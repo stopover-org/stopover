@@ -1,9 +1,9 @@
 class SmsProvider
   @client = Twilio::REST::Client.new
 
-  def send_sms(to:, message:)
+  def send_sms(from:, to:, message:)
     @client.messages.create(
-      from: Rails.application.credentials.twilio_phone_number,
+      from: from,
       to: to,
       body: message
     )
