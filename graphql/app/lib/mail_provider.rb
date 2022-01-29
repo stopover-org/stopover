@@ -2,11 +2,11 @@ require 'sendgrid-ruby'
 include SendGrid
 
 class MailProvider
-  def prepare_content(file:, locals:)
+  def self.prepare_content(file:, locals:)
     ApplicationController.render(file, locals: locals)
   end
 
-  def send_mail(from:, to:, subject:, content:, type: 'text/html')
+  def self.send_mail(from:, to:, subject:, content:, type: 'text/html')
     return if Rails.env.test?
 
     from = SendGrid::Email.new(email: from)

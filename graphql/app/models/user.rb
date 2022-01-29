@@ -13,7 +13,7 @@ class User < ApplicationRecord
   def send_confirmation_code!(primary: )
     raise "You are trying to resend confirmation code too often" unless can_check_code?
 
-    code ||= rand.to_s[2..6]
+    code = rand.to_s[2..6]
 
     self.confirmation_code = code
     self.last_try = DateTime.now
@@ -21,15 +21,15 @@ class User < ApplicationRecord
     save!
 
     if primary == 'email'&& email
-      MailProvider.new.send_mail(from: ::Configuration.get_value(:NOTIFICATION_EMAIL).value,
+      MailProvider.send_mail(from: ::Configuration.get_value(:NOTIFICATION_EMAIL).value,
                                  to: email,
                                  subject: 'Confirmation code',
-                                 content: MailProvider.new.prepare_content(file: 'mailer/confirmation_code',
+                                 content: MailProvider.prepare_content(file: 'mailer/confirmation_code',
                                                                            locals: { confirmation_code: confirmation_code }
                                  )
       )
     elsif primary == 'phone' && phone
-      SmsProvider.new.send_sms(from: ::Configuration.get_value(:NOTIFICATION_PHONE).value,
+      SmsProvider.send_sms(from: ::Configuration.get_value(:NOTIFICATION_PHONE).value,
                                to: phone,
                                message: "Your confirmation code: ##{confirmation_code}"
       )

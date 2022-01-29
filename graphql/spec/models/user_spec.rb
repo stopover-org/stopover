@@ -2,6 +2,11 @@ require "rails_helper"
 
 RSpec.describe User, type: :model do
   describe "create user from scratch" do
+    before(:each) do
+      allow(SmsProvider).to receive(:send_sms)
+      allow(MailProvider).to receive(:send_mail)
+    end
+
     let (:user) { create(:user) }
     let (:primary_method) { "phone" }
     subject { user.send_confirmation_code!(primary: primary_method) }
@@ -21,6 +26,15 @@ RSpec.describe User, type: :model do
         user.activate!(code: user.confirmation_code)
         expect(user.confirmation_code).to be(nil)
         expect(user.status).to eq('active')
+      end
+
+      it "should send notifications" do
+        subject
+        # if primary_method == 'phone'
+        #   expect(SmsProvider).to receive(:send_sms)
+        # elsif primary_method == 'email'
+        #   expect(MailProvider).to receive(:send_mail)
+        # end
       end
     end
 

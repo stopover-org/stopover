@@ -12,7 +12,7 @@ module Mutations
       if type == 'phone'
         user = User.find_or_create_by!(phone: username)
       elsif type == 'email'
-        user = User.find_or_create_by!(email: username).last
+        user = User.find_or_create_by!(email: username)
       end
 
       if args[:code]
