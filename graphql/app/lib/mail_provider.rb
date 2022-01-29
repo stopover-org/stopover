@@ -7,6 +7,8 @@ class MailProvider
   end
 
   def send_mail(from:, to:, subject:, content:, type: 'text/html')
+    return if Rails.env.test?
+
     from = SendGrid::Email.new(email: from)
     to = SendGrid::Email.new(email: to)
     subject = subject

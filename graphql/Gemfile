@@ -62,6 +62,7 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem "factory_bot_rails"
 end
 
 group :test do
@@ -78,3 +79,4 @@ gem "graphiql-rails", group: :development
 gem 'jwt'
 gem 'twilio-ruby'
 gem 'sendgrid-ruby'
+gem "rspec-rails", group: [:development, :test]

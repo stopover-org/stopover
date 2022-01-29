@@ -18,8 +18,10 @@ ActiveRecord::Schema.define(version: 2022_01_25_231734) do
   create_table "configurations", force: :cascade do |t|
     t.string "value"
     t.string "key"
+    t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_configurations_on_key"
   end
 
   create_table "users", force: :cascade do |t|
