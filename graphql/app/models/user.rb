@@ -61,11 +61,10 @@ class User < ApplicationRecord
   end
 
   def access_token
-    session_password ||= SecureRandom.hex(50)
-    self.session_password = session_password
+    self.session_password ||= SecureRandom.hex(50)
     save!
 
-    JWT.encode({ email: email, phone: phone, id: id }, session_password, GraphqlController::JWT_ALGORITHM)
+    JWT.encode({ email: email, phone: phone, id: id }, session_password, AuthorizationSupport::JWT_ALGORITHM)
   end
 
   private

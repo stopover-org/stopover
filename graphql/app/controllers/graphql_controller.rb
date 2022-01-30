@@ -5,6 +5,7 @@ class GraphqlController < ApplicationController
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
   # protect_from_forgery with: :null_session
+  before_action :authorize!
 
   JWT_ALGORITHM = 'HS256'
 
@@ -13,12 +14,12 @@ class GraphqlController < ApplicationController
     query = params[:query]
     operation_name = params[:operationName]
     context = {
-      # Query context goes here, for example:
-      current_user: authorize,
+      current_user: @current_user || nil,
     }
+    response.headers['Authorization'] = "Bearer #{@current_user.access_token}" if @current_user
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
-  rescue StandardError => e
+  rescue => e
     raise e unless Rails.env.development?
     handle_error_in_development(e)
   end
@@ -52,15 +53,16 @@ class GraphqlController < ApplicationController
     render json: { errors: [{ message: e.message, backtrace: e.backtrace }], data: {} }, status: 500
   end
 
-  def authorize
-    access_token = request.headers['Authorization'].split(' ')[1]
-    return nil unless access_token
-    decoded_token = JWT.decode(access_token, nil, false, { algorithm: JWT_ALGORITHM })
-    return nil unless decoded_token
-    user = User.find(decoded_token[0]['id'])
-    return nil unless user.session_password
-    verified_decoded_token = JWT.decode(access_token, user.session_password, true, { algorithm: JWT_ALGORITHM })
-    return nil unless verified_decoded_token
-    user
+  def skip_authorization?
+    return [].include?(params[:query].underscore)
+  end
+
+  def authorize!
+    user = AuthorizationSupport.decode_user(headers: request.headers)
+    raise GraphQL::ExecutionError.new("You are not authorized") if !user && !skip_authorization?
+    @current_user = user
+  rescue => e
+    raise e unless Rails.env.development?
+    handle_error_in_development(e)
   end
 end
