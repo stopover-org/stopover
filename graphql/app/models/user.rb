@@ -4,6 +4,10 @@ class User < ApplicationRecord
   validates :email, presence: true unless :phone
   validates :phone, presence: true unless :email
 
+  has_one :account, dependent: :destroy
+
+  default_scope { where(status: [:active, :inactive]) }
+
   aasm column: :status do
     state :inactive, initial: true
     state :active
@@ -43,6 +47,8 @@ class User < ApplicationRecord
     self.last_try = DateTime.now
     self.confirmed_at = DateTime.now
     self.status = :active
+
+    self.account = Account.new(primary_phone: phone, phones: phone.present? ? [phone] : [])
     save!
   end
 

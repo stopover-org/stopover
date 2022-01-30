@@ -1,8 +1,8 @@
 class CreateUsers < ActiveRecord::Migration[7.0]
   def change
     create_table :users do |t|
-      t.string :email
-      t.string :phone
+      t.string :email, index: { unique: true }, null: true
+      t.string :phone, index: { unique: true }, null: true
 
       t.string :confirmation_code
       t.string :status, null: false

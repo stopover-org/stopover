@@ -17,6 +17,11 @@ class Configuration < ApplicationRecord
       key: 'NOTIFICATION_PHONE',
       value: "+17755264317",
       description: 'phone that should be used for sending sms notifications, like sending confirmation code'
+    },
+    GEOCODE_PROVIDER: {
+      key: 'GEOCODE_PROVIDER',
+      value: 'osm',
+      description: 'which one maps provider will be used. supports only osm.'
     }
   }
   def self.get_value(key)
