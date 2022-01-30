@@ -75,7 +75,7 @@ end
 gem 'aasm'
 gem 'after_commit_everywhere', '~> 1.0'
 gem 'graphql', '~> 1.9'
-gem "graphiql-rails", group: :development
+gem "graphiql-rails", git: "https://github.com/rmosolgo/graphiql-rails.git", branch: "master", group: :development
 gem 'jwt'
 gem 'twilio-ruby'
 gem 'sendgrid-ruby'

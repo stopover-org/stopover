@@ -1,7 +1,8 @@
 module Mutations
   class SignIn < BaseMutation
     field :user, Types::UserType
-    field :delay, Integer
+    field :delay, Integer, null: true
+    field :access_token, String, null: true
 
     argument :username, String
     argument :code, String, required: false
@@ -18,7 +19,7 @@ module Mutations
       if args[:code]
         user.activate!(code: args[:code])
 
-        return { user: user }
+        return { user: user, access_token: user.access_token }
       else
         user.send_confirmation_code!(primary: type)
 

@@ -14,7 +14,7 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
-      # current_user: authorize,
+      current_user: authorize,
     }
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
@@ -53,12 +53,13 @@ class GraphqlController < ApplicationController
   end
 
   def authorize
-    access_token = headers['Authorization']
+    access_token = request.headers['Authorization'].split(' ')[1]
     return nil unless access_token
     decoded_token = JWT.decode(access_token, nil, false, { algorithm: JWT_ALGORITHM })
     return nil unless decoded_token
-    user = User.find(decoded_token[id])
-    verified_decoded_token = JWT.decode(access_token, user.password_digest, true, { algorithm: JWT_ALGORITHM })
+    user = User.find(decoded_token[0]['id'])
+    return nil unless user.session_password
+    verified_decoded_token = JWT.decode(access_token, user.session_password, true, { algorithm: JWT_ALGORITHM })
     return nil unless verified_decoded_token
     user
   end

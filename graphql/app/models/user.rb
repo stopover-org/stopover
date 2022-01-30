@@ -1,3 +1,5 @@
+require 'jwt'
+
 class User < ApplicationRecord
   include AASM
 
@@ -49,11 +51,21 @@ class User < ApplicationRecord
     self.status = :active
 
     self.account = Account.new(primary_phone: phone, phones: phone.present? ? [phone] : [])
+
+    self.session_password = SecureRandom.hex(50)
     save!
   end
 
   def delay
     ::Configuration.get_value(:SIGN_IN_DELAY).value.to_i - (DateTime.now.to_i - last_try&.to_i)
+  end
+
+  def access_token
+    session_password ||= SecureRandom.hex(50)
+    self.session_password = session_password
+    save!
+
+    JWT.encode({ email: email, phone: phone, id: id }, session_password, GraphqlController::JWT_ALGORITHM)
   end
 
   private
