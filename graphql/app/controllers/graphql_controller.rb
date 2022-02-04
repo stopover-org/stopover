@@ -54,12 +54,13 @@ class GraphqlController < ApplicationController
   end
 
   def skip_authorization?
-    return [].include?(params[:query].underscore)
+    return true
+    # return [:sign_in, :introspection_query].include?(params[:operationName].underscore.to_sym)
   end
 
   def authorize!
     user = AuthorizationSupport.decode_user(headers: request.headers)
-    raise GraphQL::ExecutionError.new("You are not authorized") if !user && !skip_authorization?
+    raise GraphQL::ExecutionError.new("You are not authorized") if !skip_authorization? && !user
     @current_user = user
   rescue => e
     raise e unless Rails.env.development?

@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/faker-ruby/faker.git
+  revision: cb69fe43290c90e023ef241edfdad39180cc0c31
+  branch: master
+  specs:
+    faker (2.19.0)
+      i18n (>= 1.8.11, < 2)
+
+GIT
   remote: https://github.com/rmosolgo/graphiql-rails.git
   revision: 6b34eb17bf13262eef6edf9a069cfc69b5db9708
   branch: master
@@ -293,6 +301,7 @@ DEPENDENCIES
   capybara
   debug
   factory_bot_rails
+  faker!
   geocoder
   graphiql-rails!
   graphql (~> 1.9)

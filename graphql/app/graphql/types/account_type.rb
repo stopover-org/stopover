@@ -14,5 +14,7 @@ module Types
     field :phone, [String]
     field :primary_phone, String
     field :verified_at, String
+
+    field :interests, [Types::InterestType]
   end
 end

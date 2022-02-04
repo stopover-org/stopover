@@ -15,6 +15,8 @@ module Mutations
     argument :latitude, Float
     argument :primary_phone, String
 
+    argument :interest_ids, [ID], loads: Types::InterestType
+
     def resolve (house_number: nil, street: nil, city: nil, country:, region: nil, full_address:, longitude:, latitude:, primary_phone:, name:)
       user = current_user
       return nil unless user
