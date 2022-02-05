@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_05_134536) do
+ActiveRecord::Schema.define(version: 2022_02_05_162313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,23 @@ ActiveRecord::Schema.define(version: 2022_02_05_134536) do
     t.index ["user_id"], name: "index_accounts_on_user_id", unique: true
   end
 
+  create_table "achievements", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "preview"
+    t.boolean "active", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["title"], name: "index_achievements_on_title", unique: true
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "preview"
+    t.boolean "active", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "configurations", force: :cascade do |t|
     t.string "value"
     t.string "key"
@@ -65,13 +82,54 @@ ActiveRecord::Schema.define(version: 2022_02_05_134536) do
     t.index ["title"], name: "index_interests_on_title", unique: true
   end
 
+  create_table "trip_achievements", force: :cascade do |t|
+    t.bigint "trip_id"
+    t.bigint "achievement_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["achievement_id"], name: "index_trip_achievements_on_achievement_id"
+    t.index ["trip_id", "achievement_id"], name: "index_trip_achievements_on_trip_id_and_achievement_id", unique: true
+    t.index ["trip_id"], name: "index_trip_achievements_on_trip_id"
+  end
+
+  create_table "trip_categories", force: :cascade do |t|
+    t.bigint "trip_id"
+    t.bigint "category_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_trip_categories_on_category_id"
+    t.index ["trip_id", "category_id"], name: "index_trip_categories_on_trip_id_and_category_id", unique: true
+    t.index ["trip_id"], name: "index_trip_categories_on_trip_id"
+  end
+
+  create_table "trip_options", force: :cascade do |t|
+    t.string "title"
+    t.decimal "organizer_cost_cents"
+    t.decimal "attendee_cost_cents"
+    t.boolean "built_id", default: false
+    t.bigint "trip_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["trip_id"], name: "index_trip_options_on_trip_id"
+  end
+
+  create_table "trip_trip_options", force: :cascade do |t|
+    t.bigint "trip_id"
+    t.bigint "trip_option_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["trip_id", "trip_option_id"], name: "index_trip_trip_options_on_trip_id_and_trip_option_id", unique: true
+    t.index ["trip_id"], name: "index_trip_trip_options_on_trip_id"
+    t.index ["trip_option_id"], name: "index_trip_trip_options_on_trip_option_id"
+  end
+
   create_table "trips", force: :cascade do |t|
     t.string "title", null: false
     t.text "description", null: false
     t.string "trip_type", null: false
     t.string "recurring_type", null: false
-    t.decimal "organizer_cost_per_uom"
-    t.decimal "attendee_cost_per_uom"
+    t.decimal "organizer_cost_per_uom_cents"
+    t.decimal "attendee_cost_per_uom_cents"
     t.boolean "requires_contract", default: false, null: false
     t.boolean "requires_passport", default: false, null: false
     t.string "recurring_days_with_time", default: [], array: true
