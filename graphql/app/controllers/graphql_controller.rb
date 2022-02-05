@@ -22,7 +22,7 @@ class GraphqlController < ApplicationController
 
     render json: result, status_code: status_code
   rescue => e
-    handle_error_in_development(e) if Rails.env.development?
+    return handle_error_in_development(e) if Rails.env.development?
     render json: { errors: [{ message: 'Something went wrong' }], data: {} }, status: 500
   end
 
