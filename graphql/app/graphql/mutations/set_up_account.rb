@@ -15,13 +15,14 @@ module Mutations
     argument :latitude, Float
     argument :primary_phone, String
 
-    argument :interest_ids, [ID], loads: Types::InterestType
+    argument :interest_ids, [ID], loads: Types::InterestType, required: false
 
-    def resolve (house_number: nil, street: nil, city: nil, country:, region: nil, full_address:, longitude:, latitude:, primary_phone:, name:)
+    def resolve (house_number: nil, street: nil, city: nil, country:, region: nil, full_address:, longitude:, latitude:, primary_phone:, name:, **args)
       user = current_user
       return nil unless user
       account = user.account
-      account = Account.new(primary_phone: user.phone, phones: user.phone.present? ? [user.phone] : []) unless account
+      account ||= Account.new(primary_phone: user.phone, phones: user.phone.present? ? [user.phone] : [])
+
       account.house_number = house_number
       account.street = street
       account.city = city
@@ -32,6 +33,8 @@ module Mutations
       account.latitude = latitude
       account.primary_phone = primary_phone
       account.name = name
+
+      account.interests = args[:interests] if args[:interests]
 
       user.account.save!
 

@@ -1,4 +1,4 @@
 class AccountInterest < ApplicationRecord
-  belongs_to :account
-  belongs_to :interest
+  belongs_to :account, optional: false
+  belongs_to :interest, optional: false
 end

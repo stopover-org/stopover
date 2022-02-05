@@ -18,10 +18,24 @@ class GraphqlController < ApplicationController
     }
     response.headers['Authorization'] = "Bearer #{@current_user.access_token}" if @current_user
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
-    render json: result
+    status_code = result&.dig('errors', 0, 'extensions', 'statusCode') || 200
+
+    render json: result, status_code: status_code
   rescue => e
-    raise e unless Rails.env.development?
-    handle_error_in_development(e)
+    handle_error_in_development(e) if Rails.env.development?
+    render json: { errors: [{ message: 'Something went wrong' }], data: {} }, status: 500
+  end
+
+  def relay_id
+    klass = params[:type_name].classify.constantize
+    object = klass.find(params[:raw_id])
+    id = GraphqlSchema.id_from_object(object)
+    render json: { id: id }
+  end
+
+  def raw_id
+    id = GraphqlSchema.object_from_id(params[:relay_id]).try(:id)
+    render json: { raw_id: id }
   end
 
   private
@@ -60,7 +74,6 @@ class GraphqlController < ApplicationController
 
   def authorize!
     user = AuthorizationSupport.decode_user(headers: request.headers)
-    raise GraphQL::ExecutionError.new("You are not authorized") if !skip_authorization? && !user
     @current_user = user
   rescue => e
     raise e unless Rails.env.development?

@@ -16,13 +16,13 @@ ActiveRecord::Schema.define(version: 2022_01_30_210622) do
   enable_extension "plpgsql"
 
   create_table "account_interests", force: :cascade do |t|
-    t.bigint "accounts_id"
-    t.bigint "interests_id"
+    t.bigint "account_id"
+    t.bigint "interest_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["accounts_id", "interests_id"], name: "index_account_interests_on_accounts_id_and_interests_id", unique: true
-    t.index ["accounts_id"], name: "index_account_interests_on_accounts_id"
-    t.index ["interests_id"], name: "index_account_interests_on_interests_id"
+    t.index ["account_id", "interest_id"], name: "index_account_interests_on_account_id_and_interest_id", unique: true
+    t.index ["account_id"], name: "index_account_interests_on_account_id"
+    t.index ["interest_id"], name: "index_account_interests_on_interest_id"
   end
 
   create_table "accounts", force: :cascade do |t|

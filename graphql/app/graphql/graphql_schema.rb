@@ -16,36 +16,46 @@ class GraphqlSchema < GraphQL::Schema
 
   # Union and Interface Resolution
   def self.resolve_type(abstract_type, obj, ctx)
-    # TODO: Implement this method
-    # to return the correct GraphQL object type for `obj`
-    raise(GraphQL::RequiredImplementationMissingError)
+    Object.const_get("Types::#{obj.class.name}Type")
   end
 
   # Relay-style Object Identification:
 
   # Return a string UUID for `object`
-  def self.id_from_object(object, type_definition, query_ctx)
-    # For example, use Rails' GlobalID library (https://github.com/rails/globalid):
-    object_id = object.to_global_id.to_s
-    # Remove this redundant prefix to make IDs shorter:
-    object_id = object_id.sub("gid://#{GlobalID.app}/", "")
-    encoded_id = Base64.urlsafe_encode64(object_id)
-    # Remove the "=" padding
-    encoded_id = encoded_id.sub(/=+/, "")
-    # Add a type hint
-    type_hint = type_definition.graphql_name.first
-    "#{type_hint}_#{encoded_id}"
+  def self.id_from_object(object, type_definition = nil, query_ctx = {})
+    object_type = object.try(:graphql_object_type) || object.try(:dig, :graphql_object_type)
+    is_record = object_type == :record
+    type_name = is_record ? object.class.table_name : object_type
+    unique_id = object.try(:id) || object.dig(:id)
+
+    GraphQL::Schema::UniqueWithinType.encode(type_name, unique_id)
   end
 
   # Given a string UUID, find the object
-  def self.object_from_id(encoded_id_with_hint, query_ctx)
-    # For example, use Rails' GlobalID library (https://github.com/rails/globalid):
-    # Split off the type hint
-    _type_hint, encoded_id = encoded_id_with_hint.split("_", 2)
-    # Decode the ID
-    id = Base64.urlsafe_decode64(encoded_id)
-    # Rebuild it for Rails then find the object:
-    full_global_id = "gid://#{GlobalID.app}/#{id}"
-    GlobalID::Locator.locate(full_global_id)
+  def self.object_from_id(uuid, ctx = nil)
+    raise GraphQL::ExecutionError.new('Cannot parse ID, invalid value') if !uuid.is_a?(String) || uuid.is_a?(Integer) || uuid.try(:to_i).try(:positive?)
+
+    type_name, unique_id = GraphQL::Schema::UniqueWithinType.decode(uuid)
+
+    # Check if type_name matches a model constant
+    if Object.const_defined?(type_name.classify, true)
+      model_class = type_name.classify.constantize
+      # Use dataloader if available to load the record by ID, otherwise fall back to regular loading
+      # ctx might be nil in specs, that's why we have the fallback
+      if ctx&.try(:dataloader)
+        ctx.dataloader.with(Sources::RecordById, model_class).load(unique_id)
+      else
+        model_class.find(unique_id)
+      end
+    elsif type_name.to_sym == :candidate
+      # For this type, we unpack it and get the id and job_id then return a hash with both
+      id_parts = unique_id.split('_')
+      {
+        id: id_parts[0].to_i,
+        job_id: id_parts[1].to_i
+      }
+    else
+      raise InternalServerError, "Unknown type: #{type_name}"
+    end
   end
 end
