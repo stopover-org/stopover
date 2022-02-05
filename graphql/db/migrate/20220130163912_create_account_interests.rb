@@ -1,8 +1,8 @@
 class CreateAccountInterests < ActiveRecord::Migration[7.0]
   def change
     create_table :account_interests do |t|
-      t.belongs_to :account
-      t.belongs_to :interest
+      t.belongs_to :account, foreign_key: true, index: true
+      t.belongs_to :interest, foreign_key: true, index: true
 
       t.timestamps
     end

@@ -80,4 +80,6 @@ ActiveRecord::Schema.define(version: 2022_01_30_210622) do
     t.index ["phone"], name: "index_users_on_phone", unique: true
   end
 
+  add_foreign_key "account_interests", "accounts"
+  add_foreign_key "account_interests", "interests"
 end
