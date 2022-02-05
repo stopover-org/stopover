@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_05_162313) do
+ActiveRecord::Schema.define(version: 2022_02_05_162046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,16 +113,6 @@ ActiveRecord::Schema.define(version: 2022_02_05_162313) do
     t.index ["trip_id"], name: "index_trip_options_on_trip_id"
   end
 
-  create_table "trip_trip_options", force: :cascade do |t|
-    t.bigint "trip_id"
-    t.bigint "trip_option_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["trip_id", "trip_option_id"], name: "index_trip_trip_options_on_trip_id_and_trip_option_id", unique: true
-    t.index ["trip_id"], name: "index_trip_trip_options_on_trip_id"
-    t.index ["trip_option_id"], name: "index_trip_trip_options_on_trip_option_id"
-  end
-
   create_table "trips", force: :cascade do |t|
     t.string "title", null: false
     t.text "description", null: false
@@ -132,6 +122,7 @@ ActiveRecord::Schema.define(version: 2022_02_05_162313) do
     t.decimal "attendee_cost_per_uom_cents"
     t.boolean "requires_contract", default: false, null: false
     t.boolean "requires_passport", default: false, null: false
+    t.boolean "requires_check_in", default: false, null: false
     t.string "recurring_days_with_time", default: [], array: true
     t.string "single_days_with_time", default: [], array: true
     t.string "duration_time"

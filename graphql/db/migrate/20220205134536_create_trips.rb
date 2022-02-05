@@ -11,6 +11,7 @@ class CreateTrips < ActiveRecord::Migration[7.0]
 
       t.boolean :requires_contract, default: false, null: false
       t.boolean :requires_passport, default: false, null: false
+      t.boolean :requires_check_in, default: false, null: false
 
       t.string :recurring_days_with_time, array: true, default: []
       t.string :single_days_with_time, array: true, default: []
