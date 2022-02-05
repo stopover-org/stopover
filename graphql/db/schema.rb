@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_30_210622) do
+ActiveRecord::Schema.define(version: 2022_02_05_134536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,31 @@ ActiveRecord::Schema.define(version: 2022_01_30_210622) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["slug"], name: "index_interests_on_slug", unique: true
     t.index ["title"], name: "index_interests_on_title", unique: true
+  end
+
+  create_table "trips", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", null: false
+    t.string "trip_type", null: false
+    t.string "recurring_type", null: false
+    t.decimal "organizer_cost_per_uom"
+    t.decimal "attendee_cost_per_uom"
+    t.boolean "requires_contract", default: false, null: false
+    t.boolean "requires_passport", default: false, null: false
+    t.string "recurring_days_with_time", default: [], array: true
+    t.string "single_days_with_time", default: [], array: true
+    t.string "duration_time"
+    t.string "house_number"
+    t.string "street"
+    t.string "city"
+    t.string "country"
+    t.string "region"
+    t.string "full_address"
+    t.float "longitude"
+    t.float "latitude"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["trip_type"], name: "index_trips_on_trip_type"
   end
 
   create_table "users", force: :cascade do |t|
