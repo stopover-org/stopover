@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mutations
   class SetUpAccount < BaseMutation
     field :user, Types::UserType
@@ -17,9 +19,10 @@ module Mutations
 
     argument :interest_ids, [ID], loads: Types::InterestType, required: false
 
-    def resolve (house_number: nil, street: nil, city: nil, country:, region: nil, full_address:, longitude:, latitude:, primary_phone:, name:, **args)
+    def resolve(country:, full_address:, longitude:, latitude:, primary_phone:, name:, house_number: nil, street: nil, city: nil, region: nil, **args)
       user = current_user
       return nil unless user
+
       account = user.account
       account ||= Account.new(primary_phone: user.phone, phones: user.phone.present? ? [user.phone] : [])
 
@@ -38,7 +41,7 @@ module Mutations
 
       user.account.save!
 
-      return {
+      {
         user: user
       }
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InterestsQuery
   def initialize(params = {}, relations = Interest.all, current_user = nil)
     @relations = relations

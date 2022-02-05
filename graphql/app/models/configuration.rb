@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Configuration < ApplicationRecord
   validates :key, uniqueness: true, presence: true
   default_scope { order(key: :asc) }
@@ -10,12 +12,12 @@ class Configuration < ApplicationRecord
     },
     NOTIFICATION_EMAIL: {
       key: 'NOTIFICATION_EMAIL',
-      value: "admin@dorokhovich.ru",
+      value: 'admin@dorokhovich.ru',
       description: 'email that should be used for sending email notifications, like sending confirmation code'
     },
     NOTIFICATION_PHONE: {
       key: 'NOTIFICATION_PHONE',
-      value: "+17755264317",
+      value: '+17755264317',
       description: 'phone that should be used for sending sms notifications, like sending confirmation code'
     },
     GEOCODE_PROVIDER: {
@@ -23,31 +25,30 @@ class Configuration < ApplicationRecord
       value: 'osm',
       description: 'which one maps provider will be used. supports only osm.'
     }
-  }
+  }.freeze
   def self.get_value(key)
     return nil unless DEFAULT_VALUES.keys.include?(key.to_sym)
 
-    record = find_by_key(key)
+    record = find_by(key: key)
     return record if record
 
     default = DEFAULT_VALUES[key.to_sym]
 
-    record = create!(key: key, value: default[:value], description: default[:description])
-    record
+    create!(key: key, value: default[:value], description: default[:description])
   end
 
   def self.set_value(key)
     return nil unless DEFAULT_VALUES.keys.include?(key.to_sym)
-    record = find_by_key(key)
+
+    record = find_by(key: key)
     return record if record
 
     default = DEFAULT_VALUES[key.to_sym]
-    record = create!(key: key, value: default[:value], description: default[:description])
-    return record
+    create!(key: key, value: default[:value], description: default[:description])
   end
 
   def self.update_default
-    DEFAULT_VALUES.each do |key, config|
+    DEFAULT_VALUES.each do |key, _config|
       set_value(key)
     end
   end

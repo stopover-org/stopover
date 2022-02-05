@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class QueryType < Types::BaseObject
     # Add `node(id: ID!) and `nodes(ids: [ID!]!)`
@@ -6,7 +8,7 @@ module Types
 
     field :current_user, Types::UserType
 
-    field :interests, [Types::InterestType]do
+    field :interests, [Types::InterestType] do
       argument :filters, Types::InterestsFilter, required: false
     end
 

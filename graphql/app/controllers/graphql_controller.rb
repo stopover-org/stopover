@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jwt'
 
 class GraphqlController < ApplicationController
@@ -14,16 +16,17 @@ class GraphqlController < ApplicationController
     query = params[:query]
     operation_name = params[:operationName]
     context = {
-      current_user: @current_user || nil,
+      current_user: @current_user || nil
     }
     response.headers['Authorization'] = "Bearer #{@current_user.access_token}" if @current_user
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     status_code = result&.dig('errors', 0, 'extensions', 'statusCode') || 200
 
     render json: result, status_code: status_code
-  rescue => e
+  rescue StandardError => e
     return handle_error_in_development(e) if Rails.env.development?
-    render json: { errors: [{ message: 'Something went wrong' }], data: {} }, status: 500
+
+    render json: { errors: [{ message: 'Something went wrong' }], data: {} }, status: :internal_server_error
   end
 
   def relay_id
@@ -64,19 +67,20 @@ class GraphqlController < ApplicationController
     logger.error e.message
     logger.error e.backtrace.join("\n")
 
-    render json: { errors: [{ message: e.message, backtrace: e.backtrace }], data: {} }, status: 500
+    render json: { errors: [{ message: e.message, backtrace: e.backtrace }], data: {} }, status: :internal_server_error
   end
 
   def skip_authorization?
-    return true
+    true
     # return [:sign_in, :introspection_query].include?(params[:operationName].underscore.to_sym)
   end
 
   def authorize!
     user = AuthorizationSupport.decode_user(headers: request.headers)
     @current_user = user
-  rescue => e
+  rescue StandardError => e
     raise e unless Rails.env.development?
+
     handle_error_in_development(e)
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GraphqlSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
@@ -6,34 +8,29 @@ class GraphqlSchema < GraphQL::Schema
   use GraphQL::Dataloader
 
   # GraphQL-Ruby calls this when something goes wrong while running a query:
-  def self.type_error(err, context)
-    # if err.is_a?(GraphQL::InvalidNullError)
-    #   # report to your bug tracker here
-    #   return nil
-    # end
-    super
-  end
 
   # Union and Interface Resolution
-  def self.resolve_type(abstract_type, obj, ctx)
+  def self.resolve_type(_abstract_type, obj, _ctx)
     Object.const_get("Types::#{obj.class.name}Type")
   end
 
   # Relay-style Object Identification:
 
   # Return a string UUID for `object`
-  def self.id_from_object(object, type_definition = nil, query_ctx = {})
+  def self.id_from_object(object, _type_definition = nil, _query_ctx = {})
     object_type = object.try(:graphql_object_type) || object.try(:dig, :graphql_object_type)
     is_record = object_type == :record
     type_name = is_record ? object.class.table_name : object_type
-    unique_id = object.try(:id) || object.dig(:id)
+    unique_id = object.try(:id) || object[:id]
 
     GraphQL::Schema::UniqueWithinType.encode(type_name, unique_id)
   end
 
   # Given a string UUID, find the object
   def self.object_from_id(uuid, ctx = nil)
-    raise GraphQL::ExecutionError.new('Cannot parse ID, invalid value') if !uuid.is_a?(String) || uuid.is_a?(Integer) || uuid.try(:to_i).try(:positive?)
+    if !uuid.is_a?(String) || uuid.is_a?(Integer) || uuid.try(:to_i).try(:positive?)
+      raise GraphQL::ExecutionError, 'Cannot parse ID, invalid value'
+    end
 
     type_name, unique_id = GraphQL::Schema::UniqueWithinType.decode(uuid)
 

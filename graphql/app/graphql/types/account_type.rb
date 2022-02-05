@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class AccountType < Types::BaseObject
     field :id, ID, null: false
@@ -16,5 +18,9 @@ module Types
     field :verified_at, String
 
     field :interests, [Types::InterestType]
+
+    def authorized?(object, context)
+      super && context[:current_user]&.account == object
+    end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TestEmailSenderJob < ApplicationJob
   def test_mail(to:)
     MailProvider.new.send_mail(from: 'mikhail2@dorokhovich.ru',
@@ -5,8 +7,6 @@ class TestEmailSenderJob < ApplicationJob
                                subject: 'Testing Email Sender',
                                type: 'text/html',
                                content: MailProvider.new.prepare_content(file: 'mailer/test_mail',
-                                                                         locals: {}
-                               )
-    )
+                                                                         locals: {}))
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InternalServerError < BaseError
   def initialize(message = nil)
     if Rails.env.test? || Rails.env.development?

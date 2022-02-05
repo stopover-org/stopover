@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAccounts < ActiveRecord::Migration[7.0]
   def change
     create_table :accounts do |t|
@@ -12,7 +14,7 @@ class CreateAccounts < ActiveRecord::Migration[7.0]
       t.float :latitude
       t.string :status, default: 'initial', null: false
 
-      t.string :phones, array: true, :default => []
+      t.string :phones, array: true, default: []
       t.string :primary_phone
 
       t.belongs_to :user, index: { unique: true }, foreign: true
