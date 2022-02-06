@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class CreateTrips < ActiveRecord::Migration[7.0]
+class CreateEvents < ActiveRecord::Migration[7.0]
   def change
-    create_table :trips do |t|
+    create_table :events do |t|
       t.string :title, null: false
       t.text :description, null: false
-      t.string :trip_type, null: false, index: true
+      t.string :event_type, null: false, index: true
       t.string :recurring_type, null: false
 
       t.decimal :organizer_cost_per_uom_cents

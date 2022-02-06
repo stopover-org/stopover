@@ -5,6 +5,6 @@ module Types
     field :id, ID
     field :name, String
     field :unit_type, String
-    field :preview, required: false
+    field :preview, String
   end
 end

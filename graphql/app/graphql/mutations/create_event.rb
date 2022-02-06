@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
-module Types
-  class CreateTrip < BaseMutation
+module Mutations
+  class CreateEvent < GraphQL::Schema::RelayClassicMutation
+    field :event, Types::EventType
+
     argument :title, String
-    argument :category_ids, [ID], loads: Types::CategoryType
-    argument :trip_type, Types::TripTypeEnum
+    argument :interest_ids, [ID], loads: Types::InterestType
+    argument :event_type, Types::EventTypeEnum
     # argument :images
     argument :description, String
 
@@ -12,7 +14,7 @@ module Types
     argument :street, String, required: false
     argument :city, String
     argument :country, String
-    argument :region, String
+    argument :region, String, required: false
 
     argument :full_address, String
     argument :longitude, Float
@@ -24,7 +26,7 @@ module Types
 
     argument :organizer_cost_per_uom_cents, Integer
 
-    argument :trip_options, [Types::TripOptionType]
+    argument :event_options, [Types::CreateEventOptionInput]
 
     argument :requires_contract, Boolean
     argument :requires_passport, Boolean
@@ -33,10 +35,10 @@ module Types
     argument :unit_id, ID, loads: Types::UnitType
 
     def resolve(**args)
-      trip = Trip.new(
+      event = Event.new(
         title: args[:title],
-        categories: args[:categories],
-        trip_type: args[:trip_type],
+        interests: args[:interests],
+        event_type: args[:event_type],
         description: args[:description],
         house_number: args[:house_number],
         street: args[:street],
@@ -50,18 +52,21 @@ module Types
         organizer_cost_per_uom_cents: args[:organizer_cost_per_uom_cents],
         requires_contract: args[:requires_contract],
         requires_passport: args[:requires_passport],
-        requires_check_in: args[:requires_check_in]
+        requires_check_in: args[:requires_check_in],
+        event_options: args[:event_options].map { |option| EventOption.new(**option) }
       )
-      if trip.recurring_type == 'recurring'
-        trip.recurring_days_with_time = TripSupport.prepare_dates(trip,
-                                                                  args[:dates])
+      if event.recurring_type == 'recurring'
+        event.recurring_days_with_time = ::EventSupport.prepare_dates(event,
+                                                                      args[:dates])
       end
-      if trip.recurring_type == 'non_recurring'
-        trip.single_days_with_time = TripSupport.prepare_dates(trip,
-                                                               args[:dates])
+      if event.recurring_type == 'non_recurring'
+        event.single_days_with_time = ::EventSupport.prepare_dates(event,
+                                                                   args[:dates])
       end
 
-      trip.save!
+      event.save!
+
+      { event: event }
     end
   end
 end

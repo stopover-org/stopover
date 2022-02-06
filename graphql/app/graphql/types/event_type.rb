@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module Types
-  class TripType < Types::ModelObject
+  class EventType < Types::ModelObject
     field :id, ID
     field :title, String
     field :description, String
-    field :trip_type, Types::TripTypeEnum
+    field :event_type, Types::EventTypeEnum
     field :recurring_type, Types::RecurringTypeEnum
     field :organizer_cost_per_uom_cents, Integer
     field :attendee_cost_per_uom_cents, Integer
@@ -24,8 +24,8 @@ module Types
     field :longitude, Float
     field :latitude, Float
     field :unit, Types::UnitType
-    field :trip_options, [Types::TripOptionType]
-    field :categories, [Types::CategoryType]
+    field :event_options, [Types::EventOptionType]
+    field :interests, [Types::InterestType]
     field :achievements, [Types::AchievementType]
   end
 end

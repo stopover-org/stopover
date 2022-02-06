@@ -3,6 +3,6 @@
 module Types
   class AchievementType < Types::ModelObject
     field :title, String
-    field :preview, String, required: false
+    field :preview, String
   end
 end

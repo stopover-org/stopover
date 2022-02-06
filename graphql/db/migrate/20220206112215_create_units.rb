@@ -10,6 +10,6 @@ class CreateUnits < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_reference :trips, :unit, foreign_key: true
+    add_reference :events, :unit, foreign_key: true
   end
 end

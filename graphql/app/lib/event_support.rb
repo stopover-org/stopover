@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class TripSupport
-  def self.prepare_dates(trip, dates = [])
-    return nil unless trip.is_a? Trip
+class EventSupport
+  def self.prepare_dates(event, dates = [])
+    return nil unless event.is_a? Event
 
-    case trip.recurring_type
+    case event.recurring_type
     when 'recurring'
       regexp = /([1-7])\s+([0-2][0-9]):([0-5][0-9])/
 

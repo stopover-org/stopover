@@ -54,14 +54,6 @@ ActiveRecord::Schema.define(version: 2022_02_06_112215) do
     t.index ["title"], name: "index_achievements_on_title", unique: true
   end
 
-  create_table "categories", force: :cascade do |t|
-    t.string "title", null: false
-    t.string "preview"
-    t.boolean "active", default: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "configurations", force: :cascade do |t|
     t.string "value"
     t.string "key"
@@ -71,52 +63,39 @@ ActiveRecord::Schema.define(version: 2022_02_06_112215) do
     t.index ["key"], name: "index_configurations_on_key"
   end
 
-  create_table "interests", force: :cascade do |t|
-    t.string "title", null: false
-    t.string "slug", null: false
-    t.string "preview"
-    t.boolean "active", default: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["slug"], name: "index_interests_on_slug", unique: true
-    t.index ["title"], name: "index_interests_on_title", unique: true
-  end
-
-  create_table "trip_achievements", force: :cascade do |t|
-    t.bigint "trip_id"
+  create_table "event_achievements", force: :cascade do |t|
+    t.bigint "event_id"
     t.bigint "achievement_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["achievement_id"], name: "index_trip_achievements_on_achievement_id"
-    t.index ["trip_id", "achievement_id"], name: "index_trip_achievements_on_trip_id_and_achievement_id", unique: true
-    t.index ["trip_id"], name: "index_trip_achievements_on_trip_id"
+    t.index ["achievement_id"], name: "index_event_achievements_on_achievement_id"
+    t.index ["event_id"], name: "index_event_achievements_on_event_id"
   end
 
-  create_table "trip_categories", force: :cascade do |t|
-    t.bigint "trip_id"
-    t.bigint "category_id"
+  create_table "event_interests", force: :cascade do |t|
+    t.bigint "event_id"
+    t.bigint "interest_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_trip_categories_on_category_id"
-    t.index ["trip_id", "category_id"], name: "index_trip_categories_on_trip_id_and_category_id", unique: true
-    t.index ["trip_id"], name: "index_trip_categories_on_trip_id"
+    t.index ["event_id"], name: "index_event_interests_on_event_id"
+    t.index ["interest_id"], name: "index_event_interests_on_interest_id"
   end
 
-  create_table "trip_options", force: :cascade do |t|
+  create_table "event_options", force: :cascade do |t|
     t.string "title"
     t.decimal "organizer_cost_cents"
     t.decimal "attendee_cost_cents"
-    t.boolean "built_id", default: false
-    t.bigint "trip_id", null: false
+    t.boolean "built_in", default: false
+    t.bigint "event_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["trip_id"], name: "index_trip_options_on_trip_id"
+    t.index ["event_id"], name: "index_event_options_on_event_id"
   end
 
-  create_table "trips", force: :cascade do |t|
+  create_table "events", force: :cascade do |t|
     t.string "title", null: false
     t.text "description", null: false
-    t.string "trip_type", null: false
+    t.string "event_type", null: false
     t.string "recurring_type", null: false
     t.decimal "organizer_cost_per_uom_cents"
     t.decimal "attendee_cost_per_uom_cents"
@@ -137,8 +116,19 @@ ActiveRecord::Schema.define(version: 2022_02_06_112215) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "unit_id"
-    t.index ["trip_type"], name: "index_trips_on_trip_type"
-    t.index ["unit_id"], name: "index_trips_on_unit_id"
+    t.index ["event_type"], name: "index_events_on_event_type"
+    t.index ["unit_id"], name: "index_events_on_unit_id"
+  end
+
+  create_table "interests", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "slug", null: false
+    t.string "preview"
+    t.boolean "active", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_interests_on_slug", unique: true
+    t.index ["title"], name: "index_interests_on_title", unique: true
   end
 
   create_table "units", force: :cascade do |t|
@@ -166,5 +156,9 @@ ActiveRecord::Schema.define(version: 2022_02_06_112215) do
 
   add_foreign_key "account_interests", "accounts"
   add_foreign_key "account_interests", "interests"
-  add_foreign_key "trips", "units"
+  add_foreign_key "event_achievements", "achievements"
+  add_foreign_key "event_achievements", "events"
+  add_foreign_key "event_interests", "events"
+  add_foreign_key "event_interests", "interests"
+  add_foreign_key "events", "units"
 end

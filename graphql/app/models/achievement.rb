@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 class Achievement < ApplicationRecord
-  has_many :trip_achievements
-  has_many :trips, through: :trip_achievements
+  has_many :event_achievements
+  has_many :events, through: :event_achievements
 end
