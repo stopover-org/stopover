@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class UserType < Types::BaseObject
+  class UserType < Types::ModelObject
     field :id, ID, null: false
     field :email, String, null: true
     field :phone, String, null: true

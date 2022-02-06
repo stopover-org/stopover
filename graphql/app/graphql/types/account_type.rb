@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class AccountType < Types::BaseObject
+  class AccountType < Types::ModelObject
     field :id, ID, null: false
     field :status, String, null: false
 

@@ -29,18 +29,6 @@ class GraphqlController < ApplicationController
     render json: { errors: [{ message: 'Something went wrong' }], data: {} }, status: :internal_server_error
   end
 
-  def relay_id
-    klass = params[:type_name].classify.constantize
-    object = klass.find(params[:raw_id])
-    id = GraphqlSchema.id_from_object(object)
-    render json: { id: id }
-  end
-
-  def raw_id
-    id = GraphqlSchema.object_from_id(params[:relay_id]).try(:id)
-    render json: { raw_id: id }
-  end
-
   private
 
   # Handle variables in form data, JSON body, or a blank value

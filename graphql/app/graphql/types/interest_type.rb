@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class InterestType < Types::BaseObject
-    field :relay_id, ID
+  class InterestType < Types::ModelObject
     field :id, ID
     field :title, String
     field :slug, String

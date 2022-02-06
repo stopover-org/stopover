@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_05_162046) do
+ActiveRecord::Schema.define(version: 2022_02_06_112215) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,7 +136,17 @@ ActiveRecord::Schema.define(version: 2022_02_05_162046) do
     t.float "latitude"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "unit_id"
     t.index ["trip_type"], name: "index_trips_on_trip_type"
+    t.index ["unit_id"], name: "index_trips_on_unit_id"
+  end
+
+  create_table "units", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "unit_type", default: "common", null: false
+    t.string "preview"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -156,4 +166,5 @@ ActiveRecord::Schema.define(version: 2022_02_05_162046) do
 
   add_foreign_key "account_interests", "accounts"
   add_foreign_key "account_interests", "interests"
+  add_foreign_key "trips", "units"
 end

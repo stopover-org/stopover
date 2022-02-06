@@ -2,7 +2,7 @@
 
 module Types
   class TripTypeEnum < Types::BaseEnum
-    value 'excursion', 'type for incity or offroad excursion'
-    value 'theater', 'type for theater'
+    value 'excursion', 'type for incity excursion with guide'
+    value 'tour', 'type for offroad tour'
   end
 end
