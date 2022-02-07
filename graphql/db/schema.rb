@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_06_112215) do
+ActiveRecord::Schema.define(version: 2022_02_06_183925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,29 @@ ActiveRecord::Schema.define(version: 2022_02_06_112215) do
     t.index ["title"], name: "index_achievements_on_title", unique: true
   end
 
+  create_table "booking_event_options", force: :cascade do |t|
+    t.bigint "booking_id"
+    t.bigint "event_option_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["booking_id"], name: "index_booking_event_options_on_booking_id"
+    t.index ["event_option_id"], name: "index_booking_event_options_on_event_option_id"
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.string "name"
+    t.string "status"
+    t.string "phone"
+    t.string "email"
+    t.datetime "booked_for", precision: 6, null: false
+    t.bigint "event_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "trip_id"
+    t.index ["event_id"], name: "index_bookings_on_event_id"
+    t.index ["trip_id"], name: "index_bookings_on_trip_id"
+  end
+
   create_table "configurations", force: :cascade do |t|
     t.string "value"
     t.string "key"
@@ -89,6 +112,7 @@ ActiveRecord::Schema.define(version: 2022_02_06_112215) do
     t.bigint "event_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "description"
     t.index ["event_id"], name: "index_event_options_on_event_id"
   end
 
@@ -116,6 +140,7 @@ ActiveRecord::Schema.define(version: 2022_02_06_112215) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "unit_id"
+    t.string "status"
     t.index ["event_type"], name: "index_events_on_event_type"
     t.index ["unit_id"], name: "index_events_on_unit_id"
   end
@@ -129,6 +154,22 @@ ActiveRecord::Schema.define(version: 2022_02_06_112215) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["slug"], name: "index_interests_on_slug", unique: true
     t.index ["title"], name: "index_interests_on_title", unique: true
+  end
+
+  create_table "trips", force: :cascade do |t|
+    t.bigint "account_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "city"
+    t.string "country"
+    t.string "region"
+    t.string "full_address"
+    t.float "longitude"
+    t.float "latitude"
+    t.string "status", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_trips_on_account_id"
   end
 
   create_table "units", force: :cascade do |t|
@@ -156,6 +197,8 @@ ActiveRecord::Schema.define(version: 2022_02_06_112215) do
 
   add_foreign_key "account_interests", "accounts"
   add_foreign_key "account_interests", "interests"
+  add_foreign_key "booking_event_options", "bookings"
+  add_foreign_key "booking_event_options", "event_options"
   add_foreign_key "event_achievements", "achievements"
   add_foreign_key "event_achievements", "events"
   add_foreign_key "event_interests", "events"

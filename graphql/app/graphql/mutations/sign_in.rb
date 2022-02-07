@@ -6,9 +6,9 @@ module Mutations
     field :delay, Integer, null: true
     field :access_token, String, null: true
 
-    argument :username, String
+    argument :username, String, required: true
     argument :code, String, required: false
-    argument :type, Types::SignInTypesEnum
+    argument :type, Types::SignInTypesEnum, required: true
 
     def resolve(username:, type:, **args)
       type = type.downcase

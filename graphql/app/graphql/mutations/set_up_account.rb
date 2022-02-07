@@ -9,13 +9,13 @@ module Mutations
     argument :house_number, String, required: false
     argument :street, String, required: false
     argument :city, String, required: false
-    argument :country, String
+    argument :country, String, required: true
     argument :region, String, required: false
 
-    argument :full_address, String
-    argument :longitude, Float
-    argument :latitude, Float
-    argument :primary_phone, String
+    argument :full_address, String, required: true
+    argument :longitude, Float, required: false
+    argument :latitude, Float, required: false
+    argument :primary_phone, String, required: true
 
     argument :interest_ids, [ID], loads: Types::InterestType, required: false
 

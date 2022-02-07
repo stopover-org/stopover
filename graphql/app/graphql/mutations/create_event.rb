@@ -1,38 +1,38 @@
 # frozen_string_literal: true
 
 module Mutations
-  class CreateEvent < GraphQL::Schema::RelayClassicMutation
+  class CreateEvent < BaseMutation
     field :event, Types::EventType
 
-    argument :title, String
-    argument :interest_ids, [ID], loads: Types::InterestType
-    argument :event_type, Types::EventTypeEnum
+    argument :title, String, required: true
+    argument :interest_ids, [ID], loads: Types::InterestType, required: false
+    argument :event_type, Types::EventTypeEnum, required: false
     # argument :images
-    argument :description, String
+    argument :description, String, required: false
 
     argument :house_number, String, required: false
     argument :street, String, required: false
-    argument :city, String
-    argument :country, String
+    argument :city, String, required: false
+    argument :country, String, required: false
     argument :region, String, required: false
 
-    argument :full_address, String
-    argument :longitude, Float
-    argument :latitude, Float
+    argument :full_address, String, required: true
+    argument :longitude, Float, required: false
+    argument :latitude, Float, required: false
 
-    argument :recurring_type, Types::RecurringTypeEnum
-    argument :dates, [String]
-    argument :duration_time, Integer
+    argument :recurring_type, Types::RecurringTypeEnum, required: false
+    argument :dates, [String], required: false
+    argument :duration_time, Integer, required: false
 
-    argument :organizer_cost_per_uom_cents, Integer
+    argument :organizer_cost_per_uom_cents, Integer, required: false
 
-    argument :event_options, [Types::CreateEventOptionInput]
+    argument :event_options, [Types::CreateEventOptionInput], required: false
 
-    argument :requires_contract, Boolean
-    argument :requires_passport, Boolean
-    argument :requires_check_in, Boolean
+    argument :requires_contract, Boolean, required: false
+    argument :requires_passport, Boolean, required: false
+    argument :requires_check_in, Boolean, required: false
 
-    argument :unit_id, ID, loads: Types::UnitType
+    argument :unit_id, ID, loads: Types::UnitType, required: false
 
     def resolve(**args)
       event = Event.new(
@@ -49,7 +49,7 @@ module Mutations
         latitude: args[:latitude],
         recurring_type: args[:recurring_type],
         duration_time: args[:duration_time],
-        organizer_cost_per_uom_cents: args[:organizer_cost_per_uom_cents],
+        organizer_cost_per_uom_cents: args[:organizer_cost_per_uom_cents] || 0,
         requires_contract: args[:requires_contract],
         requires_passport: args[:requires_passport],
         requires_check_in: args[:requires_check_in],
