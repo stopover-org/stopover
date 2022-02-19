@@ -1,0 +1,12 @@
+schema: http://localhost:3000/graphql
+documents:
+  - './graphql/**/*.ts'
+  - './graphql/**/*.tsx'
+generates:
+  ./generated-types.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+    config:
+      withHooks: true
