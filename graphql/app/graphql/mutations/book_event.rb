@@ -8,5 +8,7 @@ module Mutation
     argument :phone, String, required: false
     argument :datetime, String, required: true
     argument :event_id, ID, loads: Types::EventType
+
+
   end
 end

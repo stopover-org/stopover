@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'phonelib'
 
 module Mutations
   class SignIn < BaseMutation
@@ -14,6 +15,7 @@ module Mutations
       type = type.downcase
       case type
       when 'phone'
+        raise "Phone is invalid" unless Phonelib.valid? username
         user = User.find_or_create_by!(phone: username)
       when 'email'
         user = User.find_or_create_by!(email: username)
@@ -28,6 +30,9 @@ module Mutations
 
         { user: nil, delay: user.delay }
       end
+
+    rescue => e
+      raise GraphQL::ExecutionError, e.message
     end
   end
 end

@@ -86,3 +86,6 @@ gem 'rubocop', group: [:development], require: false
 gem 'rubocop-rails', require: false
 gem 'sendgrid-ruby'
 gem 'twilio-ruby'
+gem 'rack-cors', :require => 'rack/cors'
+gem 'phonelib'
+

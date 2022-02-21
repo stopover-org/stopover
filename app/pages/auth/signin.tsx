@@ -3,6 +3,10 @@ import React from "react";
 import styled from "styled-components";
 import Head from "next/head";
 import {Box, Button, Flex, Input, Label, Text} from 'theme-ui'
+import {SIGN_IN_MUTATION} from "../../graphql/signIn";
+import {useMutation} from "@apollo/client";
+import {SignInInput, SignInPayload, SignInTypesEnum} from "../../generated-types";
+import Validation from "../../components/validationField";
 
 const RightAligned = styled(Box)`
   text-align: right;
@@ -18,6 +22,10 @@ const SForm = styled.form`
   justify-content: center;
 `
 
+const CodeConfirmation = () => {
+  
+}
+
 const SignIn = () => {
   const { t } = useTranslation();
   const [type, setType] = React.useState('phone')
@@ -26,12 +34,29 @@ const SignIn = () => {
     setType(val)
     setValue("")
   }
+
+  const onSubmit = async (ev) => {
+    try {
+      ev.preventDefault();
+      await signIn({
+        variables: {
+          input: {
+            username: value,
+            type: type as SignInTypesEnum,
+          }
+        }
+      } as any)
+    } catch (err) {}
+  }
+
+  const [signIn, { data, loading, error }] = useMutation(SIGN_IN_MUTATION);
+
   return (
     <>
       <Head>
         <title>Sign In</title>
       </Head>
-      <SForm>
+      <SForm onSubmit={onSubmit}>
         <Flex
           sx={{
             flexWrap: 'wrap',
@@ -43,7 +68,7 @@ const SignIn = () => {
             <Flex sx={{
               flexWrap: "wrap"
             }}>
-              <Box sx={{width: ["100%"]}} mb={2}>
+              <Box sx={{width: ["100%"]}} mb={error ? 0 : 2}>
                 <Label>
                   <Text sx={{variant: 'styles.h4'}}>
                     {type === 'phone' ? t("signIn.enterPhone") : t("signIn.enterEmail")}
@@ -58,6 +83,9 @@ const SignIn = () => {
                   onChange={(ev) => setValue(ev.target.value)}
                   required
                 />
+                {error && <Validation>
+                  {error?.message}
+                </Validation>}
               </Box>
             </Flex>
           </Box>

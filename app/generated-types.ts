@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useQuery, UseQueryOptions, useMutation, UseMutationOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -274,6 +274,13 @@ export type CurrentUserQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CurrentUserQueryQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: string, account: { __typename?: 'Account', id: string, name?: string | null, primaryPhone?: string | null } } | null };
 
+export type SignInMutationMutationVariables = Exact<{
+  input: SignInInput;
+}>;
+
+
+export type SignInMutationMutation = { __typename?: 'Mutation', signIn?: { __typename?: 'SignInPayload', delay?: number | null, accessToken?: string | null, user?: { __typename?: 'User', id: string } | null } | null };
+
 
 export const CurrentUserQueryDocument = `
     query currentUserQuery {
@@ -298,5 +305,28 @@ export const useCurrentUserQueryQuery = <
     useQuery<CurrentUserQueryQuery, TError, TData>(
       variables === undefined ? ['currentUserQuery'] : ['currentUserQuery', variables],
       fetcher<CurrentUserQueryQuery, CurrentUserQueryQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, CurrentUserQueryDocument, variables),
+      options
+    );
+export const SignInMutationDocument = `
+    mutation signInMutation($input: SignInInput!) {
+  signIn(input: $input) {
+    user {
+      id
+    }
+    delay
+    accessToken
+  }
+}
+    `;
+export const useSignInMutationMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<SignInMutationMutation, TError, SignInMutationMutationVariables, TContext>
+    ) =>
+    useMutation<SignInMutationMutation, TError, SignInMutationMutationVariables, TContext>(
+      ['signInMutation'],
+      (variables?: SignInMutationMutationVariables) => fetcher<SignInMutationMutation, SignInMutationMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, SignInMutationDocument, variables)(),
       options
     );

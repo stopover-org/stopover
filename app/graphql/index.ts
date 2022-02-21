@@ -1,10 +1,15 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache, FetchPolicy } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: "localhost:3000/graphql",
+  uri: "http://localhost:3000/graphql",
   cache: new InMemoryCache({
     addTypename: false
   }),
+  defaultOptions: {
+    mutate: {
+      fetchPolicy: 'no-cache'
+    }
+  }
 });
 
 export default client;
