@@ -22,22 +22,80 @@ const SForm = styled.form`
   justify-content: center;
 `
 
-// const SCodeInput = styled(Input)`
-//   width: 100px;
-//   height: 100px;
-// `
-
-type CodeConfirmationProps = {
-  error: string
+type ConfirmationFormProps = {
+  error: { message: string }
 }
 
-const CodeConfirmation = ({ error }: CodeConfirmationProps) => {
+type UsernameFormProps = {
+  error: { message: string };
+  onSubmit: (ev: React.FormEvent) => void;
+  type: string;
+  username: string;
+  setUsername: (string) => void;
+  switchType: (type: string) => void
+}
+
+const UsernameForm = ({ error, onSubmit, type, username, setUsername, switchType }: UsernameFormProps) => {
+  const { t } = useTranslation();
+  return (
+    <SForm onSubmit={onSubmit}>
+      <Flex
+        sx={{
+          flexWrap: 'wrap',
+          width: '500px',
+          justifyContent: 'center',
+        }}
+      >
+        <Box sx={{width: ["100%"]}} mb={2}>
+          <Flex sx={{
+            flexWrap: "wrap"
+          }}>
+            <Box sx={{width: ["100%"]}} mb={error ? 0 : 2}>
+              <Label>
+                <Text sx={{variant: 'styles.h4'}}>
+                  {type === 'phone' ? t("signIn.enterPhone") : t("signIn.enterEmail")}
+                </Text>
+              </Label>
+            </Box>
+            <Box sx={{width: ["100%"]}}>
+              <Input
+                type="text"
+                placeholder={type === 'phone' ? "+7(___)___-__-__" : "Enter email"}
+                value={username}
+                onChange={(ev) => setUsername(ev.target.value)}
+                required
+              />
+              {error && <Validation>
+                {error?.message}
+              </Validation>}
+            </Box>
+          </Flex>
+        </Box>
+        <Box mt={3} sx={{width: ["50%"]}}>
+          <Button variant="primary" disabled={!username} p={["12px 30px"]}>{t("signIn.submit")}</Button>
+        </Box>
+        <RightAligned sx={{width: ["50%"]}}>
+          {type === 'email' && <Text sx={{variant: "styles.a"}} md={3} onClick={() => switchType('phone')}>
+            {t("signIn.switchToPhone")}
+          </Text>}
+          {type === 'phone' && <Text sx={{variant: "styles.a"}} md={3} onClick={() => switchType('email')}>
+            {t("signIn.switchToEmail")}
+          </Text>}
+        </RightAligned>
+      </Flex>
+    </SForm>
+  )
+}
+
+const CodeConfirmation = ({ error, changeCode }: ConfirmationFormProps) => {
+  const { t } = useTranslation();
   const [code, setCode] = React.useState([])
-  const onChangeCode = (index: number) => (ev) => {
-    setCode([...code.slice(0, index), ev.target.value[0], ...code.slice(index + 1)])
+  const onChangeCode = (index: number) => async (ev) => {
+    await setCode([...code.slice(0, index), ev.target.value[0], ...code.slice(index + 1)])
     if (index !== 4 && ev.target.value) {
       inputs[index + 1].current.focus()
     }
+    changeCode(code.join(''))
   }
   const inputs = [
     React.useRef(null),
@@ -61,7 +119,7 @@ const CodeConfirmation = ({ error }: CodeConfirmationProps) => {
         }}>
           <Box sx={{width: ["100%"]}} mb={error ? 0 : 2}>
             <Label>
-              Enter code from SMS
+              {t("signIn.codeLabel")}
             </Label>
             <Flex>
               <Box sx={{width: ["150px"], height: ["150px"], fontSize: 35}} mr={2}>
@@ -88,16 +146,16 @@ const CodeConfirmation = ({ error }: CodeConfirmationProps) => {
 }
 
 const SignIn = () => {
-  const { t } = useTranslation();
   const [type, setType] = React.useState('phone')
   const [value, setValue] = React.useState("")
   const [step, setStep] = React.useState(0)
+  const [code, setCode] = React.useState('');
   const switchType = (val: string) => {
     setType(val)
     setValue("")
   }
 
-  const onSubmit = async (ev) => {
+  const onSubmitUsername = async (ev) => {
     try {
       ev.preventDefault();
       await signIn({
@@ -119,53 +177,15 @@ const SignIn = () => {
       <Head>
         <title>Sign In</title>
       </Head>
-      {step === 0 && <SForm onSubmit={onSubmit}>
-        <Flex
-          sx={{
-            flexWrap: 'wrap',
-            width: '500px',
-            justifyContent: 'center',
-          }}
-        >
-          <Box sx={{width: ["100%"]}} mb={2}>
-            <Flex sx={{
-              flexWrap: "wrap"
-            }}>
-              <Box sx={{width: ["100%"]}} mb={error ? 0 : 2}>
-                <Label>
-                  <Text sx={{variant: 'styles.h4'}}>
-                    {type === 'phone' ? t("signIn.enterPhone") : t("signIn.enterEmail")}
-                  </Text>
-                </Label>
-              </Box>
-              <Box sx={{width: ["100%"]}}>
-                <Input
-                  type="text"
-                  placeholder={type === 'phone' ? "+7(___)___-__-__" : "Enter email"}
-                  value={value}
-                  onChange={(ev) => setValue(ev.target.value)}
-                  required
-                />
-                {error && <Validation>
-                  {error?.message}
-                </Validation>}
-              </Box>
-            </Flex>
-          </Box>
-          <Box mt={3} sx={{width: ["50%"]}}>
-            <Button variant="primary" disabled={!value} p={["12px 30px"]}>{t("signIn.submit")}</Button>
-          </Box>
-          <RightAligned sx={{width: ["50%"]}}>
-            {type === 'email' && <Text sx={{variant: "styles.a"}} md={3} onClick={() => switchType('phone')}>
-              {t("signIn.switchToPhone")}
-            </Text>}
-            {type === 'phone' && <Text sx={{variant: "styles.a"}} md={3} onClick={() => switchType('email')}>
-              {t("signIn.switchToEmail")}
-            </Text>}
-          </RightAligned>
-        </Flex>
-      </SForm>}
-      {step === 1 && <CodeConfirmation />}
+      {step === 0 && <UsernameForm
+          error={error}
+          onSubmit={onSubmitUsername}
+          type={type}
+          username={value}
+          setUsername={setValue}
+          switchType={switchType}
+      />}
+      {step === 1 && <CodeConfirmation error={error} changeCode={setCode} />}
     </>
   )
 }

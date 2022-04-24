@@ -7,7 +7,8 @@ export default {
       validationEmail: "Please enter Email",
       submit: "Receive code",
       switchToPhone: "Use phone",
-      switchToEmail: "Use e-mail"
+      switchToEmail: "Use e-mail",
+      codeLabel: "Enter code from SMS"
     }
   }
 }
