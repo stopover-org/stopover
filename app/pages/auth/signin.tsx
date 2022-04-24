@@ -5,7 +5,7 @@ import Head from "next/head";
 import {Box, Button, Flex, Input, Label, Text} from 'theme-ui'
 import {SIGN_IN_MUTATION} from "../../graphql/signIn";
 import {useMutation} from "@apollo/client";
-import {SignInInput, SignInPayload, SignInTypesEnum} from "../../generated-types";
+import {SignInTypesEnum} from "../../generated-types";
 import Validation from "../../components/validationField";
 
 const RightAligned = styled(Box)`
@@ -22,14 +22,76 @@ const SForm = styled.form`
   justify-content: center;
 `
 
-const CodeConfirmation = () => {
-  
+// const SCodeInput = styled(Input)`
+//   width: 100px;
+//   height: 100px;
+// `
+
+type CodeConfirmationProps = {
+  error: string
+}
+
+const CodeConfirmation = ({ error }: CodeConfirmationProps) => {
+  const [code, setCode] = React.useState([])
+  const onChangeCode = (index: number) => (ev) => {
+    setCode([...code.slice(0, index), ev.target.value[0], ...code.slice(index + 1)])
+    if (index !== 4 && ev.target.value) {
+      inputs[index + 1].current.focus()
+    }
+  }
+  const inputs = [
+    React.useRef(null),
+    React.useRef(null),
+    React.useRef(null),
+    React.useRef(null),
+    React.useRef(null)
+  ]
+
+  return <SForm>
+    <Flex
+      sx={{
+        flexWrap: 'wrap',
+        width: '500px',
+        justifyContent: 'center',
+      }}
+    >
+      <Box sx={{width: ["100%"]}} mb={2}>
+        <Flex sx={{
+          flexWrap: "wrap"
+        }}>
+          <Box sx={{width: ["100%"]}} mb={error ? 0 : 2}>
+            <Label>
+              Enter code from SMS
+            </Label>
+            <Flex>
+              <Box sx={{width: ["150px"], height: ["150px"], fontSize: 35}} mr={2}>
+                <Input ref={inputs[0]} sx={{textAlign: "center"}} onChange={onChangeCode(0)} value={code[0]} />
+              </Box>
+              <Box sx={{width: ["150px"], height: ["150px"], fontSize: 35}} mr={2}>
+                <Input ref={inputs[1]} sx={{textAlign: "center"}} onChange={onChangeCode(1)} value={code[1]} />
+              </Box>
+              <Box sx={{width: ["150px"], height: ["150px"], fontSize: 35}} mr={2}>
+                <Input ref={inputs[2]} sx={{textAlign: "center"}} onChange={onChangeCode(2)} value={code[2]} />
+              </Box>
+              <Box sx={{width: ["150px"], height: ["150px"], fontSize: 35}} mr={2}>
+                <Input ref={inputs[3]} sx={{textAlign: "center"}} onChange={onChangeCode(3)} value={code[3]} />
+              </Box>
+              <Box sx={{width: ["150px"], height: ["150px"], fontSize: 35}} mr={2}>
+                <Input ref={inputs[4]} sx={{textAlign: "center"}} onChange={onChangeCode(4)} value={code[4]} />
+              </Box>
+            </Flex>
+          </Box>
+        </Flex>
+      </Box>
+    </Flex>
+  </SForm>
 }
 
 const SignIn = () => {
   const { t } = useTranslation();
   const [type, setType] = React.useState('phone')
   const [value, setValue] = React.useState("")
+  const [step, setStep] = React.useState(0)
   const switchType = (val: string) => {
     setType(val)
     setValue("")
@@ -46,6 +108,7 @@ const SignIn = () => {
           }
         }
       } as any)
+      await setStep(1)
     } catch (err) {}
   }
 
@@ -56,11 +119,11 @@ const SignIn = () => {
       <Head>
         <title>Sign In</title>
       </Head>
-      <SForm onSubmit={onSubmit}>
+      {step === 0 && <SForm onSubmit={onSubmit}>
         <Flex
           sx={{
             flexWrap: 'wrap',
-            width: '400px',
+            width: '500px',
             justifyContent: 'center',
           }}
         >
@@ -101,7 +164,8 @@ const SignIn = () => {
             </Text>}
           </RightAligned>
         </Flex>
-      </SForm>
+      </SForm>}
+      {step === 1 && <CodeConfirmation />}
     </>
   )
 }
