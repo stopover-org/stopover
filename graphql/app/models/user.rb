@@ -35,9 +35,9 @@ class User < ApplicationRecord
                              content: MailProvider.prepare_content(file: 'mailer/confirmation_code',
                                                                    locals: { confirmation_code: confirmation_code }))
     elsif primary == 'phone' && phone
-      SmsProvider.send_sms(from: ::Configuration.get_value(:NOTIFICATION_PHONE).value,
-                           to: phone,
-                           message: "Your confirmation code: ##{confirmation_code}")
+      # SmsProvider.send_sms(from: ::Configuration.get_value(:NOTIFICATION_PHONE).value,
+      #                      to: phone,
+      #                      message: "Your confirmation code: ##{confirmation_code}")
     end
   end
 

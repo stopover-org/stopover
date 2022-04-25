@@ -111,6 +111,10 @@ const theme = {
     a: {
       color: 'primary',
       fontFamily: 'body',
+      textDecoration: 'underline',
+      ':hover': {
+        cursor: 'pointer'
+      }
     },
     pre: {
       fontFamily: 'monospace',
