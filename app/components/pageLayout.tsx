@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 
 const SWrapper = styled.div`
@@ -11,19 +11,23 @@ const SWrapper = styled.div`
   top: 0;
   bottom: 0;
   padding-bottom: 100px;
-`
+`;
 
 const SFooter = styled.footer`
   width: 100%;
   height: 100pox;
   background-color: red;
-`
+`;
 
-export const PageLayout = ({ children }: { children: ReactNode[] | ReactNode }) => {
+export const PageLayout = ({
+  children,
+}: {
+  children: ReactNode[] | ReactNode;
+}) => {
   return (
     <SWrapper>
       {children}
       <SFooter />
     </SWrapper>
-  )
-}
+  );
+};
