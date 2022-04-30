@@ -26,6 +26,10 @@ type ConfirmationFormProps = {
   error: string
   resendCode: () => void
   resetStep: () => void
+  delay: number
+  switchType: (type: string) => void
+  type: string
+  switchStep: () => void
 }
 
 type UsernameFormProps = {
@@ -85,16 +89,20 @@ const UsernameForm = ({ error, onSubmit, type, username, setUsername, switchType
   )
 }
 
-const CodeConfirmation = ({ error, changeCode, type, switchType, resetStep, resendCode }: ConfirmationFormProps) => {
+const CodeConfirmation = ({ error, delay, changeCode, type, switchType, resetStep, resendCode }: ConfirmationFormProps) => {
   const { t } = useTranslation();
   const [code, setCode] = React.useState([])
+  const getCode = (index: number, value: string) => [...code.slice(0, index), value[0], ...code.slice(index + 1)]
   const onChangeCode = (index: number) => async (ev) => {
-    await setCode([...code.slice(0, index), ev.target.value[0], ...code.slice(index + 1)])
+    await setCode(getCode(index, ev.target.value))
+
     if (index !== 4 && ev.target.value) {
       inputs[index + 1].current.focus()
     }
-    changeCode(code.join(''))
+
+    changeCode(getCode(index, ev.target.value).join(''))
   }
+
   const inputs = [
     React.useRef(null),
     React.useRef(null),
@@ -117,6 +125,7 @@ const CodeConfirmation = ({ error, changeCode, type, switchType, resetStep, rese
             {t("signIn.codeLabel")}
           </Text>
         </Label>
+
         <Flex mb={2}>
           <Box sx={{width: ["100px"], height: ["90px"], fontSize: 35}} mr={2}>
             <Input ref={inputs[0]} sx={{textAlign: "center", height: '100%'}} onChange={onChangeCode(0)} value={code[0]} />
@@ -134,6 +143,11 @@ const CodeConfirmation = ({ error, changeCode, type, switchType, resetStep, rese
             <Input ref={inputs[4]} sx={{textAlign: "center", height: '100%'}} onChange={onChangeCode(4)} value={code[4]} />
           </Box>
         </Flex>
+        {error && <Box sx={{width: ["100%"]}} mb={2}>
+          <Validation>
+            {error}
+          </Validation>
+        </Box>}
         <Box sx={{width: ["50%"]}} mb={2}>
           {type === 'email' && <Text sx={{variant: "styles.a"}} onClick={() => switchType('phone')}>
             {t("signIn.switchToPhone")}
@@ -142,15 +156,19 @@ const CodeConfirmation = ({ error, changeCode, type, switchType, resetStep, rese
             {t("signIn.switchToEmail")}
           </Text>}
         </Box>
+
         <Box sx={{width: ["50%"]}} mb={2}>
           <Text sx={{variant: "styles.a"}} onClick={() => resetStep()}>
             {type === 'phone' ? t('signIn.changePhone') : t('signIn.changeEmail')}
           </Text>
         </Box>
         <Box sx={{width: ["50%"]}} mb={2}>
-          <Link sx={{variant: "styles.a"}} onClick={() => resendCode()}>
+          <Link sx={{variant: "styles.a"}} onClick={() => resendCode()} disabled={delay > 0}>
             {t('signIn.resendCode')}
           </Link>
+          <Text sx={{variant: "styles.h5"}}>
+            &nbsp;{delay > 0 && delay}
+          </Text>
         </Box>
       </Box>
     </Flex>
@@ -159,11 +177,13 @@ const CodeConfirmation = ({ error, changeCode, type, switchType, resetStep, rese
 
 const SignIn = () => {
   const { t } = useTranslation();
+  const [signIn] = useMutation(SIGN_IN_MUTATION);
   const [type, setType] = React.useState('phone')
   const [value, setValue] = React.useState("")
   const [step, setStep] = React.useState(0)
   const [code, setCode] = React.useState('');
   const [error, setError] = React.useState(undefined)
+  const [delay, setDelay] = React.useState(0);
   const switchType = (val: string) => {
     setType(val)
     setCode("")
@@ -173,6 +193,25 @@ const SignIn = () => {
   const resetStep = () => {
     switchType(type)
   }
+  const setCodeHandler = async (val: string) => {
+    setError(undefined)
+    try {
+      await setCode(val)
+      if (val.length === 5) {
+        const result = await signIn({
+          variables: {
+            input: {
+              username: value,
+              type: type as SignInTypesEnum,
+              code: val,
+            }
+          }
+        } as any)
+      }
+    } catch (err) {
+      setError(err.message)
+    }
+  }
 
   const onSubmitUsername = async (ev?: React.MouseEvent) => {
     setError(undefined)
@@ -180,7 +219,7 @@ const SignIn = () => {
       if (ev) {
         ev.preventDefault();
       }
-      await signIn({
+      const result = await signIn({
         variables: {
           input: {
             username: value,
@@ -188,13 +227,21 @@ const SignIn = () => {
           }
         }
       } as any)
+      setDelay(result?.data?.signIn?.delay)
       await setStep(1)
     } catch (err) {
       setError(err.message)
     }
   }
 
-  const [signIn, { data, loading }] = useMutation(SIGN_IN_MUTATION);
+  React.useEffect(() => {
+    const timeoutId = setInterval(() => {
+      if (delay > 0) {
+        setDelay(delay - 1)
+      }
+    }, 1000)
+    return () => clearInterval(timeoutId)
+  }, [delay])
 
   return (
     <>
@@ -214,8 +261,9 @@ const SignIn = () => {
           switchType={switchType}
           resetStep={resetStep}
           error={error}
-          changeCode={setCode}
+          changeCode={setCodeHandler}
           resendCode={onSubmitUsername}
+          delay={delay}
       />}
     </>
   )

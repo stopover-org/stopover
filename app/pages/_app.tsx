@@ -114,6 +114,9 @@ const theme = {
       textDecoration: 'underline',
       ':hover': {
         cursor: 'pointer'
+      },
+      '[disabled]': {
+        opacity: '0.5'
       }
     },
     pre: {
