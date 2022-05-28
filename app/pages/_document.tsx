@@ -1,35 +1,37 @@
-import React from "react";
-import Document, { Head, Main, NextScript, Html } from "next/document";
-import { ServerStyleSheet } from "styled-components";
+import {createRelayDocument, RelayDocument} from "relay-nextjs/document";
+import NextDocument, {DocumentContext, Html} from "next/document";
+import Head from "next/head";
 
-export default class MyDocument extends Document {
-  static getInitialProps({ renderPage }) {
-    // Step 1: Create an instance of ServerStyleSheet
-    const sheet = new ServerStyleSheet();
+interface DocumentProps {
+  relayDocument: RelayDocument;
+}
 
-    // Step 2: Retrieve styles from components in the page
-    const page = renderPage(
-      (App) => (props) => sheet.collectStyles(<App {...props} />)
-    );
+class MyDocument extends NextDocument<DocumentProps> {
+  static async getInitialProps(ctx: DocumentContext) {
+    const relayDocument = createRelayDocument();
 
-    // Step 3: Extract the styles as <style> tags
-    const styleTags = sheet.getStyleElement();
+    const renderPage = ctx.renderPage;
+    ctx.renderPage = () =>
+      renderPage({
+        enhanceApp: (App: any) => relayDocument.enhance(App),
+      });
 
-    // Step 4: Pass styleTags as a prop
-    return { ...page, styleTags };
+    const initialProps = await NextDocument.getInitialProps(ctx);
+
+    return {
+      ...initialProps,
+      relayDocument,
+    };
   }
 
   render() {
+    const { relayDocument } = this.props;
+
     return (
       <Html>
         <Head>
-          {/* Step 5: Output the styles in the head  */}
-          {this.props.styleTags}
+          <relayDocument.Script />
         </Head>
-        <body>
-          <Main />
-          <NextScript />
-        </body>
       </Html>
     );
   }
