@@ -1,10 +1,20 @@
 import {withRelay} from "relay-nextjs";
 import {createServerEnvironment, getClientEnvironment} from "../../lib/environment";
 import {graphql} from "relay-runtime";
+import {usePreloadedQuery} from "react-relay";
 
-const ProfileQuery = graphql``;
+const EventQuery = graphql`
+    query Id_Query($id: Int!) {
+        events(id: $id) {
+            id
+        }   
+    }
+`;
 
-export const Event = () => {
+// @ts-ignore
+export const Event = ({ preloadedQuery }) => {
+  const query = usePreloadedQuery(EventQuery, preloadedQuery);
+
   return (
     <div>
       EVENT
@@ -16,7 +26,7 @@ const Loading = () => {
   return <div>Loading...</div>;
 }
 
-export default withRelay(Event, ProfileQuery, {
+export default withRelay(Event, EventQuery, {
   fallback: <Loading />,
   createClientEnvironment: () => getClientEnvironment()!,
   serverSideProps: async (ctx) => {

@@ -1,8 +1,6 @@
 // @ts-ignore
 import {createRelayDocument, RelayDocument} from "relay-nextjs/document";
-import NextDocument, {DocumentContext, Html, NextScript, Main} from "next/document";
-import Head from "next/head";
-import MyApp from "./_app";
+import NextDocument, {DocumentContext, Html, Head, NextScript, Main} from "next/document";
 
 interface DocumentProps {
   relayDocument: RelayDocument;
@@ -32,8 +30,8 @@ class MyDocument extends NextDocument<DocumentProps> {
     return (
       <Html>
         <Head>
-          <relayDocument.Script />
           <NextScript />
+          <relayDocument.Script />
         </Head>
         <body>
           <Main />

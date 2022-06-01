@@ -36,7 +36,19 @@ export function getClientEnvironment() {
   return clientEnv;
 }
 
-const makeGraphQLRequest = (text: any, variables: any) => {}
+const makeGraphQLRequest = (text: any, variables: any) => {
+  return fetch('http://localhost:3000/api/graphql', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: text,
+      variables,
+    }),
+  })
+}
 
 export function createServerNetwork() {
   return Network.create(async (text, variables) => {
@@ -46,6 +58,7 @@ export function createServerNetwork() {
     // };
 
     const results = await makeGraphQLRequest(text, variables);
+    console.log(results)
 
     const data = JSON.parse(
       JSON.stringify(results),

@@ -12,12 +12,20 @@ module Types
       argument :filters, Types::InterestsFilter, required: false
     end
 
+    field :events, [Types::EventType] do
+      argument :id, Integer, required: false
+    end
+
     def current_user
       context[:current_user]
     end
 
     def interests(**args)
       ::InterestsQuery.new(args[:filters]&.to_h || {}, Interest.all, current_user).all
+    end
+
+    def events(**args)
+      ::EventsQuery.new(args[:filters]&.to_h || {}, Event.all, current_user).all
     end
   end
 end
