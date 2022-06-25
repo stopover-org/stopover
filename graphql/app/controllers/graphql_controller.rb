@@ -19,7 +19,7 @@ class GraphqlController < ApplicationController
       current_user: @current_user || nil
     }
     response.headers['Authorization'] = "Bearer #{@current_user.access_token}" if @current_user
-    result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    result = GraphqlSchema.execute(query["text  "], variables: variables, context: context, operation_name: operation_name)
     status_code = result&.dig('errors', 0, 'extensions', 'statusCode') || 200
 
     render json: result, status_code: status_code

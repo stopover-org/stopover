@@ -4,7 +4,7 @@ import {getRelaySerializedState} from "relay-nextjs";
 
 export function createClientNetwork() {
   return Network.create(async (params, variables) => {
-    const response = await fetch('/api/graphql', {
+    const response = await fetch('/graphql', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -37,7 +37,7 @@ export function getClientEnvironment() {
 }
 
 const makeGraphQLRequest = (text: any, variables: any) => {
-  return fetch('http://localhost:3000/api/graphql', {
+  return fetch('http://localhost:3000/graphql', {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -58,7 +58,6 @@ export function createServerNetwork() {
     // };
 
     const results = await makeGraphQLRequest(text, variables);
-    console.log(results)
 
     const data = JSON.parse(
       JSON.stringify(results),
