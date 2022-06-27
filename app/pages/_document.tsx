@@ -15,7 +15,6 @@ class MyDocument extends NextDocument<DocumentProps> {
       <Html>
         <Head>
           <NextScript />
-          <relayDocument.Script />
         </Head>
         <body>
           <Main />

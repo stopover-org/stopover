@@ -12,7 +12,6 @@ const Big = styled.div`
 `;
 
 function App() {
-
   return (
     <Big>
       <Card
