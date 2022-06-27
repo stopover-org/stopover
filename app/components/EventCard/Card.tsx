@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Image from "./Image";
 import Description from "./Description";
 import Function from "./Function";
+import Rate from "./Rate";
 
 
 const CardStyle = styled.div<{ height: string | number, width: string }>`
@@ -36,6 +37,7 @@ function Card(props: Props) {
         description = { description }
         price = { price }
       />
+      <Rate />
       <Function />
     </CardStyle>
   );
