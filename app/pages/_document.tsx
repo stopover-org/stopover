@@ -1,16 +1,35 @@
+import Document, {DocumentContext, Html, Head, NextScript, Main} from "next/document";
+import {ServerStyleSheet} from "styled-components";
+
 // @ts-ignore
-import {createRelayDocument, RelayDocument} from "relay-nextjs/document";
-import NextDocument, {DocumentContext, Html, Head, NextScript, Main} from "next/document";
+class MyDocument extends Document {
+  static async getInitialProps(ctx: DocumentContext) {
+    const sheet = new ServerStyleSheet()
+    const originalRenderPage = ctx.renderPage
 
-interface DocumentProps {
-  relayDocument: RelayDocument;
-}
+    try {
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: (App) => (props) =>
+            sheet.collectStyles(<App {...props} />),
+        })
 
-class MyDocument extends NextDocument<DocumentProps> {
+      const initialProps = await Document.getInitialProps(ctx)
+      return {
+        ...initialProps,
+        styles: (
+          <>
+            {initialProps.styles}
+            {sheet.getStyleElement()}
+          </>
+        ),
+      }
+    } finally {
+      sheet.seal()
+    }
+  }
 
   render() {
-    const { relayDocument } = this.props;
-
     return (
       <Html>
         <Head>
