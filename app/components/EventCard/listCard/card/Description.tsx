@@ -15,7 +15,7 @@ const DescriptionStyle = styled.div`
 const Price = styled.div`
     color: white;
 `;
-const Text = styled.h3`
+const Text = styled.div`
     color: white;
     font-family: sans-serif;
     font-size: 25px;

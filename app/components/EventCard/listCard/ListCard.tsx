@@ -36,7 +36,6 @@ function ListCard() {
         image={ "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg" }
       />
     </Small>
-
   </Big>
 
   );

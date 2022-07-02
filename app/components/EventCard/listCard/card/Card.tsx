@@ -20,15 +20,17 @@ type Props = {
   height?: number | string,
   description: string,
   image: string,
-  price: string
+  price: string,
+  layoutWidth: number,
 }
 
 function Card(props: Props) {
-  const { width, height, description, price, image } = props;
+  const { width, height, description, price, image, layoutWidth } = props;
+  console.log(props.layoutWidth)
   return (
     <CardStyle
-      width = { `calc(${width}*100vw)` }
-      height = { height ? height : `calc(${width}*100vw / 1.6) ` }
+      width = { `calc(${width}*${layoutWidth}px)` }
+      height = { height ? height : `calc(${width}*${layoutWidth}px / 1.6)` }
     >
       <Image 
         image = { image }
