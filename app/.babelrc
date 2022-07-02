@@ -1,4 +1,7 @@
 {
   "presets": ["next/babel"],
-  "plugins": ["relay"]
+  "plugins": [
+    "relay",
+    "babel-plugin-styled-components"
+  ]
 }
