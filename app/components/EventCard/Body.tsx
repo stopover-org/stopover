@@ -13,46 +13,40 @@ const BodyStyle = styled.div`
 
 const ContainerBody = styled.div`
   border: 1px solid black;
-  max-width: 1000px;
+  max-width: 1440px;
   min-width: 100px;
-  width: 1000px;
+  width: 1440px;
   height: 100%;
   background-color: #acacac;
 
 `;
 
+const Temp = styled.div<{ width: number }>`
+    border: 1px solid black;
+    width: ${props => props.width*2}px;
+    @media (max-width: 500px){
+      width: 100px;
+    }
+
+`;
+
 function Body() {
-  let ref = useRef();
-  const [state, setState] = useState();
 
-
-  useEffect(() => {
-
-    setState(ref.current.offsetWidth);
-
-  },[])
-
-  
 
 
   return (
     <BodyStyle>
-
-        <ContainerBody ref={ ref }>
-          <Card
-            width={ 0.6 }
-            layoutWidth={ state }
-            description={ "This my life" }
-            price={ "120kč" }
-            image={ "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg" }
-          />
-        </ContainerBody>
-      
-        
+      <ContainerBody>
+        <ListCard />
+      </ContainerBody>
     </BodyStyle>
   );
 
 }
 export default Body;
 
-//<ListCard />
+//
+/*        
+
+
+*/

@@ -6,13 +6,19 @@ import Function from "./Function";
 import Rate from "./Rate";
 
 
-const CardStyle = styled.div<{ height: string | number, width: string }>`
+const CardStyle = styled.div<{ height: string | number, width: number }>`
   position: relative;
-  max-width: ${props => props.width};
-  width: ${props => props.width};
-  height: ${props => props.height};
   overflow: hidden;
   margin: 10px;
+  width: calc(${props => props.width*1440}px);
+  height: ${props => props.height};
+
+  @media (max-width: 1440px){
+    max-width: calc(${props => props.width}*100vw);
+    width: calc(${props => props.width}*100vw);
+    height: ${props => props.height};
+  
+  }
 `;
 
 type Props = {
@@ -25,12 +31,11 @@ type Props = {
 }
 
 function Card(props: Props) {
-  const { width, height, description, price, image, layoutWidth } = props;
-  console.log(props.layoutWidth)
+  const { width, height, description, price, image } = props;
   return (
     <CardStyle
-      width = { `calc(${width}*${layoutWidth}px)` }
-      height = { height ? height : `calc(${width}*${layoutWidth}px / 1.6)` }
+      width = { props.width }
+      height = { height ? height : `calc(${width}*100vw/ 1.6)` }
     >
       <Image 
         image = { image }
