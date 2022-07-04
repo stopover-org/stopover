@@ -31,7 +31,8 @@ type Props = {
 }
 
 function Card(props: Props) {
-  const { width, height, description, price, image } = props;
+  const { width, height, description, price, image, layoutWidth } = props;
+  console.log(props.layoutWidth)
   return (
     <CardStyle
       width = { props.width }

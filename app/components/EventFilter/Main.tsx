@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import LocationInput from "./LocationInput";
 
 const FilterBar = styled.div`
-  width: 20%;
+  width: 25%;
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ function Main() {
   return (
     <Wrapper>
       <FilterBar >
-        <p>Filter</p> 
+        <LocationInput></LocationInput>
         <p>Filter</p>
         <p>Filter</p>
       </FilterBar>
