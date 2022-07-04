@@ -1,41 +1,41 @@
 import React from "react";
 import styled from "styled-components";
+import icon from "../../components/icons/Outline/Interface/Edit.svg";
+import Image from "next/image";
 
 const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    
 `;
 
 const Input = styled.input`
     border: none;
-    border-bottom: 1px solid black;
-
     font-family: 'Inter';
     font-size: 36px;
     font-weight: 400;
     line-height: 44px;
     width: 100%;
     &:focus {
-        color: grey;
         outline: none;
+        border-bottom: 1px solid black;
     }
-`;
-
-const Img = styled.div`
-    width: 22px;
-    height: 22px;
-    background-color: grey;
-    margin-left: 24px;
 `;
 
 function LocationInput() {
 
   return (
     <Wrapper>
-        <Input type="text"/>
-        <Img />        
+        <Input 
+            type="text"
+            placeholder="search location"
+        />
+        <Image
+          src={icon.src}
+          alt="Picture of the author"
+          width={22}
+          height={22}
+        />        
     </Wrapper>
   );
 }
