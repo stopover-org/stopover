@@ -14,7 +14,7 @@ const SelectWrapper = styled.select`
     border-radius: 3px;
 `;
 
-const Description = styled.div`
+const Description = styled.label`
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -30,6 +30,11 @@ type Props = {
     description: string,
 }
 
+type DropdownItemType = {
+    label: string,
+    value: string
+}
+
 function DropDownList(props : Props) {
 
     return (
@@ -38,7 +43,7 @@ function DropDownList(props : Props) {
                 {props.description}
             </Description>
             <SelectWrapper>
-               {props.options.map((item: {label: string, value: string}, index: number) => {
+               {props.options.map((item: DropdownItemType, index: number) => {
                     return(
                         <option key={index} value={item.value}>{item.label}</option>
                     );

@@ -5,17 +5,17 @@ import InputFromTo from "./InputFromTo";
 import DropDownList from "./DropDownList";
 
 const FilterBar = styled.div`
-  width: 25%;
+  width: 413px;
+  margin: 0px;
+  
 `;
 const FilterBarItem = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding:10px 10px 30px 10px;
-  &:hover {
-    box-shadow: inset 0px 0px 5px #545454;
-    background-color: #e3e3e3cc;
-  }
+  //padding:10px 10px 30px 10px;
+  border-right: 1px solid black;
+  
   
 `;
 const Wrapper = styled.div`
@@ -34,9 +34,7 @@ function Main() {
   return (
     <Wrapper>
       <FilterBar >
-        <FilterBarItem>
-          <LocationInput />
-        </FilterBarItem>
+        <LocationInput />
         <FilterBarItem>
           <InputFromTo />
         </FilterBarItem>
@@ -46,7 +44,7 @@ function Main() {
           options={[
             {
                 label: "Выбирете дату",
-                value: "chooseDate"
+                value: ""
             },
             {
                 label: "1 час",
@@ -83,7 +81,7 @@ function Main() {
           options={[
             {
                 label: "Выбирете дату",
-                value: "chooseDate"
+                value: ""
             },
             {
                 label: "1 час",
@@ -120,6 +118,10 @@ function Main() {
         <DropDownList
           description="Количество участников"
           options={[
+            {
+              label: "Выберите количество",
+              value: ""
+            },
             {
                 label: "1",
                 value: "1"
