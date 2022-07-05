@@ -5,7 +5,6 @@ import Header from "./EventFilter/Header";
 
 const Wrapper = styled.div`
   width: 1600px;
-  border: 1px solid red;
 `;
 
 type Props = {

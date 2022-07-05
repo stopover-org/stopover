@@ -1,6 +1,7 @@
 import React from "react";
-import styled from "styled-components";
+import DropDownList from "./DropDownList";
 
+import styled from "styled-components";
 
 const Wrapper = styled.div`
     display: flex;
@@ -40,6 +41,7 @@ function InputFromTo() {
         <Description>Выберите дату</Description>
         <InputWrapper>
           <Input placeholder="Начало"/>
+        
           <Input placeholder="Конец"/>
         </InputWrapper>
              

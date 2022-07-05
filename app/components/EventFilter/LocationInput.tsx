@@ -3,7 +3,7 @@ import styled from "styled-components";
 import icon from "../../components/icons/Outline/Interface/Edit.svg";
 import Image from "next/image";
 
-const Img = styled.div`
+const ImageWrapper = styled.div`
   display: none;
 `;
 
@@ -27,7 +27,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-  &:hover ${Img} {
+  &:hover ${ImageWrapper} {
     display: block;
     border-bottom: 1px solid black;
   }
@@ -44,14 +44,14 @@ function LocationInput() {
             type="text"
             placeholder="search location"
         />
-        <Img>
+        <ImageWrapper>
             <Image
               src={icon.src}
               alt="Picture of the author"
               width={46}
               height={46}
             />
-        </Img>
+        </ImageWrapper>
     </Wrapper>
   );
 }
