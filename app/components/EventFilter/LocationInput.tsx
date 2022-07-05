@@ -20,7 +20,9 @@ const Input = styled.input`
   font-size: 36px;
   font-weight: 400;
   line-height: 44px;
-  width: 364px;
+  width: 372px;
+  
+
   &:focus {
       outline: none;
       border-bottom: 2px solid #D9D9D9;
@@ -32,7 +34,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   align-items: flex-end;
   width: 100%;
-  margin: 0px;
+  padding: 40px 0px 15px 30px;
   &:hover ${ImageWrapper} {
     display: block;
   }

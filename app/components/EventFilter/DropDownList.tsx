@@ -3,12 +3,14 @@ import styled from "styled-components";
 
 
 
-const Wrapper = styled.div`
-    display: inline-block;
+const Wrapper = styled.div<{ paddingRight: string | undefined}>`
+    display: flex;
+    flex-direction: column;
+    padding-right: ${props => props.paddingRight};
 `;
 
-const SelectWrapper = styled.select`
-    width: 150px;
+const SelectWrapper = styled.select<{ width: string | undefined}>`
+    width: ${props => props.width};
     height: 35px;
     border: 1px solid #000000;
     border-radius: 3px;
@@ -28,6 +30,8 @@ type Props = {
         value: string,  
     }>,
     description: string,
+    paddingRight?: string | undefined,
+    width: string,
 }
 
 type DropdownItemType = {
@@ -38,11 +42,15 @@ type DropdownItemType = {
 function DropDownList(props : Props) {
 
     return (
-        <Wrapper>
+        <Wrapper 
+            paddingRight={props.paddingRight}
+        >
             <Description>
                 {props.description}
             </Description>
-            <SelectWrapper>
+            <SelectWrapper
+                width={props.width}
+            >
                {props.options.map((item: DropdownItemType, index: number) => {
                     return(
                         <option key={index} value={item.value}>{item.label}</option>
