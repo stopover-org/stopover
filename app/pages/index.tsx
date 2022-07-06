@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import Main from '../components/EventFilter/Index';
+import Main from '../components/EventFilter';
 import Layout from '../components/Layout';
 import DropDownList from "../components/EventFilter/DropDownList"
 
@@ -15,7 +15,9 @@ const Home: NextPage = () => {
     <Container>
       <Layout>
         <Main />
+
       </Layout>
+      
     </Container>
   )
 }

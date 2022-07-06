@@ -4,6 +4,8 @@ import LocationInput from "./LocationInput";
 import InputFromTo from "./InputFromTo";
 import DropDownList from "./DropDownList";
 
+import DropDownCalander from "./Slider/DropDownCalander";
+
 const FilterBar = styled.div`
   width: 454px;
   margin: 0px;
@@ -34,6 +36,7 @@ function Main() {
   return (
     <Wrapper>
       <FilterBar >
+        <DropDownCalander />
           <LocationInput />
         <FilterBarItem>
           <InputFromTo />
