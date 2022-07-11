@@ -5,10 +5,10 @@ const Wrapper = styled.div<{display: string | undefined}>`
     display: ${props => props.display};
 
 `;
-const ImageStyle = styled.div<{border: string}>`
+const ImageStyle = styled.div<{border: string }>`
     width: 125px;
     height: 125px;
-    border: ${props => props.border};
+    border: 4px solid ${props => props.border};
     border-radius: 5px;
     img{
         width: 100%;
@@ -33,16 +33,19 @@ type Props = {
 }
 
 function SliderItem(props: Props) {
+    const transparent = "transparent";
+    const borderColor = "#FF8A00";
+
     const [state, setState] = useState({
         isClicked: false,
-        borderState: "4px solid transparent"
+        borderState: transparent 
     });
     const clickHandler = () => {
         setState({
             isClicked: !state.isClicked,
             borderState: !state.isClicked ?
-            "4px solid #FF8A00" :
-            "4px solid transparent"
+            borderColor :
+            transparent
         })
     }
 
