@@ -14,13 +14,11 @@ const Wrapper = styled.div`
     font-size: 24px;
     line-height: 29px;
   }
-  
   .DateInput_input{    
     border: 2px solid #FF8A00;
     height: 50px;
     margin: -0px;
   }
-
   .DateRangePickerInput__withBorder{
     border: none;
     width: 390px;
@@ -33,7 +31,14 @@ const Wrapper = styled.div`
   .DateRangePickerInput_arrow{
     display: none;
   }
-
+  .CalendarDay__selected_span{
+    background: #FF8A00;
+    border: 1px solid #FF8A00;
+  }
+  .CalendarDay__selected{
+    background: #da7909;
+    border: 1px solid #da7909;
+  }
 `;
 
 function DropDownCalander() {
@@ -56,19 +61,17 @@ function DropDownCalander() {
     return (
       <Wrapper>
         <DateRangePicker
-          startDate={startDate} // moment.Moment | null;
-          startDateId="your_unique_start_date_id" // moment.Moment | null;
-          endDate={endDate} // momentPropTypes.momentObj or null,
-          endDateId="your_unique_end_date_id" // string;
-          onDatesChange={handlendDatesChange} // (arg: { startDate: moment.Moment | null; endDate: moment.Moment | null }) => void;
-          focusedInput={focusedInput} // FocusedInputShape | null;
-          onFocusChange={handleFocusChange} // (arg: FocusedInputShape | null) => void;
-
+          startDate={startDate}
+          startDateId="your_unique_start_date_id"
+          endDate={endDate}
+          endDateId="your_unique_end_date_id"
+          onDatesChange={handlendDatesChange}
+          focusedInput={focusedInput}
+          onFocusChange={handleFocusChange}
           startDatePlaceholderText={"Начало"}
           endDatePlaceholderText={"Конец"}
       />
       </Wrapper>
-      
     )
 }
 
