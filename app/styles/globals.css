@@ -14,3 +14,8 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.library-css-rule {
+  color: rgb(172, 21, 21);
+}
+

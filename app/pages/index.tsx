@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import Main from '../components/EventFilter/Index';
+import Main from '../components/EventFilter';
 import Layout from '../components/Layout';
 
 import styled from "styled-components";
@@ -7,7 +7,6 @@ import styled from "styled-components";
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  border: 1px solid black;
 `;
 
 const Home: NextPage = () => {

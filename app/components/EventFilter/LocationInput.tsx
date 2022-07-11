@@ -1,25 +1,46 @@
 import React from "react";
 import styled from "styled-components";
-import icon from "../../components/icons/Outline/Interface/Edit.svg";
+import icon from "../../components/icons/Outline/Interface/Edit-alt.svg";
 import Image from "next/image";
 
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+const ImageWrapper = styled.div`
+  display: none;
+  position: relative;
+  bottom: -7px;
+  left: 16px;
+`;
+
+const SImage = styled(Image)`
 `;
 
 const Input = styled.input`
-    border: none;
-    font-family: 'Inter';
-    font-size: 36px;
-    font-weight: 400;
-    line-height: 44px;
-    width: 100%;
-    &:focus {
-        outline: none;
-        border-bottom: 1px solid black;
-    }
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-family: 'Inter';
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 44px;
+  width: 372px;
+  
+
+  &:focus {
+      outline: none;
+      border-bottom: 2px solid #D9D9D9;
+  }
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  width: 100%;
+  padding: 40px 0px 15px 30px;
+  &:hover ${ImageWrapper} {
+    display: block;
+  }
+  &:hover ${Input} {
+    border-bottom: 2px solid #D9D9D9;
+  }
 `;
 
 function LocationInput() {
@@ -30,12 +51,14 @@ function LocationInput() {
             type="text"
             placeholder="search location"
         />
-        <Image
-          src={icon.src}
-          alt="Picture of the author"
-          width={22}
-          height={22}
-        />        
+        <ImageWrapper>
+            <SImage
+              src={icon.src}
+              alt="Picture of the author"
+              width={25}
+              height={25}
+            />
+        </ImageWrapper>
     </Wrapper>
   );
 }
