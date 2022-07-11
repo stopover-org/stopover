@@ -13,7 +13,7 @@ type Props = {
 }
 
 
-function BtnSlider(props: Props) {
+function ButtonSlider(props: Props) {
 
   return (
     <Wrapper
@@ -26,4 +26,4 @@ function BtnSlider(props: Props) {
   );
 }
 
-export default BtnSlider;
+export default ButtonSlider;
