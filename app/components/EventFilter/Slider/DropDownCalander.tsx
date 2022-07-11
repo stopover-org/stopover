@@ -32,12 +32,12 @@ const Wrapper = styled.div`
     display: none;
   }
   .CalendarDay__selected_span{
-    background: #FF8A00;
-    border: 1px solid #FF8A00;
+    background: #fdaa4c;
+    border: 1px solid  #fdaa4c;
   }
   .CalendarDay__selected{
-    background: #da7909;
-    border: 1px solid #da7909;
+    background: #ef8336;
+    border: 1px solid #ef8336;
   }
 `;
 
