@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ItemGallery from "./ItemGallery";
 import ButtonGallery from "./ButtonGallery";
@@ -6,28 +6,48 @@ import ButtonGallery from "./ButtonGallery";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
-  max-width: 1125px;
-  width: 1125px;
+  justify-content: space-between;
+  max-width: 1042px;
+  width: 1042px;
   height: 200px;
 `;
-const Slider = styled.div`
+const CarouselContainer = styled.div`
+  width: inherit;
+  height: inherit;
+  overflow: hidden;
+  position: absolute;
+`;
+const Carousel = styled.div<{width: number, moveTo: number | string}>`
+  height: inherit;
+  width: ${props=>props.width}px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  position: relative;
+  left: ${props=>props.moveTo}px;
+  transition: left 1s ease;
+`;
+const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  max-width: inherit;
+  height: inherit;
   width: inherit;
-  height: 200px;
-  border: 1px solid black;
+  justify-content: space-between;
+  z-index: 1;
+  position: absolute;
 `;
 
+
 function IntrestGallery() {
+  
+  const [slideDirection, setSlideDirection] = useState(0);
+  const [rightSlideEndPoint, setRightSlideEndPoint] = useState(0);
+ 
   const uniqueId = () => {
     return `${"fsda"}-${Math.random()}`;
-  }
-  
+  }  
   const imageArray = [
     {
       name: "gastronomy",
@@ -128,71 +148,72 @@ function IntrestGallery() {
       
     },
   ]
-  const [visible, setVisible] = useState({
-    from: 0,
-    to: 7
-  });
 
-  const nextSlide = () => {
-    if(visible.to !== imageArray.length){
-      setVisible(
-        {
-          from: visible.from +1,
-          to: visible.to +1
-        }
-      );
+  const [imageState, setImageState] = useState(new Array().fill(null));
+
+  const imageWidth = 155;
+  const carouselWidth = imageArray.length*imageWidth;
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  useEffect(()=>{
+    if(carouselRef.current){
+      setRightSlideEndPoint((carouselRef.current.clientWidth)-carouselWidth);
     }else{
-      setVisible({
-        from: 0,
-        to: 7
-      })
+      console.log("не подгрузилось с сервера");
     }
+  },[])
+
+  const onClickSlide = (buttonDirection: string) => {
+    slideDirection < 0 && buttonDirection === "left" && setSlideDirection(slideDirection+imageWidth);
+    slideDirection >= rightSlideEndPoint && buttonDirection === "right" && setSlideDirection(slideDirection-imageWidth);
   }
 
-  const previousSlide = () => {
-    if(visible.from !== 0){
-      setVisible(
-        {
-          from: visible.from -1,
-          to: visible.to -1
-        }
-      );
-    }else{
-      setVisible({
-        from: imageArray.length-7,
-        to: imageArray.length
-      })
-    }
+  const onClickChoose = (id: string) => {
+    setImageState([...imageState, id]);
+    console.log(imageState)
   }
 
   return (
     <Wrapper>
-      <ButtonGallery 
-        type={"right"}
-        onClick={previousSlide}
-      />
-      <Slider>
-        {
-          imageArray.map((item, index) => {
+      <ButtonGallery
+          buttonDirection={"left"}
+          onClick={onClickSlide}
+        />
+      <CarouselContainer
+        ref={carouselRef}
+      >
+        <Carousel
+          moveTo={slideDirection}
+          width={carouselWidth}
+        >
+          {imageArray.map((item, index)=>{
             return(
-              <ItemGallery
-                name={item.name}
+              <ItemGallery 
                 image={item.image}
-                description={item.description + `${index}`}
+                description={item.description}
                 id={item.id}
-                key={item.id}
-                display={index>=visible.from && index<visible.to ? true : false}
+                choosen={imageState.includes(item.id)}
+                key={index}
+                onClickChoose={onClickChoose}
               />
             )
-          })
-        }
-      </Slider>
-      <ButtonGallery 
-        type={"left"}
-        onClick={ nextSlide}
-      />
+          })}
+        </Carousel>
+      </CarouselContainer>  
+      <ButtonGallery
+          buttonDirection={"right"}
+          onClick={onClickSlide}
+        />
     </Wrapper>
   );
 }
 
 export default IntrestGallery;
+
+/*
+
+        
+
+
+
+*/

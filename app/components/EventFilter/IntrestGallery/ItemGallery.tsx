@@ -1,21 +1,40 @@
 import React, {useState} from "react";
 import styled from "styled-components";
+import cross from "../../icons/Solid/Interface/Cross.svg";
 
-const Wrapper = styled.div<{display: string | undefined}>`
-    display: ${props => props.display};
-
+const Wrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
 `;
-const ImageStyle = styled.div<{border: string }>`
+
+const ImageContainer = styled.div<{color: string, cross: string}>`
+    cursor: pointer;
     width: 125px;
     height: 125px;
-    border: 4px solid ${props => props.border};
+    background:  ${props=>props.color};
+    border: 4px solid ${props=>props.color};
     border-radius: 5px;
     img{
         width: 100%;
         height: 100%;
+        border-radius: 5px;
+    }
+    div{
+        display: ${props=>props.cross};
+        bottom: 137px;
+        left: 111px;
+        position: relative;
+        width: 24px;
+        height: 24px;
+        background: #FF8A00;
+        border-radius: 50%;
     }
 `;
-const DescriptionStyle = styled.div`
+const DescriptionContainer = styled.div`
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 400;
@@ -23,49 +42,35 @@ const DescriptionStyle = styled.div`
     line-height: 24px;
 `;
 
-
 type Props = {
-    name: string,
     image: string,
     description: string,
     id: string,
-    display: boolean
+    choosen: boolean,
+    onClickChoose: (id: string) => void,
 }
 
 function ItemGallery(props: Props) {
-    const transparent = "transparent";
-    const borderColor = "#FF8A00";
-
-    const [state, setState] = useState({
-        isClicked: false,
-        borderState: transparent 
-    });
-    const clickHandler = () => {
-        setState({
-            isClicked: !state.isClicked,
-            borderState: !state.isClicked ?
-            borderColor :
-            transparent
-        })
-    }
-
+    let borderColor = props.choosen ? "#FF8A00" : "transparent";
+    let crossVisible = props.choosen ? "block" : "none";
+   
     return (
         <Wrapper
-            display={props.display ? "block" : "none"}
-            onClick={clickHandler}
+            
+            onClick={() => props.onClickChoose(props.id)}
         >
-            <ImageStyle
-            
-                border={state.borderState}
+            <ImageContainer
+                color={borderColor}
+                cross={crossVisible}
             >
-            <img 
-                    src={props.image}
-                />
-            </ImageStyle>
-            <DescriptionStyle>
+                <img src={props.image} />
+                <div>
+                    <img src={cross.src} />
+                </div>
+            </ImageContainer>
+            <DescriptionContainer>
                 {props.description}
-            </DescriptionStyle>
-            
+            </DescriptionContainer>
         </Wrapper>
     );
 }
