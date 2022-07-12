@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import LocationInput from "./LocationInput";
 import DropDownList from "./DropDownList";
-import IntrestSlider from "./IntrestSlider/IntrestSlider";
+import IntrestGallery from "./IntrestGallery/IntrestGallery";
 
-import DropDownCalander from "./Slider/DropDownCalander";
+import DropDownCalander from "./Calander/DropDownCalander";
 
 const Wrapper = styled.div`
   display: flex;
@@ -158,9 +158,11 @@ function Main() {
           />
         </FilterBarItem>
       </FilterBar>
-      <IntrestSlider />
+      <IntrestGallery />
     </Wrapper>
   );
 }
 
 export default Main;
+
+//
