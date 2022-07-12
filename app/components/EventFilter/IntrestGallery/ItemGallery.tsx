@@ -16,7 +16,7 @@ const ImageStyle = styled.div<{border: string }>`
     }
 `;
 const DescriptionStyle = styled.div`
-    font-family: 'Inter';
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
@@ -32,7 +32,7 @@ type Props = {
     display: boolean
 }
 
-function SliderItem(props: Props) {
+function ItemGallery(props: Props) {
     const transparent = "transparent";
     const borderColor = "#FF8A00";
 
@@ -70,4 +70,4 @@ function SliderItem(props: Props) {
     );
 }
 
-export default SliderItem;
+export default ItemGallery;

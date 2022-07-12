@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import SliderItem from "./SliderItem";
-import ButtonSlider from "./ButtonSlider";
+import ItemGallery from "./ItemGallery";
+import ButtonGallery from "./ButtonGallery";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  max-width: 1125px;
+  width: 1125px;
   height: 200px;
 `;
 const Slider = styled.div`
@@ -16,14 +17,13 @@ const Slider = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-
-  width: 1044px;
+  max-width: inherit;
+  width: inherit;
   height: 200px;
   border: 1px solid black;
-  overflow: hidden;
 `;
 
-function IntrestSlider() {
+function IntrestGallery() {
   const uniqueId = () => {
     return `${"fsda"}-${Math.random()}`;
   }
@@ -167,7 +167,7 @@ function IntrestSlider() {
 
   return (
     <Wrapper>
-      <ButtonSlider 
+      <ButtonGallery 
         type={"right"}
         onClick={previousSlide}
       />
@@ -175,7 +175,7 @@ function IntrestSlider() {
         {
           imageArray.map((item, index) => {
             return(
-              <SliderItem
+              <ItemGallery
                 name={item.name}
                 image={item.image}
                 description={item.description + `${index}`}
@@ -187,7 +187,7 @@ function IntrestSlider() {
           })
         }
       </Slider>
-      <ButtonSlider 
+      <ButtonGallery 
         type={"left"}
         onClick={ nextSlide}
       />
@@ -195,4 +195,4 @@ function IntrestSlider() {
   );
 }
 
-export default IntrestSlider;
+export default IntrestGallery;
