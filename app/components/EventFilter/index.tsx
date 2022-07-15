@@ -164,32 +164,3 @@ function Main() {
 }
 
 export default Main;
-
-/*
-<FilterBar >
-          <LocationInput />
-        <FilterBarItem>
-          <DropDownCalander /> 
-        </FilterBarItem>
-        <FilterBarItem>
-          <DropDownList
-            paddingRight={"30px"}
-            width={"150px"}
-            description="длительность от"
-            options={durationFrom}
-          />
-          <DropDownList
-            width={"150px"}
-            description="длительность до"
-            options={durationTo}
-          />
-        </FilterBarItem>
-        <FilterBarItem>
-          <DropDownList
-            width={"281px"}
-            description="Количество участников"
-            options={chooseAmount}
-          />
-        </FilterBarItem>
-      </FilterBar>
-*/

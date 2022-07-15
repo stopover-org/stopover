@@ -56,10 +56,10 @@ function ItemGallery(props: Props) {
    
     return (
         <Wrapper
-            
             onClick={() => props.onClickChoose(props.id)}
         >
             <ImageContainer
+            
                 color={borderColor}
                 cross={crossVisible}
             >

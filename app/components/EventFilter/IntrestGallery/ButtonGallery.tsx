@@ -1,9 +1,10 @@
 import React from "react";
-import right from "../../icons/Solid/Interface/Arrow right.svg";
-import left from "../../icons/Solid/Interface/Arrow left.svg";
+import right from "../../icons/Solid/Interface/Caret right.svg";
+import left from "../../icons/Solid/Interface/Caret left.svg";
 import styled from "styled-components";
 
 const Wrapper = styled.div<{gradient: string}>`
+    
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -14,9 +15,16 @@ const Wrapper = styled.div<{gradient: string}>`
     height: inherit;
     background: linear-gradient(${props=>props.gradient}, #ffffff 25%, rgba(0,212,255,0) 100%);
     img{
-        width: 50px;
-        height: 50px;
+        width: 32px;
+        height: 32px;
     }
+
+`;
+const Circle = styled.div`
+    border-radius: 50%;
+    background: black;
+    width: 32px;
+    height: 32px;
 `;
 
 type Props = {
@@ -33,9 +41,11 @@ function ButtonGallery(props: Props) {
             gradient={props.buttonDirection === "left" ? rightGradient : leftGradient}
             onClick={() => props.onClick(props.buttonDirection)}
         >
-            <img 
-                src={props.buttonDirection === "left" ? left.src : right.src}
-            />
+            <Circle>
+                <img
+                    src={props.buttonDirection === "left" ? left.src : right.src}
+                />
+            </Circle>
         </Wrapper>
     );
 }
