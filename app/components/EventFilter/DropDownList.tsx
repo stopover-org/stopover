@@ -13,11 +13,12 @@ const SelectWrapper = styled.select<{ width: string | undefined}>`
     width: ${props => props.width};
     height: 35px;
     border: 1px solid #000000;
+    background: white;
     border-radius: 3px;
 `;
 
 const Description = styled.label`
-    font-family: 'Inter';
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;

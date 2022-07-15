@@ -2,9 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import LocationInput from "./LocationInput";
 import DropDownList from "./DropDownList";
+import IntrestGallery from "./IntrestGallery/IntrestGallery";
 
-import DropDownCalander from "./Slider/DropDownCalander";
+import DropDownCalander from "./Calander/DropDownCalander";
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 const FilterBar = styled.div`
   width: 454px;
   margin: 0px;
@@ -12,19 +17,10 @@ const FilterBar = styled.div`
 const FilterBarItem = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 15px 10px 15px 30px;
+  padding: 15px 0px 15px 30px;
   border-right: 1px solid black;
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const EventsList = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 
 function Main() {
   const durationFrom = [
@@ -162,14 +158,7 @@ function Main() {
           />
         </FilterBarItem>
       </FilterBar>
-
-      <EventsList> 
-        <p>events list</p>
-        <p>events list</p>
-        <p>events list</p>
-        <p>events list</p>
-
-      </EventsList>
+      <IntrestGallery />
     </Wrapper>
   );
 }

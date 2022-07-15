@@ -16,7 +16,7 @@ const SImage = styled(Image)`
 const Input = styled.input`
   border: none;
   border-bottom: 2px solid transparent;
-  font-family: 'Inter';
+  font-family: 'Roboto', sans-serif;
   font-size: 36px;
   font-weight: 400;
   line-height: 44px;
