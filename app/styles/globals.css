@@ -15,7 +15,9 @@ a {
 }
 
 * {
-  box-sizing: border-box;
+  	box-sizing: border-box;
+  	font-family: 'Roboto', sans-serif;
+	font-style: normal;
 }
 
 .library-css-rule {
