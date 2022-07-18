@@ -18,8 +18,6 @@ const SelectWrapper = styled.select<{ width: string | undefined}>`
 `;
 
 const Description = styled.label`
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 17px;

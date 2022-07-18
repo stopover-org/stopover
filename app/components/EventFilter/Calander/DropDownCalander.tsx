@@ -8,8 +8,6 @@ import 'react-dates/lib/css/_datepicker.css';
 const Wrapper = styled.div`
   .DateInput{
     width: 170px;
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
     font-weight: 400;
     font-size: 24px;
     line-height: 29px;

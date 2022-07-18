@@ -35,8 +35,7 @@ const ImageContainer = styled.div<{color: string, cross: string}>`
     }
 `;
 const DescriptionContainer = styled.div`
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
+
     font-weight: 400;
     font-size: 20px;
     line-height: 24px;

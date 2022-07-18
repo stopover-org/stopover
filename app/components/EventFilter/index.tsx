@@ -2,7 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import LocationInput from "./LocationInput";
 import DropDownList from "./DropDownList";
-import IntrestGallery from "./IntrestGallery/IntrestGallery";
+import IntrestGallery from "./IntrestGallery";
+import Slider from "./Slider/Slider";
+import moment from "moment";
 
 import DropDownCalander from "./Calander/DropDownCalander";
 
@@ -17,8 +19,21 @@ const FilterBar = styled.div`
 const FilterBarItem = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 15px 0px 15px 30px;
+  padding: 15px 0px 15px 45px;
   border-right: 1px solid black;
+`;
+const MainPage = styled.div`
+  
+`;
+const StartingPoint = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 156px;
+  margin: 40px 0px 63px 45px;
+`;
+const IntrestBar = styled.div`
+  padding: 26px 0px 0px 45px;
 `;
 
 
@@ -133,9 +148,15 @@ function Main() {
   return (
     <Wrapper>
       <FilterBar >
+        <StartingPoint>
           <LocationInput />
+          <DropDownCalander />
+        </StartingPoint>
+
         <FilterBarItem>
-          <DropDownCalander /> 
+          <Slider
+            step={1}
+          />
         </FilterBarItem>
         <FilterBarItem>
           <DropDownList
@@ -158,7 +179,13 @@ function Main() {
           />
         </FilterBarItem>
       </FilterBar>
-      <IntrestGallery />
+
+      <MainPage>
+        <IntrestBar>
+          <IntrestGallery />
+        </IntrestBar>
+        
+      </MainPage>
     </Wrapper>
   );
 }

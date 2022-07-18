@@ -16,7 +16,6 @@ const SImage = styled(Image)`
 const Input = styled.input`
   border: none;
   border-bottom: 2px solid transparent;
-  font-family: 'Roboto', sans-serif;
   font-size: 36px;
   font-weight: 400;
   line-height: 44px;
@@ -34,7 +33,6 @@ const Wrapper = styled.div`
   flex-direction: row;
   align-items: flex-end;
   width: 100%;
-  padding: 40px 0px 15px 30px;
   &:hover ${ImageWrapper} {
     display: block;
   }
