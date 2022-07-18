@@ -4,9 +4,12 @@ import styled from "styled-components";
 import moment, {Moment} from "moment";
 import React, { useEffect, useState } from 'react';
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{display: string}>`
   .rc-slider {
     width: 380px;
+  }
+  .rc-slider-handle{
+    display: ${props => props.display};
   }
 `;
 
@@ -17,11 +20,10 @@ type Props = {
 }
 
 const SliderComponent = (props: Props) => {
-  let deltaDays= 0;
+  const deltaDays = Math.abs(Math.ceil(props.fromDate.diff(props.toDate, "days")-1))
   const [sliderPoints, setSliderPoints] = useState([{label: ''}]);
   
   const createMarks = () => {
-    if(deltaDays==null) return null;
     const cloneDate = props.fromDate.clone();
     const array = new Array(deltaDays)
       .fill(null)
@@ -43,16 +45,15 @@ const SliderComponent = (props: Props) => {
 
   useEffect(() => {
     if(props.fromDate!=undefined && props.toDate!=undefined){
-      deltaDays = Math.abs(Math.ceil(props.fromDate.diff(props.toDate, "days")))
-    }else{
-      deltaDays = null;
+      setSliderPoints(createMarks());
     }
-    setSliderPoints(createMarks());
   },[deltaDays, props.step])
 
 
   return (
-    <Wrapper>
+    <Wrapper
+      display={props.fromDate!=undefined && props.toDate!=undefined ? "block" : "none"}
+    >
         <Slider
           range
           allowCross={false}

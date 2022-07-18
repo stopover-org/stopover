@@ -155,6 +155,8 @@ function Main() {
 
         <FilterBarItem>
           <Slider
+            fromDate={moment(new Date("01.01.2020"))}
+            toDate={moment(new Date("01.10.2020"))}
             step={1}
           />
         </FilterBarItem>
