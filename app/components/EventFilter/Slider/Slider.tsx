@@ -16,25 +16,46 @@ const Wrapper = styled.div<{display: string}>`
 type Props = {
   fromDate?: Moment,
   toDate?: Moment,
-  step: number
+  countOfElements: number
 }
 
 const SliderComponent = (props: Props) => {
+  if (!props.fromDate?.isValid() || !props.toDate?.isValid()) {
+    return (
+      <Wrapper
+        display={"none"}
+      >
+        <Slider
+          range
+        />
+    </Wrapper>
+    )
+  }
+
   const deltaDays = Math.abs(Math.ceil(props.fromDate.diff(props.toDate, "days")-1))
   const [sliderPoints, setSliderPoints] = useState([{label: ''}]);
   
+  const stepHandler = (countOfElements: number) => {
+    return Math.round(deltaDays/countOfElements);
+  }
+
   const createMarks = () => {
     const cloneDate = props.fromDate.clone();
-    const array = new Array(deltaDays)
-      .fill(null)
-      .reduce((obj, item, index)=>{
-        console.log(index%props.step==0)
-      if(index%props.step==0){
-        obj[index]={label: cloneDate.format("DD.MM")};
+    let array = new Array(deltaDays).fill(null);
+
+    let flagIndex = 0;
+    const step = stepHandler(props.countOfElements-1);
+    array = array.reduce((obj, item, index)=>{
+      if(index==flagIndex){
+        flagIndex+=step;
+          obj[index]={label: cloneDate.format("DD.MM")};
       }
       if(deltaDays-1 == index){
         obj[index]={label: cloneDate.format("DD.MM")};
       }
+
+      
+      console.log(flagIndex)
       cloneDate.add(1, "days");
 
       return obj;
@@ -44,15 +65,13 @@ const SliderComponent = (props: Props) => {
   }
 
   useEffect(() => {
-    if(props.fromDate!=undefined && props.toDate!=undefined){
       setSliderPoints(createMarks());
-    }
-  },[deltaDays, props.step])
+  },[deltaDays, props.countOfElements])
 
 
   return (
     <Wrapper
-      display={props.fromDate!=undefined && props.toDate!=undefined ? "block" : "none"}
+      display={"block"}
     >
         <Slider
           range

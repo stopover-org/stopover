@@ -5,6 +5,7 @@ import DropDownList from "./DropDownList";
 import IntrestGallery from "./IntrestGallery";
 import Slider from "./Slider/Slider";
 import moment from "moment";
+import {durationFrom, durationTo, chooseAmount} from "../PseudoServer";
 
 import DropDownCalander from "./Calander/DropDownCalander";
 
@@ -38,112 +39,7 @@ const IntrestBar = styled.div`
 
 
 function Main() {
-  const durationFrom = [
-    {
-        label: "Выбирете дату",
-        value: ""
-    },
-    {
-        label: "1 час",
-        value: "1h"
-    },
-    {
-        label: "2 часа",
-        value: "2h"
-    },
-    {
-        label: "до 4 часов",
-        value: "4h"
-    },
-    {
-        label: "до 12 часов",
-        value: "12h"
-    },
-    {
-        label: "до 1 дня",
-        value: "1d"
-    },
-    {
-        label: "до 3 дней",
-        value: "3d"
-    },
-    {
-        label: "до 1 недели",
-        value: "1w"
-    },
-  ]
-  const durationTo = [
-    {
-        label: "Выбирете дату",
-        value: ""
-    },
-    {
-        label: "1 час",
-        value: "1h"
-    },
-    {
-        label: "2 часа",
-        value: "2h"
-    },
-    {
-        label: "до 4 часов",
-        value: "4h"
-    },
-    {
-        label: "до 12 часов",
-        value: "12h"
-    },
-    {
-        label: "до 1 дня",
-        value: "1d"
-    },
-    {
-        label: "до 3 дней",
-        value: "3d"
-    },
-    {
-        label: "до 1 недели",
-        value: "1w"
-    },
-  ]
-  const chooseAmount = [
-    {
-      label: "Выберите количество",
-      value: ""
-    },
-    {
-        label: "1",
-        value: "1"
-    },
-    {
-        label: "2",
-        value: "2"
-    },
-    {
-        label: "3",
-        value: "3"
-    },
-    {
-        label: "4",
-        value: "4"
-    },
-    {
-        label: "5",
-        value: "5"
-    },
-    {
-        label: "6",
-        value: "6"
-    },
-    {
-        label: "7",
-        value: "7"
-    },
-    {
-        label: "8",
-        value: "8"
-    },
-  ]
+
 
   return (
     <Wrapper>
@@ -155,9 +51,9 @@ function Main() {
 
         <FilterBarItem>
           <Slider
-            fromDate={moment(new Date("01.01.2020"))}
-            toDate={moment(new Date("01.10.2020"))}
-            step={1}
+            fromDate={moment(new Date("08.09.2020"))}
+            toDate={moment(new Date("08.13.2020"))}
+            countOfElements={4}
           />
         </FilterBarItem>
         <FilterBarItem>
