@@ -17,7 +17,7 @@ function Layout({children} : Props) {
   return (
     <Wrapper>
         <Header />
-        {children}
+          {children}
         <Footer />
     </Wrapper>
   );
