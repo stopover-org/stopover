@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import Footer from "./EventCard/Footer";
-import Header from "./EventFilter/Header";
+import React from 'react';
+import styled from 'styled-components';
+import Footer from './EventCard/Footer';
+import Header from './EventFilter/Header';
 
 const Wrapper = styled.div`
   width: 1600px;
@@ -9,16 +9,15 @@ const Wrapper = styled.div`
 `;
 
 type Props = {
-    children: JSX.Element,
+  children: JSX.Element,
 };
 
-function Layout({children} : Props) {
-
+function Layout({ children } : Props) {
   return (
     <Wrapper>
-        <Header />
-        {children}
-        <Footer />
+      <Header />
+      {children}
+      <Footer />
     </Wrapper>
   );
 }

@@ -1,22 +1,20 @@
-import type { NextPage } from 'next';
+import styled from 'styled-components';
 import Main from '../components/EventFilter';
 import Layout from '../components/Layout';
-
-import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-const Home: NextPage = () => {
+function Home() {
   return (
     <Container>
       <Layout>
         <Main />
       </Layout>
     </Container>
-  )
+  );
 }
 
-export default Home
+export default Home;

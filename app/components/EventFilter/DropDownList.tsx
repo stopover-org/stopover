@@ -1,16 +1,14 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-
-
-const Wrapper = styled.div<{ paddingRight: string | undefined}>`
+const Wrapper = styled.div<{ paddingRight: string | undefined }>`
     display: flex;
     flex-direction: column;
-    padding-right: ${props => props.paddingRight};
+    padding-right: ${(props) => props.paddingRight};
 `;
 
-const SelectWrapper = styled.select<{ width: string | undefined}>`
-    width: ${props => props.width};
+const SelectWrapper = styled.select<{ width: string | undefined }>`
+    width: ${(props) => props.width};
     height: 35px;
     border: 1px solid #000000;
     background: white;
@@ -26,40 +24,37 @@ const Description = styled.label`
 `;
 
 type Props = {
-    options: Array<{
-      label: string,
-        value: string,  
-    }>,
-    description: string,
-    paddingRight?: string | undefined,
-    width: string,
-}
+  options: Array<{
+    label: string,
+    value: string,
+  }>,
+  description: string,
+  paddingRight?: string | undefined,
+  width: string,
+};
 
 type DropdownItemType = {
-    label: string,
-    value: string
-}
+  label: string,
+  value: string
+};
 
 function DropDownList(props : Props) {
-
-    return (
-        <Wrapper 
-            paddingRight={props.paddingRight}
-        >
-            <Description>
-                {props.description}
-            </Description>
-            <SelectWrapper
-                width={props.width}
-            >
-               {props.options.map((item: DropdownItemType, index: number) => {
-                    return(
-                        <option key={index} value={item.value}>{item.label}</option>
-                    );
-                })}
-            </SelectWrapper>
-        </Wrapper>
-    );
+  return (
+    <Wrapper
+      paddingRight={props.paddingRight}
+    >
+      <Description>
+        {props.description}
+      </Description>
+      <SelectWrapper
+        width={props.width}
+      >
+        {props.options.map((item: DropdownItemType, index: number) => (
+          <option key={index} value={item.value}>{item.label}</option>
+        ))}
+      </SelectWrapper>
+    </Wrapper>
+  );
 }
 
 export default DropDownList;

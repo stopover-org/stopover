@@ -1,6 +1,5 @@
-import React  from "react";
-import styled from "styled-components";
-
+import React from 'react';
+import styled from 'styled-components';
 
 const ImageStyle = styled.img`
     display: block;
@@ -14,13 +13,11 @@ const ImageStyle = styled.img`
 
 type Props = {
   image: string
-}
+};
 
 function Image(props: Props) {
-
   return (
-    <ImageStyle src={ props.image } />
+    <ImageStyle src={props.image} />
   );
-
 }
 export default Image;

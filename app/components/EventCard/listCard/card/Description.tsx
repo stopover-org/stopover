@@ -1,5 +1,5 @@
-import React  from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const DescriptionStyle = styled.div`
     position: absolute;
@@ -26,20 +26,19 @@ const Text = styled.div`
 type Props = {
   price: string,
   description: string
-}
+};
 
-function Description(props: Props ) {
-    const { price, description } = props;
-    return (
-        <DescriptionStyle>
-            <Price>
-                { price }
-            </Price>
-            <Text>
-            { description }
-            </Text>
-        </DescriptionStyle>
-    );
-
+function Description(props: Props) {
+  const { price, description } = props;
+  return (
+    <DescriptionStyle>
+      <Price>
+        { price }
+      </Price>
+      <Text>
+        { description }
+      </Text>
+    </DescriptionStyle>
+  );
 }
 export default Description;
