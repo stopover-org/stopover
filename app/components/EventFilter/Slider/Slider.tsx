@@ -46,16 +46,13 @@ const SliderComponent = (props: Props) => {
     let flagIndex = 0;
     const step = stepHandler(props.countOfElements-1);
     array = array.reduce((obj, item, index)=>{
-      if(index==flagIndex){
+      if(index===flagIndex){
         flagIndex+=step;
           obj[index]={label: cloneDate.format("DD.MM")};
       }
-      if(deltaDays-1 == index){
+      if(deltaDays-1 === index){
         obj[index]={label: cloneDate.format("DD.MM")};
       }
-
-      
-      console.log(flagIndex)
       cloneDate.add(1, "days");
 
       return obj;
@@ -73,14 +70,14 @@ const SliderComponent = (props: Props) => {
     <Wrapper
       display={"block"}
     >
-        <Slider
-          range
-          allowCross={false}
-          count={1}
-          max={deltaDays-1}
-          min={0}
-          marks={sliderPoints}
-        />
+      <Slider
+        range
+        allowCross={false}
+        count={1}
+        max={deltaDays-1}
+        min={0}
+        marks={sliderPoints}
+      />
     </Wrapper>
   )};
 export default SliderComponent
