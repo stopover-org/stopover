@@ -7,7 +7,7 @@ module.exports = {
   ],
   "plugins": ["prettier"],
   parserOptions: {
-    project: "./tsconfig.json"
+    project: "app/tsconfig.json"
   },
   rules: {
     "prettier/prettier": ["error"],
