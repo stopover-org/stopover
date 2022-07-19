@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
     display: flex;
@@ -28,14 +28,13 @@ const NavBar = styled.div`
 `;
 
 function Header() {
-
   return (
     <Wrapper>
-        <Logo >250 x 75</Logo>
-        <NavBar>
-            <p>Путешествие</p>
-            <p>Вход</p>
-        </NavBar>
+      <Logo>250 x 75</Logo>
+      <NavBar>
+        <p>Путешествие</p>
+        <p>Вход</p>
+      </NavBar>
     </Wrapper>
   );
 }

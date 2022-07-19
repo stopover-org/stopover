@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import icon from "../../components/icons/Outline/Interface/Edit-alt.svg";
-import Image from "next/image";
+import React from 'react';
+import styled from 'styled-components';
+import Image from 'next/image';
+import icon from '../icons/Outline/Interface/Edit-alt.svg';
 
 const ImageWrapper = styled.div`
   display: none;
@@ -42,21 +42,20 @@ const Wrapper = styled.div`
 `;
 
 function LocationInput() {
-
   return (
     <Wrapper>
-        <Input 
-            type="text"
-            placeholder="search location"
+      <Input
+        type="text"
+        placeholder="search location"
+      />
+      <ImageWrapper>
+        <SImage
+          src={icon.src}
+          alt="Picture of the author"
+          width={25}
+          height={25}
         />
-        <ImageWrapper>
-            <SImage
-              src={icon.src}
-              alt="Picture of the author"
-              width={25}
-              height={25}
-            />
-        </ImageWrapper>
+      </ImageWrapper>
     </Wrapper>
   );
 }

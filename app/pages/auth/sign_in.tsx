@@ -1,9 +1,9 @@
-export const SignIn = () => {
+export function SignIn() {
   return (
     <div>
       SIGN IN
     </div>
-  )
+  );
 }
 
-export default SignIn
+export default SignIn;

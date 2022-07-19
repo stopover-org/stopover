@@ -1,5 +1,5 @@
-import React  from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const FunctionStyle = styled.div`
     position: absolute;
@@ -10,13 +10,11 @@ const FunctionStyle = styled.div`
 `;
 
 function Function() {
-
   return (
     <FunctionStyle>
       it is func
-      
+
     </FunctionStyle>
   );
-
 }
 export default Function;

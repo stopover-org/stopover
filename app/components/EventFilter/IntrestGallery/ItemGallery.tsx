@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import styled from "styled-components";
-import cross from "../../icons/Solid/Interface/Cross.svg";
+import React from 'react';
+import styled from 'styled-components';
+import cross from '../../icons/Solid/Interface/Cross.svg';
 
 const Wrapper = styled.div`
     display: flex;
@@ -11,12 +11,12 @@ const Wrapper = styled.div`
     height: 150px;
 `;
 
-const ImageContainer = styled.div<{color: string, cross: string}>`
+const ImageContainer = styled.div<{ color: string, cross: string }>`
     cursor: pointer;
     width: 125px;
     height: 125px;
-    background:  ${props=>props.color};
-    border: 4px solid ${props=>props.color};
+    background:  ${(props) => props.color};
+    border: 4px solid ${(props) => props.color};
     border-radius: 5px;
     img{
         width: 100%;
@@ -24,7 +24,7 @@ const ImageContainer = styled.div<{color: string, cross: string}>`
         border-radius: 5px;
     }
     div{
-        display: ${props=>props.cross};
+        display: ${(props) => props.cross};
         bottom: 137px;
         left: 111px;
         position: relative;
@@ -41,36 +41,35 @@ const DescriptionContainer = styled.div`
 `;
 
 type Props = {
-    image: string,
-    description: string,
-    id: string,
-    choosen: boolean,
-    onClickChoose: (id: string) => void,
-}
+  image: string,
+  description: string,
+  id: string,
+  chosen: boolean,
+  onClickChoose: (id: string) => void,
+};
 
 function ItemGallery(props: Props) {
-    let borderColor = props.choosen ? "#FF8A00" : "transparent";
-    let crossVisible = props.choosen ? "block" : "none";
-   
-    return (
-        <Wrapper
-            onClick={() => props.onClickChoose(props.id)}
-        >
-            <ImageContainer
-            
-                color={borderColor}
-                cross={crossVisible}
-            >
-                <img src={props.image} />
-                <div>
-                    <img src={cross.src} />
-                </div>
-            </ImageContainer>
-            <DescriptionContainer>
-                {props.description}
-            </DescriptionContainer>
-        </Wrapper>
-    );
+  const borderColor = props.chosen ? '#FF8A00' : 'transparent';
+  const crossVisible = props.chosen ? 'block' : 'none';
+
+  return (
+    <Wrapper
+      onClick={() => props.onClickChoose(props.id)}
+    >
+      <ImageContainer
+        color={borderColor}
+        cross={crossVisible}
+      >
+        <img alt="придумай название4" src={props.image} />
+        <div>
+          <img alt="придумай название4" src={cross.src} />
+        </div>
+      </ImageContainer>
+      <DescriptionContainer>
+        {props.description}
+      </DescriptionContainer>
+    </Wrapper>
+  );
 }
 
 export default ItemGallery;

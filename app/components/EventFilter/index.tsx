@@ -7,7 +7,7 @@ import Slider from "./Slider/Slider";
 import moment from "moment";
 import {durationFrom, durationTo, chooseAmount} from "../PseudoServer";
 
-import DropDownCalander from "./Calander/DropDownCalander";
+import DropDownCalander from './Calander/DropDownCalander';
 
 const Wrapper = styled.div`
   display: flex;
@@ -37,18 +37,16 @@ const IntrestBar = styled.div`
   padding: 26px 0px 0px 45px;
 `;
 
-
 function Main() {
 
 
   return (
     <Wrapper>
-      <FilterBar >
+      <FilterBar>
         <StartingPoint>
           <LocationInput />
           <DropDownCalander />
         </StartingPoint>
-
         <FilterBarItem>
           <Slider
             fromDate={moment(new Date("08.09.2020"))}
@@ -58,20 +56,20 @@ function Main() {
         </FilterBarItem>
         <FilterBarItem>
           <DropDownList
-            paddingRight={"30px"}
-            width={"150px"}
+            paddingRight="30px"
+            width="150px"
             description="длительность от"
             options={durationFrom}
           />
           <DropDownList
-            width={"150px"}
+            width="150px"
             description="длительность до"
             options={durationTo}
           />
         </FilterBarItem>
         <FilterBarItem>
           <DropDownList
-            width={"281px"}
+            width="281px"
             description="Количество участников"
             options={chooseAmount}
           />
@@ -82,7 +80,7 @@ function Main() {
         <IntrestBar>
           <IntrestGallery />
         </IntrestBar>
-        
+
       </MainPage>
     </Wrapper>
   );

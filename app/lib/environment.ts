@@ -1,9 +1,11 @@
-import {Environment, Network, RecordSource, Store} from 'relay-runtime';
+import {
+  Environment, Network, RecordSource, Store,
+} from 'relay-runtime';
 
 async function fetchGraphQL(text: string, variables: object) {
-  const GRAPHQL_API_URL = process.env.GRAPHQL_API_URL;
+  const { GRAPHQL_API_URL } = process.env;
   if (!GRAPHQL_API_URL) {
-    throw new Error("Graphql url wasn't specified")
+    throw new Error("Graphql url wasn't specified");
   }
 
   // Fetch data from GitHub's GraphQL API:
@@ -19,7 +21,7 @@ async function fetchGraphQL(text: string, variables: object) {
   });
 
   // Get the response as JSON
-  return await response.json();
+  return response.json();
 }
 
 // Relay passes a "params" object with the query name and text. So we define a helper function

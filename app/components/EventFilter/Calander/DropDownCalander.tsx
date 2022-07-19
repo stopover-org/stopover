@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import 'react-dates/initialize';
 import { DateRangePicker, FocusedInputShape } from 'react-dates';
 import moment from 'moment';
@@ -40,37 +40,37 @@ const Wrapper = styled.div`
 `;
 
 function DropDownCalander() {
-    const [startDate, setStartDate] = useState<moment.Moment | null>(null);
-    const [endDate, setEndDate] = useState<moment.Moment | null>(null);
-    const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(null);
+  const [startDate, setStartDate] = useState<moment.Moment | null>(null);
+  const [endDate, setEndDate] = useState<moment.Moment | null>(null);
+  const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(null);
 
-    const handlendDatesChange = (newDates: {
-      startDate: moment.Moment | null,
-      endDate: moment.Moment | null
-    }) => {
-        setStartDate(newDates.startDate);
-        setEndDate(newDates.endDate);
-    }
-  
-    const handleFocusChange = (inputName: FocusedInputShape | null) => {
-        setFocusedInput(inputName);
-    }
+  const handlendDatesChange = (newDates: {
+    startDate: moment.Moment | null,
+    endDate: moment.Moment | null
+  }) => {
+    setStartDate(newDates.startDate);
+    setEndDate(newDates.endDate);
+  };
 
-    return (
-      <Wrapper>
-        <DateRangePicker
-          startDate={startDate}
-          startDateId="your_unique_start_date_id"
-          endDate={endDate}
-          endDateId="your_unique_end_date_id"
-          onDatesChange={handlendDatesChange}
-          focusedInput={focusedInput}
-          onFocusChange={handleFocusChange}
-          startDatePlaceholderText={"Начало"}
-          endDatePlaceholderText={"Конец"}
+  const handleFocusChange = (inputName: FocusedInputShape | null) => {
+    setFocusedInput(inputName);
+  };
+
+  return (
+    <Wrapper>
+      <DateRangePicker
+        startDate={startDate}
+        startDateId="your_unique_start_date_id"
+        endDate={endDate}
+        endDateId="your_unique_end_date_id"
+        onDatesChange={handlendDatesChange}
+        focusedInput={focusedInput}
+        onFocusChange={handleFocusChange}
+        startDatePlaceholderText="Начало"
+        endDatePlaceholderText="Конец"
       />
-      </Wrapper>
-    )
+    </Wrapper>
+  );
 }
 
 export default DropDownCalander;
