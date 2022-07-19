@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import moment from "moment";
 import LocationInput from "./LocationInput";
 import DropDownList from "./DropDownList";
 import IntrestGallery from "./IntrestGallery";
 import Slider from "./Slider/Slider";
-import moment from "moment";
-import {durationFrom, durationTo, chooseAmount} from "../PseudoServer";
+import { durationFrom, durationTo, chooseAmount } from "../PseudoServer";
 
-import DropDownCalander from './Calander/DropDownCalander';
+import DropDownCalander from "./Calander/DropDownCalander";
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,9 +23,7 @@ const FilterBarItem = styled.div`
   padding: 15px 0px 15px 45px;
   border-right: 1px solid black;
 `;
-const MainPage = styled.div`
-  
-`;
+const MainPage = styled.div``;
 const StartingPoint = styled.div`
   display: flex;
   justify-content: space-between;
@@ -38,8 +36,6 @@ const IntrestBar = styled.div`
 `;
 
 function Main() {
-
-
   return (
     <Wrapper>
       <FilterBar>
@@ -80,7 +76,6 @@ function Main() {
         <IntrestBar>
           <IntrestGallery />
         </IntrestBar>
-
       </MainPage>
     </Wrapper>
   );

@@ -1,7 +1,11 @@
 import Document, {
-  DocumentContext, Html, Head, NextScript, Main,
-} from 'next/document';
-import { ServerStyleSheet } from 'styled-components';
+  DocumentContext,
+  Html,
+  Head,
+  NextScript,
+  Main,
+} from "next/document";
+import { ServerStyleSheet } from "styled-components";
 
 // @ts-ignore
 class MyDocument extends Document {
@@ -10,9 +14,11 @@ class MyDocument extends Document {
     const originalRenderPage = ctx.renderPage;
 
     try {
-      ctx.renderPage = () => originalRenderPage({
-        enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
-      });
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: (App) => (props) =>
+            sheet.collectStyles(<App {...props} />),
+        });
 
       const initialProps = await Document.getInitialProps(ctx);
       return {

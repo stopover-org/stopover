@@ -1,10 +1,10 @@
-import React from 'react';
-import styled from 'styled-components';
-import Card from './card/Card';
+import React from "react";
+import styled from "styled-components";
+import Card from "./card/Card";
 
 const Small = styled.div`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
 const Big = styled.div`
   display: flex;
@@ -37,7 +37,6 @@ function ListCard() {
         />
       </Small>
     </Big>
-
   );
 }
 export default ListCard;

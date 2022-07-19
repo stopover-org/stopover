@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import ListCard from './listCard/ListCard';
+import React from "react";
+import styled from "styled-components";
+import ListCard from "./listCard/ListCard";
 
 const BodyStyle = styled.div`
   display: flex;

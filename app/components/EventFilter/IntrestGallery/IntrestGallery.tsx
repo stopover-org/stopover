@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
-import ItemGallery from './ItemGallery';
-import ButtonGallery from './ButtonGallery';
-import {imageArrayIntrestGallery} from "../../PseudoServer";
-
+import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import ItemGallery from "./ItemGallery";
+import ButtonGallery from "./ButtonGallery";
+import { imageArrayIntrestGallery } from "../../PseudoServer";
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,7 +19,7 @@ const CarouselContainer = styled.div`
   overflow: hidden;
   position: absolute;
 `;
-const Carousel = styled.div<{ width: number, moveTo: number | string }>`
+const Carousel = styled.div<{ width: number; moveTo: number | string }>`
   height: inherit;
   width: ${(props) => props.width}px;
   display: flex;
@@ -44,16 +43,16 @@ function IntrestGallery() {
 
   useEffect(() => {
     if (carouselRef.current) {
-      setRightSlideEndPoint((carouselRef.current.clientWidth) - carouselWidth);
+      setRightSlideEndPoint(carouselRef.current.clientWidth - carouselWidth);
     }
   }, []);
 
   const onClickSlide = (buttonDirection: string) => {
-    if (slideDirection < 0 && buttonDirection === 'left') {
+    if (slideDirection < 0 && buttonDirection === "left") {
       setSlideDirection(slideDirection + imageWidth);
       return;
     }
-    if (slideDirection >= rightSlideEndPoint && buttonDirection === 'right') {
+    if (slideDirection >= rightSlideEndPoint && buttonDirection === "right") {
       setSlideDirection(slideDirection - imageWidth);
     }
   };
@@ -63,25 +62,23 @@ function IntrestGallery() {
       setImageState([...imageState, id]);
     } else {
       setImageState([
-        ...imageState.slice(0, imageState.findIndex((item) => item === id)),
-        ...imageState.slice(imageState.findIndex((item) => item === id) + 1, imageState.length),
+        ...imageState.slice(
+          0,
+          imageState.findIndex((item) => item === id)
+        ),
+        ...imageState.slice(
+          imageState.findIndex((item) => item === id) + 1,
+          imageState.length
+        ),
       ]);
     }
   };
 
   return (
     <Wrapper>
-      <ButtonGallery
-        buttonDirection="left"
-        onClick={onClickSlide}
-      />
-      <CarouselContainer
-        ref={carouselRef}
-      >
-        <Carousel
-          moveTo={slideDirection}
-          width={carouselWidth}
-        >
+      <ButtonGallery buttonDirection="left" onClick={onClickSlide} />
+      <CarouselContainer ref={carouselRef}>
+        <Carousel moveTo={slideDirection} width={carouselWidth}>
           {imageArrayIntrestGallery.map((item, index) => (
             <ItemGallery
               image={item.image}
@@ -94,10 +91,7 @@ function IntrestGallery() {
           ))}
         </Carousel>
       </CarouselContainer>
-      <ButtonGallery
-        buttonDirection="right"
-        onClick={onClickSlide}
-      />
+      <ButtonGallery buttonDirection="right" onClick={onClickSlide} />
     </Wrapper>
   );
 }
