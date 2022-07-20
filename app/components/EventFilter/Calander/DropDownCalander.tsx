@@ -37,6 +37,20 @@ const Wrapper = styled.div`
     background: #ef8336;
     border: 1px solid #ef8336;
   }
+  .DayPickerKeyboardShortcuts_show__bottomRight::before {
+    border-right: 33px solid #fdaa4c;
+  }
+  .CalendarDay__hovered_span, .CalendarDay__hovered_span:hover {
+    background: #ffcca7;
+    border: 1px double #ffcca7;
+    color: white;
+  }
+  .CalendarDay__selected, .CalendarDay__selected:active, .CalendarDay__selected:hover {
+    background: #ef8336;
+    border: 1px double #ef8336;
+    color: #fff;
+  }
+}
 `;
 
 function DropDownCalander() {
