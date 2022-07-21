@@ -5,6 +5,7 @@ import MetaBall from "../components/EventFilter/MetaBall/MetaBall";
 import styled from "styled-components";
 
 import EventsList from "../components/Events/List";
+import MetaBall from "../components/EventFilter/MetaBall/MetaBall";
 
 const Container = styled.div`
   height: 100vh;
@@ -26,3 +27,8 @@ const Home: NextPage = () => {
 export const getServerSideProps = async () => ({ props: {} });
 
 export default React.memo(Home);
+/*
+      <Layout>
+        <Main />
+      </Layout>
+*/

@@ -44,7 +44,7 @@ function IntrestGallery() {
   const [slideDirection, setSlideDirection] = useState(0);
   const [rightSlideEndPoint, setRightSlideEndPoint] = useState(0);
 
-  const [imageState, setImageState] = useState([].fill(null));
+  const [imageState, setImageState] = useState<string[]>([]);
 
   const imageWidth = 155;
   const carouselWidth = imageArray.length * imageWidth;
@@ -96,7 +96,7 @@ function IntrestGallery() {
               description={item.description}
               id={item.id}
               key={index}
-              choosen={imageState.includes(item.id)}
+              chosen={imageState.includes(item.id)}
               onClickChoose={onClickChoose}
             />
           ))}
