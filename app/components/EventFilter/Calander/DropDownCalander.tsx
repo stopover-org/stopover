@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import "react-dates/initialize";
 import { DateRangePicker, FocusedInputShape } from "react-dates";
@@ -50,15 +50,17 @@ const Wrapper = styled.div`
     border: 1px double #ef8336;
     color: #fff;
   }
-}
+
 `;
 
-function DropDownCalander() {
+type Props = {
+  dateHandler: (startDate: moment.Moment | null, endDate: moment.Moment | null) => void;
+};
+
+function DropDownCalander(props: Props) {
   const [startDate, setStartDate] = useState<moment.Moment | null>(null);
   const [endDate, setEndDate] = useState<moment.Moment | null>(null);
-  const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
-    null
-  );
+  const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(null);
 
   const handlendDatesChange = (newDates: {
     startDate: moment.Moment | null;
@@ -71,6 +73,10 @@ function DropDownCalander() {
   const handleFocusChange = (inputName: FocusedInputShape | null) => {
     setFocusedInput(inputName);
   };
+
+  useEffect(()=>{
+    props.dateHandler(startDate, endDate);
+  },[startDate, endDate])
 
   return (
     <Wrapper>

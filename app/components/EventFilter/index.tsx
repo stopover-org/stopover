@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import moment from "moment";
 import LocationInput from "./LocationInput";
@@ -36,18 +36,36 @@ const IntrestBar = styled.div`
 `;
 
 function Main() {
+  const [state, setState] = useState<{startDate: moment.Moment | null, endDate: moment.Moment | null}>({
+    startDate: null,
+    endDate: null
+  });
+
+  const dateHandler = (startDate: moment.Moment | null, endDate: moment.Moment | null) => {
+    setState({
+      startDate: startDate,
+      endDate: endDate,
+    })
+  }
+  const sliderHandler = (chosenStart: string, chosenEnd: string) => {
+    console.log(chosenStart, chosenEnd);
+  }
+
   return (
     <Wrapper>
       <FilterBar>
         <StartingPoint>
           <LocationInput />
-          <DropDownCalander />
+          <DropDownCalander 
+            dateHandler={dateHandler}
+          />
         </StartingPoint>
         <FilterBarItem>
           <Slider
-            fromDate={moment(new Date("08.09.2020"))}
-            toDate={moment(new Date("08.13.2020"))}
+            startDate={state.startDate}
+            endDate={state.endDate}
             countOfElements={4}
+            sliderHandler={sliderHandler}
           />
         </FilterBarItem>
         <FilterBarItem>

@@ -15,15 +15,17 @@ const Wrapper = styled.div<{ display: string }>`
 `;
 
 type Props = {
-  fromDate?: Moment;
-  toDate?: Moment;
+  startDate: Moment | null;
+  endDate: Moment | null;
   countOfElements: number;
+  sliderHandler: (chosenStart: string, chosenEnd: string) => void;
 };
 
 function SliderComponent(props: Props) {
+  const canCreateMarks = props.startDate && props.endDate && props.startDate?.isValid() && props.endDate?.isValid();
   const deltaDays = Math.abs(
     Math.ceil(
-      props.fromDate ? props.fromDate.diff(props.toDate, "days") - 1 : 0
+      props.startDate ? props.startDate.diff(props.endDate, "days") - 1 : 0
     )
   );
   const stepHandler = (countOfElements: number) =>
@@ -32,17 +34,19 @@ function SliderComponent(props: Props) {
   const [sliderPoints, setSliderPoints] = useState<Record<string, MarkObj>>({
     0: { label: "" },
   });
-
-  const createMarks = () => {
-    if (!props.fromDate || !props.fromDate!.isValid()) {
+  
+  const createMarks = (step: number) => {
+    
+    if (!canCreateMarks) {
       return {};
     }
 
-    const cloneDate = props.fromDate.clone();
+    const cloneDate = props.startDate!.clone();
     const array = new Array(deltaDays).fill(null) as MarkObj[];
 
     let flagIndex = 0;
-    const step = stepHandler(props.countOfElements - 1);
+    //const step = stepHandler(props.countOfElements - 1);
+    
     return array.reduce((marks: Record<string, MarkObj>, item, index) => {
       if (index === flagIndex) {
         flagIndex += step;
@@ -58,15 +62,21 @@ function SliderComponent(props: Props) {
   };
 
   useEffect(() => {
-    setSliderPoints(createMarks());
-  }, [deltaDays, props.countOfElements]);
+    
+    if(canCreateMarks){setSliderPoints(createMarks(stepHandler(props.countOfElements - 1)))}
 
-  if (!props.fromDate?.isValid() || !props.toDate?.isValid()) {
+  }, [deltaDays, props.countOfElements, canCreateMarks]);
+
+  if (!canCreateMarks) {
     return (
       <Wrapper display="none">
         <Slider range />
       </Wrapper>
     );
+  }
+
+  const chosenValue = (index: number) => {
+    return createMarks(1)[index].label;
   }
 
   return (
@@ -78,6 +88,11 @@ function SliderComponent(props: Props) {
         max={deltaDays - 1}
         min={0}
         marks={sliderPoints}
+        onChange={(...args: number[][])=>{
+          props.sliderHandler(
+            chosenValue(args[0][0]),
+            chosenValue(args[0][1])
+          )}}
       />
     </Wrapper>
   );
