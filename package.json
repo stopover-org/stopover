@@ -1,11 +1,20 @@
 {
   "devDependencies": {
-    "husky": "^8.0.1",
+    "eslint": "^8.20.0",
+    "husky": "^8.0.0",
     "lint-staged": "^13.0.3"
   },
   "lint-staged": {
-    "frontend/{app,pages}/**/*.{js,jsx,ts,tsx}": [
-      "eslint -c frontend/.eslintrc.js --fix"
+    "app/{components,pages,lib}/**/*.{js,jsx,ts,tsx}": [
+      "eslint -c app/.eslintrc.js --fix"
     ]
+  },
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

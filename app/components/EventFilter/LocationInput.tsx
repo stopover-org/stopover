@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import Image from 'next/image';
-import icon from '../icons/Outline/Interface/Edit-alt.svg';
+import React from "react";
+import styled from "styled-components";
+import Image from "next/image";
+import icon from "../icons/Outline/Interface/Edit-alt.svg";
 
 const ImageWrapper = styled.div`
   display: none;
@@ -10,22 +10,19 @@ const ImageWrapper = styled.div`
   left: 16px;
 `;
 
-const SImage = styled(Image)`
-`;
+const SImage = styled(Image)``;
 
 const Input = styled.input`
   border: none;
   border-bottom: 2px solid transparent;
-  font-family: 'Roboto', sans-serif;
   font-size: 36px;
   font-weight: 400;
   line-height: 44px;
   width: 372px;
-  
 
   &:focus {
-      outline: none;
-      border-bottom: 2px solid #D9D9D9;
+    outline: none;
+    border-bottom: 2px solid #d9d9d9;
   }
 `;
 
@@ -34,22 +31,18 @@ const Wrapper = styled.div`
   flex-direction: row;
   align-items: flex-end;
   width: 100%;
-  padding: 40px 0px 15px 30px;
   &:hover ${ImageWrapper} {
     display: block;
   }
   &:hover ${Input} {
-    border-bottom: 2px solid #D9D9D9;
+    border-bottom: 2px solid #d9d9d9;
   }
 `;
 
 function LocationInput() {
   return (
     <Wrapper>
-      <Input
-        type="text"
-        placeholder="search location"
-      />
+      <Input type="text" placeholder="search location" />
       <ImageWrapper>
         <SImage
           src={icon.src}

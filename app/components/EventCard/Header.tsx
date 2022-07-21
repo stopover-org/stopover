@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const RefStyle = styled.a`
   display: flex;
@@ -8,7 +8,7 @@ const RefStyle = styled.a`
   width: 100%;
   height: 100%;
   transition: background-color linear 0.5s, color linear 0.2s;
-  &:hover{
+  &:hover {
     background-color: black;
     color: white;
   }
@@ -21,18 +21,15 @@ const NavBarStyle = styled.div`
 `;
 
 function Header() {
-  const refCount = ['home', 'my adventure', 'my account'];
+  const refCount = ["home", "my adventure", "my account"];
 
   return (
     <NavBarStyle>
-      { refCount.map((item, index) => (
-        <RefStyle
-          href="#"
-          key={index}
-        >
-          { item }
+      {refCount.map((item, index) => (
+        <RefStyle href="#" key={index}>
+          {item}
         </RefStyle>
-      )) }
+      ))}
     </NavBarStyle>
   );
 }

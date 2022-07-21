@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import RateStar from './RateStar';
+import React, { useState } from "react";
+import styled from "styled-components";
+import RateStar from "./RateStar";
 
 const RateStyle = styled.div`
-    position: absolute;
-    display: flex;
-    flex-direction: row;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
 `;
 
 function Rate() {
-  const stars = new Array(5).fill('');
+  const stars = new Array(5).fill("");
   const [rate, setRate] = useState(0);
 
   const clickHandler = (index: number) => {
@@ -18,14 +18,14 @@ function Rate() {
 
   return (
     <RateStyle>
-      { stars.map((item, index) => (
+      {stars.map((item, index) => (
         <RateStar
           index={index}
           rate={rate}
           key={index}
           clickHandler={clickHandler}
         />
-      )) }
+      ))}
     </RateStyle>
   );
 }

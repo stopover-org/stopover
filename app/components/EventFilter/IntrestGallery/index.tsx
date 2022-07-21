@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ItemGallery from "./ItemGallery";
 import ButtonGallery from "./ButtonGallery";
-import { imageArrayIntrestGallery } from "../../PseudoServer";
+import { imageArray } from "../../PseudoServer";
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,6 +30,15 @@ const Carousel = styled.div<{ width: number; moveTo: number | string }>`
   left: ${(props) => props.moveTo}px;
   transition: left 1s ease;
 `;
+// const ButtonContainer = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   height: inherit;
+//   width: inherit;
+//   justify-content: space-between;
+//   z-index: 1;
+//   position: absolute;
+// `;
 
 function IntrestGallery() {
   const [slideDirection, setSlideDirection] = useState(0);
@@ -38,12 +47,14 @@ function IntrestGallery() {
   const [imageState, setImageState] = useState<string[]>([]);
 
   const imageWidth = 155;
-  const carouselWidth = imageArrayIntrestGallery.length * imageWidth;
+  const carouselWidth = imageArray.length * imageWidth;
   const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (carouselRef.current) {
       setRightSlideEndPoint(carouselRef.current.clientWidth - carouselWidth);
+    } else {
+      console.log("не подгрузилось с сервера");
     }
   }, []);
 
@@ -79,7 +90,7 @@ function IntrestGallery() {
       <ButtonGallery buttonDirection="left" onClick={onClickSlide} />
       <CarouselContainer ref={carouselRef}>
         <Carousel moveTo={slideDirection} width={carouselWidth}>
-          {imageArrayIntrestGallery.map((item, index) => (
+          {imageArray.map((item, index) => (
             <ItemGallery
               image={item.image}
               description={item.description}
