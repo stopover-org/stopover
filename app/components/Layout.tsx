@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 `;
 
 type Props = {
-  children: JSX.Element;
+  children: React.ReactElement;
 };
 
 function Layout({ children }: Props) {

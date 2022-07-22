@@ -40,27 +40,34 @@ const Wrapper = styled.div`
   .DayPickerKeyboardShortcuts_show__bottomRight::before {
     border-right: 33px solid #fdaa4c;
   }
-  .CalendarDay__hovered_span, .CalendarDay__hovered_span:hover {
+  .CalendarDay__hovered_span,
+  .CalendarDay__hovered_span:hover {
     background: #ffcca7;
     border: 1px double #ffcca7;
     color: white;
   }
-  .CalendarDay__selected, .CalendarDay__selected:active, .CalendarDay__selected:hover {
+  .CalendarDay__selected,
+  .CalendarDay__selected:active,
+  .CalendarDay__selected:hover {
     background: #ef8336;
     border: 1px double #ef8336;
     color: #fff;
   }
-
 `;
 
 type Props = {
-  dateHandler: (startDate: moment.Moment | null, endDate: moment.Moment | null) => void;
+  dateHandler: (
+    startDate: moment.Moment | null,
+    endDate: moment.Moment | null
+  ) => void;
 };
 
-function DropDownCalander(props: Props) {
+function Index(props: Props) {
   const [startDate, setStartDate] = useState<moment.Moment | null>(null);
   const [endDate, setEndDate] = useState<moment.Moment | null>(null);
-  const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(null);
+  const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
+    null
+  );
 
   const handlendDatesChange = (newDates: {
     startDate: moment.Moment | null;
@@ -74,9 +81,9 @@ function DropDownCalander(props: Props) {
     setFocusedInput(inputName);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     props.dateHandler(startDate, endDate);
-  },[startDate, endDate])
+  }, [startDate, endDate]);
 
   return (
     <Wrapper>
@@ -95,4 +102,4 @@ function DropDownCalander(props: Props) {
   );
 }
 
-export default DropDownCalander;
+export default Index;

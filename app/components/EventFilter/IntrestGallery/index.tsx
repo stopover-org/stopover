@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ItemGallery from "./ItemGallery";
 import ButtonGallery from "./ButtonGallery";
-import { imageArray } from "../../PseudoServer";
+import { imageArray } from "../../constants";
 
 const Wrapper = styled.div`
   display: flex;

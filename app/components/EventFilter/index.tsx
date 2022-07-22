@@ -4,10 +4,9 @@ import moment from "moment";
 import LocationInput from "./LocationInput";
 import DropDownList from "./DropDownList";
 import IntrestGallery from "./IntrestGallery";
-import Slider from "./Slider/Slider";
-import { durationFrom, durationTo, chooseAmount } from "../PseudoServer";
-
-import DropDownCalander from "./Calander/DropDownCalander";
+import Slider from "./Slider";
+import { durationFrom, durationTo, chooseAmount } from "../constants";
+import Calendar from "./Calander";
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,39 +30,43 @@ const StartingPoint = styled.div`
   height: 156px;
   margin: 40px 0px 63px 45px;
 `;
-const IntrestBar = styled.div`
+const InterestBar = styled.div`
   padding: 26px 0px 0px 45px;
 `;
 
 function Main() {
-  const [state, setState] = useState<{startDate: moment.Moment | null, endDate: moment.Moment | null}>({
+  const [filters, setFilters] = useState<{
+    startDate: moment.Moment | null;
+    endDate: moment.Moment | null;
+  }>({
     startDate: null,
-    endDate: null
+    endDate: null,
   });
 
-  const dateHandler = (startDate: moment.Moment | null, endDate: moment.Moment | null) => {
-    setState({
-      startDate: startDate,
-      endDate: endDate,
-    })
-  }
+  const dateHandler = (
+    startDate: moment.Moment | null,
+    endDate: moment.Moment | null
+  ) => {
+    setFilters({
+      startDate,
+      endDate,
+    });
+  };
   const sliderHandler = (chosenStart: string, chosenEnd: string) => {
     console.log(chosenStart, chosenEnd);
-  }
+  };
 
   return (
     <Wrapper>
       <FilterBar>
         <StartingPoint>
           <LocationInput />
-          <DropDownCalander 
-            dateHandler={dateHandler}
-          />
+          <Calendar dateHandler={dateHandler} />
         </StartingPoint>
         <FilterBarItem>
           <Slider
-            startDate={state.startDate}
-            endDate={state.endDate}
+            startDate={filters.startDate}
+            endDate={filters.endDate}
             countOfElements={4}
             sliderHandler={sliderHandler}
           />
@@ -91,9 +94,9 @@ function Main() {
       </FilterBar>
 
       <MainPage>
-        <IntrestBar>
+        <InterestBar>
           <IntrestGallery />
-        </IntrestBar>
+        </InterestBar>
       </MainPage>
     </Wrapper>
   );
