@@ -9,7 +9,7 @@ class Account < ApplicationRecord
   has_many :interests, through: :account_interests
   has_many :trips, dependent: :destroy
 
-  validates :name, :primary_phone, presence: true
+  validates :name, presence: true
 
   before_validation :set_user_info
 

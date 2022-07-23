@@ -10,16 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_06_183925) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_02_06_183925) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "account_interests", force: :cascade do |t|
     t.bigint "account_id"
     t.bigint "interest_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["account_id", "interest_id"], name: "index_account_interests_on_account_id_and_interest_id", unique: true
     t.index ["account_id"], name: "index_account_interests_on_account_id"
     t.index ["interest_id"], name: "index_account_interests_on_interest_id"
@@ -39,9 +38,9 @@ ActiveRecord::Schema.define(version: 2022_02_06_183925) do
     t.string "phones", default: [], array: true
     t.string "primary_phone"
     t.bigint "user_id"
-    t.datetime "verified_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "verified_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_accounts_on_user_id", unique: true
   end
 
@@ -49,16 +48,16 @@ ActiveRecord::Schema.define(version: 2022_02_06_183925) do
     t.string "title", null: false
     t.string "preview"
     t.boolean "active", default: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["title"], name: "index_achievements_on_title", unique: true
   end
 
   create_table "booking_event_options", force: :cascade do |t|
     t.bigint "booking_id"
     t.bigint "event_option_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["booking_id"], name: "index_booking_event_options_on_booking_id"
     t.index ["event_option_id"], name: "index_booking_event_options_on_event_option_id"
   end
@@ -68,10 +67,10 @@ ActiveRecord::Schema.define(version: 2022_02_06_183925) do
     t.string "status"
     t.string "phone"
     t.string "email"
-    t.datetime "booked_for", precision: 6, null: false
+    t.datetime "booked_for", null: false
     t.bigint "event_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "trip_id"
     t.index ["event_id"], name: "index_bookings_on_event_id"
     t.index ["trip_id"], name: "index_bookings_on_trip_id"
@@ -81,16 +80,16 @@ ActiveRecord::Schema.define(version: 2022_02_06_183925) do
     t.string "value"
     t.string "key"
     t.string "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["key"], name: "index_configurations_on_key"
   end
 
   create_table "event_achievements", force: :cascade do |t|
     t.bigint "event_id"
     t.bigint "achievement_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["achievement_id"], name: "index_event_achievements_on_achievement_id"
     t.index ["event_id"], name: "index_event_achievements_on_event_id"
   end
@@ -98,8 +97,8 @@ ActiveRecord::Schema.define(version: 2022_02_06_183925) do
   create_table "event_interests", force: :cascade do |t|
     t.bigint "event_id"
     t.bigint "interest_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_event_interests_on_event_id"
     t.index ["interest_id"], name: "index_event_interests_on_interest_id"
   end
@@ -110,8 +109,8 @@ ActiveRecord::Schema.define(version: 2022_02_06_183925) do
     t.decimal "attendee_cost_cents"
     t.boolean "built_in", default: false
     t.bigint "event_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "description"
     t.index ["event_id"], name: "index_event_options_on_event_id"
   end
@@ -137,8 +136,8 @@ ActiveRecord::Schema.define(version: 2022_02_06_183925) do
     t.string "full_address"
     t.float "longitude"
     t.float "latitude"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "unit_id"
     t.string "status"
     t.index ["event_type"], name: "index_events_on_event_type"
@@ -150,8 +149,8 @@ ActiveRecord::Schema.define(version: 2022_02_06_183925) do
     t.string "slug", null: false
     t.string "preview"
     t.boolean "active", default: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_interests_on_slug", unique: true
     t.index ["title"], name: "index_interests_on_title", unique: true
   end
@@ -167,8 +166,8 @@ ActiveRecord::Schema.define(version: 2022_02_06_183925) do
     t.float "longitude"
     t.float "latitude"
     t.string "status", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_trips_on_account_id"
   end
 
@@ -176,8 +175,8 @@ ActiveRecord::Schema.define(version: 2022_02_06_183925) do
     t.string "name", null: false
     t.string "unit_type", default: "common", null: false
     t.string "preview"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -185,11 +184,11 @@ ActiveRecord::Schema.define(version: 2022_02_06_183925) do
     t.string "phone"
     t.string "confirmation_code"
     t.string "status", null: false
-    t.datetime "disabled_at", precision: 6
-    t.datetime "confirmed_at", precision: 6
-    t.datetime "last_try", precision: 6
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "disabled_at"
+    t.datetime "confirmed_at"
+    t.datetime "last_try"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "session_password"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["phone"], name: "index_users_on_phone", unique: true

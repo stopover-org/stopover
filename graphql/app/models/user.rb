@@ -49,7 +49,7 @@ class User < ApplicationRecord
     self.confirmed_at = DateTime.now
     self.status = :active
 
-    self.account = Account.new(name: phone.present? ? phone : email, primary_phone: phone, phones: phone.present? ? [phone] : [])
+    self.account = Account.new(name: phone.present? ? phone : email, primary_phone: phone, phones: phone.present? ? [phone] : [], user: self)
 
     self.session_password = SecureRandom.hex(50)
     save!
