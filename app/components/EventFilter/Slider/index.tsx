@@ -22,7 +22,11 @@ type Props = {
 };
 
 function SliderComponent(props: Props) {
-  const canCreateMarks = props.startDate && props.endDate && props.startDate?.isValid() && props.endDate?.isValid();
+  const canCreateMarks =
+    props.startDate &&
+    props.endDate &&
+    props.startDate?.isValid() &&
+    props.endDate?.isValid();
   const deltaDays = Math.abs(
     Math.ceil(
       props.startDate ? props.startDate.diff(props.endDate, "days") - 1 : 0
@@ -34,9 +38,8 @@ function SliderComponent(props: Props) {
   const [sliderPoints, setSliderPoints] = useState<Record<string, MarkObj>>({
     0: { label: "" },
   });
-  
+
   const createMarks = (step: number) => {
-    
     if (!canCreateMarks) {
       return {};
     }
@@ -45,8 +48,8 @@ function SliderComponent(props: Props) {
     const array = new Array(deltaDays).fill(null) as MarkObj[];
 
     let flagIndex = 0;
-    //const step = stepHandler(props.countOfElements - 1);
-    
+    // const step = stepHandler(props.countOfElements - 1);
+
     return array.reduce((marks: Record<string, MarkObj>, item, index) => {
       if (index === flagIndex) {
         flagIndex += step;
@@ -62,9 +65,9 @@ function SliderComponent(props: Props) {
   };
 
   useEffect(() => {
-    
-    if(canCreateMarks){setSliderPoints(createMarks(stepHandler(props.countOfElements - 1)))}
-
+    if (canCreateMarks) {
+      setSliderPoints(createMarks(stepHandler(props.countOfElements - 1)));
+    }
   }, [deltaDays, props.countOfElements, canCreateMarks]);
 
   if (!canCreateMarks) {
@@ -75,9 +78,7 @@ function SliderComponent(props: Props) {
     );
   }
 
-  const chosenValue = (index: number) => {
-    return createMarks(1)[index].label;
-  }
+  const chosenValue = (index: number) => createMarks(1)[index].label;
 
   return (
     <Wrapper display="block">
@@ -88,11 +89,9 @@ function SliderComponent(props: Props) {
         max={deltaDays - 1}
         min={0}
         marks={sliderPoints}
-        onChange={(...args: number[][])=>{
-          props.sliderHandler(
-            chosenValue(args[0][0]),
-            chosenValue(args[0][1])
-          )}}
+        onChange={(...args: number[][]) => {
+          props.sliderHandler(chosenValue(args[0][0]), chosenValue(args[0][1]));
+        }}
       />
     </Wrapper>
   );

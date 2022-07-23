@@ -6,7 +6,7 @@ class EventsQuery
   end
 
   def all
-    @relations = @relations.where(id: params[:id]) if params[:id]
+    @relations = @relations.where(id: @params[:id]) if @params[:id]
     @relations
   end
 end

@@ -1,15 +1,13 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
 
-async function fetchGraphQL(text: string, variables: object) {
-  const { GRAPHQL_API_URL } = process.env;
-  if (!GRAPHQL_API_URL) {
-    throw new Error("Graphql url wasn't specified");
-  }
+async function fetchGraphQL(text: string, variables: any) {
+  // const REACT_APP_GITHUB_AUTH_TOKEN = process.env.REACT_APP_GITHUB_AUTH_TOKEN;
 
   // Fetch data from GitHub's GraphQL API:
-  const response = await fetch(GRAPHQL_API_URL, {
+  const response = await fetch("http://localhost:8000/graphql", {
     method: "POST",
     headers: {
+      // Authorization: `bearer ${REACT_APP_GITHUB_AUTH_TOKEN}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -22,8 +20,6 @@ async function fetchGraphQL(text: string, variables: object) {
   return response.json();
 }
 
-// Relay passes a "params" object with the query name and text. So we define a helper function
-// to call our fetchGraphQL utility with params.text.
 async function fetchRelay(params: any, variables: any) {
   console.log(
     `fetching query ${params.name} with ${JSON.stringify(variables)}`

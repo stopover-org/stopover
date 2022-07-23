@@ -1,4 +1,4 @@
-type Account {
+type Account implements Node {
   city: String
   country: String
   fullAddress: String
@@ -16,7 +16,11 @@ type Account {
   verifiedAt: String
 }
 
-type Achievement {
+type Achievement implements Node {
+  """
+  ID of the object.
+  """
+  id: ID!
   preview: String
   relayId: ID!
   title: String
@@ -71,7 +75,7 @@ type CreateEventPayload {
   event: Event
 }
 
-type Event {
+type Event implements Node {
   achievements: [Achievement!]
   attendeeCostPerUomCents: Int
   city: String
@@ -100,7 +104,7 @@ type Event {
   unit: Unit
 }
 
-type EventOption {
+type EventOption implements Node {
   attendeeCostCents: Int
   builtIn: Boolean
   id: ID
@@ -121,7 +125,7 @@ enum EventTypeEnum {
   tour
 }
 
-type Interest {
+type Interest implements Node {
   id: ID
   preview: String
   relayId: ID!
@@ -154,10 +158,40 @@ type Mutation {
   ): SignInPayload
 }
 
+"""
+An object with an ID.
+"""
+interface Node {
+  """
+  ID of the object.
+  """
+  id: ID!
+}
+
 type Query {
   currentUser: User
   events(id: Int): [Event!]
   interests(filters: InterestsFilter): [Interest!]
+
+  """
+  Fetches an object given its ID.
+  """
+  node(
+    """
+    ID of the object.
+    """
+    id: ID!
+  ): Node
+
+  """
+  Fetches a list of objects given a list of IDs.
+  """
+  nodes(
+    """
+    IDs of the objects.
+    """
+    ids: [ID!]!
+  ): [Node]!
 }
 
 enum RecurringTypeEnum {
@@ -244,7 +278,7 @@ enum SignInTypesEnum {
   phone
 }
 
-type Unit {
+type Unit implements Node {
   id: ID
   name: String
   preview: String
@@ -252,7 +286,7 @@ type Unit {
   unitType: String
 }
 
-type User {
+type User implements Node {
   account: Account!
   email: String
   id: ID!
