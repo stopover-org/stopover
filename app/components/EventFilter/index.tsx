@@ -48,9 +48,10 @@ function Main() {
       endDate: endDate,
     })
   }
+
   const sliderHandler = (chosenStart: string, chosenEnd: string) => {
     console.log(chosenStart, chosenEnd);
-  }
+  };
 
   return (
     <Wrapper>

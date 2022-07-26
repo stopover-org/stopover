@@ -1,6 +1,177 @@
 import "rc-slider/assets/index.css";
 import Slider from "rc-slider";
 import styled from "styled-components";
+import moment, { Moment } from "moment";
+import React from "react";
+import { MarkObj } from "rc-slider/es/Marks";
+
+const Wrapper = styled.div`
+  .rc-slider {
+    width: 380px;
+  }
+`;
+
+type Props = {
+  range: number[] | Moment[] | string[];
+};
+
+function SliderComponent({ range }: Props) {
+  if (!range.find(Boolean)) return null;
+
+  const checkType = () => {
+    if (typeof range[0] !== typeof range[range.length - 1]) {
+      console.log("types of start and end are different");
+      return false;
+    }
+    if (
+      typeof range[0] === "number" &&
+      typeof range[range.length - 1] === "number"
+    ) {
+      if (range[0] <= range[range.length - 1]) {
+        console.log("number");
+        return true;
+      }
+      console.log("its a number but first arg < argEnd");
+      return false;
+    }
+    // range[0] instanceof moment
+    if (
+      range[0] instanceof moment &&
+      range[range.length - 1] instanceof moment
+    ) {
+      if (
+        (range[0] as Moment).isValid() &&
+        (range[range.length - 1] as Moment).isValid()
+      ) {
+        console.log("date");
+        return true;
+      }
+      console.log("its an object but not moment");
+      return false;
+    }
+
+    return true;
+  };
+
+  if (!checkType()) {
+    return (
+      <Wrapper>
+        <Slider range />
+      </Wrapper>
+    );
+  }
+
+  const nameType = () => {
+    if (
+      typeof range[0] === "number" &&
+      typeof range[range.length - 1] === "number"
+    ) {
+      return "number";
+    }
+    if (
+      range[0] instanceof moment &&
+      range[range.length - 1] instanceof moment
+    ) {
+      return "date";
+    }
+    if (
+      typeof range[0] === "string" &&
+      typeof range[range.length - 1] === "string"
+    ) {
+      return "string";
+    }
+    console.log("function nameType didnt find correct type");
+    return null;
+  };
+
+  const createMarksNumber = (delta: number, startPoint: number) => {
+    const array = new Array(delta + 1).fill(null) as MarkObj[];
+    return array.reduce((marks: Record<string, MarkObj>, item, index) => {
+      marks[index] = { label: startPoint + index };
+      return marks;
+    }, {} as Record<string, MarkObj>);
+  };
+
+  const createMarksDate = (delta: number, startPoint: Moment) => {
+    const cloneDateStartDate = startPoint!.clone();
+    const array = new Array(delta).fill(null) as MarkObj[];
+    let flagIndex = 0;
+
+    return array.reduce((marks: Record<string, MarkObj>, item, index) => {
+      if (index === flagIndex) {
+        flagIndex += 1;
+        marks[index] = { label: cloneDateStartDate.format("DD.MM") };
+      }
+      if (delta - 1 === index) {
+        marks[index] = { label: cloneDateStartDate.format("DD.MM") };
+      }
+      cloneDateStartDate.add(1, "days");
+
+      return marks;
+    }, {} as Record<string, MarkObj>);
+  };
+
+  const createMarksString = (delta: number) => {
+    const array = new Array(delta).fill(null) as MarkObj[];
+    return array.reduce((marks: Record<string, MarkObj>, item, index) => {
+      marks[index] = { label: range[index] as string };
+      return marks;
+    }, {} as Record<string, MarkObj>);
+  };
+
+  const findDelta = () => {
+    switch (nameType()) {
+      case "number":
+        return (range[range.length - 1] as number) - (range[0] as number);
+      case "date":
+        return Math.abs(
+          Math.ceil(
+            (range[0] as Moment).diff(range[range.length - 1], "days") - 1
+          )
+        );
+      case "string":
+        return range.length;
+      default:
+        console.log(checkType());
+        return 1;
+    }
+  };
+
+  const createMarks = (): Record<string, MarkObj> => {
+    // if(findDelta() === null) return null;
+    switch (nameType()) {
+      case "number":
+        return createMarksNumber(findDelta(), range[0] as number);
+      case "date":
+        return createMarksDate(findDelta(), range[0] as Moment);
+      case "string":
+        return createMarksString(findDelta());
+      default:
+        console.log(checkType());
+        return {};
+    }
+  };
+
+  return (
+    <Wrapper>
+      <Slider
+        range
+        allowCross={false}
+        count={1}
+        max={findDelta()}
+        min={0}
+        marks={createMarks()}
+      />
+    </Wrapper>
+  );
+}
+export default SliderComponent;
+
+/*
+
+import "rc-slider/assets/index.css";
+import Slider from "rc-slider";
+import styled from "styled-components";
 import { Moment } from "moment";
 import React, { useEffect, useState } from "react";
 import { MarkObj } from "rc-slider/es/Marks";
@@ -98,3 +269,5 @@ function SliderComponent(props: Props) {
   );
 }
 export default SliderComponent;
+
+*/
