@@ -16,6 +16,12 @@ const Query = graphql`
     }
     events {
       id
+      eventType
+      title
+      description
+      country
+      city
+      status
       eventOptions {
         id
         relayId

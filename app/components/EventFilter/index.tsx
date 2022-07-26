@@ -97,6 +97,7 @@ function Main() {
         <InterestBar>
           <IntrestGallery />
         </InterestBar>
+        <div>EVENTS</div>
       </MainPage>
     </Wrapper>
   );

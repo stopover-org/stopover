@@ -4,6 +4,7 @@ module Types
   class EventType < Types::ModelObject
     field :id, ID
     field :title, String
+    field :status, String
     field :description, String
     field :event_type, Types::EventTypeEnum
     field :recurring_type, Types::RecurringTypeEnum
