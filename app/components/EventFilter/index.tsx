@@ -52,9 +52,9 @@ function Main() {
       endDate,
     });
   };
-  const sliderHandler = (chosenStart: string, chosenEnd: string) => {
+  /* const sliderHandler = (chosenStart: string, chosenEnd: string) => {
     console.log(chosenStart, chosenEnd);
-  };
+  }; */
 
   return (
     <Wrapper>
@@ -63,14 +63,11 @@ function Main() {
           <LocationInput />
           <Calendar dateHandler={dateHandler} />
         </StartingPoint>
-        <FilterBarItem>
-          <Slider
-            startDate={filters.startDate}
-            endDate={filters.endDate}
-            countOfElements={4}
-            sliderHandler={sliderHandler}
-          />
-        </FilterBarItem>
+        {filters.startDate && filters.endDate && (
+          <FilterBarItem>
+            <Slider range={[filters.startDate, filters.endDate]} />
+          </FilterBarItem>
+        )}
         <FilterBarItem>
           <DropDownList
             paddingRight="30px"
@@ -103,3 +100,11 @@ function Main() {
 }
 
 export default Main;
+/*
+<Slider
+            startDate={filters.startDate}
+            endDate={filters.endDate}
+            countOfElements={4}
+            sliderHandler={sliderHandler}
+          />
+*/
