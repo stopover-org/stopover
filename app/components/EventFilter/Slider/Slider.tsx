@@ -13,9 +13,10 @@ const Wrapper = styled.div`
 
 type Props = {
   range: number[] | Moment[] | string[];
+  countOfMarks: number;
 };
 
-function SliderComponent({ range }: Props) {
+function SliderComponent({ range, countOfMarks }: Props) {
   if (!range.find(Boolean)) return null;
 
   const checkType = () => {
@@ -84,22 +85,38 @@ function SliderComponent({ range }: Props) {
     return null;
   };
 
-  const createMarksNumber = (delta: number, startPoint: number) => {
-    const array = new Array(delta + 1).fill(null) as MarkObj[];
+  const createMarksNumber = (
+    delta: number,
+    startPoint: number,
+    currentCountOfMarks: number
+  ) => {
+    const array = new Array(delta).fill(null) as MarkObj[];
+    let flagIndex = 0;
+    const step = Math.round(delta / currentCountOfMarks);
     return array.reduce((marks: Record<string, MarkObj>, item, index) => {
-      marks[index] = { label: startPoint + index };
+      if (index === flagIndex) {
+        flagIndex += step;
+        marks[index] = { label: startPoint + index };
+      }
+      if (delta - 1 === index) {
+        marks[index] = { label: startPoint + index };
+      }
       return marks;
     }, {} as Record<string, MarkObj>);
   };
 
-  const createMarksDate = (delta: number, startPoint: Moment) => {
+  const createMarksDate = (
+    delta: number,
+    startPoint: Moment,
+    currentCountOfMarks: number
+  ) => {
     const cloneDateStartDate = startPoint!.clone();
     const array = new Array(delta).fill(null) as MarkObj[];
     let flagIndex = 0;
-
+    const step = Math.round(delta / currentCountOfMarks);
     return array.reduce((marks: Record<string, MarkObj>, item, index) => {
       if (index === flagIndex) {
-        flagIndex += 1;
+        flagIndex += step;
         marks[index] = { label: cloneDateStartDate.format("DD.MM") };
       }
       if (delta - 1 === index) {
@@ -122,13 +139,15 @@ function SliderComponent({ range }: Props) {
   const findDelta = () => {
     switch (nameType()) {
       case "number":
-        return (range[range.length - 1] as number) - (range[0] as number);
+        return (range[range.length - 1] as number) - (range[0] as number) + 1;
       case "date":
-        return Math.abs(
-          Math.ceil(
-            (range[0] as Moment).diff(range[range.length - 1], "days") - 1
-          )
-        );
+        return (
+          Math.abs(
+            Math.ceil(
+              (range[0] as Moment).diff(range[range.length - 1], "days")
+            )
+          ) + 1
+        ); // one more magical 1. conroles count of output marks
       case "string":
         return range.length;
       default:
@@ -138,12 +157,15 @@ function SliderComponent({ range }: Props) {
   };
 
   const createMarks = (): Record<string, MarkObj> => {
-    // if(findDelta() === null) return null;
     switch (nameType()) {
       case "number":
-        return createMarksNumber(findDelta(), range[0] as number);
+        return createMarksNumber(findDelta(), range[0] as number, countOfMarks);
       case "date":
-        return createMarksDate(findDelta(), range[0] as Moment);
+        return createMarksDate(
+          findDelta(),
+          range[0] as Moment,
+          countOfMarks - 1
+        );
       case "string":
         return createMarksString(findDelta());
       default:
@@ -158,7 +180,7 @@ function SliderComponent({ range }: Props) {
         range
         allowCross={false}
         count={1}
-        max={findDelta()}
+        max={findDelta() - 1} // magic -1. i dont know why it works but it works.
         min={0}
         marks={createMarks()}
       />

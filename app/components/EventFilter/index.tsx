@@ -37,9 +37,12 @@ const IntrestBar = styled.div`
 
 
 function Main() {
-  const [state, setState] = useState<{startDate: moment.Moment | null, endDate: moment.Moment | null}>({
+  const [filters, setFilters] = useState<{
+    startDate: moment.Moment | null;
+    endDate: moment.Moment | null;
+  }>({
     startDate: null,
-    endDate: null
+    endDate: null,
   });
 
   const dateHandler = (startDate: moment.Moment | null, endDate: moment.Moment | null) => {
@@ -62,15 +65,11 @@ function Main() {
             dateHandler={dateHandler}
           />
         </StartingPoint>
-
-        <FilterBarItem>
-          <Slider
-            startDate={state.startDate}
-            endDate={state.endDate}
-            countOfElements={4}
-            sliderHandler={sliderHandler}
-          />
-        </FilterBarItem>
+        {filters.startDate && filters.endDate && (
+          <FilterBarItem>
+            <Slider range={[1, 28]} countOfMarks={4} />
+          </FilterBarItem>
+        )}
         <FilterBarItem>
           <DropDownList
             paddingRight={"30px"}
