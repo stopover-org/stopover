@@ -65,7 +65,7 @@ function Main() {
         </StartingPoint>
         {filters.startDate && filters.endDate && (
           <FilterBarItem>
-            <Slider range={[filters.startDate, filters.endDate]} />
+            <Slider range={[1, 28]} countOfMarks={4} />
           </FilterBarItem>
         )}
         <FilterBarItem>
