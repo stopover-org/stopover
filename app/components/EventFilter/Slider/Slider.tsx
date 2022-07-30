@@ -14,9 +14,10 @@ const Wrapper = styled.div`
 type Props = {
   range: number[] | Moment[] | string[];
   countOfMarks: number;
+  onChange: (chosenStart: string, chosenEnd: string) => void;
 };
 
-function SliderComponent({ range, countOfMarks }: Props) {
+function SliderComponent({ range, countOfMarks, onChange }: Props) {
   if (!range.find(Boolean)) return null;
 
   const checkType = () => {
@@ -92,11 +93,15 @@ function SliderComponent({ range, countOfMarks }: Props) {
   ) => {
     const array = new Array(delta).fill(null) as MarkObj[];
     let flagIndex = 0;
-    const step = Math.round(delta / currentCountOfMarks);
+    const countOfGaps = currentCountOfMarks - 1;
+    const step = Math.round(delta / countOfGaps);
+
     return array.reduce((marks: Record<string, MarkObj>, item, index) => {
-      if (index === flagIndex) {
-        flagIndex += step;
-        marks[index] = { label: startPoint + index };
+      if (flagIndex !== countOfGaps) {
+        if (index === step * flagIndex) {
+          marks[index] = { label: startPoint + index };
+          flagIndex += 1;
+        }
       }
       if (delta - 1 === index) {
         marks[index] = { label: startPoint + index };
@@ -113,11 +118,15 @@ function SliderComponent({ range, countOfMarks }: Props) {
     const cloneDateStartDate = startPoint!.clone();
     const array = new Array(delta).fill(null) as MarkObj[];
     let flagIndex = 0;
-    const step = Math.round(delta / currentCountOfMarks);
+    const countOfGaps = currentCountOfMarks - 1;
+    const step = Math.round(delta / countOfGaps);
+
     return array.reduce((marks: Record<string, MarkObj>, item, index) => {
-      if (index === flagIndex) {
-        flagIndex += step;
-        marks[index] = { label: cloneDateStartDate.format("DD.MM") };
+      if (flagIndex !== countOfGaps) {
+        if (index === step * flagIndex) {
+          marks[index] = { label: cloneDateStartDate.format("DD.MM") };
+          flagIndex += 1;
+        }
       }
       if (delta - 1 === index) {
         marks[index] = { label: cloneDateStartDate.format("DD.MM") };
@@ -156,21 +165,38 @@ function SliderComponent({ range, countOfMarks }: Props) {
     }
   };
 
-  const createMarks = (): Record<string, MarkObj> => {
+  const createMarks = (
+    delta: number,
+    startPoint: number | Moment | string,
+    currentCountOfMarks: number
+  ): Record<string, MarkObj> => {
     switch (nameType()) {
       case "number":
-        return createMarksNumber(findDelta(), range[0] as number, countOfMarks);
+        return createMarksNumber(
+          delta,
+          startPoint as number,
+          currentCountOfMarks
+        );
       case "date":
         return createMarksDate(
-          findDelta(),
-          range[0] as Moment,
-          countOfMarks - 1
+          delta,
+          startPoint as Moment,
+          currentCountOfMarks
         );
       case "string":
-        return createMarksString(findDelta());
+        return createMarksString(delta);
       default:
         console.log(checkType());
         return {};
+    }
+  };
+
+  const chosenValue = (index?: number) => {
+    if (!index) return null;
+    try {
+      return createMarks(findDelta(), range[0], findDelta())[index].label;
+    } catch {
+      throw new Error("cant find choosen value in slider");
     }
   };
 
@@ -182,114 +208,13 @@ function SliderComponent({ range, countOfMarks }: Props) {
         count={1}
         max={findDelta() - 1} // magic -1. i dont know why it works but it works.
         min={0}
-        marks={createMarks()}
+        marks={createMarks(findDelta(), range[0], countOfMarks)}
+        onChange={(values: number[]) => {
+          if (!values.find(Boolean)) return;
+          onChange(chosenValue(values[0]!), chosenValue(values[1]));
+        }}
       />
     </Wrapper>
   );
 }
 export default SliderComponent;
-
-/*
-
-import "rc-slider/assets/index.css";
-import Slider from "rc-slider";
-import styled from "styled-components";
-import { Moment } from "moment";
-import React, { useEffect, useState } from "react";
-import { MarkObj } from "rc-slider/es/Marks";
-
-const Wrapper = styled.div<{ display: string }>`
-  .rc-slider {
-    width: 380px;
-  }
-  .rc-slider-handle {
-    display: ${(props) => props.display};
-  }
-`;
-
-type Props = {
-  startDate: Moment | null;
-  endDate: Moment | null;
-  countOfElements: number;
-  sliderHandler: (chosenStart: string, chosenEnd: string) => void;
-};
-
-function SliderComponent(props: Props) {
-  const canCreateMarks = props.startDate && props.endDate && props.startDate?.isValid() && props.endDate?.isValid();
-  const deltaDays = Math.abs(
-    Math.ceil(
-      props.startDate ? props.startDate.diff(props.endDate, "days") - 1 : 0
-    )
-  );
-  const stepHandler = (countOfElements: number) =>
-    Math.round(deltaDays / countOfElements);
-
-  const [sliderPoints, setSliderPoints] = useState<Record<string, MarkObj>>({
-    0: { label: "" },
-  });
-  
-  const createMarks = (step: number) => {
-    
-    if (!canCreateMarks) {
-      return {};
-    }
-
-    const cloneDate = props.startDate!.clone();
-    const array = new Array(deltaDays).fill(null) as MarkObj[];
-
-    let flagIndex = 0;
-    //const step = stepHandler(props.countOfElements - 1);
-    
-    return array.reduce((marks: Record<string, MarkObj>, item, index) => {
-      if (index === flagIndex) {
-        flagIndex += step;
-        marks[index] = { label: cloneDate.format("DD.MM") };
-      }
-      if (deltaDays - 1 === index) {
-        marks[index] = { label: cloneDate.format("DD.MM") };
-      }
-      cloneDate.add(1, "days");
-
-      return marks;
-    }, {} as Record<string, MarkObj>);
-  };
-
-  useEffect(() => {
-    
-    if(canCreateMarks){setSliderPoints(createMarks(stepHandler(props.countOfElements - 1)))}
-
-  }, [deltaDays, props.countOfElements, canCreateMarks]);
-
-  if (!canCreateMarks) {
-    return (
-      <Wrapper display="none">
-        <Slider range />
-      </Wrapper>
-    );
-  }
-
-  const chosenValue = (index: number) => {
-    return createMarks(1)[index].label;
-  }
-
-  return (
-    <Wrapper display="block">
-      <Slider
-        range
-        allowCross={false}
-        count={1}
-        max={deltaDays - 1}
-        min={0}
-        marks={sliderPoints}
-        onChange={(...args: number[][])=>{
-          props.sliderHandler(
-            chosenValue(args[0][0]),
-            chosenValue(args[0][1])
-          )}}
-      />
-    </Wrapper>
-  );
-}
-export default SliderComponent;
-
-*/

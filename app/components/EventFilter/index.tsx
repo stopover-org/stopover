@@ -52,7 +52,10 @@ function Main() {
     })
   }
 
-  const sliderHandler = (chosenStart: string, chosenEnd: string) => {
+  const sliderHandler = (
+    chosenStart: string | null,
+    chosenEnd: string | null
+  ) => {
     console.log(chosenStart, chosenEnd);
   };
 
@@ -67,9 +70,23 @@ function Main() {
         </StartingPoint>
         {filters.startDate && filters.endDate && (
           <FilterBarItem>
-            <Slider range={[1, 28]} countOfMarks={4} />
+            <Slider
+              range={[filters.startDate, filters.endDate]}
+              countOfMarks={3}
+              onChange={sliderHandler}
+            />
           </FilterBarItem>
         )}
+        <FilterBarItem>
+          <Slider range={[0, 9]} countOfMarks={4} onChange={sliderHandler} />
+        </FilterBarItem>
+        <FilterBarItem>
+          <Slider
+            range={["Greg", "Michailo", "Max", "Chenda", "Gilda"]}
+            countOfMarks={4}
+            onChange={sliderHandler}
+          />
+        </FilterBarItem>
         <FilterBarItem>
           <DropDownList
             paddingRight={"30px"}
