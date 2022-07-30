@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import icon from "../icons/Outline/Interface/Edit-alt.svg";
+import icon from "../../icons/Outline/Interface/Edit-alt.svg";
 
 const ImageWrapper = styled.div`
   display: none;
