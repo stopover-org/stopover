@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "./card/Card";
+import Card from "./Card/Card";
 
 const Small = styled.div`
   display: flex;

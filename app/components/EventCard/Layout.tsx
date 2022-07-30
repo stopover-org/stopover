@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import ListCard from "./listCard/ListCard";
+import ListCard from "./ListCard/ListCard";
 
 const ContainerBody = styled.div`
   border: 1px solid black;
