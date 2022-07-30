@@ -185,7 +185,7 @@ function SliderComponent({ range, countOfMarks, onChange }: Props) {
       case "string":
         return range.length;
       default:
-        console.log(checkType());
+        console.warn(checkType());
         return 1;
     }
   };
