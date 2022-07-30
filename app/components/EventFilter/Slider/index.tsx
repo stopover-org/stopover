@@ -22,9 +22,10 @@ const Wrapper = styled.div`
     background: #cacaca;
     border: none;
     border-radius: 5px 5px 5px 5px;
-    width: 3px;
+    width: 2px;
     height: 15px;
     top: -5px;
+    z-index: -1;
   }
   .rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
     border-color: #ffab49;
