@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import styled from "styled-components";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import LocationInput from "./LocationInput";
 import DropDownList from "./DropDownList";
 import IntrestGallery from "./IntrestGallery";
@@ -53,10 +53,10 @@ function Main() {
   }
 
   const sliderHandler = (
-    chosenStart: string | null,
-    chosenEnd: string | null
+    startDate: Moment | ReactNode | null,
+    endDate: Moment | ReactNode | null
   ) => {
-    console.log(chosenStart, chosenEnd);
+    console.log(startDate, endDate);
   };
 
   return (
