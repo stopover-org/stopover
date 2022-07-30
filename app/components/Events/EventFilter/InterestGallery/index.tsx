@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   width: 1042px;
   height: 180px;
   padding: 0px 0px 0px 0px;
+  padding: 26px 0px 0px 45px;
 `;
 const CarouselContainer = styled.div`
   width: inherit;
