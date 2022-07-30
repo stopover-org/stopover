@@ -2,7 +2,7 @@ import "rc-slider/assets/index.css";
 import Slider from "rc-slider";
 import styled from "styled-components";
 import moment, { Moment } from "moment";
-import React from "react";
+import React, { ReactNode } from "react";
 import { MarkObj } from "rc-slider/es/Marks";
 
 const Wrapper = styled.div`
@@ -41,44 +41,48 @@ const Wrapper = styled.div`
 `;
 
 type Props = {
-  range: number[] | Moment[] | string[];
+  range: Array<number | string | Moment>;
   countOfMarks: number;
-  onChange: (chosenStart: string, chosenEnd: string) => void;
+  onChange: (
+    startDate: Moment | ReactNode,
+    endDate: Moment | ReactNode
+  ) => void;
 };
 
+const isNumberRange = (range: Props["range"]) =>
+  typeof range[0] === "number" && typeof range[range.length - 1] === "number";
+
+const isMomentRage = (range: Props["range"]) =>
+  range[0] instanceof moment && range[range.length - 1] instanceof moment;
+
+const isDifferentTypes = (range: Props["range"]) =>
+  typeof range[0] !== typeof range[range.length - 1];
+
+const isLessRange = (range: Props["range"]) =>
+  range[0] <= range[range.length - 1];
+
+const isStringRage = (range: Props["range"]) =>
+  typeof range[0] === "string" && typeof range[range.length - 1] === "string";
+
+const isValidMomentRange = (range: Props["range"]) =>
+  (range[0] as Moment).isValid() &&
+  (range[range.length - 1] as Moment).isValid();
+
 function SliderComponent({ range, countOfMarks, onChange }: Props) {
-  if (!range.find(Boolean)) return null;
+  if (range.filter((value) => !value).length > 0) return null;
 
   const checkType = () => {
-    if (typeof range[0] !== typeof range[range.length - 1]) {
-      console.log("types of start and end are different");
+    if (isDifferentTypes(range)) {
+      console.warn("types of start and end are different");
       return false;
     }
-    if (
-      typeof range[0] === "number" &&
-      typeof range[range.length - 1] === "number"
-    ) {
-      if (range[0] <= range[range.length - 1]) {
-        console.log("number");
-        return true;
-      }
-      console.log("its a number but first arg < argEnd");
-      return false;
+
+    if (isNumberRange(range)) {
+      return isLessRange(range);
     }
-    // range[0] instanceof moment
-    if (
-      range[0] instanceof moment &&
-      range[range.length - 1] instanceof moment
-    ) {
-      if (
-        (range[0] as Moment).isValid() &&
-        (range[range.length - 1] as Moment).isValid()
-      ) {
-        console.log("date");
-        return true;
-      }
-      console.log("its an object but not moment");
-      return false;
+
+    if (isMomentRage(range)) {
+      return isValidMomentRange(range);
     }
 
     return true;
@@ -93,25 +97,10 @@ function SliderComponent({ range, countOfMarks, onChange }: Props) {
   }
 
   const nameType = () => {
-    if (
-      typeof range[0] === "number" &&
-      typeof range[range.length - 1] === "number"
-    ) {
-      return "number";
-    }
-    if (
-      range[0] instanceof moment &&
-      range[range.length - 1] instanceof moment
-    ) {
-      return "date";
-    }
-    if (
-      typeof range[0] === "string" &&
-      typeof range[range.length - 1] === "string"
-    ) {
-      return "string";
-    }
-    console.log("function nameType didnt find correct type");
+    if (isNumberRange(range)) return "number";
+    if (isMomentRage(range)) return "date";
+    if (isStringRage(range)) return "string";
+
     return null;
   };
 
@@ -157,9 +146,11 @@ function SliderComponent({ range, countOfMarks, onChange }: Props) {
           flagIndex += 1;
         }
       }
+
       if (delta - 1 === index) {
         marks[index] = { label: cloneDateStartDate.format("DD.MM") };
       }
+
       cloneDateStartDate.add(1, "days");
 
       return marks;
@@ -168,6 +159,7 @@ function SliderComponent({ range, countOfMarks, onChange }: Props) {
 
   const createMarksString = (delta: number) => {
     const array = new Array(delta).fill(null) as MarkObj[];
+
     return array.reduce((marks: Record<string, MarkObj>, item, index) => {
       marks[index] = { label: range[index] as string };
       return marks;
@@ -177,15 +169,18 @@ function SliderComponent({ range, countOfMarks, onChange }: Props) {
   const findDelta = () => {
     switch (nameType()) {
       case "number":
+        // we know that range is array of numbers
         return (range[range.length - 1] as number) - (range[0] as number) + 1;
       case "date":
+        // we know that range is array of moments
         return (
           Math.abs(
             Math.ceil(
               (range[0] as Moment).diff(range[range.length - 1], "days")
             )
+            // one more magical 1. controls count of output marks
           ) + 1
-        ); // one more magical 1. conroles count of output marks
+        );
       case "string":
         return range.length;
       default:
@@ -215,17 +210,25 @@ function SliderComponent({ range, countOfMarks, onChange }: Props) {
       case "string":
         return createMarksString(delta);
       default:
-        console.log(checkType());
+        console.warn(checkType());
         return {};
     }
   };
 
-  const chosenValue = (index?: number) => {
-    if (!index) return null;
+  const chosenValue = (index: number): string | Moment | ReactNode => {
     try {
+      if (nameType() === "date") {
+        // if we working with dates we know that we will received string
+        return moment(
+          createMarks(findDelta(), range[0], findDelta())[index]
+            .label as string,
+          "DD.MM"
+        );
+      }
       return createMarks(findDelta(), range[0], findDelta())[index].label;
     } catch {
-      throw new Error("cant find choosen value in slider");
+      console.warn("cant find chosen value in slider");
+      return "";
     }
   };
 
@@ -238,12 +241,15 @@ function SliderComponent({ range, countOfMarks, onChange }: Props) {
         max={findDelta() - 1} // magic -1. i dont know why it works but it works.
         min={0}
         marks={createMarks(findDelta(), range[0], countOfMarks)}
-        onChange={(values: number[]) => {
-          if (!values.find(Boolean)) return;
-          onChange(chosenValue(values[0]!), chosenValue(values[1]));
+        onChange={(values: number | number[]) => {
+          if (!Array.isArray(values)) {
+            values = [values, values];
+          }
+
+          onChange(chosenValue(values[0]), chosenValue(values[1]));
         }}
       />
     </Wrapper>
   );
 }
-export default SliderComponent;
+export default React.memo(SliderComponent);
