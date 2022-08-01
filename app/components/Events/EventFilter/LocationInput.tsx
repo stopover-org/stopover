@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import icon from "../../icons/Outline/Interface/Edit-alt.svg";
@@ -6,7 +6,7 @@ import icon from "../../icons/Outline/Interface/Edit-alt.svg";
 const ImageWrapper = styled.div`
   display: none;
   position: relative;
-  bottom: -7px;
+  bottom: -16px;
   left: 16px;
 `;
 
@@ -26,13 +26,17 @@ const Input = styled.input`
   }
 `;
 
+const HelpMessage = styled.div`
+  height: 16px;
+`;
+
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
   &:hover ${ImageWrapper} {
-    display: block;
+    display: inline-block;
   }
   &:hover ${Input} {
     border-bottom: 2px solid #d9d9d9;
@@ -40,17 +44,29 @@ const Wrapper = styled.div`
 `;
 
 function LocationInput() {
+  const [value, setValue] = useState("");
+  const onChange = (e: any) => {
+    setValue(e.target.value);
+  };
   return (
     <Wrapper>
-      <Input type="text" placeholder="search location" />
-      <ImageWrapper>
-        <SImage
-          src={icon.src}
-          alt="Picture of the author"
-          width={25}
-          height={25}
+      <HelpMessage>{value === "" ? "" : "Вы выбрали"}</HelpMessage>
+      <div>
+        <Input
+          type="text"
+          placeholder="search location"
+          value={value}
+          onChange={(e) => onChange(e)}
         />
-      </ImageWrapper>
+        <ImageWrapper>
+          <SImage
+            src={icon.src}
+            alt="Picture of the author"
+            width={25}
+            height={25}
+          />
+        </ImageWrapper>
+      </div>
     </Wrapper>
   );
 }
