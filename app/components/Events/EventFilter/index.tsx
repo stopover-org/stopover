@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import LocationInput from "./LocationInput";
 import DropDownList from "./DropDownList";
 import Slider from "./Slider";
@@ -43,8 +43,8 @@ function EventFilter() {
       endDate,
     });
   };
-  const sliderHandler = (chosenStart: string, chosenEnd: string) => {
-    console.log(chosenStart, chosenEnd);
+  const sliderHandler = (startDate: Moment, endDate: Moment) => {
+    console.log(startDate, endDate);
   };
 
   return (
@@ -55,10 +55,9 @@ function EventFilter() {
       </StartingPoint>
       <FilterBarItem>
         <Slider
-          startDate={filters.startDate}
-          endDate={filters.endDate}
-          countOfElements={4}
-          sliderHandler={sliderHandler}
+          range={[filters.startDate!, filters.endDate!]}
+          countOfMarks={4}
+          onChange={sliderHandler}
         />
       </FilterBarItem>
       <FilterBarItem>
