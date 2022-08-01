@@ -6,10 +6,8 @@ import moment from "moment";
 import "react-dates/lib/css/_datepicker.css";
 
 const Wrapper = styled.div`
-  border: 2px solid #fdaa4c;
-  border-radius: 3px;
   .DateInput {
-    width: 170px;
+    width: 120px;
     font-weight: 400;
     font-size: 24px;
     line-height: 29px;
@@ -20,8 +18,9 @@ const Wrapper = styled.div`
     margin: -0px;
   }
   .DateRangePickerInput__withBorder {
-    border: none;
-    width: 390px;
+    border: 2px solid #fdaa4c;
+    border-radius: 3px;
+    width: 360px;
     display: flex;
     justify-content: space-between;
   }

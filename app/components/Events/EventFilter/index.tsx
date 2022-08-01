@@ -13,9 +13,14 @@ const FilterBar = styled.div`
 `;
 const FilterBarItem = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding: 15px 0px 15px 45px;
   border-right: 1px solid black;
+  .text {
+    padding: 29px 0px 50px 0px;
+    height: 29px;
+    font-size: 24px;
+  }
 `;
 const StartingPoint = styled.div`
   display: flex;
@@ -54,12 +59,14 @@ function EventFilter() {
         <Calendar dateHandler={dateHandler} />
       </StartingPoint>
       <FilterBarItem>
+        <p className="text">Выберите дату</p>
         <Slider
           range={[filters.startDate!, filters.endDate!]}
           countOfMarks={4}
           onChange={sliderHandler}
         />
       </FilterBarItem>
+
       <FilterBarItem>
         <DropDownList
           paddingRight="30px"

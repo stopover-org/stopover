@@ -5,11 +5,18 @@ import moment, { Moment } from "moment";
 import React, { ReactNode } from "react";
 import { MarkObj } from "rc-slider/es/Marks";
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{
+  displayHandle?: string;
+  pointerEventsSlider?: string;
+  pointerEventsHandle?: string;
+}>`
   .rc-slider {
     width: 380px;
+    pointer-events: ${(props) => props.pointerEventsSlider};
   }
   .rc-slider-handle {
+    pointer-events: ${(props) => props.pointerEventsHandle};
+    display: ${(props) => props.displayHandle};
     background: #ff8a00;
     border: 2px solid #ffab49;
     height: 29px;
@@ -18,7 +25,6 @@ const Wrapper = styled.div`
     opacity: 1;
   }
   .rc-slider-dot {
-    //display: none;
     background: #cacaca;
     border: none;
     border-radius: 5px 5px 5px 5px;
@@ -70,9 +76,19 @@ const isValidMomentRange = (range: Props["range"]) =>
   (range[range.length - 1] as Moment).isValid();
 
 function SliderComponent({ range, countOfMarks, onChange }: Props) {
-  if (range.filter((value) => !value).length > 0) return null;
+  if (range.filter((value) => !value).length > 0)
+    return (
+      <Wrapper
+        displayHandle="none"
+        pointerEventsSlider="none"
+        pointerEventsHandle="auto"
+      >
+        <Slider range />
+      </Wrapper>
+    );
 
   const checkType = () => {
+    console.log(range);
     if (isDifferentTypes(range)) {
       console.warn("types of start and end are different");
       return false;
@@ -91,8 +107,8 @@ function SliderComponent({ range, countOfMarks, onChange }: Props) {
 
   if (!checkType()) {
     return (
-      <Wrapper>
-        <Slider range />
+      <Wrapper displayHandle="none">
+        <Slider range disabled />
       </Wrapper>
     );
   }
