@@ -25,7 +25,7 @@ module Types
     end
 
     def events(**args)
-      ::EventsQuery.new(args[:filters]&.to_h || {}, Event.all, current_user).all
+      ::EventsQuery.new(args[:filters]&.to_h || {}, Event.active.limit(10), current_user).all
     end
   end
 end

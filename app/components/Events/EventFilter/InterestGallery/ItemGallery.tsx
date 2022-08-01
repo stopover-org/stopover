@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import cross from "../../icons/Solid/Interface/Cross.svg";
+import cross from "../../../icons/Solid/Interface/Cross.svg";
 
 const Wrapper = styled.div`
   display: flex;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<270d36f174d8967f9f797d565004c7a7>>
+ * @generated SignedSource<<c11454f71522da86ba86127444b988b5>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,8 +10,8 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 export type EventTypeEnum = "excursion" | "tour" | "%future added value";
-export type pagesQuery$variables = {};
-export type pagesQuery$data = {
+export type ListQuery$variables = {};
+export type ListQuery$data = {
   readonly currentUser: {
     readonly id: string;
   } | null;
@@ -36,9 +36,9 @@ export type pagesQuery$data = {
     }> | null;
   }> | null;
 };
-export type pagesQuery = {
-  variables: pagesQuery$variables;
-  response: pagesQuery$data;
+export type ListQuery = {
+  variables: ListQuery$variables;
+  response: ListQuery$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -140,7 +140,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "pagesQuery",
+    "name": "ListQuery",
     "selections": [
       (v1/*: any*/),
       {
@@ -183,7 +183,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "pagesQuery",
+    "name": "ListQuery",
     "selections": [
       (v1/*: any*/),
       {
@@ -222,16 +222,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "198b10516f43c991b5bbf8790cdc3611",
+    "cacheID": "8d8d7f979daa05178fe0a8d83aa3a959",
     "id": null,
     "metadata": {},
-    "name": "pagesQuery",
+    "name": "ListQuery",
     "operationKind": "query",
-    "text": "query pagesQuery {\n  currentUser {\n    id\n  }\n  events {\n    id\n    eventType\n    title\n    description\n    country\n    city\n    status\n    eventOptions {\n      id\n      relayId\n    }\n    interests {\n      id\n      title\n    }\n    achievements {\n      title\n      id\n    }\n  }\n}\n"
+    "text": "query ListQuery {\n  currentUser {\n    id\n  }\n  events {\n    id\n    eventType\n    title\n    description\n    country\n    city\n    status\n    eventOptions {\n      id\n      relayId\n    }\n    interests {\n      id\n      title\n    }\n    achievements {\n      title\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "2fe5574306041a73c20ef7df07bebadd";
+(node as any).hash = "7509be64b4275fa40b0ec169286dfb9d";
 
 export default node;

@@ -25,6 +25,8 @@ class Event < ApplicationRecord
 
   before_validation :set_prices
 
+  scope :active, -> { where(status: :published) }
+
   aasm column: :status do
     state :draft, initial: true
     state :published

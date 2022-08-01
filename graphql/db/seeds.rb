@@ -24,3 +24,22 @@ end
 
 %w[Снегоход Квадроцикл].map { |u| Unit.create!(name: u, unit_type: :technique) }
 %w[Место Столик].map { |u| Unit.create!(name: u, unit_type: :common) }
+
+1000.times.each do |event|
+  Event.create!(
+    title: Faker::App.name,
+    description: Faker::Hipster.paragraphs,
+    event_type: :excursion,
+    recurring_type: :regular,
+    country: Faker::Address.country,
+    city: Faker::Address.city,
+    full_address: Faker::Address.full_address,
+    unit_id: Unit.find((Random.rand * Unit.count).floor + 1),
+    interests: [
+      Interest.find((Random.rand * Interest.count).floor + 1),
+      Interest.find((Random.rand * Interest.count).floor + 1),
+      Interest.find((Random.rand * Interest.count).floor + 1)
+    ]
+  )
+end
+Event.last(750).each {|e| e.update!(status: :published)}

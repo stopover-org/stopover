@@ -99,6 +99,7 @@ type Event implements Node {
   requiresContract: Boolean
   requiresPassport: Boolean
   singleDaysWithTime: [String!]
+  status: String
   street: String
   title: String
   unit: Unit

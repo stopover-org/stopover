@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ItemGallery from "./ItemGallery";
 import ButtonGallery from "./ButtonGallery";
-import { imageArrayIntrestGallery } from "../../constants";
+import { imageArray } from "../../../constants";
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   max-width: 1042px;
   width: 1042px;
   height: 200px;
+  padding: 26px 0px 0px 45px;
 `;
 const CarouselContainer = styled.div`
   width: inherit;
@@ -38,12 +39,14 @@ function IntrestGallery() {
   const [imageState, setImageState] = useState<string[]>([]);
 
   const imageWidth = 155;
-  const carouselWidth = imageArrayIntrestGallery.length * imageWidth;
+  const carouselWidth = imageArray.length * imageWidth;
   const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (carouselRef.current) {
       setRightSlideEndPoint(carouselRef.current.clientWidth - carouselWidth);
+    } else {
+      console.log("не подгрузилось с сервера");
     }
   }, []);
 
@@ -79,7 +82,7 @@ function IntrestGallery() {
       <ButtonGallery buttonDirection="left" onClick={onClickSlide} />
       <CarouselContainer ref={carouselRef}>
         <Carousel moveTo={slideDirection} width={carouselWidth}>
-          {imageArrayIntrestGallery.map((item, index) => (
+          {imageArray.map((item, index) => (
             <ItemGallery
               image={item.image}
               description={item.description}
