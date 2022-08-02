@@ -14,6 +14,8 @@ const FilterBar = styled.div``;
 const MainFilters = styled.div`
   border-right: 1px solid black;
   padding: 0px 36px 30px 30px;
+  margin-right: 56px;
+  padding-left: 30px; //top right bottom left
 `;
 
 const FilterBarItem = styled.div`

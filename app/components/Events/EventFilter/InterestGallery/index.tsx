@@ -12,7 +12,6 @@ const Wrapper = styled.div`
   max-width: 1042px;
   width: 1042px;
   height: 180px;
-  padding: 0px 0px 0px 0px;
   padding: 26px 0px 0px 45px;
 `;
 const CarouselContainer = styled.div`

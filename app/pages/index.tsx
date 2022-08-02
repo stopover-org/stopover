@@ -9,7 +9,8 @@ import MetaBall from "../components/EventFilter/MetaBall/MetaBall";
 
 const Container = styled.div`
   height: 100vh;
-  align-items: center;
+  display: flex;
+  //justify-content: center;
   display: flex;
   justify-content: center;
   
