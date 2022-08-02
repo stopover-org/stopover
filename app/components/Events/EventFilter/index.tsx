@@ -2,32 +2,47 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import moment, { Moment } from "moment";
 import LocationInput from "./LocationInput";
-import DropDownList from "./DropDownList";
+import IndividualEvents from "./IndividualEvents";
 import Slider from "./Slider";
-import { durationFrom, durationTo, chooseAmount } from "../../constants";
 import Calendar from "./Calander";
+import Rate from "./Rate";
 
 const FilterBar = styled.div`
   width: 454px;
   margin: 0px;
+  margin-right: 56px;
+  padding-left: 30px; //top right bottom left
 `;
+
+const MainFilters = styled.div`
+  border-right: 1px solid black;
+`;
+
 const FilterBarItem = styled.div`
   display: flex;
-  flex-direction: column;
-  padding: 15px 0px 15px 45px;
-  border-right: 1px solid black;
-  .text {
-    padding: 29px 0px 50px 0px;
-    height: 29px;
-    font-size: 24px;
-  }
+  flex-direction: row;
+  align-items: center;
+
+  padding: 30px 0px 30px 0px;
 `;
+
+const TextInformation = styled.p`
+  padding: 29px 0px 50px 0px;
+  height: 29px;
+  font-size: 24px;
+`;
+
 const StartingPoint = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   height: 156px;
-  margin: 40px 0px 63px 45px;
+  margin: 0px 0px 63px 0px;
+`;
+
+const Separator = styled.div`
+  width: 400px;
+  border-bottom: 1px solid #d9d9d9;
 `;
 
 function EventFilter() {
@@ -58,35 +73,30 @@ function EventFilter() {
         <LocationInput />
         <Calendar dateHandler={dateHandler} />
       </StartingPoint>
-      <FilterBarItem>
-        <p className="text">Выберите дату</p>
-        <Slider
-          range={[filters.startDate!, filters.endDate!]}
-          countOfMarks={4}
-          onChange={sliderHandler}
-        />
-      </FilterBarItem>
-
-      <FilterBarItem>
-        <DropDownList
-          paddingRight="30px"
-          width="150px"
-          description="длительность от"
-          options={durationFrom}
-        />
-        <DropDownList
-          width="150px"
-          description="длительность до"
-          options={durationTo}
-        />
-      </FilterBarItem>
-      <FilterBarItem>
-        <DropDownList
-          width="281px"
-          description="Количество участников"
-          options={chooseAmount}
-        />
-      </FilterBarItem>
+      <MainFilters>
+        <FilterBarItem>
+          <div>
+            <TextInformation>Выберите дату</TextInformation>
+            <Slider
+              range={[filters.startDate!, filters.endDate!]}
+              countOfMarks={4}
+              onChange={sliderHandler}
+            />
+          </div>
+        </FilterBarItem>
+        <Separator />
+        <FilterBarItem>
+          <IndividualEvents />
+          <TextInformation>Индивидуальное мероприятие</TextInformation>
+        </FilterBarItem>
+        <Separator />
+        <FilterBarItem>
+          <div>
+            <TextInformation>Рейтинг</TextInformation>
+            <Rate />
+          </div>
+        </FilterBarItem>
+      </MainFilters>
     </FilterBar>
   );
 }

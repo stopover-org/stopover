@@ -50,9 +50,12 @@ function LocationInput() {
   };
   return (
     <Wrapper>
-      <HelpMessage>{value === "" ? "" : "Вы выбрали"}</HelpMessage>
+      <HelpMessage className="text">
+        {value === "" ? "" : "Вы выбрали"}
+      </HelpMessage>
       <div>
         <Input
+          className="text"
           type="text"
           placeholder="search location"
           value={value}

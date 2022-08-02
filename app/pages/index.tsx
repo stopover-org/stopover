@@ -5,12 +5,13 @@ import EventsList from "../components/Events/List";
 
 const Container = styled.div`
   height: 100vh;
-  align-items: center;
+  display: flex;
+  //justify-content: center;
 `;
 
 function Home() {
   return (
-    <Container>
+    <Container className="text">
       <Layout>
         <EventsList />
       </Layout>

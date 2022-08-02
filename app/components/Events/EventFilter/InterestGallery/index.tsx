@@ -11,8 +11,8 @@ const Wrapper = styled.div`
   justify-content: space-between;
   max-width: 1042px;
   width: 1042px;
-  height: 200px;
-  padding: 26px 0px 0px 45px;
+  height: 180px;
+  padding: 0px 0px 0px 0px;
 `;
 const CarouselContainer = styled.div`
   width: inherit;
