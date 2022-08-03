@@ -1,5 +1,6 @@
 import React from "react";
-import { StarUnchecked, StarChecked } from "./StarsIcons";
+import StarUnchecked from "../../../icons/Outline/Status/Star.svg";
+import StarChecked from "../../../icons/Solid/Status/Star.svg";
 
 type Props = {
   index: number;
@@ -15,9 +16,9 @@ function RateStar(props: Props) {
       }}
     >
       {props.rate < props.index + 1 ? (
-        <StarUnchecked color="black" />
+        <img alt="Unchecked star" src={StarUnchecked.src} />
       ) : (
-        <StarChecked color="#ff8a00" />
+        <img alt="Checked star" src={StarChecked.src} />
       )}
     </div>
   );
