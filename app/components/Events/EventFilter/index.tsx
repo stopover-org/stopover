@@ -6,6 +6,7 @@ import IndividualEvents from "./IndividualEvents";
 import Slider from "./Slider";
 import Calendar from "./Calander";
 import Rate from "./Rate";
+import Help from "./Help";
 
 const FilterBar = styled.div`
   width: 454px;
@@ -27,6 +28,8 @@ const FilterBarItem = styled.div`
 `;
 
 const TextInformation = styled.p`
+  display: flex;
+  flex-direction: row;
   padding: 29px 0px 50px 0px;
   height: 29px;
   font-size: 24px;
@@ -76,7 +79,10 @@ function EventFilter() {
       <MainFilters>
         <FilterBarItem>
           <div>
-            <TextInformation>Выберите дату</TextInformation>
+            <TextInformation>
+              Выберите дату
+              <Help text="Выберите какие даты вы хотите просмотреть" />
+            </TextInformation>
             <Slider
               range={[filters.startDate!, filters.endDate!]}
               countOfMarks={4}

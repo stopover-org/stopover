@@ -4,9 +4,11 @@ import Layout from "../components/Layout";
 import EventsList from "../components/Events/List";
 
 const Container = styled.div`
+  display: grid;
+  place-items: center;
   height: 100vh;
-  display: flex;
-  //justify-content: center;
+  /*max-width: 1600px;
+  margin: auto;*/
 `;
 
 function Home() {

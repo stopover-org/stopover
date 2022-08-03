@@ -4,6 +4,7 @@ import { graphql, loadQuery, usePreloadedQuery } from "react-relay";
 import InterestGallery from "../EventFilter/InterestGallery";
 import EventFilter from "../EventFilter";
 import Environment from "../../../lib/environment";
+import Search from "../EventFilter/Search";
 
 const Wrapper = styled.div`
   display: flex;
@@ -48,6 +49,7 @@ function EventsList() {
       <EventFilter />
 
       <div>
+        <Search />
         <InterestGallery />
         <div>EVENTS</div>
       </div>
