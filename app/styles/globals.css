@@ -19,10 +19,6 @@ a {
 	font-style: normal;
 }
 
-.text {
-	font-family: Roboto;
-}
-
 .library-css-rule {
   color: rgb(172, 21, 21);
 }
@@ -64,6 +60,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
+	font-family: 'Roboto';
 	line-height: 1;
 }
 ol, ul {
