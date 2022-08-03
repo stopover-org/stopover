@@ -9,6 +9,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   width: 1600px;
   padding: 0px 38px 0px 0px;
+  margin: auto;
 `;
 
 type Props = {

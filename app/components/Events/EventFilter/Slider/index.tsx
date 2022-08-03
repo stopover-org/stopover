@@ -10,7 +10,6 @@ const Wrapper = styled.div<{
   pointerEventsSlider?: string;
   pointerEventsHandle?: string;
 }>`
-  height: 83px;
   display: flex;
   align-items: center;
   .rc-slider {
