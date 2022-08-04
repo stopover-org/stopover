@@ -12,10 +12,14 @@ const Wrapper = styled.div`
   }
 `;
 
-function IndividualEvents() {
+type Props = {
+  onClick: (checkedBox: MouseEvent) => void;
+};
+
+function IndividualEvents(props: Props) {
   return (
     <Wrapper>
-      <input type="checkbox" />
+      <input type="checkbox" onClick={(e: MouseEvent) => props.onClick(e)} />
     </Wrapper>
   );
 }

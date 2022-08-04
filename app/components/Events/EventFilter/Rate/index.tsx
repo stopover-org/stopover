@@ -14,12 +14,17 @@ const RateStyle = styled.div`
   flex-direction: row;
 `;
 
-function Rate() {
+type Props = {
+  onClick: (rateIndex: number) => void;
+};
+
+function Rate(props: Props) {
   const stars = new Array(5).fill("");
   const [rate, setRate] = useState(0);
 
-  const clickHandler = (index: number) => {
+  const rateChange = (index: number) => {
     setRate(index);
+    props.onClick(index);
   };
 
   return (
@@ -30,7 +35,7 @@ function Rate() {
             index={index}
             rate={rate}
             key={index}
-            clickHandler={clickHandler}
+            onClick={rateChange}
           />
         ))}
       </RateStyle>

@@ -27,7 +27,7 @@ const FilterBarItem = styled.div`
   padding: 30px 0px 30px 0px;
 `;
 
-const TextInformation = styled.p`
+const TextInformation = styled.label`
   display: flex;
   flex-direction: row;
   padding: 29px 0px 50px 0px;
@@ -49,7 +49,7 @@ const Separator = styled.div`
 `;
 
 function EventFilter() {
-  const [filters, setFilters] = useState<{
+  const [selectedDates, setSelectedDates] = useState<{
     startDate: moment.Moment | null;
     endDate: moment.Moment | null;
   }>({
@@ -57,19 +57,42 @@ function EventFilter() {
     endDate: null,
   });
 
+  /* const [selectedPrice, setSelectedPrice] = useState<{
+    startPrice: number | null;
+    endPrice: number | null;
+  }>({
+    startPrice: null,
+    endPrice: null,
+  }); */
+
+  const [selectedIndividualOnly, setSelectedIndividualOnly] =
+    useState<boolean>(false);
+  const [selectedRate, setSelectedRate] = useState<number>(0);
+
+  const individualEventsHandler = (checkedBox: MouseEvent) => {
+    if (checkedBox === null) throw new Error("check box returned null");
+    setSelectedIndividualOnly(checkedBox.target.checked);
+  };
+
+  const rateHandler = (rateIndex: number) => {
+    console.log(rateIndex);
+    setSelectedRate(rateIndex);
+  };
+
   const dateHandler = (
     startDate: moment.Moment | null,
     endDate: moment.Moment | null
   ) => {
-    setFilters({
+    setSelectedDates({
       startDate,
       endDate,
     });
   };
+
   const sliderHandler = (startDate: Moment, endDate: Moment) => {
     console.log(startDate, endDate);
   };
-
+  console.log(selectedRate, selectedIndividualOnly); // to silence husky
   return (
     <FilterBar>
       <StartingPoint>
@@ -84,7 +107,7 @@ function EventFilter() {
               <Help text="Выберите какие даты вы хотите просмотреть" />
             </TextInformation>
             <Slider
-              range={[filters.startDate!, filters.endDate!]}
+              range={[selectedDates.startDate!, selectedDates.endDate!]}
               countOfMarks={4}
               onChange={sliderHandler}
             />
@@ -92,14 +115,14 @@ function EventFilter() {
         </FilterBarItem>
         <Separator />
         <FilterBarItem>
-          <IndividualEvents />
+          <IndividualEvents onClick={individualEventsHandler} />
           <TextInformation>Индивидуальное мероприятие</TextInformation>
         </FilterBarItem>
         <Separator />
         <FilterBarItem>
           <div>
             <TextInformation>Рейтинг</TextInformation>
-            <Rate />
+            <Rate onClick={rateHandler} />
           </div>
         </FilterBarItem>
       </MainFilters>
