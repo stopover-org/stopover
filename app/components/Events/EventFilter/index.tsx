@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, ReactNode } from "react";
 import styled from "styled-components";
 import moment, { Moment } from "moment";
 import LocationInput from "./LocationInput";
@@ -91,7 +91,10 @@ function EventFilter() {
     });
   };
 
-  const sliderHandler = (startDate: Moment, endDate: Moment) => {
+  const sliderHandler = (
+    startDate: Moment | ReactNode,
+    endDate: Moment | ReactNode
+  ) => {
     console.log(startDate, endDate);
   };
   console.log(selectedRate, selectedIndividualOnly); // to silence husky
