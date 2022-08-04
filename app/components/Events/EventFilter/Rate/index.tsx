@@ -20,11 +20,16 @@ type Props = {
 
 function Rate(props: Props) {
   const stars = new Array(5).fill("");
-  const [rate, setRate] = useState(0);
+  const [selectedRate, setSelectedRate] = useState(0);
+  const [shownRate, setShownRate] = useState<number | null>(0);
 
   const rateChange = (index: number) => {
-    setRate(index);
+    setSelectedRate(index);
     props.onClick(index);
+  };
+
+  const showRate = (index: number | null) => {
+    setShownRate(index);
   };
 
   return (
@@ -33,9 +38,11 @@ function Rate(props: Props) {
         {stars.map((item, index) => (
           <RateStar
             index={index}
-            rate={rate}
+            selectedRate={selectedRate}
+            shownRate={shownRate}
             key={index}
             onClick={rateChange}
+            showRate={showRate}
           />
         ))}
       </RateStyle>

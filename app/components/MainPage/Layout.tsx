@@ -4,9 +4,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  border: 1px solid red;
   width: 1600px;
   margin: auto;
 `;
