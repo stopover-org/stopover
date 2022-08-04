@@ -69,9 +69,11 @@ function EventFilter() {
     useState<boolean>(false);
   const [selectedRate, setSelectedRate] = useState<number>(0);
 
-  const individualEventsHandler = (checkedBox: MouseEvent) => {
-    if (checkedBox === null) throw new Error("check box returned null");
-    setSelectedIndividualOnly(checkedBox.target.checked);
+  const individualEventsHandler = (
+    event: React.SyntheticEvent<HTMLInputElement>
+  ) => {
+    if (event === null) throw new Error("check box returned null");
+    setSelectedIndividualOnly(event.currentTarget.checked);
   };
 
   const rateHandler = (rateIndex: number) => {

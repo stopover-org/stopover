@@ -13,13 +13,18 @@ const Wrapper = styled.div`
 `;
 
 type Props = {
-  onClick: (checkedBox: MouseEvent) => void;
+  onClick: (event: React.SyntheticEvent<HTMLInputElement>) => void;
 };
 
 function IndividualEvents(props: Props) {
   return (
     <Wrapper>
-      <input type="checkbox" onClick={(e: MouseEvent) => props.onClick(e)} />
+      <input
+        type="checkbox"
+        onClick={(e: React.SyntheticEvent<HTMLInputElement>) =>
+          props.onClick(e)
+        }
+      />
     </Wrapper>
   );
 }
