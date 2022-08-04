@@ -5,7 +5,6 @@ import EventsList from "../components/Events/List";
 
 const Container = styled.div`
   height: 100vh;
-  align-items: center;
 `;
 
 function Home() {

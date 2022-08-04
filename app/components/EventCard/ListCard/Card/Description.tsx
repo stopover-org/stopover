@@ -17,7 +17,7 @@ const Price = styled.div`
 `;
 const Text = styled.div`
   color: white;
-  font-family: sans-serif;
+  font-family: Roboto;
   font-size: 25px;
   padding: 25px;
   width: 80%;

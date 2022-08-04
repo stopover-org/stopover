@@ -1,32 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, ReactNode } from "react";
 import styled from "styled-components";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import LocationInput from "./LocationInput";
-import DropDownList from "./DropDownList";
+import IndividualEvents from "./IndividualEvents";
 import Slider from "./Slider";
-import { durationFrom, durationTo, chooseAmount } from "../../constants";
 import Calendar from "./Calander";
+import Rate from "./Rate";
+import Help from "./Help";
 
 const FilterBar = styled.div`
   width: 454px;
   margin: 0px;
+  margin-right: 56px;
+  padding-left: 30px; //top right bottom left
 `;
+
+const MainFilters = styled.div`
+  border-right: 1px solid black;
+`;
+
 const FilterBarItem = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 15px 0px 15px 45px;
-  border-right: 1px solid black;
+  align-items: center;
+
+  padding: 30px 0px 30px 0px;
 `;
+
+const TextInformation = styled.label`
+  display: flex;
+  flex-direction: row;
+  padding: 29px 0px 50px 0px;
+  height: 29px;
+  font-size: 24px;
+`;
+
 const StartingPoint = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   height: 156px;
-  margin: 40px 0px 63px 45px;
+  margin: 0px 0px 63px 0px;
+`;
+
+const Separator = styled.div`
+  width: 400px;
+  border-bottom: 1px solid #d9d9d9;
 `;
 
 function EventFilter() {
-  const [filters, setFilters] = useState<{
+  const [selectedDates, setSelectedDates] = useState<{
     startDate: moment.Moment | null;
     endDate: moment.Moment | null;
   }>({
@@ -34,53 +57,80 @@ function EventFilter() {
     endDate: null,
   });
 
+  /* const [selectedPrice, setSelectedPrice] = useState<{
+    startPrice: number | null;
+    endPrice: number | null;
+  }>({
+    startPrice: null,
+    endPrice: null,
+  }); */
+
+  const [selectedIndividualOnly, setSelectedIndividualOnly] =
+    useState<boolean>(false);
+  const [selectedRate, setSelectedRate] = useState<number>(0);
+
+  const individualEventsHandler = (
+    event: React.SyntheticEvent<HTMLInputElement>
+  ) => {
+    if (event === null) throw new Error("check box returned null");
+    setSelectedIndividualOnly(event.currentTarget.checked);
+  };
+
+  const rateHandler = (rateIndex: number) => {
+    console.log(rateIndex);
+    setSelectedRate(rateIndex);
+  };
+
   const dateHandler = (
     startDate: moment.Moment | null,
     endDate: moment.Moment | null
   ) => {
-    setFilters({
+    setSelectedDates({
       startDate,
       endDate,
     });
   };
-  const sliderHandler = (chosenStart: string, chosenEnd: string) => {
-    console.log(chosenStart, chosenEnd);
-  };
 
+  const sliderHandler = (
+    startDate: Moment | ReactNode,
+    endDate: Moment | ReactNode
+  ) => {
+    console.log(startDate, endDate);
+  };
+  console.log(selectedRate, selectedIndividualOnly); // to silence husky
   return (
     <FilterBar>
       <StartingPoint>
         <LocationInput />
         <Calendar dateHandler={dateHandler} />
       </StartingPoint>
-      <FilterBarItem>
-        <Slider
-          startDate={filters.startDate}
-          endDate={filters.endDate}
-          countOfElements={4}
-          sliderHandler={sliderHandler}
-        />
-      </FilterBarItem>
-      <FilterBarItem>
-        <DropDownList
-          paddingRight="30px"
-          width="150px"
-          description="длительность от"
-          options={durationFrom}
-        />
-        <DropDownList
-          width="150px"
-          description="длительность до"
-          options={durationTo}
-        />
-      </FilterBarItem>
-      <FilterBarItem>
-        <DropDownList
-          width="281px"
-          description="Количество участников"
-          options={chooseAmount}
-        />
-      </FilterBarItem>
+      <MainFilters>
+        <FilterBarItem>
+          <div>
+            <TextInformation>
+              Выберите дату
+              <Help text="Выберите какие даты вы хотите просмотреть" />
+            </TextInformation>
+            <Slider
+              range={[selectedDates.startDate!, selectedDates.endDate!]}
+              countOfMarks={4}
+              onChange={sliderHandler}
+            />
+          </div>
+        </FilterBarItem>
+        <Separator />
+        <FilterBarItem>
+          <IndividualEvents onClick={individualEventsHandler} />
+          <TextInformation>Индивидуальное мероприятие</TextInformation>
+        </FilterBarItem>
+        <Separator />
+        <FilterBarItem>
+          <div>
+            <TextInformation>Рейтинг</TextInformation>
+            <Rate onClick={rateHandler} />
+          </div>
+        </FilterBarItem>
+      </MainFilters>
     </FilterBar>
   );
 }

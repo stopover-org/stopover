@@ -7,19 +7,20 @@ import "react-dates/lib/css/_datepicker.css";
 
 const Wrapper = styled.div`
   .DateInput {
-    width: 170px;
+    width: 120px;
     font-weight: 400;
     font-size: 24px;
     line-height: 29px;
   }
   .DateInput_input {
-    border: 2px solid #ff8a00;
+    border: none;
     height: 50px;
     margin: -0px;
   }
   .DateRangePickerInput__withBorder {
-    border: none;
-    width: 390px;
+    border: 2px solid #fdaa4c;
+    border-radius: 3px;
+    width: 360px;
     display: flex;
     justify-content: space-between;
   }
