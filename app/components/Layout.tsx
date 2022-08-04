@@ -4,11 +4,8 @@ import Footer from "./EventCard/Footer";
 import Header from "./Events/EventFilter/Header";
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  border: 1px solid red;
   width: 1600px;
-  padding: 0px 38px 0px 0px;
   margin: auto;
 `;
 

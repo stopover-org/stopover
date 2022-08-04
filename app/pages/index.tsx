@@ -3,9 +3,7 @@ import React from "react";
 import Layout from "../components/Layout";
 import EventsList from "../components/Events/List";
 
-const Container = styled.div`
-  height: 100vh;
-`;
+const Container = styled.div``;
 
 function Home() {
   return (

@@ -1,7 +1,7 @@
 import React, { useState, ReactNode } from "react";
 import styled from "styled-components";
 import moment, { Moment } from "moment";
-import LocationInput from "./LocationInput";
+import Search from "./Search";
 import IndividualEvents from "./IndividualEvents";
 import Slider from "./Slider";
 import Calendar from "./Calander";
@@ -9,10 +9,10 @@ import Rate from "./Rate";
 import Help from "./Help";
 
 const FilterBar = styled.div`
-  width: 454px;
-  margin: 0px;
-  margin-right: 56px;
-  padding-left: 30px; //top right bottom left
+  //width: 454px;
+  //margin: 0px;
+  //margin-right: 56px;
+  //padding-left: 30px; //top right bottom left
 `;
 
 const MainFilters = styled.div`
@@ -24,14 +24,14 @@ const FilterBarItem = styled.div`
   flex-direction: row;
   align-items: center;
 
-  padding: 30px 0px 30px 0px;
+  //padding: 30px 0px 30px 0px;
 `;
 
 const TextInformation = styled.label`
   display: flex;
   flex-direction: row;
-  padding: 29px 0px 50px 0px;
-  height: 29px;
+  //padding: 29px 0px 50px 0px;
+  //height: 29px;
   font-size: 24px;
 `;
 
@@ -39,8 +39,8 @@ const StartingPoint = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  height: 156px;
-  margin: 0px 0px 63px 0px;
+  //height: 156px;
+  //margin: 0px 0px 63px 0px;
 `;
 
 const Separator = styled.div`
@@ -101,7 +101,7 @@ function EventFilter() {
   return (
     <FilterBar>
       <StartingPoint>
-        <LocationInput />
+        <Search />
         <Calendar dateHandler={dateHandler} />
       </StartingPoint>
       <MainFilters>

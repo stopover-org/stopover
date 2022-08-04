@@ -1,40 +1,76 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import icon from "../../../icons/Outline/Interface/Search.svg";
+import Image from "next/image";
+import icon from "../../../icons/Outline/Interface/Edit-alt.svg";
 
-const Wrapper = styled.div`
+const ImageWrapper = styled.div`
+  display: none;
   position: relative;
+  bottom: -16px;
+  left: 16px;
+`;
 
-  input {
-    width: 650px;
-    border: none;
+const SImage = styled(Image)``;
+
+const Input = styled.input`
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 44px;
+  width: 372px;
+  opacity: 0.3;
+
+  &:focus {
+    outline: none;
     border-bottom: 2px solid #d9d9d9;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 36px;
-    line-height: 44px;
-    color: #d9d9d9;
-    &:focus {
-      outline: none;
-      border-bottom: 2px solid #d9d9d9;
-    }
   }
 `;
 
-const Icon = styled.img`
-  top: 10%;
-  left: 614px;
-  position: absolute;
-  width: 36px;
-  height: 36px;
-  opacity: 0.5;
+const HelpMessage = styled.div`
+  height: 16px;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  &:hover ${ImageWrapper} {
+    display: inline-block;
+  }
+  &:hover ${Input} {
+    border-bottom: 2px solid #d9d9d9;
+  }
 `;
 
 function Search() {
+  const [value, setValue] = useState("");
+  const onChange = (e: any) => {
+    setValue(e.target.value);
+  };
   return (
     <Wrapper>
-      <input placeholder="Какое мероприятие вы ищете?" />
-      <Icon src={icon.src} />
+      <HelpMessage className="text">
+        {value === "" ? "" : "Вы выбрали"}
+      </HelpMessage>
+      <div>
+        <Input
+          className="text"
+          type="text"
+          placeholder="search location"
+          value={value}
+          onChange={(e) => onChange(e)}
+        />
+        <ImageWrapper>
+          <SImage
+            src={icon.src}
+            alt="Picture of the author"
+            width={25}
+            height={25}
+          />
+        </ImageWrapper>
+      </div>
     </Wrapper>
   );
 }

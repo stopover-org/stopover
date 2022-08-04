@@ -11,6 +11,11 @@ const Wrapper = styled.div`
   flex-direction: row;
 `;
 
+const ListOfEvents = styled.div`
+  border: 1px solid red;
+  min-height: 100vh;
+`;
+
 const Query = graphql`
   query ListQuery {
     currentUser {
@@ -51,7 +56,7 @@ function EventsList() {
       <div>
         <Search />
         <InterestGallery />
-        <div>EVENTS</div>
+        <ListOfEvents>EVENTS</ListOfEvents>
       </div>
     </Wrapper>
   );

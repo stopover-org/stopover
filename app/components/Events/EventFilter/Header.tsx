@@ -22,9 +22,6 @@ const NavBar = styled.div`
   justify-content: right;
   align-items: center;
   width: 100%;
-  & p {
-    margin-left: 30px;
-  }
 `;
 
 function Header() {
