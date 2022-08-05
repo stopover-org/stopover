@@ -1,26 +1,27 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import icon from "../../../icons/Outline/Interface/Edit-alt.svg";
+import editSvg from "../../../icons/Outline/Interface/Edit-alt.svg";
+import searchSvg from "../../../icons/Outline/Interface/Search.svg";
 
-const ImageWrapper = styled.div`
+const ImageWrapper = styled.div<{ left: string; bottom: string }>`
   display: none;
   position: relative;
-  bottom: -16px;
-  left: 16px;
+  left: ${(props) => props.left};
+  bottom: ${(props) => props.bottom};
 `;
 
 const SImage = styled(Image)``;
 
-const Input = styled.input`
+const Input = styled.input<{ inputWidth: string }>`
   border: none;
   border-bottom: 2px solid transparent;
+  background-color: transparent;
   font-size: 36px;
   font-weight: 400;
   line-height: 44px;
-  width: 372px;
+  width: ${(props) => props.inputWidth};
   opacity: 0.3;
-
   &:focus {
     outline: none;
     border-bottom: 2px solid #d9d9d9;
@@ -35,7 +36,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
+  padding: 0px 0px 30px 0px;
   &:hover ${ImageWrapper} {
     display: inline-block;
   }
@@ -44,7 +45,14 @@ const Wrapper = styled.div`
   }
 `;
 
-function Search() {
+type Props = {
+  searchType: string;
+  inputWidth: string;
+  placeHolder: string;
+  helpText: string;
+};
+
+function Search(props: Props) {
   const [value, setValue] = useState("");
   const onChange = (e: any) => {
     setValue(e.target.value);
@@ -52,24 +60,39 @@ function Search() {
   return (
     <Wrapper>
       <HelpMessage className="text">
-        {value === "" ? "" : "Вы выбрали"}
+        {value === "" ? "" : props.helpText}
       </HelpMessage>
       <div>
         <Input
           className="text"
           type="text"
-          placeholder="search location"
+          placeholder={props.placeHolder}
+          inputWidth={props.inputWidth}
           value={value}
           onChange={(e) => onChange(e)}
         />
-        <ImageWrapper>
-          <SImage
-            src={icon.src}
-            alt="Picture of the author"
-            width={25}
-            height={25}
-          />
-        </ImageWrapper>
+
+        {props.searchType === "location" && (
+          <ImageWrapper left="16px" bottom="-16px">
+            <SImage
+              src={editSvg.src}
+              alt="Picture of the author"
+              width={25}
+              height={25}
+            />
+          </ImageWrapper>
+        )}
+
+        {props.searchType === "event" && (
+          <ImageWrapper left="-45px" bottom="auto">
+            <SImage
+              src={searchSvg.src}
+              alt="Picture of the author"
+              width={25}
+              height={25}
+            />
+          </ImageWrapper>
+        )}
       </div>
     </Wrapper>
   );

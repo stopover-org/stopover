@@ -10,7 +10,6 @@ const Wrapper = styled.div<{ paddingRight: string | undefined }>`
 const SelectWrapper = styled.select<{ width: string | undefined }>`
   width: ${(props) => props.width};
   height: 35px;
-  border: 1px solid #000000;
   background: white;
   border-radius: 3px;
 `;

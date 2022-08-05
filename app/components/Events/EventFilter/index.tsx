@@ -7,45 +7,34 @@ import Slider from "./Slider";
 import Calendar from "./Calander";
 import Rate from "./Rate";
 import Help from "./Help";
+import PriceInput from "./PriceInput";
 
-const FilterBar = styled.div`
-  //width: 454px;
-  //margin: 0px;
-  //margin-right: 56px;
-  //padding-left: 30px; //top right bottom left
-`;
+const FilterBar = styled.div``;
 
 const MainFilters = styled.div`
   border-right: 1px solid black;
+  padding: 0px 36px 30px 30px;
 `;
 
 const FilterBarItem = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  //padding: 30px 0px 30px 0px;
-`;
-
-const TextInformation = styled.label`
-  display: flex;
-  flex-direction: row;
-  //padding: 29px 0px 50px 0px;
-  //height: 29px;
-  font-size: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px 0px 30px 0px;
 `;
 
 const StartingPoint = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  padding: 0px 0px 244px 30px;
   //height: 156px;
   //margin: 0px 0px 63px 0px;
 `;
 
 const Separator = styled.div`
-  width: 400px;
-  border-bottom: 1px solid #d9d9d9;
+  padding: 0px 200px 30px 200px;
+  border-top: 1px solid #d9d9d9;
 `;
 
 function EventFilter() {
@@ -57,13 +46,13 @@ function EventFilter() {
     endDate: null,
   });
 
-  /* const [selectedPrice, setSelectedPrice] = useState<{
-    startPrice: number | null;
-    endPrice: number | null;
+  const [selectedPrice, setSelectedPrice] = useState<{
+    startPrice: number;
+    endPrice: number;
   }>({
-    startPrice: null,
-    endPrice: null,
-  }); */
+    startPrice: 0,
+    endPrice: 10000,
+  });
 
   const [selectedIndividualOnly, setSelectedIndividualOnly] =
     useState<boolean>(false);
@@ -91,44 +80,83 @@ function EventFilter() {
     });
   };
 
-  const sliderHandler = (
+  const inputPriceHandler = (
+    startPrice: number | null,
+    endPrice: number | null
+  ) => {
+    console.log(startPrice, endPrice);
+    /* setSelectedPrice({
+      startPrice,
+      endPrice,
+    }) */
+  };
+
+  const sliderDateHandler = (
     startDate: Moment | ReactNode,
     endDate: Moment | ReactNode
   ) => {
     console.log(startDate, endDate);
   };
+
+  const sliderPriceHandler = (startPrice: number, endPrice: number) => {
+    console.log(startPrice, endPrice);
+    setSelectedPrice({
+      startPrice,
+      endPrice,
+    });
+  };
+
   console.log(selectedRate, selectedIndividualOnly); // to silence husky
   return (
     <FilterBar>
       <StartingPoint>
-        <Search />
+        <Search
+          searchType="location"
+          inputWidth="372px"
+          placeHolder="Напишите локацию"
+          helpText="Вы выбрали"
+        />
         <Calendar dateHandler={dateHandler} />
       </StartingPoint>
       <MainFilters>
         <FilterBarItem>
-          <div>
-            <TextInformation>
-              Выберите дату
-              <Help text="Выберите какие даты вы хотите просмотреть" />
-            </TextInformation>
-            <Slider
-              range={[selectedDates.startDate!, selectedDates.endDate!]}
-              countOfMarks={4}
-              onChange={sliderHandler}
-            />
-          </div>
+          <Help
+            text="Выберите какие даты вы хотите просмотреть"
+            content="Выберите дату"
+          />
+          <Slider
+            range={[selectedDates.startDate!, selectedDates.endDate!]}
+            handlePosition={[0, 0]}
+            countOfMarks={4}
+            onChange={sliderDateHandler}
+          />
         </FilterBarItem>
         <Separator />
+        <FilterBarItem>
+          <Help
+            text="Здесь вы можете выбрать цену слайдером или вводом"
+            content="Выберите цену"
+          />
+          <Slider
+            range={[0, 10000]}
+            handlePosition={[selectedPrice.startPrice, selectedPrice.endPrice]}
+            countOfMarks={4}
+            onChange={sliderPriceHandler}
+          />
+          <PriceInput
+            priceHandler={inputPriceHandler}
+            startPrice={selectedPrice.startPrice}
+            endPrice={selectedPrice.endPrice}
+            maxPrice={10000}
+            minPrice={0}
+          />
+        </FilterBarItem>
         <FilterBarItem>
           <IndividualEvents onClick={individualEventsHandler} />
-          <TextInformation>Индивидуальное мероприятие</TextInformation>
         </FilterBarItem>
         <Separator />
         <FilterBarItem>
-          <div>
-            <TextInformation>Рейтинг</TextInformation>
-            <Rate onClick={rateHandler} />
-          </div>
+          <Rate onClick={rateHandler} />
         </FilterBarItem>
       </MainFilters>
     </FilterBar>

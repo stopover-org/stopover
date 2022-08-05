@@ -10,6 +10,7 @@ const Wrapper = styled.div<{
   pointerEventsSlider?: string;
   pointerEventsHandle?: string;
 }>`
+  padding: 43px 0px 43px 0px;
   display: flex;
   align-items: center;
   .rc-slider {
@@ -52,10 +53,8 @@ const Wrapper = styled.div<{
 type Props = {
   range: Array<number | string | Moment>;
   countOfMarks: number;
-  onChange: (
-    startDate: Moment | ReactNode,
-    endDate: Moment | ReactNode
-  ) => void;
+  handlePosition: Array<number>;
+  onChange: (start: Moment | ReactNode, end: Moment | ReactNode) => void;
 };
 
 const isNumberRange = (range: Props["range"]) =>
@@ -77,8 +76,19 @@ const isValidMomentRange = (range: Props["range"]) =>
   (range[0] as Moment).isValid() &&
   (range[range.length - 1] as Moment).isValid();
 
-function SliderComponent({ range, countOfMarks, onChange }: Props) {
-  if (range.filter((value) => !value).length > 0)
+const isValidRange = (range: Props["range"]) =>
+  range[0] === undefined ||
+  range[range.length - 1] === undefined ||
+  range[0] === null ||
+  range[range.length - 1] === null;
+
+function SliderComponent({
+  range,
+  countOfMarks,
+  onChange,
+  handlePosition,
+}: Props) {
+  if (isValidRange(range))
     return (
       <Wrapper
         displayHandle="none"
@@ -90,7 +100,7 @@ function SliderComponent({ range, countOfMarks, onChange }: Props) {
     );
 
   const checkType = () => {
-    console.log(range);
+    // console.log(range);
     if (isDifferentTypes(range)) {
       console.warn("types of start and end are different");
       return false;
@@ -234,7 +244,7 @@ function SliderComponent({ range, countOfMarks, onChange }: Props) {
     }
   };
 
-  const chosenValue = (index: number): string | Moment | ReactNode => {
+  const chosenValue = (index: number): string | Moment | ReactNode | number => {
     try {
       if (nameType() === "date") {
         // if we working with dates we know that we will received string
@@ -259,12 +269,12 @@ function SliderComponent({ range, countOfMarks, onChange }: Props) {
         count={1}
         max={findDelta() - 1} // magic -1. i dont know why it works but it works.
         min={0}
+        defaultValue={[handlePosition[0], handlePosition[1]]}
         marks={createMarks(findDelta(), range[0], countOfMarks)}
         onChange={(values: number | number[]) => {
           if (!Array.isArray(values)) {
             values = [values, values];
           }
-
           onChange(chosenValue(values[0]), chosenValue(values[1]));
         }}
       />
@@ -272,3 +282,98 @@ function SliderComponent({ range, countOfMarks, onChange }: Props) {
   );
 }
 export default React.memo(SliderComponent);
+
+/*
+
+
+
+
+
+
+
+
+import '../assets/index.less';
+
+import React from 'react';
+import Slider from '../src';
+
+const style = { float: 'left', width: 160, height: 400, marginBottom: 160, marginLeft: 50 };
+const parentStyle = { overflow: 'hidden' };
+
+const marks = {
+  '-10': '-10°C',
+  0: <strong>0°C</strong>,
+  26: '26°C',
+  37: '37°C',
+  50: '50°C',
+  100: {
+    style: {
+      color: 'red',
+    },
+    label: <strong>100°C</strong>,
+  },
+};
+
+function log(value) {
+  console.log(value); //eslint-disable-line
+}
+
+export default () => (
+  <div style={parentStyle}>
+    <div style={style}>
+      <p>Slider with marks, `step=null`</p>
+      <Slider vertical min={-10} marks={marks} step={null} onChange={log} defaultValue={20} />
+    </div>
+    <div style={style}>
+      <p>Slider with marks, `step=null` and `startPoint=0`</p>
+      <Slider
+        vertical
+        min={-10}
+        startPoint={0}
+        marks={marks}
+        step={null}
+        onChange={log}
+        defaultValue={20}
+      />
+    </div>
+    <div style={style}>
+      <p>Reverse Slider with marks, `step=null`</p>
+      <Slider
+        vertical
+        min={-10}
+        marks={marks}
+        step={null}
+        onChange={log}
+        defaultValue={20}
+        reverse
+      />
+    </div>
+    <div style={style}>
+      <p>Slider with marks and steps</p>
+      <Slider vertical dots min={-10} marks={marks} step={10} onChange={log} defaultValue={20} />
+    </div>
+    <div style={style}>
+      <p>Slider with marks, `included=false`</p>
+      <Slider vertical min={-10} marks={marks} included={false} defaultValue={20} />
+    </div>
+    <div style={style}>
+      <p>Slider with marks and steps, `included=false`</p>
+      <Slider vertical min={-10} marks={marks} step={10} included={false} defaultValue={20} />
+    </div>
+    <div style={style}>
+      <p>Range with marks</p>
+      <Slider.Range vertical min={-10} marks={marks} onChange={log} defaultValue={[20, 40]} />
+    </div>
+    <div style={style}>
+      <p>Range with marks and steps</p>
+      <Slider.Range
+        vertical
+        min={-10}
+        marks={marks}
+        step={10}
+        onChange={log}
+        defaultValue={[20, 40]}
+      />
+    </div>
+  </div>
+); */

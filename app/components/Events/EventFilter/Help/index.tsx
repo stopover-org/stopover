@@ -3,20 +3,9 @@ import styled from "styled-components";
 import icon from "../../../icons/Outline/Status/Pin.svg";
 
 const Wrapper = styled.div`
-  margin-left: 5px;
-  position: relative;
+  padding: 0px 0px 0px 0px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 25px;
-  height: 25px;
-  :hover .text {
-    opacity: 1;
-    pointer-events: auto;
-    top: 35px;
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  }
+  flex-direction: row;
 `;
 
 const Icon = styled.img`
@@ -27,13 +16,12 @@ const Icon = styled.img`
   height: 25px;
 `;
 
-const Text = styled.p`
+const HelpText = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 212px;
   height: 59px;
-  border: 1px solid black;
   position: absolute;
   top: 0px;
   color: white;
@@ -62,17 +50,42 @@ const Text = styled.p`
   }
 `;
 
+const IconContainer = styled.label`
+  margin-left: 5px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 25px;
+  height: 25px;
+  :hover .text {
+    opacity: 1;
+    pointer-events: auto;
+    top: 35px;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+`;
+
+const Text = styled.p`
+  font-size: 24px;
+`;
+
 type Props = {
   text: string;
+  content: string;
 };
 
 function Search(props: Props) {
   return (
     <Wrapper>
-      <Text className="text">
-        <p>{props.text}</p>
-      </Text>
-      <Icon src={icon.src} />
+      <Text>{props.content}</Text>
+      <IconContainer>
+        <HelpText className="text">
+          <p>{props.text}</p>
+        </HelpText>
+        <Icon src={icon.src} />
+      </IconContainer>
     </Wrapper>
   );
 }
