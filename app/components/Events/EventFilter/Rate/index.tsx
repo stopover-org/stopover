@@ -3,15 +3,21 @@ import styled from "styled-components";
 import RateStar from "./RateStar";
 
 const Wrapper = styled.div`
+  padding: 34px 30px 34px 0px;
+  cursor: pointer;
   display: block;
-  width: 120px;
-  height: 25px;
 `;
 
 const RateStyle = styled.div`
   position: absolute;
   display: flex;
   flex-direction: row;
+`;
+
+const Container = styled.label``;
+
+const Text = styled.p`
+  font-size: 24px;
 `;
 
 type Props = {
@@ -34,18 +40,21 @@ function Rate(props: Props) {
 
   return (
     <Wrapper>
-      <RateStyle>
-        {stars.map((item, index) => (
-          <RateStar
-            index={index}
-            selectedRate={selectedRate}
-            shownRate={shownRate}
-            key={index}
-            onClick={rateChange}
-            showRate={showRate}
-          />
-        ))}
-      </RateStyle>
+      <Container>
+        <Text>Рейтинг</Text>
+        <RateStyle>
+          {stars.map((item, index) => (
+            <RateStar
+              index={index}
+              selectedRate={selectedRate}
+              shownRate={shownRate}
+              key={index}
+              onClick={rateChange}
+              showRate={showRate}
+            />
+          ))}
+        </RateStyle>
+      </Container>
     </Wrapper>
   );
 }

@@ -4,7 +4,6 @@ import Footer from "./Footer";
 import Header from "./Header";
 
 const Wrapper = styled.div`
-  border: 1px solid red;
   width: 1600px;
   margin: auto;
 `;
