@@ -9,6 +9,15 @@ import Search from "../EventFilter/Search";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
+  padding: 40px 0px 0px 0px;
+  height: calc(100vh - 75px - 16px);
+  min-height: 1100px;
+`;
+
+const ListOfEvents = styled.div``;
+
+const Intrests = styled.div`
+  padding: 0px 0px 0px 56px;
 `;
 
 const Query = graphql`
@@ -48,11 +57,16 @@ function EventsList() {
     <Wrapper>
       <EventFilter />
 
-      <div>
-        <Search />
+      <Intrests>
+        <Search
+          searchType="event"
+          inputWidth="650px"
+          placeHolder="Какое мероприятие вы ищете?"
+          helpText="Вы ищете"
+        />
         <InterestGallery />
-        <div>EVENTS</div>
-      </div>
+        <ListOfEvents>EVENTS</ListOfEvents>
+      </Intrests>
     </Wrapper>
   );
 }

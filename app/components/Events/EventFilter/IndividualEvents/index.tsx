@@ -5,11 +5,19 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 10px 10px 0px;
+  padding: 0px 0px 0px 0px;
   input {
     width: 20px;
     height: 20px;
   }
+`;
+const Container = styled.label`
+  display: flex;
+  flex-direction: row;
+`;
+
+const Text = styled.div`
+  font-size: 24px;
 `;
 
 type Props = {
@@ -19,12 +27,15 @@ type Props = {
 function IndividualEvents(props: Props) {
   return (
     <Wrapper>
-      <input
-        type="checkbox"
-        onClick={(e: React.SyntheticEvent<HTMLInputElement>) =>
-          props.onClick(e)
-        }
-      />
+      <Container>
+        <input
+          type="checkbox"
+          onClick={(e: React.SyntheticEvent<HTMLInputElement>) =>
+            props.onClick(e)
+          }
+        />
+        <Text>Индивидуальное мероприятие</Text>
+      </Container>
     </Wrapper>
   );
 }

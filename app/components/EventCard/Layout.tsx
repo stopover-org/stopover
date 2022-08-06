@@ -3,7 +3,6 @@ import styled from "styled-components";
 import ListCard from "./ListCard/ListCard";
 
 const ContainerBody = styled.div`
-  border: 1px solid black;
   max-width: 1440px;
   min-width: 100px;
   width: 1440px;

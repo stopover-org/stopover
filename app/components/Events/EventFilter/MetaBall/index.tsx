@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React from "react";
 
 const Wrapper = styled.div`
-  border: 1px solid black;
   height: 100vh;
   width: 100vw;
   .blobs {
