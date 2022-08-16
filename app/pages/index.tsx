@@ -1,6 +1,6 @@
-import styled from "styled-components";
 import React from "react";
-import Layout from "../components/Layout";
+import styled from "styled-components";
+import Layout from "../components/MainPage/Layout";
 import EventsList from "../components/Events/List";
 
 const Container = styled.div``;

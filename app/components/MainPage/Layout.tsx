@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Footer from "./EventCard/Footer";
-import Header from "./Events/EventFilter/Header";
+import Footer from "./Footer";
+import Header from "./Header";
 
 const Wrapper = styled.div`
   width: 1600px;
