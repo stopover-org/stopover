@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 const Wrapper = styled.div``;
 
-function Photoes() {
+function Comments() {
   return <Wrapper />;
 }
 
-export default Photoes;
+export default Comments;

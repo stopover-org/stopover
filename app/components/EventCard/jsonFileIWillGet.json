@@ -1,0 +1,14 @@
+{
+    "mainInformation": {
+        "eventsName" : "string",
+        "averageRating" : "number",
+        "tags": [
+            {
+                "image" : "url?",
+                "name" : "string",
+                "slug" : "string"
+            }
+        ],
+        "location" : "string"
+    }
+}

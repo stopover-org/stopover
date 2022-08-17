@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 const Wrapper = styled.div``;
 
-function Check() {
+function GalleryOfPhotoes() {
   return <Wrapper />;
 }
 
-export default Check;
+export default GalleryOfPhotoes;

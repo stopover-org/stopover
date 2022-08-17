@@ -1,6 +1,6 @@
 import React from "react";
-import StarUnchecked from "../../../icons/Outline/Status/Star.svg";
-import StarChecked from "../../../icons/Solid/Status/Star.svg";
+import StarUnchecked from "../../icons/Outline/Status/Star.svg";
+import StarChecked from "../../icons/Solid/Status/Star.svg";
 
 type Props = {
   index: number;

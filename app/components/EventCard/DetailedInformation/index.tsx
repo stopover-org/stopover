@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 const Wrapper = styled.div``;
 
-function Map() {
+function DetailedInformation() {
   return <Wrapper />;
 }
 
-export default Map;
+export default DetailedInformation;
