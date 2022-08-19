@@ -53,7 +53,7 @@ function Rating() {
     <Wrapper>
       <RatingSystemWrapper>
         <RatingSystem>
-          <RateBackground position={calculatePositon(5, 4.5)} />
+          <RateBackground position={calculatePositon(5, 1.25)} />
         </RatingSystem>
       </RatingSystemWrapper>
       <TagsWrapper>

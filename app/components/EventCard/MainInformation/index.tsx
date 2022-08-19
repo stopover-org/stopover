@@ -1,18 +1,29 @@
 import React from "react";
 import styled from "styled-components";
+import { Moment } from "moment";
+import Image from "next/image";
 import Button from "./Button";
 import Rating from "./Rating";
+import icon from "../../icons/Solid/General/Shopping-cart.svg";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+
   padding: 15px 0px 0px 0px;
 `;
 const InformationalBlock = styled.div`
   border: 1px solid green;
 `;
 const FunctionalBlock = styled.div`
-  border: 1px solid red;
+  //TODO: с помощью children сдлетаь отступ в 10px
+  display: flex;
+  flex-direction: row;
+  #fncBlock {
+    padding-left: 10px;
+  }
 `;
 const Name = styled.p`
   padding: 0px 0px 6px 0px;
@@ -28,7 +39,7 @@ const Location = styled.p`
 `;
 
 type Props = {
-  date: any; // TODO: change to moment
+  date: Moment; // TODO: change to moment
 };
 
 function MainInformation(props: Props) {
@@ -40,8 +51,11 @@ function MainInformation(props: Props) {
         <Location>Brno, Podebradova, Kralove-pole CR 614200</Location>
       </InformationalBlock>
       <FunctionalBlock>
-        <Button content={props.date} />
-        <Button content="" />
+        <Button inscription={props.date} />
+        <Button
+          inscription="6555500kc"
+          contentAfterInscription={[<Image src={icon.src} alt="icon" />, "+"]}
+        />
       </FunctionalBlock>
     </Wrapper>
   );
