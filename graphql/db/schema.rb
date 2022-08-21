@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_02_06_183925) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_21_075839) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -115,6 +115,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_06_183925) do
     t.index ["event_id"], name: "index_event_options_on_event_id"
   end
 
+  create_table "event_tags", force: :cascade do |t|
+    t.bigint "tag_id"
+    t.bigint "event_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_tags_on_event_id"
+    t.index ["tag_id"], name: "index_event_tags_on_tag_id"
+  end
+
   create_table "events", force: :cascade do |t|
     t.string "title", null: false
     t.text "description", null: false
@@ -153,6 +162,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_06_183925) do
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_interests_on_slug", unique: true
     t.index ["title"], name: "index_interests_on_title", unique: true
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "preview"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "trips", force: :cascade do |t|

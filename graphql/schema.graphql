@@ -75,9 +75,15 @@ type CreateEventPayload {
   event: Event
 }
 
+"""
+represents a timestamp of the ISO8601 format
+"""
+scalar DateTime
+
 type Event implements Node {
   achievements: [Achievement!]
   attendeeCostPerUomCents: Int
+  availableDates: [DateTime!]
   city: String
   country: String
   description: String
@@ -101,6 +107,7 @@ type Event implements Node {
   singleDaysWithTime: [String!]
   status: String
   street: String
+  tags: [Tag!]
   title: String
   unit: Unit
 }
@@ -277,6 +284,13 @@ enum SignInTypesEnum {
   allowed to sign in with phone
   """
   phone
+}
+
+type Tag implements Node {
+  id: ID
+  preview: String
+  relayId: ID!
+  title: String
 }
 
 type Unit implements Node {

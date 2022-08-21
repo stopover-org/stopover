@@ -6,9 +6,11 @@ class Event < ApplicationRecord
 
   has_many :event_achievements, dependent: :destroy
   has_many :event_interests, dependent: :destroy
+  has_many :event_tags, dependent: :destroy
 
   has_many :achievements, through: :event_achievements
   has_many :interests, through: :event_interests
+  has_many :tags, through: :event_tags
   has_many :event_options, dependent: :destroy
   belongs_to :unit, optional: true
   has_many :bookings, dependent: :destroy
@@ -25,6 +27,7 @@ class Event < ApplicationRecord
             :duration_time, presence: true unless :draft?
 
   before_validation :set_prices
+  before_validation :update_tags
 
   # default_scope { select("UNNEST(single_days_with_time) AS day ORDER BY day ASC").active }
   scope :active, -> { where(status: :published) }
@@ -44,11 +47,35 @@ class Event < ApplicationRecord
     [single_days_with_time, recurrent_dates].flatten!
   end
 
-  def tags
-    []
+  private
+  def update_tags
+    interests.each do |interest|
+      tag = tags.where(title: interest.title.downcase).last
+      tag = Tag.create!(title: interest.title.downcase) unless tag
+      tags.push(tag) unless tags.include?(tag)
+      tag = nil
+    end
+
+    achievements.each do |achievement|
+      tag = Tag.where(title: achievement.title.downcase).last
+      tag = Tag.create!(title: achievement.title.downcase) unless tag
+      tags.push(tag) unless tags.include?(tag)
+      tag = nil
+    end
+
+    tag = tags.where(title: unit.name.downcase).last
+    tag = Tag.create!(title: unit.name.downcase) unless tag
+    tags.push(tag) unless tags.include?(tag)
+    tag = nil
+
+    if event_type
+      tag = tags.where(title: event_type.downcase).last
+      tag = Tag.create!(title: event_type.downcase) unless tag
+      tags.push(tag) unless tags.include?(tag)
+      tag = nil
+    end
   end
 
-  private
   def recurrent_dates
     res = []
     recurring_days_with_time.each do |weekday_with_time|
