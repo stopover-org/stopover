@@ -25,7 +25,7 @@ end
 %w[Снегоход Квадроцикл].map { |u| Unit.create!(name: u, unit_type: :technique) }
 %w[Место Столик].map { |u| Unit.create!(name: u, unit_type: :common) }
 
-1000.times.each do |event|
+1000.times.each do |_event|
   Event.create!(
     title: Faker::App.name,
     description: Faker::Hipster.paragraphs,
@@ -42,4 +42,4 @@ end
     ]
   )
 end
-Event.last(750).each {|e| e.update!(status: :published)}
+Event.last(750).each { |e| e.update!(status: :published) }

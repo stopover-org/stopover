@@ -81,11 +81,10 @@ gem 'geocoder'
 gem 'graphiql-rails', git: 'https://github.com/rmosolgo/graphiql-rails.git', branch: 'master', group: :development
 gem 'graphql', '~> 1.9'
 gem 'jwt'
+gem 'phonelib'
+gem 'rack-cors', require: 'rack/cors'
 gem 'rspec-rails', group: %i[development test]
 gem 'rubocop', group: [:development], require: false
 gem 'rubocop-rails', require: false
 gem 'sendgrid-ruby'
 gem 'twilio-ruby'
-gem 'rack-cors', :require => 'rack/cors'
-gem 'phonelib'
-

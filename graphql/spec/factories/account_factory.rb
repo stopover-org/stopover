@@ -9,6 +9,6 @@ FactoryBot.define do
     city { Faker::Address.city }
     country { Faker::Address.country }
     full_address { Faker::Address.full_address }
-    phones { 5.times.map{ Faker::PhoneNumber.phone_number }}
+    phones { 5.times.map { Faker::PhoneNumber.phone_number } }
   end
 end

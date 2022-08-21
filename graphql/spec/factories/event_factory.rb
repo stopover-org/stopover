@@ -13,11 +13,11 @@ FactoryBot.define do
     full_address { Faker::Address.full_address }
 
     trait :recurring do
-      recurring_days_with_time {
-        %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday ].map do |d|
+      recurring_days_with_time do
+        %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday].map do |d|
           ["#{d} 11:30", "#{d} 21:30"]
         end.flatten!
-      }
+      end
     end
 
     factory :recurring_event, traits: [:recurring]

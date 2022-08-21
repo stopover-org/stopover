@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'date'
 
 class Event < ApplicationRecord
@@ -19,12 +20,14 @@ class Event < ApplicationRecord
   enum event_type: { excursion: :excursion, tour: :tour }
 
   validates :title, length: { maximum: 100 }
-  validates :title, :description,
-            :event_type, :recurring_type,
-            :organizer_cost_per_uom_cents, :attendee_cost_per_uom_cents,
-            :unit, :city,
-            :country, :full_address,
-            :duration_time, presence: true unless :draft?
+  unless :draft?
+    validates :title, :description,
+              :event_type, :recurring_type,
+              :organizer_cost_per_uom_cents, :attendee_cost_per_uom_cents,
+              :unit, :city,
+              :country, :full_address,
+              :duration_time, presence: true
+  end
 
   before_validation :set_prices
   before_validation :update_tags
@@ -39,8 +42,8 @@ class Event < ApplicationRecord
   end
 
   def set_prices
-    self.organizer_cost_per_uom_cents = 0 unless self.organizer_cost_per_uom_cents
-    self.attendee_cost_per_uom_cents = 0 unless self.attendee_cost_per_uom_cents
+    self.organizer_cost_per_uom_cents = 0 unless organizer_cost_per_uom_cents
+    self.attendee_cost_per_uom_cents = 0 unless attendee_cost_per_uom_cents
   end
 
   def available_dates
@@ -48,29 +51,30 @@ class Event < ApplicationRecord
   end
 
   private
+
   def update_tags
     interests.each do |interest|
       tag = tags.where(title: interest.title.downcase).last
-      tag = Tag.create!(title: interest.title.downcase) unless tag
+      tag ||= Tag.create!(title: interest.title.downcase)
       tags.push(tag) unless tags.include?(tag)
       tag = nil
     end
 
     achievements.each do |achievement|
       tag = Tag.where(title: achievement.title.downcase).last
-      tag = Tag.create!(title: achievement.title.downcase) unless tag
+      tag ||= Tag.create!(title: achievement.title.downcase)
       tags.push(tag) unless tags.include?(tag)
       tag = nil
     end
 
     tag = tags.where(title: unit.name.downcase).last
-    tag = Tag.create!(title: unit.name.downcase) unless tag
+    tag ||= Tag.create!(title: unit.name.downcase)
     tags.push(tag) unless tags.include?(tag)
     tag = nil
 
     if event_type
       tag = tags.where(title: event_type.downcase).last
-      tag = Tag.create!(title: event_type.downcase) unless tag
+      tag ||= Tag.create!(title: event_type.downcase)
       tags.push(tag) unless tags.include?(tag)
       tag = nil
     end
