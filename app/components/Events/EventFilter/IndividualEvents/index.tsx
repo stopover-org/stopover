@@ -29,10 +29,10 @@ function IndividualEvents(props: Props) {
     <Wrapper>
       <Container>
         <input
-          type="checkbox"
-          onClick={(e: React.SyntheticEvent<HTMLInputElement>) =>
-            props.onClick(e)
-          }
+        type="checkbox"
+        onClick={(e: React.SyntheticEvent<HTMLInputElement>) =>
+          props.onClick(e)
+        }
         />
         <Text>Индивидуальное мероприятие</Text>
       </Container>
