@@ -1,17 +1,12 @@
-import styled from "styled-components";
 import React from "react";
-import Layout from "../components/Layout";
+import Layout from "../components/MainPage/Layout";
 import EventsList from "../components/Events/List";
-
-const Container = styled.div``;
 
 function Home() {
   return (
-    <Container>
-      <Layout>
-        <EventsList />
-      </Layout>
-    </Container>
+    <Layout>
+      <EventsList />
+    </Layout>
   );
 }
 
