@@ -9,6 +9,7 @@ class Event < ApplicationRecord
   has_many :event_interests, dependent: :destroy
   has_many :event_tags, dependent: :destroy
 
+
   has_many :achievements, through: :event_achievements
   has_many :interests, through: :event_interests
   has_many :tags, through: :event_tags
@@ -17,7 +18,21 @@ class Event < ApplicationRecord
   has_many :bookings, dependent: :destroy
 
   enum recurring_type: { recurrent: :recurrent, regular: :regular }
-  enum event_type: { excursion: :excursion, tour: :tour }
+  enum event_type: {
+    # old one
+    excursion: :excursion,
+    tour: :tour,
+    # new one
+    in_town: :in_town,
+    out_of_town: :out_of_town,
+    active_holiday: :active_holiday,
+    music: :music,
+    workshop: :workshop,
+    business_breakfast: :business_breakfast,
+    meetup: :meetup,
+    sport_activity: :sport_activity,
+    gastronomic: :gastronomic
+  }
 
   validates :title, length: { maximum: 100 }
   unless :draft?
@@ -67,14 +82,17 @@ class Event < ApplicationRecord
       tag = nil
     end
 
-    tag = tags.where(title: unit.name.downcase).last
-    tag ||= Tag.create!(title: unit.name.downcase)
-    tags.push(tag) unless tags.include?(tag)
-    tag = nil
+    if unit
+      tag = tags.where(title: unit.name.titleize.downcase).last
+      tag ||= Tag.create!(title: unit.name.titleize.downcase)
+      tags.push(tag) unless tags.include?(tag)
+      tag = nil
+    end
 
+    # [TODO] to add translations for every event_type
     if event_type
-      tag = tags.where(title: event_type.downcase).last
-      tag ||= Tag.create!(title: event_type.downcase)
+      tag = tags.where(title: event_type.titleize.downcase).last
+      tag ||= Tag.create!(title: event_type.titleize.downcase)
       tags.push(tag) unless tags.include?(tag)
       tag = nil
     end
