@@ -82,8 +82,6 @@ function EventFilter() {
       endDate,
     });
   };
-  const sliderHandler = (startDate: Moment, endDate: Moment) => {
-    console.log(startDate, endDate);
 
   const inputPriceHandler = (
     startPrice: number | null,
