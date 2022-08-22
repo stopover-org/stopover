@@ -46,8 +46,6 @@ function IntrestGallery() {
   useEffect(() => {
     if (carouselRef.current) {
       setRightSlideEndPoint(carouselRef.current.clientWidth - carouselWidth);
-    } else {
-      console.log("не подгрузилось с сервера");
     }
   }, []);
 

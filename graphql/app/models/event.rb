@@ -47,7 +47,6 @@ class Event < ApplicationRecord
   before_validation :set_prices
   before_validation :update_tags
 
-  # default_scope { select("UNNEST(single_days_with_time) AS day ORDER BY day ASC").active }
   scope :active, -> { where(status: :published) }
 
   aasm column: :status do

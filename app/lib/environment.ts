@@ -1,20 +1,21 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
 
 async function fetchGraphQL(text: string, variables: any) {
-  // const REACT_APP_GITHUB_AUTH_TOKEN = process.env.REACT_APP_GITHUB_AUTH_TOKEN;
-
   // Fetch data from GitHub's GraphQL API:
-  const response = await fetch(process.env.GRAPHQL_API_URL!, {
-    method: "POST",
-    headers: {
-      // Authorization: `bearer ${REACT_APP_GITHUB_AUTH_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: text,
-      variables,
-    }),
-  });
+  const response = await fetch(
+    process.env.GRAPHQL_API_URL || "http://localhost:8080/graphql",
+    {
+      method: "POST",
+      headers: {
+        // Authorization: `bearer ${REACT_APP_GITHUB_AUTH_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: text,
+        variables,
+      }),
+    }
+  );
 
   // Get the response as JSON
   return response.json();
