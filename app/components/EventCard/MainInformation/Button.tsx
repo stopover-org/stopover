@@ -15,7 +15,7 @@ const ButtonStyle = styled.div`
 
   border-right: 3px solid #893aad6e;
   border-bottom: 3px solid #893aad6e;
-  :hover {
+  &:hover {
     background: linear-gradient(#ff961f, #ff8a00);
     transition: ease-in-out 1s;
   }
@@ -42,9 +42,9 @@ type Props = {
 };
 
 const arrayExist = (item: Props["contentAfterInscription"]) =>
-  item !== undefined;
+  !!item !== undefined;
 const arrayIsEmpty = (item: Props["contentAfterInscription"]) =>
-  item !== undefined && item.length === 0;
+  item?.length === 0;
 const isMoment = (item: Props["inscription"]) => item instanceof moment;
 const dateIsValid = (item: Props["inscription"]) => (item as Moment).isValid();
 const isString = (item: Props["inscription"]) => typeof item === "string";

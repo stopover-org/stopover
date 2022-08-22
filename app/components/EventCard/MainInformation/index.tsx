@@ -53,7 +53,7 @@ function MainInformation(props: Props) {
     <Wrapper>
       <InformationalBlock>
         <Name>Event Name, The best of all event great</Name>
-        <AverageRating averageRating={2.5} />
+        <AverageRating averageRating={2.4} />
         <Tags
           content={[
             {

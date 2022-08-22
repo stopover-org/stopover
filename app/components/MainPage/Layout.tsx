@@ -5,7 +5,7 @@ import Header from "./Header";
 
 const Wrapper = styled.div`
   max-width: 1600px;
-  min-width: 500px;
+  min-width: 1024px;
   margin: auto;
 `;
 

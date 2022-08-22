@@ -64,8 +64,3 @@ function Tags(props: Props) {
 }
 
 export default Tags;
-/* (!!(props.shownTags as number[]).find(
-              obj => {
-                return obj === index+1
-              }
-            )) */
