@@ -54,8 +54,10 @@ function EventFilter() {
     endPrice: 10000,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedIndividualOnly, setSelectedIndividualOnly] =
     useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedRate, setSelectedRate] = useState<number>(0);
 
   const individualEventsHandler = (
@@ -66,7 +68,6 @@ function EventFilter() {
   };
 
   const rateHandler = (rateIndex: number) => {
-    console.log(rateIndex);
     setSelectedRate(rateIndex);
   };
 
@@ -85,10 +86,6 @@ function EventFilter() {
     endPrice: number | null
   ) => {
     console.log(startPrice, endPrice);
-    /* setSelectedPrice({
-      startPrice,
-      endPrice,
-    }) */
   };
 
   const sliderDateHandler = (
@@ -99,14 +96,12 @@ function EventFilter() {
   };
 
   const sliderPriceHandler = (startPrice: number, endPrice: number) => {
-    console.log(startPrice, endPrice);
     setSelectedPrice({
       startPrice,
       endPrice,
     });
   };
 
-  console.log(selectedRate, selectedIndividualOnly); // to silence husky
   return (
     <FilterBar>
       <StartingPoint>

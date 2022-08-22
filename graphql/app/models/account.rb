@@ -19,10 +19,12 @@ class Account < ApplicationRecord
   end
 
   private
+
   def set_user_info
     return unless user
+
     self.primary_phone = user.phone if user.phone
-    self.phones.concat[user.phone] if user.phone && !self.phones.include?(user.phone)
-    self.phones.concat[self.primary_phone] if self.primary_phone && !self.phones.include?(self.primary_phone)
+    phones.concat[user.phone] if user.phone && !phones.include?(user.phone)
+    phones.concat[primary_phone] if primary_phone && !phones.include?(primary_phone)
   end
 end

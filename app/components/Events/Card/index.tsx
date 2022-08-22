@@ -7,6 +7,7 @@ type Props = {
 };
 
 export function Card({ eventFragmentRef }: Props) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const event = useFragment(
     graphql`
       fragment Card_Event on Event {
@@ -16,8 +17,6 @@ export function Card({ eventFragmentRef }: Props) {
     `,
     eventFragmentRef
   );
-
-  console.log(event);
 
   return <div />;
 }

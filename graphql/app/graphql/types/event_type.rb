@@ -28,5 +28,7 @@ module Types
     field :event_options, [Types::EventOptionType]
     field :interests, [Types::InterestType]
     field :achievements, [Types::AchievementType]
+    field :available_dates, [Types::DateTimeType]
+    field :tags, [Types::TagType]
   end
 end

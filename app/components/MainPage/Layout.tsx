@@ -13,10 +13,16 @@ type Props = {
 };
 
 function Layout({ children }: Props) {
+  const [isSSR, setIsSSR] = React.useState(true);
+
+  React.useEffect(() => {
+    setIsSSR(false);
+  }, []);
+
   return (
     <Wrapper>
       <Header />
-      {children}
+      {!isSSR ? children : null}
       <Footer />
     </Wrapper>
   );

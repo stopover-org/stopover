@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'phonelib'
 
 module Mutations
@@ -15,7 +16,8 @@ module Mutations
       type = type.downcase
       case type
       when 'phone'
-        raise "Phone is invalid" unless Phonelib.valid? username
+        raise 'Phone is invalid' unless Phonelib.valid? username
+
         user = User.find_or_create_by!(phone: username)
       when 'email'
         user = User.find_or_create_by!(email: username)
@@ -30,8 +32,7 @@ module Mutations
 
         { user: nil, delay: user.delay }
       end
-
-    rescue => e
+    rescue StandardError => e
       raise GraphQL::ExecutionError, e.message
     end
   end

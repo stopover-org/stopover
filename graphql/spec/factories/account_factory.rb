@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require 'faker'
 
 FactoryBot.define do
   factory :account do
@@ -10,6 +9,6 @@ FactoryBot.define do
     city { Faker::Address.city }
     country { Faker::Address.country }
     full_address { Faker::Address.full_address }
-    phones { 5.times.map{ Faker::PhoneNumber.phone_number }}
+    phones { 5.times.map { Faker::PhoneNumber.phone_number } }
   end
 end
