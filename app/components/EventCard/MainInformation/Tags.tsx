@@ -3,9 +3,9 @@ import styled from "styled-components";
 
 const Wrapper = styled.div``;
 const TagsWrapper = styled.div`
-  max-width: 100px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 `;
 const TagWrapper = styled.div`
   padding: 0px 6px 0px 6px;
@@ -13,6 +13,7 @@ const TagWrapper = styled.div`
   flex-wrap: wrap;
 `;
 const Tag = styled.div`
+  cursor: pointer;
   background-color: #c2e0fe;
   border-radius: 3px;
   display: flex;

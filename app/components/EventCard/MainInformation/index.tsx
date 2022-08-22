@@ -7,6 +7,7 @@ import Tags from "./Tags";
 import shoppingCart from "../../icons/Solid/General/Shopping-cart.svg";
 
 const Wrapper = styled.div`
+  min-width: 500px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -70,62 +71,6 @@ function MainInformation(props: Props) {
             {
               tagName: "show this",
               image: "",
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
             },
             {
               tagName: "dont show this",
