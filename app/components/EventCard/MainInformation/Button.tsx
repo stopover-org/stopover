@@ -33,6 +33,8 @@ const ContentAfterInscriptionStyle = styled.div`
   font-weight: 400;
   font-size: 28px;
   line-height: 34px;
+  width: 25px;
+  height: 25px;
 `;
 type Props = {
   contentAfterInscription?: Array<JSX.Element | number | string | undefined>;

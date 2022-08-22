@@ -1,24 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 import { Moment } from "moment";
-import Image from "next/image";
 import Button from "./Button";
-import Rating from "./Rating";
-import icon from "../../icons/Solid/General/Shopping-cart.svg";
+import AverageRating from "./AverageRating";
+import Tags from "./Tags";
+import shoppingCart from "../../icons/Solid/General/Shopping-cart.svg";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-
   padding: 15px 0px 0px 0px;
+  border: 1px solid black;
 `;
 const InformationalBlock = styled.div`
-  border: 1px solid green;
+  .average-rating-wrapper {
+    display: inline-block;
+  }
+  .tags-wrapper {
+    display: inline-block;
+    padding-left: 6px;
+  }
 `;
 const FunctionalBlock = styled.div`
-  //TODO: с помощью children сдлетаь отступ в 10px
   display: flex;
   flex-direction: row;
   #fncBlock {
@@ -39,7 +44,7 @@ const Location = styled.p`
 `;
 
 type Props = {
-  date: Moment; // TODO: change to moment
+  date: Moment;
 };
 
 function MainInformation(props: Props) {
@@ -47,14 +52,101 @@ function MainInformation(props: Props) {
     <Wrapper>
       <InformationalBlock>
         <Name>Event Name, The best of all event great</Name>
-        <Rating />
+        <AverageRating averageRating={2.5} />
+        <Tags
+          content={[
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "show this",
+              image: "",
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+            {
+              tagName: "dont show this",
+              image: shoppingCart.src,
+            },
+          ]}
+        />
         <Location>Brno, Podebradova, Kralove-pole CR 614200</Location>
       </InformationalBlock>
       <FunctionalBlock>
         <Button inscription={props.date} />
         <Button
           inscription="6555500kc"
-          contentAfterInscription={[<Image src={icon.src} alt="icon" />, "+"]}
+          contentAfterInscription={[
+            <img src={shoppingCart.src} alt="icon" />,
+            "+",
+          ]}
         />
       </FunctionalBlock>
     </Wrapper>
