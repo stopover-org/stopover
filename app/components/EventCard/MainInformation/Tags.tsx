@@ -8,7 +8,6 @@ const TagsWrapper = styled.div`
   flex-wrap: wrap;
 `;
 const TagWrapper = styled.div`
-  padding: 0px 6px 0px 6px;
   display: flex;
   flex-wrap: wrap;
 `;
@@ -42,18 +41,17 @@ const contentExist = (content: Props["content"]) =>
 const imageExist = (image: string | undefined) =>
   typeof image === "string" && image !== "";
 
-function Tags(props: Props) {
+function Tags({ content }: Props) {
   return (
     <Wrapper className="tags-wrapper">
       <TagsWrapper>
-        {contentExist(props.content) &&
-          props.content.map((item, index) => (
-            <TagWrapper key={index}>
+        {contentExist(content) &&
+          content.map((item, index) => (
+            <TagWrapper className="tag-wrapper" key={index}>
               <Tag>
                 {imageExist(item.image) && (
                   <Image src={item.image} alt={item.tagName} />
                 )}
-
                 <TagName>{item.tagName}</TagName>
               </Tag>
             </TagWrapper>

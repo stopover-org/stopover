@@ -41,8 +41,7 @@ type Props = {
   inscription: string | Moment | number;
 };
 
-const arrayExist = (item: Props["contentAfterInscription"]) =>
-  !!item !== undefined;
+const arrayExist = (item: Props["contentAfterInscription"]) => !!item;
 const arrayIsEmpty = (item: Props["contentAfterInscription"]) =>
   item?.length === 0;
 const isMoment = (item: Props["inscription"]) => item instanceof moment;
@@ -50,21 +49,21 @@ const dateIsValid = (item: Props["inscription"]) => (item as Moment).isValid();
 const isString = (item: Props["inscription"]) => typeof item === "string";
 const isNumber = (item: Props["inscription"]) => typeof item === "number";
 
-function Button(props: Props) {
+function Button({ contentAfterInscription, inscription }: Props) {
   return (
-    <Wrapper id="fncBlock">
+    <Wrapper className="button-wrapper">
       <ButtonStyle>
-        {(isString(props.inscription) || isNumber(props.inscription)) && (
-          <Inscription>{props.inscription as string | number}</Inscription>
+        {(isString(inscription) || isNumber(inscription)) && (
+          <Inscription>{inscription as string | number}</Inscription>
         )}
-        {isMoment(props.inscription) && dateIsValid(props.inscription) && (
+        {isMoment(inscription) && dateIsValid(inscription) && (
           <Inscription>
-            {(props.inscription as Moment).format("DD.MM.YY")}
+            {(inscription as Moment).format("DD.MM.YY")}
           </Inscription>
         )}
-        {arrayExist(props.contentAfterInscription) &&
-          !arrayIsEmpty(props.contentAfterInscription) &&
-          (props.contentAfterInscription as []).map((item, index) => (
+        {arrayExist(contentAfterInscription) &&
+          !arrayIsEmpty(contentAfterInscription) &&
+          (contentAfterInscription as []).map((item, index) => (
             <ContentAfterInscriptionStyle key={index}>
               {item}
             </ContentAfterInscriptionStyle>

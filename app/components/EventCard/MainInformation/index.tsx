@@ -13,7 +13,6 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: flex-end;
   padding: 15px 0px 0px 0px;
-  border: 1px solid black;
 `;
 const InformationalBlock = styled.div`
   .average-rating-wrapper {
@@ -23,12 +22,15 @@ const InformationalBlock = styled.div`
     display: inline-block;
     padding-left: 6px;
   }
+  .tag-wrapper {
+    padding: 6px;
+  }
 `;
 const FunctionalBlock = styled.div`
   display: flex;
   flex-direction: row;
-  #fncBlock {
-    padding-left: 10px;
+  .button-wrapper {
+    padding-left: 12px;
   }
 `;
 const Name = styled.p`
@@ -44,51 +46,40 @@ const Location = styled.p`
   line-height: 24px;
 `;
 
-type Props = {
-  date: Moment;
+type Tag = {
+  tagName: string;
+  image?: string;
 };
 
-function MainInformation(props: Props) {
+type Props = {
+  date: Moment;
+  content: Tag[];
+  price: number | string;
+  currency: string;
+  averageRating: number;
+};
+
+function MainInformation({
+  date,
+  content,
+  price,
+  currency,
+  averageRating,
+}: Props) {
   return (
     <Wrapper>
       <InformationalBlock>
         <Name>Event Name, The best of all event great</Name>
-        <AverageRating averageRating={2.4} />
-        <Tags
-          content={[
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "show this",
-              image: "",
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-            {
-              tagName: "dont show this",
-              image: shoppingCart.src,
-            },
-          ]}
-        />
+        <AverageRating averageRating={averageRating} />
+        <Tags content={content} />
         <Location>Brno, Podebradova, Kralove-pole CR 614200</Location>
       </InformationalBlock>
       <FunctionalBlock>
-        <Button inscription={props.date} />
+        <Button inscription={date} />
         <Button
-          inscription="6555500kc"
+          inscription={price} // TODO if space => goes nuts
           contentAfterInscription={[
+            currency,
             <img src={shoppingCart.src} alt="icon" />,
             "+",
           ]}

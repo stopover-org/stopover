@@ -55,8 +55,11 @@ type Props = {
 };
 
 function AverageRating(props: Props) {
+  const { averageRating } = props;
+
   const calculatePositon = (maxRate: number, averageRate: number) =>
     Math.round((averageRate / maxRate) * 100);
+
   return (
     <Wrapper className="average-rating-wrapper">
       <AverageRatingWrapper>
@@ -71,16 +74,10 @@ function AverageRating(props: Props) {
               <img key={index} src={outlineStar.src} alt="outlineStar" />
             ))}
           </OutlineStarsStyle>
-          <RateBackground
-            position={calculatePositon(
-              5,
-              props.averageRating ? props.averageRating : 0
-            )}
-          />
+          <RateBackground position={calculatePositon(5, averageRating || 0)} />
         </StarsWrapper>
-
         <NumbericValueWrapper>
-          <NumericValue>{props.averageRating}</NumericValue>
+          <NumericValue>{averageRating}</NumericValue>
         </NumbericValueWrapper>
       </AverageRatingWrapper>
     </Wrapper>
