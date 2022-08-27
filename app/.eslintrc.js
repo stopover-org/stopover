@@ -7,7 +7,8 @@ module.exports = {
   ],
   "plugins": ["prettier"],
   parserOptions: {
-    project: "tsconfig.json"
+    project: "tsconfig.json",
+    tsconfigRootDir: __dirname
   },
   rules: {
     "prettier/prettier": ["error"],

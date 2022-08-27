@@ -1,57 +1,61 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import ItemGallery from "./ItemGallery";
+import { imageArray } from "../../constants";
 
-const Wrapper = styled.div``;
-const Cards = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border: 3px solid red;
 `;
-const RatioWidth = styled.div<{ width: string }>`
-  max-width: ${(props) => props.width};
-  width: ${(props) => props.width};
+const CarouselContainer = styled.div`
+  border: 1px solid black;
+  overflow: scroll;
 `;
-const Card = styled.div<{ height: string }>`
+const MainImage = styled.img`
+  width: 500px;
+  height: 500px;
+`;
+const Carousel = styled.div<{ width: number }>`
+  border: 4px solid green;
+  width: ${(props) => props.width}px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
   position: relative;
-  height: ${(props) => props.height};
-  overflow: hidden;
-`;
-const Image = styled.img`
-  display: block;
-  position: absolute;
-  width: 100%;
-  min-width: 500px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  transition: left 1s ease;
 `;
 
-function GalleryOfPhotoes() {
-  const bigCardRatio = 0.6;
-  const smallCardRatio = 0.4;
-  const smallCardHeight = "50%";
-  const image =
-    "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg";
+function GalleryOfPhotes() {
+  const [imageState, setImageState] = useState<number>(0);
 
+  const imageWidth = 155;
+  const carouselWidth = imageArray.length * imageWidth;
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const onClickChoose = (id: string) => {
+    setImageState(imageArray.findIndex((item) => item.id === id));
+  };
   return (
     <Wrapper>
-      <Cards>
-        <RatioWidth width={`calc(${bigCardRatio}*100vw)`}>
-          <Card height={`calc(${bigCardRatio}*100vw / 1.6)`}>
-            <Image src={image} />
-          </Card>
-        </RatioWidth>
-
-        <RatioWidth width={`calc(${smallCardRatio}*100vw)`}>
-          <Card height={smallCardHeight}>
-            <Image src={image} />
-          </Card>
-          <Card height={smallCardHeight}>
-            <Image src={image} />
-          </Card>
-        </RatioWidth>
-      </Cards>
+      <MainImage src={imageArray[imageState].image} />
+      <CarouselContainer ref={carouselRef}>
+        <Carousel width={carouselWidth}>
+          {imageArray.map((item, index) => (
+            <ItemGallery
+              image={item.image}
+              description={item.description}
+              id={item.id}
+              key={index}
+              onClickChoose={onClickChoose}
+            />
+          ))}
+        </Carousel>
+      </CarouselContainer>
     </Wrapper>
   );
 }
 
-export default GalleryOfPhotoes;
+export default GalleryOfPhotes;

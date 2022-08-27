@@ -8,6 +8,7 @@ import MainInformation from "../../components/EventCard/MainInformation";
 import GalleryOfPhotes from "../../components/EventCard/GalleryOfPhotes";
 import Comments from "../../components/EventCard/Comments";
 import shoppingCart from "../../components/icons/Solid/General/Shopping-cart.svg";
+import PreviewPhotes from "../../components/EventCard/GalleryOfPhotes/PreviewPhotes";
 
 const Body = styled.div`
   padding: 30px;
@@ -40,6 +41,7 @@ function Events() {
           currency="$"
           averageRating={2.4}
         />
+        <PreviewPhotes />
         <GalleryOfPhotes />
         <DetailedInformation />
         <Comments />
