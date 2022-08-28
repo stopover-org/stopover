@@ -12,7 +12,6 @@ import PriceInput from "./PriceInput";
 const FilterBar = styled.div``;
 
 const MainFilters = styled.div`
-  border-right: 1px solid black;
   padding: 0px 36px 30px 30px;
   margin-right: 56px;
   padding-left: 30px; //top right bottom left
@@ -30,8 +29,6 @@ const StartingPoint = styled.div`
   justify-content: space-between;
   flex-direction: column;
   padding: 0px 0px 244px 30px;
-  //height: 156px;
-  //margin: 0px 0px 63px 0px;
 `;
 
 const Separator = styled.div`

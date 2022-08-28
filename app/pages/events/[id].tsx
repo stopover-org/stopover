@@ -5,10 +5,9 @@ import Layout from "../../components/MainPage/Layout";
 import BreadCrums from "../../components/EventCard/BreadCrums";
 import DetailedInformation from "../../components/EventCard/DetailedInformation";
 import MainInformation from "../../components/EventCard/MainInformation";
-import GalleryOfPhotes from "../../components/EventCard/GalleryOfPhotes";
 import Comments from "../../components/EventCard/Comments";
 import shoppingCart from "../../components/icons/Solid/General/Shopping-cart.svg";
-import PreviewPhotes from "../../components/EventCard/GalleryOfPhotes/PreviewPhotes";
+import PreviewPhotes from "../../components/EventCard/PreviewPhotes";
 
 const Body = styled.div`
   padding: 30px;
@@ -42,7 +41,6 @@ function Events() {
           averageRating={2.4}
         />
         <PreviewPhotes />
-        <GalleryOfPhotes />
         <DetailedInformation />
         <Comments />
       </Body>
