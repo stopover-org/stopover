@@ -13,7 +13,7 @@ const Body = styled.div`
   padding: 30px;
 `;
 
-function Events() {
+function Event() {
   const router = useRouter();
   const { date } = router.query;
   return (
@@ -48,4 +48,4 @@ function Events() {
   );
 }
 
-export default React.memo(Events);
+export default React.memo(Event);

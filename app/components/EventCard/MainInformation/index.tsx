@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 15px 0px 0px 0px;
+  padding: 15px 0px 6px 0px;
 `;
 const InformationalBlock = styled.div`
   .average-rating-wrapper {

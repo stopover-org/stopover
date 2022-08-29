@@ -1,21 +1,31 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import PhotoTrio from "./PhotoTrio";
-import GalleryOfPhotes from "./GalleryOfPhotoes";
+import GalleryOfPhotoes from "./GalleryOfPhotoes";
+import { imageArray } from "../../constants";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  padding-top: 6px;
+`;
 
 function PreviewPhotes() {
-  const [gallery, setGallery] = useState<boolean>(false);
-  const clickHandler = () => {
-    console.log(gallery);
-    setGallery(!gallery);
-  };
+  const [isOpenGallery, setIsOpenGallery] = useState<boolean>(false);
 
   return (
     <Wrapper>
-      {gallery ? <GalleryOfPhotes onClick={clickHandler} /> : ""}
-      <PhotoTrio onClick={clickHandler} />
+      <GalleryOfPhotoes
+        isOpen={isOpenGallery}
+        onClose={() => setIsOpenGallery(false)}
+        images={imageArray}
+      />
+      <PhotoTrio
+        onOpen={() => setIsOpenGallery(true)}
+        images={[
+          "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg",
+          "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg",
+          "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg",
+        ]}
+      />
     </Wrapper>
   );
 }

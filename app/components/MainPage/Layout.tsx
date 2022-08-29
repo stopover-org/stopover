@@ -22,6 +22,7 @@ function Layout({ children }: Props) {
 
   return (
     <Wrapper>
+      <div id="galleryOfPhotoes" />
       <Header />
       {!isSSR ? children : null}
       <Footer />
