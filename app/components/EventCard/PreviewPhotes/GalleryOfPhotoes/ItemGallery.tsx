@@ -10,9 +10,9 @@ const Wrapper = styled.div`
 
 const ImageContainer = styled.img<{ color: string }>`
   cursor: pointer;
-  width: 125px;
-  height: 125px;
-  border: 3px solid ${(props) => props.color};
+  width: 110px;
+  height: 110px;
+  border: 5px solid ${(props) => props.color};
   background-color: ${(props) => props.color};
 `;
 
