@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import solidStar from "../../icons/Solid/Status/Star.svg";
-import outlineStar from "../../icons/Outline/Status/Star.svg";
+import outlinedStar from "../../icons/Outline/Status/Star.svg";
 
 const Wrapper = styled.div`
   display: flex;
@@ -54,9 +54,12 @@ type Props = {
   averageRating?: number;
 };
 
-function AverageRating(props: Props) {
+const AverageRating = (props: Props) => {
+  const { averageRating } = props;
+
   const calculatePositon = (maxRate: number, averageRate: number) =>
     Math.round((averageRate / maxRate) * 100);
+
   return (
     <Wrapper className="average-rating-wrapper">
       <AverageRatingWrapper>
@@ -68,23 +71,17 @@ function AverageRating(props: Props) {
           </SolidStarsStyle>
           <OutlineStarsStyle>
             {new Array(5).fill("").map((item, index) => (
-              <img key={index} src={outlineStar.src} alt="outlineStar" />
+              <img key={index} src={outlinedStar.src} alt="outlinedStar" />
             ))}
           </OutlineStarsStyle>
-          <RateBackground
-            position={calculatePositon(
-              5,
-              props.averageRating ? props.averageRating : 0
-            )}
-          />
+          <RateBackground position={calculatePositon(5, averageRating || 0)} />
         </StarsWrapper>
-
         <NumbericValueWrapper>
-          <NumericValue>{props.averageRating}</NumericValue>
+          <NumericValue>{averageRating}</NumericValue>
         </NumbericValueWrapper>
       </AverageRatingWrapper>
     </Wrapper>
   );
-}
+};
 
 export default AverageRating;

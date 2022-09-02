@@ -48,21 +48,21 @@ type Props = {
   onClickChoose: (id: string) => void;
 };
 
-function ItemGallery(props: Props) {
+const ItemGallery = (props: Props) => {
   const borderColor = props.chosen ? "#FF8A00" : "transparent";
   const crossVisible = props.chosen ? "block" : "none";
 
   return (
     <Wrapper onClick={() => props.onClickChoose(props.id)}>
       <ImageContainer color={borderColor} cross={crossVisible}>
-        <img alt="придумай название4" src={props.image} />
+        <img alt={props.description} src={props.image} />
         <div>
-          <img alt="придумай название4" src={cross.src} />
+          <img alt={props.description} src={cross.src} />
         </div>
       </ImageContainer>
       <DescriptionContainer>{props.description}</DescriptionContainer>
     </Wrapper>
   );
-}
+};
 
 export default ItemGallery;

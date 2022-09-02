@@ -16,9 +16,6 @@ const Input = styled.input`
   width: 150px;
   height: 35px;
   border-radius: 3px;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 29px;
   color: #656565;
   &:focus {
     outline: none;
@@ -47,7 +44,7 @@ const isValidNumber = (value: any) => !+value.isNaN();
 const isValid = (value: any) =>
   !(value === undefined || +value === undefined || value === null);
 
-function PriceInput(props: Props) {
+const PriceInput = (props: Props) => {
   const [startPrice, setStartPrice] = useState<string>(
     props.minPrice.toString()
   );
@@ -100,6 +97,6 @@ function PriceInput(props: Props) {
       </InputContainer>
     </Wrapper>
   );
-}
+};
 
 export default PriceInput;

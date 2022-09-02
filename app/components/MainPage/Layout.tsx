@@ -13,7 +13,7 @@ type Props = {
   children: React.ReactElement;
 };
 
-function Layout({ children }: Props) {
+const Layout = ({ children }: Props) => {
   const [isSSR, setIsSSR] = React.useState(true);
 
   React.useEffect(() => {
@@ -22,11 +22,12 @@ function Layout({ children }: Props) {
 
   return (
     <Wrapper>
+      <div id="galleryOfPhotoes" />
       <Header />
       {!isSSR ? children : null}
       <Footer />
     </Wrapper>
   );
-}
+};
 
 export default Layout;

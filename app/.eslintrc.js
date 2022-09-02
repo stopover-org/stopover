@@ -7,7 +7,8 @@ module.exports = {
   ],
   "plugins": ["prettier"],
   parserOptions: {
-    project: "app/tsconfig.json"
+    project: "tsconfig.json",
+    tsconfigRootDir: __dirname
   },
   rules: {
     "prettier/prettier": ["error"],
@@ -18,6 +19,14 @@ module.exports = {
     "react/require-default-props": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/no-static-element-interactions": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "react/function-component-definition": [
+      2,
+      {
+        namedComponents: "arrow-function",
+        unnamedComponents: "arrow-function",
+      },
+    ],
+    "react/prop-types": "off"
   }
 }

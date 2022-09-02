@@ -16,6 +16,10 @@ module Types
       argument :id, Integer, required: false
     end
 
+    field :event, Types::EventType do
+      argument :id, Integer, required: true
+    end
+
     def current_user
       context[:current_user]
     end
@@ -26,6 +30,10 @@ module Types
 
     def events(**args)
       ::EventsQuery.new(args[:filters]&.to_h || {}, Event.active.limit(10), current_user).all
+    end
+
+    def event(**args)
+      Event.find(args[:id])
     end
   end
 end

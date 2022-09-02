@@ -20,12 +20,12 @@ const ButtonStyle = styled.div`
     transition: ease-in-out 1s;
   }
 `;
-const Inscription = styled.div`
+const Description = styled.div`
   font-weight: 400;
   font-size: 28px;
   line-height: 34px;
 `;
-const ContentAfterInscriptionStyle = styled.div`
+const ContentAfterDescriptionStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,41 +37,58 @@ const ContentAfterInscriptionStyle = styled.div`
   height: 25px;
 `;
 type Props = {
-  contentAfterInscription?: Array<JSX.Element | number | string | undefined>;
-  inscription: string | Moment | number;
+  contentAfterDescription?: Array<JSX.Element | number | string | undefined>;
+  description: string | Moment | number;
 };
 
-const arrayExist = (item: Props["contentAfterInscription"]) =>
-  !!item !== undefined;
-const arrayIsEmpty = (item: Props["contentAfterInscription"]) =>
+const arrayExist = (item: Props["contentAfterDescription"]) => !!item;
+const arrayIsEmpty = (item: Props["contentAfterDescription"]) =>
   item?.length === 0;
-const isMoment = (item: Props["inscription"]) => item instanceof moment;
-const dateIsValid = (item: Props["inscription"]) => (item as Moment).isValid();
-const isString = (item: Props["inscription"]) => typeof item === "string";
-const isNumber = (item: Props["inscription"]) => typeof item === "number";
+const isMoment = (item: Props["description"]) => item instanceof moment;
+const dateIsValid = (item: Props["description"]) => (item as Moment).isValid();
+const isString = (item: Props["description"]) => typeof item === "string";
+const isNumber = (item: Props["description"]) => typeof item === "number";
+const couldBeAValidMoment = (item: Props["description"]) =>
+  moment(item, "DD.MM.YY").isValid();
 
-function Button(props: Props) {
+const Button = ({ contentAfterDescription, description }: Props) => {
+  if (
+    !isMoment(description) &&
+    !isString(description) &&
+    !isNumber(description) &&
+    !couldBeAValidMoment(description) &&
+    !arrayExist(contentAfterDescription)
+  )
+    return null;
   return (
-    <Wrapper id="fncBlock">
+    <Wrapper className="button-wrapper">
       <ButtonStyle>
-        {(isString(props.inscription) || isNumber(props.inscription)) && (
-          <Inscription>{props.inscription as string | number}</Inscription>
+        {isString(description) && couldBeAValidMoment(description) && (
+          <Description>
+            {moment(description, "DD.MM.YY").format("DD MMMM YYYY")}
+          </Description>
         )}
-        {isMoment(props.inscription) && dateIsValid(props.inscription) && (
-          <Inscription>
-            {(props.inscription as Moment).format("DD.MM.YY")}
-          </Inscription>
-        )}
-        {arrayExist(props.contentAfterInscription) &&
-          !arrayIsEmpty(props.contentAfterInscription) &&
-          (props.contentAfterInscription as []).map((item, index) => (
-            <ContentAfterInscriptionStyle key={index}>
+        {!isString(description) &&
+          isMoment(description) &&
+          dateIsValid(description) && (
+            <Description>
+              {(description as Moment).format("DD MMMM YYYY")}
+            </Description>
+          )}
+        {(isString(description) || isNumber(description)) &&
+          !couldBeAValidMoment(description) && (
+            <Description>{description as string | number}</Description>
+          )}
+        {arrayExist(contentAfterDescription) &&
+          !arrayIsEmpty(contentAfterDescription) &&
+          (contentAfterDescription as []).map((item, index) => (
+            <ContentAfterDescriptionStyle key={index}>
               {item}
-            </ContentAfterInscriptionStyle>
+            </ContentAfterDescriptionStyle>
           ))}
       </ButtonStyle>
     </Wrapper>
   );
-}
+};
 
 export default Button;
