@@ -40,20 +40,23 @@ const Image = styled.img`
   transform: translate(-50%, -50%);
 `;
 
-function PreviewPhotes() {
+type Props = {
+  images: string[];
+  onOpen?: () => void;
+};
+
+const PhotoTrio = ({ images, onOpen }: Props) => {
   const bigCardRatio = 0.6;
   const smallCardRatio = 0.4;
   const smallCardHeight = "50%";
-  const image =
-    "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg";
 
   return (
     <Wrapper>
-      <Cards>
+      <Cards onClick={onOpen}>
         <RatioWidth width={`calc(${bigCardRatio}*100vw)`}>
           <CardWrapper height="100%" className="big-card-wrapper">
             <Card height={`calc(${bigCardRatio}*100vw / 1.6)`}>
-              <Image src={image} />
+              <Image src={images[0]} />
             </Card>
           </CardWrapper>
         </RatioWidth>
@@ -64,7 +67,7 @@ function PreviewPhotes() {
             className="small-card-wrapper-top"
           >
             <Card height="100%">
-              <Image src={image} />
+              <Image src={images[1]} />
             </Card>
           </CardWrapper>
 
@@ -73,13 +76,13 @@ function PreviewPhotes() {
             className="small-card-wrapper-bottom"
           >
             <Card height="100%">
-              <Image src={image} />
+              <Image src={images[2]} />
             </Card>
           </CardWrapper>
         </RatioWidth>
       </Cards>
     </Wrapper>
   );
-}
+};
 
-export default PreviewPhotes;
+export default PhotoTrio;

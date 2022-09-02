@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 15px 0px 0px 0px;
+  padding: 15px 0px 6px 0px;
 `;
 const InformationalBlock = styled.div`
   .average-rating-wrapper {
@@ -59,34 +59,32 @@ type Props = {
   averageRating: number;
 };
 
-function MainInformation({
+const MainInformation = ({
   date,
   content,
   price,
   currency,
   averageRating,
-}: Props) {
-  return (
-    <Wrapper>
-      <InformationalBlock>
-        <Name>Event Name, The best of all event great</Name>
-        <AverageRating averageRating={averageRating} />
-        <Tags content={content} />
-        <Location>Brno, Podebradova, Kralove-pole CR 614200</Location>
-      </InformationalBlock>
-      <FunctionalBlock>
-        <Button inscription={date} />
-        <Button
-          inscription={price} // TODO if space => goes nuts
-          contentAfterInscription={[
-            currency,
-            <img src={shoppingCart.src} alt="icon" />,
-            "+",
-          ]}
-        />
-      </FunctionalBlock>
-    </Wrapper>
-  );
-}
+}: Props) => (
+  <Wrapper>
+    <InformationalBlock>
+      <Name>Event Name, The best of all event great</Name>
+      <AverageRating averageRating={averageRating} />
+      <Tags content={content} />
+      <Location>Brno, Podebradova, Kralove-pole CR 614200</Location>
+    </InformationalBlock>
+    <FunctionalBlock>
+      <Button inscription={date} />
+      <Button
+        inscription={price} // TODO if space => goes nuts
+        contentAfterInscription={[
+          currency,
+          <img src={shoppingCart.src} alt="icon" />,
+          "+",
+        ]}
+      />
+    </FunctionalBlock>
+  </Wrapper>
+);
 
 export default MainInformation;
