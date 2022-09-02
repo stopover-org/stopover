@@ -1,26 +1,44 @@
 import React from "react";
-import { useRouter } from "next/router";
 import styled from "styled-components";
+import { graphql, useLazyLoadQuery } from "react-relay";
+import { NextPage } from "next";
+import { useRouter } from "next/router";
 import Layout from "../../components/MainPage/Layout";
-import BreadCrums from "../../components/EventCard/BreadCrums";
 import DetailedInformation from "../../components/EventCard/DetailedInformation";
 import MainInformation from "../../components/EventCard/MainInformation";
 import GalleryOfPhotes from "../../components/EventCard/GalleryOfPhotes";
 import Comments from "../../components/EventCard/Comments";
 import shoppingCart from "../../components/icons/Solid/General/Shopping-cart.svg";
 import PreviewPhotes from "../../components/EventCard/GalleryOfPhotes/PreviewPhotes";
+import Breadcrumbs from "../../components/EventCard/Breadcrumbs";
+import { Id_Query } from "./__generated__/Id_Query.graphql";
 
 const Body = styled.div`
   padding: 30px;
 `;
 
-function Events() {
+const Query = graphql`
+  query Id_Query($id: Int!) {
+    event(id: $id) {
+      id
+      ...Breadcrumbs_Fragment
+    }
+  }
+`;
+
+type Props = {
+  id: number;
+};
+
+const Event: NextPage<Props> = ({ id }) => {
   const router = useRouter();
   const { date } = router.query;
+  const { event } = useLazyLoadQuery<Id_Query>(Query, { id });
+
   return (
     <Layout>
       <Body>
-        <BreadCrums />
+        <Breadcrumbs eventReference={event} />
         <MainInformation
           date={date}
           content={[
@@ -48,6 +66,12 @@ function Events() {
       </Body>
     </Layout>
   );
-}
+};
 
-export default React.memo(Events);
+export const getServerSideProps = (ctx: any) => ({
+  props: {
+    id: +ctx.query.id,
+  },
+});
+
+export default React.memo(Event);
