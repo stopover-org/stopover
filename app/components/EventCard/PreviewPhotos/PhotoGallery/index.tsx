@@ -74,7 +74,7 @@ type Props = {
   onClose?: () => void;
 };
 
-const GalleryOfPhotoes = ({ isOpen, images, onClose }: Props) => {
+const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
   const [indexOfCurrentImage, setIndexOfCurrentImage] = useState<number>(0);
   const [carouselHeight, setCarouselHeight] = useState<number | undefined>(0);
   const mainImageRef = useRef<HTMLDivElement>(null);
@@ -130,4 +130,4 @@ const GalleryOfPhotoes = ({ isOpen, images, onClose }: Props) => {
   );
 };
 
-export default GalleryOfPhotoes;
+export default PhotoGallery;

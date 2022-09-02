@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import PhotoTrio from "./PhotoTrio";
-import GalleryOfPhotoes from "./GalleryOfPhotoes";
+import PhotoGallery from "./PhotoGallery";
 import { imageArray } from "../../constants";
 
 const Wrapper = styled.div`
   padding-top: 6px;
 `;
 
-const PreviewPhotes = () => {
+const PreviewPhotos = () => {
   const [isOpenGallery, setIsOpenGallery] = useState<boolean>(false);
 
   return (
     <Wrapper>
-      <GalleryOfPhotoes
+      <PhotoGallery
         isOpen={isOpenGallery}
         onClose={() => setIsOpenGallery(false)}
         images={imageArray}
@@ -30,4 +30,4 @@ const PreviewPhotes = () => {
   );
 };
 
-export default PreviewPhotes;
+export default PreviewPhotos;

@@ -74,10 +74,10 @@ const MainInformation = ({
       <Location>Brno, Podebradova, Kralove-pole CR 614200</Location>
     </InformationalBlock>
     <FunctionalBlock>
-      <Button inscription={date} />
+      <Button description={date} />
       <Button
-        inscription={price} // TODO if space => goes nuts
-        contentAfterInscription={[
+        description={price} // TODO if space => goes nuts
+        contentAfterDescription={[
           currency,
           <img src={shoppingCart.src} alt="icon" />,
           "+",

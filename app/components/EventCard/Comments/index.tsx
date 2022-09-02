@@ -3,8 +3,6 @@ import styled from "styled-components";
 
 const Wrapper = styled.div``;
 
-function Comments() {
-  return <Wrapper />;
-}
+const Comments = () => <Wrapper>dsafasdf</Wrapper>;
 
 export default Comments;

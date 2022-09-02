@@ -8,13 +8,19 @@ import DetailedInformation from "../../components/EventCard/DetailedInformation"
 import MainInformation from "../../components/EventCard/MainInformation";
 import Comments from "../../components/EventCard/Comments";
 import shoppingCart from "../../components/icons/Solid/General/Shopping-cart.svg";
-import PreviewPhotes from "../../components/EventCard/PreviewPhotes";
 import Breadcrumbs from "../../components/EventCard/Breadcrumbs";
 import { Id_Query } from "./__generated__/Id_Query.graphql";
+import PreviewPhotos from "../../components/EventCard/PreviewPhotos";
+import Check from "../../components/EventCard/Check";
 
 const Body = styled.div`
   padding: 30px;
 `;
+const Bottom = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const NotCheck = styled.div``;
 
 const Query = graphql`
   query Id_Query($id: Int!) {
@@ -58,9 +64,14 @@ const Event: NextPage<Props> = ({ id }) => {
           currency="$"
           averageRating={2.4}
         />
-        <PreviewPhotes />
-        <DetailedInformation />
-        <Comments />
+        <PreviewPhotos />
+        <Bottom>
+          <NotCheck>
+            <DetailedInformation />
+            <Comments />
+          </NotCheck>
+          <Check />
+        </Bottom>
       </Body>
     </Layout>
   );
