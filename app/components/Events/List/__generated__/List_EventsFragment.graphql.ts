@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4752d884caa6a0efc51db1243785d470>>
+ * @generated SignedSource<<8c324681b8c746a4792853e494d0b25d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,14 @@ export type List_EventsFragment$data = {
         readonly title: string | null;
         readonly description: string | null;
         readonly id: string | null;
+        readonly availableDates: ReadonlyArray<any> | null;
+        readonly tags: ReadonlyArray<{
+          readonly title: string | null;
+        }> | null;
+        readonly interests: ReadonlyArray<{
+          readonly id: string | null;
+          readonly title: string | null;
+        }> | null;
       } | null;
     } | null> | null;
   } | null;
@@ -30,7 +38,21 @@ export type List_EventsFragment$key = {
 const node: ReaderFragment = (function(){
 var v0 = [
   "events"
-];
+],
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
 return {
   "argumentDefinitions": [
     {
@@ -93,13 +115,7 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "title",
-                  "storageKey": null
-                },
+                (v1/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -107,11 +123,37 @@ return {
                   "name": "description",
                   "storageKey": null
                 },
+                (v2/*: any*/),
                 {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "id",
+                  "name": "availableDates",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Tag",
+                  "kind": "LinkedField",
+                  "name": "tags",
+                  "plural": true,
+                  "selections": [
+                    (v1/*: any*/)
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Interest",
+                  "kind": "LinkedField",
+                  "name": "interests",
+                  "plural": true,
+                  "selections": [
+                    (v2/*: any*/),
+                    (v1/*: any*/)
+                  ],
                   "storageKey": null
                 },
                 {
@@ -168,6 +210,6 @@ return {
 };
 })();
 
-(node as any).hash = "1e2db55d921b57d32aa8d43a38b33109";
+(node as any).hash = "dbb32e4997c65561eee6c252472a11fe";
 
 export default node;

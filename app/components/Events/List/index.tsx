@@ -41,6 +41,14 @@ const EventsList = ({ eventsRef }: Props) => {
               title
               description
               id
+              availableDates
+              tags {
+                  title
+              }
+              interests {
+                  id
+                  title
+              }
             }
           }
         }
@@ -48,6 +56,8 @@ const EventsList = ({ eventsRef }: Props) => {
     `,
     eventsRef
   );
+
+  console.log(data)
 
   return (
     <Wrapper>

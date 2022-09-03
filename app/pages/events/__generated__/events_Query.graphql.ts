@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<971e0c0c1b015932d2fbe11473c31f6d>>
+ * @generated SignedSource<<8c3a8bc185238cf6c4d6ac31558a9744>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,51 +10,31 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type EventsListPaginationQuery$variables = {
-  count?: number | null;
-  cursor?: string | null;
-};
-export type EventsListPaginationQuery$data = {
+export type events_Query$variables = {};
+export type events_Query$data = {
   readonly " $fragmentSpreads": FragmentRefs<"List_EventsFragment">;
 };
-export type EventsListPaginationQuery = {
-  variables: EventsListPaginationQuery$variables;
-  response: EventsListPaginationQuery$data;
+export type events_Query = {
+  variables: events_Query$variables;
+  response: events_Query$data;
 };
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "defaultValue": 10,
-    "kind": "LocalArgument",
-    "name": "count"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "cursor"
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
-    "name": "after",
-    "variableName": "cursor"
-  },
-  {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "first",
-    "variableName": "count"
+    "value": 10
   }
 ],
-v2 = {
+v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "title",
   "storageKey": null
 },
-v3 = {
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -63,24 +43,13 @@ v3 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "EventsListPaginationQuery",
+    "name": "events_Query",
     "selections": [
       {
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "count",
-            "variableName": "count"
-          },
-          {
-            "kind": "Variable",
-            "name": "cursor",
-            "variableName": "cursor"
-          }
-        ],
+        "args": null,
         "kind": "FragmentSpread",
         "name": "List_EventsFragment"
       }
@@ -90,13 +59,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "EventsListPaginationQuery",
+    "name": "events_Query",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v0/*: any*/),
         "concreteType": "EventConnection",
         "kind": "LinkedField",
         "name": "events",
@@ -118,7 +87,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v2/*: any*/),
+                  (v1/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -126,7 +95,7 @@ return {
                     "name": "description",
                     "storageKey": null
                   },
-                  (v3/*: any*/),
+                  (v2/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -142,8 +111,8 @@ return {
                     "name": "tags",
                     "plural": true,
                     "selections": [
-                      (v2/*: any*/),
-                      (v3/*: any*/)
+                      (v1/*: any*/),
+                      (v2/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -155,8 +124,8 @@ return {
                     "name": "interests",
                     "plural": true,
                     "selections": [
-                      (v3/*: any*/),
-                      (v2/*: any*/)
+                      (v2/*: any*/),
+                      (v1/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -206,11 +175,11 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": null
+        "storageKey": "events(first:10)"
       },
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v0/*: any*/),
         "filters": null,
         "handle": "connection",
         "key": "Events_events",
@@ -220,16 +189,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8897d7ce0f136cda4108a60fd8cc6034",
+    "cacheID": "42cb61c3d5af90cf6f7e0f0e43bfe239",
     "id": null,
     "metadata": {},
-    "name": "EventsListPaginationQuery",
+    "name": "events_Query",
     "operationKind": "query",
-    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...List_EventsFragment_1G22uz\n}\n\nfragment List_EventsFragment_1G22uz on Query {\n  events(first: $count, after: $cursor) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query events_Query {\n  ...List_EventsFragment\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "dbb32e4997c65561eee6c252472a11fe";
+(node as any).hash = "3a8c3685f8b8a2accfbca217c9a99b2e";
 
 export default node;
