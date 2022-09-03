@@ -178,8 +178,8 @@ interface Node {
 
 type Query {
   currentUser: User
-  event(id: Int!): Event
-  events(id: Int): [Event!]
+  event(id: ID!): Event
+  events(id: ID): [Event!]
   interests(filters: InterestsFilter): [Interest!]
 
   """

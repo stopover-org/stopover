@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { graphql, useLazyLoadQuery } from "react-relay";
-import { NextPage } from "next";
+import { graphql, usePreloadedQuery } from "react-relay";
 import { useRouter } from "next/router";
+import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import DetailedInformation from "../../components/EventCard/DetailedInformation";
 import MainInformation from "../../components/EventCard/MainInformation";
@@ -12,6 +12,8 @@ import Breadcrumbs from "../../components/EventCard/Breadcrumbs";
 import { Id_Query } from "./__generated__/Id_Query.graphql";
 import PreviewPhotos from "../../components/EventCard/PreviewPhotos";
 import Check from "../../components/EventCard/Check";
+import { getClientEnvironment } from "../../lib/clientEnvironment";
+import Loading from "../../components/Loading";
 
 const Body = styled.div`
   padding: 30px;
@@ -23,7 +25,7 @@ const Bottom = styled.div`
 const NotCheck = styled.div``;
 
 const Query = graphql`
-  query Id_Query($id: Int!) {
+  query Id_Query($id: ID!) {
     event(id: $id) {
       id
       ...Breadcrumbs_Fragment
@@ -35,10 +37,10 @@ type Props = {
   id: number;
 };
 
-const Event: NextPage<Props> = ({ id }) => {
+const Event = ({ preloadedQuery }: RelayProps<Props, Id_Query>) => {
   const router = useRouter();
   const { date } = router.query;
-  const { event } = useLazyLoadQuery<Id_Query>(Query, { id });
+  const { event } = usePreloadedQuery(Query, preloadedQuery);
 
   return (
     <Layout>
@@ -76,11 +78,21 @@ const Event: NextPage<Props> = ({ id }) => {
     </Layout>
   );
 };
-
-export const getServerSideProps = (ctx: any) => ({
-  props: {
-    id: +ctx.query.id,
+export default withRelay(Event, Query, {
+  // Fallback to render while the page is loading.
+  // This property is optional.
+  fallback: <Loading />,
+  // Create a Relay environment on the client-side.
+  // Note: This function must always return the same value.
+  createClientEnvironment: () => getClientEnvironment()!,
+  // Gets server side props for the page.
+  serverSideProps: async (ctx) => ({ id: +ctx.query.id! }),
+  // Server-side props can be accessed as the second argument
+  // to this function.
+  createServerEnvironment: async () => {
+    const { createServerEnvironment } = await import(
+      "../../lib/serverEnvironment"
+    );
+    return createServerEnvironment();
   },
 });
-
-export default React.memo(Event);

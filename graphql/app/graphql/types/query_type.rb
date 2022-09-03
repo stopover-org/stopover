@@ -13,11 +13,11 @@ module Types
     end
 
     field :events, [Types::EventType] do
-      argument :id, Integer, required: false
+      argument :id, ID, required: false
     end
 
     field :event, Types::EventType do
-      argument :id, Integer, required: true
+      argument :id, ID, required: true
     end
 
     def current_user

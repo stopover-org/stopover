@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4fca5d5f55566ff9dc6ea7e87cc59f6d>>
+ * @generated SignedSource<<d2fd06c2f7243c30faa1e3c9ccd64a7e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,7 +11,7 @@
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type Id_Query$variables = {
-  id: number;
+  id: string;
 };
 export type Id_Query$data = {
   readonly event: {
@@ -114,16 +114,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b8f7dfb05505e47880068218b5633e09",
+    "cacheID": "d3d677ff9bab569ebd25966115c9a4c9",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: Int!\n) {\n  event(id: $id) {\n    id\n    ...Breadcrumbs_Fragment\n  }\n}\n\nfragment Breadcrumbs_Fragment on Event {\n  interests {\n    id\n    title\n  }\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    id\n    ...Breadcrumbs_Fragment\n  }\n}\n\nfragment Breadcrumbs_Fragment on Event {\n  interests {\n    id\n    title\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "46932c64a0e65a1acaa2f6be5853ade4";
+(node as any).hash = "d4e050116b5d37b8f100d25af5b2e56f";
 
 export default node;
