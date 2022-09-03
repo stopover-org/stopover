@@ -1,17 +1,27 @@
 import "../styles/globals.css";
 import { AppProps } from "next/app";
 import { RelayEnvironmentProvider } from "react-relay";
-import Environment from "../lib/environment";
+import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";
+import { getClientEnvironment } from "../lib/clientEnvironment";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const clientEnv = getClientEnvironment();
+const initialPreloadedQuery = getInitialPreloadedQuery({
+  createClientEnvironment: () => getClientEnvironment()!,
+});
+
+const MyApp = ({ Component, pageProps }: AppProps) => {
+  const relayProps = getRelayProps(pageProps, initialPreloadedQuery);
+  const env = relayProps.preloadedQuery?.environment ?? clientEnv!;
+
   return (
-    <RelayEnvironmentProvider environment={Environment}>
+    <RelayEnvironmentProvider environment={env}>
       {/* не удалять комментарии */}
       {/* <Suspense fallback={'Loading...'}> */}
-      <Component {...pageProps} />
+      <Component {...pageProps} {...relayProps} />
+      {/* <Component {...pageProps} /> */}
       {/* </Suspense> */}
     </RelayEnvironmentProvider>
   );
-}
+};
 
 export default MyApp;

@@ -2,15 +2,17 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div``;
-const DottedDiv = styled.div<{ height: number; width: number }>`
+const DottedDiv = styled.div<{ height: number }>`
   position: relative;
-  width: ${(props) => props.width}px;
+  min-width: 100px;
+  width: 100%;
   height: ${(props) => props.height}px;
   background-color: #c2e0fe;
   border-bottom: 5px dashed white;
 `;
-const Div = styled.div<{ height: number; width: number }>`
-  width: ${(props) => props.width}px;
+const Div = styled.div<{ height: number }>`
+  min-width: 100px;
+  width: 100%;
   height: ${(props) => props.height}px;
   background-color: #c2e0fe;
 `;
@@ -35,16 +37,15 @@ const RightHalfCircle = styled.div<{ height: number; width: number }>`
 
 type Props = {
   height: number;
-  width: number;
 };
 
-const CheckConnect = ({ height, width }: Props) => (
+const CheckConnect = ({ height }: Props) => (
   <Wrapper>
-    <DottedDiv height={height / 2 + 2.5} width={width}>
+    <DottedDiv height={height / 2 + 2.5}>
       <LeftHalfCircle height={height} width={height / 2} />
       <RightHalfCircle height={height} width={height / 2} />
     </DottedDiv>
-    <Div height={height / 2 - 2.5} width={width} />
+    <Div height={height / 2 - 2.5} />
   </Wrapper>
 );
 export default CheckConnect;

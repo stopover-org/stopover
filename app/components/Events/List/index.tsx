@@ -1,9 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { graphql, loadQuery, usePreloadedQuery } from "react-relay";
 import InterestGallery from "../EventFilter/InterestGallery";
 import EventFilter from "../EventFilter";
-import Environment from "../../../lib/environment";
 import Search from "../EventFilter/Search";
 
 const Wrapper = styled.div`
@@ -14,61 +12,29 @@ const Wrapper = styled.div`
   min-height: 1100px;
 `;
 
-const ListOfEvents = styled.div``;
+const List = styled.div``;
 
 const Intrests = styled.div`
   padding: 0px 0px 0px 56px;
 `;
 
-const Query = graphql`
-  query ListQuery {
-    currentUser {
-      id
-    }
-    events {
-      id
-      eventType
-      title
-      description
-      country
-      city
-      status
-      eventOptions {
-        id
-        relayId
-      }
-      interests {
-        id
-        title
-      }
-      achievements {
-        title
-      }
-    }
-  }
-`;
+const EventsList = () => (
+  // usePreloadedQuery(Query, preloadedQuery);
 
-const preloadedQuery = loadQuery(Environment, Query, {});
+  <Wrapper>
+    <EventFilter />
 
-function EventsList() {
-  usePreloadedQuery(Query, preloadedQuery);
-
-  return (
-    <Wrapper>
-      <EventFilter />
-
-      <Intrests>
-        <Search
-          searchType="event"
-          inputWidth="650px"
-          placeHolder="Какое мероприятие вы ищете?"
-          helpText="Вы ищете"
-        />
-        <InterestGallery />
-        <ListOfEvents>EVENTS</ListOfEvents>
-      </Intrests>
-    </Wrapper>
-  );
-}
+    <Intrests>
+      <Search
+        searchType="event"
+        inputWidth="650px"
+        placeHolder="Какое мероприятие вы ищете?"
+        helpText="Вы ищете"
+      />
+      <InterestGallery />
+      <List>EVENTS</List>
+    </Intrests>
+  </Wrapper>
+);
 
 export default React.memo(EventsList);

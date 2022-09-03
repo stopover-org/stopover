@@ -66,10 +66,15 @@ const Counter = ({ description }: Props) => {
         <AmountNumber>{amount}</AmountNumber>
         <Buttons>
           <ButtonUp onClick={() => changeAmount(+1)}>
-            <Image src={CaretUp.src} alt="arrow up" />
+            <Image height={20} width={20} src={CaretUp.src} alt="arrow up" />
           </ButtonUp>
           <ButtonDown onClick={() => changeAmount(-1)}>
-            <Image src={CaretDown.src} alt="arrow down" />
+            <Image
+              height={20}
+              width={20}
+              src={CaretDown.src}
+              alt="arrow down"
+            />
           </ButtonDown>
         </Buttons>
         <Description>{description}</Description>
