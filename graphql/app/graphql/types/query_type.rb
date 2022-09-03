@@ -12,9 +12,7 @@ module Types
       argument :filters, Types::InterestsFilter, required: false
     end
 
-    field :events, [Types::EventType] do
-      argument :id, ID, required: false
-    end
+    field :events, Types::EventType.connection_type
 
     field :event, Types::EventType do
       argument :id, ID, required: true
@@ -29,7 +27,7 @@ module Types
     end
 
     def events(**args)
-      ::EventsQuery.new(args[:filters]&.to_h || {}, Event.active.limit(10), current_user).all
+      ::EventsQuery.new(args[:filters]&.to_h || {}, Event.active, current_user).all
     end
 
     def event(**args)

@@ -14,41 +14,6 @@ type DocumentProps = {
 // @ts-ignore
 class MyDocument extends Document<DocumentProps> {
   static async getInitialProps(ctx: DocumentContext) {
-    // // handle relay
-    // const relayDocument = createRelayDocument();
-    //
-    // const renderPage = ctx.renderPage;
-    // ctx.renderPage = () =>
-    //   renderPage({
-    //     enhanceApp: (App) => relayDocument.enhance(App),
-    //   });
-    //
-    // const initialProps = await Document.getInitialProps(ctx);
-    //
-    // // handle styled components
-    // const sheet = new ServerStyleSheet();
-    // const originalRenderPage = ctx.renderPage;
-    //
-    // try {
-    //   ctx.renderPage = () =>
-    //     originalRenderPage({
-    //       enhanceApp: (App) => (props) =>
-    //         sheet.collectStyles(<App {...props} />),
-    //     });
-    //   return {
-    //     ...initialProps,
-    //     relayDocument,
-    //     styles: (
-    //       <>
-    //         {initialProps.styles}
-    //         {sheet.getStyleElement()}
-    //       </>
-    //     ),
-    //   };
-    // } finally {
-    //   sheet.seal();
-    // }
-
     const relayDocument = createRelayDocument();
 
     const { renderPage } = ctx;

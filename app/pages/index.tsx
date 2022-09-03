@@ -9,29 +9,7 @@ import Loading from "../components/Loading";
 
 const Query = graphql`
   query pages_Query {
-    currentUser {
-      id
-    }
-    events {
-      id
-      eventType
-      title
-      description
-      country
-      city
-      status
-      eventOptions {
-        id
-        relayId
-      }
-      interests {
-        id
-        title
-      }
-      achievements {
-        title
-      }
-    }
+    ...List_EventsFragment
   }
 `;
 
@@ -41,7 +19,7 @@ const Home = ({ preloadedQuery }: RelayProps<{}, pages_Query>) => {
 
   return (
     <Layout>
-      <EventsList />
+      <EventsList eventsRef={query} />
     </Layout>
   );
 };

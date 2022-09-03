@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4cadfc91f1ce80a112001efc23e80b82>>
+ * @generated SignedSource<<16fc2f40bc95c3b229d4277f8ce5d213>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,32 +10,63 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type pages_Query$variables = {};
-export type pages_Query$data = {
+export type EventsListPaginationQuery$variables = {
+  count?: number | null;
+  cursor?: string | null;
+};
+export type EventsListPaginationQuery$data = {
   readonly " $fragmentSpreads": FragmentRefs<"List_EventsFragment">;
 };
-export type pages_Query = {
-  variables: pages_Query$variables;
-  response: pages_Query$data;
+export type EventsListPaginationQuery = {
+  variables: EventsListPaginationQuery$variables;
+  response: EventsListPaginationQuery$data;
 };
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
+    "defaultValue": 10,
+    "kind": "LocalArgument",
+    "name": "count"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "cursor"
+  }
+],
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor"
+  },
+  {
+    "kind": "Variable",
     "name": "first",
-    "value": 10
+    "variableName": "count"
   }
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "pages_Query",
+    "name": "EventsListPaginationQuery",
     "selections": [
       {
-        "args": null,
+        "args": [
+          {
+            "kind": "Variable",
+            "name": "count",
+            "variableName": "count"
+          },
+          {
+            "kind": "Variable",
+            "name": "cursor",
+            "variableName": "cursor"
+          }
+        ],
         "kind": "FragmentSpread",
         "name": "List_EventsFragment"
       }
@@ -45,13 +76,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "pages_Query",
+    "name": "EventsListPaginationQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "EventConnection",
         "kind": "LinkedField",
         "name": "events",
@@ -140,11 +171,11 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "events(first:10)"
+        "storageKey": null
       },
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "filters": null,
         "handle": "connection",
         "key": "Events_events",
@@ -154,16 +185,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "08cc4a205eddd2e433adc309acaa15f4",
+    "cacheID": "ada5584daa2a83491fab1630bce9bad5",
     "id": null,
     "metadata": {},
-    "name": "pages_Query",
+    "name": "EventsListPaginationQuery",
     "operationKind": "query",
-    "text": "query pages_Query {\n  ...List_EventsFragment\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        title\n        description\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...List_EventsFragment_1G22uz\n}\n\nfragment List_EventsFragment_1G22uz on Query {\n  events(first: $count, after: $cursor) {\n    edges {\n      node {\n        title\n        description\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "18ca3766830ba46735a69a2b7415eeac";
+(node as any).hash = "1e2db55d921b57d32aa8d43a38b33109";
 
 export default node;
