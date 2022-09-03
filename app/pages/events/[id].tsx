@@ -6,7 +6,6 @@ import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import DetailedInformation from "../../components/EventCard/DetailedInformation";
 import MainInformation from "../../components/EventCard/MainInformation";
-import Comments from "../../components/EventCard/Comments";
 import shoppingCart from "../../components/icons/Solid/General/Shopping-cart.svg";
 import Breadcrumbs from "../../components/EventCard/Breadcrumbs";
 import { Id_Query } from "./__generated__/Id_Query.graphql";
@@ -22,7 +21,9 @@ const Bottom = styled.div`
   display: flex;
   flex-direction: row;
 `;
-const NotCheck = styled.div``;
+const NotCheck = styled.div`
+  max-width: 70%;
+`;
 
 const Query = graphql`
   query Id_Query($id: ID!) {
@@ -70,7 +71,6 @@ const Event = ({ preloadedQuery }: RelayProps<Props, Id_Query>) => {
         <Bottom>
           <NotCheck>
             <DetailedInformation />
-            <Comments />
           </NotCheck>
           <Check />
         </Bottom>
