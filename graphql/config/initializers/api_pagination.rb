@@ -16,10 +16,6 @@ ApiPagination.configure do |config|
 
   # Optional: what parameter should be used to set the page option
   config.page_param = :page
-  # or
-  config.page_param do |params|
-    params[:page][:number] if params[:page].is_a?(ActionController::Parameters)
-  end
 
   # Optional: what parameter should be used to set the per page option
   config.per_page_param = :per_page
