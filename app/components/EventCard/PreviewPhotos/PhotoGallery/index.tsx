@@ -79,9 +79,22 @@ const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
   const [carouselHeight, setCarouselHeight] = useState<number | undefined>(0);
   const mainImageRef = useRef<HTMLDivElement>(null);
   const portal = document.getElementById("galleryOfPhotoes") as HTMLElement;
+
+  const keyDownHandler = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      if (onClose instanceof Function) {
+        onClose();
+      }
+    }
+  };
   useEffect(() => {
     setCarouselHeight(mainImageRef.current?.offsetHeight);
+    document.addEventListener("keydown", keyDownHandler);
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
   }, []);
+
   if (!isOpen) return null;
 
   const onClickChoose = (id: string) => {
@@ -94,7 +107,7 @@ const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
       setIndexOfCurrentImage(indexOfCurrentImage + 1);
   };
   return ReactDom.createPortal(
-    <Wrapper>
+    <Wrapper onKeyDown={() => keyDownHandler} tabIndex={0}>
       <Close onClick={onClose} />
       <Gallery>
         <MainImageWrapper carouselHeight={carouselHeight as number}>

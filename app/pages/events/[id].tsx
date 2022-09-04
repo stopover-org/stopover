@@ -30,6 +30,7 @@ const Query = graphql`
     event(id: $id) {
       id
       ...Breadcrumbs_Fragment
+      ...MainInformation_Fragment
     }
   }
 `;

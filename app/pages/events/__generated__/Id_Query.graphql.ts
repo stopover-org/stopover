@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d2fd06c2f7243c30faa1e3c9ccd64a7e>>
+ * @generated SignedSource<<87a82ef11733183478ba1ad804a976ac>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,7 @@ export type Id_Query$variables = {
 export type Id_Query$data = {
   readonly event: {
     readonly id: string | null;
-    readonly " $fragmentSpreads": FragmentRefs<"Breadcrumbs_Fragment">;
+    readonly " $fragmentSpreads": FragmentRefs<"Breadcrumbs_Fragment" | "MainInformation_Fragment">;
   } | null;
 };
 export type Id_Query = {
@@ -66,6 +66,11 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "Breadcrumbs_Fragment"
+          },
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "MainInformation_Fragment"
           }
         ],
         "storageKey": null
@@ -107,6 +112,13 @@ return {
               }
             ],
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "availableDates",
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -114,16 +126,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d3d677ff9bab569ebd25966115c9a4c9",
+    "cacheID": "decf1bcddfc01e20e4f89b077a36721e",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    id\n    ...Breadcrumbs_Fragment\n  }\n}\n\nfragment Breadcrumbs_Fragment on Event {\n  interests {\n    id\n    title\n  }\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    id\n    ...Breadcrumbs_Fragment\n    ...MainInformation_Fragment\n  }\n}\n\nfragment Breadcrumbs_Fragment on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment MainInformation_Fragment on Event {\n  availableDates\n}\n"
   }
 };
 })();
 
-(node as any).hash = "d4e050116b5d37b8f100d25af5b2e56f";
+(node as any).hash = "909edb74165e5db67a8db329b23155a1";
 
 export default node;

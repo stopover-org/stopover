@@ -5,6 +5,7 @@ import CheckConnect from "./CheckConnect";
 import Text from "./Text";
 import Counter from "./Counter";
 import Button from "./Button";
+import CheckboxList from "./CheckboxList";
 import RadioButtonList from "./RadioButtonList";
 
 const Wrapper = styled.div``;
@@ -20,20 +21,12 @@ const Check = () => (
     </Layout>
     <CheckConnect height={50} />
     <Layout>
-      <Text header="Время проведения" />
-      <RadioButtonList
-        list={[
-          {
-            description: "1:00Pm - 2:00Pm",
-          },
-          {
-            description: "3:00Pm - 4:00Pm",
-          },
-          {
-            description: "5:00Pm - 6:00Pm",
-          },
-        ]}
-      />
+      <>
+        <Text header="Время проведения" />
+        <RadioButtonList
+          list={["1:00-2:00PM", "3:00-4:00PM", "5:00-6:00PM", "7:00-8:00PM"]}
+        />
+      </>
     </Layout>
     <CheckConnect height={50} />
     <Layout>
@@ -44,44 +37,56 @@ const Check = () => (
     </Layout>
     <CheckConnect height={50} />
     <Layout>
-      <Text header="Выбор опций" />
-      <RadioButtonList
-        list={[
-          {
-            description: "Мотоцикл",
-          },
-          {
-            description: "Экшен камера",
-            price: 151661,
-            free: true,
-          },
-          {
-            description: "собака спасака",
-            price: 18511,
-          },
-          {
-            description: "собака спасака",
-            price: 18511,
-          },
-          {
-            description: "собака спасака",
-            price: 18511,
-          },
-          {
-            description: "собака спасака",
-            price: 18511,
-          },
-          {
-            description: "собака спасака",
-            price: 18511,
-          },
-          {
-            description: "собака спасака",
-            price: 18511,
-          },
-        ]}
-      />
-      <Counter description="Экшен камера" />
+      <>
+        <Text header="Выбор опций" />
+        <CheckboxList
+          list={[
+            {
+              description: "Мотоцикл",
+              id: "MY_uniq_id",
+            },
+            {
+              description: "Экшен камера",
+              price: 151661,
+              builtIn: true,
+              id: "wtf",
+            },
+            {
+              description: "собака спасака",
+              price: 578,
+              id: "good_stuff",
+            },
+            {
+              description: "Скажи круто",
+              price: 51,
+              id: "yeah",
+            },
+            {
+              description:
+                "Стресс проверка как много текста он адекватно вместит или будет прям плохо",
+              price: 63,
+              id: "dont mind",
+            },
+            {
+              description: "собака",
+              price: 8423,
+              id: "only i know about this",
+            },
+            {
+              description:
+                "а ты заметил что собака стоит дороже чем собака спасака",
+              price: 6545,
+              id: "wow",
+            },
+            {
+              description: "спасака",
+              price: 5498,
+              id: "ji",
+            },
+          ]}
+        />
+        <Counter description="Экшен камера" />
+      </>
     </Layout>
     <CheckConnect height={50} />
     <Layout>

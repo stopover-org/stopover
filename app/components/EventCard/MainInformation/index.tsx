@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { Moment } from "moment";
+import { graphql, useFragment } from "react-relay";
 import Button from "./Button";
 import AverageRating from "./AverageRating";
 import Tags from "./Tags";
 import shoppingCart from "../../icons/Solid/General/Shopping-cart.svg";
+import { Id_Query$data } from "../../../pages/events/__generated__/Id_Query.graphql";
 
 const Wrapper = styled.div`
   min-width: 500px;
@@ -57,6 +59,7 @@ type Props = {
   price: number | string;
   currency: string;
   averageRating: number;
+  eventReference: Id_Query$data["event"];
 };
 
 const MainInformation = ({
@@ -65,26 +68,38 @@ const MainInformation = ({
   price,
   currency,
   averageRating,
-}: Props) => (
-  <Wrapper>
-    <InformationalBlock>
-      <Name>Event Name, The best of all event great</Name>
-      <AverageRating averageRating={averageRating} />
-      <Tags content={content} />
-      <Location>Brno, Podebradova, Kralove-pole CR 614200</Location>
-    </InformationalBlock>
-    <FunctionalBlock>
-      <Button description={date} />
-      <Button
-        description={price} // TODO if space => goes nuts
-        contentAfterDescription={[
-          currency,
-          <img src={shoppingCart.src} alt="icon" />,
-          "+",
-        ]}
-      />
-    </FunctionalBlock>
-  </Wrapper>
-);
+  eventReference,
+}: Props) => {
+  const event = useFragment(
+    graphql`
+      fragment MainInformation_Fragment on Event {
+        availableDates
+      }
+    `,
+    eventReference
+  );
+  console.log(event);
+  return (
+    <Wrapper>
+      <InformationalBlock>
+        <Name>Event Name, The best of all event great</Name>
+        <AverageRating averageRating={averageRating} />
+        <Tags content={content} />
+        <Location>Brno, Podebradova, Kralove-pole CR 614200</Location>
+      </InformationalBlock>
+      <FunctionalBlock>
+        <Button description={date} />
+        <Button
+          description={price} // TODO if space => goes nuts
+          contentAfterDescription={[
+            currency,
+            <img src={shoppingCart.src} alt="icon" />,
+            "+",
+          ]}
+        />
+      </FunctionalBlock>
+    </Wrapper>
+  );
+};
 
 export default MainInformation;

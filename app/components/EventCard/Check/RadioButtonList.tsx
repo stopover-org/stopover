@@ -1,36 +1,36 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
-  max-height: 300px;
-  overflow-y: scroll;
-`;
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-const CustomRadioButton = styled.div`
+const Wrapper = styled.form``;
+const RadioButton = styled.label`
   display: flex;
   flex-direction: row;
   padding: 6px 0px 6px 0px;
 `;
+
 const CustomRadioButtonCircle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
   background-color: white;
+  min-width: 35px;
   width: 35px;
   height: 35px;
+  input {
+    display: none;
+  }
 `;
-const CustomRadioButtonIndicator = styled.div<{ display: string }>`
+
+const CustomRadioButtonIndicator = styled.label<{ display: string }>`
   display: ${(props) => props.display};
   border-radius: 50%;
   background-color: #c2e0fe;
   width: 24px;
   height: 24px;
+  //box-shadow: 1px 1px 5px 1px #98a6b5;
 `;
+
 const Description = styled.p`
   font-style: normal;
   font-weight: 400;
@@ -38,77 +38,40 @@ const Description = styled.p`
   line-height: 29px;
   padding-left: 12px;
 `;
-const Price = styled.p<{ textDecoration: string }>`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 29px;
-  text-decoration: ${(props) => props.textDecoration};
-`;
-
-type List = {
-  description: string;
-  price?: string | number;
-  free?: boolean;
-};
 
 type Props = {
-  list: List[];
+  list: string[];
 };
-const RadioButtonList = ({ list }: Props) => {
-  const [listRadioButton, setListRadioButton] = useState(
-    list.map((item, index) => ({
-      id: index,
-      description: item.description,
-      checked: false,
-      price: item.price,
-      free: item.free,
-    }))
-  );
-  const onClickCheck = (id: number) => {
-    setListRadioButton([
-      ...listRadioButton.slice(
-        0,
-        listRadioButton.findIndex((item) => item.id === id)
-      ),
-      {
-        id,
-        description:
-          listRadioButton[listRadioButton.findIndex((item) => item.id === id)]
-            .description,
-        checked:
-          !listRadioButton[listRadioButton.findIndex((item) => item.id === id)]
-            .checked,
-        price:
-          listRadioButton[listRadioButton.findIndex((item) => item.id === id)]
-            .price,
-        free: listRadioButton[
-          listRadioButton.findIndex((item) => item.id === id)
-        ].free,
-      },
-      ...listRadioButton.slice(
-        listRadioButton.findIndex((item) => item.id === id) + 1,
-        listRadioButton.length
-      ),
-    ]);
-  };
 
+const RadioButtonList = ({ list }: Props) => {
+  const [selectedRadioButton, setSelectedRadioButton] = useState("");
+  const isRadioSelected = (value: string): boolean =>
+    selectedRadioButton === value;
+  const handleRadioClick = (e: ChangeEvent<HTMLInputElement>) =>
+    setSelectedRadioButton(e.currentTarget.value);
   return (
     <Wrapper>
-      {listRadioButton.map((item, index) => (
-        <Row>
-          <CustomRadioButton onClick={() => onClickCheck(item.id)} key={index}>
-            <CustomRadioButtonCircle>
-              <CustomRadioButtonIndicator
-                display={item.checked ? "block" : "none"}
-              />
-            </CustomRadioButtonCircle>
-            <Description>{item.description}</Description>
-          </CustomRadioButton>
-          <Price textDecoration={item.free ? "auto" : "line-through"}>
-            {item?.price}
-          </Price>
-        </Row>
+      {list.map((item, index) => (
+        <RadioButton key={index} htmlFor={item.concat(index.toString())}>
+          <CustomRadioButtonCircle>
+            <CustomRadioButtonIndicator
+              display={
+                isRadioSelected(item.concat(index.toString()))
+                  ? "block"
+                  : "none"
+              }
+            />
+            {/* id generates from description and index */}
+            <input
+              type="radio"
+              value={item.concat(index.toString())}
+              checked={isRadioSelected(item.concat(index.toString()))}
+              id={item.concat(index.toString())}
+              onChange={handleRadioClick}
+            />
+          </CustomRadioButtonCircle>
+          <Description>{item}</Description>
+        </RadioButton>
       ))}
     </Wrapper>
   );
