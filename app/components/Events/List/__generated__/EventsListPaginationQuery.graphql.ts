@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<971e0c0c1b015932d2fbe11473c31f6d>>
+ * @generated SignedSource<<87414fe3a293c1c37f32a9b5bedf0d25>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,8 +18,8 @@ export type EventsListPaginationQuery$data = {
   readonly " $fragmentSpreads": FragmentRefs<"List_EventsFragment">;
 };
 export type EventsListPaginationQuery = {
-  variables: EventsListPaginationQuery$variables;
   response: EventsListPaginationQuery$data;
+  variables: EventsListPaginationQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){

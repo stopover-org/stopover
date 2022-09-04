@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8c3a8bc185238cf6c4d6ac31558a9744>>
+ * @generated SignedSource<<2182a5dce5830310a1e767d65e1359d2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,8 +15,8 @@ export type events_Query$data = {
   readonly " $fragmentSpreads": FragmentRefs<"List_EventsFragment">;
 };
 export type events_Query = {
-  variables: events_Query$variables;
   response: events_Query$data;
+  variables: events_Query$variables;
 };
 
 const node: ConcreteRequest = (function(){

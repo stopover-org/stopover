@@ -1,15 +1,15 @@
-import Admin from "react-admin/src/Admin";
-import { Resource } from "ra-core/src/core/Resource";
-// import {getAdminBaseUrl} from "../../lib/fetchGraphQL";
+import { Admin, Resource } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
+import { getAdminBaseUrl } from "../../lib/fetchGraphQL";
+import { EventsList } from "./Events/List";
 
-// const dataProvider = jsonServerProvider(getAdminBaseUrl());
-const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
+const dataProvider = jsonServerProvider(
+  getAdminBaseUrl().replace("graphql", "admin")
+);
 
 const AdminApp = () => (
   <Admin dataProvider={dataProvider}>
-    <Resource name="posts" list={() => null} />
-    <Resource name="comments" list={() => null} />
+    <Resource name="events" list={EventsList} />
   </Admin>
 );
 

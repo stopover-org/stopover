@@ -88,3 +88,7 @@ gem 'rubocop', group: [:development], require: false
 gem 'rubocop-rails', require: false
 gem 'sendgrid-ruby'
 gem 'twilio-ruby'
+
+gem 'kaminari'
+gem 'api-pagination'
+gem 'active_model_serializers', '~> 0.10.0'
