@@ -1,6 +1,9 @@
 export const getGraphQLBaseUrl = () =>
   process.env.GRAPHQL_API_URL || "http://localhost:8080/graphql";
 
+export const getAdminBaseUrl = () =>
+  getGraphQLBaseUrl().replace("graphql", "admin");
+
 export async function fetchGraphQLRaw(
   query: string,
   variables: any = {},

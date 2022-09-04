@@ -66,7 +66,6 @@ const RadioButtonList = ({ list }: Props) => {
     }))
   );
   const onClickCheck = (id: number) => {
-    console.log(listRadioButton);
     setListRadioButton([
       ...listRadioButton.slice(
         0,

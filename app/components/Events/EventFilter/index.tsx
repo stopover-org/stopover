@@ -81,18 +81,18 @@ const EventFilter = () => {
   };
 
   const inputPriceHandler = (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     startPrice: number | null,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     endPrice: number | null
-  ) => {
-    console.log(startPrice, endPrice);
-  };
+  ) => {};
 
   const sliderDateHandler = (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     startDate: Moment | ReactNode,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     endDate: Moment | ReactNode
-  ) => {
-    console.log(startDate, endDate);
-  };
+  ) => {};
 
   const sliderPriceHandler = (startPrice: number, endPrice: number) => {
     setSelectedPrice({

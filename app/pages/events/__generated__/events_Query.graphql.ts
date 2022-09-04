@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4cadfc91f1ce80a112001efc23e80b82>>
+ * @generated SignedSource<<8c3a8bc185238cf6c4d6ac31558a9744>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,13 +10,13 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type pages_Query$variables = {};
-export type pages_Query$data = {
+export type events_Query$variables = {};
+export type events_Query$data = {
   readonly " $fragmentSpreads": FragmentRefs<"List_EventsFragment">;
 };
-export type pages_Query = {
-  variables: pages_Query$variables;
-  response: pages_Query$data;
+export type events_Query = {
+  variables: events_Query$variables;
+  response: events_Query$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -26,13 +26,27 @@ var v0 = [
     "name": "first",
     "value": 10
   }
-];
+],
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "pages_Query",
+    "name": "events_Query",
     "selections": [
       {
         "args": null,
@@ -47,7 +61,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "pages_Query",
+    "name": "events_Query",
     "selections": [
       {
         "alias": null,
@@ -73,13 +87,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "title",
-                    "storageKey": null
-                  },
+                  (v1/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -87,11 +95,38 @@ return {
                     "name": "description",
                     "storageKey": null
                   },
+                  (v2/*: any*/),
                   {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "id",
+                    "name": "availableDates",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Tag",
+                    "kind": "LinkedField",
+                    "name": "tags",
+                    "plural": true,
+                    "selections": [
+                      (v1/*: any*/),
+                      (v2/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Interest",
+                    "kind": "LinkedField",
+                    "name": "interests",
+                    "plural": true,
+                    "selections": [
+                      (v2/*: any*/),
+                      (v1/*: any*/)
+                    ],
                     "storageKey": null
                   },
                   {
@@ -154,16 +189,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "08cc4a205eddd2e433adc309acaa15f4",
+    "cacheID": "42cb61c3d5af90cf6f7e0f0e43bfe239",
     "id": null,
     "metadata": {},
-    "name": "pages_Query",
+    "name": "events_Query",
     "operationKind": "query",
-    "text": "query pages_Query {\n  ...List_EventsFragment\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        title\n        description\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query events_Query {\n  ...List_EventsFragment\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "18ca3766830ba46735a69a2b7415eeac";
+(node as any).hash = "3a8c3685f8b8a2accfbca217c9a99b2e";
 
 export default node;
