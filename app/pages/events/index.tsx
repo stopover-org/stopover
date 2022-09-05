@@ -5,7 +5,7 @@ import Layout from "../../components/MainPage/Layout";
 import EventsList from "../../components/Events/List";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/Loading";
-import {events_Query} from "./__generated__/events_Query.graphql";
+import { events_Query } from "./__generated__/events_Query.graphql";
 
 const Query = graphql`
   query events_Query {
@@ -18,7 +18,7 @@ const Home = ({ preloadedQuery }: RelayProps<{}, events_Query>) => {
 
   return (
     <Layout>
-      <EventsList eventsRef={query} />
+      <EventsList eventsReference={query} />
     </Layout>
   );
 };

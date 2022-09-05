@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8c324681b8c746a4792853e494d0b25d>>
+ * @generated SignedSource<<0dc378b7f701276f71bada5a47f7ef6a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,17 +14,17 @@ export type List_EventsFragment$data = {
   readonly events: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly title: string | null;
+        readonly availableDates: ReadonlyArray<any> | null;
         readonly description: string | null;
         readonly id: string | null;
-        readonly availableDates: ReadonlyArray<any> | null;
-        readonly tags: ReadonlyArray<{
-          readonly title: string | null;
-        }> | null;
         readonly interests: ReadonlyArray<{
           readonly id: string | null;
           readonly title: string | null;
         }> | null;
+        readonly tags: ReadonlyArray<{
+          readonly title: string | null;
+        }> | null;
+        readonly title: string | null;
       } | null;
     } | null> | null;
   } | null;

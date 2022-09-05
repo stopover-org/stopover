@@ -15,11 +15,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <RelayEnvironmentProvider environment={env}>
-      {/* не удалять комментарии */}
-      {/* <Suspense fallback={'Loading...'}> */}
       <Component {...pageProps} {...relayProps} />
-      {/* <Component {...pageProps} /> */}
-      {/* </Suspense> */}
     </RelayEnvironmentProvider>
   );
 };
