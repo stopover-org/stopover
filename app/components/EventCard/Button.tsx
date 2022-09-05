@@ -3,22 +3,15 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div``;
-const ButtonStyle = styled.div`
+const ButtonStyle = styled.div<{ color: string }>`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background-color: #ff8a00;
+  background-color: ${(props) => props.color};
   border-radius: 3px;
   padding: 10px;
-
-  border-right: 3px solid #893aad6e;
-  border-bottom: 3px solid #893aad6e;
-  &:hover {
-    background: linear-gradient(#ff961f, #ff8a00);
-    transition: ease-in-out 1s;
-  }
 `;
 const Description = styled.div`
   font-weight: 400;
@@ -38,7 +31,8 @@ const ContentAfterDescriptionStyle = styled.div`
 `;
 type Props = {
   contentAfterDescription?: Array<JSX.Element | number | string | undefined>;
-  description: string | Moment | number;
+  description: string | string[] | undefined | Moment | number;
+  color?: string;
 };
 
 const arrayExist = (item: Props["contentAfterDescription"]) => !!item;
@@ -51,7 +45,7 @@ const isNumber = (item: Props["description"]) => typeof item === "number";
 const couldBeAValidMoment = (item: Props["description"]) =>
   moment(item, "DD.MM.YY").isValid();
 
-const Button = ({ contentAfterDescription, description }: Props) => {
+const Button = ({ contentAfterDescription, description, color }: Props) => {
   if (
     !isMoment(description) &&
     !isString(description) &&
@@ -62,7 +56,7 @@ const Button = ({ contentAfterDescription, description }: Props) => {
     return null;
   return (
     <Wrapper className="button-wrapper">
-      <ButtonStyle>
+      <ButtonStyle color={color || "white"}>
         {isString(description) && couldBeAValidMoment(description) && (
           <Description>
             {moment(description, "DD.MM.YY").format("DD MMMM YYYY")}

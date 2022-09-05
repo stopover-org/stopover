@@ -3,6 +3,7 @@ import ReactDom from "react-dom";
 import styled from "styled-components";
 import ItemGallery from "./ItemGallery";
 import RightLeftButton from "./RightLeftButton";
+import CrossWhite from "../icons/Outline/Interface/CrossWhite.svg";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -54,12 +55,12 @@ const Carousel = styled.div`
   position: relative;
   transition: left 1s ease;
 `;
-const Close = styled.div`
+const Close = styled.img`
   width: 45px;
   height: 45px;
-  background-color: red;
   position: absolute;
   right: 0px;
+  cursor: pointer;
 `;
 type Image = {
   name?: string;
@@ -79,9 +80,22 @@ const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
   const [carouselHeight, setCarouselHeight] = useState<number | undefined>(0);
   const mainImageRef = useRef<HTMLDivElement>(null);
   const portal = document.getElementById("galleryOfPhotoes") as HTMLElement;
+
+  const keyDownHandler = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      if (onClose instanceof Function) {
+        onClose();
+      }
+    }
+  };
   useEffect(() => {
     setCarouselHeight(mainImageRef.current?.offsetHeight);
+    document.addEventListener("keydown", keyDownHandler);
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
   }, []);
+
   if (!isOpen) return null;
 
   const onClickChoose = (id: string) => {
@@ -94,8 +108,8 @@ const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
       setIndexOfCurrentImage(indexOfCurrentImage + 1);
   };
   return ReactDom.createPortal(
-    <Wrapper>
-      <Close onClick={onClose} />
+    <Wrapper onKeyDown={() => keyDownHandler} tabIndex={0}>
+      <Close src={CrossWhite.src} onClick={onClose} />
       <Gallery>
         <MainImageWrapper carouselHeight={carouselHeight as number}>
           <RightLeftButton
