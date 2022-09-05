@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<87a82ef11733183478ba1ad804a976ac>>
+ * @generated SignedSource<<ab32c023fd967bee65bc077d17d43c6f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -20,8 +20,8 @@ export type Id_Query$data = {
   } | null;
 };
 export type Id_Query = {
-  variables: Id_Query$variables;
   response: Id_Query$data;
+  variables: Id_Query$variables;
 };
 
 const node: ConcreteRequest = (function(){

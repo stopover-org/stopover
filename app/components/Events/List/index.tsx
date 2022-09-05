@@ -4,7 +4,7 @@ import { graphql, usePaginationFragment } from "react-relay";
 import InterestGallery from "../EventFilter/InterestGallery";
 import EventFilter from "../EventFilter";
 import Search from "../EventFilter/Search";
-import { pages_Query$data } from "../../../pages/__generated__/pages_Query.graphql";
+import { events_Query$data } from "../../../pages/events/__generated__/events_Query.graphql";
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,10 +21,10 @@ const Interests = styled.div`
 `;
 
 type Props = {
-  eventsRef: pages_Query$data;
+  eventsReference: events_Query$data;
 };
 
-const EventsList = ({ eventsRef }: Props) => {
+const EventsList = ({ eventsReference }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const data = usePaginationFragment(
     graphql`
@@ -43,21 +43,21 @@ const EventsList = ({ eventsRef }: Props) => {
               id
               availableDates
               tags {
-                  title
+                title
               }
               interests {
-                  id
-                  title
+                id
+                title
               }
             }
           }
         }
       }
     `,
-    eventsRef
+    eventsReference
   );
 
-  console.log(data)
+  console.log(data);
 
   return (
     <Wrapper>
