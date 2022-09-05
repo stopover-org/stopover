@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Moment } from "moment";
 import { graphql, useFragment } from "react-relay";
 import Button from "./Button";
 import AverageRating from "./AverageRating";
@@ -54,7 +53,7 @@ type Tag = {
 };
 
 type Props = {
-  date: Moment;
+  date: string | string[] | undefined;
   content: Tag[];
   price: number | string;
   currency: string;
@@ -88,9 +87,10 @@ const MainInformation = ({
         <Location>Brno, Podebradova, Kralove-pole CR 614200</Location>
       </InformationalBlock>
       <FunctionalBlock>
-        <Button description={date} />
+        <Button description={date} color="#ff8a00" />
         <Button
-          description={price} // TODO if space => goes nuts
+          description={price}
+          color="#ff8a00"
           contentAfterDescription={[
             currency,
             <img src={shoppingCart.src} alt="icon" />,

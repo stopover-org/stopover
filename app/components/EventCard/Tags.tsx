@@ -32,7 +32,7 @@ const Image = styled.img`
 type Props = {
   content: {
     tagName: string;
-    image: string | undefined;
+    image?: string | undefined;
   }[];
 };
 

@@ -3,6 +3,7 @@ import ReactDom from "react-dom";
 import styled from "styled-components";
 import ItemGallery from "./ItemGallery";
 import RightLeftButton from "./RightLeftButton";
+import CrossWhite from "../icons/Outline/Interface/CrossWhite.svg";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -54,12 +55,12 @@ const Carousel = styled.div`
   position: relative;
   transition: left 1s ease;
 `;
-const Close = styled.div`
+const Close = styled.img`
   width: 45px;
   height: 45px;
-  background-color: red;
   position: absolute;
   right: 0px;
+  cursor: pointer;
 `;
 type Image = {
   name?: string;
@@ -108,7 +109,7 @@ const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
   };
   return ReactDom.createPortal(
     <Wrapper onKeyDown={() => keyDownHandler} tabIndex={0}>
-      <Close onClick={onClose} />
+      <Close src={CrossWhite.src} onClick={onClose} />
       <Gallery>
         <MainImageWrapper carouselHeight={carouselHeight as number}>
           <RightLeftButton

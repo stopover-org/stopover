@@ -94,8 +94,7 @@ const Check = () => (
     </Layout>
 
     <CheckConnect height={50} />
-    <Button description="Забронировать" />
+    <Button description="Забронировать" color="#84bdf7" />
   </Wrapper>
 );
 export default Check;
-// #84bdf7

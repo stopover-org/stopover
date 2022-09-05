@@ -8,23 +8,27 @@ const Wrapper = styled.div`
   padding-top: 6px;
 `;
 
-const PreviewPhotos = () => {
-  const [isOpenGallery, setIsOpenGallery] = useState<boolean>(false);
+type Props = {
+  blockScroll: (fixed: boolean) => void;
+};
 
+const PreviewPhotos = ({ blockScroll }: Props) => {
+  const [isOpenGallery, setIsOpenGallery] = useState<boolean>(false);
+  blockScroll(isOpenGallery);
   return (
     <Wrapper>
       <PhotoGallery
         isOpen={isOpenGallery}
-        onClose={() => setIsOpenGallery(false)}
         images={imageArray}
+        onClose={() => setIsOpenGallery(false)}
       />
       <PhotoTrio
-        onOpen={() => setIsOpenGallery(true)}
         images={[
           "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg",
           "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg",
           "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg",
         ]}
+        onOpen={() => setIsOpenGallery(true)}
       />
     </Wrapper>
   );
