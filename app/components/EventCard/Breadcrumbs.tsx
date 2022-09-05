@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { graphql, useFragment } from "react-relay";
-import { Id_Query$data } from "../../../pages/events/__generated__/Id_Query.graphql";
+import { Id_Query$data } from "../../pages/events/__generated__/Id_Query.graphql";
 
 const Wrapper = styled.div`
   padding: 0px 0px 15px 0px;

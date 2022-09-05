@@ -41,24 +41,22 @@ const contentExist = (content: Props["content"]) =>
 const imageExist = (image: string | undefined) =>
   typeof image === "string" && image !== "";
 
-function Tags({ content }: Props) {
-  return (
-    <Wrapper className="tags-wrapper">
-      <TagsWrapper>
-        {contentExist(content) &&
-          content.map((item, index) => (
-            <TagWrapper className="tag-wrapper" key={index}>
-              <Tag>
-                {imageExist(item.image) && (
-                  <Image src={item.image} alt={item.tagName} />
-                )}
-                <TagName>{item.tagName}</TagName>
-              </Tag>
-            </TagWrapper>
-          ))}
-      </TagsWrapper>
-    </Wrapper>
-  );
-}
+const Tags = ({ content }: Props) => (
+  <Wrapper className="tags-wrapper">
+    <TagsWrapper>
+      {contentExist(content) &&
+        content.map((item, index) => (
+          <TagWrapper className="tag-wrapper" key={index}>
+            <Tag>
+              {imageExist(item.image) && (
+                <Image src={item.image} alt={item.tagName} />
+              )}
+              <TagName>{item.tagName}</TagName>
+            </Tag>
+          </TagWrapper>
+        ))}
+    </TagsWrapper>
+  </Wrapper>
+);
 
 export default Tags;

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import solidStar from "../../icons/Solid/Status/Star.svg";
-import outlinedStar from "../../icons/Outline/Status/Star.svg";
+import solidStar from "../icons/Solid/Status/Star.svg";
+import outlinedStar from "../icons/Outline/Status/Star.svg";
 
 const Wrapper = styled.div`
   display: flex;

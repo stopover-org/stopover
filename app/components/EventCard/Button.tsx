@@ -12,9 +12,6 @@ const ButtonStyle = styled.div`
   background-color: #ff8a00;
   border-radius: 3px;
   padding: 10px;
-
-  border-right: 3px solid #893aad6e;
-  border-bottom: 3px solid #893aad6e;
   &:hover {
     background: linear-gradient(#ff961f, #ff8a00);
     transition: ease-in-out 1s;

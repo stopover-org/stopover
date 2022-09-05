@@ -5,8 +5,8 @@ import { graphql, useFragment } from "react-relay";
 import Button from "./Button";
 import AverageRating from "./AverageRating";
 import Tags from "./Tags";
-import shoppingCart from "../../icons/Solid/General/Shopping-cart.svg";
-import { Id_Query$data } from "../../../pages/events/__generated__/Id_Query.graphql";
+import shoppingCart from "../icons/Solid/General/Shopping-cart.svg";
+import { Id_Query$data } from "../../pages/events/__generated__/Id_Query.graphql";
 
 const Wrapper = styled.div`
   min-width: 500px;

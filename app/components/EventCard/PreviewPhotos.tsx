@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import PhotoTrio from "./PhotoTrio";
 import PhotoGallery from "./PhotoGallery";
-import { imageArray } from "../../constants";
+import { imageArray } from "../constants";
 
 const Wrapper = styled.div`
   padding-top: 6px;
