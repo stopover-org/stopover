@@ -2,32 +2,36 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import PhotoTrio from "./PhotoTrio";
 import PhotoGallery from "./PhotoGallery";
-import { imageArray } from "../constants";
 
 const Wrapper = styled.div`
   padding-top: 6px;
+  padding-bottom: 6px;
 `;
+
+type Image = {
+  name?: string;
+  image: string;
+  description: string;
+  id: string;
+};
 
 type Props = {
   blockScroll: (fixed: boolean) => void;
+  images: Image[];
 };
 
-const PreviewPhotos = ({ blockScroll }: Props) => {
+const PreviewPhotos = ({ blockScroll, images }: Props) => {
   const [isOpenGallery, setIsOpenGallery] = useState<boolean>(false);
   blockScroll(isOpenGallery);
   return (
     <Wrapper>
       <PhotoGallery
         isOpen={isOpenGallery}
-        images={imageArray}
+        images={images}
         onClose={() => setIsOpenGallery(false)}
       />
       <PhotoTrio
-        images={[
-          "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg",
-          "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg",
-          "https://i.pinimg.com/564x/eb/a1/38/eba138faec79b8bd2629e99ad2612047.jpg",
-        ]}
+        images={[images[0].image, images[1].image, images[2].image]}
         onOpen={() => setIsOpenGallery(true)}
       />
     </Wrapper>

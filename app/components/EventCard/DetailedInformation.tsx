@@ -1,18 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  padding: 6px 6px 6px 0px;
+`;
 const Description = styled.p`
   border: 1px solid black;
   white-space: normal;
   word-wrap: break-word;
 `;
 
-const DetailedInformation = () => (
+type Props = {
+  description: string;
+};
+
+const DetailedInformation = ({ description }: Props) => (
   <Wrapper>
-    <Description>
-      textdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-    </Description>
+    <Description>{description}</Description>
   </Wrapper>
 );
 

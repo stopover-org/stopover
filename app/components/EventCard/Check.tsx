@@ -8,7 +8,9 @@ import Button from "./Button";
 import CheckboxList from "./CheckboxList";
 import RadioButtonList from "./RadioButtonList";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  padding: 6px 0px 6px 6px;
+`;
 
 const Check = () => (
   <Wrapper>
