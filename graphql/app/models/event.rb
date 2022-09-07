@@ -3,6 +3,8 @@
 require 'date'
 
 class Event < ApplicationRecord
+  has_many_attached :images
+
   include AASM
 
   has_many :event_achievements, dependent: :destroy

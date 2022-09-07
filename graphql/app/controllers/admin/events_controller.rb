@@ -9,4 +9,15 @@ class Admin::EventsController < AdminController
 
     render json: event, serializer: AdminEventsSerializer
   end
+
+  def update
+    event = Event.find(params[:id])
+    event.update!(update_event_params)
+    render json: event, serializer: AdminEventsSerializer
+  end
+
+  private
+  def update_event_params
+    params.permit(:title, :description, :organizer_cost_per_uom_cents, :attendee_cost_per_uom_cents, :duration_time, :house_number, :street, :city, :country, :region, :full_address, :longitude, :latitude)
+  end
 end
