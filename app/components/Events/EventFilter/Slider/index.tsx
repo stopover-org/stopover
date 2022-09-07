@@ -100,7 +100,6 @@ const SliderComponent = ({
     );
 
   const checkType = () => {
-    // console.log(range);
     if (isDifferentTypes(range)) {
       console.warn("types of start and end are different");
       return false;

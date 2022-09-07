@@ -30,28 +30,28 @@ const Image = styled.img`
   height: 25px;
 `;
 type Props = {
-  content: {
-    tagName: string;
-    image?: string | undefined;
+  tags: {
+    id: string;
+    title: string;
+    preview: string | undefined;
   }[];
 };
 
-const contentExist = (content: Props["content"]) =>
-  typeof content !== undefined;
+const contentExist = (tags: Props["tags"]) => typeof tags !== undefined;
 const imageExist = (image: string | undefined) =>
   typeof image === "string" && image !== "";
 
-const Tags = ({ content }: Props) => (
+const Tags = ({ tags }: Props) => (
   <Wrapper className="tags-wrapper">
     <TagsWrapper>
-      {contentExist(content) &&
-        content.map((item, index) => (
+      {contentExist(tags) &&
+        tags.map((item, index) => (
           <TagWrapper className="tag-wrapper" key={index}>
             <Tag>
-              {imageExist(item.image) && (
-                <Image src={item.image} alt={item.tagName} />
+              {imageExist(item.preview) && (
+                <Image src={item.preview} alt={item.title} />
               )}
-              <TagName>{item.tagName}</TagName>
+              <TagName>{item.title}</TagName>
             </Tag>
           </TagWrapper>
         ))}
