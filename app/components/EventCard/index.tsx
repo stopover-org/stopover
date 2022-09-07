@@ -6,6 +6,8 @@ import shoppingCart from "../icons/Solid/General/Shopping-cart.svg";
 import Breadcrumbs from "./Breadcrumbs";
 import PreviewPhotos from "./PreviewPhotos";
 import Check from "./Check";
+import GoogleMaps from "./GoogleMaps";
+import { imageArray } from "../constants";
 
 const Body = styled.div<{ fixed: string }>`
   max-width: 1600px;
@@ -19,13 +21,26 @@ const Bottom = styled.div`
 const NotCheck = styled.div`
   max-width: 70%;
 `;
+/* type Content = {
+    tagName: string;
+    image: string;
+}[]; */
 
 type Props = {
   date?: string | string[];
   event: any;
+  googleMapsApiKey: string;
+  /* content: Content;
+  price: string | number;
+  currency: string;
+  averageRating: number;
+  description: string;
+  latitude: number;
+  longitude: number;
+  */
 };
 
-const EventCard = ({ date, event }: Props) => {
+const EventCard = ({ date, event, googleMapsApiKey }: Props) => {
   const [fixed, setFixed] = useState<string>("block");
   const blockScroll = (blocked: boolean) => {
     setFixed(blocked ? "fixed" : "block");
@@ -34,6 +49,7 @@ const EventCard = ({ date, event }: Props) => {
     <Body fixed={fixed}>
       <Breadcrumbs eventReference={event} />
       <MainInformation
+        eventReference={event}
         date={date}
         content={[
           {
@@ -53,10 +69,16 @@ const EventCard = ({ date, event }: Props) => {
         currency="$"
         averageRating={2.4}
       />
-      <PreviewPhotos blockScroll={blockScroll} />
+      <PreviewPhotos blockScroll={blockScroll} images={imageArray} />
+
       <Bottom>
         <NotCheck>
-          <DetailedInformation />
+          <DetailedInformation description="textdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" />
+          <GoogleMaps
+            googleMapsApiKey={googleMapsApiKey}
+            latitude={40}
+            longitude={-80}
+          />
         </NotCheck>
         <Check />
       </Bottom>

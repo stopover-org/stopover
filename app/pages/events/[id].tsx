@@ -20,16 +20,20 @@ const Query = graphql`
 
 type Props = {
   id: number;
+  googleMapsApiKey: string;
 };
 
-const Event = ({ preloadedQuery }: RelayProps<Props, Id_Query>) => {
+const Event = ({ preloadedQuery, ...props }: RelayProps<Props, Id_Query>) => {
   const router = useRouter();
   const { date } = router.query;
   const { event } = usePreloadedQuery(Query, preloadedQuery);
-
   return (
     <Layout>
-      <EventCard event={event} date={date} />
+      <EventCard
+        event={event}
+        date={date}
+        googleMapsApiKey={props.googleMapsApiKey}
+      />
     </Layout>
   );
 };
@@ -41,7 +45,10 @@ export default withRelay(Event, Query, {
   // Note: This function must always return the same value.
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
-  serverSideProps: async (ctx) => ({ id: +ctx.query.id! }),
+  serverSideProps: async (ctx) => ({
+    id: +ctx.query.id!,
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+  }),
   // Server-side props can be accessed as the second argument
   // to this function.
   createServerEnvironment: async () => {
