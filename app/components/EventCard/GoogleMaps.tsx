@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
@@ -23,24 +23,27 @@ const Map = ({
 }: {
   latitude: number;
   longitude: number;
-}) => (
-  /* const map = new google.maps.Map(
-        document.getElementById("map") as HTMLElement,
-        {}
-    ) */
-  <GoogleMap
-    zoom={10}
-    center={{ lat: latitude, lng: longitude }}
-    mapContainerClassName="map-container"
-  >
-    <Marker position={{ lat: 44, lng: -80 }} />
-  </GoogleMap>
-);
-export default GoogleMaps = ({
-  latitude,
-  longitude,
-  googleMapsApiKey,
-}: Props) => {
+}) => {
+  const options = useMemo(
+    () => ({
+      disableDefaultUI: true,
+      clickableIcons: false,
+    }),
+    []
+  );
+  return (
+    <GoogleMap
+      zoom={10}
+      center={{ lat: latitude, lng: longitude }}
+      mapContainerClassName="map-container"
+      options={options}
+    >
+      <Marker position={{ lat: 44, lng: -80 }} />
+    </GoogleMap>
+  );
+};
+
+const GoogleMaps = ({ latitude, longitude, googleMapsApiKey }: Props) => {
   const { isLoaded } = useLoadScript({ googleMapsApiKey });
   if (!isLoaded) return <div>Loading...</div>;
   return (
@@ -49,3 +52,5 @@ export default GoogleMaps = ({
     </Wrapper>
   );
 };
+
+export default GoogleMaps;
