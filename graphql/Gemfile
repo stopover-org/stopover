@@ -92,3 +92,4 @@ gem 'twilio-ruby'
 gem 'kaminari'
 gem 'api-pagination'
 gem 'active_model_serializers', '~> 0.10.0'
+gem "image_processing", ">= 1.2"

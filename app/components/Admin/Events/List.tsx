@@ -1,4 +1,4 @@
-import { List, Datagrid, TextField } from "react-admin";
+import { List, Datagrid, TextField, EditButton } from "react-admin";
 
 export const EventsList = () => (
   <List>
@@ -9,6 +9,7 @@ export const EventsList = () => (
       <TextField source="recurring_type" />
       <TextField source="organizer_cost_per_uom_cents" />
       <TextField source="attendee_cost_per_uom_cents" />
+      <EditButton />
     </Datagrid>
   </List>
 );
