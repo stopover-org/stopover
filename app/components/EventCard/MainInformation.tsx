@@ -51,12 +51,14 @@ type Props = {
   currency: string;
   averageRating: number;
   eventReference: Id_Query$data["event"];
+  date?: string | string[];
 };
 
 const MainInformation = ({
   currency,
   averageRating,
   eventReference,
+  date,
 }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const event = useFragment<any>(
@@ -84,7 +86,7 @@ const MainInformation = ({
         <Location>{event.fullAddress}</Location>
       </InformationalBlock>
       <FunctionalBlock>
-        <Button description={event.availableDates} color="#ff8a00" />
+        <Button description={date} color="#ff8a00" />
         <Button
           description={event.attendeeCostPerUomCents}
           color="#ff8a00"

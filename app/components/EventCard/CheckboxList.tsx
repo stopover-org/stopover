@@ -20,7 +20,7 @@ const CustomCheckboxCircle = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background-color: white;
+  background-color: #c2e0fe;
   min-width: 35px;
   height: 35px;
   input {
@@ -30,7 +30,7 @@ const CustomCheckboxCircle = styled.div`
 const CustomCheckboxIndicator = styled.label<{ display: string }>`
   display: ${(props) => props.display};
   border-radius: 50%;
-  background-color: #c2e0fe;
+  background-color: white;
   width: 24px;
   height: 24px;
   //box-shadow: 1px 1px 5px 1px #98a6b5;
@@ -108,7 +108,7 @@ const CheckboxList = ({ list }: Props) => {
             </CustomCheckboxCircle>
             <Description>{item.description}</Description>
           </CustomCheckbox>
-          <Price textDecoration={item.builtIn ? "auto" : "line-through"}>
+          <Price textDecoration={item.builtIn ? "line-through" : "auto"}>
             {item?.price}
           </Price>
         </Row>

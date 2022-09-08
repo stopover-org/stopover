@@ -13,7 +13,7 @@ const CustomRadioButtonCircle = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background-color: white;
+  background-color: #c2e0fe;
   min-width: 35px;
   width: 35px;
   height: 35px;
@@ -25,7 +25,7 @@ const CustomRadioButtonCircle = styled.div`
 const CustomRadioButtonIndicator = styled.label<{ display: string }>`
   display: ${(props) => props.display};
   border-radius: 50%;
-  background-color: #c2e0fe;
+  background-color: white;
   width: 24px;
   height: 24px;
   //box-shadow: 1px 1px 5px 1px #98a6b5;

@@ -13,8 +13,8 @@ const TagWrapper = styled.div`
 `;
 const Tag = styled.div`
   cursor: pointer;
-  background-color: #c2e0fe;
   border-radius: 3px;
+  border: 1px solid #c2e0fe;
   display: flex;
   flex-direction: row;
   padding: 6px;

@@ -9,7 +9,6 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  background-color: #c2e0fe;
   padding: 12px;
 `;
 const Amount = styled.div`
@@ -77,12 +76,12 @@ const Counter = ({ description }: Props) => {
         />
         <Buttons>
           <ButtonUp onClick={() => OnClickchangeAmount(+1)}>
-            <Image height={20} width={20} src={CaretUp.src} alt="arrow up" />
+            <Image height={50} width={50} src={CaretUp.src} alt="arrow up" />
           </ButtonUp>
           <ButtonDown onClick={() => OnClickchangeAmount(-1)}>
             <Image
-              height={20}
-              width={20}
+              height={50}
+              width={50}
               src={CaretDown.src}
               alt="arrow down"
             />

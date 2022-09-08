@@ -5,7 +5,7 @@ import MainInformation from "./MainInformation";
 import shoppingCart from "../icons/Solid/General/Shopping-cart.svg";
 import Breadcrumbs from "./Breadcrumbs";
 import PreviewPhotos from "./PreviewPhotos";
-import Check from "./Check";
+import Cheque from "./Cheque";
 import GoogleMaps from "./GoogleMaps";
 import { imageArray } from "../constants";
 
@@ -18,7 +18,7 @@ const Bottom = styled.div`
   display: flex;
   flex-direction: row;
 `;
-const NotCheck = styled.div`
+const Content = styled.div`
   max-width: 70%;
 `;
 /* type Content = {
@@ -30,14 +30,6 @@ type Props = {
   date?: string | string[];
   event: any;
   googleMapsApiKey: string;
-  /* content: Content;
-  price: string | number;
-  currency: string;
-  averageRating: number;
-  description: string;
-  latitude: number;
-  longitude: number;
-  */
 };
 
 const EventCard = ({ date, event, googleMapsApiKey }: Props) => {
@@ -72,15 +64,15 @@ const EventCard = ({ date, event, googleMapsApiKey }: Props) => {
       <PreviewPhotos blockScroll={blockScroll} images={imageArray} />
 
       <Bottom>
-        <NotCheck>
+        <Content>
           <DetailedInformation description="textdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" />
           <GoogleMaps
             googleMapsApiKey={googleMapsApiKey}
             latitude={40}
             longitude={-80}
           />
-        </NotCheck>
-        <Check />
+        </Content>
+        <Cheque />
       </Bottom>
     </Body>
   );

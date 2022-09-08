@@ -5,7 +5,6 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  background-color: #c2e0fe;
   padding: 12px;
 `;
 const Header = styled.p`
