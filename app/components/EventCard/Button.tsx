@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div``;
+
 const ButtonStyle = styled.div<{ color: string }>`
   display: flex;
   flex-direction: row;
@@ -12,11 +13,13 @@ const ButtonStyle = styled.div<{ color: string }>`
   border: 1px solid ${(props) => props.color};
   padding: 10px;
 `;
+
 const Description = styled.div`
   font-weight: 400;
   font-size: 28px;
   line-height: 34px;
 `;
+
 const ContentAfterDescriptionStyle = styled.div`
   display: flex;
   justify-content: center;
@@ -28,6 +31,7 @@ const ContentAfterDescriptionStyle = styled.div`
   width: 25px;
   height: 25px;
 `;
+
 type Props = {
   contentAfterDescription?: Array<JSX.Element | number | string | undefined>;
   description: string | string[] | undefined | Moment | number;
@@ -35,12 +39,18 @@ type Props = {
 };
 
 const arrayExist = (item: Props["contentAfterDescription"]) => !!item;
+
 const arrayIsEmpty = (item: Props["contentAfterDescription"]) =>
   item?.length === 0;
+
 const isMoment = (item: Props["description"]) => item instanceof moment;
+
 const dateIsValid = (item: Props["description"]) => (item as Moment).isValid();
+
 const isString = (item: Props["description"]) => typeof item === "string";
+
 const isNumber = (item: Props["description"]) => typeof item === "number";
+
 const couldBeAValidMoment = (item: Props["description"]) =>
   moment(item, "DD.MM.YY").isValid();
 

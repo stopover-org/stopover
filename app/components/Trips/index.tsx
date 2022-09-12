@@ -26,4 +26,5 @@ const Trips = () => (
     </Button>
   </Wrapper>
 );
+
 export default Trips;

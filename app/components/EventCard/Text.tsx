@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   padding: 12px;
 `;
+
 const Header = styled.p`
   text-align: center;
   font-style: normal;
@@ -15,6 +16,7 @@ const Header = styled.p`
   font-size: 30px;
   line-height: 36px;
 `;
+
 const Description = styled.p`
   text-align: center;
   font-style: normal;
@@ -33,4 +35,5 @@ const Text = ({ header, description }: Props) => (
     <Description>{description}</Description>
   </Wrapper>
 );
+
 export default Text;

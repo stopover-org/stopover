@@ -14,10 +14,12 @@ const Body = styled.div<{ fixed: string }>`
   position: ${(props) => props.fixed};
   padding: 30px;
 `;
+
 const Bottom = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
 const Content = styled.div`
   max-width: 70%;
 `;
@@ -34,9 +36,11 @@ type Props = {
 
 const EventCard = ({ date, event, googleMapsApiKey }: Props) => {
   const [fixed, setFixed] = useState<string>("block");
+
   const blockScroll = (blocked: boolean) => {
     setFixed(blocked ? "fixed" : "block");
   };
+
   return (
     <Body fixed={fixed}>
       <Breadcrumbs eventReference={event} />
@@ -77,4 +81,5 @@ const EventCard = ({ date, event, googleMapsApiKey }: Props) => {
     </Body>
   );
 };
+
 export default EventCard;

@@ -1,8 +1,11 @@
-import { DataProvider, fetchUtils } from "ra-core";
+import {DataProvider, fetchUtils, UpdateParams} from "ra-core";
 import { stringify } from "query-string";
+import {getAdminBaseUrl} from "./fetchGraphQL";
 
 export const getAdminUrl = (apiUrl: string, resource: string, query: any) =>
   `${apiUrl}/${resource}?${stringify(query)}`;
+
+const adminBaseUrl = getAdminBaseUrl().replace("graphql", "admin")
 
 /**
  * Maps react-admin queries to a simple REST API
@@ -37,10 +40,10 @@ export const getAdminUrl = (apiUrl: string, resource: string, query: any) =>
  * export default App;
  */
 
-export default (
+export const dataProvider = (
   apiUrl: string,
   httpClient = fetchUtils.fetchJson,
-  countHeader: string = "Content-Range"
+  countHeader: string = "X-Total-Count"
 ): DataProvider => ({
   getList: (resource, params) => {
     const { page, perPage } = params.pagination;
@@ -50,9 +53,11 @@ export default (
     const rangeEnd = page * perPage - 1;
 
     const query = {
-      sort: JSON.stringify([field, order]),
-      range: JSON.stringify([rangeStart, rangeEnd]),
-      filter: JSON.stringify(params.filter),
+      _sort: field,
+      _end: rangeEnd,
+      _start: rangeStart,
+      _order: order,
+      _filter: JSON.stringify(params.filter),
     };
     const url = getAdminUrl(apiUrl, resource, query);
     const options =
@@ -71,6 +76,7 @@ export default (
           `The ${countHeader} header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare ${countHeader} in the Access-Control-Expose-Headers header?`
         );
       }
+
       return {
         data: json,
         total:
@@ -107,9 +113,11 @@ export default (
     const rangeEnd = page * perPage - 1;
 
     const query = {
-      sort: JSON.stringify([field, order]),
-      range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-      filter: JSON.stringify({
+      _sort: field,
+      _end: rangeEnd,
+      _start: rangeStart,
+      _order: order,
+      _filter: JSON.stringify({
         ...params.filter,
         [params.target]: params.id,
       }),
@@ -146,7 +154,7 @@ export default (
     });
   },
 
-  update: (resource, params) =>
+  update: (resource, params: UpdateParams<any>) =>
     httpClient(`${apiUrl}/${resource}/${params.id}`, {
       method: "PUT",
       body: JSON.stringify(params.data),
@@ -192,3 +200,65 @@ export default (
       data: responses.map(({ json }) => json.id),
     })),
 });
+
+export const convertFileToBase64 = (file: { rawFile: File }) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file.rawFile);
+
+    reader.onload = () => resolve(reader.result);
+
+    reader.onerror = reject;
+  });
+}
+
+const provider = dataProvider(adminBaseUrl)
+
+export default {
+  ...provider,
+  update: (resource: string, params: any) => {
+    if (resource !== 'events') {
+      // fallback to the default implementation
+      return provider.update(resource, params);
+    }
+
+    /**
+     * For posts update only, convert uploaded image in base 64 and attach it to
+     * the `picture` sent property, with `src` and `title` attributes.
+     */
+
+    if (!Array.isArray(params.data.images)) {
+      params.data.images = []
+    }
+
+      // Freshly dropped pictures are File objects and must be converted to base64 strings
+    const newImages = params.data.images.filter(
+      (p: { rawFile: File | string }) => p.rawFile instanceof File
+    );
+
+    const formerImages = params.data.images.filter(
+      (p: { rawFile: File | string }) => !(p.rawFile instanceof File)
+    );
+
+    return Promise.all(newImages.map(convertFileToBase64))
+      .then(base64Pictures =>
+        base64Pictures.map(picture64 => ({
+          src: picture64,
+          title: `${params.data.title}`,
+        }))
+      )
+      .then(transformedNewImages =>
+        provider.update(resource, {
+          ...params,
+          data: {
+            ...params.data,
+            images: [
+              ...transformedNewImages,
+              ...formerImages,
+            ],
+          },
+        })
+      );
+  },
+};

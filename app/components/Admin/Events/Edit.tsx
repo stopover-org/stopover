@@ -1,10 +1,25 @@
-import { Edit, SimpleForm, TextInput, NumberInput } from "react-admin";
+import {
+  Edit,
+  SimpleForm,
+  TextInput,
+  NumberInput,
+  ImageInput,
+  ImageField,
+} from "react-admin";
 
 export const EditEvent = () => (
   <Edit>
     <SimpleForm>
       <TextInput name="title" source="title" />
       <TextInput name="description" source="description" />
+      <ImageInput
+        source="images"
+        label="Related pictures"
+        accept="image/*"
+        multiple
+      >
+        <ImageField source="src" title="title" />
+      </ImageInput>
       <NumberInput
         name="organizer_cost_per_uom_cents"
         source="organizer_cost_per_uom_cents"

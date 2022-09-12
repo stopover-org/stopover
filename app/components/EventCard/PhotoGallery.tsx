@@ -18,12 +18,14 @@ const Wrapper = styled.div`
     padding-right: 35px;
   }
 `;
+
 const Gallery = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   height: 100%;
 `;
+
 const MainImageWrapper = styled.div<{ carouselHeight: number }>`
   display: flex;
   flex-direction: row;
@@ -34,17 +36,20 @@ const MainImageWrapper = styled.div<{ carouselHeight: number }>`
   height: 100vh;
   overflow: hidden;
 `;
+
 const CarouselWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 12px 35px 12px 35px;
 `;
+
 const MainImage = styled.img`
   min-height: 100px;
   min-width: 100px;
   max-height: 900px;
   max-width: 1300px;
 `;
+
 const Carousel = styled.div`
   overflow-x: scroll;
   width: auto;
@@ -57,6 +62,7 @@ const Carousel = styled.div`
   width: 100%;
   padding: 6px;
 `;
+
 const Close = styled.img`
   width: 45px;
   height: 45px;
@@ -73,6 +79,7 @@ const ImageContainer = styled.div`
   cursor: pointer;
   overflow: hidden;
 `;
+
 const ItemGallery = styled.div<{ color: string }>`
   display: flex;
   align-items: center;
@@ -82,6 +89,7 @@ const ItemGallery = styled.div<{ color: string }>`
   border: 5px solid ${(props) => props.color};
   background-color: ${(props) => props.color};
 `;
+
 const Image = styled.img`
   display: block;
   position: absolute;
@@ -90,6 +98,7 @@ const Image = styled.img`
   left: 50%;
   transform: translate(-50%, -50%);
 `;
+
 type Images = {
   name?: string;
   image: string;
@@ -105,8 +114,11 @@ type Props = {
 
 const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
   const [indexOfCurrentImage, setIndexOfCurrentImage] = useState<number>(0);
+
   const [carouselHeight, setCarouselHeight] = useState<number | undefined>(0);
+
   const mainImageRef = useRef<HTMLDivElement>(null);
+
   const portal = document.getElementById("galleryOfPhotoes") as HTMLElement;
 
   const keyDownHandler = (e: KeyboardEvent) => {
@@ -116,6 +128,7 @@ const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
       }
     }
   };
+
   useEffect(() => {
     setCarouselHeight(mainImageRef.current?.offsetHeight);
     document.addEventListener("keydown", keyDownHandler);
@@ -129,12 +142,14 @@ const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
   const onClickChoose = (id: string) => {
     setIndexOfCurrentImage(images.findIndex((item) => item.id === id));
   };
+
   const onClickSlide = (buttonDirection: string) => {
     if (buttonDirection === "left" && indexOfCurrentImage > 0)
       setIndexOfCurrentImage(indexOfCurrentImage - 1);
     if (buttonDirection === "right" && indexOfCurrentImage < images.length - 1)
       setIndexOfCurrentImage(indexOfCurrentImage + 1);
   };
+
   return ReactDom.createPortal(
     <Wrapper onKeyDown={() => keyDownHandler} tabIndex={0}>
       <Close src={CrossWhite.src} onClick={onClose} />

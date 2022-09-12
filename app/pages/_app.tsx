@@ -5,12 +5,14 @@ import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";
 import { getClientEnvironment } from "../lib/clientEnvironment";
 
 const clientEnv = getClientEnvironment();
+
 const initialPreloadedQuery = getInitialPreloadedQuery({
   createClientEnvironment: () => getClientEnvironment()!,
 });
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const relayProps = getRelayProps(pageProps, initialPreloadedQuery);
+
   const env = relayProps.preloadedQuery?.environment ?? clientEnv!;
 
   return (

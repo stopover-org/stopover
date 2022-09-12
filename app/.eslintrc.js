@@ -27,6 +27,9 @@ module.exports = {
         unnamedComponents: "arrow-function",
       },
     ],
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "padding-line-between-statements": ["error",
+      { blankLine: "always", prev: ["const", "let", "var"], next: "*"},
+    ],
   }
 }

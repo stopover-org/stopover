@@ -24,9 +24,11 @@ type Props = {
   onClick: (rateIndex: number) => void;
 };
 
-function Rate(props: Props) {
+const Rate = (props: Props) => {
   const stars = new Array(5).fill("");
+
   const [selectedRate, setSelectedRate] = useState(0);
+
   const [shownRate, setShownRate] = useState<number | null>(0);
 
   const rateChange = (index: number) => {
@@ -57,5 +59,6 @@ function Rate(props: Props) {
       </Container>
     </Wrapper>
   );
-}
+};
+
 export default Rate;

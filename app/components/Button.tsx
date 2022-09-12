@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ButtonVariants, ButtonIconPlace, ButtonSizes } from "./StatesEnum";
 
 const Wrapper = styled.div``;
+
 const ButtonStyle = styled.button<{
   backgrounColor: string;
   border: string;
@@ -56,4 +57,5 @@ const Button = ({
     </ButtonStyle>
   </Wrapper>
 );
+
 export default Button;

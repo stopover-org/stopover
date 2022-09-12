@@ -11,6 +11,7 @@ const Wrapper = styled.div<{ gradient: string }>`
   align-items: center;
   position: relative;
 `;
+
 const Circle = styled.div<{ color: string; active: string }>`
   border-radius: 50%;
   background: ${(props) => props.color};
@@ -27,7 +28,9 @@ type Props = {
 
 const RightLeftButton = ({ buttonDirection, onClick, active }: Props) => {
   const leftGradient = "-90deg";
+
   const rightGradient = "90deg";
+
   return (
     <Wrapper
       className="right-left-button-wrapper"

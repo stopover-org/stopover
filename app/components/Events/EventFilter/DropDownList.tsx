@@ -35,19 +35,17 @@ type DropdownItemType = {
   value: string;
 };
 
-function DropDownList(props: Props) {
-  return (
-    <Wrapper paddingRight={props.paddingRight}>
-      <Description>{props.description}</Description>
-      <SelectWrapper width={props.width}>
-        {props.options.map((item: DropdownItemType, index: number) => (
-          <option key={index} value={item.value}>
-            {item.label}
-          </option>
-        ))}
-      </SelectWrapper>
-    </Wrapper>
-  );
-}
+const DropDownList = (props: Props) => (
+  <Wrapper paddingRight={props.paddingRight}>
+    <Description>{props.description}</Description>
+    <SelectWrapper width={props.width}>
+      {props.options.map((item: DropdownItemType, index: number) => (
+        <option key={index} value={item.value}>
+          {item.label}
+        </option>
+      ))}
+    </SelectWrapper>
+  </Wrapper>
+);
 
 export default DropDownList;

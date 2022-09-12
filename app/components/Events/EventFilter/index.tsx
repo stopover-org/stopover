@@ -56,6 +56,7 @@ const EventFilter = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedIndividualOnly, setSelectedIndividualOnly] =
     useState<boolean>(false);
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedRate, setSelectedRate] = useState<number>(0);
 

@@ -34,6 +34,7 @@ const ImageContainer = styled.div<{ color: string; cross: string }>`
     border-radius: 50%;
   }
 `;
+
 const DescriptionContainer = styled.div`
   font-weight: 400;
   font-size: 20px;
@@ -50,6 +51,7 @@ type Props = {
 
 const ItemGallery = (props: Props) => {
   const borderColor = props.chosen ? "#FF8A00" : "transparent";
+
   const crossVisible = props.chosen ? "block" : "none";
 
   return (

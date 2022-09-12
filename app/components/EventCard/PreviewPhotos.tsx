@@ -22,6 +22,7 @@ type Props = {
 
 const PreviewPhotos = ({ blockScroll, images }: Props) => {
   const [isOpenGallery, setIsOpenGallery] = useState<boolean>(false);
+
   blockScroll(isOpenGallery);
   return (
     <Wrapper>

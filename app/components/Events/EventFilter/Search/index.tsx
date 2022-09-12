@@ -52,11 +52,13 @@ type Props = {
   helpText: string;
 };
 
-function Search(props: Props) {
+const Search = (props: Props) => {
   const [value, setValue] = useState("");
+
   const onChange = (e: any) => {
     setValue(e.target.value);
   };
+
   return (
     <Wrapper>
       <HelpMessage className="text">
@@ -96,6 +98,6 @@ function Search(props: Props) {
       </div>
     </Wrapper>
   );
-}
+};
 
 export default Search;

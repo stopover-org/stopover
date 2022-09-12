@@ -5,12 +5,15 @@ const Wrapper = styled.div`
   padding-top: 6px;
   padding-bottom: 6px;
 `;
+
 const Content = styled.div``;
+
 const Row = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
+
 const Column = styled.p<{ textDecoration: string }>`
   font-weight: 400;
   font-size: 24px;
@@ -19,6 +22,7 @@ const Column = styled.p<{ textDecoration: string }>`
   padding-bottom: 6px;
   text-decoration: ${(props) => props.textDecoration};
 `;
+
 type EventOptions = {
   column1: string;
   column2: string;
@@ -43,4 +47,5 @@ const ReadOnly = ({ eventOptions }: Props) => (
     </Content>
   </Wrapper>
 );
+
 export default ReadOnly;

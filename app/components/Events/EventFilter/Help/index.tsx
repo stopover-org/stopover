@@ -76,18 +76,16 @@ type Props = {
   content: string;
 };
 
-function Search(props: Props) {
-  return (
-    <Wrapper>
-      <Text>{props.content}</Text>
-      <IconContainer>
-        <HelpText className="text">
-          <p>{props.text}</p>
-        </HelpText>
-        <Icon src={icon.src} />
-      </IconContainer>
-    </Wrapper>
-  );
-}
+const Search = (props: Props) => (
+  <Wrapper>
+    <Text>{props.content}</Text>
+    <IconContainer>
+      <HelpText className="text">
+        <p>{props.text}</p>
+      </HelpText>
+      <Icon src={icon.src} />
+    </IconContainer>
+  </Wrapper>
+);
 
 export default Search;

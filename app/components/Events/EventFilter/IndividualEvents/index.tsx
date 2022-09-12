@@ -11,6 +11,7 @@ const Wrapper = styled.div`
     height: 20px;
   }
 `;
+
 const Container = styled.label`
   display: flex;
   flex-direction: row;
@@ -24,20 +25,18 @@ type Props = {
   onClick: (event: React.SyntheticEvent<HTMLInputElement>) => void;
 };
 
-function IndividualEvents(props: Props) {
-  return (
-    <Wrapper>
-      <Container>
-        <input
+const IndividualEvents = (props: Props) => (
+  <Wrapper>
+    <Container>
+      <input
         type="checkbox"
         onClick={(e: React.SyntheticEvent<HTMLInputElement>) =>
           props.onClick(e)
         }
-        />
-        <Text>Индивидуальное мероприятие</Text>
-      </Container>
-    </Wrapper>
-  );
-}
+      />
+      <Text>Индивидуальное мероприятие</Text>
+    </Container>
+  </Wrapper>
+);
 
 export default IndividualEvents;

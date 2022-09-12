@@ -18,6 +18,7 @@ const Underline = styled.div`
 
 const ChequeReadOnly = () => {
   const color = "#82E297";
+
   return (
     <Wrapper>
       <ChequeHead color={color} />
@@ -68,4 +69,5 @@ const ChequeReadOnly = () => {
     </Wrapper>
   );
 };
+
 export default ChequeReadOnly;

@@ -14,12 +14,14 @@ const Wrapper = styled.div`
   height: 180px;
   padding: 26px 0px 0px 45px;
 `;
+
 const CarouselContainer = styled.div`
   width: inherit;
   height: inherit;
   overflow: hidden;
   position: absolute;
 `;
+
 const Carousel = styled.div<{ width: number; moveTo: number | string }>`
   height: inherit;
   width: ${(props) => props.width}px;
@@ -32,14 +34,17 @@ const Carousel = styled.div<{ width: number; moveTo: number | string }>`
   transition: left 1s ease;
 `;
 
-function IntrestGallery() {
+const IntrestGallery = () => {
   const [slideDirection, setSlideDirection] = useState(0);
+
   const [rightSlideEndPoint, setRightSlideEndPoint] = useState(0);
 
   const [imageState, setImageState] = useState<string[]>([]);
 
   const imageWidth = 155;
+
   const carouselWidth = imageArray.length * imageWidth;
+
   const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -51,6 +56,7 @@ function IntrestGallery() {
   const onClickSlide = (buttonDirection: string) => {
     if (slideDirection < 0 && buttonDirection === "left") {
       setSlideDirection(slideDirection + imageWidth);
+
       return;
     }
     if (slideDirection >= rightSlideEndPoint && buttonDirection === "right") {
@@ -95,6 +101,6 @@ function IntrestGallery() {
       <ButtonGallery buttonDirection="right" onClick={onClickSlide} />
     </Wrapper>
   );
-}
+};
 
 export default IntrestGallery;

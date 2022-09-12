@@ -102,6 +102,7 @@ const SliderComponent = ({
   const checkType = () => {
     if (isDifferentTypes(range)) {
       console.warn("types of start and end are different");
+
       return false;
     }
 
@@ -138,8 +139,11 @@ const SliderComponent = ({
     currentCountOfMarks: number
   ) => {
     const array = new Array(delta).fill(null) as MarkObj[];
+
     let flagIndex = 0;
+
     const countOfGaps = currentCountOfMarks - 1;
+
     const step = Math.round(delta / countOfGaps);
 
     return array.reduce((marks: Record<string, MarkObj>, item, index) => {
@@ -152,6 +156,7 @@ const SliderComponent = ({
       if (delta - 1 === index) {
         marks[index] = { label: startPoint + index };
       }
+
       return marks;
     }, {} as Record<string, MarkObj>);
   };
@@ -162,9 +167,13 @@ const SliderComponent = ({
     currentCountOfMarks: number
   ) => {
     const cloneDateStartDate = startPoint!.clone();
+
     const array = new Array(delta).fill(null) as MarkObj[];
+
     let flagIndex = 0;
+
     const countOfGaps = currentCountOfMarks - 1;
+
     const step = Math.round(delta / countOfGaps);
 
     return array.reduce((marks: Record<string, MarkObj>, item, index) => {
@@ -190,6 +199,7 @@ const SliderComponent = ({
 
     return array.reduce((marks: Record<string, MarkObj>, item, index) => {
       marks[index] = { label: range[index] as string };
+
       return marks;
     }, {} as Record<string, MarkObj>);
   };
@@ -213,6 +223,7 @@ const SliderComponent = ({
         return range.length;
       default:
         console.warn(checkType());
+
         return 1;
     }
   };
@@ -239,6 +250,7 @@ const SliderComponent = ({
         return createMarksString(delta);
       default:
         console.warn(checkType());
+
         return {};
     }
   };
@@ -253,9 +265,11 @@ const SliderComponent = ({
           "DD.MM"
         );
       }
+
       return createMarks(findDelta(), range[0], findDelta())[index].label;
     } catch {
       console.warn("cant find chosen value in slider");
+
       return "";
     }
   };
@@ -280,4 +294,5 @@ const SliderComponent = ({
     </Wrapper>
   );
 };
+
 export default React.memo(SliderComponent);

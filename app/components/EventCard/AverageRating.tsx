@@ -8,11 +8,13 @@ const Wrapper = styled.div`
   flex-direction: row;
   align-items: center;
 `;
+
 const AverageRatingWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
 `;
+
 const StarsWrapper = styled.div`
   background-color: transparent;
   padding: 0px 6px 0px 0px;
@@ -27,6 +29,7 @@ const RateBackground = styled.div<{ position: number }>`
   background-color: white;
   z-index: 1;
 `;
+
 const SolidStarsStyle = styled.div`
   position: absolute;
   z-index: 0;
@@ -35,6 +38,7 @@ const SolidStarsStyle = styled.div`
     height: 25px;
   }
 `;
+
 const OutlineStarsStyle = styled.div`
   position: absolute;
   z-index: 2;
@@ -43,7 +47,9 @@ const OutlineStarsStyle = styled.div`
     height: 25px;
   }
 `;
+
 const NumbericValueWrapper = styled.div``;
+
 const NumericValue = styled.p`
   font-weight: 400;
   font-size: 20px;

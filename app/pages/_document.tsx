@@ -17,6 +17,7 @@ class MyDocument extends Document<DocumentProps> {
     const relayDocument = createRelayDocument();
 
     const { renderPage } = ctx;
+
     ctx.renderPage = () =>
       renderPage({
         enhanceApp: (App) => relayDocument.enhance(App),
