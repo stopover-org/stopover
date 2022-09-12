@@ -32,7 +32,7 @@ type Props = {
   color?: string;
 };
 
-const Index = ({
+const Typography = ({
   color,
   italic,
   bold,
@@ -55,4 +55,4 @@ const Index = ({
   </Wrapper>
 );
 
-export default Index;
+export default Typography;
