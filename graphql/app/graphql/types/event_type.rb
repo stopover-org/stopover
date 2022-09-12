@@ -30,5 +30,13 @@ module Types
     field :achievements, [Types::AchievementType]
     field :available_dates, [Types::DateTimeType]
     field :tags, [Types::TagType]
+
+    field :images, [String]
+
+    def images
+      object.images.map do |img|
+        Rails.application.routes.url_helpers.rails_blob_url(img)
+      end
+    end
   end
 end

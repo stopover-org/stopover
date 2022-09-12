@@ -8,17 +8,17 @@ import {
   ButtonSizes,
   TypographySize,
   TypographyTags,
-} from "../StatesEnum";
+} from "../Typography/StatesEnum";
 
 const Wrapper = styled.div``;
 
 const Trips = () => (
   <Wrapper>
     <Button
-      buttonVariant={ButtonVariants.COMMON}
-      buttonIconPlace={ButtonIconPlace.WITH_RIGHT_ICON}
+      variant={ButtonVariants.COMMON}
+      iconPosition={ButtonIconPlace.WITH_RIGHT_ICON}
       disabled
-      buttonSize={ButtonSizes.H3}
+      size={ButtonSizes.H3}
     >
       <Typography size={TypographySize.H5} as={TypographyTags.MEDIUM}>
         button
