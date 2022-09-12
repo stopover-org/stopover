@@ -29,16 +29,14 @@ const NavBar = styled.div`
   }
 `;
 
-function Header() {
-  return (
-    <Wrapper>
-      <Logo>250 x 75</Logo>
-      <NavBar>
-        <p>Путешествие</p>
-        <p>Вход</p>
-      </NavBar>
-    </Wrapper>
-  );
-}
+const Header = () => (
+  <Wrapper>
+    <Logo>250 x 75</Logo>
+    <NavBar>
+      <p>Путешествие</p>
+      <p>Вход</p>
+    </NavBar>
+  </Wrapper>
+);
 
 export default Header;

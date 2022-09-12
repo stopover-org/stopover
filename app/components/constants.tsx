@@ -108,6 +108,7 @@ export const chooseAmount = [
 ];
 
 const uniqueId = () => `${"fsda"}-${Math.random()}`;
+
 export const imageArray = [
   {
     name: "gastronomy",

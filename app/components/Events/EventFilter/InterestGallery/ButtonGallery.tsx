@@ -22,6 +22,7 @@ const Wrapper = styled.div<{ gradient: string }>`
     height: 32px;
   }
 `;
+
 const Circle = styled.div`
   border-radius: 50%;
   background: black;
@@ -34,9 +35,11 @@ type Props = {
   onClick: (buttonDirection: string) => void;
 };
 
-function ButtonGallery(props: Props) {
+const ButtonGallery = (props: Props) => {
   const leftGradient = "-90deg";
+
   const rightGradient = "90deg";
+
   return (
     <Wrapper
       gradient={props.buttonDirection === "left" ? rightGradient : leftGradient}
@@ -50,6 +53,6 @@ function ButtonGallery(props: Props) {
       </Circle>
     </Wrapper>
   );
-}
+};
 
 export default ButtonGallery;

@@ -32,6 +32,7 @@ const ItemGallery = ({
   onClickChoose,
 }: Props) => {
   const borderColor = chosen ? "#FF8A00" : "transparent";
+
   return (
     <Wrapper onClick={() => onClickChoose(id)}>
       <ImageContainer color={borderColor} src={image} alt={description} />

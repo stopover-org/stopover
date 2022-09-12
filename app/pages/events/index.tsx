@@ -38,6 +38,7 @@ export default withRelay(Home, Query, {
     const { createServerEnvironment } = await import(
       "../../lib/serverEnvironment"
     );
+
     return createServerEnvironment();
   },
 });

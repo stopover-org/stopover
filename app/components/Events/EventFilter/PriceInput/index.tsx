@@ -41,6 +41,7 @@ type Props = {
   priceHandler: (startPrice: number | null, endPrice: number | null) => void;
 };
 const isValidNumber = (value: any) => !+value.isNaN();
+
 const isValid = (value: any) =>
   !(value === undefined || +value === undefined || value === null);
 
@@ -48,6 +49,7 @@ const PriceInput = (props: Props) => {
   const [startPrice, setStartPrice] = useState<string>(
     props.minPrice.toString()
   );
+
   const [endPrice, setEndPrice] = useState<string>(props.maxPrice.toString());
 
   const onStartPriceChange = (value: string) => {

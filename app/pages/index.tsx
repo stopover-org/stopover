@@ -1,14 +1,10 @@
-const Home = () => {
-  return null
-};
+const Home = () => null;
 
-export const getServerSideProps = async () => {
-  return {
-    redirect: {
-      destination: '/events',
-      permanent: true,
-    },
-  }
-}
+export const getServerSideProps = async () => ({
+  redirect: {
+    destination: "/events",
+    permanent: true,
+  },
+});
 
-export default Home
+export default Home;

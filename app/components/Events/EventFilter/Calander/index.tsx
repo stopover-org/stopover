@@ -63,9 +63,11 @@ type Props = {
   ) => void;
 };
 
-function Index(props: Props) {
+const Index = (props: Props) => {
   const [startDate, setStartDate] = useState<moment.Moment | null>(null);
+
   const [endDate, setEndDate] = useState<moment.Moment | null>(null);
+
   const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
     null
   );
@@ -101,6 +103,6 @@ function Index(props: Props) {
       />
     </Wrapper>
   );
-}
+};
 
 export default Index;

@@ -10,7 +10,7 @@ type Props = {
   showRate: (index: number | null) => void;
 };
 
-function RateStar(props: Props) {
+const RateStar = (props: Props) => {
   const showStar = () => {
     if (props.shownRate === null || props.shownRate === undefined) {
       return props.selectedRate < props.index + 1 ? (
@@ -25,6 +25,7 @@ function RateStar(props: Props) {
       <img alt="Checked star" src={StarChecked.src} />
     );
   };
+
   return (
     <div
       onClick={() => {
@@ -43,5 +44,6 @@ function RateStar(props: Props) {
       {showStar()}
     </div>
   );
-}
+};
+
 export default RateStar;

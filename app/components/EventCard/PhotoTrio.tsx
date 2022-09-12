@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div``;
+
 const Cards = styled.div`
   display: flex;
   flex-direction: row;
@@ -17,19 +18,23 @@ const Cards = styled.div`
     padding-left: 6px;
   }
 `;
+
 const CardWrapper = styled.div<{ height: string }>`
   height: ${(props) => props.height};
 `;
+
 const RatioWidth = styled.div<{ width: string }>`
   max-width: ${(props) => props.width};
   width: ${(props) => props.width};
 `;
+
 const Card = styled.div<{ height: string }>`
   position: relative;
   height: ${(props) => props.height};
   cursor: pointer;
   overflow: hidden;
 `;
+
 const Image = styled.img`
   display: block;
   position: absolute;
@@ -47,7 +52,9 @@ type Props = {
 
 const PhotoTrio = ({ images, onOpen }: Props) => {
   const bigCardRatio = 0.6;
+
   const smallCardRatio = 0.4;
+
   const smallCardHeight = "50%";
 
   return (
