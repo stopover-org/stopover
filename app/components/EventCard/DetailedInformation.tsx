@@ -4,6 +4,7 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   padding: 6px 6px 6px 0px;
 `;
+
 const Description = styled.p`
   border: 1px solid black;
   white-space: normal;

@@ -54,4 +54,5 @@ const Typography = ({
     </TextStyle>
   </Wrapper>
 );
+
 export default Typography;

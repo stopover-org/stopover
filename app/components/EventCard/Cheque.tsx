@@ -15,6 +15,7 @@ const Wrapper = styled.div`
 
 const Cheque = () => {
   const color = "#c2e0fe";
+
   return (
     <Wrapper>
       <ChequeHead color={color} />
@@ -103,4 +104,5 @@ const Cheque = () => {
     </Wrapper>
   );
 };
+
 export default Cheque;

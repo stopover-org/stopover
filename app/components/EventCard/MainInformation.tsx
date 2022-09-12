@@ -15,6 +15,7 @@ const Wrapper = styled.div`
   align-items: flex-end;
   padding: 15px 0px 6px 0px;
 `;
+
 const InformationalBlock = styled.div`
   .average-rating-wrapper {
     display: inline-block;
@@ -27,6 +28,7 @@ const InformationalBlock = styled.div`
     padding: 6px;
   }
 `;
+
 const FunctionalBlock = styled.div`
   display: flex;
   flex-direction: row;
@@ -34,12 +36,14 @@ const FunctionalBlock = styled.div`
     padding-left: 12px;
   }
 `;
+
 const Name = styled.p`
   padding: 0px 0px 6px 0px;
   font-weight: 400;
   font-size: 40px;
   line-height: 48px;
 `;
+
 const Location = styled.p`
   padding: 6px 0px 0px 0px;
   font-weight: 400;
@@ -77,6 +81,7 @@ const MainInformation = ({
     `,
     eventReference
   );
+
   return (
     <Wrapper>
       <InformationalBlock>

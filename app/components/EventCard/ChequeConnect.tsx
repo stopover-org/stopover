@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div``;
+
 const DottedDiv = styled.div<{ height: number; color: string }>`
   position: relative;
   min-width: 100px;
@@ -10,12 +11,14 @@ const DottedDiv = styled.div<{ height: number; color: string }>`
   //background-color: #c2e0fe;
   border-bottom: 2px dashed ${(props) => props.color};
 `;
+
 const Div = styled.div<{ height: number }>`
   min-width: 100px;
   width: 100%;
   height: ${(props) => props.height}px;
   //background-color: #c2e0fe;
 `;
+
 const LeftHalfCircle = styled.div<{
   height: number;
   width: number;
@@ -32,6 +35,7 @@ const LeftHalfCircle = styled.div<{
   border-top: 1px solid ${(props) => props.color};
   border-bottom: 1px solid ${(props) => props.color};
 `;
+
 const RightHalfCircle = styled.div<{
   height: number;
   width: number;
@@ -52,6 +56,7 @@ const RightHalfCircle = styled.div<{
 
 const ChequeConnect = ({ color }: { color: string }) => {
   const height = 50;
+
   return (
     <Wrapper>
       <DottedDiv height={height / 2 + 2.5} color={color}>
@@ -62,4 +67,5 @@ const ChequeConnect = ({ color }: { color: string }) => {
     </Wrapper>
   );
 };
+
 export default ChequeConnect;

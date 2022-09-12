@@ -11,12 +11,14 @@ const Wrapper = styled.div`
   flex-direction: column;
   padding: 12px;
 `;
+
 const Amount = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   background-color: white;
 `;
+
 const AmountNumber = styled.input`
   font-style: normal;
   font-weight: 400;
@@ -26,10 +28,12 @@ const AmountNumber = styled.input`
   border: none;
   outline: none;
 `;
+
 const Buttons = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const ButtonUp = styled.button`
   cursor: pointer;
   background-color: transparent;
@@ -41,6 +45,7 @@ const ButtonDown = styled.button`
   background-color: transparent;
   border: none;
 `;
+
 const Description = styled.p`
   width: 100%;
   text-align: center;
@@ -55,17 +60,21 @@ type Props = {
 };
 const Counter = ({ description }: Props) => {
   const maxItems = 5;
+
   const [amount, setAmount] = useState<number>(0);
+
   const OnChangechangeAmount = (e: HTMLInputElement) => {
     if (+e.value <= maxItems && +e.value >= 0) {
       setAmount(+e.value);
     }
   };
+
   const OnClickchangeAmount = (delta: number) => {
     if (amount + delta <= maxItems && amount + delta >= 0) {
       setAmount(amount + delta);
     }
   };
+
   return (
     <Wrapper>
       <Amount>
@@ -92,4 +101,5 @@ const Counter = ({ description }: Props) => {
     </Wrapper>
   );
 };
+
 export default Counter;

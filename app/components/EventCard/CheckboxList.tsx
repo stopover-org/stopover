@@ -5,16 +5,19 @@ const Wrapper = styled.form`
   max-height: 300px;
   overflow-y: scroll;
 `;
+
 const Row = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
+
 const CustomCheckbox = styled.label`
   display: flex;
   flex-direction: row;
   padding: 6px 0px 6px 0px;
 `;
+
 const CustomCheckboxCircle = styled.div`
   display: flex;
   justify-content: center;
@@ -27,6 +30,7 @@ const CustomCheckboxCircle = styled.div`
     display: none;
   }
 `;
+
 const CustomCheckboxIndicator = styled.label<{ display: string }>`
   display: ${(props) => props.display};
   border-radius: 50%;
@@ -35,6 +39,7 @@ const CustomCheckboxIndicator = styled.label<{ display: string }>`
   height: 24px;
   //box-shadow: 1px 1px 5px 1px #98a6b5;
 `;
+
 const Description = styled.p`
   font-style: normal;
   font-weight: 400;
@@ -42,6 +47,7 @@ const Description = styled.p`
   line-height: 29px;
   padding-left: 12px;
 `;
+
 const Price = styled.p<{ textDecoration: string }>`
   font-style: normal;
   font-weight: 400;
@@ -70,10 +76,12 @@ const CheckboxList = ({ list }: Props) => {
       builtIn: item.builtIn,
     }))
   );
+
   const onClickCheck = (id: string) => {
     const indexCorrespondentId = listCheckbox.findIndex(
       (item) => item.id === id
     );
+
     // traking what checkbox was clicked and changing coresponded porperty
     setListCheckbox([
       ...listCheckbox.slice(
@@ -87,6 +95,7 @@ const CheckboxList = ({ list }: Props) => {
       ...listCheckbox.slice(indexCorrespondentId + 1, listCheckbox.length),
     ]);
   };
+
   return (
     <Wrapper>
       {listCheckbox.map((item, index) => (
@@ -116,4 +125,5 @@ const CheckboxList = ({ list }: Props) => {
     </Wrapper>
   );
 };
+
 export default CheckboxList;

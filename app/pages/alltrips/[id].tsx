@@ -7,4 +7,5 @@ const AllTrips = () => (
     <Trips />
   </Layout>
 );
+
 export default AllTrips;

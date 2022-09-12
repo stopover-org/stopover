@@ -31,6 +31,7 @@ const Map = ({
     }),
     []
   );
+
   return (
     <GoogleMap
       zoom={10}
@@ -45,6 +46,7 @@ const Map = ({
 
 const GoogleMaps = ({ latitude, longitude, googleMapsApiKey }: Props) => {
   const { isLoaded } = useLoadScript({ googleMapsApiKey });
+
   if (!isLoaded) return <div>Loading...</div>;
   return (
     <Wrapper>

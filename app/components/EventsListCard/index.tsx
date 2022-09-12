@@ -4,4 +4,4 @@
 
 export const EventsListCard = () => null;
 
-export default EventsListCard
+export default EventsListCard;

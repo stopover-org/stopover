@@ -26,6 +26,7 @@ const Breadcrumbs = ({ eventReference }: Props) => {
     `,
     eventReference
   );
+
   return (
     <Wrapper>
       <Path>{`Home > Events > ${event.title}`}</Path>

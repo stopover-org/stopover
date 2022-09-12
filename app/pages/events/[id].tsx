@@ -25,8 +25,11 @@ type Props = {
 
 const Event = ({ preloadedQuery, ...props }: RelayProps<Props, Id_Query>) => {
   const router = useRouter();
+
   const { date } = router.query;
+
   const { event } = usePreloadedQuery(Query, preloadedQuery);
+
   return (
     <Layout>
       <EventCard
@@ -37,6 +40,7 @@ const Event = ({ preloadedQuery, ...props }: RelayProps<Props, Id_Query>) => {
     </Layout>
   );
 };
+
 export default withRelay(Event, Query, {
   // Fallback to render while the page is loading.
   // This property is optional.
@@ -55,6 +59,7 @@ export default withRelay(Event, Query, {
     const { createServerEnvironment } = await import(
       "../../lib/serverEnvironment"
     );
+
     return createServerEnvironment();
   },
 });

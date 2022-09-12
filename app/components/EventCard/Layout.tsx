@@ -19,4 +19,5 @@ type Props = {
 const Layout = ({ children, color }: Props) => (
   <Wrapper color={color}>{children}</Wrapper>
 );
+
 export default Layout;
