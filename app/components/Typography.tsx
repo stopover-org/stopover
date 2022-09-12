@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { TypographySize } from "./StatesEnum";
+import { TypographySize, TypographyTags } from "./StatesEnum";
 
 const Wrapper = styled.div``;
 
@@ -25,28 +25,11 @@ const TextStyle = styled.span<{
 type Props = {
   children: string | React.ReactElement;
   size?: TypographySize;
+  as: TypographyTags;
   strikeThrough?: boolean;
   bold?: boolean;
   italic?: boolean;
   color?: string;
-};
-
-const getTag = (size: TypographySize = TypographySize.MEDIUM) => {
-  if (
-    [
-      TypographySize.H1,
-      TypographySize.H2,
-      TypographySize.H3,
-      TypographySize.H4,
-      TypographySize.H5,
-      TypographySize.H6,
-    ].includes(size)
-  ) {
-    return Object.keys(TypographySize)[
-      Object.values(TypographySize).indexOf(size)
-    ].toLocaleLowerCase();
-  }
-  return "span";
 };
 
 const Typography = ({
@@ -56,10 +39,11 @@ const Typography = ({
   strikeThrough,
   size,
   children,
+  as = TypographyTags.MEDIUM,
 }: Props) => (
   <Wrapper>
     <TextStyle
-      as={getTag(size)}
+      as={as}
       size={size || TypographySize.MEDIUM.toString()}
       textDecoration={strikeThrough ? "line-through" : "none"}
       fontWeight={bold ? "700" : "none"}
