@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDom from "react-dom";
 import styled from "styled-components";
-import ItemGallery from "./ItemGallery";
 import RightLeftButton from "./RightLeftButton";
 import CrossWhite from "../icons/Outline/Interface/CrossWhite.svg";
 
 const Wrapper = styled.div`
+  padding-top: 12px;
   position: fixed;
   bottom: 0px;
   top: 0px;
@@ -54,6 +54,8 @@ const Carousel = styled.div`
   flex-direction: row;
   position: relative;
   transition: left 1s ease;
+  width: 100%;
+  padding: 6px;
 `;
 const Close = styled.img`
   width: 45px;
@@ -62,7 +64,33 @@ const Close = styled.img`
   right: 0px;
   cursor: pointer;
 `;
-type Image = {
+
+const ImageContainer = styled.div`
+  cursor: pointer;
+  width: 150px;
+  height: 150px;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+`;
+const ItemGallery = styled.div<{ color: string }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  border: 5px solid ${(props) => props.color};
+  background-color: ${(props) => props.color};
+`;
+const Image = styled.img`
+  display: block;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+type Images = {
   name?: string;
   image: string;
   description: string;
@@ -71,7 +99,7 @@ type Image = {
 
 type Props = {
   isOpen: boolean;
-  images: Image[];
+  images: Images[];
   onClose?: () => void;
 };
 
@@ -128,13 +156,18 @@ const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
           <Carousel>
             {images.map((item, index) => (
               <ItemGallery
-                image={item.image}
-                description={item.description}
-                id={item.id}
+                color={
+                  images[indexOfCurrentImage].id === item.id
+                    ? "#FF8A00"
+                    : "transparent"
+                }
                 key={index}
-                chosen={!!(images[indexOfCurrentImage].id === item.id)}
-                onClickChoose={onClickChoose}
-              />
+                onClick={() => onClickChoose(item.id)}
+              >
+                <ImageContainer>
+                  <Image src={item.image} alt={item.description} />
+                </ImageContainer>
+              </ItemGallery>
             ))}
           </Carousel>
         </CarouselWrapper>
@@ -145,3 +178,18 @@ const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
 };
 
 export default PhotoGallery;
+/*
+<MainImageWrapper carouselHeight={carouselHeight as number}>
+          <RightLeftButton
+            buttonDirection="left"
+            onClick={onClickSlide}
+            active={!(indexOfCurrentImage === 0)}
+          />
+          <MainImage src={images[indexOfCurrentImage].image} />
+          <RightLeftButton
+            buttonDirection="right"
+            onClick={onClickSlide}
+            active={!(indexOfCurrentImage === images.length - 1)}
+          />
+        </MainImageWrapper>
+*/

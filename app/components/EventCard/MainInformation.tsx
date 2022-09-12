@@ -47,49 +47,48 @@ const Location = styled.p`
   line-height: 24px;
 `;
 
-type Tag = {
-  tagName: string;
-  image?: string;
-};
-
 type Props = {
-  date: string | string[] | undefined;
-  content: Tag[];
-  price: number | string;
   currency: string;
   averageRating: number;
   eventReference: Id_Query$data["event"];
+  date?: string | string[];
 };
 
 const MainInformation = ({
-  date,
-  content,
-  price,
   currency,
   averageRating,
   eventReference,
+  date,
 }: Props) => {
-  const event = useFragment(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const event = useFragment<any>(
     graphql`
       fragment MainInformation_Fragment on Event {
+        title
         availableDates
+        fullAddress
+        attendeeCostPerUomCents
+        tags {
+          id
+          title
+          preview
+        }
       }
     `,
     eventReference
   );
-  console.log(event);
   return (
     <Wrapper>
       <InformationalBlock>
-        <Name>Event Name, The best of all event great</Name>
+        <Name>{event.title}</Name>
         <AverageRating averageRating={averageRating} />
-        <Tags content={content} />
-        <Location>Brno, Podebradova, Kralove-pole CR 614200</Location>
+        <Tags tags={event.tags} />
+        <Location>{event.fullAddress}</Location>
       </InformationalBlock>
       <FunctionalBlock>
         <Button description={date} color="#ff8a00" />
         <Button
-          description={price}
+          description={event.attendeeCostPerUomCents}
           color="#ff8a00"
           contentAfterDescription={[
             currency,

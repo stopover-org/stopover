@@ -9,8 +9,7 @@ const ButtonStyle = styled.div<{ color: string }>`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background-color: ${(props) => props.color};
-  border-radius: 3px;
+  border: 1px solid ${(props) => props.color};
   padding: 10px;
 `;
 const Description = styled.div`
@@ -68,6 +67,11 @@ const Button = ({ contentAfterDescription, description, color }: Props) => {
             <Description>
               {(description as Moment).format("DD MMMM YYYY")}
             </Description>
+          )}
+        {!isString(description) &&
+          isMoment(description) &&
+          !dateIsValid(description) && (
+            <Description>please choose valid date</Description>
           )}
         {(isString(description) || isNumber(description)) &&
           !couldBeAValidMoment(description) && (
