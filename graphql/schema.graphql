@@ -93,6 +93,7 @@ type Event implements Node {
   fullAddress: String
   houseNumber: String
   id: ID
+  images: [String!]
   interests: [Interest!]
   latitude: Float
   longitude: Float

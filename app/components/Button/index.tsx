@@ -1,16 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import { ButtonVariants, ButtonIconPlace, ButtonSizes } from "./StatesEnum";
+import {
+  ButtonVariants,
+  ButtonIconPlace,
+  ButtonSizes,
+} from "../Typography/StatesEnum";
 
 const Wrapper = styled.div``;
 
 const ButtonStyle = styled.button<{
-  backgrounColor: string;
+  backgroundColor: string;
   border: string;
   padding: string;
 }>`
   border-radius: 3px;
-  background-color: ${(props) => props.backgrounColor};
+  background-color: ${(props) => props.backgroundColor};
   border: 1px solid ${(props) => props.border};
   padding: ${(props) => props.padding};
 `;
@@ -26,36 +30,34 @@ const Content = styled.div`
 
 type Props = {
   children: React.ReactElement;
-  buttonVariant: ButtonVariants;
-  buttonIconPlace: ButtonIconPlace;
-  buttonColor?: string;
-  buttonSize?: ButtonSizes;
+  variant: ButtonVariants;
+  iconPosition: ButtonIconPlace;
+  color?: string;
+  size?: ButtonSizes;
   disabled: boolean;
 };
 
-const Button = ({
-  buttonIconPlace,
-  buttonVariant,
+const Index = ({
+  iconPosition,
+  variant,
   children,
   disabled,
-  buttonColor = "#FF8A00",
-  buttonSize = ButtonSizes.VERY_SMALL,
+  color = "#FF8A00",
+  size = ButtonSizes.VERY_SMALL,
   ...props
 }: Props) => (
   <Wrapper>
     <ButtonStyle
       {...props}
-      backgrounColor={
-        buttonVariant === ButtonVariants.COMMON ? buttonColor : "transparent"
+      backgroundColor={
+        variant === ButtonVariants.COMMON ? color : "transparent"
       }
-      border={
-        buttonVariant === ButtonVariants.OUTLINED ? buttonColor : "transparent"
-      }
-      padding={buttonSize.toString()}
+      border={variant === ButtonVariants.OUTLINED ? color : "transparent"}
+      padding={size.toString()}
     >
       <Content>{children}</Content>
     </ButtonStyle>
   </Wrapper>
 );
 
-export default Button;
+export default Index;

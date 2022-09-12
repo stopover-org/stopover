@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<87414fe3a293c1c37f32a9b5bedf0d25>>
+ * @generated SignedSource<<cf413f147d8f25392533595c0821906e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -137,6 +137,13 @@ return {
                   {
                     "alias": null,
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "images",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
                     "concreteType": "Tag",
                     "kind": "LinkedField",
                     "name": "tags",
@@ -220,16 +227,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8897d7ce0f136cda4108a60fd8cc6034",
+    "cacheID": "e05634e1362c98adb2dbfccb2c2425b6",
     "id": null,
     "metadata": {},
     "name": "EventsListPaginationQuery",
     "operationKind": "query",
-    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...List_EventsFragment_1G22uz\n}\n\nfragment List_EventsFragment_1G22uz on Query {\n  events(first: $count, after: $cursor) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...List_EventsFragment_1G22uz\n}\n\nfragment List_EventsFragment_1G22uz on Query {\n  events(first: $count, after: $cursor) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "dbb32e4997c65561eee6c252472a11fe";
+(node as any).hash = "44fc1381e7bae372b16a86ac74df0b8c";
 
 export default node;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0dc378b7f701276f71bada5a47f7ef6a>>
+ * @generated SignedSource<<79a88f1e136d6945548fea14e01438d6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,7 @@ export type List_EventsFragment$data = {
         readonly availableDates: ReadonlyArray<any> | null;
         readonly description: string | null;
         readonly id: string | null;
+        readonly images: ReadonlyArray<string> | null;
         readonly interests: ReadonlyArray<{
           readonly id: string | null;
           readonly title: string | null;
@@ -134,6 +135,13 @@ return {
                 {
                   "alias": null,
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "images",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
                   "concreteType": "Tag",
                   "kind": "LinkedField",
                   "name": "tags",
@@ -210,6 +218,6 @@ return {
 };
 })();
 
-(node as any).hash = "dbb32e4997c65561eee6c252472a11fe";
+(node as any).hash = "44fc1381e7bae372b16a86ac74df0b8c";
 
 export default node;

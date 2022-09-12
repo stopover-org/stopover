@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a05094b6c3ba5185d577c92fa50577df>>
+ * @generated SignedSource<<c5a2935f14a7bf872beca4d0a75574de>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -101,19 +101,6 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Interest",
-            "kind": "LinkedField",
-            "name": "interests",
-            "plural": true,
-            "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/)
-            ],
-            "storageKey": null
-          },
           (v3/*: any*/),
           {
             "alias": null,
@@ -162,12 +149,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "38b4b0fc6d75b6f49e8242ca6b14b85f",
+    "cacheID": "4bd01d740145ffc36bfcaf9ff64aa19b",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    id\n    ...Breadcrumbs_Fragment\n    ...MainInformation_Fragment\n  }\n}\n\nfragment Breadcrumbs_Fragment on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment MainInformation_Fragment on Event {\n  title\n  availableDates\n  fullAddress\n  attendeeCostPerUomCents\n  tags {\n    id\n    title\n    preview\n  }\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    id\n    ...Breadcrumbs_Fragment\n    ...MainInformation_Fragment\n  }\n}\n\nfragment Breadcrumbs_Fragment on Event {\n  title\n}\n\nfragment MainInformation_Fragment on Event {\n  title\n  availableDates\n  fullAddress\n  attendeeCostPerUomCents\n  tags {\n    id\n    title\n    preview\n  }\n}\n"
   }
 };
 })();

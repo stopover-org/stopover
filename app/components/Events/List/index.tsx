@@ -42,6 +42,7 @@ const EventsList = ({ eventsReference }: Props) => {
               description
               id
               availableDates
+              images
               tags {
                 title
               }
@@ -56,6 +57,8 @@ const EventsList = ({ eventsReference }: Props) => {
     `,
     eventsReference
   );
+
+  console.log(data);
 
   return (
     <Wrapper>
