@@ -37,7 +37,7 @@ type Props = {
   disabled: boolean;
 };
 
-const Index = ({
+const Button = ({
   iconPosition,
   variant,
   children,
@@ -60,4 +60,4 @@ const Index = ({
   </Wrapper>
 );
 
-export default Index;
+export default Button;

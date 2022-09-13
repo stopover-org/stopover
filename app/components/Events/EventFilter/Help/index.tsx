@@ -16,7 +16,7 @@ const Icon = styled.img`
   height: 25px;
 `;
 
-const HelpText = styled.p`
+const HelpText = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -61,12 +61,9 @@ const Search = (props: Props) => {
 
   return (
     <Wrapper>
-      <HelpMessage className="text">
-        {value === "" ? "" : props.helpText}
-      </HelpMessage>
+      <HelpMessage>{value === "" ? "" : props.helpText}</HelpMessage>
       <div>
         <Input
-          className="text"
           type="text"
           placeholder={props.placeHolder}
           inputWidth={props.inputWidth}

@@ -13,6 +13,11 @@ export const Card = ({ eventFragmentRef }: Props) => {
       fragment Card_Event on Event {
         title
         description
+        tags {
+          title
+          id
+        }
+        images
       }
     `,
     eventFragmentRef

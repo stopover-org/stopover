@@ -19,32 +19,30 @@ class Event < ApplicationRecord
   belongs_to :unit, optional: true
   has_many :bookings, dependent: :destroy
 
-  enum recurring_type: { recurrent: :recurrent, regular: :regular }
+  enum recurring_type: { recurrent: "recurrent", regular: "regular" }
   enum event_type: {
     # old one
-    excursion: :excursion,
-    tour: :tour,
+    excursion: "excursion",
+    tour: "tour",
     # new one
-    in_town: :in_town,
-    out_of_town: :out_of_town,
-    active_holiday: :active_holiday,
-    music: :music,
-    workshop: :workshop,
-    business_breakfast: :business_breakfast,
-    meetup: :meetup,
-    sport_activity: :sport_activity,
-    gastronomic: :gastronomic
+    in_town: "in_town",
+    out_of_town: "out_of_town",
+    active_holiday: "active_holiday",
+    music: "music",
+    workshop: "workshop",
+    business_breakfast: "business_breakfast",
+    meetup: "meetup",
+    sport_activity: "sport_activity",
+    gastronomic: "gastronomic"
   }
 
-  validates :title, length: { maximum: 100 }
-  unless :draft?
-    validates :title, :description,
-              :event_type, :recurring_type,
-              :organizer_cost_per_uom_cents, :attendee_cost_per_uom_cents,
-              :unit, :city,
-              :country, :full_address,
-              :duration_time, presence: true
-  end
+  validates :title, length: { maximum: 100 }, unless: :draft?
+  validates :title, :description,
+            :event_type, :recurring_type,
+            :organizer_cost_per_uom_cents, :attendee_cost_per_uom_cents,
+            :unit, :city,
+            :country, :full_address,
+            :duration_time, presence: true, unless: :draft?
 
   before_validation :set_prices
   before_validation :update_tags
@@ -63,7 +61,7 @@ class Event < ApplicationRecord
   end
 
   def available_dates
-    [single_days_with_time, recurrent_dates].flatten!
+    [single_days_with_time.map{|t| DateTime.parse t}, recurrent_dates].flatten.compact.sort
   end
 
   private
