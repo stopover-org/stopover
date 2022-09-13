@@ -19,7 +19,7 @@ const TextStyle = styled.span<{
   font-size: ${(props) => props.size};
   text-decoration: ${(props) => props.textDecoration};
   color: ${(props) => props.color};
-  line-height: 42px;
+  line-height: 1em;
 `;
 
 type Props = {
