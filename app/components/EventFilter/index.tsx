@@ -36,7 +36,15 @@ const Separator = styled.div`
   border-top: 1px solid #d9d9d9;
 `;
 
-const EventFilter = () => {
+type Props = {
+  startDate: Date;
+  endDate: Date;
+  minPrice: number;
+  maxPrice: number;
+  city: string
+}
+
+const EventFilter = ({ startDate, endDate, minPrice, maxPrice, city }: Props) => {
   const [selectedDates, setSelectedDates] = useState<{
     startDate: moment.Moment | null;
     endDate: moment.Moment | null;
@@ -49,8 +57,8 @@ const EventFilter = () => {
     startPrice: number;
     endPrice: number;
   }>({
-    startPrice: 0,
-    endPrice: 10000,
+    startPrice: minPrice,
+    endPrice: maxPrice,
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -86,7 +94,12 @@ const EventFilter = () => {
     startPrice: number | null,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     endPrice: number | null
-  ) => {};
+  ) => {
+    setSelectedPrice({
+      startPrice: startPrice!,
+      endPrice: endPrice!,
+    });
+  };
 
   const sliderDateHandler = (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -110,6 +123,7 @@ const EventFilter = () => {
           inputWidth="372px"
           placeHolder="Напишите локацию"
           helpText="Вы выбрали"
+          value={city}
         />
         <Calendar dateHandler={dateHandler} />
       </StartingPoint>
@@ -120,7 +134,7 @@ const EventFilter = () => {
             content="Выберите дату"
           />
           <Slider
-            range={[selectedDates.startDate!, selectedDates.endDate!]}
+            range={[moment(startDate), moment(endDate)]}
             handlePosition={[0, 0]}
             countOfMarks={4}
             onChange={sliderDateHandler}
@@ -133,7 +147,7 @@ const EventFilter = () => {
             content="Выберите цену"
           />
           <Slider
-            range={[0, 10000]}
+            range={[minPrice, maxPrice]}
             handlePosition={[selectedPrice.startPrice, selectedPrice.endPrice]}
             countOfMarks={4}
             onChange={sliderPriceHandler}
@@ -142,8 +156,8 @@ const EventFilter = () => {
             priceHandler={inputPriceHandler}
             startPrice={selectedPrice.startPrice}
             endPrice={selectedPrice.endPrice}
-            maxPrice={10000}
-            minPrice={0}
+            maxPrice={maxPrice}
+            minPrice={minPrice}
           />
         </FilterBarItem>
         <FilterBarItem>

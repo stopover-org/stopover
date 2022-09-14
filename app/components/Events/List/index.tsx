@@ -65,11 +65,14 @@ const EventsList = ({ eventsReference }: Props) => {
     eventsReference
   );
 
-  console.log(events);
-
   return (
     <Wrapper>
-      <EventFilter />
+      <EventFilter
+        startDate={events.data.eventFilters.startDate}
+        endDate={events.data.eventFilters.endDate}
+        minPrice={events.data.eventFilters.minPrice}
+        maxPrice={events.data.eventFilters.maxPrice}
+      />
 
       <Interests>
         <Search

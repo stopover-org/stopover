@@ -10,13 +10,13 @@ const Wrapper = styled.div`
 const Input = styled.input`
   border: 2px solid #fdaa4c;
   background-color: transparent;
-  font-size: 36px;
-  font-weight: 400;
-  line-height: 44px;
+  padding: 10px;
+  font-size: 16px;
   width: 150px;
   height: 35px;
   border-radius: 3px;
   color: #656565;
+  margin-top: 2px;
   &:focus {
     outline: none;
   }
@@ -40,7 +40,6 @@ type Props = {
   minPrice: number;
   priceHandler: (startPrice: number | null, endPrice: number | null) => void;
 };
-const isValidNumber = (value: any) => !+value.isNaN();
 
 const isValid = (value: any) =>
   !(value === undefined || +value === undefined || value === null);
@@ -53,24 +52,19 @@ const PriceInput = (props: Props) => {
   const [endPrice, setEndPrice] = useState<string>(props.maxPrice.toString());
 
   const onStartPriceChange = (value: string) => {
-    if (isValidNumber(+value) && isValid(value)) {
-      if (+value >= 0 && +value <= props.maxPrice) {
-        setStartPrice(value);
-      }
+    if (+value >= 0 && +value <= props.maxPrice) {
+      setStartPrice(value);
+      props.priceHandler(+startPrice, +endPrice);
     }
   };
 
   const onEndPriceChange = (value: string) => {
-    if (isValidNumber(+value) && isValid(value)) {
-      if (+value >= 0 && +value <= props.maxPrice) {
-        setEndPrice(value);
-      }
+    console.log(+value, props.maxPrice)
+    if (+value >= 0 && +value <= props.maxPrice) {
+      setEndPrice(value);
+      props.priceHandler(+startPrice, +endPrice);
     }
   };
-
-  useEffect(() => {
-    props.priceHandler(+startPrice, +endPrice);
-  }, [startPrice, endPrice]);
 
   useEffect(() => {
     setStartPrice(props.startPrice.toString());
