@@ -19,7 +19,7 @@ const TextStyle = styled.span<{
   font-size: ${(props) => props.size};
   text-decoration: ${(props) => props.textDecoration};
   color: ${(props) => props.color};
-  line-height: 1em;
+  line-height: 42px;
 `;
 
 type Props = {
@@ -54,5 +54,4 @@ const Typography = ({
     </TextStyle>
   </Wrapper>
 );
-
 export default Typography;

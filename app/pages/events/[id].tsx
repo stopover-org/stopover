@@ -29,7 +29,6 @@ const Event = ({ preloadedQuery, ...props }: RelayProps<Props, Id_Query>) => {
   const { date } = router.query;
 
   const { event } = usePreloadedQuery(Query, preloadedQuery);
-
   return (
     <Layout>
       <EventCard
