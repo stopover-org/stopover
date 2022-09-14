@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1756ba3130a79b3199ff9cb0a2448563>>
+ * @generated SignedSource<<9d910785a6b283ff487bcdf2eb68efa2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,7 +12,11 @@ import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type List_EventsFragment$data = {
   readonly eventFilters: {
+    readonly city: string | null;
     readonly endDate: any | null;
+    readonly maxPrice: number | null;
+    readonly minPrice: number | null;
+    readonly startDate: any | null;
   } | null;
   readonly events: {
     readonly edges: ReadonlyArray<{
@@ -227,7 +231,35 @@ return {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
+          "name": "startDate",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
           "name": "endDate",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "minPrice",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "maxPrice",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "city",
           "storageKey": null
         }
       ],
@@ -239,6 +271,6 @@ return {
 };
 })();
 
-(node as any).hash = "da120d5657d01be7fc65e574841ccd55";
+(node as any).hash = "5bf95a860735156fcade353909540849";
 
 export default node;

@@ -54,13 +54,18 @@ const EventsList = ({ eventsReference }: Props) => {
           }
         }
         eventFilters {
+          startDate
           endDate
+          minPrice
+          maxPrice
+          city
         }
       }
     `,
     eventsReference
   );
-  console.log(events)
+
+  console.log(events);
 
   return (
     <Wrapper>

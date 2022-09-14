@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8b14bff08938d57a5ce56d877b6aa5a1>>
+ * @generated SignedSource<<f164c0fabdeb067c2b59853565b91a76>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -205,7 +205,35 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "startDate",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "endDate",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "minPrice",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "maxPrice",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "city",
             "storageKey": null
           }
         ],
@@ -214,12 +242,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "a201b0cd97ee8f46201d08a1c666c67c",
+    "cacheID": "95f47e3046afde99ec83249eb6916e17",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query {\n  ...List_EventsFragment\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    endDate\n  }\n}\n"
+    "text": "query events_Query {\n  ...List_EventsFragment\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n"
   }
 };
 })();

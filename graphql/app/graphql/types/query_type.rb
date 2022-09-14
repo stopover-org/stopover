@@ -28,8 +28,8 @@ module Types
       context[:current_user]
     end
 
-    def event_filters
-      ::EventFiltersQuery.new(args[:city])
+    def event_filters(**args)
+      ::EventFiltersQuery.new({ city: args[:city] }).filters
     end
 
     def interests(**args)
