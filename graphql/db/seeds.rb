@@ -58,7 +58,8 @@ count.times.each do |_event|
       (Time.zone.now + 1.day).change({ hour: 19, minute: 30 }),
       (Time.zone.now + 3.months).change({ hour: 07, minute: 30 })
     ],
-    recurring_days_with_time: ["Monday 13:00", "Wednesday 13:00", "Friday 14:00"],
+    # recurring_days_with_time: ["Monday 13:00", "Wednesday 13:00", "Friday 14:00"],
+    recurring_days_with_time: ["Monday 13:00"],
     organizer_cost_per_uom_cents: 3000,
     attendee_cost_per_uom_cents: 3000,
   )

@@ -48,6 +48,24 @@ class Event < ApplicationRecord
   before_validation :update_tags
 
   scope :active, -> { where(status: :published) }
+  scope :between, -> (start_date, end_date) {
+    sql = <<-SQL
+      WITH dates AS (
+          SELECT DISTINCT
+              *,
+              unnest(get_timestamp_from_weekday(unnest(recurring_days_with_time), :start_date::TIMESTAMP, :end_date::TIMESTAMP)) recurrent_date,
+              unnest(single_days_with_time::TIMESTAMP[]) single_date
+          FROM events
+      )
+      SELECT DISTINCT *
+      FROM dates
+      WHERE
+          recurrent_date BETWEEN :start_date::TIMESTAMP AND :end_date::TIMESTAMP
+          OR single_date BETWEEN :start_date::TIMESTAMP AND :end_date::TIMESTAMP
+    SQL
+
+    Event.where(id: ActiveRecord::Base.connection.execute(ActiveRecord::Base::sanitize_sql([sql, start_date: start_date, end_date: end_date])).values.map{|v| v[0]})
+  }
 
   aasm column: :status do
     state :draft, initial: true

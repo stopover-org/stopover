@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_07_161444) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_14_120453) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -163,7 +163,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_161444) do
     t.boolean "requires_passport", default: false, null: false
     t.boolean "requires_check_in", default: false, null: false
     t.string "recurring_days_with_time", default: [], array: true
-    t.string "single_days_with_time", default: [], array: true
     t.string "duration_time"
     t.string "house_number"
     t.string "street"
@@ -177,6 +176,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_161444) do
     t.datetime "updated_at", null: false
     t.bigint "unit_id"
     t.string "status"
+    t.datetime "single_days_with_time", precision: nil, default: [], array: true
     t.index ["event_type"], name: "index_events_on_event_type"
     t.index ["unit_id"], name: "index_events_on_unit_id"
   end
@@ -238,15 +238,4 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_161444) do
     t.index ["phone"], name: "index_users_on_phone", unique: true
   end
 
-  add_foreign_key "account_interests", "accounts"
-  add_foreign_key "account_interests", "interests"
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "booking_event_options", "bookings"
-  add_foreign_key "booking_event_options", "event_options"
-  add_foreign_key "event_achievements", "achievements"
-  add_foreign_key "event_achievements", "events"
-  add_foreign_key "event_interests", "events"
-  add_foreign_key "event_interests", "interests"
-  add_foreign_key "events", "units"
 end
