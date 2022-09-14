@@ -26,7 +26,7 @@ type Props = {
 
 const EventsList = ({ eventsReference }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const data = usePaginationFragment(
+  const events = usePaginationFragment(
     graphql`
       fragment List_EventsFragment on Query
       @argumentDefinitions(
@@ -53,10 +53,14 @@ const EventsList = ({ eventsReference }: Props) => {
             }
           }
         }
+        eventFilters {
+          endDate
+        }
       }
     `,
     eventsReference
   );
+  console.log(events)
 
   return (
     <Wrapper>

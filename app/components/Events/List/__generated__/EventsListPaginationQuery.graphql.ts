@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<cf413f147d8f25392533595c0821906e>>
+ * @generated SignedSource<<064ee466a5d8469c1329f72251c5724d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -223,20 +223,38 @@ return {
         "key": "Events_events",
         "kind": "LinkedHandle",
         "name": "events"
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "EventFilters",
+        "kind": "LinkedField",
+        "name": "eventFilters",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "endDate",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "e05634e1362c98adb2dbfccb2c2425b6",
+    "cacheID": "4ce96c8e9115bb8f3be34931ddc19970",
     "id": null,
     "metadata": {},
     "name": "EventsListPaginationQuery",
     "operationKind": "query",
-    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...List_EventsFragment_1G22uz\n}\n\nfragment List_EventsFragment_1G22uz on Query {\n  events(first: $count, after: $cursor) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...List_EventsFragment_1G22uz\n}\n\nfragment List_EventsFragment_1G22uz on Query {\n  events(first: $count, after: $cursor) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    endDate\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "44fc1381e7bae372b16a86ac74df0b8c";
+(node as any).hash = "da120d5657d01be7fc65e574841ccd55";
 
 export default node;

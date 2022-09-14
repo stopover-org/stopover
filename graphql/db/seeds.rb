@@ -35,7 +35,7 @@ end
 count = ENV['count'].to_i || 1000
 
 count.times.each do |_event|
-  event_image = URI.open("https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/elymn/DSC03540_fa5f2e24-36ca-4587-923f-e389c3a46e4b.jpg")
+  event_image = URI.open('https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/elymn/DSC03540_fa5f2e24-36ca-4587-923f-e389c3a46e4b.jpg')
 
   event = Event.create!(
     title: Faker::App.name,
@@ -56,12 +56,12 @@ count.times.each do |_event|
     single_days_with_time: [
       Time.zone.now.change({ hour: 19, minute: 30 }),
       (Time.zone.now + 1.day).change({ hour: 19, minute: 30 }),
-      (Time.zone.now + 3.months).change({ hour: 07, minute: 30 })
+      (Time.zone.now + 3.months).change({ hour: 0o7, minute: 30 })
     ],
     # recurring_days_with_time: ["Monday 13:00", "Wednesday 13:00", "Friday 14:00"],
-    recurring_days_with_time: ["Monday 13:00"],
+    recurring_days_with_time: ['Monday 13:00'],
     organizer_cost_per_uom_cents: 3000,
-    attendee_cost_per_uom_cents: 3000,
+    attendee_cost_per_uom_cents: 3000
   )
   event.images.attach(io: event_image, filename: "#{event.title}.jpg") unless ENV['without_images'] == 'true'
   puts "#{event.id} #{event.title} was created"

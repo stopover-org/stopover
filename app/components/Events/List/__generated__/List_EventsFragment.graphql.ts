@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<79a88f1e136d6945548fea14e01438d6>>
+ * @generated SignedSource<<1756ba3130a79b3199ff9cb0a2448563>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,6 +11,9 @@
 import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type List_EventsFragment$data = {
+  readonly eventFilters: {
+    readonly endDate: any | null;
+  } | null;
   readonly events: {
     readonly edges: ReadonlyArray<{
       readonly node: {
@@ -211,6 +214,24 @@ return {
         }
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "EventFilters",
+      "kind": "LinkedField",
+      "name": "eventFilters",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "endDate",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
     }
   ],
   "type": "Query",
@@ -218,6 +239,6 @@ return {
 };
 })();
 
-(node as any).hash = "44fc1381e7bae372b16a86ac74df0b8c";
+(node as any).hash = "da120d5657d01be7fc65e574841ccd55";
 
 export default node;
