@@ -193,18 +193,3 @@ const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
 };
 
 export default PhotoGallery;
-/*
-<MainImageWrapper carouselHeight={carouselHeight as number}>
-          <RightLeftButton
-            buttonDirection="left"
-            onClick={onClickSlide}
-            active={!(indexOfCurrentImage === 0)}
-          />
-          <MainImage src={images[indexOfCurrentImage].image} />
-          <RightLeftButton
-            buttonDirection="right"
-            onClick={onClickSlide}
-            active={!(indexOfCurrentImage === images.length - 1)}
-          />
-        </MainImageWrapper>
-*/
