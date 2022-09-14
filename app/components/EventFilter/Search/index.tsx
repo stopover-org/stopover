@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import editSvg from "../../../icons/Outline/Interface/Edit-alt.svg";
-import searchSvg from "../../../icons/Outline/Interface/Search.svg";
+import editSvg from "../../icons/Outline/Interface/Edit-alt.svg";
+import searchSvg from "../../icons/Outline/Interface/Search.svg";
 
 const ImageWrapper = styled.div<{ left: string; bottom: string }>`
   display: none;

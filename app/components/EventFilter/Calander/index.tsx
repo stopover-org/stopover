@@ -72,7 +72,7 @@ const Index = (props: Props) => {
     null
   );
 
-  const handlendDatesChange = (newDates: {
+  const handleDatesChange = (newDates: {
     startDate: moment.Moment | null;
     endDate: moment.Moment | null;
   }) => {
@@ -92,10 +92,10 @@ const Index = (props: Props) => {
     <Wrapper>
       <DateRangePicker
         startDate={startDate}
-        startDateId="your_unique_start_date_id"
+        startDateId="event_filters_start_date_id"
         endDate={endDate}
-        endDateId="your_unique_end_date_id"
-        onDatesChange={handlendDatesChange}
+        endDateId="event_filters_end_date_id"
+        onDatesChange={handleDatesChange}
         focusedInput={focusedInput}
         onFocusChange={handleFocusChange}
         startDatePlaceholderText="Начало"

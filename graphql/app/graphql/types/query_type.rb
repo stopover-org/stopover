@@ -37,7 +37,7 @@ module Types
     end
 
     def events(**args)
-      ::EventsQuery.new(args[:filters]&.to_h || {}, Event.active, current_user).all
+      ::EventsQuery.new(args[:filters]&.to_h || {}, Event.events_between(Time.zone.now), current_user).all
     end
 
     def event(**args)

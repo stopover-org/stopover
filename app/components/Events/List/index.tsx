@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { graphql, usePaginationFragment } from "react-relay";
-import InterestGallery from "../EventFilter/InterestGallery";
-import EventFilter from "../EventFilter";
-import Search from "../EventFilter/Search";
+import InterestGallery from "../../EventFilter/InterestGallery";
+import EventFilter from "../../EventFilter";
+import Search from "../../EventFilter/Search";
 import { events_Query$data } from "../../../pages/events/__generated__/events_Query.graphql";
 
 const Wrapper = styled.div`

@@ -6,8 +6,8 @@ class EventsQuery
   end
 
   def all
-    @relations = Event.events_between(params[:start_date], params[:end_date]) if params[:start_date] && params[:end_date]
-    @relations = @relations.where("attendee_cost_per_uom_cents BETWEEN ? AND ?", params[:min_price], params[:max_price]) if params[:start_date] && params[:end_date]
+    @relations = Event.events_between(params[:start_date], params[:end_date]) if @params[:start_date] && @params[:end_date]
+    @relations = @relations.where("attendee_cost_per_uom_cents BETWEEN ? AND ?", @params[:min_price], @params[:max_price]) if @params[:start_date] && @params[:end_date]
     @relations
   end
 end

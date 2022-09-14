@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import icon from "../../../icons/Outline/Status/Pin.svg";
 
 const Wrapper = styled.div`
   padding: 0px 0px 0px 0px;
@@ -8,12 +7,17 @@ const Wrapper = styled.div`
   flex-direction: row;
 `;
 
-const Icon = styled.img`
+const Icon = styled.div`
   background-color: black;
   border-radius: 50%;
   padding: 2px;
   width: 25px;
   height: 25px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
 `;
 
 const HelpText = styled.div`
@@ -83,7 +87,7 @@ const Search = (props: Props) => (
       <HelpText className="text">
         <p>{props.text}</p>
       </HelpText>
-      <Icon src={icon.src} />
+      <Icon>?</Icon>
     </IconContainer>
   </Wrapper>
 );

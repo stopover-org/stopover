@@ -5,7 +5,7 @@ import Search from "./Search";
 import IndividualEvents from "./IndividualEvents";
 import Slider from "./Slider";
 import Calendar from "./Calander";
-import Rate from "../../Rate";
+import Rate from "../Rate";
 import Help from "./Help";
 import PriceInput from "./PriceInput";
 
