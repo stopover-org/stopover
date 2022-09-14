@@ -65,6 +65,8 @@ const EventsList = ({ eventsReference }: Props) => {
     eventsReference
   );
 
+  console.log(events)
+
   return (
     <Wrapper>
       <EventFilter

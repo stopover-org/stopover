@@ -8,6 +8,7 @@ import Calendar from "./Calander";
 import Rate from "../Rate";
 import Help from "./Help";
 import PriceInput from "./PriceInput";
+import NumericSlider from "./Slider/NumericSlider";
 
 const FilterBar = styled.div``;
 
@@ -115,6 +116,8 @@ const EventFilter = ({ startDate, endDate, minPrice, maxPrice, city }: Props) =>
     });
   };
 
+  console.log(selectedPrice, selectedDates)
+
   return (
     <FilterBar>
       <StartingPoint>
@@ -146,11 +149,11 @@ const EventFilter = ({ startDate, endDate, minPrice, maxPrice, city }: Props) =>
             text="Здесь вы можете выбрать цену слайдером или вводом"
             content="Выберите цену"
           />
-          <Slider
-            range={[minPrice, maxPrice]}
-            handlePosition={[selectedPrice.startPrice, selectedPrice.endPrice]}
-            countOfMarks={4}
-            onChange={sliderPriceHandler}
+          <NumericSlider
+            min={1000}
+            max={3000}
+            value={[1300, 2500]}
+            stepsCount={4}
           />
           <PriceInput
             priceHandler={inputPriceHandler}
