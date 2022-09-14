@@ -148,6 +148,14 @@ type EventEdge {
   node: Event
 }
 
+type EventFilters {
+  city: String
+  endDate: DateTime
+  maxPrice: Int
+  minPrice: Int
+  startDate: DateTime
+}
+
 type EventOption implements Node {
   attendeeCostCents: Int
   builtIn: Boolean
@@ -167,6 +175,14 @@ enum EventTypeEnum {
   type for offroad tour
   """
   tour
+}
+
+input EventsFilter {
+  city: String!
+  endDate: DateTime!
+  maxPrice: Int!
+  minPrice: Int!
+  startDate: DateTime!
 }
 
 type Interest implements Node {
@@ -240,6 +256,7 @@ type PageInfo {
 type Query {
   currentUser: User
   event(id: ID!): Event
+  eventFilters(city: String): EventFilters
   events(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -250,6 +267,7 @@ type Query {
     Returns the elements in the list that come before the specified cursor.
     """
     before: String
+    filters: EventsFilter
 
     """
     Returns the first _n_ elements from the list.

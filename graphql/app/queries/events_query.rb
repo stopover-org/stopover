@@ -1,12 +1,13 @@
 class EventsQuery
-  def initialize(params = {}, relations = Event.all, current_user = nil)
+  def initialize(params = {}, relations = Event.events_between(Time.zone.now), current_user = nil)
     @relations = relations
     @params = params
     @current_user = current_user
   end
 
   def all
-    @relations = @relations.where(id: @params[:id]) if @params[:id]
+    @relations = Event.events_between(params[:start_date], params[:end_date]) if params[:start_date] && params[:end_date]
+    @relations = @relations.where("attendee_cost_per_uom_cents BETWEEN ? AND ?", params[:min_price], params[:max_price]) if params[:start_date] && params[:end_date]
     @relations
   end
 end
