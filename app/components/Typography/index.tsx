@@ -41,7 +41,7 @@ const Typography = ({
   children,
   as = TypographyTags.MEDIUM,
 }: Props) => (
-  <Wrapper>
+  <Wrapper className="typography-wrapper">
     <TextStyle
       as={as}
       size={size || TypographySize.MEDIUM.toString()}
