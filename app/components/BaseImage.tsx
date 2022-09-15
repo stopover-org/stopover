@@ -20,10 +20,10 @@ const Image = styled.div`
 
 type Props = {
   width: string;
-  height: string;
+  height?: string;
   children: React.ReactElement;
 };
-const ImageFrame = ({ width, height, children }: Props) => (
+const ImageFrame = ({ width, height = "auto", children }: Props) => (
   <Frame width={width} height={height}>
     <Image>{children}</Image>
   </Frame>
