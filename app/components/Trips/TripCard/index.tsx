@@ -11,23 +11,7 @@ const Content = styled(Column)`
   padding: 10px;
 `;
 
-type Props = {
-  title: string;
-  startDate: string;
-  endDate: string;
-  places: string;
-  location: string;
-  image: string;
-};
-
-export const TripCard = ({
-  title,
-  startDate,
-  endDate,
-  places,
-  location,
-  image,
-}: Props) => (
+export const TripCard = () => (
   <Card
     width="400px"
     content={
@@ -40,26 +24,21 @@ export const TripCard = ({
         <>
           <Row justifyContent="start" alignItems="start">
             <Typography size={TypographySize.H3} as={TypographyTags.H3}>
-              {title}
+              USTI NAD LABEM
             </Typography>
           </Row>
           <Row justifyContent="start" alignItems="center">
-            <>
-              <Typography size={TypographySize.H6} as={TypographyTags.H6} bold>
-                {startDate}
-              </Typography>
-              <Typography size={TypographySize.H6} as={TypographyTags.H6} bold>
-                {endDate}
-              </Typography>
-            </>
+            <Typography size={TypographySize.H6} as={TypographyTags.H6} bold>
+              12 september - 22 september
+            </Typography>
           </Row>
           <Row justifyContent="space-between" alignItems="end">
             <>
               <Typography size={TypographySize.H6} as={TypographyTags.H6}>
-                {places}
+                2 people
               </Typography>
               <Typography size={TypographySize.H6} as={TypographyTags.H6}>
-                {location}
+                usti nad labem
               </Typography>
             </>
           </Row>
@@ -68,7 +47,12 @@ export const TripCard = ({
     }
     image={
       <BaseImage width="40%">
-        <img src={image} alt="boss darksouls" width="100%" height="100%" />
+        <img
+          src="https://i.guim.co.uk/img/media/26392d05302e02f7bf4eb143bb84c8097d09144b/446_167_3683_2210/master/3683.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=49ed3252c0b2ffb49cf8b508892e452d"
+          alt="boss darksouls"
+          width="100%"
+          height="100%"
+        />
       </BaseImage>
     }
   />
