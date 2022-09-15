@@ -64,7 +64,7 @@ const Button = ({ contentAfterDescription, description, color }: Props) => {
   )
     return null;
   return (
-    <Wrapper className="button-wrapper">
+    <Wrapper>
       <ButtonStyle color={color || "white"}>
         {isString(description) && couldBeAValidMoment(description) && (
           <Description>

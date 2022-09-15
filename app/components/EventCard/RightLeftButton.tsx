@@ -33,7 +33,6 @@ const RightLeftButton = ({ buttonDirection, onClick, active }: Props) => {
 
   return (
     <Wrapper
-      className="right-left-button-wrapper"
       gradient={buttonDirection === "left" ? rightGradient : leftGradient}
     >
       <Circle
