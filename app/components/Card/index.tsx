@@ -23,9 +23,8 @@ const Card = ({
   image,
   width = "auto",
   padding = "0px",
-  ...props
 }: Props) => (
-  <Wrapper width={width} padding={padding} {...props}>
+  <Wrapper width={width} padding={padding}>
     {rightToLeft && content}
     {!rightToLeft && image}
     {rightToLeft && image}

@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 const Frame = styled.div<{ width: string; height: string }>`
   position: relative;
-  height: ${(props) => props.height || "100%"};
-  width: ${(props) => props.width || "100%"};
+  height: ${(props) => props.height};
+  width: ${(props) => props.width};
   cursor: pointer;
   overflow: hidden;
 `;
@@ -23,10 +23,10 @@ type Props = {
   height?: string;
   children: React.ReactElement;
 };
-const BaseImage = ({ width, height = "auto", children }: Props) => (
+const ImageFrame = ({ width, height = "auto", children }: Props) => (
   <Frame width={width} height={height}>
     <Image>{children}</Image>
   </Frame>
 );
 
-export default BaseImage;
+export default ImageFrame;

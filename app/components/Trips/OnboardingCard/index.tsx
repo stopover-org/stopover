@@ -17,6 +17,7 @@ import {
 } from "../../Typography/StatesEnum";
 
 const Wrapper = styled.div``;
+
 const Content = styled(Column)`
   padding: 10px;
 `;
