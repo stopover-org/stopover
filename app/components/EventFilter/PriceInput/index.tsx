@@ -38,57 +38,44 @@ type Props = {
   endPrice: number;
   maxPrice: number;
   minPrice: number;
-  priceHandler: (startPrice: number | null, endPrice: number | null) => void;
+  priceHandler: (startPrice: number, endPrice: number) => void;
 };
 
-const isValid = (value: any) =>
-  !(value === undefined || +value === undefined || value === null);
+const PriceInput = (props:  Props) => {
+  const onStartPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value
 
-const PriceInput = (props: Props) => {
-  const [startPrice, setStartPrice] = useState<string>(
-    props.minPrice.toString()
-  );
-
-  const [endPrice, setEndPrice] = useState<string>(props.maxPrice.toString());
-
-  const onStartPriceChange = (value: string) => {
-    if (+value >= 0 && +value <= props.maxPrice) {
-      setStartPrice(value);
-      props.priceHandler(+startPrice, +endPrice);
+    if (+value >= props.minPrice) {
+      props.priceHandler(+value, +props.endPrice);
+    } else {
+      props.priceHandler(+props.minPrice, +props.endPrice);
     }
   };
 
-  const onEndPriceChange = (value: string) => {
-    console.log(+value, props.maxPrice)
-    if (+value >= 0 && +value <= props.maxPrice) {
-      setEndPrice(value);
-      props.priceHandler(+startPrice, +endPrice);
+  const onEndPriceChange = (event:  React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value
+
+    if (+value <= props.maxPrice) {
+      props.priceHandler(+props.startPrice, +value);
+    } else {
+      props.priceHandler(+props.startPrice, +props.maxPrice);
     }
   };
-
-  useEffect(() => {
-    setStartPrice(props.startPrice.toString());
-    setEndPrice(props.endPrice.toString());
-  }, [props.startPrice, props.endPrice]);
 
   return (
     <Wrapper>
       <InputContainer>
         <Text>цена от</Text>
         <Input
-          onChange={(e) => {
-            onStartPriceChange(e.target.value);
-          }}
-          value={startPrice}
+          onChange={onStartPriceChange}
+          value={props.startPrice}
         />
       </InputContainer>
       <InputContainer>
         <Text>цена до</Text>
         <Input
-          onChange={(e) => {
-            onEndPriceChange(e.target.value);
-          }}
-          value={endPrice}
+          onChange={onEndPriceChange}
+          value={props.endPrice}
         />
       </InputContainer>
     </Wrapper>

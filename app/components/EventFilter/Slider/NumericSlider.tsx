@@ -1,22 +1,73 @@
 import Slider from "rc-slider";
+import styled from "styled-components";
+
+export type RangeType = [number, number]
 
 type Props = {
   min: number;
   max: number;
-  defaultValue?: [number, number];
-  value: [number, number];
+  defaultValue?: RangeType;
+  value: RangeType;
   stepsCount: number;
+  onChange: (newRange: RangeType) => void;
 }
 
-export const NumericSlider = ({min, max, defaultValue, value, stepsCount}: Props) => {
+const Wrapper = styled.div<{
+  displayHandle?: string;
+  pointerEventsSlider?: string;
+  pointerEventsHandle?: string;
+}>`
+  padding: 43px 0px 43px 0px;
+  display: flex;
+  align-items: center;
+  .rc-slider {
+    width: 380px;
+    pointer-events: ${(props) => props.pointerEventsSlider};
+  }
+  .rc-slider-handle {
+    pointer-events: ${(props) => props.pointerEventsHandle};
+    display: ${(props) => props.displayHandle};
+    background: #ff8a00;
+    border: 2px solid #ffab49;
+    height: 29px;
+    width: 29px;
+    top: -8px;
+    opacity: 1;
+  }
+  .rc-slider-dot {
+    background: #cacaca;
+    border: none;
+    border-radius: 5px 5px 5px 5px;
+    width: 2px;
+    height: 15px;
+    top: -5px;
+    z-index: -1;
+  }
+  .rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
+    border-color: #ffab49;
+    box-shadow: 0 0 0 5px #ff8a00;
+  }
+  .rc-slider-track {
+    background: #ff8a00;
+    height: 15px;
+    top: -6px;
+  }
+  .rc-slider-rail {
+    background-color: #cacaca;
+  }
+`;
+
+export const NumericSlider = ({min, max, defaultValue, value, stepsCount, onChange}: Props) => {
   const markStep = (max - min) / stepsCount
   const marks = new Array(stepsCount + 1).fill(null).reduce((res, _, index) => {
     const value = Math.round(min + markStep * index)
     res[value < max ? value : max] = { label: value < max ? value : max }
     return res
   }, {})
-  
-  return <div style={{height: '100px', width: '100%'}}>
+
+  console.log(min, max, marks, value)
+
+  return <Wrapper>
     <Slider
       range
       allowCross={false}
@@ -26,8 +77,9 @@ export const NumericSlider = ({min, max, defaultValue, value, stepsCount}: Props
       defaultValue={defaultValue}
       value={value}
       marks={marks}
+      onChange={(val) => onChange(Array.isArray(val) ? [val[0], val[1]] : [val, val])}
     />
-  </div>
+  </Wrapper>
 }
 
 export default NumericSlider;
