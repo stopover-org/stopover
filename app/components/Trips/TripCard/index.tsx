@@ -11,7 +11,15 @@ const Content = styled(Column)`
   padding: 10px;
 `;
 
-export const TripCard = () => (
+type Props = {
+  title: string;
+  date: string;
+  places: string;
+  location: string;
+  image: string;
+};
+
+export const TripCard = ({ title, date, places, location, image }: Props) => (
   <Card
     width="400px"
     content={
@@ -24,21 +32,21 @@ export const TripCard = () => (
         <>
           <Row justifyContent="start" alignItems="start">
             <Typography size={TypographySize.H3} as={TypographyTags.H3}>
-              USTI NAD LABEM
+              {title}
             </Typography>
           </Row>
           <Row justifyContent="start" alignItems="center">
             <Typography size={TypographySize.H6} as={TypographyTags.H6} bold>
-              12 september - 22 september
+              {date}
             </Typography>
           </Row>
           <Row justifyContent="space-between" alignItems="end">
             <>
               <Typography size={TypographySize.H6} as={TypographyTags.H6}>
-                2 people
+                {places}
               </Typography>
               <Typography size={TypographySize.H6} as={TypographyTags.H6}>
-                usti nad labem
+                {location}
               </Typography>
             </>
           </Row>
@@ -47,12 +55,7 @@ export const TripCard = () => (
     }
     image={
       <BaseImage width="40%">
-        <img
-          src="https://i.guim.co.uk/img/media/26392d05302e02f7bf4eb143bb84c8097d09144b/446_167_3683_2210/master/3683.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=49ed3252c0b2ffb49cf8b508892e452d"
-          alt="boss darksouls"
-          width="100%"
-          height="100%"
-        />
+        <img src={image} alt="boss darksouls" width="100%" height="100%" />
       </BaseImage>
     }
   />
