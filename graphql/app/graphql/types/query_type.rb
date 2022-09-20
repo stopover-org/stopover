@@ -12,11 +12,11 @@ module Types
       argument :filters, Types::InterestsFilter, required: false
     end
 
-    field :events, Types::EventType.connection_type do
+    field :events, Types::EventType.connection_type, null: false do
       argument :filters, Types::EventsFilter, required: false
     end
 
-    field :event_filters, Types::EventFiltersType do
+    field :event_filters, Types::EventFiltersType, null: false do
       argument :city, String, required: false
     end
 

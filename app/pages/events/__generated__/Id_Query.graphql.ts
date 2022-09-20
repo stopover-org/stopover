@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c5a2935f14a7bf872beca4d0a75574de>>
+ * @generated SignedSource<<27c8420ebebbd2bb51e5843135a15184>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,7 +15,7 @@ export type Id_Query$variables = {
 };
 export type Id_Query$data = {
   readonly event: {
-    readonly id: string | null;
+    readonly id: string;
     readonly " $fragmentSpreads": FragmentRefs<"Breadcrumbs_Fragment" | "MainInformation_Fragment">;
   } | null;
 };

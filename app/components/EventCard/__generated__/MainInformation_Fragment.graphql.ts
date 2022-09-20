@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f32ea8310c1ddfa6ed46346325648e5a>>
+ * @generated SignedSource<<1a2ae0c96879e7eceeaa4dd0745dd9bd>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,15 +11,15 @@
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type MainInformation_Fragment$data = {
-  readonly attendeeCostPerUomCents: number | null;
-  readonly availableDates: ReadonlyArray<any> | null;
-  readonly fullAddress: string | null;
+  readonly attendeeCostPerUomCents: number;
+  readonly availableDates: ReadonlyArray<any>;
+  readonly fullAddress: string;
   readonly tags: ReadonlyArray<{
-    readonly id: string | null;
+    readonly id: string;
     readonly preview: string | null;
-    readonly title: string | null;
-  }> | null;
-  readonly title: string | null;
+    readonly title: string;
+  }>;
+  readonly title: string;
   readonly " $fragmentType": "MainInformation_Fragment";
 };
 export type MainInformation_Fragment$key = {

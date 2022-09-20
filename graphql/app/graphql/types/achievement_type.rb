@@ -2,7 +2,8 @@
 
 module Types
   class AchievementType < Types::ModelObject
-    field :title, String
+    field :id, ID, null: false
+    field :title, String, null: false
     field :preview, String
   end
 end
