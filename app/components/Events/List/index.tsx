@@ -5,6 +5,11 @@ import InterestGallery from "../../EventFilter/InterestGallery";
 import EventFilter from "../../EventFilter";
 import Search from "../../EventFilter/Search";
 import { events_Query$data } from "../../../pages/events/__generated__/events_Query.graphql";
+import moment from "moment";
+import {
+  EventsListPaginationQuery,
+  EventsListPaginationQuery$data
+} from "./__generated__/EventsListPaginationQuery.graphql";
 
 const Wrapper = styled.div`
   display: flex;
@@ -25,8 +30,7 @@ type Props = {
 };
 
 const EventsList = ({ eventsReference }: Props) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const events = usePaginationFragment(
+  const events: any = usePaginationFragment(
     graphql`
       fragment List_EventsFragment on Query
       @argumentDefinitions(
@@ -65,15 +69,16 @@ const EventsList = ({ eventsReference }: Props) => {
     eventsReference
   );
 
-  console.log(events)
+  console.log(events);
 
   return (
     <Wrapper>
       <EventFilter
-        startDate={events.data.eventFilters.startDate}
-        endDate={events.data.eventFilters.endDate}
+        minDate={moment(events.data.eventFilters.startDate)}
+        maxDate={moment(events.data.eventFilters.endDate)}
         minPrice={events.data.eventFilters.minPrice}
         maxPrice={events.data.eventFilters.maxPrice}
+        city={events.data.eventFilters.city}
       />
 
       <Interests>

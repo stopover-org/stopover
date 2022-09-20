@@ -3,12 +3,12 @@ import styled from "styled-components";
 import moment, { Moment } from "moment";
 import Search from "./Search";
 import IndividualEvents from "./IndividualEvents";
-import Slider from "./Slider";
 import Calendar from "./Calander";
 import Rate from "../Rate";
 import Help from "./Help";
 import PriceInput from "./PriceInput";
 import {NumericSlider, RangeType} from "./Slider/NumericSlider";
+import DatesSlider from "./Slider/DatesSlider";
 
 const FilterBar = styled.div``;
 
@@ -38,14 +38,14 @@ const Separator = styled.div`
 `;
 
 type Props = {
-  startDate: Date;
-  endDate: Date;
+  minDate: moment.Moment;
+  maxDate: moment.Moment;
   minPrice: number;
   maxPrice: number;
   city: string
 }
 
-const EventFilter = ({ startDate, endDate, minPrice, maxPrice, city }: Props) => {
+const EventFilter = ({ minPrice, maxPrice, city }: Props) => {
   const [selectedDates, setSelectedDates] = useState<{
     startDate: moment.Moment | null;
     endDate: moment.Moment | null;
@@ -56,6 +56,10 @@ const EventFilter = ({ startDate, endDate, minPrice, maxPrice, city }: Props) =>
 
   const [startPrice, setStartPrice] = React.useState<number>(minPrice)
   const [endPrice, setEndPrice] = React.useState<number>(maxPrice)
+  const [startDate, setStartDate] = React.useState<moment.Moment | null>(null)
+  const [endDate, setEndDate] = React.useState<moment.Moment | null>(null)
+  const [minDate, setMinDate] = React.useState<moment.Moment | null>(moment())
+  const [maxDate, setMaxDate] = React.useState<moment.Moment | null>(null)
 
   const [selectedIndividualOnly, setSelectedIndividualOnly] =
     useState<boolean>(false);
@@ -77,10 +81,10 @@ const EventFilter = ({ startDate, endDate, minPrice, maxPrice, city }: Props) =>
     newStartDate: moment.Moment | null,
     newEndDate: moment.Moment | null
   ) => {
-    setSelectedDates({
-      startDate: newStartDate,
-      endDate: newEndDate,
-    });
+    setMinDate(newStartDate)
+    setMaxDate(newEndDate)
+    setStartDate(newStartDate)
+    setEndDate(newEndDate)
   };
 
   const inputPriceHandler = (
@@ -91,12 +95,10 @@ const EventFilter = ({ startDate, endDate, minPrice, maxPrice, city }: Props) =>
     setEndPrice(newEndPrice)
   };
 
-  const sliderDateHandler = (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    startDate: Moment | ReactNode,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    endDate: Moment | ReactNode
-  ) => {};
+  const sliderDateHandler = ([newStartDate, newEndDate]: [number, number]) => {
+    setStartDate(moment(newStartDate * 1000))
+    setEndDate(moment(newEndDate * 1000))
+  };
 
   const sliderPriceHandler = (range: RangeType) => {
     setStartPrice(range[0])
@@ -121,12 +123,14 @@ const EventFilter = ({ startDate, endDate, minPrice, maxPrice, city }: Props) =>
             text="Выберите какие даты вы хотите просмотреть"
             content="Выберите дату"
           />
-          <Slider
-            range={[moment(startDate), moment(endDate)]}
-            handlePosition={[0, 0]}
-            countOfMarks={4}
+          {minDate && maxDate && startDate && endDate && <DatesSlider
+            min={minDate.unix()}
+            max={maxDate.unix()}
+            defaultValue={[minDate.unix(), maxDate.unix()]}
+            value={[startDate.unix(), endDate.unix()]}
+            stepsCount={4}
             onChange={sliderDateHandler}
-          />
+          />}
         </FilterBarItem>
         <Separator />
         <FilterBarItem>
