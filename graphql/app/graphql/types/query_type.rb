@@ -12,7 +12,13 @@ module Types
       argument :filters, Types::InterestsFilter, required: false
     end
 
-    field :events, Types::EventType.connection_type
+    field :events, Types::EventType.connection_type do
+      argument :filters, Types::EventsFilter, required: false
+    end
+
+    field :event_filters, Types::EventFiltersType do
+      argument :city, String, required: false
+    end
 
     field :event, Types::EventType do
       argument :id, ID, required: true
@@ -22,12 +28,16 @@ module Types
       context[:current_user]
     end
 
+    def event_filters(**args)
+      ::EventFiltersQuery.new({ city: args[:city] }).filters
+    end
+
     def interests(**args)
       ::InterestsQuery.new(args[:filters]&.to_h || {}, Interest.all, current_user).all
     end
 
     def events(**args)
-      ::EventsQuery.new(args[:filters]&.to_h || {}, Event.active, current_user).all
+      ::EventsQuery.new(args[:filters]&.to_h || {}, Event.events_between(Time.zone.now), current_user).all
     end
 
     def event(**args)

@@ -1,0 +1,38 @@
+import BaseSlider from "./BaseSlider";
+import Slider from "rc-slider";
+import moment from "moment";
+
+type RangeType = [number, number]
+
+type Props = {
+  min: number;
+  max: number;
+  defaultValue?: RangeType;
+  value: RangeType;
+  stepsCount: number;
+  onChange: (newRange: RangeType) => void;
+}
+
+export const DatesSlider = ({min, max, defaultValue, value, stepsCount, onChange}: Props) => {
+  const markStep = (max - min) / stepsCount
+  const marks = new Array(stepsCount + 1).fill(null).reduce((res, _, index) => {
+    const value = Math.round(min + markStep * index)
+    res[value < max ? value : max] = { label: value < max ?  moment.unix(value).format('DD.MM') : moment.unix(max).format('DD.MM') }
+    return res
+  }, {})
+  return <BaseSlider>
+    <Slider
+      range
+      allowCross={false}
+      count={1}
+      max={max}
+      min={min}
+      marks={marks}
+      defaultValue={defaultValue}
+      value={value}
+      onChange={(val) => onChange(Array.isArray(val) ? [val[0], val[1]] : [val, val])}
+    />
+  </BaseSlider>
+}
+
+export default DatesSlider
