@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { graphql, usePaginationFragment } from "react-relay";
 import moment from "moment";
+import Link from "next/link";
 import InterestGallery from "../../EventFilter/InterestGallery";
 import EventFilter from "../../EventFilter";
 import Search from "../../EventFilter/Search";
@@ -10,6 +11,9 @@ import {
   events_Query$data,
 } from "../../../pages/events/__generated__/events_Query.graphql";
 import { List_EventsFragment$key } from "./__generated__/List_EventsFragment.graphql";
+import Typography from "../../Typography";
+import { TypographySize, TypographyTags } from "../../Typography/StatesEnum";
+import Button from "../../Button";
 
 const Wrapper = styled.div`
   display: flex;
@@ -100,15 +104,26 @@ const EventsList = ({ eventsReference }: Props) => {
                   <img alt={images[0]} src={images[0]} />
                 </div>
                 <div>
-                  <div>{title}</div>
+                  <Typography
+                    size={TypographySize.LARGE}
+                    as={TypographyTags.H5}
+                    bold
+                  >
+                    {title}
+                  </Typography>
                   <div>
                     {interests.map((interest: any) => (
-                      <div>{interest.title}</div>
+                      <Link href="#wtf">{interest.title}</Link>
                     ))}
                   </div>
                   <div>
-                    <div>{attendeeCostPerUomCents}</div>
-                    <div>Button</div>
+                    <Typography
+                      as={TypographyTags.DIV}
+                      size={TypographySize.LARGE}
+                    >
+                      $ {attendeeCostPerUomCents}
+                    </Typography>
+                    <Button>Button</Button>
                   </div>
                 </div>
               </div>
