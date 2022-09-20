@@ -31,5 +31,6 @@ module.exports = {
     "padding-line-between-statements": ["error",
       { blankLine: "always", prev: ["const", "let", "var"], next: "*"},
     ],
+    "import/no-named-as-default": "off",
   }
 }

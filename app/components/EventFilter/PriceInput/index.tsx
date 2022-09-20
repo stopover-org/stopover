@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -41,9 +41,9 @@ type Props = {
   priceHandler: (startPrice: number, endPrice: number) => void;
 };
 
-const PriceInput = (props:  Props) => {
+const PriceInput = (props: Props) => {
   const onStartPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
+    const { value } = event.target;
 
     if (+value >= props.minPrice) {
       props.priceHandler(+value, +props.endPrice);
@@ -52,8 +52,8 @@ const PriceInput = (props:  Props) => {
     }
   };
 
-  const onEndPriceChange = (event:  React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
+  const onEndPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
 
     if (+value <= props.maxPrice) {
       props.priceHandler(+props.startPrice, +value);
@@ -66,20 +66,14 @@ const PriceInput = (props:  Props) => {
     <Wrapper>
       <InputContainer>
         <Text>цена от</Text>
-        <Input
-          onChange={onStartPriceChange}
-          value={props.startPrice}
-        />
+        <Input onChange={onStartPriceChange} value={props.startPrice || ""} />
       </InputContainer>
       <InputContainer>
         <Text>цена до</Text>
-        <Input
-          onChange={onEndPriceChange}
-          value={props.endPrice}
-        />
+        <Input onChange={onEndPriceChange} value={props.endPrice || ""} />
       </InputContainer>
     </Wrapper>
   );
 };
 
-export default PriceInput;
+export default React.memo(PriceInput);

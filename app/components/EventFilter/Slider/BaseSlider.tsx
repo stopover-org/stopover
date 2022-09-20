@@ -45,4 +45,4 @@ export const BaseSlider = styled.div<{
   }
 `;
 
-export default BaseSlider
+export default BaseSlider;
