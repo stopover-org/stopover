@@ -13,15 +13,16 @@ const ImageWrapper = styled.div<{ left: string; bottom: string }>`
 
 const SImage = styled(Image)``;
 
-const Input = styled.input<{ inputWidth: string }>`
+const Input = styled.input<{ width: string; padding?: string }>`
   border: none;
   border-bottom: 2px solid transparent;
   background-color: transparent;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 400;
   line-height: 44px;
-  width: ${(props) => props.inputWidth};
+  width: ${(props) => props.width};
   opacity: 0.3;
+  ${({ padding }) => padding && `padding-right: ${padding};`}
   &:focus {
     outline: none;
     border-bottom: 2px solid #d9d9d9;
@@ -47,7 +48,7 @@ const Wrapper = styled.div`
 
 type Props = {
   searchType: string;
-  inputWidth: string;
+  width: string;
   placeHolder: string;
   helpText: string;
   value?: string;
@@ -65,11 +66,11 @@ const Search = (props: Props) => {
       <HelpMessage>{value === "" ? "" : props.helpText}</HelpMessage>
       <div>
         <Input
-          type="text"
           placeholder={props.placeHolder}
-          inputWidth={props.inputWidth}
+          width={props.width}
           value={value}
           onChange={(e) => onChange(e)}
+          padding={props.searchType === "event" ? "50px" : undefined}
         />
 
         {props.searchType === "location" && (

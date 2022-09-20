@@ -113,7 +113,7 @@ const EventFilter = ({
       <StartingPoint>
         <Search
           searchType="location"
-          inputWidth="372px"
+          width="372px"
           placeHolder="Напишите локацию"
           helpText="Вы выбрали"
           value={city || ""}

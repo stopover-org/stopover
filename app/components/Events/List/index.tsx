@@ -78,7 +78,7 @@ const EventsList = ({ eventsReference }: Props) => {
       <Interests>
         <Search
           searchType="event"
-          inputWidth="650px"
+          width="650px"
           placeHolder="Какое мероприятие вы ищете?"
           helpText="Вы ищете"
         />
