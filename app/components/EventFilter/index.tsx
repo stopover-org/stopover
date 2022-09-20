@@ -39,7 +39,7 @@ type Props = {
   maxDate: moment.Moment;
   minPrice: number;
   maxPrice: number;
-  city: string;
+  city: string | null;
 };
 
 const EventFilter = ({

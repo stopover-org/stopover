@@ -5,7 +5,11 @@ import moment from "moment";
 import InterestGallery from "../../EventFilter/InterestGallery";
 import EventFilter from "../../EventFilter";
 import Search from "../../EventFilter/Search";
-import { events_Query$data } from "../../../pages/events/__generated__/events_Query.graphql";
+import {
+  events_Query,
+  events_Query$data,
+} from "../../../pages/events/__generated__/events_Query.graphql";
+import { List_EventsFragment$key } from "./__generated__/List_EventsFragment.graphql";
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,7 +28,7 @@ type Props = {
 };
 
 const EventsList = ({ eventsReference }: Props) => {
-  const events: any = usePaginationFragment(
+  const events = usePaginationFragment<events_Query, List_EventsFragment$key>(
     graphql`
       fragment List_EventsFragment on Query
       @argumentDefinitions(
@@ -41,6 +45,7 @@ const EventsList = ({ eventsReference }: Props) => {
               id
               availableDates
               images
+              attendeeCostPerUomCents
               tags {
                 title
               }
@@ -63,13 +68,15 @@ const EventsList = ({ eventsReference }: Props) => {
     eventsReference
   );
 
+  console.log(events);
+
   return (
     <Wrapper>
       <EventFilter
         minDate={moment(events.data.eventFilters.startDate)}
         maxDate={moment(events.data.eventFilters.endDate)}
-        minPrice={events.data.eventFilters.minPrice}
-        maxPrice={events.data.eventFilters.maxPrice}
+        minPrice={events.data.eventFilters.minPrice!}
+        maxPrice={events.data.eventFilters.maxPrice!}
         city={events.data.eventFilters.city}
       />
 
@@ -81,7 +88,33 @@ const EventsList = ({ eventsReference }: Props) => {
           helpText="Вы ищете"
         />
         <InterestGallery />
-        <List>EVENTS</List>
+        <List>
+          {events.data.events.edges.map((edge) => {
+            const { images, title, interests, attendeeCostPerUomCents } =
+              edge.node!;
+
+            console.log(edge!.node);
+            return (
+              <div>
+                <div>
+                  <img alt={src[0]} src={images[0]} />
+                </div>
+                <div>
+                  <div>{title}</div>
+                  <div>
+                    {interests.map((interest) => (
+                      <div>{interest.title}</div>
+                    ))}
+                  </div>
+                  <div>
+                    <div>{attendeeCostPerUomCents}</div>
+                    <div>Button</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </List>
       </Interests>
     </Wrapper>
   );

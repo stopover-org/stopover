@@ -48,4 +48,4 @@ const DropDownList = (props: Props) => (
   </Wrapper>
 );
 
-export default DropDownList;
+export default React.memo(DropDownList);

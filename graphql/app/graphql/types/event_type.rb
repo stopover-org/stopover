@@ -2,36 +2,36 @@
 
 module Types
   class EventType < Types::ModelObject
-    field :id, ID
-    field :title, String
-    field :status, String
-    field :description, String
-    field :event_type, Types::EventTypeEnum
+    field :id, ID, null: false
+    field :title, String, null: false
+    field :status, String, null: false
+    field :description, String, null: false
+    field :event_type, Types::EventTypeEnum, null: false
     field :recurring_type, Types::RecurringTypeEnum
     field :organizer_cost_per_uom_cents, Integer
-    field :attendee_cost_per_uom_cents, Integer
+    field :attendee_cost_per_uom_cents, Integer, null: false
     field :requires_contract, Boolean
     field :requires_passport, Boolean
     field :requires_check_in, Boolean
     field :recurring_days_with_time, [String]
     field :single_days_with_time, [String]
-    field :duration_time, String
+    field :duration_time, String, null: false
     field :house_number, String
     field :street, String
     field :city, String
     field :country, String
     field :region, String
-    field :full_address, String
+    field :full_address, String, null: false
     field :longitude, Float
     field :latitude, Float
-    field :unit, Types::UnitType
-    field :event_options, [Types::EventOptionType]
-    field :interests, [Types::InterestType]
+    field :unit, Types::UnitType, null: false
+    field :event_options, [Types::EventOptionType], null: false
+    field :interests, [Types::InterestType], null: false
     field :achievements, [Types::AchievementType]
-    field :available_dates, [Types::DateTimeType]
-    field :tags, [Types::TagType]
+    field :available_dates, [Types::DateTimeType], null: false
+    field :tags, [Types::TagType], null: false
 
-    field :images, [String]
+    field :images, [String], null: false
 
     def images
       object.images.map do |img|

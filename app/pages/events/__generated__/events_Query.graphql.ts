@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f164c0fabdeb067c2b59853565b91a76>>
+ * @generated SignedSource<<46b07318b9704c367065bbdff4c77785>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -108,6 +108,13 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "images",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "attendeeCostPerUomCents",
                     "storageKey": null
                   },
                   {
@@ -242,12 +249,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "95f47e3046afde99ec83249eb6916e17",
+    "cacheID": "764d6d68a2463388c124de5c8cd66532",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query {\n  ...List_EventsFragment\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n"
+    "text": "query events_Query {\n  ...List_EventsFragment\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        attendeeCostPerUomCents\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n"
   }
 };
 })();
