@@ -13,13 +13,21 @@ const Content = styled(Column)`
 
 type Props = {
   title: string;
-  date: string;
+  startDate: string;
+  endDate: string;
   places: string;
   location: string;
   image: string;
 };
 
-export const TripCard = ({ title, date, places, location, image }: Props) => (
+export const TripCard = ({
+  title,
+  startDate,
+  endDate,
+  places,
+  location,
+  image,
+}: Props) => (
   <Card
     width="400px"
     content={
@@ -36,9 +44,14 @@ export const TripCard = ({ title, date, places, location, image }: Props) => (
             </Typography>
           </Row>
           <Row justifyContent="start" alignItems="center">
-            <Typography size={TypographySize.H6} as={TypographyTags.H6} bold>
-              {date}
-            </Typography>
+            <>
+              <Typography size={TypographySize.H6} as={TypographyTags.H6} bold>
+                {startDate}
+              </Typography>
+              <Typography size={TypographySize.H6} as={TypographyTags.H6} bold>
+                {endDate}
+              </Typography>
+            </>
           </Row>
           <Row justifyContent="space-between" alignItems="end">
             <>

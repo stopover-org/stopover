@@ -24,7 +24,8 @@ const ButtonArrow = styled.img`
 
 type Cards = {
   title: string;
-  date: string;
+  startDate: string;
+  endDate: string;
   places: string;
   location: string;
   image: string;
@@ -46,6 +47,7 @@ const PaginationGallery = ({
   cardsShown,
   total,
   onClickShift,
+  ...props
 }: Props) => {
   const [offset, setOffset] = useState([0, cardsShown]);
 
@@ -58,7 +60,7 @@ const PaginationGallery = ({
   const showButton = !isLoading && isShowArrow;
 
   return (
-    <Wrapper>
+    <Wrapper {...props}>
       <Column>
         <Row justifyContent="start">
           <Typography size={TypographySize.H3} as={TypographyTags.H3} bold>
@@ -89,7 +91,8 @@ const PaginationGallery = ({
               <IndividualCard key={index}>
                 <TripCardComponent
                   title={item.title}
-                  date={item.date}
+                  startDate={item.startDate}
+                  endDate={item.endDate}
                   places={item.places}
                   location={item.location}
                   image={item.image}
