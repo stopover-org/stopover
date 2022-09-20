@@ -73,7 +73,7 @@ const Button = ({
   size = ButtonSizes.VERY_SMALL,
   ...props
 }: Props) => {
-  const shownColor = ((disabled && "grey") || color).toString();
+  const shownColor = (disabled && "grey") || color;
 
   return (
     <Wrapper>

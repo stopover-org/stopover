@@ -49,11 +49,11 @@ const imageExist = (image: string | undefined) =>
   typeof image === "string" && image !== "";
 
 const Tags = ({ tags }: Props) => (
-  <Wrapper className="tags-wrapper">
+  <Wrapper>
     <TagsWrapper>
       {contentExist(tags) &&
         tags.map((item, index) => (
-          <TagWrapper className="tag-wrapper" key={index}>
+          <TagWrapper key={index}>
             <Tag>
               {imageExist(item.preview) && (
                 <Image src={item.preview} alt={item.title} />

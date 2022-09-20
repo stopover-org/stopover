@@ -61,7 +61,7 @@ const PhotoTrio = ({ images, onOpen }: Props) => {
     <Wrapper>
       <Cards onClick={onOpen}>
         <RatioWidth width={`calc(${bigCardRatio}*100vw)`}>
-          <CardWrapper height="100%" className="big-card-wrapper">
+          <CardWrapper height="100%">
             <Card height={`calc(${bigCardRatio}*100vw / 1.6)`}>
               <Image src={images[0]} />
             </Card>
@@ -78,10 +78,7 @@ const PhotoTrio = ({ images, onOpen }: Props) => {
             </Card>
           </CardWrapper>
 
-          <CardWrapper
-            height={smallCardHeight}
-            className="small-card-wrapper-bottom"
-          >
+          <CardWrapper height={smallCardHeight}>
             <Card height="100%">
               <Image src={images[2]} />
             </Card>

@@ -50,3 +50,8 @@ export enum ButtonSizes {
   LARGE = "12px",
   VERY_LARGE = "15px",
 }
+
+export enum SkeletonType {
+  BLOCK = "block",
+  IMAGE = "image",
+}

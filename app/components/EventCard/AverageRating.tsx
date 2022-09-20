@@ -67,7 +67,7 @@ const AverageRating = (props: Props) => {
     Math.round((averageRate / maxRate) * 100);
 
   return (
-    <Wrapper className="average-rating-wrapper">
+    <Wrapper>
       <AverageRatingWrapper>
         <StarsWrapper>
           <SolidStarsStyle>
