@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div``;
-
 const DottedDiv = styled.div<{ height: number; color: string }>`
   position: relative;
   min-width: 100px;

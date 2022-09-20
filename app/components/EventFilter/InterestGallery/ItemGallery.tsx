@@ -51,7 +51,6 @@ type Props = {
 
 const ItemGallery = (props: Props) => {
   const borderColor = props.chosen ? "#FF8A00" : "transparent";
-
   const crossVisible = props.chosen ? "block" : "none";
 
   return (

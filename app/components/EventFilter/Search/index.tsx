@@ -10,9 +10,7 @@ const ImageWrapper = styled.div<{ left: string; bottom: string }>`
   left: ${(props) => props.left};
   bottom: ${(props) => props.bottom};
 `;
-
 const SImage = styled(Image)``;
-
 const Input = styled.input<{ width: string; padding?: string }>`
   border: none;
   border-bottom: 2px solid transparent;
@@ -56,7 +54,6 @@ type Props = {
 
 const Search = (props: Props) => {
   const [value, setValue] = useState(props.value);
-
   const onChange = (e: any) => {
     setValue(e.target.value);
   };
@@ -99,4 +96,4 @@ const Search = (props: Props) => {
   );
 };
 
-export default Search;
+export default React.memo(Search);

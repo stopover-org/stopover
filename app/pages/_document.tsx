@@ -15,7 +15,6 @@ type DocumentProps = {
 class MyDocument extends Document<DocumentProps> {
   static async getInitialProps(ctx: DocumentContext) {
     const relayDocument = createRelayDocument();
-
     const { renderPage } = ctx;
 
     ctx.renderPage = () =>

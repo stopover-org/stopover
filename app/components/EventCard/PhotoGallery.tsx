@@ -114,13 +114,9 @@ type Props = {
 
 const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
   const [indexOfCurrentImage, setIndexOfCurrentImage] = useState<number>(0);
-
   const [carouselHeight, setCarouselHeight] = useState<number | undefined>(0);
-
   const mainImageRef = useRef<HTMLDivElement>(null);
-
   const portal = document.getElementById("galleryOfPhotoes") as HTMLElement;
-
   const keyDownHandler = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       if (onClose instanceof Function) {
@@ -131,6 +127,7 @@ const PhotoGallery = ({ isOpen, images, onClose }: Props) => {
 
   useEffect(() => {
     setCarouselHeight(mainImageRef.current?.offsetHeight);
+
     document.addEventListener("keydown", keyDownHandler);
     return () => {
       document.removeEventListener("keydown", keyDownHandler);

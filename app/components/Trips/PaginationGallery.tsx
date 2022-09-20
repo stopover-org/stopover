@@ -11,7 +11,6 @@ import right from "../icons/Solid/Interface/Caret right.svg";
 import left from "../icons/Solid/Interface/Caret left.svg";
 
 const Wrapper = styled.div``;
-
 const IndividualCard = styled.div`
   padding-right: 12px;
 `;
@@ -50,13 +49,9 @@ const PaginationGallery = ({
   ...props
 }: Props) => {
   const [offset, setOffset] = useState([0, cardsShown]);
-
   const hasPrevious = offset[0] !== 0;
-
   const hasNext = offset[1] < total;
-
   const isShowArrow = total > cardsShown;
-
   const showButton = !isLoading && isShowArrow;
 
   return (
@@ -82,6 +77,7 @@ const PaginationGallery = ({
               src={left.src}
               onClick={() => {
                 onClickShift(offset);
+
                 setOffset([offset[0] - cardsShown, offset[1] - cardsShown]);
               }}
             />
@@ -107,6 +103,7 @@ const PaginationGallery = ({
               src={right.src}
               onClick={() => {
                 onClickShift(offset);
+
                 setOffset([offset[0] + cardsShown, offset[1] + cardsShown]);
               }}
             />
