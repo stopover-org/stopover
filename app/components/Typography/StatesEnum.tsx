@@ -52,5 +52,6 @@ export enum ButtonSizes {
 }
 
 export enum SkeletonType {
-  SOLID,
+  BLOCK = "block",
+  IMAGE = "image",
 }
