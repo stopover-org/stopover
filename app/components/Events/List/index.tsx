@@ -1,15 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { graphql, usePaginationFragment } from "react-relay";
+import moment from "moment";
 import InterestGallery from "../../EventFilter/InterestGallery";
 import EventFilter from "../../EventFilter";
 import Search from "../../EventFilter/Search";
 import { events_Query$data } from "../../../pages/events/__generated__/events_Query.graphql";
-import moment from "moment";
-import {
-  EventsListPaginationQuery,
-  EventsListPaginationQuery$data
-} from "./__generated__/EventsListPaginationQuery.graphql";
 
 const Wrapper = styled.div`
   display: flex;
@@ -68,8 +64,6 @@ const EventsList = ({ eventsReference }: Props) => {
     `,
     eventsReference
   );
-
-  console.log(events);
 
   return (
     <Wrapper>

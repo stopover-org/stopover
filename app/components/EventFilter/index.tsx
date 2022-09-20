@@ -1,13 +1,11 @@
-import React, { useState, ReactNode } from "react";
+import React from "react";
 import styled from "styled-components";
-import moment, { Moment } from "moment";
+import moment from "moment";
 import Search from "./Search";
-import IndividualEvents from "./IndividualEvents";
 import Calendar from "./Calander";
-import Rate from "../Rate";
 import Help from "./Help";
 import PriceInput from "./PriceInput";
-import {NumericSlider, RangeType} from "./Slider/NumericSlider";
+import { NumericSlider, RangeType } from "./Slider/NumericSlider";
 import DatesSlider from "./Slider/DatesSlider";
 
 const FilterBar = styled.div``;
@@ -42,67 +40,72 @@ type Props = {
   maxDate: moment.Moment;
   minPrice: number;
   maxPrice: number;
-  city: string
-}
+  city: string;
+};
 
-const EventFilter = ({ minPrice, maxPrice, city }: Props) => {
-  const [selectedDates, setSelectedDates] = useState<{
-    startDate: moment.Moment | null;
-    endDate: moment.Moment | null;
-  }>({
-    startDate: null,
-    endDate: null,
-  });
+const EventFilter = ({
+  minDate: minDateProp,
+  maxDate: maxDateProp,
+  minPrice,
+  maxPrice,
+  city,
+}: Props) => {
+  const [startPrice, setStartPrice] = React.useState<number>(minPrice);
 
-  const [startPrice, setStartPrice] = React.useState<number>(minPrice)
-  const [endPrice, setEndPrice] = React.useState<number>(maxPrice)
-  const [startDate, setStartDate] = React.useState<moment.Moment | null>(null)
-  const [endDate, setEndDate] = React.useState<moment.Moment | null>(null)
-  const [minDate, setMinDate] = React.useState<moment.Moment | null>(moment())
-  const [maxDate, setMaxDate] = React.useState<moment.Moment | null>(null)
+  const [endPrice, setEndPrice] = React.useState<number>(maxPrice);
 
-  const [selectedIndividualOnly, setSelectedIndividualOnly] =
-    useState<boolean>(false);
+  const [startDate, setStartDate] = React.useState<moment.Moment | null>(null);
 
-  const [selectedRate, setSelectedRate] = useState<number>(0);
+  const [endDate, setEndDate] = React.useState<moment.Moment | null>(null);
 
-  const individualEventsHandler = (
-    event: React.SyntheticEvent<HTMLInputElement>
-  ) => {
-    if (event === null) throw new Error("check box returned null");
-    setSelectedIndividualOnly(event.currentTarget.checked);
-  };
+  const [minDate, setMinDate] = React.useState<moment.Moment | null>(
+    minDateProp
+  );
 
-  const rateHandler = (rateIndex: number) => {
-    setSelectedRate(rateIndex);
-  };
+  const [maxDate, setMaxDate] = React.useState<moment.Moment | null>(
+    maxDateProp
+  );
+
+  // TODO restore this functionality when backend will have this fields
+  // const [selectedIndividualOnly, setSelectedIndividualOnly] =
+  //   useState<boolean>(false);
+  //
+  // const [selectedRate, setSelectedRate] = useState<number>(0);
+  //
+  // const individualEventsHandler = (
+  //   event: React.SyntheticEvent<HTMLInputElement>
+  // ) => {
+  //   if (event === null) throw new Error("check box returned null");
+  //   setSelectedIndividualOnly(event.currentTarget.checked);
+  // };
+  //
+  // const rateHandler = (rateIndex: number) => {
+  //   setSelectedRate(rateIndex);
+  // };
 
   const dateHandler = (
     newStartDate: moment.Moment | null,
     newEndDate: moment.Moment | null
   ) => {
-    setMinDate(newStartDate)
-    setMaxDate(newEndDate)
-    setStartDate(newStartDate)
-    setEndDate(newEndDate)
+    setMinDate(newStartDate);
+    setMaxDate(newEndDate);
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
   };
 
-  const inputPriceHandler = (
-    newStartPrice: number,
-    newEndPrice: number
-  ) => {
-    setStartPrice(newStartPrice)
-    setEndPrice(newEndPrice)
+  const inputPriceHandler = (newStartPrice: number, newEndPrice: number) => {
+    setStartPrice(newStartPrice);
+    setEndPrice(newEndPrice);
   };
 
   const sliderDateHandler = ([newStartDate, newEndDate]: [number, number]) => {
-    setStartDate(moment(newStartDate * 1000))
-    setEndDate(moment(newEndDate * 1000))
+    setStartDate(moment(newStartDate * 1000));
+    setEndDate(moment(newEndDate * 1000));
   };
 
   const sliderPriceHandler = (range: RangeType) => {
-    setStartPrice(range[0])
-    setEndPrice(range[1])
+    setStartPrice(range[0]);
+    setEndPrice(range[1]);
   };
 
   return (
@@ -113,7 +116,7 @@ const EventFilter = ({ minPrice, maxPrice, city }: Props) => {
           inputWidth="372px"
           placeHolder="Напишите локацию"
           helpText="Вы выбрали"
-          value={city}
+          value={city || ""}
         />
         <Calendar dateHandler={dateHandler} />
       </StartingPoint>
@@ -123,14 +126,16 @@ const EventFilter = ({ minPrice, maxPrice, city }: Props) => {
             text="Выберите какие даты вы хотите просмотреть"
             content="Выберите дату"
           />
-          {minDate && maxDate && startDate && endDate && <DatesSlider
-            min={minDate.unix()}
-            max={maxDate.unix()}
-            defaultValue={[minDate.unix(), maxDate.unix()]}
-            value={[startDate.unix(), endDate.unix()]}
-            stepsCount={4}
-            onChange={sliderDateHandler}
-          />}
+          {minDate && maxDate && startDate && endDate && (
+            <DatesSlider
+              min={minDate.unix()}
+              max={maxDate.unix()}
+              defaultValue={[minDate.unix(), maxDate.unix()]}
+              value={[startDate.unix(), endDate.unix()]}
+              stepsCount={4}
+              onChange={sliderDateHandler}
+            />
+          )}
         </FilterBarItem>
         <Separator />
         <FilterBarItem>
@@ -154,13 +159,14 @@ const EventFilter = ({ minPrice, maxPrice, city }: Props) => {
             minPrice={minPrice}
           />
         </FilterBarItem>
-        <FilterBarItem>
-          <IndividualEvents onClick={individualEventsHandler} />
-        </FilterBarItem>
-        <Separator />
-        <FilterBarItem>
-          <Rate onClick={rateHandler} />
-        </FilterBarItem>
+        {/* TODO restore this filters when backend will be ready */}
+        {/* <FilterBarItem> */}
+        {/*  <IndividualEvents onClick={individualEventsHandler} /> */}
+        {/* </FilterBarItem> */}
+        {/* <Separator /> */}
+        {/* <FilterBarItem> */}
+        {/*  <Rate onClick={rateHandler} /> */}
+        {/* </FilterBarItem> */}
       </MainFilters>
     </FilterBar>
   );
