@@ -92,7 +92,7 @@ const Button = ({
         cursor={disabled ? "auto" : "pointer"}
         disabled={disabled}
       >
-        {getContent(iconPosition, React.Children.only(children), icon)}
+        {getContent(iconPosition, children, icon)}
       </ButtonStyle>
     </Wrapper>
   );
