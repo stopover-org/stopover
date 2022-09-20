@@ -8,7 +8,6 @@ import SkeletonImage from "../../icons/SkeletonImage.svg";
 import { SkeletonType } from "../../Typography/StatesEnum";
 
 const Wrapper = styled.div``;
-
 const Content = styled(Column)`
   padding: 10px;
 `;

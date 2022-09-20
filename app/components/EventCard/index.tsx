@@ -36,7 +36,6 @@ type Props = {
 
 const EventCard = ({ date, event, googleMapsApiKey }: Props) => {
   const [fixed, setFixed] = useState<string>("block");
-
   const blockScroll = (blocked: boolean) => {
     setFixed(blocked ? "fixed" : "block");
   };

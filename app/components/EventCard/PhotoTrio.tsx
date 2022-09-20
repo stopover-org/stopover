@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div``;
-
 const Cards = styled.div`
   display: flex;
   flex-direction: row;
@@ -52,9 +51,7 @@ type Props = {
 
 const PhotoTrio = ({ images, onOpen }: Props) => {
   const bigCardRatio = 0.6;
-
   const smallCardRatio = 0.4;
-
   const smallCardHeight = "50%";
 
   return (

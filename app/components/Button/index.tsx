@@ -7,7 +7,6 @@ import {
 } from "../Typography/StatesEnum";
 
 const Wrapper = styled.div``;
-
 const ButtonStyle = styled.button<{
   backgroundColor: string;
   border: string;

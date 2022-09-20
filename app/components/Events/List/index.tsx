@@ -14,9 +14,7 @@ const Wrapper = styled.div`
   height: calc(100vh - 75px - 16px);
   min-height: 1100px;
 `;
-
 const List = styled.div``;
-
 const Interests = styled.div`
   padding: 0px 0px 0px 56px;
 `;
@@ -78,7 +76,7 @@ const EventsList = ({ eventsReference }: Props) => {
       <Interests>
         <Search
           searchType="event"
-          inputWidth="650px"
+          width="650px"
           placeHolder="Какое мероприятие вы ищете?"
           helpText="Вы ищете"
         />

@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div``;
-
 const TagsWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -44,7 +43,6 @@ type Props = {
 };
 
 const contentExist = (tags: Props["tags"]) => typeof tags !== undefined;
-
 const imageExist = (image: string | undefined) =>
   typeof image === "string" && image !== "";
 

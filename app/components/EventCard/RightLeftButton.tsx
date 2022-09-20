@@ -28,7 +28,6 @@ type Props = {
 
 const RightLeftButton = ({ buttonDirection, onClick, active }: Props) => {
   const leftGradient = "-90deg";
-
   const rightGradient = "90deg";
 
   return (

@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.form``;
-
 const RadioButton = styled.label`
   display: flex;
   flex-direction: row;
@@ -46,7 +45,6 @@ type Props = {
 
 const RadioButtonList = ({ list }: Props) => {
   const [selectedRadioButton, setSelectedRadioButton] = useState("");
-
   const isRadioSelected = (value: string): boolean =>
     selectedRadioButton === value;
 

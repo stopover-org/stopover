@@ -25,9 +25,7 @@ type Props = {
 
 const Event = ({ preloadedQuery, ...props }: RelayProps<Props, Id_Query>) => {
   const router = useRouter();
-
   const { date } = router.query;
-
   const { event } = usePreloadedQuery(Query, preloadedQuery);
   return (
     <Layout>

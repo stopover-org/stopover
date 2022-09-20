@@ -37,7 +37,6 @@ type Props = {
 
 const ButtonGallery = (props: Props) => {
   const leftGradient = "-90deg";
-
   const rightGradient = "90deg";
 
   return (

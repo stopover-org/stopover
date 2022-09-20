@@ -3,7 +3,6 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div``;
-
 const ButtonStyle = styled.div<{ color: string }>`
   display: flex;
   flex-direction: row;
@@ -39,18 +38,12 @@ type Props = {
 };
 
 const arrayExist = (item: Props["contentAfterDescription"]) => !!item;
-
 const arrayIsEmpty = (item: Props["contentAfterDescription"]) =>
   item?.length === 0;
-
 const isMoment = (item: Props["description"]) => item instanceof moment;
-
 const dateIsValid = (item: Props["description"]) => (item as Moment).isValid();
-
 const isString = (item: Props["description"]) => typeof item === "string";
-
 const isNumber = (item: Props["description"]) => typeof item === "number";
-
 const couldBeAValidMoment = (item: Props["description"]) =>
   moment(item, "DD.MM.YY").isValid();
 

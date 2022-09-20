@@ -9,7 +9,6 @@ import { NumericSlider, RangeType } from "./Slider/NumericSlider";
 import DatesSlider from "./Slider/DatesSlider";
 
 const FilterBar = styled.div``;
-
 const MainFilters = styled.div`
   padding: 0px 36px 30px 30px;
   margin-right: 56px;
@@ -51,13 +50,9 @@ const EventFilter = ({
   city,
 }: Props) => {
   const [startPrice, setStartPrice] = React.useState<number>(minPrice);
-
   const [endPrice, setEndPrice] = React.useState<number>(maxPrice);
-
   const [startDate, setStartDate] = React.useState<moment.Moment | null>(null);
-
   const [endDate, setEndDate] = React.useState<moment.Moment | null>(null);
-
   const [minDate, setMinDate] = React.useState<moment.Moment | null>(
     minDateProp
   );
@@ -88,23 +83,29 @@ const EventFilter = ({
     newEndDate: moment.Moment | null
   ) => {
     setMinDate(newStartDate);
+
     setMaxDate(newEndDate);
+
     setStartDate(newStartDate);
+
     setEndDate(newEndDate);
   };
 
   const inputPriceHandler = (newStartPrice: number, newEndPrice: number) => {
     setStartPrice(newStartPrice);
+
     setEndPrice(newEndPrice);
   };
 
   const sliderDateHandler = ([newStartDate, newEndDate]: [number, number]) => {
     setStartDate(moment(newStartDate * 1000));
+
     setEndDate(moment(newEndDate * 1000));
   };
 
   const sliderPriceHandler = (range: RangeType) => {
     setStartPrice(range[0]);
+
     setEndPrice(range[1]);
   };
 
@@ -113,7 +114,7 @@ const EventFilter = ({
       <StartingPoint>
         <Search
           searchType="location"
-          inputWidth="372px"
+          width="372px"
           placeHolder="Напишите локацию"
           helpText="Вы выбрали"
           value={city || ""}

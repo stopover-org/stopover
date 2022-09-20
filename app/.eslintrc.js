@@ -29,7 +29,9 @@ module.exports = {
     ],
     "react/prop-types": "off",
     "padding-line-between-statements": ["error",
-      { blankLine: "always", prev: ["const", "let", "var"], next: "*"},
+      // { blankLine: "always", prev: ["const", "let", "var"], next: "*"},
+      { blankLine: "never", prev: ["const", "let", "var"], next: ["const", "let", "var"]},
+      { blankLine: "always", prev: ["multiline-expression", "multiline-const", "multiline-let", "multiline-var", "expression"], next: ["multiline-expression", "multiline-const", "multiline-let", "multiline-var", "expression"]},
     ],
     "import/no-named-as-default": "off",
   }

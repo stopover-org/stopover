@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { TypographySize, TypographyTags } from "./StatesEnum";
 
 const Wrapper = styled.div``;
-
 const TextStyle = styled.span<{
   size: string;
   textDecoration: string;
