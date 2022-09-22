@@ -6,19 +6,26 @@ import SkeletonTripCard from "./TripCard/SkeletonTripCard";
 import Row from "../Row";
 import Column from "../Column";
 import Typography from "../Typography";
-import { TypographySize, TypographyTags } from "../Typography/StatesEnum";
+import { TypographySize, TypographyTags } from "../StatesEnum";
 import right from "../icons/Solid/Interface/Caret right.svg";
 import left from "../icons/Solid/Interface/Caret left.svg";
 
-const Wrapper = styled.div``;
 const IndividualCard = styled.div`
-  padding-right: 12px;
+  padding-right: 6px;
+  padding-left: 6px;
 `;
 
 const ButtonArrow = styled.img`
   background-color: black;
   border-radius: 50%;
   cursor: pointer;
+`;
+
+const Wrapper = styled.div`
+  ${ButtonArrow}:nth-child(1) {
+    margin-right: 6px;
+    margin-left: 6px;
+  }
 `;
 
 type Cards = {
@@ -57,8 +64,8 @@ const PaginationGallery = ({
   return (
     <Wrapper {...props}>
       <Column>
-        <Row justifyContent="start">
-          <Typography size={TypographySize.H3} as={TypographyTags.H3} bold>
+        <Row justifyContent="start" height="80px">
+          <Typography size={TypographySize.H3} as={TypographyTags.H3}>
             {title}
           </Typography>
         </Row>

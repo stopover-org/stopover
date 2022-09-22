@@ -5,7 +5,7 @@ import Row from "../../Row";
 import Column from "../../Column";
 import Typography from "../../Typography";
 import BaseImage from "../../BaseImage";
-import { TypographySize, TypographyTags } from "../../Typography/StatesEnum";
+import { TypographySize, TypographyTags } from "../../StatesEnum";
 
 const Content = styled(Column)`
   padding: 10px;
@@ -39,16 +39,35 @@ export const TripCard = ({
       >
         <>
           <Row justifyContent="start" alignItems="start">
-            <Typography size={TypographySize.H3} as={TypographyTags.H3}>
+            <Typography
+              size={TypographySize.H3}
+              as={TypographyTags.H3}
+              fontWeight="100"
+            >
               {title}
             </Typography>
           </Row>
           <Row justifyContent="start" alignItems="center">
             <>
-              <Typography size={TypographySize.H6} as={TypographyTags.H6} bold>
+              <Typography
+                size={TypographySize.H6}
+                as={TypographyTags.H6}
+                fontWeight="700"
+              >
                 {startDate}
               </Typography>
-              <Typography size={TypographySize.H6} as={TypographyTags.H6} bold>
+              <Typography
+                size={TypographySize.H6}
+                as={TypographyTags.H6}
+                fontWeight="700"
+              >
+                &nbsp;-&nbsp;
+              </Typography>
+              <Typography
+                size={TypographySize.H6}
+                as={TypographyTags.H6}
+                fontWeight="700"
+              >
                 {endDate}
               </Typography>
             </>

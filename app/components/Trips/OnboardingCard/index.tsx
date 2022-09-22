@@ -14,9 +14,10 @@ import {
   ButtonSizes,
   TypographySize,
   TypographyTags,
-} from "../../Typography/StatesEnum";
+} from "../../StatesEnum";
 
 const Wrapper = styled.div``;
+
 const Content = styled(Column)`
   padding: 10px;
 `;

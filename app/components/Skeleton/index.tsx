@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import { SkeletonType } from "../Typography/StatesEnum";
+import { SkeletonType } from "../StatesEnum";
 
 const ImageWrapper = styled.div<{
   width?: string;
