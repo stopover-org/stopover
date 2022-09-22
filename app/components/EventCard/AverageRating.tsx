@@ -47,9 +47,7 @@ const OutlineStarsStyle = styled.div`
     height: 25px;
   }
 `;
-
 const NumbericValueWrapper = styled.div``;
-
 const NumericValue = styled.p`
   font-weight: 400;
   font-size: 20px;
@@ -62,7 +60,6 @@ type Props = {
 
 const AverageRating = (props: Props) => {
   const { averageRating } = props;
-
   const calculatePositon = (maxRate: number, averageRate: number) =>
     Math.round((averageRate / maxRate) * 100);
 

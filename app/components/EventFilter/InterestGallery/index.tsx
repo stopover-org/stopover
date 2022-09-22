@@ -34,17 +34,12 @@ const Carousel = styled.div<{ width: number; moveTo: number | string }>`
   transition: left 1s ease;
 `;
 
-const IntrestGallery = () => {
+const InterestGallery = () => {
   const [slideDirection, setSlideDirection] = useState(0);
-
   const [rightSlideEndPoint, setRightSlideEndPoint] = useState(0);
-
   const [imageState, setImageState] = useState<string[]>([]);
-
   const imageWidth = 155;
-
   const carouselWidth = imageArray.length * imageWidth;
-
   const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -103,4 +98,4 @@ const IntrestGallery = () => {
   );
 };
 
-export default IntrestGallery;
+export default React.memo(InterestGallery);

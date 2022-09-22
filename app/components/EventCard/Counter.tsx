@@ -60,9 +60,7 @@ type Props = {
 };
 const Counter = ({ description }: Props) => {
   const maxItems = 5;
-
   const [amount, setAmount] = useState<number>(0);
-
   const OnChangechangeAmount = (e: HTMLInputElement) => {
     if (+e.value <= maxItems && +e.value >= 0) {
       setAmount(+e.value);

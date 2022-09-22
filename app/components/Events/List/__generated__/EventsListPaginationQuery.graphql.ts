@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2f4f28c3a5b8c4c012e13abc62fa28ff>>
+ * @generated SignedSource<<feccbb94c6cd43908394900b2697f75e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -144,6 +144,13 @@ return {
                   {
                     "alias": null,
                     "args": null,
+                    "kind": "ScalarField",
+                    "name": "attendeeCostPerUomCents",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
                     "concreteType": "Tag",
                     "kind": "LinkedField",
                     "name": "tags",
@@ -273,16 +280,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "234040c5581559c166372642d0e75196",
+    "cacheID": "ef68d9f4043c6d48369fa6cd28363285",
     "id": null,
     "metadata": {},
     "name": "EventsListPaginationQuery",
     "operationKind": "query",
-    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...List_EventsFragment_1G22uz\n}\n\nfragment List_EventsFragment_1G22uz on Query {\n  events(first: $count, after: $cursor) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n"
+    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...List_EventsFragment_1G22uz\n}\n\nfragment List_EventsFragment_1G22uz on Query {\n  events(first: $count, after: $cursor) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        attendeeCostPerUomCents\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "5bf95a860735156fcade353909540849";
+(node as any).hash = "9c70716aea7cd6015fc6137dedb55ba0";
 
 export default node;

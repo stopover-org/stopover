@@ -65,9 +65,7 @@ type Props = {
 
 const Index = (props: Props) => {
   const [startDate, setStartDate] = useState<moment.Moment | null>(null);
-
   const [endDate, setEndDate] = useState<moment.Moment | null>(null);
-
   const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
     null
   );
@@ -77,6 +75,7 @@ const Index = (props: Props) => {
     endDate: moment.Moment | null;
   }) => {
     setStartDate(newDates.startDate);
+
     setEndDate(newDates.endDate);
   };
 

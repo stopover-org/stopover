@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { ButtonVariants, ButtonIconPlace, ButtonSizes } from "../StatesEnum";
 
 const Wrapper = styled.div``;
-
 const ButtonStyle = styled.button<{
   backgroundColor: string;
   border: string;

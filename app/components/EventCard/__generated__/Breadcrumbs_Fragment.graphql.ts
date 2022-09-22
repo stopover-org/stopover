@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<29622a3854815de7a7d605d1fd749310>>
+ * @generated SignedSource<<f0eb6e9e55efe4f6d0ec2ff68bbd56e2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,7 +11,7 @@
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type Breadcrumbs_Fragment$data = {
-  readonly title: string | null;
+  readonly title: string;
   readonly " $fragmentType": "Breadcrumbs_Fragment";
 };
 export type Breadcrumbs_Fragment$key = {

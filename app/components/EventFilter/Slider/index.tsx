@@ -139,17 +139,15 @@ const SliderComponent = ({
     currentCountOfMarks: number
   ) => {
     const array = new Array(delta).fill(null) as MarkObj[];
-
     let flagIndex = 0;
-
     const countOfGaps = currentCountOfMarks - 1;
-
     const step = Math.round(delta / countOfGaps);
 
     return array.reduce((marks: Record<string, MarkObj>, item, index) => {
       if (flagIndex !== countOfGaps) {
         if (index === step * flagIndex) {
           marks[index] = { label: startPoint + index };
+
           flagIndex += 1;
         }
       }
@@ -167,19 +165,16 @@ const SliderComponent = ({
     currentCountOfMarks: number
   ) => {
     const cloneDateStartDate = startPoint!.clone();
-
     const array = new Array(delta).fill(null) as MarkObj[];
-
     let flagIndex = 0;
-
     const countOfGaps = currentCountOfMarks - 1;
-
     const step = Math.round(delta / countOfGaps);
 
     return array.reduce((marks: Record<string, MarkObj>, item, index) => {
       if (flagIndex !== countOfGaps) {
         if (index === step * flagIndex) {
           marks[index] = { label: cloneDateStartDate.format("DD.MM") };
+
           flagIndex += 1;
         }
       }

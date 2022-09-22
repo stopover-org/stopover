@@ -17,13 +17,10 @@ type Account implements Node {
 }
 
 type Achievement implements Node {
-  """
-  ID of the object.
-  """
   id: ID!
   preview: String
   relayId: ID!
-  title: String
+  title: String!
 }
 
 """
@@ -82,19 +79,19 @@ scalar DateTime
 
 type Event implements Node {
   achievements: [Achievement!]
-  attendeeCostPerUomCents: Int
-  availableDates: [DateTime!]
+  attendeeCostPerUomCents: Int!
+  availableDates: [DateTime!]!
   city: String
   country: String
-  description: String
-  durationTime: String
-  eventOptions: [EventOption!]
-  eventType: EventTypeEnum
-  fullAddress: String
+  description: String!
+  durationTime: String!
+  eventOptions: [EventOption!]!
+  eventType: EventTypeEnum!
+  fullAddress: String!
   houseNumber: String
-  id: ID
-  images: [String!]
-  interests: [Interest!]
+  id: ID!
+  images: [String!]!
+  interests: [Interest!]!
   latitude: Float
   longitude: Float
   organizerCostPerUomCents: Int
@@ -106,11 +103,11 @@ type Event implements Node {
   requiresContract: Boolean
   requiresPassport: Boolean
   singleDaysWithTime: [String!]
-  status: String
+  status: String!
   street: String
-  tags: [Tag!]
-  title: String
-  unit: Unit
+  tags: [Tag!]!
+  title: String!
+  unit: Unit!
 }
 
 """
@@ -120,12 +117,12 @@ type EventConnection {
   """
   A list of edges.
   """
-  edges: [EventEdge]
+  edges: [EventEdge!]!
 
   """
   A list of nodes.
   """
-  nodes: [Event]
+  nodes: [Event!]!
 
   """
   Information to aid in pagination.
@@ -151,18 +148,18 @@ type EventEdge {
 type EventFilters {
   city: String
   endDate: DateTime
-  maxPrice: Int
-  minPrice: Int
+  maxPrice: Int!
+  minPrice: Int!
   startDate: DateTime
 }
 
 type EventOption implements Node {
-  attendeeCostCents: Int
+  attendeeCostCents: Int!
   builtIn: Boolean
-  id: ID
+  id: ID!
   organizerCostCents: Int
   relayId: ID!
-  title: String
+  title: String!
 }
 
 enum EventTypeEnum {
@@ -186,11 +183,11 @@ input EventsFilter {
 }
 
 type Interest implements Node {
-  id: ID
+  id: ID!
   preview: String
   relayId: ID!
-  slug: String
-  title: String
+  slug: String!
+  title: String!
 }
 
 input InterestsFilter {
@@ -256,7 +253,7 @@ type PageInfo {
 type Query {
   currentUser: User
   event(id: ID!): Event
-  eventFilters(city: String): EventFilters
+  eventFilters(city: String): EventFilters!
   events(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -278,7 +275,7 @@ type Query {
     Returns the last _n_ elements from the list.
     """
     last: Int
-  ): EventConnection
+  ): EventConnection!
   interests(filters: InterestsFilter): [Interest!]
 
   """
@@ -387,18 +384,18 @@ enum SignInTypesEnum {
 }
 
 type Tag implements Node {
-  id: ID
+  id: ID!
   preview: String
   relayId: ID!
-  title: String
+  title: String!
 }
 
 type Unit implements Node {
-  id: ID
-  name: String
+  id: ID!
+  name: String!
   preview: String
   relayId: ID!
-  unitType: String
+  unitType: String!
 }
 
 type User implements Node {

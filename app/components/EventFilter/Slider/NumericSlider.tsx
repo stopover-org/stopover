@@ -21,7 +21,6 @@ export const NumericSlider = ({
   onChange,
 }: Props) => {
   const markStep = (max - min) / stepsCount;
-
   const marks = new Array(stepsCount + 1).fill(null).reduce((res, _, index) => {
     const val = Math.round(min + markStep * index);
 

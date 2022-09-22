@@ -5,9 +5,7 @@ const Wrapper = styled.div`
   padding-top: 6px;
   padding-bottom: 6px;
 `;
-
 const Content = styled.div``;
-
 const Row = styled.div`
   display: flex;
   align-items: center;

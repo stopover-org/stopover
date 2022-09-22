@@ -13,9 +13,7 @@ const RateStyle = styled.div`
   display: flex;
   flex-direction: row;
 `;
-
 const Container = styled.label``;
-
 const Text = styled.p`
   font-size: 24px;
 `;
@@ -26,13 +24,11 @@ type Props = {
 
 const Rate = (props: Props) => {
   const stars = new Array(5).fill("");
-
   const [selectedRate, setSelectedRate] = useState(0);
-
   const [shownRate, setShownRate] = useState<number | null>(0);
-
   const rateChange = (index: number) => {
     setSelectedRate(index);
+
     props.onClick(index);
   };
 

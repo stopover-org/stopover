@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<93925940343def1ffade412eea1afb04>>
+ * @generated SignedSource<<06602740c3cf2176d4cfaa723a18a5c1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,13 +11,13 @@
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type Card_Event$data = {
-  readonly description: string | null;
-  readonly images: ReadonlyArray<string> | null;
+  readonly description: string;
+  readonly images: ReadonlyArray<string>;
   readonly tags: ReadonlyArray<{
-    readonly id: string | null;
-    readonly title: string | null;
-  }> | null;
-  readonly title: string | null;
+    readonly id: string;
+    readonly title: string;
+  }>;
+  readonly title: string;
   readonly " $fragmentType": "Card_Event";
 };
 export type Card_Event$key = {

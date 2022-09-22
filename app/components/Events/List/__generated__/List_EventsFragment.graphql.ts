@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9d910785a6b283ff487bcdf2eb68efa2>>
+ * @generated SignedSource<<ea853cf3fdf04b5c321cb93e497e6040>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,28 +14,29 @@ export type List_EventsFragment$data = {
   readonly eventFilters: {
     readonly city: string | null;
     readonly endDate: any | null;
-    readonly maxPrice: number | null;
-    readonly minPrice: number | null;
+    readonly maxPrice: number;
+    readonly minPrice: number;
     readonly startDate: any | null;
-  } | null;
+  };
   readonly events: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly availableDates: ReadonlyArray<any> | null;
-        readonly description: string | null;
-        readonly id: string | null;
-        readonly images: ReadonlyArray<string> | null;
+        readonly attendeeCostPerUomCents: number;
+        readonly availableDates: ReadonlyArray<any>;
+        readonly description: string;
+        readonly id: string;
+        readonly images: ReadonlyArray<string>;
         readonly interests: ReadonlyArray<{
-          readonly id: string | null;
-          readonly title: string | null;
-        }> | null;
+          readonly id: string;
+          readonly title: string;
+        }>;
         readonly tags: ReadonlyArray<{
-          readonly title: string | null;
-        }> | null;
-        readonly title: string | null;
+          readonly title: string;
+        }>;
+        readonly title: string;
       } | null;
-    } | null> | null;
-  } | null;
+    }>;
+  };
   readonly " $fragmentType": "List_EventsFragment";
 };
 export type List_EventsFragment$key = {
@@ -144,6 +145,13 @@ return {
                   "args": null,
                   "kind": "ScalarField",
                   "name": "images",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "attendeeCostPerUomCents",
                   "storageKey": null
                 },
                 {
@@ -271,6 +279,6 @@ return {
 };
 })();
 
-(node as any).hash = "5bf95a860735156fcade353909540849";
+(node as any).hash = "9c70716aea7cd6015fc6137dedb55ba0";
 
 export default node;
