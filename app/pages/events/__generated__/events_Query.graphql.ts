@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<263db2af4f3c0a161374bebfbaf972e1>>
+ * @generated SignedSource<<f164c0fabdeb067c2b59853565b91a76>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -192,16 +192,62 @@ return {
         "key": "Events_events",
         "kind": "LinkedHandle",
         "name": "events"
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "EventFilters",
+        "kind": "LinkedField",
+        "name": "eventFilters",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "startDate",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "endDate",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "minPrice",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "maxPrice",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "city",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "166b137eb4c5b34302642da994e244fe",
+    "cacheID": "95f47e3046afde99ec83249eb6916e17",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query {\n  ...List_EventsFragment\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query events_Query {\n  ...List_EventsFragment\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n"
   }
 };
 })();

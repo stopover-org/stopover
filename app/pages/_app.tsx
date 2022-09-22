@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import { RelayEnvironmentProvider } from "react-relay";
 import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";
 import { getClientEnvironment } from "../lib/clientEnvironment";
+import "rc-slider/assets/index.css";
 
 const clientEnv = getClientEnvironment();
 

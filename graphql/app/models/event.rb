@@ -11,7 +11,6 @@ class Event < ApplicationRecord
   has_many :event_interests, dependent: :destroy
   has_many :event_tags, dependent: :destroy
 
-
   has_many :achievements, through: :event_achievements
   has_many :interests, through: :event_interests
   has_many :tags, through: :event_tags
@@ -19,21 +18,21 @@ class Event < ApplicationRecord
   belongs_to :unit, optional: true
   has_many :bookings, dependent: :destroy
 
-  enum recurring_type: { recurrent: "recurrent", regular: "regular" }
+  enum recurring_type: { recurrent: 'recurrent', regular: 'regular' }
   enum event_type: {
     # old one
-    excursion: "excursion",
-    tour: "tour",
+    excursion: 'excursion',
+    tour: 'tour',
     # new one
-    in_town: "in_town",
-    out_of_town: "out_of_town",
-    active_holiday: "active_holiday",
-    music: "music",
-    workshop: "workshop",
-    business_breakfast: "business_breakfast",
-    meetup: "meetup",
-    sport_activity: "sport_activity",
-    gastronomic: "gastronomic"
+    in_town: 'in_town',
+    out_of_town: 'out_of_town',
+    active_holiday: 'active_holiday',
+    music: 'music',
+    workshop: 'workshop',
+    business_breakfast: 'business_breakfast',
+    meetup: 'meetup',
+    sport_activity: 'sport_activity',
+    gastronomic: 'gastronomic'
   }
 
   validates :title, length: { maximum: 100 }, unless: :draft?
@@ -47,12 +46,18 @@ class Event < ApplicationRecord
   before_validation :set_prices
   before_validation :update_tags
 
-  scope :active, -> { where(status: :published) }
+  default_scope { where(status: :published) }
+  scope :by_city, ->(city) { where(city: city) }
 
   aasm column: :status do
     state :draft, initial: true
     state :published
     state :unpublished
+  end
+
+  # it's not a scope because it cannot be chained to other query
+  def self.events_between(start_date, end_date = Time.zone.now + 1.year)
+    Event.where(id: execute_events_by_dates(start_date, end_date).values.map { |v| v[0] })
   end
 
   def set_prices
@@ -61,7 +66,7 @@ class Event < ApplicationRecord
   end
 
   def available_dates
-    [single_days_with_time.map{|t| DateTime.parse t}, recurrent_dates].flatten.compact.sort
+    [single_days_with_time.map { |t| t.to_datetime }, recurrent_dates].flatten.compact.sort
   end
 
   private
@@ -114,5 +119,26 @@ class Event < ApplicationRecord
 
   def get_next_weekday(date, weekday, time)
     date.change(hour: time.hour, min: time.minute).next_occurring(weekday)
+  end
+
+  def self.execute_events_by_dates(start_date, end_date)
+    sql = <<-SQL
+      WITH dates AS (
+          SELECT DISTINCT
+              *,
+              unnest(get_timestamp_from_weekday(unnest(recurring_days_with_time), :start_date::TIMESTAMP, :end_date::TIMESTAMP)) recurrent_date,
+              unnest(single_days_with_time::TIMESTAMP[]) single_date
+          FROM events
+      )
+      SELECT DISTINCT *
+      FROM dates
+      WHERE
+          recurrent_date BETWEEN :start_date::TIMESTAMP AND :end_date::TIMESTAMP
+          OR single_date BETWEEN :start_date::TIMESTAMP AND :end_date::TIMESTAMP
+    SQL
+
+    ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql([sql, {
+                                                                            start_date: start_date, end_date: end_date
+                                                                          }]))
   end
 end

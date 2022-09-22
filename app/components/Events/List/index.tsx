@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { graphql, usePaginationFragment } from "react-relay";
-import InterestGallery from "../EventFilter/InterestGallery";
-import EventFilter from "../EventFilter";
-import Search from "../EventFilter/Search";
+import moment from "moment";
+import InterestGallery from "../../EventFilter/InterestGallery";
+import EventFilter from "../../EventFilter";
+import Search from "../../EventFilter/Search";
 import { events_Query$data } from "../../../pages/events/__generated__/events_Query.graphql";
 
 const Wrapper = styled.div`
@@ -25,8 +26,7 @@ type Props = {
 };
 
 const EventsList = ({ eventsReference }: Props) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const data = usePaginationFragment(
+  const events: any = usePaginationFragment(
     graphql`
       fragment List_EventsFragment on Query
       @argumentDefinitions(
@@ -53,6 +53,13 @@ const EventsList = ({ eventsReference }: Props) => {
             }
           }
         }
+        eventFilters {
+          startDate
+          endDate
+          minPrice
+          maxPrice
+          city
+        }
       }
     `,
     eventsReference
@@ -60,7 +67,13 @@ const EventsList = ({ eventsReference }: Props) => {
 
   return (
     <Wrapper>
-      <EventFilter />
+      <EventFilter
+        minDate={moment(events.data.eventFilters.startDate)}
+        maxDate={moment(events.data.eventFilters.endDate)}
+        minPrice={events.data.eventFilters.minPrice}
+        maxPrice={events.data.eventFilters.maxPrice}
+        city={events.data.eventFilters.city}
+      />
 
       <Interests>
         <Search
