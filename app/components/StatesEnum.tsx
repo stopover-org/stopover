@@ -1,3 +1,9 @@
+export enum TypographyWeight {
+  COMMON = "100",
+  MEDIUM = "300",
+  THICK = "500",
+  BOLD = "700",
+}
 export enum TypographySize {
   H1 = "36px",
   H2 = "32px",
