@@ -14,7 +14,7 @@ import {
   ButtonSizes,
   TypographySize,
   TypographyTags,
-} from "../../Typography/StatesEnum";
+} from "../../StatesEnum";
 
 const Wrapper = styled.div``;
 

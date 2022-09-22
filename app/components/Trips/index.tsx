@@ -12,11 +12,18 @@ type Trip = {
   location: string;
   image: string;
 };
-// start date end date
 const arrayIsEmpty = (array: Trip[]) => array.length === 0;
 
 const Trips = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingDraft, setIsLoadingDraft] = useState(true);
+
+  const [isLoadingActive, setIsLoadingActive] = useState(true);
+
+  const [isLoadingFuture, setIsLoadingFuture] = useState(true);
+
+  const [isLoadingPast, setIsLoadingPast] = useState(true);
+
+  const [isLoadingCanceled, setIsLoadingCanceled] = useState(true);
 
   const draft: Trip[] = [
     {
@@ -85,21 +92,25 @@ const Trips = () => {
   const canceled: Trip[] = [];
 
   const onClickShift = (offset: number[]) => {
-    setIsLoading(true);
+    setIsLoadingDraft(true);
+    setIsLoadingActive(true);
+    setIsLoadingFuture(true);
+    setIsLoadingPast(true);
+    setIsLoadingCanceled(true);
     console.log(offset);
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 2000);
+    const timer = setTimeout(() => setIsLoadingDraft(false), 2000);
 
     return () => clearTimeout(timer);
-  }, [isLoading]);
+  }, [isLoadingDraft]);
 
   return (
     <Wrapper>
       {!arrayIsEmpty(draft) && (
         <PaginationGallery
-          isLoading={isLoading}
+          isLoading={isLoadingDraft}
           cards={draft}
           title="Черновики"
           total={156}
@@ -109,7 +120,7 @@ const Trips = () => {
       )}
       {!arrayIsEmpty(active) && (
         <PaginationGallery
-          isLoading={isLoading}
+          isLoading={isLoadingActive}
           cards={active}
           title="Активные путешествия"
           total={156}
@@ -119,7 +130,7 @@ const Trips = () => {
       )}
       {!arrayIsEmpty(future) && (
         <PaginationGallery
-          isLoading={isLoading}
+          isLoading={isLoadingFuture}
           cards={future}
           title="Будущие путешествия"
           total={156}
@@ -129,7 +140,7 @@ const Trips = () => {
       )}
       {!arrayIsEmpty(past) && (
         <PaginationGallery
-          isLoading={isLoading}
+          isLoading={isLoadingPast}
           cards={past}
           title="Прошлые путешествия"
           total={156}
@@ -139,7 +150,7 @@ const Trips = () => {
       )}
       {!arrayIsEmpty(canceled) && (
         <PaginationGallery
-          isLoading={isLoading}
+          isLoading={isLoadingCanceled}
           cards={canceled}
           title="Отмененные путешествия"
           total={156}

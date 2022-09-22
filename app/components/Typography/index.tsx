@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { TypographySize, TypographyTags } from "./StatesEnum";
-
-const Wrapper = styled.div``;
+import { TypographySize, TypographyTags } from "../StatesEnum";
 
 const TextStyle = styled.span<{
   size: string;
@@ -25,9 +23,9 @@ const TextStyle = styled.span<{
 type Props = {
   children: string | React.ReactElement;
   size?: TypographySize;
-  as: TypographyTags;
+  as?: TypographyTags;
+  fontWeight?: string;
   strikeThrough?: boolean;
-  bold?: boolean;
   italic?: boolean;
   color?: string;
 };
@@ -35,24 +33,22 @@ type Props = {
 const Typography = ({
   color,
   italic,
-  bold,
+  fontWeight = "100",
   strikeThrough,
   size,
   children,
   as = TypographyTags.MEDIUM,
 }: Props) => (
-  <Wrapper className="typography-wrapper">
-    <TextStyle
-      as={as}
-      size={size || TypographySize.MEDIUM.toString()}
-      textDecoration={strikeThrough ? "line-through" : "none"}
-      fontWeight={bold ? "700" : "none"}
-      fontStyle={italic ? "italic" : "none"}
-      color={color || "black"}
-    >
-      {children}
-    </TextStyle>
-  </Wrapper>
+  <TextStyle
+    as={as}
+    size={size || TypographySize.MEDIUM.toString()}
+    textDecoration={strikeThrough ? "line-through" : "none"}
+    fontWeight={fontWeight}
+    fontStyle={italic ? "italic" : "none"}
+    color={color || "black"}
+  >
+    {children}
+  </TextStyle>
 );
 
 export default Typography;

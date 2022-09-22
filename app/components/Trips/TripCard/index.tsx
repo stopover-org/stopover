@@ -5,7 +5,7 @@ import Row from "../../Row";
 import Column from "../../Column";
 import Typography from "../../Typography";
 import BaseImage from "../../BaseImage";
-import { TypographySize, TypographyTags } from "../../Typography/StatesEnum";
+import { TypographySize, TypographyTags } from "../../StatesEnum";
 
 const Content = styled(Column)`
   padding: 10px;
@@ -45,20 +45,43 @@ export const TripCard = ({
           </Row>
           <Row justifyContent="start" alignItems="center">
             <>
-              <Typography size={TypographySize.H6} as={TypographyTags.H6} bold>
+              <Typography
+                size={TypographySize.H6}
+                as={TypographyTags.H6}
+                fontWeight="700"
+              >
                 {startDate}
               </Typography>
-              <Typography size={TypographySize.H6} as={TypographyTags.H6} bold>
+              <Typography
+                size={TypographySize.H6}
+                as={TypographyTags.H6}
+                fontWeight="700"
+              >
+                &nbsp;-&nbsp;
+              </Typography>
+              <Typography
+                size={TypographySize.H6}
+                as={TypographyTags.H6}
+                fontWeight="700"
+              >
                 {endDate}
               </Typography>
             </>
           </Row>
           <Row justifyContent="space-between" alignItems="end">
             <>
-              <Typography size={TypographySize.H6} as={TypographyTags.H6}>
+              <Typography
+                size={TypographySize.H6}
+                as={TypographyTags.H6}
+                fontWeight="300"
+              >
                 {places}
               </Typography>
-              <Typography size={TypographySize.H6} as={TypographyTags.H6}>
+              <Typography
+                size={TypographySize.H6}
+                as={TypographyTags.H6}
+                fontWeight="300"
+              >
                 {location}
               </Typography>
             </>

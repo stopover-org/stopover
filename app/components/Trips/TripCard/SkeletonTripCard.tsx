@@ -5,7 +5,7 @@ import Row from "../../Row";
 import Skeleton from "../../Skeleton";
 import Card from "../../Card";
 import SkeletonImage from "../../icons/SkeletonImage.svg";
-import { SkeletonType } from "../../Typography/StatesEnum";
+import { SkeletonType } from "../../StatesEnum";
 
 const Wrapper = styled.div``;
 
