@@ -28,7 +28,10 @@ type Props = {
 };
 
 const EventsList = ({ eventsReference }: Props) => {
-  const events = usePaginationFragment<events_Query, List_EventsFragment$key>(
+  const events: any = usePaginationFragment<
+    events_Query,
+    List_EventsFragment$key
+  >(
     graphql`
       fragment List_EventsFragment on Query
       @argumentDefinitions(
@@ -87,20 +90,19 @@ const EventsList = ({ eventsReference }: Props) => {
         />
         <InterestGallery />
         <List>
-          {events.data.events.edges.map((edge) => {
+          {events.data.events.edges.map((edge: any) => {
             const { images, title, interests, attendeeCostPerUomCents } =
               edge.node!;
 
-            console.log(edge!.node);
             return (
               <div>
                 <div>
-                  <img alt={src[0]} src={images[0]} />
+                  <img alt={images[0]} src={images[0]} />
                 </div>
                 <div>
                   <div>{title}</div>
                   <div>
-                    {interests.map((interest) => (
+                    {interests.map((interest: any) => (
                       <div>{interest.title}</div>
                     ))}
                   </div>
