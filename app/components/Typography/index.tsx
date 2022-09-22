@@ -33,7 +33,7 @@ type Props = {
 const Typography = ({
   color,
   italic,
-  fontWeight = "100",
+  fontWeight = "300",
   strikeThrough,
   size,
   children,

@@ -39,7 +39,11 @@ export const TripCard = ({
       >
         <>
           <Row justifyContent="start" alignItems="start">
-            <Typography size={TypographySize.H3} as={TypographyTags.H3}>
+            <Typography
+              size={TypographySize.H3}
+              as={TypographyTags.H3}
+              fontWeight="100"
+            >
               {title}
             </Typography>
           </Row>
@@ -70,18 +74,10 @@ export const TripCard = ({
           </Row>
           <Row justifyContent="space-between" alignItems="end">
             <>
-              <Typography
-                size={TypographySize.H6}
-                as={TypographyTags.H6}
-                fontWeight="300"
-              >
+              <Typography size={TypographySize.H6} as={TypographyTags.H6}>
                 {places}
               </Typography>
-              <Typography
-                size={TypographySize.H6}
-                as={TypographyTags.H6}
-                fontWeight="300"
-              >
+              <Typography size={TypographySize.H6} as={TypographyTags.H6}>
                 {location}
               </Typography>
             </>

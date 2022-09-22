@@ -56,24 +56,16 @@ const PaginationGallery = ({
   ...props
 }: Props) => {
   const [offset, setOffset] = useState([0, cardsShown]);
-
   const hasPrevious = offset[0] !== 0;
-
   const hasNext = offset[1] < total;
-
   const isShowArrow = total > cardsShown;
-
   const showButton = !isLoading && isShowArrow;
 
   return (
     <Wrapper {...props}>
       <Column>
         <Row justifyContent="start" height="80px">
-          <Typography
-            size={TypographySize.H3}
-            as={TypographyTags.H3}
-            fontWeight="700"
-          >
+          <Typography size={TypographySize.H3} as={TypographyTags.H3}>
             {title}
           </Typography>
         </Row>
@@ -92,6 +84,7 @@ const PaginationGallery = ({
               src={left.src}
               onClick={() => {
                 onClickShift(offset);
+
                 setOffset([offset[0] - cardsShown, offset[1] - cardsShown]);
               }}
             />
@@ -117,6 +110,7 @@ const PaginationGallery = ({
               src={right.src}
               onClick={() => {
                 onClickShift(offset);
+
                 setOffset([offset[0] + cardsShown, offset[1] + cardsShown]);
               }}
             />
