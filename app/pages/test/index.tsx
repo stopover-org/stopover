@@ -1,25 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../components/MainPage/Layout";
-import Acardion from "../../components/Acardion";
+import Accordion from "../../components/Accordion";
 import Typography from "../../components/Typography";
 import { TypographySize, TypographyTags } from "../../components/StatesEnum";
 import Column from "../../components/Column";
 import Row from "../../components/Row";
 
-const AcardionStyle = styled.div`
+const AccordionStyle = styled.div`
   width: 500px;
 `;
 
 const Test = () => {
   const [contentHeightState, setContentHeightState] = useState(0);
-  const onOpen = (text: string) => {
-    console.log(text);
-  };
-
-  const onClose = (text: string) => {
-    console.log(text);
-  };
+  const onOpen = () => {};
+  const onClose = () => {};
   const contentHeight = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,8 +25,8 @@ const Test = () => {
 
   return (
     <Layout>
-      <AcardionStyle>
-        <Acardion
+      <AccordionStyle>
+        <Accordion
           contentHeight={contentHeightState}
           opened
           header={
@@ -76,7 +71,7 @@ const Test = () => {
           onOpen={onOpen}
           onClose={onClose}
         />
-      </AcardionStyle>
+      </AccordionStyle>
     </Layout>
   );
 };

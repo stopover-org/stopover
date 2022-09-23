@@ -5,11 +5,7 @@ import CaretUp from "../icons/Outline/Interface/Caret up.svg";
 import Column from "../Column";
 import Row from "../Row";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
+const Wrapper = styled(Column)``;
 const Caret = styled(Image)<{ rotate: string }>`
   rotate: ${(props) => props.rotate};
   transition: rotate 0.5s ease-in-out;
@@ -40,11 +36,11 @@ type Props = {
   content: React.ReactElement;
   header: React.ReactElement;
   contentHeight?: number;
-  onOpen: (text: string) => void;
-  onClose: (text: string) => void;
+  onOpen: () => void;
+  onClose: () => void;
 };
 
-const Acardion = ({
+const Accordion = ({
   opened = false,
   showChevron = true,
   content,
@@ -55,8 +51,8 @@ const Acardion = ({
 }: Props) => {
   const [isOpen, setIsOpen] = useState(opened);
   const clickHandler = () => {
-    if (!isOpen) onOpen("i am opened");
-    if (isOpen) onClose("i am closed");
+    if (!isOpen) onOpen();
+    if (isOpen) onClose();
     setIsOpen(!isOpen);
   };
 
@@ -81,4 +77,4 @@ const Acardion = ({
   );
 };
 
-export default Acardion;
+export default Accordion;
