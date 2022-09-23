@@ -56,7 +56,6 @@ const Accordion = ({
     setIsOpen(!isOpen);
   };
 
-  console.log(contentHeight);
   return (
     <Wrapper>
       <Header onClick={() => clickHandler()}>
