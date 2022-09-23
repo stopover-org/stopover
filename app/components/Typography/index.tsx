@@ -18,6 +18,7 @@ const TextStyle = styled.span<{
   text-decoration: ${(props) => props.textDecoration};
   color: ${(props) => props.color};
   line-height: 1em;
+  word-break: break-all;
 `;
 
 type Props = {

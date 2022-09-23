@@ -2,33 +2,30 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import CaretUp from "../icons/Outline/Interface/Caret up.svg";
+import Column from "../Column";
+import Row from "../Row";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
-  border: 1px solid green;
 `;
 
 const Caret = styled(Image)<{ rotate: string }>`
   rotate: ${(props) => props.rotate};
-  transition: rotate 1s ease-in-out;
+  transition: rotate 0.5s ease-in-out;
 `;
 
-const Header = styled.div`
-  border: 1px solid black;
-  width: 100%;
+const Header = styled(Row)`
+  display: flex;
+  justify-content: space-between;
   cursor: pointer;
 `;
 
-const Content = styled.div<{ opacity: number }>`
-  position: absolute;
-  background-color: red;
-  top: 100%;
-  left: 0px;
-  opacity: ${(props) => props.opacity};
-  transition: opacity 1s ease-in-out;
-  width: 100%;
+const Content = styled(Column)<{ height: number }>`
+  overflow: hidden;
+  max-height: ${(props) => props.height}px;
+  transition: all 0.5s ease-in-out;
+  z-index: -9999;
 `;
 
 const Divider = styled.div`
@@ -42,6 +39,9 @@ type Props = {
   showChevron?: boolean;
   content: React.ReactElement;
   header: React.ReactElement;
+  contentHeight?: number;
+  onOpen: (text: string) => void;
+  onClose: (text: string) => void;
 };
 
 const Acardion = ({
@@ -49,16 +49,21 @@ const Acardion = ({
   showChevron = true,
   content,
   header,
+  contentHeight,
+  onOpen,
+  onClose,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(opened);
-
   const clickHandler = () => {
+    if (!isOpen) onOpen("i am opened");
+    if (isOpen) onClose("i am closed");
     setIsOpen(!isOpen);
   };
 
+  console.log(contentHeight);
   return (
     <Wrapper>
-      <Header onClick={clickHandler}>
+      <Header onClick={() => clickHandler()}>
         {header}
         {showChevron && (
           <Caret
@@ -71,7 +76,7 @@ const Acardion = ({
         )}
       </Header>
       <Divider />
-      <Content opacity={+isOpen}>{content}</Content>
+      <Content height={isOpen ? contentHeight : 0}>{content}</Content>
     </Wrapper>
   );
 };
