@@ -13,7 +13,7 @@ export enum TypographySize {
   H6 = "14px",
   VERY_SMALL = "8px",
   SMALL = "10px",
-  MEDIUM = "14px",
+  MEDIUM = "12px",
   BIG = "16px",
   LARGE = "24px",
   VERY_LARGE = "36px",
@@ -60,4 +60,19 @@ export enum ButtonSizes {
 export enum SkeletonType {
   BLOCK = "block",
   IMAGE = "image",
+}
+
+export enum InputSizes {
+  SMALL = "5px",
+  MEDIUM = "10px",
+  LARGE = "15px",
+}
+
+export enum InputVariants {
+  COMMON = "common",
+  OUTLINED = "outlined",
+}
+export enum IconPosition {
+  LEFT = "left",
+  RIGHT = "right",
 }

@@ -18,26 +18,28 @@ const TextStyle = styled.span<{
   text-decoration: ${(props) => props.textDecoration};
   color: ${(props) => props.color};
   line-height: 1em;
+  word-break: break-all;
 `;
 
 type Props = {
   children: string | React.ReactElement;
+  color?: string;
   size?: TypographySize;
   as?: TypographyTags;
   fontWeight?: string;
   strikeThrough?: boolean;
   italic?: boolean;
-  color?: string;
 };
 
 const Typography = ({
-  color,
+  color = "black",
   italic,
   fontWeight = "300",
   strikeThrough,
   size,
   children,
   as = TypographyTags.MEDIUM,
+  ...props
 }: Props) => (
   <TextStyle
     as={as}
@@ -46,6 +48,7 @@ const Typography = ({
     fontWeight={fontWeight}
     fontStyle={italic ? "italic" : "none"}
     color={color || "black"}
+    {...props}
   >
     {children}
   </TextStyle>

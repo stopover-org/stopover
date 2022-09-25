@@ -22,7 +22,6 @@ const Input = styled.input<{ width: string; padding?: string }>`
   opacity: 0.3;
   ${({ padding }) => padding && `padding-right: ${padding};`}
   &:focus {
-    outline: none;
     border-bottom: 2px solid #d9d9d9;
   }
 `;
