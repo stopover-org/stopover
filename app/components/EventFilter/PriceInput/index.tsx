@@ -17,9 +17,6 @@ const Input = styled.input`
   border-radius: 3px;
   color: #656565;
   margin-top: 2px;
-  &:focus {
-    outline: none;
-  }
 `;
 
 const Text = styled.p`

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import CaretUp from "../icons/Outline/Interface/Caret up.svg";
-import CaretDown from "../icons/Outline/Interface/Caret down.svg";
+import CaretUp from "../icons/Outline/Interface/Caret_up.svg";
+import CaretDown from "../icons/Outline/Interface/Caret_down.svg";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -26,7 +26,6 @@ const AmountNumber = styled.input`
   line-height: 29px;
   width: 45px;
   border: none;
-  outline: none;
 `;
 
 const Buttons = styled.div`
