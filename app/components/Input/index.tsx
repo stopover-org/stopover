@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
+import { v4 as uuidv4 } from "uuid";
 import Column from "../Column";
 import Row from "../Row";
 import { IconPosition, InputVariants } from "../StatesEnum";
+import CaretUp from "../icons/Outline/Interface/Caret_up.svg";
+import CaretDown from "../icons/Outline/Interface/Caret_down.svg";
 
 const Wrapper = styled.form``;
 const Content = styled(Row)`
@@ -29,14 +32,24 @@ const SInput = styled.input`
   font-size: 18px;
 `;
 
+const SArrow = styled(Column)`
+  height: 20px;
+  width: 16px;
+  margin: 0px 10px 0px 10px;
+`;
+
 const SImage = styled.div<{ padding: string }>`
   padding: ${(props) => props.padding};
 `;
 
 type Props = {
   value?: string;
+  id?: string;
   size?: string;
+  type?: string;
   icon?: string;
+  minValue?: number;
+  maxValue?: number;
   iconPosition?: IconPosition;
   inputVariants?: InputVariants;
   disabled?: boolean;
@@ -48,9 +61,13 @@ type Props = {
 const Input = ({
   value = "",
   size = "0px",
+  id = uuidv4(),
+  type = "text",
   label = "",
   hint = "",
   errorMessage = "",
+  minValue = 0,
+  maxValue = 9999,
   disabled,
   icon,
   iconPosition = IconPosition.LEFT,
@@ -58,8 +75,20 @@ const Input = ({
   ...props
 }: Props) => {
   const [valueState, setValueState] = useState<string>(value);
+  const changeValue = (delta: number) => {
+    if (+valueState + delta >= minValue && +valueState + delta <= maxValue) {
+      setValueState((+valueState + delta).toString());
+    }
+  };
+
   const changeHandler = (inputValue: string) => {
-    setValueState(inputValue);
+    if (type === "number") {
+      if (+inputValue >= minValue && +inputValue <= maxValue) {
+        setValueState(inputValue);
+      }
+    } else {
+      setValueState(inputValue);
+    }
   };
 
   const borderStyle = () => {
@@ -69,10 +98,10 @@ const Input = ({
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  console.log(inputVariants);
+  console.log(uuidv4());
   return (
     <Wrapper>
-      <label htmlFor="input">
+      <label htmlFor={id}>
         <Column>
           <Content justifyContent="start">{label}</Content>
           <Content justifyContent="start">
@@ -98,12 +127,30 @@ const Input = ({
                     </SImage>
                   )}
                   <SInput
-                    id="input"
+                    id={id}
                     onChange={(e) => changeHandler(e.target.value)}
                     value={valueState}
                     disabled={disabled}
                     {...props}
                   />
+                  {type === "number" && (
+                    <SArrow>
+                      <Image
+                        onClick={() => changeValue(1)}
+                        src={CaretUp}
+                        width="10px"
+                        height="10px"
+                        alt="arrow"
+                      />
+                      <Image
+                        onClick={() => changeValue(-1)}
+                        src={CaretDown}
+                        width="10px"
+                        height="10px"
+                        alt="arrow"
+                      />
+                    </SArrow>
+                  )}
                   {!!icon && IconPosition.RIGHT === iconPosition && (
                     <SImage padding="0px 0px 0px 10px">
                       <Image
@@ -125,4 +172,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default React.memo(Input);

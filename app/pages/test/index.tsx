@@ -8,7 +8,7 @@ import {
   InputVariants,
   IconPosition,
 } from "../../components/StatesEnum";
-import MagnifineGlass from "../../components/icons/Outline/Interface/Zoom-in.svg";
+import Search from "../../components/icons/Outline/Interface/Search.svg";
 
 const SInput = styled.div`
   width: 180px;
@@ -19,9 +19,11 @@ const Test = () => (
     <SInput>
       <Input
         size={InputSizes.MEDIUM}
-        icon={MagnifineGlass.src}
-        iconPosition={IconPosition.RIGHT}
+        icon={Search.src}
+        iconPosition={IconPosition.LEFT}
         inputVariants={InputVariants.COMMON}
+        type="number"
+        maxValue={11}
         placeholder="Placeholder"
         errorMessage={
           <Typography fontWeight="400" color="#BE0000">
