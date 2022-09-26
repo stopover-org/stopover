@@ -10,20 +10,28 @@ const Content = styled(Row)`
   cursor: pointer;
 `;
 
-const InputWrapper = styled.div<{ padding: string; border: string }>`
+const InputWrapper = styled.div<{
+  padding: string;
+  border: string;
+  borderBottom: string;
+}>`
   border-radius: 1px;
   padding: ${(props) => props.padding};
   width: 100%;
   border: ${(props) => props.border};
+  border-bottom: ${(props) => props.borderBottom};
+`;
+
+const SInput = styled.input`
+  width: 100%;
   font-weight: 400;
   font-family: "Roboto";
   font-size: 18px;
 `;
 
-const SInput = styled.input`
-  width: 100%;
+const SImage = styled.div<{ padding: string }>`
+  padding: ${(props) => props.padding};
 `;
-const SImage = styled(Image)``;
 
 type Props = {
   value?: string;
@@ -31,6 +39,7 @@ type Props = {
   icon?: string;
   iconPosition?: IconPosition;
   inputVariants?: InputVariants;
+  disabled?: boolean;
   label?: string | React.ReactElement;
   hint?: string | React.ReactElement;
   errorMessage?: string | React.ReactElement;
@@ -42,6 +51,7 @@ const Input = ({
   label = "",
   hint = "",
   errorMessage = "",
+  disabled,
   icon,
   iconPosition = IconPosition.LEFT,
   inputVariants = InputVariants.COMMON,
@@ -50,6 +60,12 @@ const Input = ({
   const [valueState, setValueState] = useState<string>(value);
   const changeHandler = (inputValue: string) => {
     setValueState(inputValue);
+  };
+
+  const borderStyle = () => {
+    if (disabled) return "1px solid #797979";
+    if (errorMessage) return "1px solid #BE0000";
+    return "1px solid black";
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -62,31 +78,41 @@ const Input = ({
           <Content justifyContent="start">
             <InputWrapper
               padding={size}
-              border={errorMessage ? "1px solid #BE0000" : "1px solid black"}
+              border={
+                inputVariants === InputVariants.COMMON ? borderStyle() : ""
+              }
+              borderBottom={
+                inputVariants === InputVariants.OUTLINED ? borderStyle() : ""
+              }
             >
               <Content>
                 <>
                   {!!icon && IconPosition.LEFT === iconPosition && (
-                    <SImage
-                      src={icon}
-                      width="25px"
-                      height="25px"
-                      alt="mag glass"
-                    />
+                    <SImage padding="0px 10px 0px 0px">
+                      <Image
+                        src={icon}
+                        width="25px"
+                        height="25px"
+                        alt="mag glass"
+                      />
+                    </SImage>
                   )}
                   <SInput
                     id="input"
                     onChange={(e) => changeHandler(e.target.value)}
                     value={valueState}
+                    disabled={disabled}
                     {...props}
                   />
                   {!!icon && IconPosition.RIGHT === iconPosition && (
-                    <SImage
-                      src={icon}
-                      width="25px"
-                      height="25px"
-                      alt="mag glass"
-                    />
+                    <SImage padding="0px 0px 0px 10px">
+                      <Image
+                        src={icon}
+                        width="25px"
+                        height="25px"
+                        alt="mag glass"
+                      />
+                    </SImage>
                   )}
                 </>
               </Content>
