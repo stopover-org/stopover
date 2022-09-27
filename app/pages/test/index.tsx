@@ -23,6 +23,8 @@ const Test = () => (
         iconPosition={IconPosition.LEFT}
         inputVariants={InputVariants.COMMON}
         type="number"
+        maxValue={11}
+        minValue={-25}
         placeholder="Placeholder"
         errorMessage={
           <Typography fontWeight="400" color="#BE0000">
@@ -40,5 +42,4 @@ const Test = () => (
     </SInput>
   </Layout>
 );
-
 export default Test;

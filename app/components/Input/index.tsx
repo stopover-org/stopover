@@ -85,19 +85,31 @@ const Input = ({
       setValueState((+valueState + delta).toString());
       return;
     }
-    if (minValue && +valueState + delta >= minValue) {
+    if (
+      minValue &&
+      +valueState + delta >= minValue &&
+      maxValue &&
+      +valueState + delta <= maxValue
+    ) {
       setValueState((+valueState + delta).toString());
-      return;
     }
-    if (maxValue && +valueState + delta <= maxValue) {
-      setValueState((+valueState + delta).toString());
-      return;
-    }
-    setValueState((+valueState + delta).toString());
   };
+  // обновить репозиторий - git fetch
+  // подключиться в мою ветку - git checkout inputDate
+  // сделать рибейз на remote changes ветки main - git rebase origin/main
+
+  // если мы хотим сделать ребэз на локальные ветки main - git rebase main
 
   const changeHandler = (inputValue: string) => {
     if (type === "number") {
+      if (maxValue && maxValue < +inputValue) {
+        setValueState(maxValue.toString());
+        return;
+      }
+      if (minValue && minValue > +inputValue) {
+        setValueState(minValue.toString());
+        return;
+      }
       if (
         minValue &&
         maxValue &&
@@ -107,18 +119,16 @@ const Input = ({
         setValueState(inputValue);
         return;
       }
-      if (minValue && +inputValue >= minValue) {
+      if (
+        minValue &&
+        +inputValue >= minValue &&
+        maxValue &&
+        +inputValue <= maxValue
+      ) {
         setValueState(inputValue);
         return;
       }
-      if (maxValue && +inputValue <= maxValue) {
-        setValueState(inputValue);
-        return;
-      }
-      if (maxValue) {
-        setValueState(maxValue.toString());
-        return;
-      }
+
       setValueState(inputValue);
     } else {
       setValueState(inputValue);
@@ -131,8 +141,6 @@ const Input = ({
     return "1px solid black";
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  console.log(uuidv4());
   return (
     <Wrapper>
       <label htmlFor={id}>
