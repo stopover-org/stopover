@@ -40,4 +40,5 @@ const Test = () => (
     </SInput>
   </Layout>
 );
+
 export default Test;
