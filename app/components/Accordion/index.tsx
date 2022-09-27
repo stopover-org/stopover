@@ -5,7 +5,43 @@ import CaretUp from "../icons/Outline/Interface/Caret up.svg";
 import Column from "../Column";
 import Row from "../Row";
 
-const Wrapper = styled(Column)``;
+const Wrapper = styled(Column)`
+  .closed {
+    overflow: hidden;
+    animation-duration: 0.5s;
+    animation-name: close;
+    animation-fill-mode: forwards;
+    @keyframes close {
+      0% {
+        max-height: 300px;
+      }
+      99% {
+        opacity: 1;
+      }
+      100% {
+        max-height: 0px;
+        opacity: 0;
+      }
+    }
+  }
+  .opened {
+    animation-duration: 0.5s;
+    animation-name: open;
+    animation-fill-mode: forwards;
+    @keyframes open {
+      0% {
+        max-height: 0px;
+      }
+      99% {
+        max-height: 300px;
+      }
+      100% {
+        max-height: auto;
+      }
+    }
+  }
+`;
+
 const Caret = styled(Image)<{ rotate: string }>`
   rotate: ${(props) => props.rotate};
   transition: rotate 0.5s ease-in-out;
@@ -16,12 +52,9 @@ const Header = styled(Row)`
   justify-content: space-between;
   cursor: pointer;
 `;
-
-const Content = styled(Column)<{ height: number }>`
+const Content = styled(Column)``;
+const SlideWrapper = styled.div`
   overflow: hidden;
-  max-height: ${(props) => props.height}px;
-  transition: all 0.5s ease-in-out;
-  z-index: -9999;
 `;
 
 const Divider = styled.div`
@@ -35,7 +68,6 @@ type Props = {
   showChevron?: boolean;
   content: React.ReactElement;
   header: React.ReactElement;
-  contentHeight?: number;
   onOpen: () => void;
   onClose: () => void;
 };
@@ -45,7 +77,6 @@ const Accordion = ({
   showChevron = true,
   content,
   header,
-  contentHeight,
   onOpen,
   onClose,
 }: Props) => {
@@ -71,7 +102,9 @@ const Accordion = ({
         )}
       </Header>
       <Divider />
-      <Content height={isOpen ? contentHeight : 0}>{content}</Content>
+      <SlideWrapper>
+        <Content className={isOpen ? "closed" : "opened"}>{content}</Content>
+      </SlideWrapper>
     </Wrapper>
   );
 };
