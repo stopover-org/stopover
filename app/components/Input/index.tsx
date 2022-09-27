@@ -94,11 +94,6 @@ const Input = ({
       setValueState((+valueState + delta).toString());
     }
   };
-  // обновить репозиторий - git fetch
-  // подключиться в мою ветку - git checkout inputDate
-  // сделать рибейз на remote changes ветки main - git rebase origin/main
-
-  // если мы хотим сделать ребэз на локальные ветки main - git rebase main
 
   const changeHandler = (inputValue: string) => {
     if (type === "number") {
