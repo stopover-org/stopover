@@ -11,6 +11,7 @@ const TextStyle = styled.span<{
 }>`
   display: flex;
   justify-content: center;
+  text-align: justify;
   font-family: "Roboto";
   font-style: ${(props) => props.fontStyle};
   font-weight: ${(props) => props.fontWeight};

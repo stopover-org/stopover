@@ -17,11 +17,41 @@ const Header = styled(Row)`
   cursor: pointer;
 `;
 
-const Content = styled(Column)<{ height: number }>`
+const Content = styled(Column)<{ animation: string }>`
+  animation-duration: 0.5s;
+  animation-name: ${(props) => props.animation};
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+  @keyframes open {
+    0% {
+      max-height: 0px;
+    }
+    99% {
+      max-height: 300px;
+    }
+    100% {
+      max-height: auto;
+    }
+  }
+  @keyframes close {
+    0% {
+      max-height: 300px;
+      overflow: hidden;
+    }
+    99% {
+      opacity: 1;
+      overflow: hidden;
+    }
+    100% {
+      max-height: 0px;
+      opacity: 0;
+      overflow: hidden;
+    }
+  }
+`;
+
+const SlideWrapper = styled.div`
   overflow: hidden;
-  max-height: ${(props) => props.height}px;
-  transition: all 0.5s ease-in-out;
-  z-index: -9999;
 `;
 
 const Divider = styled.div`
@@ -35,7 +65,6 @@ type Props = {
   showChevron?: boolean;
   content: React.ReactElement;
   header: React.ReactElement;
-  contentHeight?: number;
   onOpen: () => void;
   onClose: () => void;
 };
@@ -45,7 +74,6 @@ const Accordion = ({
   showChevron = true,
   content,
   header,
-  contentHeight,
   onOpen,
   onClose,
 }: Props) => {
@@ -71,7 +99,9 @@ const Accordion = ({
         )}
       </Header>
       <Divider />
-      <Content height={isOpen ? contentHeight : 0}>{content}</Content>
+      <SlideWrapper>
+        <Content animation={isOpen ? "close" : "open"}>{content}</Content>
+      </SlideWrapper>
     </Wrapper>
   );
 };
