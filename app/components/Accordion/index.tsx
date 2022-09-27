@@ -5,17 +5,7 @@ import CaretUp from "../icons/Outline/Interface/Caret up.svg";
 import Column from "../Column";
 import Row from "../Row";
 
-const Wrapper = styled(Column)`
-  .closed {
-    overflow: hidden;
-    animation-duration: 0.5s;
-    animation-name: close;
-    animation-fill-mode: forwards;
-  }
-  .opened {
-  }
-`;
-
+const Wrapper = styled(Column)``;
 const Caret = styled(Image)<{ rotate: string }>`
   rotate: ${(props) => props.rotate};
   transition: rotate 0.5s ease-in-out;
