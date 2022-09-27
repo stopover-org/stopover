@@ -11,34 +11,8 @@ const Wrapper = styled(Column)`
     animation-duration: 0.5s;
     animation-name: close;
     animation-fill-mode: forwards;
-    @keyframes close {
-      0% {
-        max-height: 300px;
-      }
-      99% {
-        opacity: 1;
-      }
-      100% {
-        max-height: 0px;
-        opacity: 0;
-      }
-    }
   }
   .opened {
-    animation-duration: 0.5s;
-    animation-name: open;
-    animation-fill-mode: forwards;
-    @keyframes open {
-      0% {
-        max-height: 0px;
-      }
-      99% {
-        max-height: 300px;
-      }
-      100% {
-        max-height: auto;
-      }
-    }
   }
 `;
 
@@ -52,7 +26,40 @@ const Header = styled(Row)`
   justify-content: space-between;
   cursor: pointer;
 `;
-const Content = styled(Column)``;
+
+const Content = styled(Column)<{ animation: string }>`
+  animation-duration: 0.5s;
+  animation-name: ${(props) => props.animation};
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+  @keyframes open {
+    0% {
+      max-height: 0px;
+    }
+    99% {
+      max-height: 300px;
+    }
+    100% {
+      max-height: auto;
+    }
+  }
+  @keyframes close {
+    0% {
+      max-height: 300px;
+      overflow: hidden;
+    }
+    99% {
+      opacity: 1;
+      overflow: hidden;
+    }
+    100% {
+      max-height: 0px;
+      opacity: 0;
+      overflow: hidden;
+    }
+  }
+`;
+
 const SlideWrapper = styled.div`
   overflow: hidden;
 `;
@@ -103,7 +110,7 @@ const Accordion = ({
       </Header>
       <Divider />
       <SlideWrapper>
-        <Content className={isOpen ? "closed" : "opened"}>{content}</Content>
+        <Content animation={isOpen ? "close" : "open"}>{content}</Content>
       </SlideWrapper>
     </Wrapper>
   );

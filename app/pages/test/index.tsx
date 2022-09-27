@@ -8,7 +8,7 @@ import Column from "../../components/Column";
 import Row from "../../components/Row";
 
 const AccordionStyle = styled.div`
-  width: 500px;
+  width: 400px;
   padding-top: 15px;
 `;
 
@@ -24,15 +24,15 @@ const Test = () => {
             opened
             header={
               <Typography size={TypographySize.H1} as={TypographyTags.H1}>
-                hi
+                Header
               </Typography>
             }
             content={
               <Column justifyContent="start" alignItems="start">
                 <Row justifyContent="start">
                   <Typography size={TypographySize.H6} as={TypographyTags.H1}>
-                    some
-                    coadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstent
+                    some coads ddd2314n
+                    ss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstent
                     coadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42134sssss4231ssssss231sdsafrebsssss14ss2314ssssweqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42
                   </Typography>
                 </Row>
@@ -54,8 +54,16 @@ const Test = () => {
               <Column justifyContent="start" alignItems="start">
                 <Row justifyContent="start">
                   <Typography size={TypographySize.H6} as={TypographyTags.H1}>
-                    some
-                    coadsdddnssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssstent
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industrys
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a
+                    type specimen book. It has survived not only five centuries,
+                    but also the leap into electronic typesetting, remaining
+                    essentially unchanged. It was popularised in the 1960s with
+                    the release of Letraset sheets containing Lorem Ipsum
+                    passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including versions of Lorem Ipsum.
                   </Typography>
                 </Row>
                 <Row justifyContent="start">
