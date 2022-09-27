@@ -66,8 +66,8 @@ const Input = ({
   label = "",
   hint = "",
   errorMessage = "",
-  minValue = 0,
-  maxValue = 9999,
+  minValue,
+  maxValue,
   disabled,
   icon,
   iconPosition = IconPosition.LEFT,
@@ -76,16 +76,50 @@ const Input = ({
 }: Props) => {
   const [valueState, setValueState] = useState<string>(value);
   const changeValue = (delta: number) => {
-    if (+valueState + delta >= minValue && +valueState + delta <= maxValue) {
+    if (
+      minValue &&
+      maxValue &&
+      +valueState + delta >= minValue &&
+      +valueState + delta <= maxValue
+    ) {
       setValueState((+valueState + delta).toString());
+      return;
     }
+    if (minValue && +valueState + delta >= minValue) {
+      setValueState((+valueState + delta).toString());
+      return;
+    }
+    if (maxValue && +valueState + delta <= maxValue) {
+      setValueState((+valueState + delta).toString());
+      return;
+    }
+    setValueState((+valueState + delta).toString());
   };
 
   const changeHandler = (inputValue: string) => {
     if (type === "number") {
-      if (+inputValue >= minValue && +inputValue <= maxValue) {
+      if (
+        minValue &&
+        maxValue &&
+        +inputValue >= minValue &&
+        +inputValue <= maxValue
+      ) {
         setValueState(inputValue);
+        return;
       }
+      if (minValue && +inputValue >= minValue) {
+        setValueState(inputValue);
+        return;
+      }
+      if (maxValue && +inputValue <= maxValue) {
+        setValueState(inputValue);
+        return;
+      }
+      if (maxValue) {
+        setValueState(maxValue.toString());
+        return;
+      }
+      setValueState(inputValue);
     } else {
       setValueState(inputValue);
     }

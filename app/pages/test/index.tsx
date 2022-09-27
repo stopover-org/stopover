@@ -23,7 +23,6 @@ const Test = () => (
         iconPosition={IconPosition.LEFT}
         inputVariants={InputVariants.COMMON}
         type="number"
-        maxValue={11}
         placeholder="Placeholder"
         errorMessage={
           <Typography fontWeight="400" color="#BE0000">
