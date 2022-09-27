@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import CaretUp from "../icons/Outline/Interface/Caret up.svg";
+import CaretUp from "../icons/Outline/Interface/Caret_up.svg";
 import Column from "../Column";
 import Row from "../Row";
 
