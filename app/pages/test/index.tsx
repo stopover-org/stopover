@@ -1,11 +1,14 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../components/MainPage/Layout";
-import Accordion from "../../components/Accordion";
+import Input from "../../components/Input";
 import Typography from "../../components/Typography";
-import { TypographySize, TypographyTags } from "../../components/StatesEnum";
-import Column from "../../components/Column";
-import Row from "../../components/Row";
+import {
+  InputSizes,
+  InputVariants,
+  IconPosition,
+} from "../../components/StatesEnum";
+import Search from "../../components/icons/Outline/Interface/Search.svg";
 
 const AccordionStyle = styled.div`
   width: 400px;

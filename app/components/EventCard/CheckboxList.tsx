@@ -37,7 +37,6 @@ const CustomCheckboxIndicator = styled.label<{ display: string }>`
   background-color: white;
   width: 24px;
   height: 24px;
-  //box-shadow: 1px 1px 5px 1px #98a6b5;
 `;
 
 const Description = styled.p`

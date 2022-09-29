@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import CaretUp from "../icons/Outline/Interface/Caret up.svg";
+import CaretUp from "../icons/Outline/Interface/Caret_up.svg";
 import Column from "../Column";
 import Row from "../Row";
 
@@ -18,6 +18,7 @@ const Header = styled(Row)`
 `;
 
 const Content = styled(Column)<{ animation: string; height: number }>`
+
   animation-duration: 0.5s;
   animation-name: ${(props) => props.animation};
   animation-fill-mode: forwards;
@@ -28,15 +29,18 @@ const Content = styled(Column)<{ animation: string; height: number }>`
     }
     100% {
       max-height: ${(props) => props.height}px;
+
     }
   }
   @keyframes close {
     0% {
       max-height: ${(props) => props.height}px;
+
       overflow: hidden;
     }
     99% {
       opacity: 1;
+
     }
     100% {
       max-height: 0px;
@@ -60,7 +64,9 @@ type Props = {
   showChevron?: boolean;
   content: React.ReactElement;
   header: React.ReactElement;
+
   height?: number;
+
   onOpen: () => void;
   onClose: () => void;
 };
