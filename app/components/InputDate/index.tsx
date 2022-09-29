@@ -46,6 +46,8 @@ const InputWrapper = styled(Row)<{
 const Input = styled(SingleDatePicker)``;
 const Content = styled(Row)`
   cursor: pointer;
+  padding-top: 1px;
+  padding-bottom: 1px;
 `;
 
 const SImage = styled.div<{ padding: string }>`
@@ -145,25 +147,3 @@ const InputDate = ({
 };
 
 export default React.memo(InputDate);
-
-/*
-{!!icon && IconPosition.LEFT === iconPosition && (
-  <SImage padding="0px 10px 0px 0px">
-    <Image
-      src={icon}
-      width="25px"
-      height="25px"
-      alt="calender"
-    />
-  </SImage>
-)}
-{!!icon && IconPosition.RIGHT === iconPosition && (
-  <SImage padding="0px 0px 0px 10px">
-    <Image
-      src={icon}
-      width="25px"
-      height="25px"
-      alt="calender"
-    />
-  </SImage>
-)} */
