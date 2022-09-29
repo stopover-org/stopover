@@ -30,7 +30,7 @@ type Props = {
   hint?: string | React.ReactElement;
   errorMessage?: string | React.ReactElement;
   id?: string;
-  items: ;
+  items: Array<{value: string, key: string}>;
 };
 
 //no animation onOpen/onClose
