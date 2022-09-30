@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../components/MainPage/Layout";
 import Input from "../../components/Input";
@@ -10,36 +10,52 @@ import {
 } from "../../components/StatesEnum";
 import Search from "../../components/icons/Outline/Interface/Search.svg";
 
-const SInput = styled.div`
-  width: 180px;
+const AccordionStyle = styled.div`
+  width: 400px;
+  padding-top: 15px;
 `;
 
-const Test = () => (
-  <Layout>
-    <SInput>
-      <Input
-        size={InputSizes.MEDIUM}
-        icon={Search.src}
-        iconPosition={IconPosition.LEFT}
-        inputVariants={InputVariants.COMMON}
-        type="number"
-        maxValue={11}
-        minValue={-25}
-        placeholder="Placeholder"
-        errorMessage={
-          <Typography fontWeight="400" color="#BE0000">
-            You have some error
-          </Typography>
-        }
-        hint={
-          <Typography fontWeight="400">
-            this is message to you, idiot. its is big. really really big. o my
-            god i does not work as intendeed
-          </Typography>
-        }
-        label={<Typography fontWeight="400">The best input</Typography>}
-      />
-    </SInput>
-  </Layout>
-);
+const Test = () => {
+  const [contentHeightState, setContentHeightState] = useState<number>();
+  const onOpen = () => {};
+  const onClose = () => {};
+  const contentHeight = useCallback((contentHeightNode: Element) => {
+    console.log(contentHeightNode?.getBoundingClientRect().height);
+
+    setContentHeightState(contentHeightNode?.getBoundingClientRect().height);
+  }, []);
+
+  return (
+    <Layout>
+      <AccordionStyle>
+        <Accordion
+          opened
+          height={contentHeightState}
+          header={
+            <Typography size={TypographySize.H1} as={TypographyTags.H1}>
+              Header
+            </Typography>
+          }
+          content={
+            <Column
+              justifyContent="start"
+              alignItems="start"
+              ref={contentHeight}
+            >
+              <Row justifyContent="start">
+                <Typography size={TypographySize.H6} as={TypographyTags.H1}>
+                  some coads ddd2314n ss42134sssss4231sssss2314ssssweqrssss
+                  weqrssss weqrssss weqrssss weqrssss weqrssss
+                  weqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd231sss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42
+                </Typography>
+              </Row>
+            </Column>
+          }
+          onOpen={onOpen}
+          onClose={onClose}
+        />
+      </AccordionStyle>
+    </Layout>
+  );
+};
 export default Test;
