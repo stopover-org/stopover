@@ -5,11 +5,13 @@ import { ButtonVariants, ButtonIconPlace, ButtonSizes } from "../StatesEnum";
 const Wrapper = styled.div``;
 const ButtonStyle = styled.button<{
   backgroundColor: string;
+  color: string;
   border: string;
   padding: string;
   cursor: string;
 }>`
   border-radius: 3px;
+  color: ${(props) => props.color || "#000000"};
   background-color: ${(props) => props.backgroundColor};
   border: 1px solid ${(props) => props.border};
   padding: ${(props) => props.padding};
@@ -25,12 +27,13 @@ const Content = styled.div`
 `;
 
 type Props = {
-  children: React.ReactElement;
-  icon: React.ReactElement; // TODO i do have to have icon
-  variant: ButtonVariants;
-  iconPosition: ButtonIconPlace;
+  children: React.ReactNode;
+  icon?: React.ReactElement; // TODO i do have to have icon
+  variant?: ButtonVariants;
+  iconPosition?: ButtonIconPlace;
   color?: string;
-  size: ButtonSizes;
+  backgroundColor?: string;
+  size?: ButtonSizes;
   disabled?: boolean;
 };
 
@@ -39,6 +42,9 @@ const getContent = (
   children: Props["children"],
   icon: Props["icon"]
 ) => {
+  if (!icon) {
+    return <Content>{children}</Content>;
+  }
   if (iconPosition === ButtonIconPlace.WITH_LEFT_ICON) {
     return (
       <Content>
@@ -59,16 +65,17 @@ const getContent = (
 };
 
 const Button = ({
-  iconPosition,
-  variant,
+  iconPosition = ButtonIconPlace.WITH_LEFT_ICON,
+  variant = ButtonVariants.COMMON,
   children,
   icon,
   disabled,
-  color = "#FF8A00",
-  size = ButtonSizes.VERY_SMALL,
+  backgroundColor = "#FF8A00",
+  color = "#FFFFFF",
+  size = ButtonSizes.BIG,
   ...props
 }: Props) => {
-  const shownColor = (disabled && "grey") || color;
+  const shownColor = (disabled && "grey") || backgroundColor;
 
   return (
     <Wrapper>
@@ -80,11 +87,12 @@ const Button = ({
         border={
           variant === ButtonVariants.OUTLINED ? shownColor : "transparent"
         }
+        color={color}
         padding={size.toString()}
         cursor={disabled ? "auto" : "pointer"}
         disabled={disabled}
       >
-        {getContent(iconPosition, React.Children.only(children), icon)}
+        {getContent(iconPosition, children, icon)}
       </ButtonStyle>
     </Wrapper>
   );

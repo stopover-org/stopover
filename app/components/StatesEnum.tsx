@@ -32,6 +32,7 @@ export enum TypographyTags {
   BIG = "span",
   LARGE = "span",
   VERY_LARGE = "span",
+  DIV = "div",
 }
 
 export enum ButtonVariants {
