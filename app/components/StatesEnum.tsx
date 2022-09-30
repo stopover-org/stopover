@@ -74,6 +74,6 @@ export enum InputVariants {
   OUTLINED = "outlined",
 }
 export enum IconPosition {
-  LEFT = "left",
-  RIGHT = "right",
+  LEFT = "before",
+  RIGHT = "after",
 }

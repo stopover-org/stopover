@@ -1,61 +1,32 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
+import moment from "moment";
 import Layout from "../../components/MainPage/Layout";
+import InputDate from "../../components/InputDate";
+import icon from "../../components/icons/Outline/General/Calendar.svg";
+import { IconPosition, InputVariants } from "../../components/StatesEnum";
 import Input from "../../components/Input";
-import Typography from "../../components/Typography";
-import {
-  InputSizes,
-  InputVariants,
-  IconPosition,
-} from "../../components/StatesEnum";
-import Search from "../../components/icons/Outline/Interface/Search.svg";
 
-const AccordionStyle = styled.div`
-  width: 400px;
-  padding-top: 15px;
-`;
+const Wrapper = styled.div``;
+const Test = () => (
+  <Layout>
+    <Wrapper>
+      <InputDate
+        value={moment("09/02/2022")}
+        icon={icon.src}
+        iconPosition={IconPosition.RIGHT}
+        hint="hi my name is"
+        label="it worksfsdfa dfasdf dsaf adsf sdaf sadf sa"
+        inputVariants={InputVariants.COMMON}
+      />
+      <Input
+        icon={icon.src}
+        iconPosition={IconPosition.RIGHT}
+        hint="hi my name is"
+        label="it worksfsdfa dfasdf dsaf adsf sdaf sadf sa"
+      />
+    </Wrapper>
+  </Layout>
+);
 
-const Test = () => {
-  const [contentHeightState, setContentHeightState] = useState<number>();
-  const onOpen = () => {};
-  const onClose = () => {};
-  const contentHeight = useCallback((contentHeightNode: Element) => {
-    console.log(contentHeightNode?.getBoundingClientRect().height);
-
-    setContentHeightState(contentHeightNode?.getBoundingClientRect().height);
-  }, []);
-
-  return (
-    <Layout>
-      <AccordionStyle>
-        <Accordion
-          opened
-          height={contentHeightState}
-          header={
-            <Typography size={TypographySize.H1} as={TypographyTags.H1}>
-              Header
-            </Typography>
-          }
-          content={
-            <Column
-              justifyContent="start"
-              alignItems="start"
-              ref={contentHeight}
-            >
-              <Row justifyContent="start">
-                <Typography size={TypographySize.H6} as={TypographyTags.H1}>
-                  some coads ddd2314n ss42134sssss4231sssss2314ssssweqrssss
-                  weqrssss weqrssss weqrssss weqrssss weqrssss
-                  weqrssssssssssssssewqrwesss2412ssssssssssss233sssssssssssssssssstentcoadsddd231sss2412ssssssssssss233sssssssssssssssssstentcoadsddd2314nss42
-                </Typography>
-              </Row>
-            </Column>
-          }
-          onOpen={onOpen}
-          onClose={onClose}
-        />
-      </AccordionStyle>
-    </Layout>
-  );
-};
 export default Test;
