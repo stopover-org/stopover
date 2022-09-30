@@ -5,14 +5,16 @@ const Wrapper = styled.a<{ width?: string; padding: string }>`
   padding: ${(props) => props.padding};
   border: 1px solid #d9d9d9;
   width: ${(props) => props.width};
+  min-width: ${(props) => props.width};
+  max-width: ${(props) => props.width};
   display: flex;
   flex-direction: row;
 `;
 
 type Props = {
   rightToLeft?: boolean;
-  content?: React.ReactElement;
-  image?: React.ReactElement;
+  content?: React.ReactNode;
+  image?: React.ReactNode;
   width?: string;
   padding?: string;
 };
@@ -26,10 +28,18 @@ const Card = ({
   ...props
 }: Props) => (
   <Wrapper width={width} padding={padding} {...props}>
-    {rightToLeft && content}
-    {!rightToLeft && image}
-    {rightToLeft && image}
-    {!rightToLeft && content}
+    {!!rightToLeft && (
+      <>
+        {content}
+        {image}
+      </>
+    )}
+    {!rightToLeft && (
+      <>
+        {image}
+        {content}
+      </>
+    )}
   </Wrapper>
 );
 
