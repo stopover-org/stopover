@@ -11,6 +11,24 @@ const Test = () => (
       <Selector
         label="hi"
         content={<Typography>hi my name is ...</Typography>}
+        items={[
+          {
+            value: "option 1",
+            key: "dogue",
+          },
+          {
+            value: "option 2",
+            key: "catue",
+          },
+          {
+            value: "option 3",
+            key: "parrotue",
+          },
+          {
+            value: "option 4",
+            key: "humanue",
+          },
+        ]}
       />
     </Wrapper>
   </Layout>
