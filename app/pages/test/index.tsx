@@ -1,35 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 import Layout from "../../components/MainPage/Layout";
-import Selector from "../../components/Selector";
+import Checkbox from "../../components/Checkbox";
 import Typography from "../../components/Typography";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  border: 1px solid red;
+  width: 210px;
+`;
+
 const Test = () => (
   <Layout>
     <Wrapper>
-      <Selector
-        label="hi"
-        content={<Typography>hi my name is ...</Typography>}
-        items={[
-          {
-            value: "option 1",
-            key: "dogue",
-          },
-          {
-            value: "option 2",
-            key: "catue",
-          },
-          {
-            value: "option 3",
-            key: "parrotue",
-          },
-          {
-            value: "option 4",
-            key: "humanue",
-          },
-        ]}
-      />
+      <Checkbox type="radio">
+        <Typography>
+          this is label. It is better then yoursdsafsdfsadfdsaf
+        </Typography>
+      </Checkbox>
+      <Checkbox>
+        <Typography>this is label. It is better then yours</Typography>
+      </Checkbox>
     </Wrapper>
   </Layout>
 );
