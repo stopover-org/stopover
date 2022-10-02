@@ -12,7 +12,7 @@ import {
 } from "../../../pages/events/__generated__/events_Query.graphql";
 import { List_EventsFragment$key } from "./__generated__/List_EventsFragment.graphql";
 import Typography from "../../Typography";
-import { TypographySize, TypographyTags } from "../../Typography/StatesEnum";
+import { TypographySize, TypographyTags } from "../../StatesEnum";
 import Button from "../../Button";
 import Card from "../../Card";
 import Row from "../../Row";
@@ -120,7 +120,7 @@ const EventsList = ({ eventsReference }: Props) => {
                     <Typography
                       size={TypographySize.LARGE}
                       as={TypographyTags.H5}
-                      bold
+                      fontWeight="700"
                     >
                       {title}
                     </Typography>

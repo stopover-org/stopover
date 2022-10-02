@@ -18,7 +18,6 @@ const Header = styled(Row)`
 `;
 
 const Content = styled(Column)<{ animation: string; height: number }>`
-
   animation-duration: 0.5s;
   animation-name: ${(props) => props.animation};
   animation-fill-mode: forwards;
@@ -29,7 +28,6 @@ const Content = styled(Column)<{ animation: string; height: number }>`
     }
     100% {
       max-height: ${(props) => props.height}px;
-
     }
   }
   @keyframes close {
@@ -40,7 +38,6 @@ const Content = styled(Column)<{ animation: string; height: number }>`
     }
     99% {
       opacity: 1;
-
     }
     100% {
       max-height: 0px;
@@ -86,9 +83,6 @@ const Accordion = ({
     if (isOpen) onClose();
     setIsOpen(!isOpen);
   };
-
-  console.log(height);
-
   return (
     <Wrapper>
       <Header onClick={() => clickHandler()}>

@@ -1,30 +1,25 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import moment from "moment";
 import Layout from "../../components/MainPage/Layout";
-import InputDate from "../../components/InputDate";
-import icon from "../../components/icons/Outline/General/Calendar.svg";
-import { IconPosition, InputVariants } from "../../components/StatesEnum";
-import Input from "../../components/Input";
+import Checkbox from "../../components/Checkbox";
+import Typography from "../../components/Typography";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  border: 1px solid red;
+  width: 210px;
+`;
+
 const Test = () => (
   <Layout>
     <Wrapper>
-      <InputDate
-        value={moment("09/02/2022")}
-        icon={icon.src}
-        iconPosition={IconPosition.RIGHT}
-        hint="hi my name is"
-        label="it worksfsdfa dfasdf dsaf adsf sdaf sadf sa"
-        inputVariants={InputVariants.COMMON}
-      />
-      <Input
-        icon={icon.src}
-        iconPosition={IconPosition.RIGHT}
-        hint="hi my name is"
-        label="it worksfsdfa dfasdf dsaf adsf sdaf sadf sa"
-      />
+      <Checkbox type="radio">
+        <Typography>
+          this is label. It is better then yoursdsafsdfsadfdsaf
+        </Typography>
+      </Checkbox>
+      <Checkbox>
+        <Typography>this is label. It is better then yours</Typography>
+      </Checkbox>
     </Wrapper>
   </Layout>
 );
