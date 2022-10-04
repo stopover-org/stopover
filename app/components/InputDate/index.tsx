@@ -59,7 +59,7 @@ type Props = {
   value: moment.Moment | null;
   disabled?: boolean;
   size?: string;
-  inputVariants?: InputVariants;
+  variant?: InputVariants;
   iconPosition?: IconPosition;
   icon?: string;
   errorMessage?: string | React.ReactElement;
@@ -71,7 +71,7 @@ type Props = {
 const InputDate = ({
   value,
   id = uuidv4(),
-  inputVariants = InputVariants.COMMON,
+  variant = InputVariants.COMMON,
   disabled,
   hasError,
   size = "0px",
@@ -107,11 +107,9 @@ const InputDate = ({
               padding={size}
               justifyContent="start"
               alignItems="center"
-              border={
-                inputVariants === InputVariants.COMMON ? borderStyle() : ""
-              }
+              border={variant === InputVariants.COMMON ? borderStyle() : ""}
               borderBottom={
-                inputVariants === InputVariants.OUTLINED ? borderStyle() : ""
+                variant === InputVariants.OUTLINED ? borderStyle() : ""
               }
             >
               <Input
@@ -147,25 +145,3 @@ const InputDate = ({
 };
 
 export default React.memo(InputDate);
-
-/*
-{!!icon && IconPosition.LEFT === iconPosition && (
-  <SImage padding="0px 10px 0px 0px">
-    <Image
-      src={icon}
-      width="25px"
-      height="25px"
-      alt="calender"
-    />
-  </SImage>
-)}
-{!!icon && IconPosition.RIGHT === iconPosition && (
-  <SImage padding="0px 0px 0px 10px">
-    <Image
-      src={icon}
-      width="25px"
-      height="25px"
-      alt="calender"
-    />
-  </SImage>
-)} */

@@ -58,7 +58,7 @@ type Props = {
   id?: string;
   items: Array<{ value: string; key: string }>;
   size?: string;
-  inputVariants?: InputVariants;
+  variant?: InputVariants;
   disabled?: boolean;
   icon?: string;
 };
@@ -74,7 +74,7 @@ const Selector = ({
   id = uuidv4(),
   items,
   size = "0px",
-  inputVariants = InputVariants.COMMON,
+  variant = InputVariants.COMMON,
   icon,
   disabled,
   ...props
@@ -95,7 +95,8 @@ const Selector = ({
     };
   }, []);
 
-  const changeHandler = (choice: any) => {
+  const changeHandler = (choice: React.ChangeEvent<HTMLSelectElement>) => {
+    // @ts-ignore
     console.log(choice.target.value);
   };
 
@@ -112,10 +113,8 @@ const Selector = ({
         <SelectBorder
           padding={size}
           ref={menuRef}
-          border={inputVariants === InputVariants.COMMON ? borderStyle() : ""}
-          borderBottom={
-            inputVariants === InputVariants.OUTLINED ? borderStyle() : ""
-          }
+          border={variant === InputVariants.COMMON ? borderStyle() : ""}
+          borderBottom={variant === InputVariants.OUTLINED ? borderStyle() : ""}
         >
           <SSelect
             onClick={clickHandler}
@@ -127,16 +126,14 @@ const Selector = ({
             }}
             {...props}
           >
-            <optgroup label="Maybe">
-              <SOption value="default value" disabled>
-                Select...
+            <SOption value="default value" disabled>
+              Select...
+            </SOption>
+            {items.map((item, index) => (
+              <SOption key={index} value={item.value}>
+                {item.key}
               </SOption>
-              {items.map((item, index) => (
-                <SOption key={index} value={item.value}>
-                  {item.key}
-                </SOption>
-              ))}
-            </optgroup>
+            ))}
           </SSelect>
           <ArrowCover />
           <SImage rotate={isOpen ? "0deg" : "180deg"}>
