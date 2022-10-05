@@ -51,7 +51,7 @@ type Props = {
   minValue?: number;
   maxValue?: number;
   iconPosition?: IconPosition;
-  inputVariants?: InputVariants;
+  variant?: InputVariants;
   disabled?: boolean;
   label?: string | React.ReactElement;
   hint?: string | React.ReactElement;
@@ -71,7 +71,7 @@ const Input = ({
   disabled,
   icon,
   iconPosition = IconPosition.LEFT,
-  inputVariants = InputVariants.COMMON,
+  variant = InputVariants.COMMON,
   ...props
 }: Props) => {
   const [valueState, setValueState] = useState<string>(value);
@@ -144,11 +144,9 @@ const Input = ({
           <Content justifyContent="start">
             <InputWrapper
               padding={size}
-              border={
-                inputVariants === InputVariants.COMMON ? borderStyle() : ""
-              }
+              border={variant === InputVariants.COMMON ? borderStyle() : ""}
               borderBottom={
-                inputVariants === InputVariants.OUTLINED ? borderStyle() : ""
+                variant === InputVariants.OUTLINED ? borderStyle() : ""
               }
             >
               <Content>
