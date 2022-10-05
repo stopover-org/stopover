@@ -34,7 +34,6 @@ export enum TypographyTags {
   VERY_LARGE = "span",
   DIV = "div",
 }
-
 export enum ButtonVariants {
   COMMON,
   OUTLINED,
@@ -57,18 +56,15 @@ export enum ButtonSizes {
   LARGE = "12px",
   VERY_LARGE = "15px",
 }
-
 export enum SkeletonType {
   BLOCK = "block",
   IMAGE = "image",
 }
-
 export enum InputSizes {
   SMALL = "5px",
   MEDIUM = "10px",
   LARGE = "15px",
 }
-
 export enum InputVariants {
   COMMON = "common",
   OUTLINED = "outlined",
@@ -76,4 +72,12 @@ export enum InputVariants {
 export enum IconPosition {
   LEFT = "before",
   RIGHT = "after",
+}
+export enum CheckboxSizes {
+  SMALL = "19px",
+  MEDIUM = "24px",
+}
+export enum CheckboxType {
+  CHECKBOX = "checkbox",
+  RADIO = "radio",
 }
