@@ -81,3 +81,13 @@ export enum CheckboxType {
   CHECKBOX = "checkbox",
   RADIO = "radio",
 }
+export enum TagType {
+  FULLFILLED = "fullfilled",
+  OUTLINED = "outlined",
+}
+export enum TagSizes {
+  NONE = "0px",
+  SMALL = "5px",
+  MEDIUM = "10px",
+  LARGE = "15px",
+}
