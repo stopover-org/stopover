@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 `;
 
 const Tag1 = styled.div`
-  width: 100px;
+  width: 80px;
   padding-bottom: 10px;
 `;
 

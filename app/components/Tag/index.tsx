@@ -35,9 +35,6 @@ type Props = {
   imageSize?: string;
 };
 
-const imageExist = (image?: string) =>
-  typeof image === "string" && image !== "" && typeof image !== "undefined";
-
 const Tag = ({
   image,
   imageSize = "25px",
@@ -46,7 +43,7 @@ const Tag = ({
   variant = TagType.FULLFILLED,
   href,
 }: Props) => {
-  console.log(typeof image);
+  console.log(image);
   return (
     <Wrapper href={href}>
       <STag
@@ -56,7 +53,7 @@ const Tag = ({
         color={variant === TagType.FULLFILLED ? "white" : "black"}
         padding={size}
       >
-        {imageExist(image) && (
+        {image && (
           <Image src={image} width={imageSize} height={imageSize} alt="icon" />
         )}
         <Content>{content}</Content>
