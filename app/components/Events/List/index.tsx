@@ -12,10 +12,10 @@ import {
 } from "../../../pages/events/__generated__/events_Query.graphql";
 import { List_EventsFragment$key } from "./__generated__/List_EventsFragment.graphql";
 import Typography from "../../Typography";
-import { TypographySize, TypographyTags } from "../../StatesEnum";
 import Button from "../../Button";
 import Card from "../../Card";
 import Row from "../../Row";
+import { TypographySize, TypographyTags } from "../../StatesEnum";
 
 const Wrapper = styled.div`
   display: flex;

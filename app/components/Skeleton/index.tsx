@@ -72,11 +72,11 @@ type Props = {
   border?: string;
   borderRadius?: string;
   image?: string;
-  type: SkeletonType;
+  type?: SkeletonType;
 };
 
 const Skeleton = ({
-  type,
+  type = SkeletonType.BLOCK,
   width,
   height,
   margin,
