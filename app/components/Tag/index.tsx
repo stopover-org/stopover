@@ -4,7 +4,10 @@ import Image from "next/image";
 import Row from "../Row";
 import { TagType, TagSizes } from "../StatesEnum";
 
-const Wrapper = styled.a``;
+const Wrapper = styled.a`
+  cursor: pointer;
+`;
+
 const STag = styled(Row)<{
   border: string;
   padding: string;
@@ -15,6 +18,12 @@ const STag = styled(Row)<{
   padding: ${(props) => props.padding};
   background-color: ${(props) => props.background};
   color: ${(props) => props.color};
+  border-radius: 3px;
+`;
+
+const Content = styled.div`
+  padding-left: 5px;
+  padding-right: 5px;
 `;
 
 type Props = {
@@ -23,33 +32,37 @@ type Props = {
   variant?: TagType;
   size?: TagSizes;
   href?: string;
+  imageSize?: string;
 };
 
-const imageExist = (image: string | undefined) =>
-  typeof image === "string" && image !== "";
+const imageExist = (image?: string) =>
+  typeof image === "string" && image !== "" && typeof image !== "undefined";
 
 const Tag = ({
   image,
+  imageSize = "25px",
   content,
   size = TagSizes.NONE,
   variant = TagType.FULLFILLED,
   href,
-}: Props) => (
-  <Wrapper href={href}>
-    <STag
-      border={
-        variant === TagType.OUTLINED ? "1px solid #FF8A00" : "transparent"
-      }
-      background={variant === TagType.FULLFILLED ? "#FF8A00" : "transparent"}
-      color={variant === TagType.FULLFILLED ? "white" : "transparent"}
-      padding={size}
-    >
-      {imageExist(image) && (
-        <Image src={image} width="25px" height="25px" alt="icon" />
-      )}
-      {content}
-    </STag>
-  </Wrapper>
-);
+}: Props) => {
+  console.log(typeof image);
+  return (
+    <Wrapper href={href}>
+      <STag
+        justifyContent="space-around"
+        border={variant === TagType.OUTLINED ? "1px solid #FF8A00" : "auto"}
+        background={variant === TagType.FULLFILLED ? "#FF8A00" : "auto"}
+        color={variant === TagType.FULLFILLED ? "white" : "black"}
+        padding={size}
+      >
+        {imageExist(image) && (
+          <Image src={image} width={imageSize} height={imageSize} alt="icon" />
+        )}
+        <Content>{content}</Content>
+      </STag>
+    </Wrapper>
+  );
+};
 
 export default Tag;
