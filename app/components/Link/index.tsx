@@ -2,11 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import NextLink from "next/link";
 
-const SLink = styled.div<{ disabled: string }>`
+const SLink = styled.div<{ color: string }>`
   cursor: pointer;
-  :nth-child(n) {
-    color: ${(props) => props.disabled};
-  }
+  color: ${(props) => props.color};
   :hover {
     text-decoration: underline;
   }
@@ -20,7 +18,7 @@ type Props = {
 
 const Link = ({ href, disabled, children, ...props }: Props) => (
   <NextLink href={disabled ? "" : href} {...props}>
-    <SLink disabled={disabled ? "grey" : "#FF8A00"}>{children}</SLink>
+    <SLink color={disabled ? "grey" : "#FF8A00"}>{children}</SLink>
   </NextLink>
 );
 
