@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import NextLink from "next/link";
 
-const SLink = styled.div<{ color: string }>`
+const SLink = styled.a<{ color: string }>`
   cursor: pointer;
   color: ${(props) => props.color};
   :hover {
@@ -17,7 +17,7 @@ type Props = {
 };
 
 const Link = ({ href, disabled, children, ...props }: Props) => (
-  <NextLink href={disabled ? "" : href} {...props}>
+  <NextLink href={disabled ? "" : href} passHref {...props}>
     <SLink color={disabled ? "grey" : "#FF8A00"}>{children}</SLink>
   </NextLink>
 );
