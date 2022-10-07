@@ -90,7 +90,7 @@ const RadioCircleNoAnimation = styled.div<{
 `;
 
 type Props = {
-  animateOnClick: boolean;
+  animateOnClick?: boolean;
   disabled?: boolean;
   animate?: boolean;
 };

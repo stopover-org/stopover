@@ -93,7 +93,7 @@ const CheckMarkNoAnimation = styled.div<{ display: string }>`
 `;
 
 type Props = {
-  animateOnClick: boolean;
+  animateOnClick?: boolean;
   disabled?: boolean;
   animate?: boolean;
 };
