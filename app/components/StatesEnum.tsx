@@ -91,3 +91,9 @@ export enum TagSizes {
   MEDIUM = "10px",
   LARGE = "15px",
 }
+export enum CardImageLocation {
+  TOP = "top",
+  BOTTOM = "bottom",
+  RIGHT = "right",
+  LEFT = "left",
+}

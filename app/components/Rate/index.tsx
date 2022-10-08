@@ -3,9 +3,12 @@ import styled from "styled-components";
 import RateStar from "./RateStar";
 
 const Wrapper = styled.div`
-  padding: 34px 30px 34px 0px;
+  width: 100%;
+  min-height: 24px;
   cursor: pointer;
-  display: block;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 `;
 
 const RateStyle = styled.div`
@@ -13,23 +16,19 @@ const RateStyle = styled.div`
   display: flex;
   flex-direction: row;
 `;
-const Container = styled.label``;
-const Text = styled.p`
-  font-size: 24px;
-`;
-
 type Props = {
   onClick: (rateIndex: number) => void;
+  rate: number;
 };
 
-const Rate = (props: Props) => {
+const Rate = ({ onClick, rate }: Props) => {
   const stars = new Array(5).fill("");
-  const [selectedRate, setSelectedRate] = useState(0);
+  const [selectedRate, setSelectedRate] = useState(rate);
   const [shownRate, setShownRate] = useState<number | null>(0);
   const rateChange = (index: number) => {
     setSelectedRate(index);
 
-    props.onClick(index);
+    onClick(index);
   };
 
   const showRate = (index: number | null) => {
@@ -38,21 +37,18 @@ const Rate = (props: Props) => {
 
   return (
     <Wrapper>
-      <Container>
-        <Text>Рейтинг</Text>
-        <RateStyle>
-          {stars.map((item, index) => (
-            <RateStar
-              index={index}
-              selectedRate={selectedRate}
-              shownRate={shownRate}
-              key={index}
-              onClick={rateChange}
-              showRate={showRate}
-            />
-          ))}
-        </RateStyle>
-      </Container>
+      <RateStyle>
+        {stars.map((_, index) => (
+          <RateStar
+            index={index}
+            selectedRate={selectedRate}
+            shownRate={shownRate}
+            key={index}
+            onClick={rateChange}
+            showRate={showRate}
+          />
+        ))}
+      </RateStyle>
     </Wrapper>
   );
 };

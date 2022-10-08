@@ -28,7 +28,7 @@ const Content = styled.div`
 
 type Props = {
   image?: string;
-  content: React.ReactElement;
+  children: React.ReactElement;
   variant?: TagType;
   size?: TagSizes;
   href?: string;
@@ -38,28 +38,25 @@ type Props = {
 const Tag = ({
   image,
   imageSize = "25px",
-  content,
+  children,
   size = TagSizes.NONE,
   variant = TagType.FULLFILLED,
   href,
-}: Props) => {
-  console.log(image);
-  return (
-    <Wrapper href={href}>
-      <STag
-        justifyContent="space-around"
-        border={variant === TagType.OUTLINED ? "1px solid #FF8A00" : "auto"}
-        background={variant === TagType.FULLFILLED ? "#FF8A00" : "auto"}
-        color={variant === TagType.FULLFILLED ? "white" : "black"}
-        padding={size}
-      >
-        {image && (
-          <Image src={image} width={imageSize} height={imageSize} alt="icon" />
-        )}
-        <Content>{content}</Content>
-      </STag>
-    </Wrapper>
-  );
-};
+}: Props) => (
+  <Wrapper href={href}>
+    <STag
+      justifyContent="space-around"
+      border={variant === TagType.OUTLINED ? "1px solid #FF8A00" : "auto"}
+      background={variant === TagType.FULLFILLED ? "#FF8A00" : "auto"}
+      color={variant === TagType.FULLFILLED ? "white" : "black"}
+      padding={size}
+    >
+      {image && (
+        <Image src={image} width={imageSize} height={imageSize} alt="icon" />
+      )}
+      <Content>{children}</Content>
+    </STag>
+  </Wrapper>
+);
 
 export default Tag;

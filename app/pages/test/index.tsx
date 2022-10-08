@@ -31,7 +31,6 @@ const Test = () => {
           size={CheckboxSizes.SMALL}
           checked={value2}
           animate
-          disabled
           onClick={() => setValue2(!value2)}
         >
           <Typography>this is label. It is better then yours</Typography>
