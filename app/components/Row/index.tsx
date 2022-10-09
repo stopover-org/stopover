@@ -7,7 +7,7 @@ const Wrapper = styled.div<Props>`
   height: ${(props) => props.height || "100%"};
   justify-content: ${(props) => props.justifyContent || "center"};
   align-items: ${(props) => props.alignItems || "center"};
-  flex-wrap: nowrap;
+  flex-wrap: ${(props) => props.wrap || "nowrap"};
 `;
 
 type Props = {
@@ -15,6 +15,7 @@ type Props = {
   alignItems?: string;
   width?: string;
   height?: string;
+  wrap?: string;
 };
 
 export default Wrapper;

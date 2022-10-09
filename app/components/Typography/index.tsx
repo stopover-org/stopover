@@ -19,7 +19,8 @@ const TextStyle = styled.span<{
   text-decoration: ${(props) => props.textDecoration};
   color: ${(props) => props.color};
   line-height: 1em;
-  word-break: break-all;
+  max-height: 195px;
+  word-break: break-word;
 `;
 
 type Props = {

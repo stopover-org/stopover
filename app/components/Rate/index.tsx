@@ -18,13 +18,12 @@ const RateStyle = styled.div`
 `;
 type Props = {
   onClick: (rateIndex: number) => void;
-  rate: number;
 };
 
-const Rate = ({ onClick, rate }: Props) => {
+const Rate = ({ onClick }: Props) => {
   const stars = new Array(5).fill("");
-  const [selectedRate, setSelectedRate] = useState(rate);
-  const [shownRate, setShownRate] = useState<number | null>(0);
+  const [selectedRate, setSelectedRate] = useState(0);
+  const [shownRate, setShownRate] = useState<number | null>(2);
   const rateChange = (index: number) => {
     setSelectedRate(index);
 

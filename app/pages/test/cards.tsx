@@ -3,45 +3,89 @@ import styled from "styled-components";
 import Layout from "../../components/MainPage/Layout";
 import CardImageLeft from "../../components/EventListCard/CardImageLeft";
 import CardImageTop from "../../components/EventListCard/CardImageTop";
-import icon from "../../components/icons/Outline/Brands/Chrome.svg";
+import Typography from "../../components/Typography";
+import { TypographySize, TypographyTags } from "../../components/StatesEnum";
 
 const Wrapper = styled.div``;
 const Cards = () => (
   <Layout>
     <Wrapper>
       <CardImageLeft
-        rate={4.5}
+        averageRate={4.5}
+        currency="$"
         price={600}
         image="https://images.theconversation.com/files/315915/original/file-20200218-11023-1k78m5f.jpg?ixlib=rb-1.1.0&rect=53%2C0%2C3425%2C1712&q=45&auto=format&w=1356&h=668&fit=crop"
         title="Welcome to marc"
-        links={["first link", "second link"]}
-        tags={[
+        links={[
           {
-            image: icon.src,
-            content: "first tag",
+            text: "first link",
+            href: "../pages/test/tags_test",
           },
           {
-            image: "",
-            content: "second tag",
+            text: "second link",
+            href: "../pages/test/tags_test",
           },
         ]}
+        tags={["first tag", "second tag", "first tag"]}
+        text={
+          <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industrys standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book. It has survived not
+            only five centuries, but also the leap into electronic typesetting,
+            remaining essentially unchanged. It was popularised in the 1960s
+            with the release of Letraset sheets containing Lorem Ipsum passages,
+            and more recently with desktop publishing software like Aldus
+            PageMaker including versions of Lorem Ipsum. rvived not only five
+            centuries, but also the leap into electronic typesetting, remaining
+            essentially unchanged. It was popularised in the 1960s with the
+            release of Letraset sheets containing Lorem Ipsum passages, and more
+            recently with desktop publishing software like Aldus PageMaker
+            including versions of rvived not only five centuries, but also the
+            leap into electronic typesetting, remaining essentially unchanged.
+            It was popularised in the 1960s with the release of Letraset sheets
+            containing Lorem Ipsum passages, and more recently with desktop
+            publishing software like Aldus PageMaker including versions of
+            rvived not only five centuries, but also the leap into electronic
+            typesetting, remaining essentially unchanged. It was popularised in
+            the 1960s with the release of Letraset sheets containing Lorem Ipsum
+            passages, and more recently with desktop publishing software like
+            Aldus PageMaker including versions of rvived not only five
+            centuries, but also the leap into electronic typesetting, remaining
+            essentially unchanged. It was popularised in the 1960s with the
+            release of Letraset sheets containing Lorem Ipsum passages, and more
+            recently with desktop publishing software like Aldus PageMaker
+            including versions of rvived not only five centuries, but also the
+            leap into electronic typesetting, remaining essentially unchanged.
+            It was popularised in the 1960s with the release of Letraset sheets
+            containing Lorem Ipsum passages, and more recently with desktop
+            publishing software like Aldus PageMaker including versions of
+            rvived not only five centuries, but also the leap into electronic
+            typesetting, remaining essentially unchanged. It was popularised in
+            the 1960s with the release of Letraset sheets containing Lorem Ipsum
+            passages, and more recently with desktop publishing software like
+            Aldus PageMaker including versions of
+          </Typography>
+        }
       />
       <CardImageTop
-        rate={4.5}
+        averageRate={4.5}
+        currency="$"
         price={600}
         image="https://images.theconversation.com/files/315915/original/file-20200218-11023-1k78m5f.jpg?ixlib=rb-1.1.0&rect=53%2C0%2C3425%2C1712&q=45&auto=format&w=1356&h=668&fit=crop"
         title="Welcome to marc"
-        links={["first link", "second link"]}
-        tags={[
+        links={[
           {
-            image: "",
-            content: "first tag",
+            text: "first link",
+            href: "../pages/test/tags_test",
           },
           {
-            image: "",
-            content: "second tag",
+            text: "second link",
+            href: "../pages/test/tags_test",
           },
         ]}
+        tags={["first tag", "second tag", "third tag"]}
       />
     </Wrapper>
   </Layout>

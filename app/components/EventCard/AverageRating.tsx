@@ -68,12 +68,12 @@ const AverageRating = (props: Props) => {
       <AverageRatingWrapper>
         <StarsWrapper>
           <SolidStarsStyle>
-            {new Array(5).fill("").map((item, index) => (
+            {new Array(5).fill("").map((_, index) => (
               <img key={index} src={solidStar.src} alt="solidStar" />
             ))}
           </SolidStarsStyle>
           <OutlineStarsStyle>
-            {new Array(5).fill("").map((item, index) => (
+            {new Array(5).fill("").map((_, index) => (
               <img key={index} src={outlinedStar.src} alt="outlinedStar" />
             ))}
           </OutlineStarsStyle>
