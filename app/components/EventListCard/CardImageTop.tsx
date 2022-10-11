@@ -25,13 +25,17 @@ const TagList = styled(Column)`
 `;
 
 const SColumn = styled(Column)`
-  padding: 25px;
-  height: 60%;
+  padding: 10px;
+  height: 40%;
 `;
 
 const SRow = styled(Row)`
   padding-top: 5px;
   padding-bottom: 5px;
+`;
+
+const RatingWrapper = styled(Row)`
+  padding-bottom: 20px;
 `;
 
 const SLink = styled.div`
@@ -54,11 +58,11 @@ type LinksType = {
 type Props = {
   title: string;
   image: string;
-  links: LinksType[];
+  links?: LinksType[];
   averageRate: number;
-  tags: string[];
+  tags?: string[];
   price: number;
-  currency: string;
+  currency?: string;
 };
 
 const CardImageTop = ({
@@ -93,7 +97,7 @@ const CardImageTop = ({
                   <Typography
                     size={TypographySize.BIG}
                     as={TypographyTags.BIG}
-                    fontWeight="700"
+                    fontWeight="400"
                   >
                     {item.text}
                   </Typography>
@@ -101,9 +105,9 @@ const CardImageTop = ({
               </SLink>
             ))}
         </SRow>
-        <SRow justifyContent="start" wrap="wrap">
+        <RatingWrapper justifyContent="start" wrap="nowrap">
           <AverageRating averageRating={averageRate} />
-        </SRow>
+        </RatingWrapper>
         <SRow justifyContent="start">
           <TypographyWrapper>
             <Typography
@@ -129,17 +133,21 @@ const CardImageTop = ({
       </SColumn>
     }
     image={
-      <BaseImage height="40%">
+      <BaseImage height="60%">
         <img src={image} alt="event foto" width="100%" height="100%" />
       </BaseImage>
     }
   >
-    <TagList>
+    <TagList alignItems="end">
       {tags &&
         tags.map((item, index) => (
           <STag key={index}>
             <Tag size={TagSizes.SMALL}>
-              <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
+              <Typography
+                size={TypographySize.BIG}
+                as={TypographyTags.BIG}
+                fontWeight="300"
+              >
                 {item}
               </Typography>
             </Tag>

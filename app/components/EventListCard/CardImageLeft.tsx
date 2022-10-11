@@ -21,8 +21,6 @@ import Button from "../Button";
 import icon from "../icons/Outline/General/Shopping_cart_white.svg";
 
 const TextHeight = styled.div`
-  min-height: 20px;
-  max-height: 195px;
   overflow: hidden;
 `;
 
@@ -56,12 +54,12 @@ type LinksType = {
 type Props = {
   title: string;
   image: string;
-  links: LinksType[];
+  links?: LinksType[];
   averageRate: number;
-  tags: string[];
+  tags?: string[];
   price: number;
-  text: React.ReactElement;
-  currency: string;
+  text?: React.ReactElement;
+  currency?: string;
 };
 
 const CardImageLeft = ({
@@ -97,7 +95,7 @@ const CardImageLeft = ({
                   <Typography
                     size={TypographySize.BIG}
                     as={TypographyTags.BIG}
-                    fontWeight="700"
+                    fontWeight="400"
                   >
                     {item.text}
                   </Typography>
@@ -113,7 +111,13 @@ const CardImageLeft = ({
             tags.map((item, index) => (
               <STag key={index}>
                 <Tag size={TagSizes.SMALL}>
-                  <Typography>{item}</Typography>
+                  <Typography
+                    size={TypographySize.BIG}
+                    as={TypographyTags.BIG}
+                    fontWeight="300"
+                  >
+                    {item}
+                  </Typography>
                 </Tag>
               </STag>
             ))}
