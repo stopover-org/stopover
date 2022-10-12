@@ -14,6 +14,7 @@ import CardImageLeft from "../../EventListCard/CardImageLeft";
 import CardImageTop from "../../EventListCard/CardImageTop";
 import Row from "../../Row";
 import Column from "../../Column";
+import Pagination from "../../Pagination";
 
 const Wrapper = styled.div`
   display: flex;
@@ -73,7 +74,6 @@ const EventsList = ({ eventsReference }: Props) => {
     `,
     eventsReference
   );
-
   return (
     <Wrapper>
       <EventFilter
@@ -124,6 +124,12 @@ const EventsList = ({ eventsReference }: Props) => {
             </Column>
           );
         })}
+        <Pagination
+          currentPage={5}
+          amountPagesOnLeft={3}
+          amountPagesOnRight={3}
+          totalPages={800}
+        />
       </Interests>
     </Wrapper>
   );
