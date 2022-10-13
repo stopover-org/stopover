@@ -97,3 +97,7 @@ export enum CardImageLocation {
   RIGHT = "right",
   LEFT = "left",
 }
+export enum PaginationSize {
+  SMALL = "55px",
+  MEDIUM = "75px",
+}

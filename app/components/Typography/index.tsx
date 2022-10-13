@@ -26,7 +26,7 @@ const TextStyle = styled.span<{
 type Props = {
   children: React.ReactNode;
   color?: string;
-  size?: TypographySize;
+  size?: TypographySize | string;
   as?: TypographyTags;
   fontWeight?: string;
   strikeThrough?: boolean;

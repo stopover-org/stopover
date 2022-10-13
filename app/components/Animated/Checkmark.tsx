@@ -6,11 +6,8 @@ const onCheckedCheckMarkAnimation = keyframes`
     opacity: 0;
     scale: 2;
   }
-  20%{
-    scale: 1.9;
-  }
-  50%{
-    scale: 0.8;
+  30%{
+    opacity: 1;
   }
   100%{
     opacity: 1;

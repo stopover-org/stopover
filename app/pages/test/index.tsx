@@ -19,7 +19,7 @@ const Test = () => {
           type={CheckboxType.RADIO}
           size={CheckboxSizes.SMALL}
           checked={value1}
-          disabled
+          animate
           onClick={() => setValue1(!value1)}
         >
           <Typography>

@@ -15,6 +15,7 @@ import CardImageTop from "../../EventListCard/CardImageTop";
 import Row from "../../Row";
 import Column from "../../Column";
 import Pagination from "../../Pagination";
+import { PaginationSize } from "../../StatesEnum";
 
 const Wrapper = styled.div`
   display: flex;
@@ -74,6 +75,44 @@ const EventsList = ({ eventsReference }: Props) => {
     `,
     eventsReference
   );
+
+  console.log(events.data.events.edges);
+
+  const generateCardsRowArray = () =>
+    events.data.events.edges.map((edge: any) => {
+      const { images, title, attendeeCostPerUomCents } = edge.node!;
+      return (
+        <Column>
+          <SRow justifyContent="space-between">
+            <CardImageTop
+              title={title}
+              image={images[0]}
+              price={attendeeCostPerUomCents}
+              averageRate={4.5}
+            />
+            <CardImageTop
+              title={title}
+              image={images[0]}
+              price={attendeeCostPerUomCents}
+              averageRate={3.1}
+            />
+            <CardImageTop
+              title={title}
+              image={images[0]}
+              price={attendeeCostPerUomCents}
+              averageRate={2}
+            />
+          </SRow>
+          <CardImageLeft
+            title={title}
+            image={images[0]}
+            price={attendeeCostPerUomCents}
+            averageRate={2}
+          />
+        </Column>
+      );
+    });
+
   return (
     <Wrapper>
       <EventFilter
@@ -91,44 +130,17 @@ const EventsList = ({ eventsReference }: Props) => {
           helpText="Вы ищете"
         />
         <InterestGallery />
-        {events.data.events.edges.map((edge: any) => {
-          const { images, title, attendeeCostPerUomCents } = edge.node!;
-          return (
-            <Column>
-              <SRow justifyContent="space-between">
-                <CardImageTop
-                  title={title}
-                  image={images[0]}
-                  price={attendeeCostPerUomCents}
-                  averageRate={4.5}
-                />
-                <CardImageTop
-                  title={title}
-                  image={images[0]}
-                  price={attendeeCostPerUomCents}
-                  averageRate={3.1}
-                />
-                <CardImageTop
-                  title={title}
-                  image={images[0]}
-                  price={attendeeCostPerUomCents}
-                  averageRate={2}
-                />
-              </SRow>
-              <CardImageLeft
-                title={title}
-                image={images[0]}
-                price={attendeeCostPerUomCents}
-                averageRate={2}
-              />
-            </Column>
-          );
-        })}
+        {generateCardsRowArray()}
         <Pagination
           currentPage={5}
-          amountPagesOnLeft={3}
           amountPagesOnRight={3}
+          amountPagesOnLeft={3}
           totalPages={800}
+          size={PaginationSize.SMALL}
+          minVisible
+          maxVisible
+          fillerVisible
+          prevNextElementVisible
         />
       </Interests>
     </Wrapper>
