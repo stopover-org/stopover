@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Wrapper = styled.div<Props>`
+const Row = styled.div<Props>`
   display: flex;
   flex-direction: row;
   width: ${(props) => props.width || "100%"};
@@ -18,4 +18,4 @@ type Props = {
   wrap?: string;
 };
 
-export default Wrapper;
+export default Row;

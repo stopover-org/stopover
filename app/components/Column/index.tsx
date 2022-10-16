@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Wrapper = styled.div<Props>`
+const Column = styled.div<Props>`
   display: flex;
   flex-direction: column;
   width: ${(props) => props.width || "100%"};
@@ -16,4 +16,4 @@ type Props = {
   height?: string;
 };
 
-export default Wrapper;
+export default Column;

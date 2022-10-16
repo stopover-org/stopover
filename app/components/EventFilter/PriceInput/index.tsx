@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Typography from "../../Typography";
 
 const Wrapper = styled.div`
   padding: 0px 0px 0px 0px;
@@ -19,8 +20,8 @@ const Input = styled.input`
   margin-top: 2px;
 `;
 
-const Text = styled.p`
-  font-size: 14px;
+const Text = styled(Typography)`
+  padding-bottom: 2px;
 `;
 
 const InputContainer = styled.label`

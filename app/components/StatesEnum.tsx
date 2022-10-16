@@ -33,6 +33,7 @@ export enum TypographyTags {
   LARGE = "span",
   VERY_LARGE = "span",
   DIV = "div",
+  LINK = "a",
 }
 export enum ButtonVariants {
   COMMON,

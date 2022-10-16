@@ -10,7 +10,7 @@ const TextStyle = styled.span<{
   color: string;
 }>`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: justify;
   font-family: "Roboto";
   font-style: ${(props) => props.fontStyle};

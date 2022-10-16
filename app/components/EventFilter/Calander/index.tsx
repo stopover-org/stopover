@@ -9,13 +9,13 @@ const Wrapper = styled.div`
   .DateInput {
     width: 120px;
     font-weight: 400;
-    font-size: 24px;
     line-height: 29px;
   }
   .DateInput_input {
     border: none;
     height: 50px;
     margin: -0px;
+    font-size: 24px;
   }
   .DateRangePickerInput__withBorder {
     border: 2px solid #fdaa4c;
