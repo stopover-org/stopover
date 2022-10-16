@@ -56,7 +56,12 @@ const NextElement = styled(Column)<{ size: string }>`
     cursor: pointer;
   }
 `;
-const SFiller = styled(Column)``;
+
+const SFiller = styled(Column)`
+  width: 55px;
+  height: 55px;
+`;
+
 const DisabledElement = styled(Column)<{ size: string }>`
   border: 1px solid #9d9d9d;
   border-radius: 3px;
@@ -87,6 +92,9 @@ type Props = {
   disabled?: boolean;
   prevNextElementVisible?: boolean;
   size?: PaginationSize;
+  onNextPage: () => void;
+  onPrevPage: () => void;
+  onSelectPage: (page: number) => void;
 };
 
 const Pagination = ({
@@ -103,9 +111,32 @@ const Pagination = ({
   disabled,
   prevNextElementVisible,
   size = PaginationSize.MEDIUM,
+  onNextPage,
+  onPrevPage,
+  onSelectPage,
 }: Props) => {
+  const additionalElements = 2; // additional elements in paggination like filler, arrows ... Made to maintain consistency in spacing
+  const calculatePagesOnRight = () => {
+    if (currentPage <= amountPagesOnRight)
+      return (
+        amountPagesOnRight +
+        amountPagesOnLeft -
+        currentPage +
+        additionalElements
+      );
+    return amountPagesOnRight;
+  };
+
+  const calculatePagesOnLeft = () => {
+    if (currentPage >= totalPages - amountPagesOnRight)
+      return (
+        amountPagesOnLeft + amountPagesOnRight - (totalPages - currentPage)
+      );
+    return amountPagesOnLeft;
+  };
   if (disabled)
     return (
+      // TODO: add knew functions to desable
       <PageNumberWrapper justifyContent="space-between">
         {prevNextElementVisible && (
           <DisabledElement size={size}>
@@ -181,23 +212,23 @@ const Pagination = ({
 
   return (
     <PageNumberWrapper justifyContent="space-between">
-      {prevNextElementVisible && (
-        <PrevElement size={size}>
+      {prevNextElementVisible && currentPage !== 1 && (
+        <PrevElement size={size} onClick={onPrevPage}>
           <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
             {prevElement}
           </Typography>
         </PrevElement>
       )}
 
-      {minVisible && (
-        <PageNumber size={size}>
+      {minVisible && currentPage > amountPagesOnLeft + 1 && (
+        <PageNumber size={size} onClick={() => onSelectPage(1)}>
           <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
             1
           </Typography>
         </PageNumber>
       )}
 
-      {fillerVisible && (
+      {fillerVisible && currentPage > amountPagesOnLeft + 2 && (
         <SFiller justifyContent="end" height={size} width="auto">
           <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
             {fillerElement}
@@ -205,13 +236,28 @@ const Pagination = ({
         </SFiller>
       )}
 
-      {new Array(amountPagesOnLeft).fill("").map((_, index) => (
-        <PageNumber size={size}>
-          <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
-            {currentPage - amountPagesOnLeft + index}
-          </Typography>
-        </PageNumber>
-      ))}
+      {new Array(calculatePagesOnLeft()).fill("").map((_, index) => {
+        if (currentPage - amountPagesOnLeft + index > 0) {
+          return (
+            <PageNumber
+              key={index}
+              size={size}
+              onClick={() =>
+                onSelectPage(currentPage - calculatePagesOnLeft() + index)
+              }
+            >
+              <Typography
+                fontWeight="400"
+                as={TypographyTags.LARGE}
+                size="20px"
+              >
+                {currentPage + index - calculatePagesOnLeft()}
+              </Typography>
+            </PageNumber>
+          );
+        }
+        return null;
+      })}
 
       <Choosen size={size}>
         <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
@@ -219,15 +265,28 @@ const Pagination = ({
         </Typography>
       </Choosen>
 
-      {new Array(amountPagesOnRight).fill("").map((_, index) => (
-        <PageNumber size={size}>
-          <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
-            {currentPage + index + 1}
-          </Typography>
-        </PageNumber>
-      ))}
+      {new Array(calculatePagesOnRight()).fill("").map((_, index) => {
+        if (currentPage + index < totalPages) {
+          return (
+            <PageNumber
+              key={index}
+              size={size}
+              onClick={() => onSelectPage(currentPage + index + 1)}
+            >
+              <Typography
+                fontWeight="400"
+                as={TypographyTags.LARGE}
+                size="20px"
+              >
+                {currentPage + index + 1}
+              </Typography>
+            </PageNumber>
+          );
+        }
+        return null;
+      })}
 
-      {fillerVisible && (
+      {fillerVisible && currentPage < totalPages - amountPagesOnRight - 1 && (
         <SFiller justifyContent="end" height={size} width="auto">
           <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
             {fillerElement}
@@ -235,16 +294,16 @@ const Pagination = ({
         </SFiller>
       )}
 
-      {maxVisible && (
-        <PageNumber size={size}>
+      {maxVisible && currentPage < totalPages - amountPagesOnRight && (
+        <PageNumber size={size} onClick={() => onSelectPage(totalPages)}>
           <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
             {totalPages}
           </Typography>
         </PageNumber>
       )}
 
-      {prevNextElementVisible && (
-        <NextElement size={size}>
+      {prevNextElementVisible && currentPage !== totalPages && (
+        <NextElement size={size} onClick={onNextPage}>
           <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
             {nextElement}
           </Typography>
@@ -255,85 +314,3 @@ const Pagination = ({
 };
 
 export default React.memo(Pagination);
-/*
-
-import React, { useState } from "react";
-import styled from "styled-components";
-import Row from "../Row";
-import Column from "../Column";
-
-const Wrapper = styled.div`
-
-`;
-const Posts = styled(Column)`
-
-`;
-const PageNumberWrapper = styled(Row)`
-    border: 1px solid;
-`;
-const PageNumber = styled.button`
-
-    background-color: #FF8A00;
-    width: 75px;
-    height: 75px;
-    border: none;
-    color: white;
-    :hover{
-        background-color: #FFAB49;
-        cursor: pointer;
-    }
-`;
-type Props = {
-    posts: React.ReactElement[];
-    postsPerPage?: number;
-}
-
-const countPages = (posts: Props["posts"], postsPerPage: number) => Math.ceil(posts.length / postsPerPage);
-
-const Pagination = ({posts, postsPerPage = 3}: Props) => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [statePostsPerPage, setStatePostPerPage] = useState(postsPerPage);
-
-    const lastPostIndex = currentPage * postsPerPage;
-    const firstPostIndex = lastPostIndex - postsPerPage;
-    const currentPosts = posts.slice(firstPostIndex, lastPostIndex);
-    console.log(countPages(posts, postsPerPage));
-    return (
-        <Wrapper>
-            <Posts>
-                {currentPosts}
-            </Posts>
-            <PageNumberWrapper justifyContent="space-between">
-                <PageNumber>
-                    След.
-                </PageNumber>
-                {
-                    new Array(countPages(posts, postsPerPage)).fill("").map((_, index) => {
-                        return(
-                            <PageNumber>
-                                {index}
-                            </PageNumber>
-                        )
-                    })
-                }
-                <PageNumber>
-                    Пред.
-                </PageNumber>
-            </PageNumberWrapper>
-        </Wrapper>
-    );
-};
-
-export default React.memo(Pagination);
-
-
-
-
-
-
-
-
-
-
-
-*/

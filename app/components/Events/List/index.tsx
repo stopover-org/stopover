@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { graphql, usePaginationFragment } from "react-relay";
 import moment from "moment";
@@ -13,7 +13,6 @@ import { List_EventsFragment$key } from "./__generated__/List_EventsFragment.gra
 import CardImageLeft from "../../EventListCard/CardImageLeft";
 import CardImageTop from "../../EventListCard/CardImageTop";
 import Row from "../../Row";
-import Column from "../../Column";
 import Pagination from "../../Pagination";
 import { PaginationSize } from "../../StatesEnum";
 
@@ -25,8 +24,7 @@ const Wrapper = styled.div`
 `;
 const Interests = styled.div``;
 const SRow = styled(Row)`
-  padding-top: 40px;
-  padding-bottom: 40px;
+  border: 1px solid;
 `;
 type Props = {
   eventsReference: events_Query$data;
@@ -76,43 +74,33 @@ const EventsList = ({ eventsReference }: Props) => {
     eventsReference
   );
 
-  console.log(events.data.events.edges);
-
   const generateCardsRowArray = () =>
-    events.data.events.edges.map((edge: any) => {
+    events.data.events.edges.map((edge: any, index: number) => {
       const { images, title, attendeeCostPerUomCents } = edge.node!;
-      return (
-        <Column>
-          <SRow justifyContent="space-between">
-            <CardImageTop
-              title={title}
-              image={images[0]}
-              price={attendeeCostPerUomCents}
-              averageRate={4.5}
-            />
-            <CardImageTop
-              title={title}
-              image={images[0]}
-              price={attendeeCostPerUomCents}
-              averageRate={3.1}
-            />
-            <CardImageTop
-              title={title}
-              image={images[0]}
-              price={attendeeCostPerUomCents}
-              averageRate={2}
-            />
-          </SRow>
+      if (index === 3) {
+        return (
           <CardImageLeft
             title={title}
             image={images[0]}
             price={attendeeCostPerUomCents}
             averageRate={2}
           />
-        </Column>
+        );
+      }
+      return (
+        <CardImageTop
+          key={edge.node.id}
+          title={title}
+          image={images[0]}
+          price={attendeeCostPerUomCents}
+          averageRate={4.5}
+        />
       );
     });
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const onSelectPage = (page: number) => {
+    setCurrentPage(page);
+  };
   return (
     <Wrapper>
       <EventFilter
@@ -130,12 +118,17 @@ const EventsList = ({ eventsReference }: Props) => {
           helpText="Вы ищете"
         />
         <InterestGallery />
-        {generateCardsRowArray()}
+        <SRow wrap="wrap" justifyContent="space-around">
+          {generateCardsRowArray()}
+        </SRow>
         <Pagination
-          currentPage={5}
+          onNextPage={() => setCurrentPage(currentPage + 1)}
+          onPrevPage={() => setCurrentPage(currentPage - 1)}
+          onSelectPage={onSelectPage}
+          currentPage={currentPage}
           amountPagesOnRight={3}
-          amountPagesOnLeft={3}
-          totalPages={800}
+          amountPagesOnLeft={2}
+          totalPages={11}
           size={PaginationSize.SMALL}
           minVisible
           maxVisible
