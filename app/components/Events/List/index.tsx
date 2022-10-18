@@ -22,6 +22,14 @@ const Wrapper = styled.div`
   padding: 40px 0px 0px 0px;
   height: auto;
 `;
+
+const WrapperBigCard = styled.div`
+  padding-bottom: 70px;
+`;
+
+const WrapperSmallCard = styled.div`
+  padding-bottom: 70px;
+`;
 const Interests = styled.div``;
 const SRow = styled(Row)`
   border: 1px solid;
@@ -29,6 +37,15 @@ const SRow = styled(Row)`
 type Props = {
   eventsReference: events_Query$data;
 };
+
+/* const getInterestLinks = (array: [], show: number) => {
+  return array.map((item, index) => {
+    if(index+1 < show) return {
+      text: item[index].title,
+      href: `interests/${item[index].id}`
+    };
+  })
+} */
 
 const EventsList = ({ eventsReference }: Props) => {
   const events: any = usePaginationFragment<
@@ -74,27 +91,39 @@ const EventsList = ({ eventsReference }: Props) => {
     eventsReference
   );
 
+  console.log(events.data.events);
+
+  console.log(events.data.events.edges[0].node.tags);
+
   const generateCardsRowArray = () =>
     events.data.events.edges.map((edge: any, index: number) => {
       const { images, title, attendeeCostPerUomCents } = edge.node!;
       if (index === 3) {
         return (
-          <CardImageLeft
-            title={title}
-            image={images[0]}
-            price={attendeeCostPerUomCents}
-            averageRate={2}
-          />
+          <WrapperBigCard>
+            <CardImageLeft
+              key={edge.node.id}
+              title={title}
+              image={images[0]}
+              price={attendeeCostPerUomCents}
+              averageRate={2}
+              tags={edge.node.tags}
+              text={edge.node.description}
+            />
+          </WrapperBigCard>
         );
       }
       return (
-        <CardImageTop
-          key={edge.node.id}
-          title={title}
-          image={images[0]}
-          price={attendeeCostPerUomCents}
-          averageRate={4.5}
-        />
+        <WrapperSmallCard>
+          <CardImageTop
+            key={edge.node.id}
+            title={title}
+            image={images[0]}
+            price={attendeeCostPerUomCents}
+            averageRate={4.5}
+            tags={edge.node.tags}
+          />
+        </WrapperSmallCard>
       );
     });
   const [currentPage, setCurrentPage] = useState(1);
@@ -118,7 +147,7 @@ const EventsList = ({ eventsReference }: Props) => {
           helpText="Вы ищете"
         />
         <InterestGallery />
-        <SRow wrap="wrap" justifyContent="space-around">
+        <SRow wrap="wrap" justifyContent="space-between">
           {generateCardsRowArray()}
         </SRow>
         <Pagination

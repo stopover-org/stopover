@@ -5,8 +5,13 @@ import Column from "../Column";
 import Typography from "../Typography";
 import { TypographyTags, PaginationSize } from "../StatesEnum";
 
-const PageNumberWrapper = styled(Row)``;
+const PageNumberWrapper = styled(Row)`
+  border: 1px solid;
+`;
+
 const PageNumber = styled(Column)<{ size: string }>`
+  margin-right: 10px;
+  margin-left: 10px;
   border: 1px solid #ff8a00;
   border-radius: 3px;
   width: ${(props) => props.size};
@@ -20,6 +25,8 @@ const PageNumber = styled(Column)<{ size: string }>`
 `;
 
 const Choosen = styled(Column)<{ size: string }>`
+  margin-right: 10px;
+  margin-left: 10px;
   background-color: #ff8a00;
   border-radius: 3px;
   width: ${(props) => props.size};
@@ -32,6 +39,8 @@ const Choosen = styled(Column)<{ size: string }>`
 `;
 
 const PrevElement = styled(Column)<{ size: string }>`
+  margin-right: 10px;
+  margin-left: 10px;
   border: 1px solid #ff8a00;
   border-radius: 3px;
   width: ${(props) => props.size};
@@ -45,6 +54,8 @@ const PrevElement = styled(Column)<{ size: string }>`
 `;
 
 const NextElement = styled(Column)<{ size: string }>`
+  margin-right: 10px;
+  margin-left: 10px;
   border: 1px solid #ff8a00;
   border-radius: 3px;
   width: ${(props) => props.size};
@@ -58,6 +69,8 @@ const NextElement = styled(Column)<{ size: string }>`
 `;
 
 const SFiller = styled(Column)`
+  margin-right: 10px;
+  margin-left: 10px;
   width: 55px;
   height: 55px;
 `;
@@ -71,6 +84,8 @@ const DisabledElement = styled(Column)<{ size: string }>`
 `;
 
 const DisabledChoosen = styled(Column)<{ size: string }>`
+  margin-right: 10px;
+  margin-left: 10px;
   background-color: #9d9d9d;
   border-radius: 3px;
   width: ${(props) => props.size};
@@ -211,7 +226,7 @@ const Pagination = ({
     );
 
   return (
-    <PageNumberWrapper justifyContent="space-between">
+    <PageNumberWrapper>
       {prevNextElementVisible && currentPage !== 1 && (
         <PrevElement size={size} onClick={onPrevPage}>
           <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">

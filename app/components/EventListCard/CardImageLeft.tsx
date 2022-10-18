@@ -42,6 +42,10 @@ const STag = styled.div`
   padding-right: 10px;
 `;
 
+const TagOnImage = styled.div`
+  padding: 10px;
+`;
+
 const TypographyWrapper = styled.div`
   padding-right: 9px;
 `;
@@ -51,14 +55,18 @@ type LinksType = {
   href: string;
 };
 
+type TagsType = {
+  title: string;
+};
+
 type Props = {
   title: string;
   image: string;
   links?: LinksType[];
   averageRate: number;
-  tags?: string[];
+  tags?: TagsType[];
   price: number;
-  text?: React.ReactElement;
+  text?: string;
   currency?: string;
 };
 
@@ -76,10 +84,11 @@ const CardImageLeft = ({
     imageLocation={CardImageLocation.LEFT}
     height="440px"
     width="1060px"
+    childrenRight="60%"
     content={
-      <SColumn justifyContent="space-between">
+      <SColumn justifyContent="start" height="100%">
         <SRow justifyContent="start">
-          <Typography size="22px" as={TypographyTags.H5} fontWeight="400">
+          <Typography size="22px" as={TypographyTags.H5}>
             {title}
           </Typography>
         </SRow>
@@ -88,46 +97,37 @@ const CardImageLeft = ({
             links.map((item, index) => (
               <SLink key={index}>
                 <Link href={item.href}>
-                  <Typography
-                    size={TypographySize.BIG}
-                    as={TypographyTags.BIG}
-                    fontWeight="400"
-                  >
+                  <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
                     {item.text}
                   </Typography>
                 </Link>
               </SLink>
             ))}
         </SRow>
-        <SRow justifyContent="start">
+        <SRow justifyContent="start" alignItems="end">
           <AverageRating averageRating={averageRate} />
+          <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
+            (3 отзыва)
+          </Typography>
         </SRow>
         <SRow justifyContent="start" wrap="wrap">
           {tags &&
             tags.map((item, index) => (
               <STag key={index}>
                 <Tag size={TagSizes.SMALL}>
-                  <Typography
-                    size={TypographySize.BIG}
-                    as={TypographyTags.BIG}
-                    fontWeight="300"
-                  >
-                    {item}
+                  <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
+                    {item.title}
                   </Typography>
                 </Tag>
               </STag>
             ))}
         </SRow>
-        <SRow justifyContent="start">
+        <SRow alignItems="start" height="100%">
           <TextHeight>{text}</TextHeight>
         </SRow>
         <SRow justifyContent="end">
           <TypographyWrapper>
-            <Typography
-              size="26px"
-              as={TypographyTags.VERY_LARGE}
-              fontWeight="400"
-            >
+            <Typography size="26px" as={TypographyTags.VERY_LARGE}>
               {price} {currency}
             </Typography>
           </TypographyWrapper>
@@ -135,6 +135,7 @@ const CardImageLeft = ({
             size={ButtonSizes.BIG}
             icon={<Image src={icon.src} width="35px" height="35px" />}
             iconPosition={ButtonIconPlace.WITH_RIGHT_ICON}
+            borderRadius="10px"
           >
             <TypographyWrapper>
               <Typography size="28px" as={TypographyTags.BIG}>
@@ -150,7 +151,17 @@ const CardImageLeft = ({
         <img src={image} alt="event foto" width="100%" height="100%" />
       </BaseImage>
     }
-  />
+  >
+    {tags && (
+      <TagOnImage>
+        <Tag size={TagSizes.SMALL}>
+          <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
+            {tags[0].title}
+          </Typography>
+        </Tag>
+      </TagOnImage>
+    )}
+  </Card>
 );
 
 export default CardImageLeft;

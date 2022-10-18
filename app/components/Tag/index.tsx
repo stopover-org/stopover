@@ -18,7 +18,7 @@ const STag = styled(Row)<{
   padding: ${(props) => props.padding};
   background-color: ${(props) => props.background};
   color: ${(props) => props.color};
-  border-radius: 3px;
+  border-radius: 10px;
 `;
 
 const Content = styled.div`

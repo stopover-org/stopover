@@ -4,14 +4,9 @@ import solidStar from "../icons/Solid/Status/Star.svg";
 import outlinedStar from "../icons/Outline/Status/Star.svg";
 import Typography from "../Typography";
 import { TypographySize, TypographyTags } from "../StatesEnum";
+import Row from "../Row";
 
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
+const Wrapper = styled(Row)``;
 const StarsWrapper = styled.div<{ width: number }>`
   position: relative;
   width: ${(props) => props.width}px;
@@ -56,7 +51,7 @@ const AverageRating = ({ averageRating = 0, countOfStars = 5 }: Props) => {
     Math.round((averageRate / maxRate) * 100);
 
   return (
-    <Wrapper>
+    <Wrapper justifyContent="start" alignItems="end" width="auto">
       <StarsWrapper width={countOfStars * 25 + 2}>
         <SolidStarsStyle width={calculatePositon(countOfStars, averageRating)}>
           {new Array(countOfStars).fill("").map((_, index) => (
@@ -70,11 +65,7 @@ const AverageRating = ({ averageRating = 0, countOfStars = 5 }: Props) => {
         </OutlineStarsStyle>
       </StarsWrapper>
       <NumbericValueWrapper>
-        <Typography
-          size={TypographySize.H5}
-          as={TypographyTags.H5}
-          fontWeight="400"
-        >
+        <Typography size={TypographySize.H5} as={TypographyTags.H5}>
           {averageRating}
         </Typography>
       </NumbericValueWrapper>
@@ -83,23 +74,3 @@ const AverageRating = ({ averageRating = 0, countOfStars = 5 }: Props) => {
 };
 
 export default AverageRating;
-/*
-<StarsWrapper>
-          <SolidStarsStyle>
-            {new Array(5).fill("").map((_, index) => (
-              <img key={index} src={solidStar.src} alt="solidStar" />
-            ))}
-          </SolidStarsStyle>
-          <OutlineStarsStyle>
-            {new Array(5).fill("").map((_, index) => (
-              <img key={index} src={outlinedStar.src} alt="outlinedStar" />
-            ))}
-          </OutlineStarsStyle>
-          <RateBackground position={calculatePositon(5, averageRating || 0)} />
-        </StarsWrapper>
-        
-        <NumbericValueWrapper>
-          <NumericValue>{averageRating}</NumericValue>
-        </NumbericValueWrapper>
-
-*/

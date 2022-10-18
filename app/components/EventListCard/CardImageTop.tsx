@@ -55,12 +55,16 @@ type LinksType = {
   href: string;
 };
 
+type TagsType = {
+  title: string;
+};
+
 type Props = {
   title: string;
   image: string;
   links?: LinksType[];
   averageRate: number;
-  tags?: string[];
+  tags?: TagsType[];
   price: number;
   currency?: string;
 };
@@ -81,7 +85,7 @@ const CardImageTop = ({
     content={
       <SColumn>
         <SRow justifyContent="start">
-          <Typography size="22px" as={TypographyTags.H5} fontWeight="400">
+          <Typography size="22px" as={TypographyTags.H5}>
             {title}
           </Typography>
         </SRow>
@@ -90,11 +94,7 @@ const CardImageTop = ({
             links.map((item, index) => (
               <SLink key={index}>
                 <Link href={item.href}>
-                  <Typography
-                    size={TypographySize.BIG}
-                    as={TypographyTags.BIG}
-                    fontWeight="400"
-                  >
+                  <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
                     {item.text}
                   </Typography>
                 </Link>
@@ -106,11 +106,7 @@ const CardImageTop = ({
         </RatingWrapper>
         <SRow justifyContent="start">
           <TypographyWrapper>
-            <Typography
-              size="26px"
-              as={TypographyTags.VERY_LARGE}
-              fontWeight="400"
-            >
+            <Typography size="26px" as={TypographyTags.VERY_LARGE}>
               {price} {currency}
             </Typography>
           </TypographyWrapper>
@@ -118,6 +114,7 @@ const CardImageTop = ({
             size={ButtonSizes.BIG}
             icon={<Image src={icon.src} width="35px" height="35px" />}
             iconPosition={ButtonIconPlace.WITH_RIGHT_ICON}
+            borderRadius="10px"
           >
             <TypographyWrapper>
               <Typography size="28px" as={TypographyTags.BIG}>
@@ -139,12 +136,8 @@ const CardImageTop = ({
         tags.map((item, index) => (
           <STag key={index}>
             <Tag size={TagSizes.SMALL}>
-              <Typography
-                size={TypographySize.BIG}
-                as={TypographyTags.BIG}
-                fontWeight="300"
-              >
-                {item}
+              <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
+                {item.title}
               </Typography>
             </Tag>
           </STag>

@@ -31,24 +31,29 @@ const MoveLeft = (width: number) => keyframes`
 `;
 
 const Wrapper = styled.div`
-  border: 1px solid green;
+  padding-top: 50px;
   width: 500px;
   display: flex;
   justify-content: center;
 `;
 
 const MainBody = styled(Row)`
-  border: 1px solid;
-  background-color: blue;
+  //border: 1px solid black;
+  background-color: #e2edff;
   width: 300px;
   height: 101px;
   border-radius: 50px;
   position: relative;
+  box-shadow: inset 5px 5px 5px 0px #909bae;
+  overflow: hidden;
 `;
 
 const Actuator = styled.div<{ animation: Keyframes }>`
   transform: translateX(-100px);
-  border: 1px solid red;
+  //border: 1px solid grey;
+  background-color: #ffd6d6;
+  box-shadow: 5px 5px 5px 0px #bfa7d2;
+
   width: 100px;
   height: 100px;
   border-radius: 50px;
