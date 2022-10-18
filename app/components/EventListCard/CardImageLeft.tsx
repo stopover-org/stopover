@@ -79,11 +79,7 @@ const CardImageLeft = ({
     content={
       <SColumn justifyContent="space-between">
         <SRow justifyContent="start">
-          <Typography
-            size={TypographySize.LARGE}
-            as={TypographyTags.H5}
-            fontWeight="700"
-          >
+          <Typography size="22px" as={TypographyTags.H5} fontWeight="400">
             {title}
           </Typography>
         </SRow>
@@ -128,9 +124,9 @@ const CardImageLeft = ({
         <SRow justifyContent="end">
           <TypographyWrapper>
             <Typography
-              size={TypographySize.VERY_LARGE}
+              size="26px"
               as={TypographyTags.VERY_LARGE}
-              fontWeight="700"
+              fontWeight="400"
             >
               {price} {currency}
             </Typography>
@@ -141,7 +137,7 @@ const CardImageLeft = ({
             iconPosition={ButtonIconPlace.WITH_RIGHT_ICON}
           >
             <TypographyWrapper>
-              <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
+              <Typography size="28px" as={TypographyTags.BIG}>
                 +
               </Typography>
             </TypographyWrapper>
