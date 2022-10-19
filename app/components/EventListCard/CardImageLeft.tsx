@@ -42,6 +42,10 @@ const STag = styled.div`
   padding-right: 10px;
 `;
 
+const SCommentsRating = styled(Typography)`
+  padding-left: 3px;
+`;
+
 const TagOnImage = styled.div`
   padding: 10px;
 `;
@@ -106,9 +110,11 @@ const CardImageLeft = ({
         </SRow>
         <SRow justifyContent="start" alignItems="end">
           <AverageRating averageRating={averageRate} />
-          <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-            (3 отзыва)
-          </Typography>
+          <SCommentsRating>
+            <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
+              (3 отзыва)
+            </Typography>
+          </SCommentsRating>
         </SRow>
         <SRow justifyContent="start" wrap="wrap">
           {tags &&

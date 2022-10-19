@@ -65,7 +65,7 @@ const AverageRating = ({ averageRating = 0, countOfStars = 5 }: Props) => {
         </OutlineStarsStyle>
       </StarsWrapper>
       <NumbericValueWrapper>
-        <Typography size={TypographySize.H5} as={TypographyTags.H5}>
+        <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
           {averageRating}
         </Typography>
       </NumbericValueWrapper>

@@ -38,6 +38,10 @@ const RatingWrapper = styled(Row)`
   padding-bottom: 20px;
 `;
 
+const SCommentsRating = styled(Typography)`
+  padding-left: 3px;
+`;
+
 const SLink = styled.div`
   padding-right: 10px;
 `;
@@ -101,8 +105,13 @@ const CardImageTop = ({
               </SLink>
             ))}
         </SRow>
-        <RatingWrapper justifyContent="start" wrap="nowrap">
+        <RatingWrapper justifyContent="start" alignItems="end">
           <AverageRating averageRating={averageRate} />
+          <SCommentsRating>
+            <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
+              (3 отзыва)
+            </Typography>
+          </SCommentsRating>
         </RatingWrapper>
         <SRow justifyContent="start">
           <TypographyWrapper>

@@ -30,22 +30,50 @@ const WrapperBigCard = styled.div`
 const WrapperSmallCard = styled.div`
   padding-bottom: 70px;
 `;
-const Interests = styled.div``;
-const SRow = styled(Row)`
-  border: 1px solid;
+
+const Interests = styled.div`
+  padding-left: 50px;
 `;
+const SRow = styled(Row)``;
 type Props = {
   eventsReference: events_Query$data;
 };
 
-/* const getInterestLinks = (array: [], show: number) => {
-  return array.map((item, index) => {
-    if(index+1 < show) return {
-      text: item[index].title,
-      href: `interests/${item[index].id}`
-    };
-  })
-} */
+const getInterestLinks = (
+  array: {
+    title: string;
+    id: string;
+  }[],
+  from: number,
+  to: number
+) =>
+  array
+    .map((item, index) => {
+      if (index < to)
+        return {
+          text: item.title,
+          href: `interests/${item.id}`,
+        };
+      return {
+        text: "",
+        href: "",
+      };
+    })
+    .slice(from, to);
+
+const getInterestTags = (
+  array: {
+    title: string;
+  }[],
+  from: number,
+  to: number
+) =>
+  array
+    .map((item, index) => {
+      if (index < to) return { title: item.title };
+      return { title: "" };
+    })
+    .slice(from, to);
 
 const EventsList = ({ eventsReference }: Props) => {
   const events: any = usePaginationFragment<
@@ -91,10 +119,6 @@ const EventsList = ({ eventsReference }: Props) => {
     eventsReference
   );
 
-  console.log(events.data.events);
-
-  console.log(events.data.events.edges[0].node.tags);
-
   const generateCardsRowArray = () =>
     events.data.events.edges.map((edge: any, index: number) => {
       const { images, title, attendeeCostPerUomCents } = edge.node!;
@@ -107,8 +131,9 @@ const EventsList = ({ eventsReference }: Props) => {
               image={images[0]}
               price={attendeeCostPerUomCents}
               averageRate={2}
-              tags={edge.node.tags}
               text={edge.node.description}
+              tags={getInterestTags(edge.node.tags, 0, 3)}
+              links={getInterestLinks(edge.node.interests, 0, 3)}
             />
           </WrapperBigCard>
         );
@@ -121,7 +146,8 @@ const EventsList = ({ eventsReference }: Props) => {
             image={images[0]}
             price={attendeeCostPerUomCents}
             averageRate={4.5}
-            tags={edge.node.tags}
+            tags={getInterestTags(edge.node.tags, 0, 3)}
+            links={getInterestLinks(edge.node.interests, 0, 3)}
           />
         </WrapperSmallCard>
       );

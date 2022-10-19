@@ -10,9 +10,9 @@ import DatesSlider from "./Slider/DatesSlider";
 
 const FilterBar = styled.div``;
 const MainFilters = styled.div`
-  padding: 0px 36px 30px 30px;
-  margin-right: 56px;
-  padding-left: 30px; //top right bottom left
+  padding: 5px 36px 30px 30px;
+  border-right: 1px solid;
+  height: 50%;
 `;
 
 const FilterBarItem = styled.div`
