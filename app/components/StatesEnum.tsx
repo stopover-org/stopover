@@ -33,6 +33,7 @@ export enum TypographyTags {
   LARGE = "span",
   VERY_LARGE = "span",
   DIV = "div",
+  LINK = "a",
 }
 export enum ButtonVariants {
   COMMON,
@@ -90,4 +91,17 @@ export enum TagSizes {
   SMALL = "5px",
   MEDIUM = "10px",
   LARGE = "15px",
+}
+export enum CardImageLocation {
+  TOP = "top",
+  BOTTOM = "bottom",
+  RIGHT = "right",
+  LEFT = "left",
+}
+export enum PaginationSize {
+  SMALL = "55px",
+  MEDIUM = "75px",
+}
+export enum Currencies {
+  USD = "$",
 }

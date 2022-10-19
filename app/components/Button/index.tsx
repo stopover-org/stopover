@@ -9,8 +9,9 @@ const ButtonStyle = styled.button<{
   border: string;
   padding: string;
   cursor: string;
+  borderRadius: string;
 }>`
-  border-radius: 3px;
+  border-radius: ${(props) => props.borderRadius};
   color: ${(props) => props.color || "#000000"};
   background-color: ${(props) => props.backgroundColor};
   border: 1px solid ${(props) => props.border};
@@ -35,6 +36,7 @@ type Props = {
   backgroundColor?: string;
   size?: ButtonSizes;
   disabled?: boolean;
+  borderRadius?: string;
 };
 
 const getContent = (
@@ -73,6 +75,7 @@ const Button = ({
   backgroundColor = "#FF8A00",
   color = "#FFFFFF",
   size = ButtonSizes.BIG,
+  borderRadius = "3px",
   ...props
 }: Props) => {
   const shownColor = (disabled && "grey") || backgroundColor;
@@ -91,6 +94,7 @@ const Button = ({
         padding={size.toString()}
         cursor={disabled ? "auto" : "pointer"}
         disabled={disabled}
+        borderRadius={borderRadius}
       >
         {getContent(iconPosition, children, icon)}
       </ButtonStyle>

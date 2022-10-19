@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { graphql, usePaginationFragment } from "react-relay";
 import moment from "moment";
-import Link from "next/link";
 import InterestGallery from "../../EventFilter/InterestGallery";
 import EventFilter from "../../EventFilter";
 import Search from "../../EventFilter/Search";
@@ -11,39 +10,70 @@ import {
   events_Query$data,
 } from "../../../pages/events/__generated__/events_Query.graphql";
 import { List_EventsFragment$key } from "./__generated__/List_EventsFragment.graphql";
-import Typography from "../../Typography";
-import Button from "../../Button";
-import Card from "../../Card";
+import CardImageLeft from "../../EventListCard/CardImageLeft";
+import CardImageTop from "../../EventListCard/CardImageTop";
 import Row from "../../Row";
-import { TypographySize, TypographyTags } from "../../StatesEnum";
+import Pagination from "../../Pagination";
+import { PaginationSize, Currencies } from "../../StatesEnum";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   padding: 40px 0px 0px 0px;
-  height: calc(100vh - 75px - 16px);
-  min-height: 1100px;
+  height: auto;
+`;
+
+const WrapperBigCard = styled.div`
+  padding-bottom: 70px;
+`;
+
+const WrapperSmallCard = styled.div`
+  padding-bottom: 70px;
 `;
 
 const Interests = styled.div`
-  padding: 0px 0px 0px 56px;
+  padding-left: 50px;
 `;
-
-const CardContentRow = styled(Row)`
-  min-width: 330px;
-`;
-
-const CardImageRow = styled(Row)`
-  min-width: 330px;
-`;
-
-const SCard = styled(Card)`
-  flex-direction: column;
-`;
-
+const SRow = styled(Row)``;
 type Props = {
   eventsReference: events_Query$data;
 };
+
+const getInterestLinks = (
+  array: {
+    title: string;
+    id: string;
+  }[],
+  from: number,
+  to: number
+) =>
+  array
+    .map((item, index) => {
+      if (index < to)
+        return {
+          text: item.title,
+          href: `interests/${item.id}`,
+        };
+      return {
+        text: "",
+        href: "",
+      };
+    })
+    .slice(from, to);
+
+const getInterestTags = (
+  array: {
+    title: string;
+  }[],
+  from: number,
+  to: number
+) =>
+  array
+    .map((item, index) => {
+      if (index < to) return { title: item.title };
+      return { title: "" };
+    })
+    .slice(from, to);
 
 const EventsList = ({ eventsReference }: Props) => {
   const events: any = usePaginationFragment<
@@ -89,6 +119,45 @@ const EventsList = ({ eventsReference }: Props) => {
     eventsReference
   );
 
+  const generateCardsRowArray = () =>
+    events.data.events.edges.map((edge: any, index: number) => {
+      const { images, title, attendeeCostPerUomCents } = edge.node!;
+      if (index === 3) {
+        return (
+          <WrapperBigCard>
+            <CardImageLeft
+              key={edge.node.id}
+              title={title}
+              image={images[0]}
+              price={attendeeCostPerUomCents}
+              averageRate={2}
+              text={edge.node.description}
+              tags={getInterestTags(edge.node.tags, 0, 3)}
+              links={getInterestLinks(edge.node.interests, 0, 3)}
+              currency={Currencies.USD}
+            />
+          </WrapperBigCard>
+        );
+      }
+      return (
+        <WrapperSmallCard>
+          <CardImageTop
+            key={edge.node.id}
+            title={title}
+            image={images[0]}
+            price={attendeeCostPerUomCents}
+            averageRate={4.5}
+            tags={getInterestTags(edge.node.tags, 0, 3)}
+            links={getInterestLinks(edge.node.interests, 0, 3)}
+            currency={Currencies.USD}
+          />
+        </WrapperSmallCard>
+      );
+    });
+  const [currentPage, setCurrentPage] = useState(1);
+  const onSelectPage = (page: number) => {
+    setCurrentPage(page);
+  };
   return (
     <Wrapper>
       <EventFilter
@@ -98,7 +167,6 @@ const EventsList = ({ eventsReference }: Props) => {
         maxPrice={events.data.eventFilters.maxPrice!}
         city={events.data.eventFilters.city}
       />
-
       <Interests>
         <Search
           searchType="event"
@@ -107,52 +175,23 @@ const EventsList = ({ eventsReference }: Props) => {
           helpText="Вы ищете"
         />
         <InterestGallery />
-        <Row>
-          {events.data.events.edges.map((edge: any) => {
-            const { images, title, interests, attendeeCostPerUomCents } =
-              edge.node!;
-
-            return (
-              <SCard
-                width="330px"
-                content={
-                  <CardContentRow>
-                    <Typography
-                      size={TypographySize.LARGE}
-                      as={TypographyTags.H5}
-                      fontWeight="700"
-                    >
-                      {title}
-                    </Typography>
-                    <div>
-                      {interests.map((interest: any) => (
-                        <Link href="#wtf">{interest.title}</Link>
-                      ))}
-                    </div>
-                    <div>
-                      <Typography
-                        as={TypographyTags.DIV}
-                        size={TypographySize.LARGE}
-                      >
-                        $ {attendeeCostPerUomCents}
-                      </Typography>
-                      <Button>Button</Button>
-                    </div>
-                  </CardContentRow>
-                }
-                image={
-                  <CardImageRow>
-                    <img
-                      style={{ display: "block", width: "100%" }}
-                      alt={images[0]}
-                      src={images[0]}
-                    />
-                  </CardImageRow>
-                }
-              />
-            );
-          })}
-        </Row>
+        <SRow wrap="wrap" justifyContent="space-between">
+          {generateCardsRowArray()}
+        </SRow>
+        <Pagination
+          onNextPage={() => setCurrentPage(currentPage + 1)}
+          onPrevPage={() => setCurrentPage(currentPage - 1)}
+          onSelectPage={onSelectPage}
+          currentPage={currentPage}
+          amountPagesOnRight={3}
+          amountPagesOnLeft={2}
+          totalPages={11}
+          size={PaginationSize.SMALL}
+          minVisible
+          maxVisible
+          fillerVisible
+          prevNextElementVisible
+        />
       </Interests>
     </Wrapper>
   );

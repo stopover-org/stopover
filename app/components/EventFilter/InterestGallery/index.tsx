@@ -9,10 +9,8 @@ const Wrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  max-width: 1042px;
-  width: 1042px;
+  width: 1000px;
   height: 180px;
-  padding: 26px 0px 0px 45px;
 `;
 
 const CarouselContainer = styled.div`

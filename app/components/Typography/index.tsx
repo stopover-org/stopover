@@ -10,7 +10,7 @@ const TextStyle = styled.span<{
   color: string;
 }>`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: justify;
   font-family: "Roboto";
   font-style: ${(props) => props.fontStyle};
@@ -19,13 +19,14 @@ const TextStyle = styled.span<{
   text-decoration: ${(props) => props.textDecoration};
   color: ${(props) => props.color};
   line-height: 1em;
-  word-break: break-all;
+  max-height: 195px;
+  word-break: break-word;
 `;
 
 type Props = {
   children: React.ReactNode;
   color?: string;
-  size?: TypographySize;
+  size?: TypographySize | string;
   as?: TypographyTags;
   fontWeight?: string;
   strikeThrough?: boolean;

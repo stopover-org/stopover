@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Row from "../Row";
 
 const Frame = styled.div<{ width: string; height: string }>`
   position: relative;
@@ -8,17 +9,6 @@ const Frame = styled.div<{ width: string; height: string }>`
   cursor: pointer;
   overflow: hidden;
 `;
-
-const Image = styled.div`
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
-
 type Props = {
   width?: string;
   height?: string;
@@ -26,7 +16,9 @@ type Props = {
 };
 const BaseImage = ({ width = "100%", height = "100%", children }: Props) => (
   <Frame width={width} height={height}>
-    <Image>{children}</Image>
+    <Row justifyContent="center" height="100%" width="100%">
+      {children}
+    </Row>
   </Frame>
 );
 

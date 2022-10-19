@@ -5,9 +5,14 @@ export const BaseSlider = styled.div<{
   pointerEventsSlider?: string;
   pointerEventsHandle?: string;
 }>`
-  padding: 43px 0px 43px 0px;
+  padding: 43px 0px 43px 15px;
   display: flex;
   align-items: center;
+  .rc-slider-mark-text {
+    font-family: Roboto;
+    font-size: 14px;
+    padding-top: 4px;
+  }
   .rc-slider {
     width: 380px;
     pointer-events: ${(props) => props.pointerEventsSlider};

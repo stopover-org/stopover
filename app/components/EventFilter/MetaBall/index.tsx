@@ -6,7 +6,6 @@ const Wrapper = styled.div`
   width: 100vw;
   .blobs {
     border: 1px solid green;
-
     filter: url("#goo");
     position: absolute;
     top: 0;
@@ -85,7 +84,7 @@ const Wrapper = styled.div`
     font-size: 40px;
     margin-top: -50px;
     margin-left: -50px;
-    animation: blob-left-top-anim cubic-bezier(0.77, 0, 0.175, 1) 4s infinite;
+    animation: blob-left-top-anim cubic-bezier(0.77, 0, 0.175, 1) 20s infinite;
 
     &:nth-child(2) {
       animation-name: blob-right-top-anim;

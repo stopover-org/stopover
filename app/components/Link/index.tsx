@@ -11,12 +11,12 @@ const SLink = styled.a<{ color: string }>`
 `;
 
 type Props = {
-  href: string;
+  href?: string;
   disabled?: boolean;
   children: React.ReactNode;
 };
 
-const Link = ({ href, disabled, children, ...props }: Props) => (
+const Link = ({ href = "#", disabled, children, ...props }: Props) => (
   <NextLink href={disabled ? "" : href} passHref {...props}>
     <SLink color={disabled ? "grey" : "#FF8A00"}>{children}</SLink>
   </NextLink>

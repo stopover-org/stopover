@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import Typography from "../Typography";
+import Row from "../Row";
+import { TypographySize, TypographyTags } from "../StatesEnum";
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,24 +20,22 @@ const Logo = styled.div`
   color: white;
 `;
 
-const NavBar = styled.div`
-  display: flex;
-  justify-content: right;
-  align-items: center;
-  width: 100%;
-  p {
-    padding-left: 30px;
+const NavBar = styled(Row)`
+  a {
     padding-right: 38px;
-    cursor: pointer;
   }
 `;
 
 const Header = () => (
   <Wrapper>
     <Logo>250 x 75</Logo>
-    <NavBar>
-      <p>Путешествие</p>
-      <p>Вход</p>
+    <NavBar justifyContent="flex-end">
+      <Typography size={TypographySize.BIG} as={TypographyTags.LINK}>
+        Путешествие
+      </Typography>
+      <Typography size={TypographySize.BIG} as={TypographyTags.LINK}>
+        Вход
+      </Typography>
     </NavBar>
   </Wrapper>
 );

@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import cross from "../../icons/Solid/Interface/Cross.svg";
+import Typography from "../../Typography";
+import { TypographySize } from "../../StatesEnum";
+import Column from "../../Column";
 
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+const Wrapper = styled(Column)`
   width: 150px;
   height: 150px;
 `;
@@ -35,12 +34,6 @@ const ImageContainer = styled.div<{ color: string; cross: string }>`
   }
 `;
 
-const DescriptionContainer = styled.div`
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 24px;
-`;
-
 type Props = {
   image: string;
   description: string;
@@ -61,7 +54,7 @@ const ItemGallery = (props: Props) => {
           <img alt={props.description} src={cross.src} />
         </div>
       </ImageContainer>
-      <DescriptionContainer>{props.description}</DescriptionContainer>
+      <Typography size={TypographySize.H4}>{props.description}</Typography>
     </Wrapper>
   );
 };

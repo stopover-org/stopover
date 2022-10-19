@@ -3,6 +3,9 @@ import styled from "styled-components";
 import Image from "next/image";
 import editSvg from "../../icons/Outline/Interface/Edit-alt.svg";
 import searchSvg from "../../icons/Outline/Interface/Search.svg";
+import Column from "../../Column";
+import { TypographySize, TypographyWeight } from "../../StatesEnum";
+import Typography from "../../Typography";
 
 const ImageWrapper = styled.div<{ left: string; bottom: string }>`
   display: none;
@@ -15,25 +18,23 @@ const Input = styled.input<{ width: string; padding?: string }>`
   border: none;
   border-bottom: 2px solid transparent;
   background-color: transparent;
-  font-size: 32px;
-  font-weight: 400;
+  font-size: ${TypographySize.H2};
+  font-weight: ${TypographyWeight.MEDIUM};
   line-height: 44px;
   width: ${(props) => props.width};
   opacity: 0.3;
   ${({ padding }) => padding && `padding-right: ${padding};`}
+  color: black;
   &:focus {
     border-bottom: 2px solid #d9d9d9;
   }
 `;
 
-const HelpMessage = styled.div`
+const HelpMessage = styled(Typography)`
   height: 16px;
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+const Wrapper = styled(Column)`
   padding: 0px 0px 30px 0px;
   &:hover ${ImageWrapper} {
     display: inline-block;
@@ -58,8 +59,10 @@ const Search = (props: Props) => {
   };
 
   return (
-    <Wrapper>
-      <HelpMessage>{value === "" ? "" : props.helpText}</HelpMessage>
+    <Wrapper alignItems="flex-start">
+      <HelpMessage size={TypographySize.H5}>
+        {value === "" ? "" : props.helpText}
+      </HelpMessage>
       <div>
         <Input
           placeholder={props.placeHolder}

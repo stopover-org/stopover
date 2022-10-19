@@ -26,14 +26,14 @@ const Tag2 = styled.div`
 const TagsTest = () => (
   <Wrapper>
     <Tag1>
-      <Tag
-        size={TagSizes.SMALL}
-        image={icon.src}
-        content={<Typography>6 july</Typography>}
-      />
+      <Tag size={TagSizes.SMALL} image={icon.src}>
+        <Typography>6 july</Typography>
+      </Tag>
     </Tag1>
     <Tag1>
-      <Tag size={TagSizes.SMALL} content={<Typography>6 july</Typography>} />
+      <Tag size={TagSizes.SMALL}>
+        <Typography>6 july</Typography>
+      </Tag>
     </Tag1>
     <Tag2>
       <Tag
@@ -41,16 +41,15 @@ const TagsTest = () => (
         size={TagSizes.LARGE}
         imageSize="42px"
         image={icon.src}
-        content={
-          <Typography
-            size={TypographySize.LARGE}
-            as={TypographyTags.LARGE}
-            fontWeight="400"
-          >
-            Great for two traveles
-          </Typography>
-        }
-      />
+      >
+        <Typography
+          size={TypographySize.LARGE}
+          as={TypographyTags.LARGE}
+          fontWeight="400"
+        >
+          Great for two traveles
+        </Typography>
+      </Tag>
     </Tag2>
   </Wrapper>
 );
