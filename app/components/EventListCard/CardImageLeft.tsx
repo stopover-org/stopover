@@ -154,7 +154,7 @@ const CardImageLeft = ({
     }
     image={
       <BaseImage width="40%">
-        <img src={image} alt="event foto" width="100%" height="100%" />
+        <img src={image} alt="event foto" height="100%" />
       </BaseImage>
     }
   >

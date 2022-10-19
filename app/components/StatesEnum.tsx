@@ -102,3 +102,6 @@ export enum PaginationSize {
   SMALL = "55px",
   MEDIUM = "75px",
 }
+export enum Currencies {
+  USD = "$",
+}

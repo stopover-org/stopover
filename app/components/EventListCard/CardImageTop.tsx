@@ -25,7 +25,7 @@ const TagList = styled(Column)`
 `;
 
 const SColumn = styled(Column)`
-  padding: 10px;
+  padding: 20px;
   height: 40%;
 `;
 

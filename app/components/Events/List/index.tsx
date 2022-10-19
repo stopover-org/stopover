@@ -14,7 +14,7 @@ import CardImageLeft from "../../EventListCard/CardImageLeft";
 import CardImageTop from "../../EventListCard/CardImageTop";
 import Row from "../../Row";
 import Pagination from "../../Pagination";
-import { PaginationSize } from "../../StatesEnum";
+import { PaginationSize, Currencies } from "../../StatesEnum";
 
 const Wrapper = styled.div`
   display: flex;
@@ -134,6 +134,7 @@ const EventsList = ({ eventsReference }: Props) => {
               text={edge.node.description}
               tags={getInterestTags(edge.node.tags, 0, 3)}
               links={getInterestLinks(edge.node.interests, 0, 3)}
+              currency={Currencies.USD}
             />
           </WrapperBigCard>
         );
@@ -148,6 +149,7 @@ const EventsList = ({ eventsReference }: Props) => {
             averageRate={4.5}
             tags={getInterestTags(edge.node.tags, 0, 3)}
             links={getInterestLinks(edge.node.interests, 0, 3)}
+            currency={Currencies.USD}
           />
         </WrapperSmallCard>
       );
