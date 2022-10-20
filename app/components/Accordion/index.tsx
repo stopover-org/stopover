@@ -61,9 +61,7 @@ type Props = {
   showChevron?: boolean;
   content: React.ReactElement;
   header: React.ReactElement;
-
   height?: number;
-
   onOpen: () => void;
   onClose: () => void;
 };
