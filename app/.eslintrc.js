@@ -34,5 +34,21 @@ module.exports = {
       { blankLine: "always", prev: ["multiline-expression", "multiline-const", "multiline-let", "multiline-var", "expression"], next: ["multiline-expression", "multiline-const", "multiline-let", "multiline-var", "expression"]},
     ],
     "import/no-named-as-default": "off",
+    "no-underscore-dangle": "off",
+    "@typescript-eslint/naming-convention": [
+      "error",
+
+      {
+        selector: 'variable',
+        format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
+        leadingUnderscore: 'allow',
+        trailingUnderscore: 'allow',
+      },
+
+      {
+        selector: 'typeLike',
+        format: ['PascalCase'],
+      },
+    ]
   }
 }
