@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Interest < ApplicationRecord
+  has_one_attached :preview
   has_many :account_interests, dependent: :destroy
   has_many :event_interests, dependent: :destroy
 
