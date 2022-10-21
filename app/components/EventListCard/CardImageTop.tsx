@@ -115,7 +115,11 @@ const CardImageTop = ({
         </RatingWrapper>
         <SRow justifyContent="start">
           <TypographyWrapper>
-            <Typography size="26px" as={TypographyTags.VERY_LARGE}>
+            <Typography
+              lineHeight="60px"
+              size="26px"
+              as={TypographyTags.VERY_LARGE}
+            >
               {price} {currency}
             </Typography>
           </TypographyWrapper>
