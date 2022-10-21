@@ -12,12 +12,10 @@ const Caret = styled(Image)<{ rotate: string }>`
 `;
 
 const Header = styled(Row)`
-  display: flex;
-  justify-content: space-between;
   cursor: pointer;
 `;
 
-const Content = styled(Column)<{ animation: string; height: number }>`
+const Content = styled.div<{ animation: string; height?: number }>`
   animation-duration: 0.5s;
   animation-name: ${(props) => props.animation};
   animation-fill-mode: forwards;
@@ -82,8 +80,12 @@ const Accordion = ({
     setIsOpen(!isOpen);
   };
   return (
-    <Wrapper>
-      <Header onClick={() => clickHandler()}>
+    <Wrapper container>
+      <Header
+        justifyContent="space-between"
+        alignItems="end"
+        onClick={() => clickHandler()}
+      >
         {header}
         {showChevron && (
           <Caret

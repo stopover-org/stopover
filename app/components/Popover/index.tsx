@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import Row from "../Row";
@@ -25,12 +25,13 @@ const ContentWrapper = styled(Row)<{ padding: string }>`
   cursor: pointer;
 `;
 
-const PopoverWindow = styled.div<{ opacity: number }>`
+const PopoverWindow = styled.div<{ opacity: number; padding: string }>`
   top: 70%;
   left: 0px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
   background: white;
   position: absolute;
+  padding: ${(props) => props.padding};
   opacity: ${(props) => props.opacity};
 `;
 
@@ -59,22 +60,49 @@ const Popover = ({
   onOpen,
   onClose,
   size = PopoverSizes.SMALL,
-}: Props) => (
-  <Wrapper>
-    <ContentWrapper
-      padding={size}
-      onClick={() => {
-        if (!isOpen) onOpen();
-        if (isOpen) onClose();
-      }}
-    >
-      <ImageWrapper>
-        <Image src={icon.src} width="25px" height="25px" />
-      </ImageWrapper>
-      {children}
-      <PopoverWindow opacity={isOpen ? 1 : 0}>{component}</PopoverWindow>
-    </ContentWrapper>
-  </Wrapper>
-);
+}: Props) => {
+  const popoverWindowRef = useRef();
+
+  useEffect(() => {
+    const handler = (event: Event) => {
+      if (
+        popoverWindowRef.current &&
+        !popoverWindowRef.current.contains(event.target)
+      ) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
+
+  return (
+    <Wrapper>
+      <ContentWrapper
+        padding={size}
+        onClick={() => {
+          if (!isOpen) onOpen();
+          if (isOpen) onClose();
+        }}
+      >
+        <ImageWrapper>
+          <Image src={icon.src} width="25px" height="25px" />
+        </ImageWrapper>
+        {children}
+        <PopoverWindow
+          ref={popoverWindowRef}
+          padding={size}
+          opacity={isOpen ? 1 : 0}
+        >
+          {component}
+        </PopoverWindow>
+      </ContentWrapper>
+    </Wrapper>
+  );
+};
 
 export default React.memo(Popover);
