@@ -105,7 +105,7 @@ export enum PaginationSize {
 export enum Currencies {
   USD = "$",
 }
-export enum PopupSizes {
+export enum PopoverSizes {
   SMALL = "5px",
   MEDIUM = "10px",
   BIG = "15px",
