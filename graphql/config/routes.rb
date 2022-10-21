@@ -10,5 +10,6 @@ Rails.application.routes.draw do
   # root "articles#index"
   namespace :admin, constraints: { format: :json }, defaults: { format: :json } do
     resources :events
+    resources :interests
   end
 end

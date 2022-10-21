@@ -5,10 +5,6 @@ import Column from "../Column";
 import Typography from "../Typography";
 import { TypographyTags, PaginationSize } from "../StatesEnum";
 
-const PageNumberWrapper = styled(Row)`
-  border: 1px solid;
-`;
-
 const PageNumber = styled(Column)<{ size: string }>`
   margin-right: 10px;
   margin-left: 10px;
@@ -152,10 +148,10 @@ const Pagination = ({
   if (disabled)
     return (
       // TODO: add knew functions to desable
-      <PageNumberWrapper justifyContent="space-between">
+      <Row justifyContent="space-between">
         {prevNextElementVisible && (
           <DisabledElement size={size}>
-            <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+            <Typography as={TypographyTags.LARGE} size="20px">
               {prevElement}
             </Typography>
           </DisabledElement>
@@ -163,7 +159,7 @@ const Pagination = ({
 
         {minVisible && (
           <DisabledElement size={size}>
-            <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+            <Typography as={TypographyTags.LARGE} size="20px">
               1
             </Typography>
           </DisabledElement>
@@ -171,7 +167,7 @@ const Pagination = ({
 
         {fillerVisible && (
           <SFiller justifyContent="end" height={size} width="auto">
-            <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+            <Typography as={TypographyTags.LARGE} size="20px">
               {fillerElement}
             </Typography>
           </SFiller>
@@ -179,21 +175,21 @@ const Pagination = ({
 
         {new Array(amountPagesOnLeft).fill("").map((_, index) => (
           <DisabledElement size={size}>
-            <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+            <Typography as={TypographyTags.LARGE} size="20px">
               {currentPage - amountPagesOnLeft + index}
             </Typography>
           </DisabledElement>
         ))}
 
         <DisabledChoosen size={size}>
-          <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+          <Typography as={TypographyTags.LARGE} size="20px">
             {currentPage}
           </Typography>
         </DisabledChoosen>
 
         {new Array(amountPagesOnRight).fill("").map((_, index) => (
           <DisabledElement size={size}>
-            <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+            <Typography as={TypographyTags.LARGE} size="20px">
               {currentPage + index + 1}
             </Typography>
           </DisabledElement>
@@ -201,7 +197,7 @@ const Pagination = ({
 
         {fillerVisible && (
           <SFiller justifyContent="end" height={size} width="auto">
-            <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+            <Typography as={TypographyTags.LARGE} size="20px">
               {fillerElement}
             </Typography>
           </SFiller>
@@ -209,7 +205,7 @@ const Pagination = ({
 
         {maxVisible && (
           <DisabledElement size={size}>
-            <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+            <Typography as={TypographyTags.LARGE} size="20px">
               {totalPages}
             </Typography>
           </DisabledElement>
@@ -217,19 +213,19 @@ const Pagination = ({
 
         {prevNextElementVisible && (
           <DisabledElement size={size}>
-            <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+            <Typography as={TypographyTags.LARGE} size="20px">
               {nextElement}
             </Typography>
           </DisabledElement>
         )}
-      </PageNumberWrapper>
+      </Row>
     );
 
   return (
-    <PageNumberWrapper>
+    <Row>
       {prevNextElementVisible && currentPage !== 1 && (
         <PrevElement size={size} onClick={onPrevPage}>
-          <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+          <Typography as={TypographyTags.LARGE} size="20px">
             {prevElement}
           </Typography>
         </PrevElement>
@@ -237,7 +233,7 @@ const Pagination = ({
 
       {minVisible && currentPage > amountPagesOnLeft + 1 && (
         <PageNumber size={size} onClick={() => onSelectPage(1)}>
-          <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+          <Typography as={TypographyTags.LARGE} size="20px">
             1
           </Typography>
         </PageNumber>
@@ -245,7 +241,7 @@ const Pagination = ({
 
       {fillerVisible && currentPage > amountPagesOnLeft + 2 && (
         <SFiller justifyContent="end" height={size} width="auto">
-          <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+          <Typography as={TypographyTags.LARGE} size="20px">
             {fillerElement}
           </Typography>
         </SFiller>
@@ -275,7 +271,7 @@ const Pagination = ({
       })}
 
       <Choosen size={size}>
-        <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+        <Typography as={TypographyTags.LARGE} size="20px">
           {currentPage}
         </Typography>
       </Choosen>
@@ -288,11 +284,7 @@ const Pagination = ({
               size={size}
               onClick={() => onSelectPage(currentPage + index + 1)}
             >
-              <Typography
-                fontWeight="400"
-                as={TypographyTags.LARGE}
-                size="20px"
-              >
+              <Typography as={TypographyTags.LARGE} size="20px">
                 {currentPage + index + 1}
               </Typography>
             </PageNumber>
@@ -303,7 +295,7 @@ const Pagination = ({
 
       {fillerVisible && currentPage < totalPages - amountPagesOnRight - 1 && (
         <SFiller justifyContent="end" height={size} width="auto">
-          <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+          <Typography as={TypographyTags.LARGE} size="20px">
             {fillerElement}
           </Typography>
         </SFiller>
@@ -311,7 +303,7 @@ const Pagination = ({
 
       {maxVisible && currentPage < totalPages - amountPagesOnRight && (
         <PageNumber size={size} onClick={() => onSelectPage(totalPages)}>
-          <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+          <Typography as={TypographyTags.LARGE} size="20px">
             {totalPages}
           </Typography>
         </PageNumber>
@@ -319,12 +311,12 @@ const Pagination = ({
 
       {prevNextElementVisible && currentPage !== totalPages && (
         <NextElement size={size} onClick={onNextPage}>
-          <Typography fontWeight="400" as={TypographyTags.LARGE} size="20px">
+          <Typography as={TypographyTags.LARGE} size="20px">
             {nextElement}
           </Typography>
         </NextElement>
       )}
-    </PageNumberWrapper>
+    </Row>
   );
 };
 

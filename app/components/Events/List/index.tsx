@@ -14,7 +14,8 @@ import CardImageLeft from "../../EventListCard/CardImageLeft";
 import CardImageTop from "../../EventListCard/CardImageTop";
 import Row from "../../Row";
 import Pagination from "../../Pagination";
-import { PaginationSize, Currencies } from "../../StatesEnum";
+import { Currencies, PaginationSize, TypographySize } from "../../StatesEnum";
+import Typography from "../../Typography";
 
 const Wrapper = styled.div`
   display: flex;
@@ -52,7 +53,7 @@ const getInterestLinks = (
       if (index < to)
         return {
           text: item.title,
-          href: `interests/${item.id}`,
+          href: `/interests/${item.id}`,
         };
       return {
         text: "",
@@ -61,7 +62,7 @@ const getInterestLinks = (
     })
     .slice(from, to);
 
-const getInterestTags = (
+const getTags = (
   array: {
     title: string;
   }[],
@@ -132,7 +133,7 @@ const EventsList = ({ eventsReference }: Props) => {
               price={attendeeCostPerUomCents}
               averageRate={2}
               text={edge.node.description}
-              tags={getInterestTags(edge.node.tags, 0, 3)}
+              tags={getTags(edge.node.tags, 0, 3)}
               links={getInterestLinks(edge.node.interests, 0, 3)}
               currency={Currencies.USD}
             />
@@ -147,7 +148,7 @@ const EventsList = ({ eventsReference }: Props) => {
             image={images[0]}
             price={attendeeCostPerUomCents}
             averageRate={4.5}
-            tags={getInterestTags(edge.node.tags, 0, 3)}
+            tags={getTags(edge.node.tags, 0, 3)}
             links={getInterestLinks(edge.node.interests, 0, 3)}
             currency={Currencies.USD}
           />
@@ -174,7 +175,11 @@ const EventsList = ({ eventsReference }: Props) => {
           placeHolder="Какое мероприятие вы ищете?"
           helpText="Вы ищете"
         />
-        <InterestGallery />
+        <InterestGallery
+          onChange={(interests) => {
+            console.log(interests);
+          }}
+        />
         <SRow wrap="wrap" justifyContent="space-between">
           {generateCardsRowArray()}
         </SRow>
@@ -183,7 +188,7 @@ const EventsList = ({ eventsReference }: Props) => {
           onPrevPage={() => setCurrentPage(currentPage - 1)}
           onSelectPage={onSelectPage}
           currentPage={currentPage}
-          amountPagesOnRight={3}
+          amountPagesOnRight={1}
           amountPagesOnLeft={2}
           totalPages={11}
           size={PaginationSize.SMALL}
@@ -191,6 +196,8 @@ const EventsList = ({ eventsReference }: Props) => {
           maxVisible
           fillerVisible
           prevNextElementVisible
+          prevElement={<Typography size={TypographySize.BIG}>Пред</Typography>}
+          nextElement={<Typography size={TypographySize.BIG}>След</Typography>}
         />
       </Interests>
     </Wrapper>

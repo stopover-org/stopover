@@ -32,10 +32,14 @@ const Carousel = styled.div<{ width: number; moveTo: number | string }>`
   transition: left 1s ease;
 `;
 
-const InterestGallery = () => {
+type Props = {
+  onChange: (interests: string[]) => void;
+};
+
+const InterestGallery = ({ onChange }: Props) => {
   const [slideDirection, setSlideDirection] = useState(0);
   const [rightSlideEndPoint, setRightSlideEndPoint] = useState(0);
-  const [imageState, setImageState] = useState<string[]>([]);
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const imageWidth = 155;
   const carouselWidth = imageArray.length * imageWidth;
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -58,20 +62,24 @@ const InterestGallery = () => {
   };
 
   const onClickChoose = (id: string) => {
-    if (!imageState.includes(id)) {
-      setImageState([...imageState, id]);
+    let _selectedInterests: string[] = [];
+    if (!selectedInterests.includes(id)) {
+      _selectedInterests = [...selectedInterests, id];
     } else {
-      setImageState([
-        ...imageState.slice(
+      _selectedInterests = [
+        ...selectedInterests.slice(
           0,
-          imageState.findIndex((item) => item === id)
+          selectedInterests.findIndex((item) => item === id)
         ),
-        ...imageState.slice(
-          imageState.findIndex((item) => item === id) + 1,
-          imageState.length
+        ...selectedInterests.slice(
+          selectedInterests.findIndex((item) => item === id) + 1,
+          selectedInterests.length
         ),
-      ]);
+      ];
     }
+    setSelectedInterests(_selectedInterests);
+
+    onChange(selectedInterests);
   };
 
   return (
@@ -85,7 +93,7 @@ const InterestGallery = () => {
               description={item.description}
               id={item.id}
               key={index}
-              chosen={imageState.includes(item.id)}
+              chosen={selectedInterests.includes(item.id)}
               onClickChoose={onClickChoose}
             />
           ))}

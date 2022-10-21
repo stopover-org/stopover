@@ -18,7 +18,7 @@ const SRow = styled(Row)`
 `;
 
 const SSkeleton = styled(Skeleton)`
-  margin-right: 5px;
+  margin-right: 10px;
 `;
 
 const CardImageLeftSkeleton = () => (
@@ -44,7 +44,7 @@ const CardImageLeftSkeleton = () => (
           <SSkeleton type={SkeletonType.BLOCK} width="100px" height="28px" />
         </SRow>
         <SRow justifyContent="start">
-          <SSkeleton type={SkeletonType.BLOCK} width="560px" height="195px" />
+          <SSkeleton type={SkeletonType.BLOCK} width="580px" height="195px" />
         </SRow>
         <SRow justifyContent="end">
           <SSkeleton type={SkeletonType.BLOCK} width="68px" height="50px" />

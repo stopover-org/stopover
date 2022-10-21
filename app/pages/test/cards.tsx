@@ -3,8 +3,6 @@ import styled from "styled-components";
 import Layout from "../../components/MainPage/Layout";
 import CardImageLeft from "../../components/EventListCard/CardImageLeft";
 import CardImageTop from "../../components/EventListCard/CardImageTop";
-import Typography from "../../components/Typography";
-import { TypographySize, TypographyTags } from "../../components/StatesEnum";
 
 const Wrapper = styled.div``;
 const Cards = () => (
@@ -26,10 +24,7 @@ const Cards = () => (
             href: "../pages/test/tags_test",
           },
         ]}
-        tags={["first tag", "second tag", "first tag"]}
-        text={
-          <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
+        text="Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industrys standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
             and scrambled it to make a type specimen book. It has survived not
@@ -65,9 +60,7 @@ const Cards = () => (
             typesetting, remaining essentially unchanged. It was popularised in
             the 1960s with the release of Letraset sheets containing Lorem Ipsum
             passages, and more recently with desktop publishing software like
-            Aldus PageMaker including versions of
-          </Typography>
-        }
+            Aldus PageMaker including versions of"
       />
       <CardImageTop
         averageRate={4.5}
@@ -85,7 +78,6 @@ const Cards = () => (
             href: "../pages/test/tags_test",
           },
         ]}
-        tags={["first tag", "second tag", "third tag"]}
       />
     </Wrapper>
   </Layout>

@@ -20,8 +20,9 @@ import Row from "../Row";
 import Button from "../Button";
 import icon from "../icons/Outline/General/Shopping_cart_white.svg";
 
-const TextHeight = styled.div`
+const TextHeight = styled(Typography)`
   overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const SColumn = styled(Column)`
@@ -129,7 +130,9 @@ const CardImageLeft = ({
             ))}
         </SRow>
         <SRow alignItems="start" height="100%">
-          <TextHeight>{text}</TextHeight>
+          <TextHeight fontWeight="300" size={TypographySize.BIG}>
+            {text}
+          </TextHeight>
         </SRow>
         <SRow justifyContent="end">
           <TypographyWrapper>

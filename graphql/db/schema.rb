@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_14_120453) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_20_201335) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,7 +46,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_14_120453) do
 
   create_table "achievements", force: :cascade do |t|
     t.string "title", null: false
-    t.string "preview"
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -184,7 +183,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_14_120453) do
   create_table "interests", force: :cascade do |t|
     t.string "title", null: false
     t.string "slug", null: false
-    t.string "preview"
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -194,7 +192,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_14_120453) do
 
   create_table "tags", force: :cascade do |t|
     t.string "title", null: false
-    t.string "preview"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -218,7 +215,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_14_120453) do
   create_table "units", force: :cascade do |t|
     t.string "name", null: false
     t.string "unit_type", default: "common", null: false
-    t.string "preview"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

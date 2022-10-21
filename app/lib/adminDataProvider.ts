@@ -1,11 +1,11 @@
-import {DataProvider, fetchUtils, UpdateParams} from "ra-core";
+import { DataProvider, fetchUtils, UpdateParams } from "ra-core";
 import { stringify } from "query-string";
-import {getAdminBaseUrl} from "./fetchGraphQL";
+import { getAdminBaseUrl } from "./fetchGraphQL";
 
 export const getAdminUrl = (apiUrl: string, resource: string, query: any) =>
   `${apiUrl}/${resource}?${stringify(query)}`;
 
-const adminBaseUrl = getAdminBaseUrl().replace("graphql", "admin")
+const adminBaseUrl = getAdminBaseUrl().replace("graphql", "admin");
 
 /**
  * Maps react-admin queries to a simple REST API
@@ -48,10 +48,8 @@ export const dataProvider = (
   getList: (resource, params) => {
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
-
     const rangeStart = (page - 1) * perPage;
     const rangeEnd = page * perPage - 1;
-
     const query = {
       _sort: field,
       _end: rangeEnd,
@@ -108,10 +106,8 @@ export const dataProvider = (
   getManyReference: (resource, params) => {
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
-
     const rangeStart = (page - 1) * perPage;
     const rangeEnd = page * perPage - 1;
-
     const query = {
       _sort: field,
       _end: rangeEnd,
@@ -201,8 +197,8 @@ export const dataProvider = (
     })),
 });
 
-export const convertFileToBase64 = (file: { rawFile: File }) => {
-  return new Promise((resolve, reject) => {
+export const convertFileToBase64 = (file: { rawFile: File }) =>
+  new Promise((resolve, reject) => {
     const reader = new FileReader();
 
     reader.readAsDataURL(file.rawFile);
@@ -211,14 +207,13 @@ export const convertFileToBase64 = (file: { rawFile: File }) => {
 
     reader.onerror = reject;
   });
-}
 
-const provider = dataProvider(adminBaseUrl)
+const provider = dataProvider(adminBaseUrl);
 
 export default {
   ...provider,
   update: (resource: string, params: any) => {
-    if (resource !== 'events') {
+    if (!params.data.images) {
       // fallback to the default implementation
       return provider.update(resource, params);
     }
@@ -229,10 +224,10 @@ export default {
      */
 
     if (!Array.isArray(params.data.images)) {
-      params.data.images = []
+      params.data.images = [];
     }
 
-      // Freshly dropped pictures are File objects and must be converted to base64 strings
+    // Freshly dropped pictures are File objects and must be converted to base64 strings
     const newImages = params.data.images.filter(
       (p: { rawFile: File | string }) => p.rawFile instanceof File
     );
@@ -242,21 +237,18 @@ export default {
     );
 
     return Promise.all(newImages.map(convertFileToBase64))
-      .then(base64Pictures =>
-        base64Pictures.map(picture64 => ({
+      .then((base64Pictures) =>
+        base64Pictures.map((picture64) => ({
           src: picture64,
           title: `${params.data.title}`,
         }))
       )
-      .then(transformedNewImages =>
+      .then((transformedNewImages) =>
         provider.update(resource, {
           ...params,
           data: {
             ...params.data,
-            images: [
-              ...transformedNewImages,
-              ...formerImages,
-            ],
+            images: [...transformedNewImages, ...formerImages],
           },
         })
       );

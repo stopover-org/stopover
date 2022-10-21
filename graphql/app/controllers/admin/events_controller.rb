@@ -1,5 +1,3 @@
-require 'digest'
-
 class Admin::EventsController < AdminController
   def index
     events = Event.all.reorder(get_user_order)
@@ -18,25 +16,13 @@ class Admin::EventsController < AdminController
     images_to_attach = []
     params[:images].each do |img|
       next unless img[:src].is_a? String
+
       next if img[:id]
 
-      start_regex = %r{data:image/[a-z]{3,4};base64,}
-      filename ||= SecureRandom.hex
-      regex_result = start_regex.match(img[:src])
+      tmpFile = FilesSupport.base64_to_file(img[:src], img[:title])
+      next unless tmpFile
 
-      next unless img[:src] && regex_result
-
-      start = regex_result.to_s
-      tempfile = Tempfile.new(filename)
-      tempfile.binmode
-      tempfile.write(Base64.decode64(img[:src][start.length..-1]))
-      uploaded_file = ActionDispatch::Http::UploadedFile.new(
-        tempfile: tempfile,
-        filename: "#{filename}.jpg",
-        original_filename: "#{img[:title] || filename}.jpg"
-      )
-
-      images_to_attach.push uploaded_file
+      images_to_attach.push tmpFile
     end.compact!
 
     event.images.each do |img|
