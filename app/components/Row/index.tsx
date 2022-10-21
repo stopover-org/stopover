@@ -5,9 +5,9 @@ const Row = styled.div<Props>`
   display: flex;
   flex-direction: row;
   width: ${(props) =>
-    props.width || getContainerItemUnit(props.container, props.item)};
+    props.width || getContainerItemUnit(props.container, props.item, "100%")};
   height: ${(props) =>
-    props.height || getContainerItemUnit(props.container, props.item)};
+    props.height || getContainerItemUnit(props.container, props.item, "auto")};
   justify-content: ${(props) => props.justifyContent};
   align-items: ${(props) => props.alignItems};
   flex-wrap: ${(props) => props.wrap || "nowrap"};

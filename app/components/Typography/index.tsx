@@ -18,7 +18,7 @@ const TextStyle = styled.span<{
   font-size: ${(props) => props.size};
   text-decoration: ${(props) => props.textDecoration};
   color: ${(props) => props.color};
-  line-height: 1.2em;
+  line-height: ${(props) => props.lineHeight || "1.2em"};
   max-height: 195px;
   word-break: break-word;
 `;
@@ -31,6 +31,7 @@ type Props = {
   fontWeight?: string;
   strikeThrough?: boolean;
   italic?: boolean;
+  lineHeight?: string;
 };
 
 const Typography = ({

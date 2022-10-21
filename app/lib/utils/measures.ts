@@ -1,6 +1,11 @@
-const getContainerItemUnit = (container?: boolean, item?: boolean) => {
+export const getContainerItemUnit = (
+  container?: boolean,
+  item?: boolean,
+  defaultValue?: string
+) => {
   if (item) return "auto";
   if (container) return "100%";
-  return "100%";
+  return defaultValue || "unset";
 };
-export default getContainerItemUnit;
+
+export default getContainerItemUnit();
