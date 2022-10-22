@@ -57,6 +57,7 @@ const Divider = styled.div`
 type Props = {
   opened?: boolean;
   showChevron?: boolean;
+  divider?: boolean;
   content: React.ReactElement;
   header: React.ReactElement;
   height?: number;
@@ -67,6 +68,7 @@ type Props = {
 const Accordion = ({
   opened = false,
   showChevron = true,
+  divider,
   content,
   header,
   height,
@@ -97,9 +99,14 @@ const Accordion = ({
           />
         )}
       </Header>
-      <Divider />
+      {divider && <Divider />}
       <SlideWrapper>
-        <Content height={height} animation={isOpen ? "close" : "open"}>
+        <Content
+          container
+          alignItems="start"
+          height={height}
+          animation={isOpen ? "close" : "open"}
+        >
           {content}
         </Content>
       </SlideWrapper>

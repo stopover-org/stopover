@@ -26,7 +26,7 @@ const BoxContaner = styled.div<{ size: CheckboxSizes }>`
   min-width: ${(props) => props.size};
   height: ${(props) => props.size};
   width: ${(props) => props.size};
-  padding: 1%;
+  padding: 0.01%;
 `;
 
 type CheckboxProps = {

@@ -140,8 +140,10 @@ const Input = ({
     <Wrapper>
       <label htmlFor={id}>
         <Column>
-          <Content justifyContent="start">{label}</Content>
-          <Content justifyContent="start">
+          <Content container justifyContent="start">
+            {label}
+          </Content>
+          <Content container justifyContent="start">
             <InputWrapper
               padding={size}
               border={variant === InputVariants.COMMON ? borderStyle() : ""}
