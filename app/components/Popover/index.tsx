@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import Row from "../Row";
-import icon from "../icons/Solid/Interface/Cross.svg";
+import crossIcon from "../icons/Solid/Interface/Cross.svg";
 import { PopoverSizes } from "../StatesEnum";
 
 const Wrapper = styled.button`
@@ -33,6 +33,7 @@ const PopoverWindow = styled.div<{ opacity: number; padding: string }>`
   position: absolute;
   padding: ${(props) => props.padding};
   opacity: ${(props) => props.opacity};
+  width: ${(props) => props.width};
 `;
 
 const ImageWrapper = styled.div`
@@ -46,6 +47,8 @@ const ImageWrapper = styled.div`
   max-height: 17px;
 `;
 type Props = {
+  width?: string;
+  icon?: boolean;
   children: React.ReactElement;
   component: React.ReactElement;
   isOpen: boolean;
@@ -54,6 +57,8 @@ type Props = {
   onClose: () => void;
 };
 const Popover = ({
+  width,
+  icon,
   children,
   component,
   isOpen,

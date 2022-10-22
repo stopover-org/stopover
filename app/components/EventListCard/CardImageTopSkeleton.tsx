@@ -36,18 +36,18 @@ const CardImageTopSkeleton = () => (
     width="330px"
     content={
       <SColumn>
-        <SRow justifyContent="start">
+        <SRow container justifyContent="start">
           <SSkeleton type={SkeletonType.BLOCK} width="247px" height="29px" />
         </SRow>
-        <SRow justifyContent="start">
+        <SRow container justifyContent="start">
           <SSkeleton type={SkeletonType.BLOCK} width="130px" height="19px" />
           <SSkeleton type={SkeletonType.BLOCK} width="90px" height="19px" />
         </SRow>
-        <SRow justifyContent="start" alignItems="end">
+        <SRow container justifyContent="start" alignItems="end">
           <SSkeleton type={SkeletonType.BLOCK} width="137px" height="25px" />
           <SSkeleton type={SkeletonType.BLOCK} width="100px" height="17px" />
         </SRow>
-        <SRow justifyContent="start">
+        <SRow container justifyContent="start">
           <SSkeleton type={SkeletonType.BLOCK} width="73px" height="34px" />
           <SSkeleton type={SkeletonType.BLOCK} width="68px" height="55px" />
         </SRow>
