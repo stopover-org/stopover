@@ -220,6 +220,7 @@ export const Forma = ({ additionalOptions, allreadyInPrice }: Props) => {
             </Typography>
           </Link>
         </LinkPadding>
+
         <Popover
           width="326px"
           isOpen={checkbox}
