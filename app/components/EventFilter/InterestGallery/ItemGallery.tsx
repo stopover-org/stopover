@@ -1,9 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import styled from "styled-components";
+import { graphql, useFragment } from "react-relay";
 import cross from "../../icons/Solid/Interface/Cross.svg";
 import Typography from "../../Typography";
 import { TypographySize } from "../../StatesEnum";
 import Column from "../../Column";
+import { ItemGallery_InterestFragment$key } from "./__generated__/ItemGallery_InterestFragment.graphql";
 
 const Wrapper = styled(Column)`
   width: 150px;
@@ -19,7 +21,8 @@ const ImageContainer = styled.div<{ color: string; cross: string }>`
   border-radius: 5px;
   img {
     width: 100%;
-    height: 100%;
+    min-height: 100%;
+    display: block;
     border-radius: 5px;
   }
   div {
@@ -35,27 +38,37 @@ const ImageContainer = styled.div<{ color: string; cross: string }>`
 `;
 
 type Props = {
-  image: string;
-  description: string;
-  id: string;
   chosen: boolean;
-  onClickChoose: (id: string) => void;
+  onClick: (id: string) => void;
+  interestRef: ItemGallery_InterestFragment$key;
 };
 
-const ItemGallery = (props: Props) => {
+const ItemGallery = ({ interestRef, ...props }: Props) => {
+  const interest = useFragment(
+    graphql`
+      fragment ItemGallery_InterestFragment on Interest {
+        id
+        title
+        preview
+      }
+    `,
+    interestRef
+  );
   const borderColor = props.chosen ? "#FF8A00" : "transparent";
   const crossVisible = props.chosen ? "block" : "none";
 
   return (
-    <Wrapper onClick={() => props.onClickChoose(props.id)}>
-      <ImageContainer color={borderColor} cross={crossVisible}>
-        <img alt={props.description} src={props.image} />
-        <div>
-          <img alt={props.description} src={cross.src} />
-        </div>
-      </ImageContainer>
-      <Typography size={TypographySize.H4}>{props.description}</Typography>
-    </Wrapper>
+    <Suspense>
+      <Wrapper onClick={() => props.onClick(interest.id)}>
+        <ImageContainer color={borderColor} cross={crossVisible}>
+          <img alt={interest.title} src={interest.preview || "#"} />
+          <div>
+            <img alt="preview" src={cross.src} />
+          </div>
+        </ImageContainer>
+        <Typography size={TypographySize.H4}>{interest.title}</Typography>
+      </Wrapper>
+    </Suspense>
   );
 };
 

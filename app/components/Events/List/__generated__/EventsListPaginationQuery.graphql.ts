@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<feccbb94c6cd43908394900b2697f75e>>
+ * @generated SignedSource<<714a2ca173b624d22dc224ca71011d8f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -60,7 +60,18 @@ v3 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-};
+},
+v4 = [
+  (v2/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "link",
+    "storageKey": null
+  },
+  (v3/*: any*/)
+];
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -155,10 +166,7 @@ return {
                     "kind": "LinkedField",
                     "name": "tags",
                     "plural": true,
-                    "selections": [
-                      (v2/*: any*/),
-                      (v3/*: any*/)
-                    ],
+                    "selections": (v4/*: any*/),
                     "storageKey": null
                   },
                   {
@@ -168,10 +176,7 @@ return {
                     "kind": "LinkedField",
                     "name": "interests",
                     "plural": true,
-                    "selections": [
-                      (v3/*: any*/),
-                      (v2/*: any*/)
-                    ],
+                    "selections": (v4/*: any*/),
                     "storageKey": null
                   },
                   {
@@ -280,16 +285,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ef68d9f4043c6d48369fa6cd28363285",
+    "cacheID": "d459a88d426fb7b9a5eaf1810b56d720",
     "id": null,
     "metadata": {},
     "name": "EventsListPaginationQuery",
     "operationKind": "query",
-    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...List_EventsFragment_1G22uz\n}\n\nfragment List_EventsFragment_1G22uz on Query {\n  events(first: $count, after: $cursor) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        attendeeCostPerUomCents\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n"
+    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...List_EventsFragment_1G22uz\n}\n\nfragment CardImageLeft_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment CardImageTop_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment List_EventsFragment_1G22uz on Query {\n  events(first: $count, after: $cursor) {\n    edges {\n      node {\n        ...CardImageLeft_EventFragment\n        ...CardImageTop_EventFragment\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "9c70716aea7cd6015fc6137dedb55ba0";
+(node as any).hash = "c35d054e8dcfc3ccc56d47ee225457e4";
 
 export default node;

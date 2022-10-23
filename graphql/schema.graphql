@@ -184,6 +184,7 @@ input EventsFilter {
 
 type Interest implements Node {
   id: ID!
+  link: String
   preview: String
   relayId: ID!
   slug: String!
@@ -385,6 +386,7 @@ enum SignInTypesEnum {
 
 type Tag implements Node {
   id: ID!
+  link: String
   preview: String
   relayId: ID!
   title: String!
