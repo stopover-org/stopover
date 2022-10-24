@@ -4,6 +4,8 @@ import Image from "next/image";
 import CaretUp from "../icons/Outline/Interface/Caret_up.svg";
 import Column from "../Column";
 import Row from "../Row";
+import Typography from "../Typography";
+import { TypographySize, TypographyTags } from "../StatesEnum";
 
 const Wrapper = styled(Column)``;
 const Caret = styled(Image)<{ rotate: string }>`
@@ -15,7 +17,7 @@ const Header = styled(Row)`
   cursor: pointer;
 `;
 
-const Content = styled.div<{ animation: string; height?: number }>`
+const Content = styled(Row)<{ animation: string; height?: number }>`
   animation-duration: 0.5s;
   animation-name: ${(props) => props.animation};
   animation-fill-mode: forwards;
@@ -54,9 +56,14 @@ const Divider = styled.div`
   width: 100%;
 `;
 
+const Collapse = styled(Row)`
+  cursor: pointer;
+`;
+
 type Props = {
   opened?: boolean;
   showChevron?: boolean;
+  showCollapse?: boolean;
   divider?: boolean;
   content: React.ReactElement;
   header: React.ReactElement;
@@ -67,7 +74,8 @@ type Props = {
 
 const Accordion = ({
   opened = false,
-  showChevron = true,
+  showChevron,
+  showCollapse,
   divider,
   content,
   header,
@@ -83,11 +91,7 @@ const Accordion = ({
   };
   return (
     <Wrapper container>
-      <Header
-        justifyContent="space-between"
-        alignItems="end"
-        onClick={() => clickHandler()}
-      >
+      <Header alignItems="center" onClick={() => clickHandler()}>
         {header}
         {showChevron && (
           <Caret
@@ -110,6 +114,20 @@ const Accordion = ({
           {content}
         </Content>
       </SlideWrapper>
+      {showCollapse && (
+        <Collapse alignItems="center" onClick={() => clickHandler()}>
+          <Typography size={TypographySize.SMALL} as={TypographyTags.SMALL}>
+            Свернуть
+          </Typography>
+          <Caret
+            height="25px"
+            width="25px"
+            alt="caret"
+            src={CaretUp.src}
+            rotate={isOpen ? "180deg" : "0deg"}
+          />
+        </Collapse>
+      )}
     </Wrapper>
   );
 };

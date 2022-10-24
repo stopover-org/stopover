@@ -25,15 +25,21 @@ const ContentWrapper = styled(Row)<{ padding: string }>`
   cursor: pointer;
 `;
 
-const PopoverWindow = styled.div<{ opacity: number; padding: string }>`
+// Added additional container because overfloww hidden hides popover window.
+// This is parent and i can use top and left.
+// In popover window i cant use it
+const PopoverWindowContainer = styled.div`
   top: 70%;
   left: 0px;
+  position: absolute;
+`;
+
+const PopoverWindow = styled.div<{ opacity: number; padding: string }>`
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
   background: white;
-  position: absolute;
+  position: fixed;
   padding: ${(props) => props.padding};
   opacity: ${(props) => props.opacity};
-  width: ${(props) => props.width};
 `;
 
 const ImageWrapper = styled.div`
@@ -47,7 +53,6 @@ const ImageWrapper = styled.div`
   max-height: 17px;
 `;
 type Props = {
-  width?: string;
   icon?: boolean;
   children: React.ReactElement;
   component: React.ReactElement;
@@ -57,7 +62,6 @@ type Props = {
   onClose: () => void;
 };
 const Popover = ({
-  width,
   icon,
   children,
   component,
@@ -94,17 +98,21 @@ const Popover = ({
           if (isOpen) onClose();
         }}
       >
-        <ImageWrapper>
-          <Image src={icon.src} width="25px" height="25px" />
-        </ImageWrapper>
+        {icon && (
+          <ImageWrapper>
+            <Image src={crossIcon.src} width="25px" height="25px" />
+          </ImageWrapper>
+        )}
         {children}
-        <PopoverWindow
-          ref={popoverWindowRef}
-          padding={size}
-          opacity={isOpen ? 1 : 0}
-        >
-          {component}
-        </PopoverWindow>
+        <PopoverWindowContainer>
+          <PopoverWindow
+            ref={popoverWindowRef}
+            padding={size}
+            opacity={isOpen ? 1 : 0}
+          >
+            {component}
+          </PopoverWindow>
+        </PopoverWindowContainer>
       </ContentWrapper>
     </Wrapper>
   );
