@@ -27,7 +27,6 @@ const InputWrapper = styled.div<{
 
 const SInput = styled.input`
   width: 100%;
-  font-weight: 400;
   font-family: "Roboto";
   font-size: 18px;
 `;

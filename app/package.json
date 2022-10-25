@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "generate": "relay-compiler",
-    "eslint": "eslint"
+    "eslint": "eslint",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@react-google-maps/api": "^2.12.2",
@@ -33,6 +35,15 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@storybook/addon-actions": "^6.5.13",
+    "@storybook/addon-essentials": "^6.5.13",
+    "@storybook/addon-interactions": "^6.5.13",
+    "@storybook/addon-links": "^6.5.13",
+    "@storybook/builder-webpack5": "^6.5.13",
+    "@storybook/manager-webpack5": "^6.5.13",
+    "@storybook/react": "^6.5.13",
+    "@storybook/testing-library": "^0.0.13",
     "@types/node": "18.7.14",
     "@types/react": "18.0.18",
     "@types/react-dates": "^21.8.3",
@@ -41,6 +52,7 @@
     "@types/relay-runtime": "^14.1.2",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
+    "babel-loader": "^8.2.5",
     "babel-plugin-relay": "^14.1.0",
     "babel-plugin-styled-components": "^2.0.7",
     "eslint": "^8.23.0",
@@ -55,6 +67,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.4",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^0.6.6",
     "graphql": "^16.6.0",
     "prettier": "^2.7.1",
     "relay-compiler": "^14.1.0",

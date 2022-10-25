@@ -72,7 +72,7 @@ type Props = {
   allreadyInPrice?: AllreadyInPrice[];
 };
 
-export const Form = ({ additionalOptions, allreadyInPrice }: Props) => {
+export const BookingForm = ({ additionalOptions, allreadyInPrice }: Props) => {
   const [checkbox, setCheckbox] = useState(false);
   return (
     <Row>
@@ -254,4 +254,4 @@ export const Form = ({ additionalOptions, allreadyInPrice }: Props) => {
     </Row>
   );
 };
-export default React.memo(Form);
+export default React.memo(BookingForm);
