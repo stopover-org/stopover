@@ -25,8 +25,15 @@ user.activate!(code: user.confirmation_code)
 user.session_password = rand.to_s[2..16]
 
 100.times.each do |_n|
-  interest = Faker::Food.ethnic_category
-  Interest.create(title: interest, slug: interest.parameterize) unless Interest.find_by(title: interest)
+  title = Faker::Food.ethnic_category
+  unless Interest.find_by(title: title)
+    interest = Interest.create!(title: title, slug: title.parameterize)
+    interest_image = URI.open('https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/elymn/DSC03540_fa5f2e24-36ca-4587-923f-e389c3a46e4b.jpg')
+    interest.preview.attach(io: interest_image, filename: "#{interest.title}.jpg")
+    puts "Interest was created #{interest.id}"
+  else
+    puts "skip"
+  end
 end
 
 %w[Снегоход Квадроцикл].map { |u| Unit.create!(name: u, unit_type: :technique) }
@@ -35,6 +42,7 @@ end
 count = ENV['count'].to_i || 1000
 
 count.times.each do |_event|
+  puts 'trying to create event'
   event_image = URI.open('https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/elymn/DSC03540_fa5f2e24-36ca-4587-923f-e389c3a46e4b.jpg')
 
   event = Event.create!(

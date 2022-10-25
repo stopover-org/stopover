@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<46b07318b9704c367065bbdff4c77785>>
+ * @generated SignedSource<<1050cdbf902600a6ab8095e6f2808de9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,7 +12,7 @@ import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type events_Query$variables = {};
 export type events_Query$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"List_EventsFragment">;
+  readonly " $fragmentSpreads": FragmentRefs<"List_EventsFragment" | "List_InterestsFragment">;
 };
 export type events_Query = {
   response: events_Query$data;
@@ -40,7 +40,18 @@ v2 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-};
+},
+v3 = [
+  (v1/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "link",
+    "storageKey": null
+  },
+  (v2/*: any*/)
+];
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -52,6 +63,11 @@ return {
         "args": null,
         "kind": "FragmentSpread",
         "name": "List_EventsFragment"
+      },
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "List_InterestsFragment"
       }
     ],
     "type": "Query",
@@ -124,10 +140,7 @@ return {
                     "kind": "LinkedField",
                     "name": "tags",
                     "plural": true,
-                    "selections": [
-                      (v1/*: any*/),
-                      (v2/*: any*/)
-                    ],
+                    "selections": (v3/*: any*/),
                     "storageKey": null
                   },
                   {
@@ -137,10 +150,7 @@ return {
                     "kind": "LinkedField",
                     "name": "interests",
                     "plural": true,
-                    "selections": [
-                      (v2/*: any*/),
-                      (v1/*: any*/)
-                    ],
+                    "selections": (v3/*: any*/),
                     "storageKey": null
                   },
                   {
@@ -245,20 +255,40 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Interest",
+        "kind": "LinkedField",
+        "name": "interests",
+        "plural": true,
+        "selections": [
+          (v2/*: any*/),
+          (v1/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "preview",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "764d6d68a2463388c124de5c8cd66532",
+    "cacheID": "c67ee42b32cf548da0ed95de6b0f7281",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query {\n  ...List_EventsFragment\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        title\n        description\n        id\n        availableDates\n        images\n        attendeeCostPerUomCents\n        tags {\n          title\n          id\n        }\n        interests {\n          id\n          title\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n"
+    "text": "query events_Query {\n  ...List_EventsFragment\n  ...List_InterestsFragment\n}\n\nfragment CardImageLeft_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment CardImageTop_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment InterestGallery_InterestsFragment on Query {\n  interests {\n    id\n    ...ItemGallery_InterestFragment\n  }\n}\n\nfragment ItemGallery_InterestFragment on Interest {\n  id\n  title\n  preview\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        ...CardImageLeft_EventFragment\n        ...CardImageTop_EventFragment\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n\nfragment List_InterestsFragment on Query {\n  ...InterestGallery_InterestsFragment\n}\n"
   }
 };
 })();
 
-(node as any).hash = "3a8c3685f8b8a2accfbca217c9a99b2e";
+(node as any).hash = "b11e06d8c6d15fca2835febdee92e8f1";
 
 export default node;

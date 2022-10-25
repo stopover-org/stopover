@@ -9,6 +9,7 @@ const TextStyle = styled.span<{
   fontStyle: string;
   color: string;
   underline: string;
+  lineHeight?: string;
 }>`
   display: flex;
   justify-content: flex-start;
@@ -18,9 +19,9 @@ const TextStyle = styled.span<{
   font-weight: ${(props) => props.fontWeight};
   font-size: ${(props) => props.size};
   text-decoration: ${(props) => props.textDecoration};
-  color: ${(props) => props.color};
   text-decoration: ${(props) => props.underline};
-  line-height: 1.2em;
+  color: ${(props) => props.color};
+  line-height: ${(props) => props.lineHeight || "1.2em"};
   max-height: 195px;
   word-break: break-word;
 `;
@@ -34,27 +35,28 @@ type Props = {
   strikeThrough?: boolean;
   italic?: boolean;
   underline?: boolean;
+  lineHeight?: string;
 };
 
 const Typography = ({
   color = "inherit",
   italic,
-  fontWeight = "300",
   strikeThrough,
-  size,
+  size = TypographySize.MEDIUM,
   children,
   underline,
   as = TypographyTags.MEDIUM,
+  fontWeight = "300",
   ...props
 }: Props) => (
   <TextStyle
     as={as}
-    size={size || TypographySize.MEDIUM.toString()}
+    size={size}
+    color={color}
+    fontWeight={fontWeight}
     textDecoration={strikeThrough ? "line-through" : "none"}
     fontStyle={italic ? "italic" : "none"}
     underline={underline ? "underline" : "none"}
-    fontWeight={fontWeight}
-    color={color}
     {...props}
   >
     {children}

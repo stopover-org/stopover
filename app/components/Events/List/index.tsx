@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { graphql, usePaginationFragment } from "react-relay";
+import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import moment from "moment";
 import InterestGallery from "../../EventFilter/InterestGallery";
 import EventFilter from "../../EventFilter";
@@ -40,47 +40,8 @@ type Props = {
   eventsReference: events_Query$data;
 };
 
-const getInterestLinks = (
-  array: {
-    title: string;
-    id: string;
-  }[],
-  from: number,
-  to: number
-) =>
-  array
-    .map((item, index) => {
-      if (index < to)
-        return {
-          text: item.title,
-          href: `/interests/${item.id}`,
-        };
-      return {
-        text: "",
-        href: "",
-      };
-    })
-    .slice(from, to);
-
-const getTags = (
-  array: {
-    title: string;
-  }[],
-  from: number,
-  to: number
-) =>
-  array
-    .map((item, index) => {
-      if (index < to) return { title: item.title };
-      return { title: "" };
-    })
-    .slice(from, to);
-
 const EventsList = ({ eventsReference }: Props) => {
-  const events: any = usePaginationFragment<
-    events_Query,
-    List_EventsFragment$key
-  >(
+  const events = usePaginationFragment<events_Query, List_EventsFragment$key>(
     graphql`
       fragment List_EventsFragment on Query
       @argumentDefinitions(
@@ -92,19 +53,8 @@ const EventsList = ({ eventsReference }: Props) => {
           @connection(key: "Events_events") {
           edges {
             node {
-              title
-              description
-              id
-              availableDates
-              images
-              attendeeCostPerUomCents
-              tags {
-                title
-              }
-              interests {
-                id
-                title
-              }
+              ...CardImageLeft_EventFragment
+              ...CardImageTop_EventFragment
             }
           }
         }
@@ -120,37 +70,34 @@ const EventsList = ({ eventsReference }: Props) => {
     eventsReference
   );
 
+  const interests = useFragment(
+    graphql`
+      fragment List_InterestsFragment on Query {
+        ...InterestGallery_InterestsFragment
+      }
+    `,
+    eventsReference
+  );
+
   const generateCardsRowArray = () =>
     events.data.events.edges.map((edge: any, index: number) => {
-      const { images, title, attendeeCostPerUomCents } = edge.node!;
       if (index === 3) {
         return (
-          <WrapperBigCard>
+          <WrapperBigCard key={edge.node.id}>
             <CardImageLeft
-              key={edge.node.id}
-              title={title}
-              image={images[0]}
-              price={attendeeCostPerUomCents}
               averageRate={2}
-              text={edge.node.description}
-              tags={getTags(edge.node.tags, 0, 3)}
-              links={getInterestLinks(edge.node.interests, 0, 3)}
               currency={Currencies.USD}
+              eventRef={edge.node}
             />
           </WrapperBigCard>
         );
       }
       return (
-        <WrapperSmallCard>
+        <WrapperSmallCard key={edge.node.id}>
           <CardImageTop
-            key={edge.node.id}
-            title={title}
-            image={images[0]}
-            price={attendeeCostPerUomCents}
             averageRate={4.5}
-            tags={getTags(edge.node.tags, 0, 3)}
-            links={getInterestLinks(edge.node.interests, 0, 3)}
             currency={Currencies.USD}
+            eventRef={edge.node}
           />
         </WrapperSmallCard>
       );
@@ -175,11 +122,7 @@ const EventsList = ({ eventsReference }: Props) => {
           placeHolder="Какое мероприятие вы ищете?"
           helpText="Вы ищете"
         />
-        <InterestGallery
-          onChange={(interests) => {
-            console.log(interests);
-          }}
-        />
+        <InterestGallery onChange={() => {}} interestsRef={interests} />
         <SRow wrap="wrap" justifyContent="space-between">
           {generateCardsRowArray()}
         </SRow>

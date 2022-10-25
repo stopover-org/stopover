@@ -34,13 +34,9 @@ const HelpText = styled(Row)`
   pointer-events: none;
 `;
 
-const IconContainer = styled.label`
+const IconContainer = styled(Row)`
   margin-left: 5px;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
   width: 25px;
   height: 25px;
   :hover ${HelpText} {
@@ -59,11 +55,11 @@ type Props = {
 const Search = (props: Props) => (
   <Wrapper>
     <Typography size={TypographySize.H3}>{props.content}</Typography>
-    <IconContainer>
+    <IconContainer justifyContent="center">
       <HelpText>
         <Typography>{props.text}</Typography>
       </HelpText>
-      <Icon>?</Icon>
+      <Icon justifyContent="center">?</Icon>
     </IconContainer>
   </Wrapper>
 );

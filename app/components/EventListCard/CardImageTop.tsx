@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
+import { graphql, useFragment } from "react-relay";
 import Card from "../Card";
 import AverageRating from "../EventCard/AverageRating";
 import {
@@ -19,6 +20,7 @@ import Tag from "../Tag";
 import Row from "../Row";
 import Button from "../Button";
 import icon from "../icons/Outline/General/Shopping_cart_white.svg";
+import { CardImageTop_EventFragment$key } from "./__generated__/CardImageTop_EventFragment.graphql";
 
 const TagList = styled(Column)`
   padding: 10px;
@@ -54,109 +56,113 @@ const TypographyWrapper = styled.div`
   padding-right: 9px;
 `;
 
-type LinksType = {
-  text: string;
-  href: string;
-};
-
-type TagsType = {
-  title: string;
-};
-
 type Props = {
-  title: string;
-  image: string;
-  links?: LinksType[];
   averageRate: number;
-  tags?: TagsType[];
-  price: number;
   currency?: string;
+  eventRef: CardImageTop_EventFragment$key;
 };
 
-const CardImageTop = ({
-  title,
-  image,
-  links,
-  averageRate,
-  tags,
-  price,
-  currency,
-}: Props) => (
-  <Card
-    imageLocation={CardImageLocation.TOP}
-    height="530px"
-    width="330px"
-    content={
-      <SColumn>
-        <SRow justifyContent="start">
-          <Typography size="22px" as={TypographyTags.H5}>
-            {title}
-          </Typography>
-        </SRow>
-        <SRow justifyContent="start" wrap="wrap">
-          {links &&
-            links.map((item, index) => (
-              <SLink key={index}>
-                <Link href={item.href}>
+const CardImageTop = ({ averageRate, currency, eventRef }: Props) => {
+  const { title, images, tags, interests, attendeeCostPerUomCents } =
+    useFragment(
+      graphql`
+        fragment CardImageTop_EventFragment on Event {
+          title
+          description
+          id
+          availableDates
+          images
+          attendeeCostPerUomCents
+          tags {
+            title
+            link
+            id
+          }
+          interests {
+            title
+            link
+            id
+          }
+        }
+      `,
+      eventRef
+    );
+
+  return (
+    <Card
+      imageLocation={CardImageLocation.TOP}
+      height="530px"
+      width="330px"
+      content={
+        <SColumn>
+          <SRow justifyContent="start">
+            <Typography size="22px" as={TypographyTags.H5}>
+              {title}
+            </Typography>
+          </SRow>
+          <SRow justifyContent="start" wrap="wrap">
+            {interests.map(({ id: interestId, link, title: interestTitle }) => (
+              <SLink key={interestId}>
+                <Link href={link!}>
                   <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-                    {item.text}
+                    {interestTitle}
                   </Typography>
                 </Link>
               </SLink>
             ))}
-        </SRow>
-        <RatingWrapper justifyContent="start" alignItems="end">
-          <AverageRating averageRating={averageRate} />
-          <SCommentsRating>
-            <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-              (3 отзыва)
-            </Typography>
-          </SCommentsRating>
-        </RatingWrapper>
-        <SRow justifyContent="start">
-          <TypographyWrapper>
-            <Typography
-              lineHeight="60px"
-              size="26px"
-              as={TypographyTags.VERY_LARGE}
-            >
-              {price} {currency}
-            </Typography>
-          </TypographyWrapper>
-          <Button
-            size={ButtonSizes.BIG}
-            icon={<Image src={icon.src} width="35px" height="35px" />}
-            iconPosition={ButtonIconPlace.WITH_RIGHT_ICON}
-            borderRadius="10px"
-          >
+          </SRow>
+          <RatingWrapper justifyContent="start" alignItems="end">
+            <AverageRating averageRating={averageRate} />
+            <SCommentsRating>
+              <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
+                (3 отзыва)
+              </Typography>
+            </SCommentsRating>
+          </RatingWrapper>
+          <SRow justifyContent="start">
             <TypographyWrapper>
-              <Typography size="28px" as={TypographyTags.BIG}>
-                +
+              <Typography
+                lineHeight="60px"
+                size="26px"
+                as={TypographyTags.VERY_LARGE}
+              >
+                {attendeeCostPerUomCents} {currency}
               </Typography>
             </TypographyWrapper>
-          </Button>
-        </SRow>
-      </SColumn>
-    }
-    image={
-      <BaseImage height="60%">
-        <img src={image} alt="event foto" height="100%" />
-      </BaseImage>
-    }
-  >
-    <TagList alignItems="end">
-      {tags &&
-        tags.map((item, index) => (
-          <STag key={index}>
+            <Button
+              size={ButtonSizes.BIG}
+              icon={<Image src={icon.src} width="35px" height="35px" />}
+              iconPosition={ButtonIconPlace.WITH_RIGHT_ICON}
+              borderRadius="10px"
+            >
+              <TypographyWrapper>
+                <Typography size="28px" as={TypographyTags.BIG}>
+                  +
+                </Typography>
+              </TypographyWrapper>
+            </Button>
+          </SRow>
+        </SColumn>
+      }
+      image={
+        <BaseImage height="60%">
+          <img src={images[0]} alt="event" height="100%" />
+        </BaseImage>
+      }
+    >
+      <TagList alignItems="end">
+        {tags.map(({ id: tagId, title: tagTitle }) => (
+          <STag key={tagId}>
             <Tag size={TagSizes.SMALL}>
               <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-                {item.title}
+                {tagTitle}
               </Typography>
             </Tag>
           </STag>
         ))}
-    </TagList>
-  </Card>
-);
+      </TagList>
+    </Card>
+  );
+};
 
 export default CardImageTop;

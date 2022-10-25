@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ea853cf3fdf04b5c321cb93e497e6040>>
+ * @generated SignedSource<<e457a83178ff52862df0b3ddf6efc3e6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,19 +21,7 @@ export type List_EventsFragment$data = {
   readonly events: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly attendeeCostPerUomCents: number;
-        readonly availableDates: ReadonlyArray<any>;
-        readonly description: string;
-        readonly id: string;
-        readonly images: ReadonlyArray<string>;
-        readonly interests: ReadonlyArray<{
-          readonly id: string;
-          readonly title: string;
-        }>;
-        readonly tags: ReadonlyArray<{
-          readonly title: string;
-        }>;
-        readonly title: string;
+        readonly " $fragmentSpreads": FragmentRefs<"CardImageLeft_EventFragment" | "CardImageTop_EventFragment">;
       } | null;
     }>;
   };
@@ -47,21 +35,7 @@ export type List_EventsFragment$key = {
 const node: ReaderFragment = (function(){
 var v0 = [
   "events"
-],
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "title",
-  "storageKey": null
-},
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-};
+];
 return {
   "argumentDefinitions": [
     {
@@ -124,60 +98,15 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
-                (v1/*: any*/),
                 {
-                  "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "description",
-                  "storageKey": null
-                },
-                (v2/*: any*/),
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "availableDates",
-                  "storageKey": null
+                  "kind": "FragmentSpread",
+                  "name": "CardImageLeft_EventFragment"
                 },
                 {
-                  "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "images",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "attendeeCostPerUomCents",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "Tag",
-                  "kind": "LinkedField",
-                  "name": "tags",
-                  "plural": true,
-                  "selections": [
-                    (v1/*: any*/)
-                  ],
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "Interest",
-                  "kind": "LinkedField",
-                  "name": "interests",
-                  "plural": true,
-                  "selections": [
-                    (v2/*: any*/),
-                    (v1/*: any*/)
-                  ],
-                  "storageKey": null
+                  "kind": "FragmentSpread",
+                  "name": "CardImageTop_EventFragment"
                 },
                 {
                   "alias": null,
@@ -279,6 +208,6 @@ return {
 };
 })();
 
-(node as any).hash = "9c70716aea7cd6015fc6137dedb55ba0";
+(node as any).hash = "c35d054e8dcfc3ccc56d47ee225457e4";
 
 export default node;

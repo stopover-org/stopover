@@ -10,6 +10,7 @@ import { events_Query } from "./__generated__/events_Query.graphql";
 const Query = graphql`
   query events_Query {
     ...List_EventsFragment
+    ...List_InterestsFragment
   }
 `;
 
