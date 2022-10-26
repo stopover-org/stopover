@@ -74,6 +74,7 @@ type Props = {
 
 export const BookingForm = ({ additionalOptions, allreadyInPrice }: Props) => {
   const [checkbox, setCheckbox] = useState(false);
+  const [isPoped, setIsPoped] = useState(false);
   return (
     <Row>
       <FormWrapper>
@@ -147,19 +148,15 @@ export const BookingForm = ({ additionalOptions, allreadyInPrice }: Props) => {
         </Row>
         <Row container alignItems="end">
           <LinkPadding>
-            <Link href="intrests/cancel">
-              <Typography
-                color="#BE0000"
-                size={TypographySize.MEDIUM}
-                as={TypographyTags.MEDIUM}
-              >
+            <Link href="intrests/cancel" color="#BE0000">
+              <Typography size={TypographySize.H5} as={TypographyTags.H5}>
                 Отмена бронирования
               </Typography>
             </Link>
           </LinkPadding>
           <Popover
             width="326px"
-            isOpen={checkbox}
+            isOpen={isPoped}
             component={
               <Typography size={TypographySize.SMALL} as={TypographyTags.SMALL}>
                 Бесплатная отмена бронирования до 12:00 10 февраля <br />
@@ -168,8 +165,8 @@ export const BookingForm = ({ additionalOptions, allreadyInPrice }: Props) => {
                 <br />
               </Typography>
             }
-            onOpen={() => setCheckbox(true)}
-            onClose={() => setCheckbox(false)}
+            onOpen={() => setIsPoped(true)}
+            onClose={() => setIsPoped(false)}
           >
             <Row alignItems="end">
               <Typography size={TypographySize.H5} as={TypographyTags.H5}>

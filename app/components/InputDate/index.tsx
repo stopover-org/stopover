@@ -45,6 +45,11 @@ const InputWrapper = styled(Row)<{
   .SingleDatePickerInput__withBorder {
     background-color: white;
   }
+  .DateInput_input__disabled {
+    font-family: Roboto;
+    font-style: normal;
+    color: #4f4f4f;
+  }
 `;
 const Input = styled(SingleDatePicker)``;
 const Content = styled(Row)`

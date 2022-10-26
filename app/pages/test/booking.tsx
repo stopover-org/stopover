@@ -1,10 +1,10 @@
 import React from "react";
 import Layout from "../../components/MainPage/Layout";
-import ItemCard from "../../components/Trips/ItemCard";
+import Booking from "../../components/Trips/Booking";
 
 const TirpItemCard = () => (
   <Layout>
-    <ItemCard />
+    <Booking />
   </Layout>
 );
 

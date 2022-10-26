@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import CaretUp from "../icons/Outline/Interface/Caret_up.svg";
 import Column from "../Column";
 import Row from "../Row";
-import Typography from "../Typography";
-import { TypographySize, TypographyTags } from "../StatesEnum";
 
 const Wrapper = styled(Column)``;
 const Caret = styled(Image)<{ rotate: string }>`
@@ -56,15 +54,10 @@ const Divider = styled.div`
   width: 100%;
 `;
 
-const Collapse = styled(Row)`
-  cursor: pointer;
-`;
-
 type Props = {
   opened?: boolean;
   showChevron?: boolean;
-  showCollapse?: boolean;
-  divider?: boolean;
+  showDivider?: boolean;
   content: React.ReactElement;
   header: React.ReactElement;
   height?: number;
@@ -75,19 +68,16 @@ type Props = {
 const Accordion = ({
   opened = false,
   showChevron,
-  showCollapse,
-  divider,
+  showDivider,
   content,
   header,
   height,
   onOpen,
   onClose,
 }: Props) => {
-  const [isOpen, setIsOpen] = useState(opened);
   const clickHandler = () => {
-    if (!isOpen) onOpen();
-    if (isOpen) onClose();
-    setIsOpen(!isOpen);
+    if (!opened) onOpen();
+    if (opened) onClose();
   };
   return (
     <Wrapper container>
@@ -99,35 +89,21 @@ const Accordion = ({
             width="25px"
             alt="caret"
             src={CaretUp.src}
-            rotate={isOpen ? "180deg" : "0deg"}
+            rotate={opened ? "0deg" : "180deg"}
           />
         )}
       </Header>
-      {divider && <Divider />}
+      {showDivider && <Divider />}
       <SlideWrapper>
         <Content
           container
           alignItems="start"
           height={height}
-          animation={isOpen ? "close" : "open"}
+          animation={opened ? "open" : "close"}
         >
           {content}
         </Content>
       </SlideWrapper>
-      {showCollapse && (
-        <Collapse alignItems="center" onClick={() => clickHandler()}>
-          <Typography size={TypographySize.SMALL} as={TypographyTags.SMALL}>
-            Свернуть
-          </Typography>
-          <Caret
-            height="25px"
-            width="25px"
-            alt="caret"
-            src={CaretUp.src}
-            rotate={isOpen ? "180deg" : "0deg"}
-          />
-        </Collapse>
-      )}
     </Wrapper>
   );
 };

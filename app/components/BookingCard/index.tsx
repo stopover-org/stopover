@@ -12,7 +12,6 @@ import {
 } from "../StatesEnum";
 
 const SColumn = styled(Column)`
-  border: 1px solid;
   padding: 18px 30px 18px 30px;
 `;
 const SRow = styled(Row)``;
