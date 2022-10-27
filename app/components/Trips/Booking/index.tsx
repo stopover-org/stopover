@@ -37,9 +37,8 @@ export const Booking = () => {
       <AccordionPadding>
         <Accordion
           height={500}
-          showCollapse
           opened={isOpen}
-          showChevron={!isOpen}
+          showChevron
           onOpen={() => setIsOpen(true)}
           onClose={() => setIsOpen(false)}
           header={

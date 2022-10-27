@@ -15,33 +15,9 @@ const Header = styled(Row)`
   cursor: pointer;
 `;
 
-const Content = styled(Row)<{ animation: string; height?: number }>`
-  animation-duration: 0.5s;
-  animation-name: ${(props) => props.animation};
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-in-out;
-  @keyframes open {
-    0% {
-      max-height: 0px;
-    }
-    100% {
-      max-height: ${(props) => props.height}px;
-    }
-  }
-  @keyframes close {
-    0% {
-      max-height: ${(props) => props.height}px;
-
-      overflow: hidden;
-    }
-    99% {
-      opacity: 1;
-    }
-    100% {
-      max-height: 0px;
-      opacity: 0;
-    }
-  }
+const Content = styled(Row)<{ height?: number }>`
+  max-height: ${(props) => props.height};
+  transition: max-height 0.5s ease-in-out forwards;
 `;
 
 const SlideWrapper = styled.div`
@@ -95,12 +71,7 @@ const Accordion = ({
       </Header>
       {showDivider && <Divider />}
       <SlideWrapper>
-        <Content
-          container
-          alignItems="start"
-          height={height}
-          animation={opened ? "open" : "close"}
-        >
+        <Content container alignItems="start" height={opened ? height : 0}>
           {content}
         </Content>
       </SlideWrapper>
