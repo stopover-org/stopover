@@ -8,19 +8,22 @@ import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 import Row from "../Row";
 import Column from "../Column";
+import BaseImage from "../BaseImage";
 import { IconPosition, InputVariants } from "../StatesEnum";
 
-const Wrapper = styled.div`
-  width: 204px;
-`;
-
+const Wrapper = styled.div``;
 const InputWrapper = styled(Row)<{
   padding: string;
   border: string;
   borderBottom: string;
 }>`
+  width: 100%;
   border-radius: 1px;
   padding: ${(props) => props.padding};
+  .SingleDatePickerInput_calendarIcon {
+    padding: 5px;
+    margin: 0px;
+  }
   .SingleDatePickerInput_calendarIcon_svg {
     display: none;
   }
@@ -42,16 +45,17 @@ const InputWrapper = styled(Row)<{
   .SingleDatePickerInput__withBorder {
     background-color: white;
   }
+  .DateInput_input__disabled {
+    font-family: Roboto;
+    font-style: normal;
+    color: #4f4f4f;
+  }
 `;
 const Input = styled(SingleDatePicker)``;
 const Content = styled(Row)`
   cursor: pointer;
   padding-top: 1px;
   padding-bottom: 1px;
-`;
-
-const SImage = styled.div<{ padding: string }>`
-  padding: ${(props) => props.padding};
 `;
 
 type Props = {
@@ -75,7 +79,7 @@ const InputDate = ({
   disabled,
   hasError,
   size = "0px",
-  icon = "",
+  icon,
   label = "",
   hint = "",
   errorMessage = "",
@@ -121,14 +125,14 @@ const InputDate = ({
                 inputIconPosition={iconPosition}
                 customInputIcon={
                   icon && (
-                    <SImage padding="0px 0px 0px 10px">
+                    <BaseImage width="25px" height="25px">
                       <Image
                         src={icon}
-                        width="25px"
-                        height="25px"
+                        width="100%"
+                        height="100%"
                         alt="calender"
                       />
-                    </SImage>
+                    </BaseImage>
                   )
                 }
                 showDefaultInputIcon={false}
@@ -145,25 +149,3 @@ const InputDate = ({
 };
 
 export default React.memo(InputDate);
-
-/*
-{!!icon && IconPosition.LEFT === iconPosition && (
-  <SImage padding="0px 10px 0px 0px">
-    <Image
-      src={icon}
-      width="25px"
-      height="25px"
-      alt="calender"
-    />
-  </SImage>
-)}
-{!!icon && IconPosition.RIGHT === iconPosition && (
-  <SImage padding="0px 0px 0px 10px">
-    <Image
-      src={icon}
-      width="25px"
-      height="25px"
-      alt="calender"
-    />
-  </SImage>
-)} */

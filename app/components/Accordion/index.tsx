@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import CaretUp from "../icons/Outline/Interface/Caret_up.svg";
@@ -15,33 +15,9 @@ const Header = styled(Row)`
   cursor: pointer;
 `;
 
-const Content = styled.div<{ animation: string; height?: number }>`
-  animation-duration: 0.5s;
-  animation-name: ${(props) => props.animation};
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-in-out;
-  @keyframes open {
-    0% {
-      max-height: 0px;
-    }
-    100% {
-      max-height: ${(props) => props.height}px;
-    }
-  }
-  @keyframes close {
-    0% {
-      max-height: ${(props) => props.height}px;
-
-      overflow: hidden;
-    }
-    99% {
-      opacity: 1;
-    }
-    100% {
-      max-height: 0px;
-      opacity: 0;
-    }
-  }
+const Content = styled(Row)<{ height?: number }>`
+  max-height: ${(props) => props.height};
+  transition: max-height 0.5s ease-in-out forwards;
 `;
 
 const SlideWrapper = styled.div`
@@ -57,6 +33,7 @@ const Divider = styled.div`
 type Props = {
   opened?: boolean;
   showChevron?: boolean;
+  showDivider?: boolean;
   content: React.ReactElement;
   header: React.ReactElement;
   height?: number;
@@ -66,26 +43,21 @@ type Props = {
 
 const Accordion = ({
   opened = false,
-  showChevron = true,
+  showChevron,
+  showDivider,
   content,
   header,
   height,
   onOpen,
   onClose,
 }: Props) => {
-  const [isOpen, setIsOpen] = useState(opened);
   const clickHandler = () => {
-    if (!isOpen) onOpen();
-    if (isOpen) onClose();
-    setIsOpen(!isOpen);
+    if (!opened) onOpen();
+    if (opened) onClose();
   };
   return (
     <Wrapper container>
-      <Header
-        justifyContent="space-between"
-        alignItems="end"
-        onClick={() => clickHandler()}
-      >
+      <Header alignItems="center" onClick={() => clickHandler()}>
         {header}
         {showChevron && (
           <Caret
@@ -93,13 +65,13 @@ const Accordion = ({
             width="25px"
             alt="caret"
             src={CaretUp.src}
-            rotate={isOpen ? "180deg" : "0deg"}
+            rotate={opened ? "0deg" : "180deg"}
           />
         )}
       </Header>
-      <Divider />
+      {showDivider && <Divider />}
       <SlideWrapper>
-        <Content height={height} animation={isOpen ? "close" : "open"}>
+        <Content container alignItems="start" height={opened ? height : 0}>
           {content}
         </Content>
       </SlideWrapper>

@@ -28,25 +28,25 @@ const CardImageLeftSkeleton = () => (
     imageLocation={CardImageLocation.LEFT}
     content={
       <SColumn justifyContent="start" height="100%">
-        <SRow justifyContent="start">
+        <SRow container justifyContent="start">
           <SSkeleton type={SkeletonType.BLOCK} width="247px" height="27px" />
         </SRow>
-        <SRow justifyContent="start">
+        <SRow container justifyContent="start">
           <SSkeleton type={SkeletonType.BLOCK} width="130px" height="19px" />
           <SSkeleton type={SkeletonType.BLOCK} width="120px" height="19px" />
         </SRow>
-        <SRow justifyContent="start" alignItems="end">
+        <SRow container justifyContent="start" alignItems="end">
           <SSkeleton type={SkeletonType.BLOCK} width="140px" height="24px" />
         </SRow>
-        <SRow justifyContent="start">
+        <SRow container justifyContent="start">
           <SSkeleton type={SkeletonType.BLOCK} width="100px" height="28px" />
           <SSkeleton type={SkeletonType.BLOCK} width="100px" height="28px" />
           <SSkeleton type={SkeletonType.BLOCK} width="100px" height="28px" />
         </SRow>
-        <SRow justifyContent="start">
+        <SRow container justifyContent="start">
           <SSkeleton type={SkeletonType.BLOCK} width="580px" height="195px" />
         </SRow>
-        <SRow justifyContent="end">
+        <SRow container justifyContent="end">
           <SSkeleton type={SkeletonType.BLOCK} width="68px" height="50px" />
           <SSkeleton type={SkeletonType.BLOCK} width="100px" height="50px" />
         </SRow>

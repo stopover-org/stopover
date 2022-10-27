@@ -14,11 +14,18 @@ type Props = {
   href?: string;
   disabled?: boolean;
   children: React.ReactNode;
+  color?: string;
 };
 
-const Link = ({ href = "#", disabled, children, ...props }: Props) => (
+const Link = ({
+  href = "#",
+  disabled,
+  children,
+  color = "#FF8A00",
+  ...props
+}: Props) => (
   <NextLink href={disabled ? "" : href} passHref {...props}>
-    <SLink color={disabled ? "grey" : "#FF8A00"}>{children}</SLink>
+    <SLink color={disabled ? "grey" : color}>{children}</SLink>
   </NextLink>
 );
 
