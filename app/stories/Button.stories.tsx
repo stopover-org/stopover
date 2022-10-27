@@ -1,20 +1,26 @@
 import React from 'react';
 import Button from "../components/Button";
 import Typography from "../components/Typography";
+import icon from "../components/icons/Outline/Brands/Android.svg";
+import Image from "next/image";
 
 export default {
     title: "Components/Button",
-    component: "Button",
-    argTypes: {
-        disabled: { control: "boolean" },
-        color: { control: "text"},
-    },
+    component: Button,
+
 }
 
-export const Default = (args) => <Button {...args} ><Typography>Press me</Typography></Button>
+const Template = (args: any) => <Button {...args} />
+
+export const Default = Template.bind({})
 Default.args = {
+    borderRadius: "5px",
     disabled: false,
-    color: "black",
+    children: "press me",
 }
 
-export const Disabled = () => <Button disabled><Typography>Press me</Typography></Button>
+export const Icon = Template.bind({})
+Icon.args = {
+    children: "press me",
+    icon: <Image src={icon.src} width="25px" height="25px" alt="icon button" />
+}
