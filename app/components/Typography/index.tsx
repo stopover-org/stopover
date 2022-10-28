@@ -4,7 +4,6 @@ import { TypographySize, TypographyTags } from "../StatesEnum";
 
 const TextStyle = styled.span<{
   size: string;
-  textDecoration: string;
   fontWeight: string;
   fontStyle: string;
   color: string;
@@ -18,12 +17,18 @@ const TextStyle = styled.span<{
   font-style: ${(props) => props.fontStyle};
   font-weight: ${(props) => props.fontWeight};
   font-size: ${(props) => props.size};
-  text-decoration: ${(props) => props.textDecoration};
-  text-decoration: ${(props) => props.underline};
   color: ${(props) => props.color};
-  line-height: ${(props) => props.lineHeight || "1.2em"};
+  line-height: ${(props) => props.lineHeight};
   max-height: 195px;
   word-break: break-word;
+`;
+
+const UnderlineStyle = styled.span<{ textDecoration: string }>`
+  text-decoration: ${(props) => props.textDecoration};
+`;
+
+const SrikeThroughStyle = styled.span<{ textDecoration: string }>`
+  text-decoration: ${(props) => props.textDecoration};
 `;
 
 type Props = {
@@ -37,7 +42,6 @@ type Props = {
   underline?: boolean;
   lineHeight?: string;
 };
-
 const Typography = ({
   color = "inherit",
   italic,
@@ -47,6 +51,7 @@ const Typography = ({
   underline,
   as = TypographyTags.MEDIUM,
   fontWeight = "300",
+  lineHeight = "1.2em",
   ...props
 }: Props) => (
   <TextStyle
@@ -54,12 +59,15 @@ const Typography = ({
     size={size}
     color={color}
     fontWeight={fontWeight}
-    textDecoration={strikeThrough ? "line-through" : "none"}
     fontStyle={italic ? "italic" : "none"}
-    underline={underline ? "underline" : "none"}
+    lineHeight={lineHeight}
     {...props}
   >
-    {children}
+    <UnderlineStyle textDecoration={strikeThrough ? "line-through" : "none"}>
+      <SrikeThroughStyle textDecoration={underline ? "underline" : "none"}>
+        {children}
+      </SrikeThroughStyle>
+    </UnderlineStyle>
   </TextStyle>
 );
 
