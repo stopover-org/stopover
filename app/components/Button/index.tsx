@@ -3,6 +3,10 @@ import styled from "styled-components";
 import { ButtonVariants, ButtonIconPlace, ButtonSizes } from "../StatesEnum";
 
 const Wrapper = styled.div``;
+const IconPadding = styled.div<{ padding: string }>`
+  padding: ${(props) => props.padding};
+`;
+
 const ButtonStyle = styled.button<{
   backgroundColor: string;
   color: string;
@@ -12,7 +16,7 @@ const ButtonStyle = styled.button<{
   borderRadius: string;
 }>`
   border-radius: ${(props) => props.borderRadius};
-  color: ${(props) => props.color || "#000000"};
+  color: ${(props) => props.color};
   background-color: ${(props) => props.backgroundColor};
   border: 1px solid ${(props) => props.border};
   padding: ${(props) => props.padding};
@@ -50,7 +54,7 @@ const getContent = (
   if (iconPosition === ButtonIconPlace.WITH_LEFT_ICON) {
     return (
       <Content>
-        {icon}
+        <IconPadding padding="0px 10px 0px 0px">{icon}</IconPadding>
         {children}
       </Content>
     );
@@ -59,7 +63,7 @@ const getContent = (
     return (
       <Content>
         {children}
-        {icon}
+        <IconPadding padding="0px 0px 0px 10px">{icon}</IconPadding>
       </Content>
     );
   }
@@ -73,7 +77,7 @@ const Button = ({
   icon,
   disabled,
   backgroundColor = "#FF8A00",
-  color = "#FFFFFF",
+  color = "black",
   size = ButtonSizes.BIG,
   borderRadius = "3px",
   ...props

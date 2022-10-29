@@ -42,7 +42,7 @@ const SImage = styled.div<{ padding: string }>`
   padding: ${(props) => props.padding};
 `;
 
-type Props = {
+export type Props = {
   value?: string;
   id?: string;
   size?: string;
