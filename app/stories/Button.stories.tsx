@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from "../components/Button";
+import Button, { Props } from "../components/Button";
 import icon from "../components/icons/Outline/Brands/Android.svg";
 
 export default {
@@ -7,7 +7,7 @@ export default {
     component: Button,
 }
 
-const Template = (args: any) => <Button {...args} />
+const Template = (args: Props) => <Button {...args} />
 
 export const Default = Template.bind({})
 Default.args = {

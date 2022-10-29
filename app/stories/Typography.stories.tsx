@@ -4,11 +4,22 @@ import Typography from "../components/Typography";
 export default {
     title: "Components/Typography",
     component: Typography,
-    argTypes: {color: { control: "color" } }
+    argTypes: {
+        color: { control: "color" },
+    }
 }
 
-const Template = (args: any) => <Typography {...args} />
+const Preview = () => <>
+    <Typography>Header H1</Typography>
+    <Typography>Header H2</Typography>
+    <Typography>Header H3</Typography>
+    <Typography>Header H4</Typography>
+    <Typography>Header H5</Typography>
+    <Typography>Header H6</Typography>
+</>
+export const DesignPreview = Preview
 
+const Template = (args: any) => <Typography {...args} />
 export const Default = Template.bind({})
 Default.args = {
     children: "Header",

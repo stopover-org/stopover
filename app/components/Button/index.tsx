@@ -27,7 +27,7 @@ const Content = styled.div`
   align-items: center;
 `;
 
-type Props = {
+export type Props = {
   children: React.ReactNode;
   icon?: React.ReactElement; // TODO i do have to have icon
   variant?: ButtonVariants;

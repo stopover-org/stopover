@@ -174,14 +174,14 @@ const Input = ({
                     <SArrow>
                       <Image
                         onClick={() => changeValue(1)}
-                        src={CaretUp}
+                        src={CaretUp as any}
                         width="10px"
                         height="10px"
                         alt="arrow"
                       />
                       <Image
                         onClick={() => changeValue(-1)}
-                        src={CaretDown}
+                        src={CaretDown as any}
                         width="10px"
                         height="10px"
                         alt="arrow"
