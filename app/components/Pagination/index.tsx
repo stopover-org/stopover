@@ -150,7 +150,11 @@ const Pagination = ({
       // TODO: add knew functions to desable
       <Row justifyContent="space-between">
         {prevNextElementVisible && (
-          <DisabledElement size={size}>
+          <DisabledElement
+            size={size}
+            alignItems="center"
+            justifyContent="center"
+          >
             <Typography as={TypographyTags.LARGE} size="20px">
               {prevElement}
             </Typography>
@@ -158,7 +162,11 @@ const Pagination = ({
         )}
 
         {minVisible && (
-          <DisabledElement size={size}>
+          <DisabledElement
+            size={size}
+            alignItems="center"
+            justifyContent="center"
+          >
             <Typography as={TypographyTags.LARGE} size="20px">
               1
             </Typography>
@@ -166,7 +174,12 @@ const Pagination = ({
         )}
 
         {fillerVisible && (
-          <SFiller justifyContent="end" height={size} width="auto">
+          <SFiller
+            justifyContent="end"
+            height={size}
+            width="auto"
+            alignItems="center"
+          >
             <Typography as={TypographyTags.LARGE} size="20px">
               {fillerElement}
             </Typography>
@@ -174,21 +187,33 @@ const Pagination = ({
         )}
 
         {new Array(amountPagesOnLeft).fill("").map((_, index) => (
-          <DisabledElement size={size}>
+          <DisabledElement
+            size={size}
+            alignItems="center"
+            justifyContent="center"
+          >
             <Typography as={TypographyTags.LARGE} size="20px">
               {currentPage - amountPagesOnLeft + index}
             </Typography>
           </DisabledElement>
         ))}
 
-        <DisabledChoosen size={size}>
+        <DisabledChoosen
+          size={size}
+          alignItems="center"
+          justifyContent="center"
+        >
           <Typography as={TypographyTags.LARGE} size="20px">
             {currentPage}
           </Typography>
         </DisabledChoosen>
 
         {new Array(amountPagesOnRight).fill("").map((_, index) => (
-          <DisabledElement size={size}>
+          <DisabledElement
+            size={size}
+            alignItems="center"
+            justifyContent="center"
+          >
             <Typography as={TypographyTags.LARGE} size="20px">
               {currentPage + index + 1}
             </Typography>
@@ -196,7 +221,12 @@ const Pagination = ({
         ))}
 
         {fillerVisible && (
-          <SFiller justifyContent="end" height={size} width="auto">
+          <SFiller
+            justifyContent="end"
+            height={size}
+            width="auto"
+            alignItems="center"
+          >
             <Typography as={TypographyTags.LARGE} size="20px">
               {fillerElement}
             </Typography>
@@ -204,7 +234,11 @@ const Pagination = ({
         )}
 
         {maxVisible && (
-          <DisabledElement size={size}>
+          <DisabledElement
+            size={size}
+            alignItems="center"
+            justifyContent="center"
+          >
             <Typography as={TypographyTags.LARGE} size="20px">
               {totalPages}
             </Typography>
@@ -212,7 +246,11 @@ const Pagination = ({
         )}
 
         {prevNextElementVisible && (
-          <DisabledElement size={size}>
+          <DisabledElement
+            size={size}
+            alignItems="center"
+            justifyContent="center"
+          >
             <Typography as={TypographyTags.LARGE} size="20px">
               {nextElement}
             </Typography>
@@ -222,9 +260,14 @@ const Pagination = ({
     );
 
   return (
-    <Row>
+    <Row justifyContent="center">
       {prevNextElementVisible && currentPage !== 1 && (
-        <PrevElement size={size} onClick={onPrevPage}>
+        <PrevElement
+          size={size}
+          onClick={onPrevPage}
+          alignItems="center"
+          justifyContent="center"
+        >
           <Typography as={TypographyTags.LARGE} size="20px">
             {prevElement}
           </Typography>
@@ -232,7 +275,12 @@ const Pagination = ({
       )}
 
       {minVisible && currentPage > amountPagesOnLeft + 1 && (
-        <PageNumber size={size} onClick={() => onSelectPage(1)}>
+        <PageNumber
+          size={size}
+          onClick={() => onSelectPage(1)}
+          alignItems="center"
+          justifyContent="center"
+        >
           <Typography as={TypographyTags.LARGE} size="20px">
             1
           </Typography>
@@ -240,7 +288,12 @@ const Pagination = ({
       )}
 
       {fillerVisible && currentPage > amountPagesOnLeft + 2 && (
-        <SFiller justifyContent="end" height={size} width="auto">
+        <SFiller
+          justifyContent="end"
+          height={size}
+          width="auto"
+          alignItems="center"
+        >
           <Typography as={TypographyTags.LARGE} size="20px">
             {fillerElement}
           </Typography>
@@ -256,12 +309,10 @@ const Pagination = ({
               onClick={() =>
                 onSelectPage(currentPage - calculatePagesOnLeft() + index)
               }
+              alignItems="center"
+              justifyContent="center"
             >
-              <Typography
-                fontWeight="400"
-                as={TypographyTags.LARGE}
-                size="20px"
-              >
+              <Typography as={TypographyTags.LARGE} size="20px">
                 {currentPage + index - calculatePagesOnLeft()}
               </Typography>
             </PageNumber>
@@ -270,7 +321,7 @@ const Pagination = ({
         return null;
       })}
 
-      <Choosen size={size}>
+      <Choosen size={size} alignItems="center" justifyContent="center">
         <Typography as={TypographyTags.LARGE} size="20px">
           {currentPage}
         </Typography>
@@ -283,6 +334,8 @@ const Pagination = ({
               key={index}
               size={size}
               onClick={() => onSelectPage(currentPage + index + 1)}
+              alignItems="center"
+              justifyContent="center"
             >
               <Typography as={TypographyTags.LARGE} size="20px">
                 {currentPage + index + 1}
@@ -294,7 +347,12 @@ const Pagination = ({
       })}
 
       {fillerVisible && currentPage < totalPages - amountPagesOnRight - 1 && (
-        <SFiller justifyContent="end" height={size} width="auto">
+        <SFiller
+          justifyContent="end"
+          height={size}
+          width="auto"
+          alignItems="center"
+        >
           <Typography as={TypographyTags.LARGE} size="20px">
             {fillerElement}
           </Typography>
@@ -302,7 +360,12 @@ const Pagination = ({
       )}
 
       {maxVisible && currentPage < totalPages - amountPagesOnRight && (
-        <PageNumber size={size} onClick={() => onSelectPage(totalPages)}>
+        <PageNumber
+          size={size}
+          onClick={() => onSelectPage(totalPages)}
+          alignItems="center"
+          justifyContent="center"
+        >
           <Typography as={TypographyTags.LARGE} size="20px">
             {totalPages}
           </Typography>
@@ -310,7 +373,12 @@ const Pagination = ({
       )}
 
       {prevNextElementVisible && currentPage !== totalPages && (
-        <NextElement size={size} onClick={onNextPage}>
+        <NextElement
+          size={size}
+          onClick={onNextPage}
+          alignItems="center"
+          justifyContent="center"
+        >
           <Typography as={TypographyTags.LARGE} size="20px">
             {nextElement}
           </Typography>
