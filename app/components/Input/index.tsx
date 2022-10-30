@@ -13,6 +13,10 @@ const Content = styled(Row)`
   cursor: pointer;
 `;
 
+const SErrorMessage = styled.div<{ color: string }>`
+  color: ${(props) => props.color};
+`;
+
 const InputWrapper = styled.div<{
   padding: string;
   border: string;
@@ -204,7 +208,11 @@ const Input = ({
               </Content>
             </InputWrapper>
           </Content>
-          <Content justifyContent="start">{errorMessage || hint}</Content>
+          <Content justifyContent="start">
+            <SErrorMessage color={errorMessage ? "#BE0000" : "black"}>
+              {errorMessage || hint}
+            </SErrorMessage>
+          </Content>
         </Column>
       </label>
     </Wrapper>
