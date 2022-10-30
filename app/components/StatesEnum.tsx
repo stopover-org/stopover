@@ -36,12 +36,12 @@ export enum TypographyTags {
   LINK = "a",
 }
 export enum ButtonVariants {
-  COMMON,
-  OUTLINED,
+  COMMON = "common",
+  OUTLINED = "outlined",
 }
 export enum ButtonIconPlace {
-  WITH_RIGHT_ICON,
-  WITH_LEFT_ICON,
+  WITH_RIGHT_ICON = "icon_on_right",
+  WITH_LEFT_ICON = "icon_on_left",
 }
 export enum ButtonSizes {
   H1 = "6px",

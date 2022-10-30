@@ -7,7 +7,6 @@ import Radio from "../Animated/Radio";
 import { CheckboxSizes, CheckboxType } from "../StatesEnum";
 import { Omit } from "../../lib/types";
 
-const Wrapper = styled.div``;
 const CustomCheckboxLabel = styled.label`
   input {
     display: none;
@@ -26,12 +25,13 @@ const BoxContaner = styled.div<{ size: CheckboxSizes }>`
   min-width: ${(props) => props.size};
   height: ${(props) => props.size};
   width: ${(props) => props.size};
-  padding: 0.01%;
+  padding: 1px;
+  margin-right: 5px;
 `;
 
 type CheckboxProps = {
   id?: string;
-  children: React.ReactNode;
+  children: string | React.ReactNode;
   disabled?: boolean;
   type?: CheckboxType;
   checked?: boolean;
@@ -39,7 +39,10 @@ type CheckboxProps = {
   animate?: boolean;
 };
 
-type Props = Omit<React.HTMLProps<HTMLInputElement>, keyof CheckboxProps> &
+export type Props = Omit<
+  React.HTMLProps<HTMLInputElement>,
+  keyof CheckboxProps
+> &
   CheckboxProps;
 
 const Checkbox = ({
@@ -53,37 +56,35 @@ const Checkbox = ({
   onClick,
   ...props
 }: Props) => (
-  <Wrapper>
-    <CustomCheckboxLabel htmlFor={id}>
-      <CustomCheckboxWrapper justifyContent="space-between">
-        <BoxContaner size={size}>
-          {type === CheckboxType.RADIO && (
-            <Radio
-              animateOnClick={checked}
-              disabled={disabled}
-              animate={animate}
-            />
-          )}
-          {type === CheckboxType.CHECKBOX && (
-            <Checkmark
-              animateOnClick={checked}
-              disabled={disabled}
-              animate={animate}
-            />
-          )}
-        </BoxContaner>
-        {children}
-        <input
-          type={type}
-          id={id}
-          disabled={disabled}
-          checked={checked}
-          onClick={onClick}
-          {...props}
-        />
-      </CustomCheckboxWrapper>
-    </CustomCheckboxLabel>
-  </Wrapper>
+  <CustomCheckboxLabel htmlFor={id}>
+    <CustomCheckboxWrapper container alignItems="center" justifyContent="start">
+      <BoxContaner size={size}>
+        {type === CheckboxType.RADIO && (
+          <Radio
+            animateOnClick={checked}
+            disabled={disabled}
+            animate={animate}
+          />
+        )}
+        {type === CheckboxType.CHECKBOX && (
+          <Checkmark
+            animateOnClick={checked}
+            disabled={disabled}
+            animate={animate}
+          />
+        )}
+      </BoxContaner>
+      {children}
+      <input
+        type={type}
+        id={id}
+        disabled={disabled}
+        checked={checked}
+        onClick={onClick}
+        {...props}
+      />
+    </CustomCheckboxWrapper>
+  </CustomCheckboxLabel>
 );
 
 export default React.memo(Checkbox);
