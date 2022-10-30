@@ -4,7 +4,7 @@ import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import Column from "../Column";
 import Row from "../Row";
-import { IconPosition, InputVariants } from "../StatesEnum";
+import { IconPosition, InputVariants, InputSizes } from "../StatesEnum";
 import CaretUp from "../icons/Outline/Interface/Caret_up.svg";
 import CaretDown from "../icons/Outline/Interface/Caret_down.svg";
 
@@ -35,17 +35,19 @@ const SInput = styled.input`
 const SArrow = styled(Column)`
   height: 20px;
   width: 16px;
-  margin: 0px 10px 0px 10px;
+  margin-left: 10px;
 `;
 
-const SImage = styled.div<{ padding: string }>`
-  padding: ${(props) => props.padding};
+const SImage = styled.div<{ margin: string }>`
+  margin: ${(props) => props.margin};
+  min-width: 25px;
+  height: 25px;
 `;
 
 export type Props = {
   value?: string;
   id?: string;
-  size?: string;
+  size?: string | InputSizes;
   type?: string;
   icon?: string;
   minValue?: number;
@@ -60,7 +62,7 @@ export type Props = {
 
 const Input = ({
   value = "",
-  size = "0px",
+  size = InputSizes.MEDIUM,
   id = uuidv4(),
   type = "text",
   label = "",
@@ -151,10 +153,10 @@ const Input = ({
                 variant === InputVariants.OUTLINED ? borderStyle() : ""
               }
             >
-              <Content>
+              <Content container alignItems="center">
                 <>
                   {!!icon && IconPosition.LEFT === iconPosition && (
-                    <SImage padding="0px 10px 0px 0px">
+                    <SImage margin="0px 10px 0px 0px">
                       <Image
                         src={icon}
                         width="25px"
@@ -171,7 +173,7 @@ const Input = ({
                     {...props}
                   />
                   {type === "number" && (
-                    <SArrow>
+                    <SArrow justifyContent="center">
                       <Image
                         onClick={() => changeValue(1)}
                         src={CaretUp as any}
@@ -189,7 +191,7 @@ const Input = ({
                     </SArrow>
                   )}
                   {!!icon && IconPosition.RIGHT === iconPosition && (
-                    <SImage padding="0px 0px 0px 10px">
+                    <SImage margin="0px 0px 0px 10px">
                       <Image
                         src={icon}
                         width="25px"

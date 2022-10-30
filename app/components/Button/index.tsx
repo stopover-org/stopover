@@ -96,7 +96,7 @@ const Button = ({
         }
         color={color}
         padding={size.toString()}
-        cursor={disabled ? "auto" : "pointer"}
+        cursor={disabled ? "not-allowed" : "pointer"}
         disabled={disabled}
         borderRadius={borderRadius}
       >
