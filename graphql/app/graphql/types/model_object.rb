@@ -6,6 +6,10 @@ module Types
     connection_type_class(Types::BaseConnection)
 
     implements GraphQL::Types::Relay::Node
-    global_id_field :relay_id
+    global_id_field :id
+
+    def raw_id
+      object.id
+    end
   end
 end
