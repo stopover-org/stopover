@@ -16,6 +16,7 @@ import Row from "../../Row";
 import Pagination from "../../Pagination";
 import { Currencies, PaginationSize, TypographySize } from "../../StatesEnum";
 import Typography from "../../Typography";
+import { List_InterestsFragment$key } from "./__generated__/List_InterestsFragment.graphql";
 
 const Wrapper = styled.div`
   display: flex;
@@ -70,7 +71,7 @@ const EventsList = ({ eventsReference }: Props) => {
     eventsReference
   );
 
-  const interests = useFragment(
+  const interests = useFragment<List_InterestsFragment$key>(
     graphql`
       fragment List_InterestsFragment on Query {
         ...InterestGallery_InterestsFragment
@@ -106,6 +107,26 @@ const EventsList = ({ eventsReference }: Props) => {
   const onSelectPage = (page: number) => {
     setCurrentPage(page);
   };
+
+  const onFiltersChange = ({
+    minDate,
+    maxDate,
+    minPrice,
+    maxPrice,
+    city,
+  }: any) => {
+    console.log(events);
+
+    events.refetch({
+      filters: {
+        startDate: minDate,
+        endDate: maxDate,
+        minPrice,
+        maxPrice,
+        city,
+      },
+    });
+  };
   return (
     <Wrapper>
       <EventFilter
@@ -114,6 +135,7 @@ const EventsList = ({ eventsReference }: Props) => {
         minPrice={events.data.eventFilters.minPrice!}
         maxPrice={events.data.eventFilters.maxPrice!}
         city={events.data.eventFilters.city}
+        onChange={onFiltersChange}
       />
       <Interests>
         <Search

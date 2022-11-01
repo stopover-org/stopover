@@ -61,65 +61,32 @@ const Card = ({
   height = "auto",
   padding = "0px",
   ...props
-}: Props) => (
-  <Wrapper {...props}>
-    {imageLocation === CardImageLocation.LEFT && (
-      <SRow
+}: Props) => {
+  const startPosition =
+    imageLocation === CardImageLocation.TOP ||
+    imageLocation === CardImageLocation.LEFT;
+
+  const Tag =
+    CardImageLocation.TOP || CardImageLocation.BOTTOM ? SColumn : SRow;
+  const leftContent = startPosition ? image : content;
+  const rightContent = startPosition ? content : image;
+  const justifyContent = startPosition ? "start" : "end";
+  return (
+    <Wrapper {...props}>
+      <Tag
         width={width}
         height={height}
         padding={padding}
-        justifyContent="start"
+        justifyContent={justifyContent}
       >
-        {image}
-        {content}
+        {leftContent}
+        {rightContent}
         <SChildren top={childrenTop} right={childrenRight}>
           {children}
         </SChildren>
-      </SRow>
-    )}
-    {imageLocation === CardImageLocation.RIGHT && (
-      <SRow
-        width={width}
-        height={height}
-        padding={padding}
-        justifyContent="end"
-      >
-        {content}
-        {image}
-        <SChildren top={childrenTop} right={childrenRight}>
-          {children}
-        </SChildren>
-      </SRow>
-    )}
-    {imageLocation === CardImageLocation.TOP && (
-      <SColumn
-        width={width}
-        height={height}
-        padding={padding}
-        justifyContent="start"
-      >
-        {image}
-        {content}
-        <SChildren top={childrenTop} right={childrenRight}>
-          {children}
-        </SChildren>
-      </SColumn>
-    )}
-    {imageLocation === CardImageLocation.BOTTOM && (
-      <SColumn
-        width={width}
-        height={height}
-        padding={padding}
-        justifyContent="end"
-      >
-        {content}
-        {image}
-        <SChildren top={childrenTop} right={childrenRight}>
-          {children}
-        </SChildren>
-      </SColumn>
-    )}
-  </Wrapper>
-);
+      </Tag>
+    </Wrapper>
+  );
+};
 
 export default Card;

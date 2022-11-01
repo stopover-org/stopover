@@ -40,6 +40,15 @@ type Props = {
   minPrice: number;
   maxPrice: number;
   city: string | null;
+  onChange: (filters: {
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+    minDate: moment.Moment;
+    maxDate: moment.Moment;
+    minPrice: number;
+    maxPrice: number;
+    city: string;
+  }) => void;
 };
 
 const EventFilter = ({
@@ -48,6 +57,7 @@ const EventFilter = ({
   minPrice,
   maxPrice,
   city,
+  onChange,
 }: Props) => {
   const [startPrice, setStartPrice] = React.useState<number>(minPrice);
   const [endPrice, setEndPrice] = React.useState<number>(maxPrice);
@@ -60,6 +70,18 @@ const EventFilter = ({
   const [maxDate, setMaxDate] = React.useState<moment.Moment | null>(
     maxDateProp
   );
+
+  React.useEffect(() => {
+    onChange({
+      startDate: startDate || minDateProp,
+      endDate: endDate || maxDateProp,
+      maxDate: maxDate || maxDateProp,
+      minDate: minDate || minDateProp,
+      minPrice,
+      maxPrice,
+      city: city || "",
+    });
+  }, [startPrice, endPrice, startDate, endDate, minDate, maxDate]);
 
   // TODO restore this functionality when backend will have this fields
   // const [selectedIndividualOnly, setSelectedIndividualOnly] =
