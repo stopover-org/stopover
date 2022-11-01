@@ -22,7 +22,11 @@ const AccordionPadding = styled.div`
   padding: 18px 30px;
 `;
 
-export const Booking = () => {
+type Props = {
+  duration: string;
+};
+
+export const Booking = ({ duration }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -32,7 +36,7 @@ export const Booking = () => {
         title="Ultramarine"
         text=" Жизнь свою отдаю Императору. Молюсь, дабы Он принял ее.Силу свою отдаю Императору. Молюсь, дабы ее не лишил меня Он. Кровь свою отдаю Императору. Молюсь, дабы утолила она жажду Его. Тело свое кладу на алтарь битвы, Молюсь, дабы Он даровал мне благородную смерть. Молю Его о защите, всё отдавая взамен."
         units="1"
-        time="3:00-4:00"
+        time={duration}
       />
       <AccordionPadding>
         <Accordion
