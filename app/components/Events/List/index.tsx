@@ -119,8 +119,6 @@ const EventsList = ({ eventsReference }: Props) => {
     maxPrice,
     city,
   }: any) => {
-    console.log(events);
-
     events.refetch({
       filters: {
         startDate: minDate,
