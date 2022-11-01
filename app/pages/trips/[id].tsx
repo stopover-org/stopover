@@ -11,22 +11,18 @@ const Query = graphql`
       id
       bookedFor
       event {
-        title
         durationTime
-        description
-        images
       }
     }
   }
 `;
 
 const Trip = ({ preloadedQuery }: any) => {
-  const query = usePreloadedQuery(Query, preloadedQuery);
+  const data = usePreloadedQuery(Query, preloadedQuery);
+  console.log(data.bookings[0].bookedFor, data.bookings[0].id);
   return (
     <Layout>
-      {query.bookings.map((_: any, index: number) => (
-        <Booking eventsReference={query.bookings[index]} />
-      ))}
+      <Booking duration={data.bookings[0].event.durationTime} />
     </Layout>
   );
 };

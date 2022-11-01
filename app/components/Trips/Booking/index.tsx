@@ -24,19 +24,10 @@ const AccordionPadding = styled.div`
 `;
 
 type Props = {
-  eventsReference: {
-    bookedFor: string;
-    id: string;
-    event: {
-      description: string;
-      durationTime: string;
-      images: string[];
-      title: string;
-    };
-  };
+  duration: string;
 };
 
-export const Booking = ({ eventsReference }: Props) => {
+export const Booking = ({ duration }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   console.log(moment(eventsReference.bookedFor).format("h:mm"));
   return (
@@ -46,6 +37,7 @@ export const Booking = ({ eventsReference }: Props) => {
         title={eventsReference.event.title}
         text={eventsReference.event.description}
         units="1"
+        time={duration}
       />
       <AccordionPadding>
         <Accordion

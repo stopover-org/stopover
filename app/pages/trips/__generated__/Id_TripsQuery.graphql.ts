@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<856a5efc7485e0d531b2283757a70362>>
+ * @generated SignedSource<<460ae0a6776ab0cf4f3a7a81024e7bea>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,10 +16,7 @@ export type Id_TripsQuery$data = {
   readonly bookings: ReadonlyArray<{
     readonly bookedFor: any;
     readonly event: {
-      readonly description: string;
       readonly durationTime: string;
-      readonly images: ReadonlyArray<string>;
-      readonly title: string;
     };
     readonly id: string;
   }> | null;
@@ -62,28 +59,7 @@ v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
-  "storageKey": null
-},
-v5 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "durationTime",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "description",
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "images",
   "storageKey": null
 };
 return {
@@ -111,10 +87,7 @@ return {
             "name": "event",
             "plural": false,
             "selections": [
-              (v4/*: any*/),
-              (v5/*: any*/),
-              (v6/*: any*/),
-              (v7/*: any*/)
+              (v4/*: any*/)
             ],
             "storageKey": null
           }
@@ -150,9 +123,6 @@ return {
             "plural": false,
             "selections": [
               (v4/*: any*/),
-              (v5/*: any*/),
-              (v6/*: any*/),
-              (v7/*: any*/),
               (v2/*: any*/)
             ],
             "storageKey": null
@@ -163,16 +133,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e19861fadad19df596e37869d683a6b5",
+    "cacheID": "2d3f714d258a376bebeaf7fdb6804c81",
     "id": null,
     "metadata": {},
     "name": "Id_TripsQuery",
     "operationKind": "query",
-    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  bookings(id: $id) {\n    id\n    bookedFor\n    event {\n      title\n      durationTime\n      description\n      images\n      id\n    }\n  }\n}\n"
+    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  bookings(id: $id) {\n    id\n    bookedFor\n    event {\n      durationTime\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "250c63d1aa04af82df357c08f795642c";
+(node as any).hash = "e353a9496ede5108a7fc46aef32a9c57";
 
 export default node;
