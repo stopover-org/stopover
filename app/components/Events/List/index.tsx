@@ -121,10 +121,7 @@ const EventsList = ({ eventsReference }: Props) => {
           city,
         },
       },
-      {
-        fetchPolicy: "store-and-network",
-      }
-    );
+    });
   };
   return (
     <Wrapper>
