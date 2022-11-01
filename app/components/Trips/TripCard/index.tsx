@@ -32,7 +32,7 @@ export const TripCard = ({
     width="400px"
     content={
       <Content
-        justifyContent="center"
+        justifyContent="space-between"
         alignItems="center"
         width="60%"
         height="130px"
@@ -86,8 +86,8 @@ export const TripCard = ({
       </Content>
     }
     image={
-      <BaseImage width="40%">
-        <img src={image} alt="boss darksouls" width="100%" height="100%" />
+      <BaseImage width="40%" height="130px">
+        <img src={image} alt="boss darksouls" />
       </BaseImage>
     }
   />

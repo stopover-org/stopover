@@ -69,7 +69,7 @@ const PaginationGallery = ({
             {title}
           </Typography>
         </Row>
-        <Row justifyContent="start">
+        <Row justifyContent="start" alignItems="center">
           {isLoading &&
             new Array(cardsShown).fill("").map((_, index) => (
               <IndividualCard key={index}>

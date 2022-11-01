@@ -33,7 +33,7 @@ export const Booking = ({ duration }: Props) => {
     <>
       <BookingCard
         image="https://i.ytimg.com/vi/TG60ElhAYCk/maxresdefault.jpg"
-        title="Ultramarine"
+        title={title}
         text=" Жизнь свою отдаю Императору. Молюсь, дабы Он принял ее.Силу свою отдаю Императору. Молюсь, дабы ее не лишил меня Он. Кровь свою отдаю Императору. Молюсь, дабы утолила она жажду Его. Тело свое кладу на алтарь битвы, Молюсь, дабы Он даровал мне благородную смерть. Молю Его о защите, всё отдавая взамен."
         units="1"
         time={duration}
