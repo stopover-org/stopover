@@ -74,4 +74,11 @@ count.times.each do |_event|
   event.images.attach(io: event_image, filename: "#{event.title}.jpg") unless ENV['without_images'] == 'true'
   puts "#{event.id} #{event.title} was created"
 end
+
 Event.first((count * 0.25).to_i).each { |e| e.update!(status: :draft) }
+
+trip = Trip.create!(account: Account.last, status: :draft)
+
+Event.where.not(single_days_with_time: []).last(10).each do |event|
+  event.bookings.create!(booked_for: event.single_days_with_time.first, trip: trip)
+end

@@ -24,6 +24,14 @@ module Types
       argument :id, ID, required: true
     end
 
+    field :bookings, [Types::BookingType]do
+      argument :id, ID, required: true
+    end
+
+    def bookings(**args)
+      Booking.where(trip_id: args[:id])
+    end
+
     def current_user
       context[:current_user]
     end
