@@ -111,8 +111,7 @@ const EventsList = ({ eventsReference }: Props) => {
     maxPrice,
     city,
   }: ChangeFiltersProps) => {
-    events.refetch(
-      {
+    events.refetch({
         filters: {
           startDate: minDate,
           endDate: maxDate,
