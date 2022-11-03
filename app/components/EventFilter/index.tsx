@@ -112,35 +112,6 @@ const EventFilter = ({ onChange, eventFiltersRef }: Props) => {
     };
   }, [location, startPrice, endPrice, startDate, endDate, maxDate, minDate]);
 
-  React.useEffect(() => {
-    onChange({
-      startDate: startDate || minDateProp,
-      endDate: endDate || maxDateProp,
-      maxDate: maxDate || maxDateProp,
-      minDate: minDate || minDateProp,
-      minPrice,
-      maxPrice,
-      city: city || "",
-    });
-  }, [startPrice, endPrice, startDate, endDate, minDate, maxDate]);
-
-  // TODO restore this functionality when backend will have this fields
-  // const [selectedIndividualOnly, setSelectedIndividualOnly] =
-  //   useState<boolean>(false);
-  //
-  // const [selectedRate, setSelectedRate] = useState<number>(0);
-  //
-  // const individualEventsHandler = (
-  //   event: React.SyntheticEvent<HTMLInputElement>
-  // ) => {
-  //   if (event === null) throw new Error("check box returned null");
-  //   setSelectedIndividualOnly(event.currentTarget.checked);
-  // };
-  //
-  // const rateHandler = (rateIndex: number) => {
-  //   setSelectedRate(rateIndex);
-  // };
-
   const dateHandler = (
     newStartDate: moment.Moment | null,
     newEndDate: moment.Moment | null

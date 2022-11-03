@@ -111,7 +111,10 @@ const EventsList = ({ eventsReference }: Props) => {
     maxPrice,
     city,
   }: ChangeFiltersProps) => {
-    events.refetch({
+    console.log("asdfasdf", events);
+
+    events.refetch(
+        {
         filters: {
           startDate: minDate,
           endDate: maxDate,
@@ -120,7 +123,10 @@ const EventsList = ({ eventsReference }: Props) => {
           city,
         },
       },
-    });
+      {
+        fetchPolicy: "store-and-network",
+      }
+    );
   };
   return (
     <Wrapper>
