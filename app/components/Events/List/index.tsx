@@ -48,9 +48,10 @@ const EventsList = ({ eventsReference }: Props) => {
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
+        filters: { type: "EventsFilter" }
       )
       @refetchable(queryName: "EventsListPaginationQuery") {
-        events(first: $count, after: $cursor)
+        events(first: $count, after: $cursor, filters: $filters)
           @connection(key: "Events_events") {
           edges {
             node {
@@ -68,7 +69,10 @@ const EventsList = ({ eventsReference }: Props) => {
         }
       }
     `,
-    eventsReference
+    eventsReference,
+    {
+      fetchPolicy: "store-and-network",
+    }
   );
 
   const interests = useFragment<List_InterestsFragment$key>(
@@ -115,15 +119,22 @@ const EventsList = ({ eventsReference }: Props) => {
     maxPrice,
     city,
   }: any) => {
-    events.refetch({
-      filters: {
-        startDate: minDate,
-        endDate: maxDate,
-        minPrice,
-        maxPrice,
-        city,
+    console.log("asdfasdf", events);
+
+    events.refetch(
+      {
+        filters: {
+          startDate: minDate,
+          endDate: maxDate,
+          minPrice,
+          maxPrice,
+          city,
+        },
       },
-    });
+      {
+        fetchPolicy: "store-and-network",
+      }
+    );
   };
   return (
     <Wrapper>
@@ -147,7 +158,19 @@ const EventsList = ({ eventsReference }: Props) => {
           {generateCardsRowArray()}
         </SRow>
         <Pagination
-          onNextPage={() => setCurrentPage(currentPage + 1)}
+          onNextPage={() => {
+            events.refetch({
+              filters: {
+                startDate: events.data.eventFilters.startDate,
+                endDate: events.data.eventFilters.endDate,
+                minPrice: events.data.eventFilters.minPrice!,
+                maxPrice: events.data.eventFilters.maxPrice!,
+                city: events.data.eventFilters.city,
+              },
+            });
+
+            setCurrentPage(currentPage + 1);
+          }}
           onPrevPage={() => setCurrentPage(currentPage - 1)}
           onSelectPage={onSelectPage}
           currentPage={currentPage}

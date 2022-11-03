@@ -8,8 +8,8 @@ import Loading from "../../components/Loading";
 import { events_Query } from "./__generated__/events_Query.graphql";
 
 const Query = graphql`
-  query events_Query {
-    ...List_EventsFragment
+  query events_Query($filters: EventsFilter) {
+    ...List_EventsFragment @arguments(filters: $filters)
     ...List_InterestsFragment
   }
 `;
