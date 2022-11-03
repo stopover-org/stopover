@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
+import moment from "moment";
 import BookingForm from "../BookingForm";
 import Accordion from "../../Accordion";
 import Typography from "../../Typography";
@@ -23,20 +24,28 @@ const AccordionPadding = styled.div`
 `;
 
 type Props = {
-  duration: string;
+  eventsReference: {
+    bookedFor: string;
+    id: string;
+    event: {
+      description: string;
+      durationTime: string;
+      images: string[];
+      title: string;
+    };
+  };
 };
 
-export const Booking = ({ duration }: Props) => {
+export const Booking = ({ eventsReference }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  console.log(moment(eventsReference.bookedFor).format("h:mm"));
   return (
     <>
       <BookingCard
-        image="https://i.ytimg.com/vi/TG60ElhAYCk/maxresdefault.jpg"
-        title={title}
-        text=" Жизнь свою отдаю Императору. Молюсь, дабы Он принял ее.Силу свою отдаю Императору. Молюсь, дабы ее не лишил меня Он. Кровь свою отдаю Императору. Молюсь, дабы утолила она жажду Его. Тело свое кладу на алтарь битвы, Молюсь, дабы Он даровал мне благородную смерть. Молю Его о защите, всё отдавая взамен."
+        image={eventsReference.event.images[0]}
+        title={eventsReference.event.title}
+        text={eventsReference.event.description}
         units="1"
-        time={duration}
       />
       <AccordionPadding>
         <Accordion
@@ -52,6 +61,8 @@ export const Booking = ({ duration }: Props) => {
           }
           content={
             <BookingForm
+              date={moment(eventsReference.bookedFor)}
+              time={moment(eventsReference.bookedFor)}
               additionalOptions={[
                 {
                   text: "большой снегоход",

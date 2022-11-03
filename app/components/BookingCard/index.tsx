@@ -26,10 +26,9 @@ type Props = {
   title: string;
   text: string;
   units: string;
-  time: string;
 };
 
-export const BookingCard = ({ image, title, text, units, time }: Props) => (
+export const BookingCard = ({ image, title, text, units }: Props) => (
   <Card
     imageLocation={CardImageLocation.RIGHT}
     width="946px"
@@ -41,7 +40,7 @@ export const BookingCard = ({ image, title, text, units, time }: Props) => (
             {title}
           </Typography>
           <Typography size={TypographySize.LARGE} as={TypographyTags.LARGE}>
-            {time}
+            30045510
           </Typography>
         </SRow>
         <SRow container height="100%">
