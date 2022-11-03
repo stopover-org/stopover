@@ -63,7 +63,7 @@ type Props = {
 };
 
 const CardImageTop = ({ averageRate, currency, eventRef }: Props) => {
-  const { title, images, tags, interests, attendeeCostPerUomCents } =
+  const { title, id, images, tags, interests, attendeeCostPerUomCents } =
     useFragment(
       graphql`
         fragment CardImageTop_EventFragment on Event {
@@ -102,7 +102,7 @@ const CardImageTop = ({ averageRate, currency, eventRef }: Props) => {
           </SRow>
           <SRow justifyContent="start" wrap="wrap">
             {interests.map(({ id: interestId, link, title: interestTitle }) => (
-              <SLink key={interestId}>
+              <SLink key={`interest-${id}-${interestId}`}>
                 <Link href={link!}>
                   <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
                     {interestTitle}
@@ -152,7 +152,7 @@ const CardImageTop = ({ averageRate, currency, eventRef }: Props) => {
     >
       <TagList alignItems="end">
         {tags.map(({ id: tagId, title: tagTitle }) => (
-          <STag key={tagId}>
+          <STag key={`tag-${tagId}`}>
             <Tag size={TagSizes.SMALL}>
               <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
                 {tagTitle}

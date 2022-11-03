@@ -66,6 +66,7 @@ type Props = {
 const CardImageLeft = ({ averageRate, currency, eventRef }: Props) => {
   const {
     title,
+    id,
     description,
     images,
     tags,
@@ -110,7 +111,7 @@ const CardImageLeft = ({ averageRate, currency, eventRef }: Props) => {
           </SRow>
           <SRow justifyContent="start">
             {interests.map(({ link, title: interestTitle, id: interestId }) => (
-              <SLink key={interestId}>
+              <SLink key={`interest-${id}-${interestId}`}>
                 <Link href={link!}>
                   <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
                     {interestTitle}
@@ -129,7 +130,7 @@ const CardImageLeft = ({ averageRate, currency, eventRef }: Props) => {
           </SRow>
           <SRow justifyContent="start" wrap="wrap">
             {tags.map(({ id: tagId, title: tagTitle }) => (
-              <STag key={tagId}>
+              <STag key={`tag-${id}-${tagId}`}>
                 <Tag size={TagSizes.SMALL}>
                   <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
                     {tagTitle}

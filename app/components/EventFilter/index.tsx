@@ -40,6 +40,15 @@ type Props = {
   minPrice: number;
   maxPrice: number;
   city: string | null;
+  onChange: (filters: {
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+    minDate: moment.Moment;
+    maxDate: moment.Moment;
+    minPrice: number;
+    maxPrice: number;
+    city: string;
+  }) => void;
 };
 
 const EventFilter = ({
@@ -48,6 +57,7 @@ const EventFilter = ({
   minPrice,
   maxPrice,
   city,
+  onChange,
 }: Props) => {
   const [startPrice, setStartPrice] = React.useState<number>(minPrice);
   const [endPrice, setEndPrice] = React.useState<number>(maxPrice);
@@ -61,23 +71,6 @@ const EventFilter = ({
     maxDateProp
   );
 
-  // TODO restore this functionality when backend will have this fields
-  // const [selectedIndividualOnly, setSelectedIndividualOnly] =
-  //   useState<boolean>(false);
-  //
-  // const [selectedRate, setSelectedRate] = useState<number>(0);
-  //
-  // const individualEventsHandler = (
-  //   event: React.SyntheticEvent<HTMLInputElement>
-  // ) => {
-  //   if (event === null) throw new Error("check box returned null");
-  //   setSelectedIndividualOnly(event.currentTarget.checked);
-  // };
-  //
-  // const rateHandler = (rateIndex: number) => {
-  //   setSelectedRate(rateIndex);
-  // };
-
   const dateHandler = (
     newStartDate: moment.Moment | null,
     newEndDate: moment.Moment | null
@@ -89,24 +82,64 @@ const EventFilter = ({
     setStartDate(newStartDate);
 
     setEndDate(newEndDate);
+
+    onChange({
+      startDate: newStartDate!,
+      endDate: newEndDate!,
+      minDate: newStartDate!,
+      maxDate: newEndDate!,
+      minPrice: startPrice,
+      maxPrice: endPrice,
+      city: city || "",
+    });
   };
 
   const inputPriceHandler = (newStartPrice: number, newEndPrice: number) => {
     setStartPrice(newStartPrice);
 
     setEndPrice(newEndPrice);
+
+    onChange({
+      startDate: startDate!,
+      endDate: endDate!,
+      minDate: minDate!,
+      maxDate: maxDate!,
+      minPrice: newStartPrice,
+      maxPrice: newEndPrice,
+      city: city || "",
+    });
   };
 
   const sliderDateHandler = ([newStartDate, newEndDate]: [number, number]) => {
     setStartDate(moment(newStartDate * 1000));
 
     setEndDate(moment(newEndDate * 1000));
+
+    onChange({
+      startDate: moment(newStartDate * 1000),
+      endDate: moment(newEndDate * 1000),
+      minDate: minDate!,
+      maxDate: maxDate!,
+      minPrice: startPrice,
+      maxPrice: endPrice,
+      city: city || "",
+    });
   };
 
   const sliderPriceHandler = (range: RangeType) => {
     setStartPrice(range[0]);
 
     setEndPrice(range[1]);
+
+    onChange({
+      startDate: startDate!,
+      endDate: endDate!,
+      minDate: minDate!,
+      maxDate: maxDate!,
+      minPrice: range[0],
+      maxPrice: range[1],
+      city: city || "",
+    });
   };
 
   return (

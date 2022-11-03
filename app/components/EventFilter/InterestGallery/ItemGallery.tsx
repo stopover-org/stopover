@@ -19,11 +19,10 @@ const ImageContainer = styled.div<{ color: string; cross: string }>`
   background: ${(props) => props.color};
   border: 4px solid ${(props) => props.color};
   border-radius: 5px;
+  overflow: hidden;
   img {
-    width: 100%;
-    min-height: 100%;
+    height: 100%;
     display: block;
-    border-radius: 5px;
   }
   div {
     display: ${(props) => props.cross};
@@ -42,6 +41,14 @@ type Props = {
   onClick: (id: string) => void;
   interestRef: ItemGallery_InterestFragment$key;
 };
+
+const InterestTitle = styled(Typography)`
+  height: 1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  width: 125px;
+`;
 
 const ItemGallery = ({ interestRef, ...props }: Props) => {
   const interest = useFragment(
@@ -66,7 +73,7 @@ const ItemGallery = ({ interestRef, ...props }: Props) => {
             <img alt="preview" src={cross.src} />
           </div>
         </ImageContainer>
-        <Typography size={TypographySize.H4}>{interest.title}</Typography>
+        <InterestTitle size={TypographySize.H4}>{interest.title}</InterestTitle>
       </Wrapper>
     </Suspense>
   );
