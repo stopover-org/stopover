@@ -15,7 +15,7 @@ const SColumn = styled(Column)`
   padding: 18px 30px 18px 30px;
 `;
 const SRow = styled(Row)``;
-const SText = styled(Typography)`
+const TextPadding = styled.div`
   overflow: hidden;
   padding-top: 11px;
   padding-bottom: 11px;
@@ -26,9 +26,18 @@ type Props = {
   title: string;
   text: string;
   units: string;
+  time: string;
+  date: string;
 };
 
-export const BookingCard = ({ image, title, text, units }: Props) => (
+export const BookingCard = ({
+  image,
+  title,
+  text,
+  units,
+  time,
+  date,
+}: Props) => (
   <Card
     imageLocation={CardImageLocation.RIGHT}
     width="946px"
@@ -39,14 +48,34 @@ export const BookingCard = ({ image, title, text, units }: Props) => (
           <Typography size="22px" as={TypographyTags.LARGE}>
             {title}
           </Typography>
-          <Typography size={TypographySize.LARGE} as={TypographyTags.LARGE}>
-            30045510
-          </Typography>
+          <Row item>
+            <Column>
+              <Typography size={TypographySize.LARGE} as={TypographyTags.LARGE}>
+                <pre>
+                  {/* to safe space in charecter " - " */}
+                  {`${time.split(" ")[0]} - `}
+                </pre>
+              </Typography>
+              <Typography size="12px" as={TypographyTags.LARGE}>
+                {date.split(" ")[0]}
+              </Typography>
+            </Column>
+            <Column>
+              <Typography size={TypographySize.LARGE} as={TypographyTags.LARGE}>
+                {time.split(" ")[1]}
+              </Typography>
+              <Typography size="12px" as={TypographyTags.LARGE}>
+                {date.split(" ")[1]}
+              </Typography>
+            </Column>
+          </Row>
         </SRow>
         <SRow container height="100%">
-          <SText size={TypographySize.BIG} as={TypographyTags.BIG}>
-            {text}
-          </SText>
+          <TextPadding>
+            <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
+              {text}
+            </Typography>
+          </TextPadding>
         </SRow>
         <SRow>
           <Typography size="22px" as={TypographyTags.LARGE}>
