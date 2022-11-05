@@ -78,25 +78,17 @@ const EventsList = ({ eventsReference }: Props) => {
 
   const generateCardsRowArray = () =>
     events.data.events.edges.map((edge: any, index: number) => {
-      if (index === 3) {
-        return (
-          <WrapperBigCard key={edge.node.id}>
-            <CardImageLeft
-              averageRate={2}
-              currency={Currencies.USD}
-              eventRef={edge.node}
-            />
-          </WrapperBigCard>
-        );
-      }
+      const EventWrapper = index === 3 ? WrapperBigCard : WrapperSmallCard;
+      const EventComponent = index === 3 ? CardImageLeft : CardImageTop;
+
       return (
-        <WrapperSmallCard key={edge.node.id}>
-          <CardImageTop
+        <EventWrapper key={edge.node.id}>
+          <EventComponent
             averageRate={4.5}
             currency={Currencies.USD}
             eventRef={edge.node}
           />
-        </WrapperSmallCard>
+        </EventWrapper>
       );
     });
   const [currentPage, setCurrentPage] = useState(1);

@@ -48,6 +48,7 @@ type Props = {
   padding?: string;
   childrenTop?: string;
   childrenRight?: string;
+  as?: string;
 };
 
 const Card = ({
@@ -60,6 +61,7 @@ const Card = ({
   width = "auto",
   height = "auto",
   padding = "0px",
+  as = "div",
   ...props
 }: Props) => {
   const startPosition =
@@ -72,7 +74,7 @@ const Card = ({
   const rightContent = startPosition ? content : image;
   const justifyContent = startPosition ? "start" : "end";
   return (
-    <Wrapper {...props}>
+    <Wrapper as={as} {...props}>
       <Tag
         width={width}
         height={height}

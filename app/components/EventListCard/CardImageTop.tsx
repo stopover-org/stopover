@@ -93,6 +93,8 @@ const CardImageTop = ({ averageRate, currency, eventRef }: Props) => {
       imageLocation={CardImageLocation.TOP}
       height="530px"
       width="330px"
+      as="a"
+      href={`/events/${id}`}
       content={
         <SColumn>
           <SRow justifyContent="start">

@@ -98,6 +98,8 @@ const CardImageLeft = ({ averageRate, currency, eventRef }: Props) => {
 
   return (
     <Card
+      as="a"
+      href={`/events/${id}`}
       imageLocation={CardImageLocation.LEFT}
       height="440px"
       width="1060px"
