@@ -2,8 +2,8 @@
 
 module Types
   class EventsFilter < BaseInputObject
-    argument :start_date, DateTimeType
-    argument :end_date, DateTimeType
+    argument :start_date, DateTimeType, required: false
+    argument :end_date, DateTimeType, required: false
     argument :min_price, Integer
     argument :max_price, Integer
     argument :city, String

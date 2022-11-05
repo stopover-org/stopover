@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<714a2ca173b624d22dc224ca71011d8f>>
+ * @generated SignedSource<<564cf0d8a629e1733f91f6fafb567ef9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,9 +10,17 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
+export type EventsFilter = {
+  city: string;
+  endDate?: any | null;
+  maxPrice: number;
+  minPrice: number;
+  startDate?: any | null;
+};
 export type EventsListPaginationQuery$variables = {
   count?: number | null;
   cursor?: string | null;
+  filters?: EventsFilter | null;
 };
 export type EventsListPaginationQuery$data = {
   readonly " $fragmentSpreads": FragmentRefs<"List_EventsFragment">;
@@ -33,36 +41,47 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "cursor"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "filters"
   }
 ],
-v1 = [
+v1 = {
+  "kind": "Variable",
+  "name": "filters",
+  "variableName": "filters"
+},
+v2 = [
   {
     "kind": "Variable",
     "name": "after",
     "variableName": "cursor"
   },
+  (v1/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   }
 ],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "title",
   "storageKey": null
 },
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v4 = [
-  (v2/*: any*/),
+v5 = [
+  (v3/*: any*/),
   {
     "alias": null,
     "args": null,
@@ -70,7 +89,7 @@ v4 = [
     "name": "link",
     "storageKey": null
   },
-  (v3/*: any*/)
+  (v4/*: any*/)
 ];
 return {
   "fragment": {
@@ -90,7 +109,8 @@ return {
             "kind": "Variable",
             "name": "cursor",
             "variableName": "cursor"
-          }
+          },
+          (v1/*: any*/)
         ],
         "kind": "FragmentSpread",
         "name": "List_EventsFragment"
@@ -107,7 +127,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "EventConnection",
         "kind": "LinkedField",
         "name": "events",
@@ -129,7 +149,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v2/*: any*/),
+                  (v3/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -137,7 +157,7 @@ return {
                     "name": "description",
                     "storageKey": null
                   },
-                  (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -166,7 +186,7 @@ return {
                     "kind": "LinkedField",
                     "name": "tags",
                     "plural": true,
-                    "selections": (v4/*: any*/),
+                    "selections": (v5/*: any*/),
                     "storageKey": null
                   },
                   {
@@ -176,7 +196,7 @@ return {
                     "kind": "LinkedField",
                     "name": "interests",
                     "plural": true,
-                    "selections": (v4/*: any*/),
+                    "selections": (v5/*: any*/),
                     "storageKey": null
                   },
                   {
@@ -229,8 +249,10 @@ return {
       },
       {
         "alias": null,
-        "args": (v1/*: any*/),
-        "filters": null,
+        "args": (v2/*: any*/),
+        "filters": [
+          "filters"
+        ],
         "handle": "connection",
         "key": "Events_events",
         "kind": "LinkedHandle",
@@ -285,16 +307,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d459a88d426fb7b9a5eaf1810b56d720",
+    "cacheID": "03ebaffb61712f3308cd5a692ce4b1bf",
     "id": null,
     "metadata": {},
     "name": "EventsListPaginationQuery",
     "operationKind": "query",
-    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n) {\n  ...List_EventsFragment_1G22uz\n}\n\nfragment CardImageLeft_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment CardImageTop_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment List_EventsFragment_1G22uz on Query {\n  events(first: $count, after: $cursor) {\n    edges {\n      node {\n        ...CardImageLeft_EventFragment\n        ...CardImageTop_EventFragment\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n"
+    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n  $filters: EventsFilter\n) {\n  ...List_EventsFragment_4DMzEc\n}\n\nfragment CardImageLeft_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment CardImageTop_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment EventFilter_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice\n  maxPrice\n  city\n}\n\nfragment List_EventsFragment_4DMzEc on Query {\n  events(first: $count, after: $cursor, filters: $filters) {\n    edges {\n      node {\n        ...CardImageLeft_EventFragment\n        ...CardImageTop_EventFragment\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...EventFilter_EventFiltersFragment\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "c35d054e8dcfc3ccc56d47ee225457e4";
+(node as any).hash = "b98c36cf2654b8cc7038ffde556c23a3";
 
 export default node;

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { graphql, useFragment, usePaginationFragment } from "react-relay";
-import moment from "moment";
 import InterestGallery from "../../EventFilter/InterestGallery";
-import EventFilter from "../../EventFilter";
+import EventFilter, { ChangeFiltersProps } from "../../EventFilter";
 import Search from "../../EventFilter/Search";
 import {
   events_Query,
@@ -36,7 +35,7 @@ const WrapperSmallCard = styled.div`
 const Interests = styled.div`
   padding-left: 50px;
 `;
-const SRow = styled(Row)``;
+
 type Props = {
   eventsReference: events_Query$data;
 };
@@ -61,18 +60,11 @@ const EventsList = ({ eventsReference }: Props) => {
           }
         }
         eventFilters {
-          startDate
-          endDate
-          minPrice
-          maxPrice
-          city
+          ...EventFilter_EventFiltersFragment
         }
       }
     `,
-    eventsReference,
-    {
-      fetchPolicy: "store-and-network",
-    }
+    eventsReference
   );
 
   const interests = useFragment<List_InterestsFragment$key>(
@@ -118,9 +110,7 @@ const EventsList = ({ eventsReference }: Props) => {
     minPrice,
     maxPrice,
     city,
-  }: any) => {
-    console.log("asdfasdf", events);
-
+  }: ChangeFiltersProps) => {
     events.refetch(
       {
         filters: {
@@ -139,12 +129,8 @@ const EventsList = ({ eventsReference }: Props) => {
   return (
     <Wrapper>
       <EventFilter
-        minDate={moment(events.data.eventFilters.startDate)}
-        maxDate={moment(events.data.eventFilters.endDate)}
-        minPrice={events.data.eventFilters.minPrice!}
-        maxPrice={events.data.eventFilters.maxPrice!}
-        city={events.data.eventFilters.city}
         onChange={onFiltersChange}
+        eventFiltersRef={events.data.eventFilters}
       />
       <Interests>
         <Search
@@ -152,26 +138,19 @@ const EventsList = ({ eventsReference }: Props) => {
           width="650px"
           placeHolder="Какое мероприятие вы ищете?"
           helpText="Вы ищете"
+          onChange={() => null}
         />
         <InterestGallery onChange={() => {}} interestsRef={interests} />
-        <SRow wrap="wrap" justifyContent="space-between">
+        <Row wrap="wrap" justifyContent="space-between">
           {generateCardsRowArray()}
-        </SRow>
+        </Row>
         <Pagination
           onNextPage={() => {
-            events.refetch({
-              filters: {
-                startDate: events.data.eventFilters.startDate,
-                endDate: events.data.eventFilters.endDate,
-                minPrice: events.data.eventFilters.minPrice!,
-                maxPrice: events.data.eventFilters.maxPrice!,
-                city: events.data.eventFilters.city,
-              },
-            });
-
             setCurrentPage(currentPage + 1);
           }}
-          onPrevPage={() => setCurrentPage(currentPage - 1)}
+          onPrevPage={() => {
+            setCurrentPage(currentPage - 1);
+          }}
           onSelectPage={onSelectPage}
           currentPage={currentPage}
           amountPagesOnRight={1}

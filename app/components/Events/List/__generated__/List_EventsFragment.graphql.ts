@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e457a83178ff52862df0b3ddf6efc3e6>>
+ * @generated SignedSource<<2bdbac26a14b00754b8d91dc5e4ca885>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,7 @@ export type List_EventsFragment$data = {
     readonly maxPrice: number;
     readonly minPrice: number;
     readonly startDate: any | null;
+    readonly " $fragmentSpreads": FragmentRefs<"EventFilter_EventFiltersFragment">;
   };
   readonly events: {
     readonly edges: ReadonlyArray<{
@@ -47,6 +48,11 @@ return {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "cursor"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "filters"
     }
   ],
   "kind": "Fragment",
@@ -76,7 +82,13 @@ return {
   "selections": [
     {
       "alias": "events",
-      "args": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "filters",
+          "variableName": "filters"
+        }
+      ],
       "concreteType": "EventConnection",
       "kind": "LinkedField",
       "name": "__Events_events_connection",
@@ -165,6 +177,11 @@ return {
       "plural": false,
       "selections": [
         {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "EventFilter_EventFiltersFragment"
+        },
+        {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
@@ -208,6 +225,6 @@ return {
 };
 })();
 
-(node as any).hash = "c35d054e8dcfc3ccc56d47ee225457e4";
+(node as any).hash = "b98c36cf2654b8cc7038ffde556c23a3";
 
 export default node;
