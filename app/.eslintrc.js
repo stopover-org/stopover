@@ -41,6 +41,7 @@ module.exports = {
     }, {
       selector: 'typeLike',
       format: ['PascalCase']
-    }]
+    }],
+    "import/prefer-default-export": "off"
   }
 };

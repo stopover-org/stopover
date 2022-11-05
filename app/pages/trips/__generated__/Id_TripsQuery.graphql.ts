@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<460ae0a6776ab0cf4f3a7a81024e7bea>>
+ * @generated SignedSource<<ae6ffed2280d3eeeca8a6749fc35bb21>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,17 +9,12 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Query } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
 export type Id_TripsQuery$variables = {
   id: string;
 };
 export type Id_TripsQuery$data = {
-  readonly bookings: ReadonlyArray<{
-    readonly bookedFor: any;
-    readonly event: {
-      readonly durationTime: string;
-    };
-    readonly id: string;
-  }> | null;
+  readonly " $fragmentSpreads": FragmentRefs<"BookingsList_BookingsFragment">;
 };
 export type Id_TripsQuery = {
   response: Id_TripsQuery$data;
@@ -40,28 +35,7 @@ v1 = [
     "name": "id",
     "variableName": "id"
   }
-],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "bookedFor",
-  "storageKey": null
-},
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "durationTime",
-  "storageKey": null
-};
+];
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -70,29 +44,9 @@ return {
     "name": "Id_TripsQuery",
     "selections": [
       {
-        "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "Booking",
-        "kind": "LinkedField",
-        "name": "bookings",
-        "plural": true,
-        "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Event",
-            "kind": "LinkedField",
-            "name": "event",
-            "plural": false,
-            "selections": [
-              (v4/*: any*/)
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
+        "kind": "FragmentSpread",
+        "name": "BookingsList_BookingsFragment"
       }
     ],
     "type": "Query",
@@ -112,19 +66,18 @@ return {
         "name": "bookings",
         "plural": true,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
-            "concreteType": "Event",
-            "kind": "LinkedField",
-            "name": "event",
-            "plural": false,
-            "selections": [
-              (v4/*: any*/),
-              (v2/*: any*/)
-            ],
+            "kind": "ScalarField",
+            "name": "bookedFor",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "id",
             "storageKey": null
           }
         ],
@@ -133,16 +86,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "2d3f714d258a376bebeaf7fdb6804c81",
+    "cacheID": "92354d6d66d94a7eee10f4bf216a8a2a",
     "id": null,
     "metadata": {},
     "name": "Id_TripsQuery",
     "operationKind": "query",
-    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  bookings(id: $id) {\n    id\n    bookedFor\n    event {\n      durationTime\n      id\n    }\n  }\n}\n"
+    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  ...BookingsList_BookingsFragment_1Bmzm5\n}\n\nfragment BookingsList_BookingsFragment_1Bmzm5 on Query {\n  bookings(id: $id) {\n    bookedFor\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e353a9496ede5108a7fc46aef32a9c57";
+(node as any).hash = "b469d09bf18208be38071843940a0d37";
 
 export default node;

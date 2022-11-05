@@ -1,14 +1,17 @@
 import React from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
 import { withRelay } from "relay-nextjs";
-import styled from "styled-components";
-import moment from "moment";
+// import styled from "styled-components";
+// import moment from "moment";
 import Layout from "../../components/MainPage/Layout";
-import Booking from "../../components/Trips/Booking";
-import Typography from "../../components/Typography";
+// import Booking from "../../components/Trips/Booking";
+// import Typography from "../../components/Typography";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
-import { TypographySize, TypographyTags } from "../../components/StatesEnum";
-
+// import { TypographySize, TypographyTags } from "../../components/StatesEnum";
+import { Id_TripsQuery } from "./__generated__/Id_TripsQuery.graphql";
+// import { isDifferentDay } from "../../lib/utils/differenceDates";
+import BookingsList from "../../components/Trips/BookingsList";
+/*
 const BookingPadding = styled.div`
   padding-top: 30px;
 `;
@@ -16,62 +19,56 @@ const BookingPadding = styled.div`
 const TextPadding = styled.div`
   padding-top: 10px;
 `;
-
+*/
 const Query = graphql`
   query Id_TripsQuery($id: ID!) {
-    bookings(id: $id) {
-      id
-      bookedFor
-      event {
-        durationTime
-      }
-    }
+    ...BookingsList_BookingsFragment @arguments(id: $id)
   }
 `;
 
 const Trip = ({ preloadedQuery }: any) => {
-  const data = usePreloadedQuery(Query, preloadedQuery);
+  const data = usePreloadedQuery<Id_TripsQuery>(Query, preloadedQuery);
   console.log(data.bookings[0].bookedFor, data.bookings[0].id);
   return (
     <Layout>
       <>
-        <Typography size={TypographySize.H1} as={TypographyTags.H1}>
+        <BookingsList bookingReference={data} />
+        {/* <Typography size={TypographySize.H1} as={TypographyTags.H1}>
           Моя поездка в Брно
         </Typography>
         <TextPadding>
           <Typography size={TypographySize.H2} as={TypographyTags.H2}>
-            {`${moment(query.bookings[0].event.bookedFor).format(
+            {`${moment(data?.bookings?.[0]?.bookedFor).format(
               "DD.MMMM"
             )} - ${moment(
-              query.bookings[query.bookings.length - 1].event.bookedFor
+              data?.bookings?.[data?.bookings.length - 1].bookedFor
             ).format("DD.MMMM")}`}
           </Typography>
         </TextPadding>
-        {query.bookings.map((_: any, index: number) => {
-          if (
-            moment(query.bookings[index].event.bookedFor).diff(
-              moment(query.bookings[index + 1]),
-              "d"
-            ) !== 0 ||
-            index === 0
+        {data?.bookings?.map((_: any, index: number) => {
+          if (index !== 0 &&
+            isDifferentDay(
+              moment(data?.bookings?.[index]?.bookedFor),
+              moment(data?.bookings?.[index - 1].bookedFor)
+            ) || index === 0
           ) {
             return (
               <BookingPadding key={index}>
                 <Typography size={TypographySize.H3} as={TypographyTags.H3}>
-                  {moment(query.bookings[index].event.bookedFor).format(
+                  {moment(data?.bookings[index].bookedFor).format(
                     "DD.MMMM"
                   )}
                 </Typography>
-                <Booking eventsReference={query.bookings[index]} />
+                <Booking eventsReference={data.bookings[index]} />
               </BookingPadding>
             );
           }
           return (
             <BookingPadding key={index}>
-              <Booking eventsReference={query.bookings[index]} />
+              <Booking eventsReference={data.bookings[index]} />
             </BookingPadding>
           );
-        })}
+        })} */}
       </>
     </Layout>
   );

@@ -36,16 +36,14 @@ type Props = {
   };
 };
 
-export const Booking = ({ eventReference }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
+const timeParser = (initialTime: string) => {
   const deltaTime = {
     days: "0",
     hours: "0",
     minutes: "0",
   };
-  const time = eventsReference.event.durationTime.split(/\s/);
-
-  new Array(time.length).forEach((item) => {
+  const time = initialTime.split(/\s/);
+  time.forEach((item: string) => {
     deltaTime.days =
       (item[item.length - 1] === "d" && item.slice(0, item.length - 1)) ||
       deltaTime.days;
@@ -58,11 +56,16 @@ export const Booking = ({ eventReference }: Props) => {
       (item[item.length - 1] === "m" && item.slice(0, item.length - 1)) ||
       deltaTime.minutes;
   });
-  const endDate = moment(eventsReference.bookedFor);
-  const startDate = moment(eventsReference.bookedFor)
-    .subtract(deltaTime.days, "d")
-    .subtract(deltaTime.hours, "h")
-    .subtract(deltaTime.minutes, "m");
+  return deltaTime;
+};
+
+export const Booking = ({ eventsReference }: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const startDate = moment(eventsReference.bookedFor);
+  const endDate = moment(eventsReference.bookedFor)
+    .add(timeParser(eventsReference.event.durationTime).days, "d")
+    .add(timeParser(eventsReference.event.durationTime).hours, "h")
+    .add(timeParser(eventsReference.event.durationTime).minutes, "m");
   return (
     <>
       <BookingCard
@@ -70,7 +73,7 @@ export const Booking = ({ eventReference }: Props) => {
         title={eventsReference.event.title}
         text={eventsReference.event.description}
         units="1"
-        time={`${startDate.format("hh:mm")} ${endDate.format("hh:mm")}`}
+        time={`${startDate.format("HH:mm")} ${endDate.format("HH:mm")}`}
         date={
           (startDate.format("DD.M") !== endDate.format("DD.M") &&
             `${startDate.format("DD.M")} ${endDate.format("DD.M")}`) ||
