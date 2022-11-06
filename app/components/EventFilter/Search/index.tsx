@@ -50,12 +50,15 @@ type Props = {
   placeHolder: string;
   helpText: string;
   value?: string;
+  onChange: (val: string) => void;
 };
 
 const Search = (props: Props) => {
   const [value, setValue] = useState(props.value);
   const onChange = (e: any) => {
     setValue(e.target.value);
+
+    props.onChange(e.target.value);
   };
 
   return (

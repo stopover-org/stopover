@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1050cdbf902600a6ab8095e6f2808de9>>
+ * @generated SignedSource<<7e34c00e6d057435cda552297f1d49ed>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,16 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type events_Query$variables = {};
+export type EventsFilter = {
+  city: string;
+  endDate?: any | null;
+  maxPrice: number;
+  minPrice: number;
+  startDate?: any | null;
+};
+export type events_Query$variables = {
+  filters?: EventsFilter | null;
+};
 export type events_Query$data = {
   readonly " $fragmentSpreads": FragmentRefs<"List_EventsFragment" | "List_InterestsFragment">;
 };
@@ -22,27 +31,40 @@ export type events_Query = {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "filters"
+  }
+],
+v1 = {
+  "kind": "Variable",
+  "name": "filters",
+  "variableName": "filters"
+},
+v2 = [
+  (v1/*: any*/),
+  {
     "kind": "Literal",
     "name": "first",
     "value": 10
   }
 ],
-v1 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "title",
   "storageKey": null
 },
-v2 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = [
-  (v1/*: any*/),
+v5 = [
+  (v3/*: any*/),
   {
     "alias": null,
     "args": null,
@@ -50,17 +72,19 @@ v3 = [
     "name": "link",
     "storageKey": null
   },
-  (v2/*: any*/)
+  (v4/*: any*/)
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "events_Query",
     "selections": [
       {
-        "args": null,
+        "args": [
+          (v1/*: any*/)
+        ],
         "kind": "FragmentSpread",
         "name": "List_EventsFragment"
       },
@@ -75,13 +99,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "events_Query",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "EventConnection",
         "kind": "LinkedField",
         "name": "events",
@@ -103,7 +127,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v1/*: any*/),
+                  (v3/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -111,7 +135,7 @@ return {
                     "name": "description",
                     "storageKey": null
                   },
-                  (v2/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -140,7 +164,7 @@ return {
                     "kind": "LinkedField",
                     "name": "tags",
                     "plural": true,
-                    "selections": (v3/*: any*/),
+                    "selections": (v5/*: any*/),
                     "storageKey": null
                   },
                   {
@@ -150,7 +174,7 @@ return {
                     "kind": "LinkedField",
                     "name": "interests",
                     "plural": true,
-                    "selections": (v3/*: any*/),
+                    "selections": (v5/*: any*/),
                     "storageKey": null
                   },
                   {
@@ -199,12 +223,14 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "events(first:10)"
+        "storageKey": null
       },
       {
         "alias": null,
-        "args": (v0/*: any*/),
-        "filters": null,
+        "args": (v2/*: any*/),
+        "filters": [
+          "filters"
+        ],
         "handle": "connection",
         "key": "Events_events",
         "kind": "LinkedHandle",
@@ -264,8 +290,8 @@ return {
         "name": "interests",
         "plural": true,
         "selections": [
-          (v2/*: any*/),
-          (v1/*: any*/),
+          (v4/*: any*/),
+          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -279,16 +305,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c67ee42b32cf548da0ed95de6b0f7281",
+    "cacheID": "dd376dae3d3a7ec3dcd0fb1dbf0a52a4",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query {\n  ...List_EventsFragment\n  ...List_InterestsFragment\n}\n\nfragment CardImageLeft_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment CardImageTop_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment InterestGallery_InterestsFragment on Query {\n  interests {\n    id\n    ...ItemGallery_InterestFragment\n  }\n}\n\nfragment ItemGallery_InterestFragment on Interest {\n  id\n  title\n  preview\n}\n\nfragment List_EventsFragment on Query {\n  events(first: 10) {\n    edges {\n      node {\n        ...CardImageLeft_EventFragment\n        ...CardImageTop_EventFragment\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n\nfragment List_InterestsFragment on Query {\n  ...InterestGallery_InterestsFragment\n}\n"
+    "text": "query events_Query(\n  $filters: EventsFilter\n) {\n  ...List_EventsFragment_VTAHT\n  ...List_InterestsFragment\n}\n\nfragment CardImageLeft_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment CardImageTop_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment EventFilter_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice\n  maxPrice\n  city\n}\n\nfragment InterestGallery_InterestsFragment on Query {\n  interests {\n    id\n    ...ItemGallery_InterestFragment\n  }\n}\n\nfragment ItemGallery_InterestFragment on Interest {\n  id\n  title\n  preview\n}\n\nfragment List_EventsFragment_VTAHT on Query {\n  events(first: 10, filters: $filters) {\n    edges {\n      node {\n        ...CardImageLeft_EventFragment\n        ...CardImageTop_EventFragment\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...EventFilter_EventFiltersFragment\n    startDate\n    endDate\n    minPrice\n    maxPrice\n    city\n  }\n}\n\nfragment List_InterestsFragment on Query {\n  ...InterestGallery_InterestsFragment\n}\n"
   }
 };
 })();
 
-(node as any).hash = "b11e06d8c6d15fca2835febdee92e8f1";
+(node as any).hash = "4dedac6a48009c9ece55d09ac96a3894";
 
 export default node;

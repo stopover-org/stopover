@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import moment from "moment";
+import { graphql, useFragment } from "react-relay";
 import Search from "./Search";
 import Calendar from "./Calander";
 import Help from "./Help";
 import PriceInput from "./PriceInput";
 import { NumericSlider, RangeType } from "./Slider/NumericSlider";
 import DatesSlider from "./Slider/DatesSlider";
+import { EventFilter_EventFiltersFragment$key } from "./__generated__/EventFilter_EventFiltersFragment.graphql";
 
 const FilterBar = styled.div``;
 const MainFilters = styled.div`
@@ -34,31 +36,41 @@ const Separator = styled.div`
   border-top: 1px solid #d9d9d9;
 `;
 
-type Props = {
-  minDate: moment.Moment;
-  maxDate: moment.Moment;
+export type ChangeFiltersProps = {
+  startDate: moment.Moment | null;
+  endDate: moment.Moment | null;
+  minDate: moment.Moment | null;
+  maxDate: moment.Moment | null;
   minPrice: number;
   maxPrice: number;
-  city: string | null;
-  onChange: (filters: {
-    startDate: moment.Moment;
-    endDate: moment.Moment;
-    minDate: moment.Moment;
-    maxDate: moment.Moment;
-    minPrice: number;
-    maxPrice: number;
-    city: string;
-  }) => void;
+  city: string;
 };
 
-const EventFilter = ({
-  minDate: minDateProp,
-  maxDate: maxDateProp,
-  minPrice,
-  maxPrice,
-  city,
-  onChange,
-}: Props) => {
+type Props = {
+  eventFiltersRef: EventFilter_EventFiltersFragment$key;
+  onChange: (filters: ChangeFiltersProps) => void;
+};
+
+const EventFilter = ({ onChange, eventFiltersRef }: Props) => {
+  const {
+    startDate: minDateProp,
+    endDate: maxDateProp,
+    minPrice,
+    maxPrice,
+    city,
+  } = useFragment(
+    graphql`
+      fragment EventFilter_EventFiltersFragment on EventFilters {
+        startDate
+        endDate
+        minPrice
+        maxPrice
+        city
+      }
+    `,
+    eventFiltersRef
+  );
+  const [location, setLocation] = React.useState<string>(city);
   const [startPrice, setStartPrice] = React.useState<number>(minPrice);
   const [endPrice, setEndPrice] = React.useState<number>(maxPrice);
   const [startDate, setStartDate] = React.useState<moment.Moment | null>(null);
@@ -70,6 +82,35 @@ const EventFilter = ({
   const [maxDate, setMaxDate] = React.useState<moment.Moment | null>(
     maxDateProp
   );
+  const [timerId, setTimerId] = React.useState<NodeJS.Timeout | null>(null);
+
+  React.useEffect(() => {
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+
+    const _timerId = setTimeout(() => {
+      onChange({
+        startDate,
+        endDate,
+        minDate,
+        maxDate,
+        minPrice: startPrice,
+        maxPrice: endPrice,
+        city: location || "",
+      });
+
+      setTimerId(null);
+    }, 500);
+
+    setTimerId(_timerId);
+
+    return () => {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+    };
+  }, [location, startPrice, endPrice, startDate, endDate, maxDate, minDate]);
 
   const dateHandler = (
     newStartDate: moment.Moment | null,
@@ -82,64 +123,24 @@ const EventFilter = ({
     setStartDate(newStartDate);
 
     setEndDate(newEndDate);
-
-    onChange({
-      startDate: newStartDate!,
-      endDate: newEndDate!,
-      minDate: newStartDate!,
-      maxDate: newEndDate!,
-      minPrice: startPrice,
-      maxPrice: endPrice,
-      city: city || "",
-    });
   };
 
   const inputPriceHandler = (newStartPrice: number, newEndPrice: number) => {
     setStartPrice(newStartPrice);
 
     setEndPrice(newEndPrice);
-
-    onChange({
-      startDate: startDate!,
-      endDate: endDate!,
-      minDate: minDate!,
-      maxDate: maxDate!,
-      minPrice: newStartPrice,
-      maxPrice: newEndPrice,
-      city: city || "",
-    });
   };
 
   const sliderDateHandler = ([newStartDate, newEndDate]: [number, number]) => {
     setStartDate(moment(newStartDate * 1000));
 
     setEndDate(moment(newEndDate * 1000));
-
-    onChange({
-      startDate: moment(newStartDate * 1000),
-      endDate: moment(newEndDate * 1000),
-      minDate: minDate!,
-      maxDate: maxDate!,
-      minPrice: startPrice,
-      maxPrice: endPrice,
-      city: city || "",
-    });
   };
 
   const sliderPriceHandler = (range: RangeType) => {
     setStartPrice(range[0]);
 
     setEndPrice(range[1]);
-
-    onChange({
-      startDate: startDate!,
-      endDate: endDate!,
-      minDate: minDate!,
-      maxDate: maxDate!,
-      minPrice: range[0],
-      maxPrice: range[1],
-      city: city || "",
-    });
   };
 
   return (
@@ -150,7 +151,8 @@ const EventFilter = ({
           width="372px"
           placeHolder="Напишите локацию"
           helpText="Вы выбрали"
-          value={city || ""}
+          value={location || ""}
+          onChange={setLocation}
         />
         <Calendar dateHandler={dateHandler} />
       </StartingPoint>
@@ -193,14 +195,6 @@ const EventFilter = ({
             minPrice={minPrice}
           />
         </FilterBarItem>
-        {/* TODO restore this filters when backend will be ready */}
-        {/* <FilterBarItem> */}
-        {/*  <IndividualEvents onClick={individualEventsHandler} /> */}
-        {/* </FilterBarItem> */}
-        {/* <Separator /> */}
-        {/* <FilterBarItem> */}
-        {/*  <Rate onClick={rateHandler} /> */}
-        {/* </FilterBarItem> */}
       </MainFilters>
     </FilterBar>
   );
