@@ -42,7 +42,11 @@ const TripHeader = ({
           <>
             {getDayMonth(moment(data?.bookings?.[0]?.bookedFor))}
             {" - "}
-            {getDayMonth(moment(data?.bookings?.[8].bookedFor))}
+            {data?.bookings &&
+              data?.bookings.length > 2 &&
+              getDayMonth(
+                moment(data?.bookings?.[data?.bookings?.length].bookedFor)
+              )}
           </>
         </Typography>
       </TextPadding>
