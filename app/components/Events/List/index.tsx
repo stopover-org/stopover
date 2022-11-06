@@ -9,8 +9,8 @@ import {
   events_Query$data,
 } from "../../../pages/events/__generated__/events_Query.graphql";
 import { List_EventsFragment$key } from "./__generated__/List_EventsFragment.graphql";
-import CardImageLeft from "../../EventListCard/CardImageLeft";
-import CardImageTop from "../../EventListCard/CardImageTop";
+import CompactCard from "../../EventListCard/CompactCard";
+import WideCard from "../../EventListCard/WideCard";
 import Row from "../../Row";
 import Pagination from "../../Pagination";
 import { Currencies, PaginationSize, TypographySize } from "../../StatesEnum";
@@ -54,8 +54,8 @@ const EventsList = ({ eventsReference }: Props) => {
           @connection(key: "Events_events") {
           edges {
             node {
-              ...CardImageLeft_EventFragment
-              ...CardImageTop_EventFragment
+              ...CompactCard_EventFragment
+              ...WideCard_EventFragment
             }
           }
         }
@@ -79,7 +79,7 @@ const EventsList = ({ eventsReference }: Props) => {
   const generateCardsRowArray = () =>
     events.data.events.edges.map((edge: any, index: number) => {
       const EventWrapper = index === 3 ? WrapperBigCard : WrapperSmallCard;
-      const EventComponent = index === 3 ? CardImageLeft : CardImageTop;
+      const EventComponent = index === 3 ? CompactCard : WideCard;
 
       return (
         <EventWrapper key={edge.node.id}>

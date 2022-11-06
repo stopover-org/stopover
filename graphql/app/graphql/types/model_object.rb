@@ -8,7 +8,7 @@ module Types
     implements GraphQL::Types::Relay::Node
     global_id_field :id
 
-    def raw_id
+    def relay_id
       object.id
     end
   end

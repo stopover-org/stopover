@@ -20,7 +20,7 @@ import Tag from "../Tag";
 import Row from "../Row";
 import Button from "../Button";
 import icon from "../icons/Outline/General/Shopping_cart_white.svg";
-import { CardImageTop_EventFragment$key } from "./__generated__/CardImageTop_EventFragment.graphql";
+import { WideCard_EventFragment$key } from "./__generated__/WideCard_EventFragment.graphql";
 
 const TagList = styled(Column)`
   padding: 10px;
@@ -59,14 +59,14 @@ const TypographyWrapper = styled.div`
 type Props = {
   averageRate: number;
   currency?: string;
-  eventRef: CardImageTop_EventFragment$key;
+  eventRef: WideCard_EventFragment$key;
 };
 
-const CardImageTop = ({ averageRate, currency, eventRef }: Props) => {
+const WideCard = ({ averageRate, currency, eventRef }: Props) => {
   const { title, id, images, tags, interests, attendeeCostPerUomCents } =
     useFragment(
       graphql`
-        fragment CardImageTop_EventFragment on Event {
+        fragment WideCard_EventFragment on Event {
           title
           description
           id
@@ -167,4 +167,4 @@ const CardImageTop = ({ averageRate, currency, eventRef }: Props) => {
   );
 };
 
-export default CardImageTop;
+export default WideCard;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2bdbac26a14b00754b8d91dc5e4ca885>>
+ * @generated SignedSource<<c2e18af77341393f7d11acf26008098a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,17 +12,12 @@ import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type List_EventsFragment$data = {
   readonly eventFilters: {
-    readonly city: string | null;
-    readonly endDate: any | null;
-    readonly maxPrice: number;
-    readonly minPrice: number;
-    readonly startDate: any | null;
     readonly " $fragmentSpreads": FragmentRefs<"EventFilter_EventFiltersFragment">;
   };
   readonly events: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly " $fragmentSpreads": FragmentRefs<"CardImageLeft_EventFragment" | "CardImageTop_EventFragment">;
+        readonly " $fragmentSpreads": FragmentRefs<"CompactCard_EventFragment" | "WideCard_EventFragment">;
       } | null;
     }>;
   };
@@ -113,12 +108,12 @@ return {
                 {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "CardImageLeft_EventFragment"
+                  "name": "CompactCard_EventFragment"
                 },
                 {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "CardImageTop_EventFragment"
+                  "name": "WideCard_EventFragment"
                 },
                 {
                   "alias": null,
@@ -180,41 +175,6 @@ return {
           "args": null,
           "kind": "FragmentSpread",
           "name": "EventFilter_EventFiltersFragment"
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "startDate",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "endDate",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "minPrice",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "maxPrice",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "city",
-          "storageKey": null
         }
       ],
       "storageKey": null
@@ -225,6 +185,6 @@ return {
 };
 })();
 
-(node as any).hash = "b98c36cf2654b8cc7038ffde556c23a3";
+(node as any).hash = "f78f1d10974c295884ee82d4b1acbac1";
 
 export default node;

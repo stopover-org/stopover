@@ -21,7 +21,7 @@ const SSkeleton = styled(Skeleton)`
   margin-right: 10px;
 `;
 
-const CardImageLeftSkeleton = () => (
+const CompactCardSkeleton = () => (
   <Card
     width="1060px"
     height="440px"
@@ -65,7 +65,7 @@ const CardImageLeftSkeleton = () => (
   />
 );
 
-export default CardImageLeftSkeleton;
+export default CompactCardSkeleton;
 /*
 <Skeleton
                                 type={SkeletonType.BLOCK}

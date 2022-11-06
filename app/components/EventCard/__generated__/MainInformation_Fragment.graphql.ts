@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1a2ae0c96879e7eceeaa4dd0745dd9bd>>
+ * @generated SignedSource<<8d51694405e912e7cb3b209c3a6d37fd>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,6 @@ export type MainInformation_Fragment$data = {
   readonly fullAddress: string;
   readonly tags: ReadonlyArray<{
     readonly id: string;
-    readonly preview: string | null;
     readonly title: string;
   }>;
   readonly title: string;
@@ -78,14 +77,7 @@ return {
           "name": "id",
           "storageKey": null
         },
-        (v0/*: any*/),
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "preview",
-          "storageKey": null
-        }
+        (v0/*: any*/)
       ],
       "storageKey": null
     }
@@ -95,6 +87,6 @@ return {
 };
 })();
 
-(node as any).hash = "73530efb968088d1603303742a65f076";
+(node as any).hash = "803dd2119ef36d784d558740f950d5a5";
 
 export default node;

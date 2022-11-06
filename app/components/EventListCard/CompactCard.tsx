@@ -20,7 +20,7 @@ import Tag from "../Tag";
 import Row from "../Row";
 import Button from "../Button";
 import icon from "../icons/Outline/General/Shopping_cart_white.svg";
-import { CardImageLeft_EventFragment$key } from "./__generated__/CardImageLeft_EventFragment.graphql";
+import { CompactCard_EventFragment$key } from "./__generated__/CompactCard_EventFragment.graphql";
 
 const TextHeight = styled(Typography)`
   overflow: hidden;
@@ -60,10 +60,10 @@ const TypographyWrapper = styled.div`
 type Props = {
   averageRate: number;
   currency?: string;
-  eventRef: CardImageLeft_EventFragment$key;
+  eventRef: CompactCard_EventFragment$key;
 };
 
-const CardImageLeft = ({ averageRate, currency, eventRef }: Props) => {
+const CompactCard = ({ averageRate, currency, eventRef }: Props) => {
   const {
     title,
     id,
@@ -74,7 +74,7 @@ const CardImageLeft = ({ averageRate, currency, eventRef }: Props) => {
     attendeeCostPerUomCents,
   } = useFragment(
     graphql`
-      fragment CardImageLeft_EventFragment on Event {
+      fragment CompactCard_EventFragment on Event {
         title
         description
         id
@@ -188,4 +188,4 @@ const CardImageLeft = ({ averageRate, currency, eventRef }: Props) => {
   );
 };
 
-export default CardImageLeft;
+export default CompactCard;
