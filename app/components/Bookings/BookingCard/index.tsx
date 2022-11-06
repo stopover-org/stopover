@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "../Card";
-import BaseImage from "../BaseImage";
-import Typography from "../Typography";
-import Row from "../Row";
-import Column from "../Column";
+import Card from "../../Card";
+import BaseImage from "../../BaseImage";
+import Typography from "../../Typography";
+import Row from "../../Row";
+import Column from "../../Column";
 import {
   CardImageLocation,
   TypographySize,
   TypographyTags,
-} from "../StatesEnum";
+} from "../../StatesEnum";
 
 const SColumn = styled(Column)`
   padding: 18px 30px 18px 30px;

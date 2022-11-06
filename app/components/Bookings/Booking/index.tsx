@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import moment from "moment";
+import { graphql, useFragment } from "react-relay";
 import BookingForm from "../BookingForm";
 import Accordion from "../../Accordion";
 import Typography from "../../Typography";
-import BookingCard from "../../BookingCard";
+import BookingCard from "../BookingCard";
 import CaretUp from "../../icons/Outline/Interface/Caret_up.svg";
 import Row from "../../Row";
 import { TypographySize, TypographyTags } from "../../StatesEnum";
+import {
+  isDifferentDayMonth,
+  calculateDate,
+  getTime,
+} from "../../../lib/utils/dates";
+import { Booking_BookingsFragment$key } from "./__generated__/Booking_BookingsFragment.graphql";
 
 const Collapse = styled(Row)`
   cursor: pointer;
@@ -23,60 +30,41 @@ const AccordionPadding = styled.div`
   padding: 18px 30px;
 `;
 
-type Props = {
-  eventsReference: {
-    bookedFor: string;
-    id: string;
-    event: {
-      description: string;
-      durationTime: string;
-      images: string[];
-      title: string;
-    };
-  };
-};
-
-const timeParser = (initialTime: string) => {
-  const deltaTime = {
-    days: "0",
-    hours: "0",
-    minutes: "0",
-  };
-  const time = initialTime.split(/\s/);
-  time.forEach((item: string) => {
-    deltaTime.days =
-      (item[item.length - 1] === "d" && item.slice(0, item.length - 1)) ||
-      deltaTime.days;
-
-    deltaTime.hours =
-      (item[item.length - 1] === "h" && item.slice(0, item.length - 1)) ||
-      deltaTime.hours;
-
-    deltaTime.minutes =
-      (item[item.length - 1] === "m" && item.slice(0, item.length - 1)) ||
-      deltaTime.minutes;
-  });
-  return deltaTime;
-};
-
-export const Booking = ({ eventsReference }: Props) => {
+export const Booking = ({
+  bookingReference,
+}: {
+  bookingReference: Booking_BookingsFragment$key;
+}) => {
+  const data = useFragment(
+    graphql`
+      fragment Booking_BookingsFragment on Booking {
+        bookedFor
+        id
+        event {
+          description
+          durationTime
+          images
+          title
+        }
+      }
+    `,
+    bookingReference
+  );
+  const { bookedFor, event } = data;
   const [isOpen, setIsOpen] = useState(false);
-  const startDate = moment(eventsReference.bookedFor);
-  const endDate = moment(eventsReference.bookedFor)
-    .add(timeParser(eventsReference.event.durationTime).days, "d")
-    .add(timeParser(eventsReference.event.durationTime).hours, "h")
-    .add(timeParser(eventsReference.event.durationTime).minutes, "m");
+  const startDate = moment(bookedFor);
+  const endDate = calculateDate(moment(bookedFor), event.durationTime, "add");
   return (
     <>
       <BookingCard
-        image={eventsReference.event.images[0]}
-        title={eventsReference.event.title}
-        text={eventsReference.event.description}
+        image={event.images[0]}
+        title={event.title}
+        text={event.description}
         units="1"
-        time={`${startDate.format("HH:mm")} ${endDate.format("HH:mm")}`}
+        time={`${getTime(moment(startDate))} ${getTime(moment(endDate))}`}
         date={
-          (startDate.format("DD.M") !== endDate.format("DD.M") &&
-            `${startDate.format("DD.M")} ${endDate.format("DD.M")}`) ||
+          (isDifferentDayMonth(startDate, endDate) &&
+            `${startDate.format("DD.M")} ${endDate.format("DD.M")}`) || // TODO: conflic in format. neede 3.11 ive got 3 November. space is problem
           ""
         }
       />
@@ -94,8 +82,8 @@ export const Booking = ({ eventsReference }: Props) => {
           }
           content={
             <BookingForm
-              date={moment(eventsReference.bookedFor)}
-              time={moment(eventsReference.bookedFor)}
+              date={moment(bookedFor)}
+              time={moment(bookedFor)}
               additionalOptions={[
                 {
                   text: "большой снегоход",

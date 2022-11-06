@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<98b684801524afe2a2d694fd06287a35>>
+ * @generated SignedSource<<cb15bd607f88f4a840228ca0c9345131>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,16 +10,18 @@
 
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type BookingsList_BookingsFragment$data = {
+export type TripHeader_BookingsFragment$data = {
   readonly bookings: ReadonlyArray<{
     readonly bookedFor: any;
-    readonly id: string;
+    readonly event: {
+      readonly city: string | null;
+    };
   }> | null;
-  readonly " $fragmentType": "BookingsList_BookingsFragment";
+  readonly " $fragmentType": "TripHeader_BookingsFragment";
 };
-export type BookingsList_BookingsFragment$key = {
-  readonly " $data"?: BookingsList_BookingsFragment$data;
-  readonly " $fragmentSpreads": FragmentRefs<"BookingsList_BookingsFragment">;
+export type TripHeader_BookingsFragment$key = {
+  readonly " $data"?: TripHeader_BookingsFragment$data;
+  readonly " $fragmentSpreads": FragmentRefs<"TripHeader_BookingsFragment">;
 };
 
 const node: ReaderFragment = {
@@ -32,7 +34,7 @@ const node: ReaderFragment = {
   ],
   "kind": "Fragment",
   "metadata": null,
-  "name": "BookingsList_BookingsFragment",
+  "name": "TripHeader_BookingsFragment",
   "selections": [
     {
       "alias": null,
@@ -58,8 +60,19 @@ const node: ReaderFragment = {
         {
           "alias": null,
           "args": null,
-          "kind": "ScalarField",
-          "name": "id",
+          "concreteType": "Event",
+          "kind": "LinkedField",
+          "name": "event",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "city",
+              "storageKey": null
+            }
+          ],
           "storageKey": null
         }
       ],
@@ -70,6 +83,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "7a4521cbea47eab8f584f8b010f9b77b";
+(node as any).hash = "41b97943b0efaa244e61ef43833733a9";
 
 export default node;

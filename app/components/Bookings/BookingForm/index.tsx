@@ -12,6 +12,7 @@ import Link from "../../Link";
 import InputDate from "../../InputDate";
 import CallenderIcon from "../../icons/Outline/General/Calendar.svg";
 import ClockIcon from "../../icons/Outline/General/Clock.svg";
+import { getTime } from "../../../lib/utils/dates";
 import {
   InputSizes,
   CheckboxType,
@@ -74,7 +75,7 @@ type Props = {
   time?: Moment;
 };
 
-export const BookingForm = ({
+export const Form = ({
   additionalOptions,
   allreadyInPrice,
   date = null,
@@ -150,7 +151,7 @@ export const BookingForm = ({
             <InputDate value={date} icon={CallenderIcon.src} disabled />
           </InputDatePadding>
           <InputDatePadding>
-            <Input value={time.format("h:mm")} icon={ClockIcon.src} disabled />
+            <Input value={getTime(time)} icon={ClockIcon.src} disabled />
           </InputDatePadding>
         </Row>
         <Row container alignItems="end">
@@ -259,4 +260,4 @@ export const BookingForm = ({
     </Row>
   );
 };
-export default React.memo(BookingForm);
+export default React.memo(Form);

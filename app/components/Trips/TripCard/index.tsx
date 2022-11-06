@@ -1,95 +1,16 @@
 import React from "react";
-import styled from "styled-components";
-import Card from "../../Card";
-import Row from "../../Row";
-import Column from "../../Column";
-import Typography from "../../Typography";
-import BaseImage from "../../BaseImage";
-import { TypographySize, TypographyTags } from "../../StatesEnum";
-
-const Content = styled(Column)`
-  padding: 10px;
-`;
+import TripHeader from "../TripHeader";
+import BookingList from "../../Bookings/BookingList";
 
 type Props = {
-  title: string;
-  startDate: string;
-  endDate: string;
-  places: string;
-  location: string;
-  image: string;
+  queryReference: any;
 };
 
-export const TripCard = ({
-  title,
-  startDate,
-  endDate,
-  places,
-  location,
-  image,
-}: Props) => (
-  <Card
-    width="400px"
-    content={
-      <Content
-        justifyContent="space-between"
-        alignItems="center"
-        width="60%"
-        height="130px"
-      >
-        <>
-          <Row justifyContent="start" alignItems="start">
-            <Typography
-              size={TypographySize.H3}
-              as={TypographyTags.H3}
-              fontWeight="100"
-            >
-              {title}
-            </Typography>
-          </Row>
-          <Row justifyContent="start" alignItems="center">
-            <>
-              <Typography
-                size={TypographySize.H6}
-                as={TypographyTags.H6}
-                fontWeight="700"
-              >
-                {startDate}
-              </Typography>
-              <Typography
-                size={TypographySize.H6}
-                as={TypographyTags.H6}
-                fontWeight="700"
-              >
-                &nbsp;-&nbsp;
-              </Typography>
-              <Typography
-                size={TypographySize.H6}
-                as={TypographyTags.H6}
-                fontWeight="700"
-              >
-                {endDate}
-              </Typography>
-            </>
-          </Row>
-          <Row justifyContent="space-between" alignItems="end">
-            <>
-              <Typography size={TypographySize.H6} as={TypographyTags.H6}>
-                {places}
-              </Typography>
-              <Typography size={TypographySize.H6} as={TypographyTags.H6}>
-                {location}
-              </Typography>
-            </>
-          </Row>
-        </>
-      </Content>
-    }
-    image={
-      <BaseImage width="40%" height="130px">
-        <img src={image} alt="boss darksouls" />
-      </BaseImage>
-    }
-  />
+const TripCard = ({ queryReference }: Props) => (
+  <>
+    <TripHeader tripHeaderReference={queryReference} />
+    <BookingList bookingReference={queryReference} />
+  </>
 );
-export default React.memo(TripCard);
+
+export default TripCard;

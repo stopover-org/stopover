@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ae6ffed2280d3eeeca8a6749fc35bb21>>
+ * @generated SignedSource<<be2c6dd334aba35108a910915fa277c5>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,7 +14,7 @@ export type Id_TripsQuery$variables = {
   id: string;
 };
 export type Id_TripsQuery$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"BookingsList_BookingsFragment">;
+  readonly " $fragmentSpreads": FragmentRefs<"BookingList_BookingsFragment" | "TripHeader_BookingsFragment">;
 };
 export type Id_TripsQuery = {
   response: Id_TripsQuery$data;
@@ -35,7 +35,14 @@ v1 = [
     "name": "id",
     "variableName": "id"
   }
-];
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -46,7 +53,12 @@ return {
       {
         "args": (v1/*: any*/),
         "kind": "FragmentSpread",
-        "name": "BookingsList_BookingsFragment"
+        "name": "BookingList_BookingsFragment"
+      },
+      {
+        "args": (v1/*: any*/),
+        "kind": "FragmentSpread",
+        "name": "TripHeader_BookingsFragment"
       }
     ],
     "type": "Query",
@@ -66,6 +78,7 @@ return {
         "name": "bookings",
         "plural": true,
         "selections": [
+          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -76,8 +89,48 @@ return {
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "id",
+            "concreteType": "Event",
+            "kind": "LinkedField",
+            "name": "event",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "description",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "durationTime",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "images",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "title",
+                "storageKey": null
+              },
+              (v2/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "city",
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           }
         ],
@@ -86,16 +139,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "92354d6d66d94a7eee10f4bf216a8a2a",
+    "cacheID": "6f1781a679ab37e861ac33034a0eb948",
     "id": null,
     "metadata": {},
     "name": "Id_TripsQuery",
     "operationKind": "query",
-    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  ...BookingsList_BookingsFragment_1Bmzm5\n}\n\nfragment BookingsList_BookingsFragment_1Bmzm5 on Query {\n  bookings(id: $id) {\n    bookedFor\n    id\n  }\n}\n"
+    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  ...BookingList_BookingsFragment_1Bmzm5\n  ...TripHeader_BookingsFragment_1Bmzm5\n}\n\nfragment BookingList_BookingsFragment_1Bmzm5 on Query {\n  bookings(id: $id) {\n    id\n    bookedFor\n    ...Booking_BookingsFragment\n  }\n}\n\nfragment Booking_BookingsFragment on Booking {\n  bookedFor\n  id\n  event {\n    description\n    durationTime\n    images\n    title\n    id\n  }\n}\n\nfragment TripHeader_BookingsFragment_1Bmzm5 on Query {\n  bookings(id: $id) {\n    bookedFor\n    event {\n      city\n      id\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "b469d09bf18208be38071843940a0d37";
+(node as any).hash = "4260f74cd6851f067a4aad064606ea5a";
 
 export default node;

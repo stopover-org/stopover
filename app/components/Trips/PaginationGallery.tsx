@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 // was forced to change TripCard => TripCardComponent. Error eslint "Using exported name 'TripCard' as identifier for default export"
-import TripCardComponent from "./TripCard";
-import SkeletonTripCard from "./TripCard/SkeletonTripCard";
+import TripCardComponent from "./CompactCard";
+import SkeletonTripCard from "./CompactCard/SkeletonCompactCard";
 import Row from "../Row";
 import Column from "../Column";
 import Typography from "../Typography";
