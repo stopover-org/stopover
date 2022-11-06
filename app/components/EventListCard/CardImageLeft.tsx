@@ -49,7 +49,7 @@ const SCommentsRating = styled(Typography)`
   padding-left: 3px;
 `;
 
-const TagOnImage = styled.div`
+const TagOverImage = styled.div`
   padding: 10px;
 `;
 
@@ -176,13 +176,13 @@ const CardImageLeft = ({ averageRate, currency, eventRef }: Props) => {
       }
     >
       {tags && (
-        <TagOnImage>
+        <TagOverImage>
           <Tag size={TagSizes.SMALL}>
             <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
               {tags[0].title}
             </Typography>
           </Tag>
-        </TagOnImage>
+        </TagOverImage>
       )}
     </Card>
   );

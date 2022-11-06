@@ -29,15 +29,16 @@ const SColumn = styled(Column)<{
   padding: string;
 }>`
   position: relative;
-  padding: ${(props) => props.padding};
+  padding: ${({ padding }) => padding};
   border: 1px solid #d9d9d9;
-  width: ${(props) => props.width};
-  min-width: ${(props) => props.width};
-  max-width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  min-height: ${(props) => props.height};
-  max-height: ${(props) => props.height};
+  width: ${({ width }) => width};
+  min-width: ${({ width }) => width};
+  max-width: ${({ width }) => width};
+  height: ${({ height }) => height};
+  min-height: ${({ height }) => height};
+  max-height: ${({ height }) => height};
 `;
+
 type Props = {
   imageLocation?: CardImageLocation;
   content?: React.ReactNode;
@@ -68,14 +69,16 @@ const Card = ({
     imageLocation === CardImageLocation.TOP ||
     imageLocation === CardImageLocation.LEFT;
 
-  const Tag =
-    CardImageLocation.TOP || CardImageLocation.BOTTOM ? SColumn : SRow;
+  const isColumn =
+    imageLocation === CardImageLocation.TOP ||
+    imageLocation === CardImageLocation.BOTTOM;
+  const Component = isColumn ? SColumn : SRow;
   const leftContent = startPosition ? image : content;
   const rightContent = startPosition ? content : image;
   const justifyContent = startPosition ? "start" : "end";
   return (
     <Wrapper as={as} {...props}>
-      <Tag
+      <Component
         width={width}
         height={height}
         padding={padding}
@@ -86,7 +89,7 @@ const Card = ({
         <SChildren top={childrenTop} right={childrenRight}>
           {children}
         </SChildren>
-      </Tag>
+      </Component>
     </Wrapper>
   );
 };
