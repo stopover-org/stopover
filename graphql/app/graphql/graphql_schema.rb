@@ -44,13 +44,6 @@ class GraphqlSchema < GraphQL::Schema
       else
         model_class.find(unique_id)
       end
-    elsif type_name.to_sym == :candidate
-      # For this type, we unpack it and get the id and job_id then return a hash with both
-      id_parts = unique_id.split('_')
-      {
-        id: id_parts[0].to_i,
-        job_id: id_parts[1].to_i
-      }
     else
       raise InternalServerError, "Unknown type: #{type_name}"
     end

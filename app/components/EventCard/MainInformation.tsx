@@ -75,7 +75,6 @@ const MainInformation = ({
         tags {
           id
           title
-          preview
         }
       }
     `,

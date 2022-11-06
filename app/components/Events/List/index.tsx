@@ -9,8 +9,8 @@ import {
   events_Query$data,
 } from "../../../pages/events/__generated__/events_Query.graphql";
 import { List_EventsFragment$key } from "./__generated__/List_EventsFragment.graphql";
-import CardImageLeft from "../../EventListCard/CardImageLeft";
-import CardImageTop from "../../EventListCard/CardImageTop";
+import CompactCard from "../../EventListCard/CompactCard";
+import WideCard from "../../EventListCard/WideCard";
 import Row from "../../Row";
 import Pagination from "../../Pagination";
 import { Currencies, PaginationSize, TypographySize } from "../../StatesEnum";
@@ -54,8 +54,8 @@ const EventsList = ({ eventsReference }: Props) => {
           @connection(key: "Events_events") {
           edges {
             node {
-              ...CardImageLeft_EventFragment
-              ...CardImageTop_EventFragment
+              ...CompactCard_EventFragment
+              ...WideCard_EventFragment
             }
           }
         }
@@ -78,25 +78,17 @@ const EventsList = ({ eventsReference }: Props) => {
 
   const generateCardsRowArray = () =>
     events.data.events.edges.map((edge: any, index: number) => {
-      if (index === 3) {
-        return (
-          <WrapperBigCard key={edge.node.id}>
-            <CardImageLeft
-              averageRate={2}
-              currency={Currencies.USD}
-              eventRef={edge.node}
-            />
-          </WrapperBigCard>
-        );
-      }
+      const EventWrapper = index === 3 ? WrapperBigCard : WrapperSmallCard;
+      const EventComponent = index === 3 ? CompactCard : WideCard;
+
       return (
-        <WrapperSmallCard key={edge.node.id}>
-          <CardImageTop
+        <EventWrapper key={edge.node.id}>
+          <EventComponent
             averageRate={4.5}
             currency={Currencies.USD}
             eventRef={edge.node}
           />
-        </WrapperSmallCard>
+        </EventWrapper>
       );
     });
   const [currentPage, setCurrentPage] = useState(1);
@@ -111,8 +103,10 @@ const EventsList = ({ eventsReference }: Props) => {
     maxPrice,
     city,
   }: ChangeFiltersProps) => {
+    console.log("asdfasdf", events);
+
     events.refetch(
-      {
+        {
         filters: {
           startDate: minDate,
           endDate: maxDate,

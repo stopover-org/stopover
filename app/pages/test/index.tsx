@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Layout from "../../components/MainPage/Layout";
 import Switch from "../../components/Animated/Switch";
-import CardImageLeftSkeleton from "../../components/EventListCard/CardImageLeftSkeleton";
-import CardImageTopSkeleton from "../../components/EventListCard/CardImageTopSkeleton";
+import CompactCardSkeleton from "../../components/EventListCard/CompactCardSkeleton";
+import WideCardSkeleton from "../../components/EventListCard/WideCardSkeleton";
 
 const Wrapper = styled.div`
   width: 200px;
@@ -12,8 +12,8 @@ const Wrapper = styled.div`
 const Test = () => (
   <Layout>
     <Wrapper>
-      <CardImageLeftSkeleton />
-      <CardImageTopSkeleton />
+      <CompactCardSkeleton />
+      <WideCardSkeleton />
       <Switch />
     </Wrapper>
   </Layout>

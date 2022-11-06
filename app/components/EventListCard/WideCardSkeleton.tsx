@@ -29,7 +29,7 @@ const SRow = styled(Row)`
   padding-bottom: 5px;
 `;
 
-const CardImageTopSkeleton = () => (
+const WideCardSkeleton = () => (
   <Card
     imageLocation={CardImageLocation.TOP}
     height="530px"
@@ -71,4 +71,4 @@ const CardImageTopSkeleton = () => (
   </Card>
 );
 
-export default CardImageTopSkeleton;
+export default WideCardSkeleton;

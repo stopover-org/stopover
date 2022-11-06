@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import Layout from "../../components/MainPage/Layout";
-import CardImageLeft from "../../components/EventListCard/CardImageLeft";
-import CardImageTop from "../../components/EventListCard/CardImageTop";
+import CompactCard from "../../components/EventListCard/CompactCard";
+import WideCard from "../../components/EventListCard/WideCard";
 
 const Wrapper = styled.div``;
 const Cards = () => (
   <Layout>
     <Wrapper>
-      <CardImageLeft
+      <CompactCard
         averageRate={1.23}
         currency="$"
         price={600}
@@ -62,7 +62,7 @@ const Cards = () => (
             passages, and more recently with desktop publishing software like
             Aldus PageMaker including versions of"
       />
-      <CardImageTop
+      <WideCard
         averageRate={4.5}
         currency="$"
         price={600}

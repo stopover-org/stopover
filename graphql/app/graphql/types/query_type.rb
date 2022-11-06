@@ -21,7 +21,7 @@ module Types
     end
 
     field :event, Types::EventType do
-      argument :id, ID, required: true
+      argument :id, ID, required: true, loads: Types::EventType
     end
 
     field :bookings, [Types::BookingType]do
@@ -49,7 +49,7 @@ module Types
     end
 
     def event(**args)
-      Event.find(args[:id])
+      args[:id]
     end
   end
 end
