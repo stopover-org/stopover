@@ -1,13 +1,21 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
+import moment from "moment";
+import { graphql, useFragment } from "react-relay";
 import BookingForm from "../BookingForm";
 import Accordion from "../../Accordion";
 import Typography from "../../Typography";
-import BookingCard from "../../BookingCard";
+import BookingCard from "../BookingCard";
 import CaretUp from "../../icons/Outline/Interface/Caret_up.svg";
 import Row from "../../Row";
 import { TypographySize, TypographyTags } from "../../StatesEnum";
+import {
+  isDifferentDayMonth,
+  calculateDate,
+  getTime,
+} from "../../../lib/utils/dates";
+import { Booking_BookingsFragment$key } from "./__generated__/Booking_BookingsFragment.graphql";
 
 const Collapse = styled(Row)`
   cursor: pointer;
@@ -22,17 +30,43 @@ const AccordionPadding = styled.div`
   padding: 18px 30px;
 `;
 
-export const Booking = () => {
+export const Booking = ({
+  bookingReference,
+}: {
+  bookingReference: Booking_BookingsFragment$key;
+}) => {
+  const data = useFragment(
+    graphql`
+      fragment Booking_BookingsFragment on Booking {
+        bookedFor
+        id
+        event {
+          description
+          durationTime
+          images
+          title
+        }
+      }
+    `,
+    bookingReference
+  );
+  const { bookedFor, event } = data;
   const [isOpen, setIsOpen] = useState(false);
-
+  const startDate = moment(bookedFor);
+  const endDate = calculateDate(moment(bookedFor), event.durationTime, "add");
   return (
     <>
       <BookingCard
-        image="https://i.ytimg.com/vi/TG60ElhAYCk/maxresdefault.jpg"
-        title="Ultramarine"
-        text=" Жизнь свою отдаю Императору. Молюсь, дабы Он принял ее.Силу свою отдаю Императору. Молюсь, дабы ее не лишил меня Он. Кровь свою отдаю Императору. Молюсь, дабы утолила она жажду Его. Тело свое кладу на алтарь битвы, Молюсь, дабы Он даровал мне благородную смерть. Молю Его о защите, всё отдавая взамен."
+        image={event.images[0]}
+        title={event.title}
+        text={event.description}
         units="1"
-        time="3:00-4:00"
+        time={`${getTime(moment(startDate))} ${getTime(moment(endDate))}`}
+        date={
+          (isDifferentDayMonth(startDate, endDate) &&
+            `${startDate.format("DD.M")} ${endDate.format("DD.M")}`) || // TODO: conflic in format. neede 3.11 ive got 3 November. space is problem
+          ""
+        }
       />
       <AccordionPadding>
         <Accordion
@@ -48,6 +82,8 @@ export const Booking = () => {
           }
           content={
             <BookingForm
+              date={moment(bookedFor)}
+              time={moment(bookedFor)}
               additionalOptions={[
                 {
                   text: "большой снегоход",

@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../../components/MainPage/Layout";
-import Booking from "../../components/Trips/Booking";
+import Booking from "../../components/Bookings/Booking";
 
 const TirpItemCard = () => (
   <Layout>

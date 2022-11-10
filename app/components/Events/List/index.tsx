@@ -103,8 +103,6 @@ const EventsList = ({ eventsReference }: Props) => {
     maxPrice,
     city,
   }: ChangeFiltersProps) => {
-    console.log("asdfasdf", events);
-
     events.refetch(
         {
         filters: {

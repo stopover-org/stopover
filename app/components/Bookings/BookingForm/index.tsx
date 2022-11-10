@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import Input from "../../Input";
 import Typography from "../../Typography";
 import Row from "../../Row";
@@ -12,6 +12,7 @@ import Link from "../../Link";
 import InputDate from "../../InputDate";
 import CallenderIcon from "../../icons/Outline/General/Calendar.svg";
 import ClockIcon from "../../icons/Outline/General/Clock.svg";
+import { getTime } from "../../../lib/utils/dates";
 import {
   InputSizes,
   CheckboxType,
@@ -70,9 +71,16 @@ type AllreadyInPrice = {
 type Props = {
   additionalOptions?: AdditionalOptions[];
   allreadyInPrice?: AllreadyInPrice[];
+  date?: Moment | null;
+  time?: Moment;
 };
 
-export const BookingForm = ({ additionalOptions, allreadyInPrice }: Props) => {
+export const Form = ({
+  additionalOptions,
+  allreadyInPrice,
+  date = null,
+  time = moment("00:00"),
+}: Props) => {
   const [checkbox, setCheckbox] = useState(false);
   const [isPoped, setIsPoped] = useState(false);
   return (
@@ -140,10 +148,10 @@ export const BookingForm = ({ additionalOptions, allreadyInPrice }: Props) => {
         </Typography>
         <Row justifyContent="space-between">
           <InputDatePadding>
-            <InputDate value={moment()} icon={CallenderIcon.src} disabled />
+            <InputDate value={date} icon={CallenderIcon.src} disabled />
           </InputDatePadding>
           <InputDatePadding>
-            <InputDate value={moment()} icon={ClockIcon.src} disabled />
+            <Input value={getTime(time)} icon={ClockIcon.src} disabled />
           </InputDatePadding>
         </Row>
         <Row container alignItems="end">
@@ -155,7 +163,6 @@ export const BookingForm = ({ additionalOptions, allreadyInPrice }: Props) => {
             </Link>
           </LinkPadding>
           <Popover
-            width="326px"
             isOpen={isPoped}
             component={
               <Typography size={TypographySize.SMALL} as={TypographyTags.SMALL}>
@@ -185,6 +192,7 @@ export const BookingForm = ({ additionalOptions, allreadyInPrice }: Props) => {
           additionalOptions.map((item, index) => (
             <CheckboxPadding key={index}>
               <Checkbox
+                disabled // TODO: implement real functionality
                 id={uuidv4()}
                 checked={checkbox}
                 type={CheckboxType.CHECKBOX}
@@ -216,6 +224,7 @@ export const BookingForm = ({ additionalOptions, allreadyInPrice }: Props) => {
           allreadyInPrice.map((item, index) => (
             <CheckboxPadding key={index}>
               <Checkbox
+                disabled // TODO: implement real functionality
                 id={uuidv4()}
                 checked={checkbox}
                 type={CheckboxType.CHECKBOX}
@@ -251,4 +260,4 @@ export const BookingForm = ({ additionalOptions, allreadyInPrice }: Props) => {
     </Row>
   );
 };
-export default React.memo(BookingForm);
+export default React.memo(Form);

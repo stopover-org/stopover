@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<657c99a02b05bfdfc6d93afb8e41ec2e>>
+ * @generated SignedSource<<273949aca2053e7c8a64436a1219d0e7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -215,8 +215,7 @@ return {
                 "kind": "ScalarField",
                 "name": "cursor",
                 "storageKey": null
-              },
-              (v4/*: any*/)
+              }
             ],
             "storageKey": null
           },
@@ -244,8 +243,7 @@ return {
               }
             ],
             "storageKey": null
-          },
-          (v4/*: any*/)
+          }
         ],
         "storageKey": null
       },
@@ -302,20 +300,19 @@ return {
             "kind": "ScalarField",
             "name": "city",
             "storageKey": null
-          },
-          (v4/*: any*/)
+          }
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "8fe9259ce52d3ad3771a27cbd9afa9f4",
+    "cacheID": "2aa9ccc1499cd7faec2a35c6f9536e90",
     "id": null,
     "metadata": {},
     "name": "EventsListPaginationQuery",
     "operationKind": "query",
-    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n  $filters: EventsFilter\n) {\n  ...List_EventsFragment_4DMzEc\n}\n\nfragment CompactCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment EventFilter_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice\n  maxPrice\n  city\n}\n\nfragment List_EventsFragment_4DMzEc on Query {\n  events(first: $count, after: $cursor, filters: $filters) {\n    edges {\n      node {\n        ...CompactCard_EventFragment\n        ...WideCard_EventFragment\n        id\n        __typename\n      }\n      cursor\n      id\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    id\n  }\n  eventFilters {\n    ...EventFilter_EventFiltersFragment\n    id\n  }\n}\n\nfragment WideCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n"
+    "text": "query EventsListPaginationQuery(\n  $count: Int = 10\n  $cursor: String\n  $filters: EventsFilter\n) {\n  ...List_EventsFragment_4DMzEc\n}\n\nfragment CompactCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment EventFilter_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice\n  maxPrice\n  city\n}\n\nfragment List_EventsFragment_4DMzEc on Query {\n  events(first: $count, after: $cursor, filters: $filters) {\n    edges {\n      node {\n        ...CompactCard_EventFragment\n        ...WideCard_EventFragment\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...EventFilter_EventFiltersFragment\n  }\n}\n\nfragment WideCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n"
   }
 };
 })();

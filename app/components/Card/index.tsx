@@ -71,8 +71,10 @@ const Card = ({
 
   const isColumn =
     imageLocation === CardImageLocation.TOP ||
-    imageLocation === CardImageLocation.BOTTOM;
-  const Component = isColumn ? SColumn : SRow;
+    imageLocation === CardImageLocation.BOTTOM
+     ;
+  const Component = isColumn ? SColumn
+      : SRow;
   const leftContent = startPosition ? image : content;
   const rightContent = startPosition ? content : image;
   const justifyContent = startPosition ? "start" : "end";

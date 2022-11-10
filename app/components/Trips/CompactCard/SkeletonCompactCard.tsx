@@ -8,7 +8,6 @@ import SkeletonImage from "../../icons/SkeletonImage.svg";
 import { SkeletonType } from "../../StatesEnum";
 
 const Wrapper = styled.div``;
-
 const Content = styled(Column)`
   padding: 10px;
 `;
@@ -19,7 +18,7 @@ const SkeletonOnboardingCard = () => (
       width="400px"
       content={
         <Content
-          justifyContent="center"
+          justifyContent="space-between"
           alignItems="center"
           width="60%"
           height="130px"

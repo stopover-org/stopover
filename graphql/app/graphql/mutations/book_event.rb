@@ -1,12 +1,20 @@
-module Mutation
+module Mutations
   class BookEvent < BaseMutation
-    field :booking, Types::BookingType
-    field :event, Types::EventType
-    argument :first_name, String, required: false
-    argument :last_name, String, required: false
-    argument :email, String, required: false
-    argument :phone, String, required: false
-    argument :datetime, String, required: true
     argument :event_id, ID, loads: Types::EventType
+    argument :booked_for, Types::DateTimeType
+    argument :attendees_count, Integer
+
+    field :booking, Types::BookingType
+
+    def resolve(event:, **args)
+      booking = event.bookings.create!(
+          booked_for: args[:booked_for],
+          attendees: (1..args[:attendees_count]).map{ Attendee.new }
+      )
+
+      {
+          booking: booking
+      }
+    end
   end
 end
