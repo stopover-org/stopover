@@ -5,7 +5,6 @@ module Types
     edge_type_class(Types::BaseEdge)
     connection_type_class(Types::BaseConnection)
     field_class Types::BaseField
-    implements GraphQL::Types::Relay::Node
 
     def current_user
       context[:current_user]

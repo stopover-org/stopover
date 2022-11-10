@@ -15,7 +15,6 @@ const Query = graphql`
 
 const Trip = ({ preloadedQuery }: any) => {
   const data = usePreloadedQuery<Id_TripsQuery>(Query, preloadedQuery);
-  console.log(data.bookings[0].bookedFor, data.bookings[0].id);
   return (
     <Layout>
       <TripCard queryReference={data} />

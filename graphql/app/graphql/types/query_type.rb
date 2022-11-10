@@ -28,6 +28,8 @@ module Types
       argument :id, ID, required: true
     end
 
+    field :trips, [Types::TripType]
+
     def bookings(**args)
       Booking.where(trip_id: args[:id])
     end
@@ -50,6 +52,10 @@ module Types
 
     def event(**args)
       args[:id]
+    end
+
+    def tripe
+      Trip.all
     end
   end
 end

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<986b0dd28d0a4a6dc23724f05a3af31c>>
+ * @generated SignedSource<<ae9182f4e24a24cfd92706af03ad1b61>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -193,8 +193,7 @@ return {
                 "kind": "ScalarField",
                 "name": "cursor",
                 "storageKey": null
-              },
-              (v4/*: any*/)
+              }
             ],
             "storageKey": null
           },
@@ -222,8 +221,7 @@ return {
               }
             ],
             "storageKey": null
-          },
-          (v4/*: any*/)
+          }
         ],
         "storageKey": null
       },
@@ -280,8 +278,7 @@ return {
             "kind": "ScalarField",
             "name": "city",
             "storageKey": null
-          },
-          (v4/*: any*/)
+          }
         ],
         "storageKey": null
       },
@@ -308,12 +305,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "10710c5207a7c33df792206373ed33b1",
+    "cacheID": "8c36e1f4e2744f2dec8bc2ef5d892075",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query(\n  $filters: EventsFilter\n) {\n  ...List_EventsFragment_VTAHT\n  ...List_InterestsFragment\n}\n\nfragment CompactCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment EventFilter_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice\n  maxPrice\n  city\n}\n\nfragment InterestGallery_InterestsFragment on Query {\n  interests {\n    id\n    ...ItemGallery_InterestFragment\n  }\n}\n\nfragment ItemGallery_InterestFragment on Interest {\n  id\n  title\n  preview\n}\n\nfragment List_EventsFragment_VTAHT on Query {\n  events(first: 10, filters: $filters) {\n    edges {\n      node {\n        ...CompactCard_EventFragment\n        ...WideCard_EventFragment\n        id\n        __typename\n      }\n      cursor\n      id\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    id\n  }\n  eventFilters {\n    ...EventFilter_EventFiltersFragment\n    id\n  }\n}\n\nfragment List_InterestsFragment on Query {\n  ...InterestGallery_InterestsFragment\n}\n\nfragment WideCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n"
+    "text": "query events_Query(\n  $filters: EventsFilter\n) {\n  ...List_EventsFragment_VTAHT\n  ...List_InterestsFragment\n}\n\nfragment CompactCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n\nfragment EventFilter_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice\n  maxPrice\n  city\n}\n\nfragment InterestGallery_InterestsFragment on Query {\n  interests {\n    id\n    ...ItemGallery_InterestFragment\n  }\n}\n\nfragment ItemGallery_InterestFragment on Interest {\n  id\n  title\n  preview\n}\n\nfragment List_EventsFragment_VTAHT on Query {\n  events(first: 10, filters: $filters) {\n    edges {\n      node {\n        ...CompactCard_EventFragment\n        ...WideCard_EventFragment\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...EventFilter_EventFiltersFragment\n  }\n}\n\nfragment List_InterestsFragment on Query {\n  ...InterestGallery_InterestsFragment\n}\n\nfragment WideCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeeCostPerUomCents\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n}\n"
   }
 };
 })();

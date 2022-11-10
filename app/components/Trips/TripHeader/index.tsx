@@ -5,7 +5,7 @@ import { graphql, useFragment } from "react-relay";
 import Typography from "../../Typography";
 import { TripHeader_BookingsFragment$key } from "./__generated__/TripHeader_BookingsFragment.graphql";
 import { TypographySize, TypographyTags } from "../../StatesEnum";
-import { getDayMonth } from "../../../lib/utils/dates";
+import { getDayMonth, isDifferentDayMonth } from "../../../lib/utils/dates";
 
 const TextPadding = styled.div`
   padding-top: 10px;
@@ -16,7 +16,7 @@ const TripHeader = ({
 }: {
   tripHeaderReference: TripHeader_BookingsFragment$key;
 }) => {
-  const data = useFragment(
+  const { bookings } = useFragment(
     graphql`
       fragment TripHeader_BookingsFragment on Query
       @argumentDefinitions(id: { type: "ID!" }) {
@@ -30,24 +30,25 @@ const TripHeader = ({
     `,
     tripHeaderReference
   );
+  if (!bookings) return null;
+
+  const dates = bookings?.map(({ bookedFor }) => bookedFor);
+  const minDate = Math.min.apply(null, dates);
+  const maxDate = Math.max.apply(null, dates);
+  const isSameDate = !isDifferentDayMonth(moment(minDate), moment(maxDate));
+  const datesText = isSameDate
+    ? getDayMonth(moment(minDate))
+    : `${getDayMonth(moment(minDate))} - ${getDayMonth(moment(maxDate))}`;
+  const citiesText = bookings?.map((item) => `${item.event.city}, `);
+
   return (
     <>
       <Typography size={TypographySize.H1} as={TypographyTags.H1}>
-        <>
-          Моя поездка в {data?.bookings?.map((item) => `${item.event.city}, `)}
-        </>
+        <>Моя поездка в {citiesText}</>
       </Typography>
       <TextPadding>
         <Typography size={TypographySize.H2} as={TypographyTags.H2}>
-          <>
-            {getDayMonth(moment(data?.bookings?.[0]?.bookedFor))}
-            {" - "}
-            {data?.bookings &&
-              data?.bookings.length > 2 &&
-              getDayMonth(
-                moment(data?.bookings?.[data?.bookings?.length].bookedFor)
-              )}
-          </>
+          {datesText}
         </Typography>
       </TextPadding>
     </>
