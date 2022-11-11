@@ -17,6 +17,7 @@ class Event < ApplicationRecord
   has_many :event_options, dependent: :destroy
   belongs_to :unit, optional: true
   has_many :bookings, dependent: :destroy
+  has_many :ratings, dependent: :destroy
 
   enum recurring_type: { recurrent: 'recurrent', regular: 'regular' }
   enum event_type: {
@@ -67,6 +68,10 @@ class Event < ApplicationRecord
 
   def available_dates
     [single_days_with_time.map { |t| t.to_datetime }, recurrent_dates].flatten.compact.sort
+  end
+
+  def average_rating
+    ratings.sum(&:rating_value) / ratings.count.to_f
   end
 
   private

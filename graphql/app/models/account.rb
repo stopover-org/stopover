@@ -8,6 +8,7 @@ class Account < ApplicationRecord
   belongs_to :user, optional: false
   has_many :interests, through: :account_interests
   has_many :trips, dependent: :destroy
+  has_many :ratings
 
   validates :name, presence: true
 

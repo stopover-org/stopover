@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import DetailedInformation from "./DetailedInformation";
 import MainInformation from "./MainInformation";
-import shoppingCart from "../icons/Solid/General/Shopping-cart.svg";
 import Breadcrumbs from "./Breadcrumbs";
 import PreviewPhotos from "./PreviewPhotos";
 import Cheque from "./Cheque";
@@ -46,20 +45,6 @@ const EventCard = ({ date, event, googleMapsApiKey }: Props) => {
       <MainInformation
         eventReference={event}
         date={date}
-        content={[
-          {
-            tagName: "dont show this",
-            image: shoppingCart.src,
-          },
-          {
-            tagName: "show this",
-            image: shoppingCart.src,
-          },
-          {
-            tagName: "dont show this",
-            image: shoppingCart.src,
-          },
-        ]}
         price="6000"
         currency="$"
         averageRating={2.4}

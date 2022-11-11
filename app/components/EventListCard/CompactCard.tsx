@@ -160,11 +160,9 @@ const CompactCard = ({ averageRate, currency, eventRef }: Props) => {
               iconPosition={ButtonIconPlace.WITH_RIGHT_ICON}
               borderRadius="10px"
             >
-              <TypographyWrapper>
-                <Typography size="28px" as={TypographyTags.BIG}>
-                  +
-                </Typography>
-              </TypographyWrapper>
+              <Typography size="28px" as={TypographyTags.BIG} color="white">
+                +
+              </Typography>
             </Button>
           </SRow>
         </SColumn>
