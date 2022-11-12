@@ -1,11 +1,14 @@
 module Mutations
     class UpdateBooking < BaseMutation
         argument :booking_id, ID, loads: Types::BookingType
-        argument :first_name, String
+        argument :status, String
         field :booking, Types::BookingType
-        def resolve(**args)
+        def resolve(booking: , **args)
             # debugger
-            args.[:booking].update(name: args[:first_name])
+            booking.update(**args)
+            {
+                booking: booking
+            }
         end
     end
 end
