@@ -54,7 +54,7 @@ module Types
       args[:id]
     end
 
-    def tripe
+    def trips
       Trip.all
     end
   end

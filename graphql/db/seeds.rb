@@ -9,6 +9,9 @@
 #   Character.create(name: "Luke", movie: movies.first)
 require 'uri'
 
+events_count = ENV['count'] ? ENV['count'].to_i : 1000
+interests_count = 100
+
 user = User.create(phone: '+79829320283')
 user.send_confirmation_code!(primary: 'phone')
 user.activate!(code: user.confirmation_code)
@@ -24,58 +27,109 @@ user.send_confirmation_code!(primary: 'email')
 user.activate!(code: user.confirmation_code)
 user.session_password = rand.to_s[2..16]
 
-100.times.each do |_n|
-  title = Faker::Food.ethnic_category
-  unless Interest.find_by(title: title)
-    interest = Interest.create!(title: title, slug: title.parameterize)
-    interest_image = URI.open('https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/elymn/DSC03540_fa5f2e24-36ca-4587-923f-e389c3a46e4b.jpg')
-    interest.preview.attach(io: interest_image, filename: "#{interest.title}.jpg")
-    puts "Interest was created #{interest.id}"
-  else
-    puts "skip"
+ActiveRecord::Base.connection_pool.flush!
+
+titles = (0...interests_count * 10).map{ Faker::Internet.username(specifier: 5..10) }.uniq
+
+puts __dir__
+
+event_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview.jpg"), filename: "event_preview.jpg")
+
+interest_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/interest_preview.jpg"), filename: "interest_preview.jpg")
+
+
+(0...interests_count).each_slice(30) do |subset|
+  threads = []
+
+  subset.each do
+    threads << Thread.new do
+      title = titles.pop
+      slug = title.parameterize
+      unless Interest.find_by_title(title) || Interest.find_by_slug(slug)
+        interest = Interest.create!(title: title, slug: slug)
+        interest.preview.attach(interest_image)
+        puts "Interest was created #{interest.id}"
+      else
+        puts "skip"
+      end
+
+      ActiveRecord::Base.connection_pool.release_connection
+    rescue => e
+      puts e.message
+      ActiveRecord::Base.connection_pool.release_connection
+    end
   end
+
+  threads.each(&:join)
 end
 
 %w[Снегоход Квадроцикл].map { |u| Unit.create!(name: u, unit_type: :technique) }
 %w[Место Столик].map { |u| Unit.create!(name: u, unit_type: :common) }
 
-count = ENV['count'].to_i || 1000
-
-count.times.each do |_event|
-  puts 'trying to create event'
-  event_image = URI.open('https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/elymn/DSC03540_fa5f2e24-36ca-4587-923f-e389c3a46e4b.jpg')
-
-  event = Event.create!(
-    title: Faker::App.name,
-    description: Faker::Hipster.paragraphs.last,
-    event_type: :excursion,
-    recurring_type: :regular,
-    country: Faker::Address.country,
-    city: Faker::Address.city,
-    full_address: Faker::Address.full_address,
-    unit: Unit.find((Random.rand * Unit.count).floor + 1),
-    duration_time: '4h',
-    status: :published,
-    interests: [
-      Interest.find((Random.rand * Interest.count).floor + 1),
-      Interest.find((Random.rand * Interest.count).floor + 1),
-      Interest.find((Random.rand * Interest.count).floor + 1)
-    ],
-    single_days_with_time: [
-      Time.zone.now.change({ hour: 19, minute: 30 }),
-      (Time.zone.now + 1.day).change({ hour: 19, minute: 30 }),
-      (Time.zone.now + 3.months).change({ hour: 0o7, minute: 30 })
-    ],
-    # recurring_days_with_time: ["Monday 13:00", "Wednesday 13:00", "Friday 14:00"],
-    recurring_days_with_time: ['Monday 13:00'],
-    organizer_cost_per_uom_cents: 3000,
-    attendee_cost_per_uom_cents: 3000
-  )
-  event.images.attach(io: event_image, filename: "#{event.title}.jpg") unless ENV['without_images'] == 'true'
-  puts "#{event.id} #{event.title} was created"
+random_from = -> (total, min = 0) do
+    value = (Random.rand * total).floor
+    return value if value >= min
+    min
 end
 
-Event.first((count * 0.25).to_i).each { |e| e.update!(status: :draft) }
+random_hour = -> { rand(0..24) }
+
+random_minute = -> { rand(0..60) }
+
+random_hours = -> { "#{random_minute.call}m #{random_hour.call}h" }
+
+random_day = -> { %w(Monday Tuesday Wednesday Thursday Friday Saturday Sunday).sample}
+
+ActiveRecord::Base.connection_pool.flush!
+
+(0...events_count).each_slice(30) do |subset|
+  threads = []
+
+  subset.each do |int|
+    threads << Thread.new do
+      now = Time.zone.now + int.days
+      price = random_from.call(100_000)
+
+      event = Event.create!(
+          title: Faker::App.name,
+          description: Faker::Hipster.paragraphs.last,
+          event_type: :excursion,
+          recurring_type: :regular,
+          country: Faker::Address.country,
+          city: Faker::Address.city,
+          full_address: Faker::Address.full_address,
+          unit: Unit.find(random_from.call(Unit.count) + 1),
+          duration_time: random_hours.call,
+          status: :published,
+          interests: [
+                     Interest.find(random_from.call(Interest.count) + 1),
+                     Interest.find(random_from.call(Interest.count) + 1),
+                     Interest.find(random_from.call(Interest.count) + 1)
+                 ],
+          single_days_with_time: [
+                     now.change({ hour: random_hour.call, minute: random_minute.call }),
+                     (now + 1.day).change({ hour: random_hour.call, minute: random_minute.call }),
+                     (now + 3.months).change({ hour: random_hour.call, minute: random_minute.call })
+                 ],
+          recurring_days_with_time: ["#{random_day.call} #{random_hour.call}:#{random_minute.call}"],
+          organizer_cost_per_uom_cents: price,
+          attendee_cost_per_uom_cents: price * 0.8
+      )
+      event.images.attach(event_image) unless ENV['without_images'] == 'true'
+      (0...random_from.call(40)).map{ Rating.create!(account: Account.all.sample, event: event, rating_value: random_from.call(5, 1)) }
+      puts "#{event.id} #{event.title} was created"
+
+      ActiveRecord::Base.connection_pool.release_connection
+    rescue => e
+      puts e.message
+      ActiveRecord::Base.connection_pool.release_connection
+    end
+  end
+
+  threads.each(&:join)
+end
+
+Event.first((events_count * 0.25).to_i).each { |e| e.update!(status: :draft) }
 
 trip = Trip.create!(account: Account.last, status: :draft)
 
