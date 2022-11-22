@@ -8,7 +8,6 @@ module Mutations
         field :attendee, Types::AttendeeType
         
         def resolve(attendee: , **args)
-            debugger
             attendee.update(**args)
             {
                 attendee: attendee

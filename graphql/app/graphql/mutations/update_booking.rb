@@ -4,7 +4,6 @@ module Mutations
         argument :status, String
         field :booking, Types::BookingType
         def resolve(booking: , **args)
-            # debugger
             booking.update(**args)
             {
                 booking: booking
