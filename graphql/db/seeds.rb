@@ -72,9 +72,9 @@ random_from = -> (total, min = 0) do
     min
 end
 
-random_hour = -> { rand(0..24) }
+random_hour = -> { rand(0...24) }
 
-random_minute = -> { rand(0..60) }
+random_minute = -> { rand(0...60) }
 
 random_hours = -> { "#{random_minute.call}m #{random_hour.call}h" }
 
