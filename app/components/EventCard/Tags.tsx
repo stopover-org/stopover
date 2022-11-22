@@ -50,7 +50,7 @@ const Tags = ({ tags }: Props) => (
   <Wrapper>
     <TagsWrapper>
       {contentExist(tags) &&
-        tags.map((item, index) => (
+        tags?.map((item, index) => (
           <TagWrapper key={index}>
             <Tag>
               {imageExist(item.preview) && (

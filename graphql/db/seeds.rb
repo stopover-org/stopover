@@ -12,20 +12,17 @@ require 'uri'
 events_count = ENV['count'] ? ENV['count'].to_i : 1000
 interests_count = 100
 
-user = User.create(phone: '+79829320283')
+user = User.create!(phone: '+79829320283')
 user.send_confirmation_code!(primary: 'phone')
 user.activate!(code: user.confirmation_code)
-user.session_password = rand.to_s[2..16]
 
-user = User.create(email: 'mikhail@dorokhovich.ru')
+user = User.create!(email: 'mikhail@dorokhovich.ru')
 user.send_confirmation_code!(primary: 'email')
 user.activate!(code: user.confirmation_code)
-user.session_password = rand.to_s[2..16]
 
-user = User.create(email: 'maxhooga@gmail.com')
+user = User.create!(email: 'maxhooga@gmail.com')
 user.send_confirmation_code!(primary: 'email')
 user.activate!(code: user.confirmation_code)
-user.session_password = rand.to_s[2..16]
 
 ActiveRecord::Base.connection_pool.flush!
 
@@ -34,6 +31,11 @@ titles = (0...interests_count * 10).map{ Faker::Internet.username(specifier: 5..
 puts __dir__
 
 event_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview.jpg"), filename: "event_preview.jpg")
+event_image1 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview1.png"), filename: "event_preview1.png")
+event_image2 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview2.png"), filename: "event_preview2.png")
+event_image3 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview3.png"), filename: "event_preview3.png")
+event_image4 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview4.png"), filename: "event_preview4.png")
+event_image5 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview5.png"), filename: "event_preview5.png")
 
 interest_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/interest_preview.jpg"), filename: "interest_preview.jpg")
 
@@ -72,9 +74,9 @@ random_from = -> (total, min = 0) do
     min
 end
 
-random_hour = -> { rand(0..24) }
+random_hour = -> { rand(0...24) }
 
-random_minute = -> { rand(0..60) }
+random_minute = -> { rand(0...60) }
 
 random_hours = -> { "#{random_minute.call}m #{random_hour.call}h" }
 
@@ -115,7 +117,14 @@ ActiveRecord::Base.connection_pool.flush!
           organizer_cost_per_uom_cents: price,
           attendee_cost_per_uom_cents: price * 0.8
       )
-      event.images.attach(event_image) unless ENV['without_images'] == 'true'
+      unless ENV['without_images'] == 'true'
+        event.images.attach(event_image)
+        event.images.attach(event_image1)
+        event.images.attach(event_image2)
+        event.images.attach(event_image3)
+        event.images.attach(event_image4)
+        event.images.attach(event_image5)
+      end
       (0...random_from.call(40)).map{ Rating.create!(account: Account.all.sample, event: event, rating_value: random_from.call(5, 1)) }
       puts "#{event.id} #{event.title} was created"
 

@@ -22,7 +22,7 @@ const Layout = ({ children }: Props) => {
 
   return (
     <Wrapper>
-      <div id="galleryOfPhotoes" />
+      <div id="gallery-portal" />
       <Header />
       {!isSSR ? children : null}
       <Footer />

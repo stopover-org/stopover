@@ -30,6 +30,8 @@ module Types
     field :achievements, [Types::AchievementType]
     field :available_dates, [Types::DateTimeType], null: false
     field :tags, [Types::TagType], null: false
+    field :average_rating, Float
+    field :ratings_count, Integer
 
     field :images, [String], null: false
 

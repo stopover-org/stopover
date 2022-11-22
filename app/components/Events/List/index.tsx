@@ -77,17 +77,13 @@ const EventsList = ({ eventsReference }: Props) => {
   );
 
   const generateCardsRowArray = () =>
-    events.data.events.edges.map((edge: any, index: number) => {
+    events.data?.events?.edges?.map((edge: any, index: number) => {
       const EventWrapper = index === 3 ? WrapperBigCard : WrapperSmallCard;
       const EventComponent = index === 3 ? CompactCard : WideCard;
 
       return (
         <EventWrapper key={edge.node.id}>
-          <EventComponent
-            averageRate={4.5}
-            currency={Currencies.USD}
-            eventRef={edge.node}
-          />
+          <EventComponent currency={Currencies.USD} eventRef={edge.node} />
         </EventWrapper>
       );
     });
@@ -104,7 +100,7 @@ const EventsList = ({ eventsReference }: Props) => {
     city,
   }: ChangeFiltersProps) => {
     events.refetch(
-        {
+      {
         filters: {
           startDate: minDate,
           endDate: maxDate,

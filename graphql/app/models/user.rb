@@ -5,8 +5,11 @@ require 'jwt'
 class User < ApplicationRecord
   include AASM
 
-  validates :email, presence: true unless :phone
-  validates :phone, presence: true unless :email
+  validates :email, presence: true, unless: :phone
+  validates :email, uniqueness: true, unless: phone
+
+  validates :phone, presence: true, unless: :email
+  validates :phone, uniqueness: true, unless: :email
 
   has_one :account, dependent: :destroy
 
@@ -19,7 +22,7 @@ class User < ApplicationRecord
   end
 
   def send_confirmation_code!(primary:)
-    raise 'You are trying to resend confirmation code too often' unless can_check_code?
+    raise 'You are trying to resend confirmation code too often' unless can_send_code?
 
     code = rand.to_s[2..6]
 
@@ -42,7 +45,7 @@ class User < ApplicationRecord
   end
 
   def activate!(code:)
-    raise 'Confirmation code is incorrect' if code != confirmation_code
+    raise 'Confirmation code is incorrect' if code != confirmation_code || confirmation_code.nil?
 
     self.confirmation_code = nil
     self.last_try = DateTime.now
@@ -69,7 +72,7 @@ class User < ApplicationRecord
 
   private
 
-  def can_check_code?
+  def can_send_code?
     return true unless last_try || confirmation_code
 
     required_delay = ::Configuration.get_value(:SIGN_IN_DELAY)&.value.to_i
