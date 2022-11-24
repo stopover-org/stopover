@@ -6,7 +6,7 @@ class User < ApplicationRecord
   include AASM
 
   validates :email, presence: true, unless: :phone
-  validates :email, uniqueness: true, unless: phone
+  validates :email, uniqueness: true, unless: :phone
 
   validates :phone, presence: true, unless: :email
   validates :phone, uniqueness: true, unless: :email
