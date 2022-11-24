@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8d51694405e912e7cb3b209c3a6d37fd>>
+ * @generated SignedSource<<99a8095fd920c0019f7192ee7ff6760d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,6 +13,7 @@ import { FragmentRefs } from "relay-runtime";
 export type MainInformation_Fragment$data = {
   readonly attendeeCostPerUomCents: number;
   readonly availableDates: ReadonlyArray<any>;
+  readonly averageRating: number | null;
   readonly fullAddress: string;
   readonly tags: ReadonlyArray<{
     readonly id: string;
@@ -65,6 +66,13 @@ return {
     {
       "alias": null,
       "args": null,
+      "kind": "ScalarField",
+      "name": "averageRating",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "concreteType": "Tag",
       "kind": "LinkedField",
       "name": "tags",
@@ -87,6 +95,6 @@ return {
 };
 })();
 
-(node as any).hash = "803dd2119ef36d784d558740f950d5a5";
+(node as any).hash = "4362646bc0970cd7319055c87b4bca41";
 
 export default node;

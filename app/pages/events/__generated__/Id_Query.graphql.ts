@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6b278d30037593308ec1869b6777dc42>>
+ * @generated SignedSource<<ddd75fcdf67d087ca345e3a7060014fd>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -126,6 +126,13 @@ return {
           {
             "alias": null,
             "args": null,
+            "kind": "ScalarField",
+            "name": "averageRating",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "Tag",
             "kind": "LinkedField",
             "name": "tags",
@@ -142,12 +149,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b9e07ffa35eaba90269fc03102a1f91c",
+    "cacheID": "f205db7a2a8f3edd04b81c10f1e2f75c",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    id\n    ...Breadcrumbs_Fragment\n    ...MainInformation_Fragment\n  }\n}\n\nfragment Breadcrumbs_Fragment on Event {\n  title\n}\n\nfragment MainInformation_Fragment on Event {\n  title\n  availableDates\n  fullAddress\n  attendeeCostPerUomCents\n  tags {\n    id\n    title\n  }\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    id\n    ...Breadcrumbs_Fragment\n    ...MainInformation_Fragment\n  }\n}\n\nfragment Breadcrumbs_Fragment on Event {\n  title\n}\n\nfragment MainInformation_Fragment on Event {\n  title\n  availableDates\n  fullAddress\n  attendeeCostPerUomCents\n  averageRating\n  tags {\n    id\n    title\n  }\n}\n"
   }
 };
 })();

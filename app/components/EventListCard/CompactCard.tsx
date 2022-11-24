@@ -58,12 +58,11 @@ const TypographyWrapper = styled.div`
 `;
 
 type Props = {
-  averageRate: number;
   currency?: string;
   eventRef: CompactCard_EventFragment$key;
 };
 
-const CompactCard = ({ averageRate, currency, eventRef }: Props) => {
+const CompactCard = ({ currency, eventRef }: Props) => {
   const {
     title,
     id,
@@ -72,6 +71,8 @@ const CompactCard = ({ averageRate, currency, eventRef }: Props) => {
     tags,
     interests,
     attendeeCostPerUomCents,
+    averageRating,
+    ratingsCount,
   } = useFragment(
     graphql`
       fragment CompactCard_EventFragment on Event {
@@ -91,6 +92,8 @@ const CompactCard = ({ averageRate, currency, eventRef }: Props) => {
           link
           id
         }
+        averageRating
+        ratingsCount
       }
     `,
     eventRef
@@ -123,10 +126,10 @@ const CompactCard = ({ averageRate, currency, eventRef }: Props) => {
             ))}
           </SRow>
           <SRow justifyContent="start" alignItems="end">
-            <AverageRating averageRating={averageRate} />
+            <AverageRating averageRating={averageRating} />
             <SCommentsRating>
               <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-                (3 отзыва)
+                ({ratingsCount} отзыва)
               </Typography>
             </SCommentsRating>
           </SRow>

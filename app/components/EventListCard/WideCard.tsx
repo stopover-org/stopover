@@ -57,36 +57,45 @@ const TypographyWrapper = styled.div`
 `;
 
 type Props = {
-  averageRate: number;
   currency?: string;
   eventRef: WideCard_EventFragment$key;
 };
 
-const WideCard = ({ averageRate, currency, eventRef }: Props) => {
-  const { title, id, images, tags, interests, attendeeCostPerUomCents } =
-    useFragment(
-      graphql`
-        fragment WideCard_EventFragment on Event {
+const WideCard = ({ currency, eventRef }: Props) => {
+  const {
+    title,
+    id,
+    images,
+    tags,
+    interests,
+    attendeeCostPerUomCents,
+    averageRating,
+    ratingsCount,
+  } = useFragment(
+    graphql`
+      fragment WideCard_EventFragment on Event {
+        title
+        description
+        id
+        availableDates
+        images
+        attendeeCostPerUomCents
+        tags {
           title
-          description
+          link
           id
-          availableDates
-          images
-          attendeeCostPerUomCents
-          tags {
-            title
-            link
-            id
-          }
-          interests {
-            title
-            link
-            id
-          }
         }
-      `,
-      eventRef
-    );
+        interests {
+          title
+          link
+          id
+        }
+        averageRating
+        ratingsCount
+      }
+    `,
+    eventRef
+  );
 
   return (
     <Card
@@ -114,10 +123,10 @@ const WideCard = ({ averageRate, currency, eventRef }: Props) => {
             ))}
           </SRow>
           <RatingWrapper justifyContent="start" alignItems="end">
-            <AverageRating averageRating={averageRate} />
+            <AverageRating averageRating={averageRating} />
             <SCommentsRating>
               <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-                (3 отзыва)
+                ({ratingsCount} отзыва)
               </Typography>
             </SCommentsRating>
           </RatingWrapper>

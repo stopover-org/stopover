@@ -123,6 +123,7 @@ type Event implements Node {
   achievements: [Achievement!]
   attendeeCostPerUomCents: Int!
   availableDates: [DateTime!]!
+  averageRating: Float
   city: String
   country: String
   description: String!
@@ -137,6 +138,7 @@ type Event implements Node {
   latitude: Float
   longitude: Float
   organizerCostPerUomCents: Int
+  ratingsCount: Int
   recurringDaysWithTime: [String!]
   recurringType: RecurringTypeEnum
   region: String

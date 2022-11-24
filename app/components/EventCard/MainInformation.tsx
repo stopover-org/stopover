@@ -53,18 +53,11 @@ const Location = styled.p`
 
 type Props = {
   currency: string;
-  averageRating: number;
   eventReference: Id_Query$data["event"];
   date?: string | string[];
 };
 
-const MainInformation = ({
-  currency,
-  averageRating,
-  eventReference,
-  date,
-}: Props) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+const MainInformation = ({ currency, eventReference, date }: Props) => {
   const event = useFragment<any>(
     graphql`
       fragment MainInformation_Fragment on Event {
@@ -72,6 +65,7 @@ const MainInformation = ({
         availableDates
         fullAddress
         attendeeCostPerUomCents
+        averageRating
         tags {
           id
           title
@@ -84,15 +78,15 @@ const MainInformation = ({
   return (
     <Wrapper>
       <InformationalBlock>
-        <Name>{event.title}</Name>
-        <AverageRating averageRating={averageRating} />
-        <Tags tags={event.tags} />
-        <Location>{event.fullAddress}</Location>
+        <Name>{event?.title}</Name>
+        <AverageRating averageRating={event?.averageRating} />
+        <Tags tags={event?.tags} />
+        <Location>{event?.fullAddress}</Location>
       </InformationalBlock>
       <FunctionalBlock>
         <Button description={date} color="#ff8a00" />
         <Button
-          description={event.attendeeCostPerUomCents}
+          description={event?.attendeeCostPerUomCents}
           color="#ff8a00"
           contentAfterDescription={[
             currency,

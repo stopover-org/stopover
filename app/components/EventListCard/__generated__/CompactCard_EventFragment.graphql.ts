@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<be9f19bd5367e642f812df8a7c4fb8cb>>
+ * @generated SignedSource<<14816992fce597c28d5b1a9cbdc6c229>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,6 +13,7 @@ import { FragmentRefs } from "relay-runtime";
 export type CompactCard_EventFragment$data = {
   readonly attendeeCostPerUomCents: number;
   readonly availableDates: ReadonlyArray<any>;
+  readonly averageRating: number | null;
   readonly description: string;
   readonly id: string;
   readonly images: ReadonlyArray<string>;
@@ -21,6 +22,7 @@ export type CompactCard_EventFragment$data = {
     readonly link: string | null;
     readonly title: string;
   }>;
+  readonly ratingsCount: number | null;
   readonly tags: ReadonlyArray<{
     readonly id: string;
     readonly link: string | null;
@@ -115,6 +117,20 @@ return {
       "plural": true,
       "selections": (v2/*: any*/),
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "averageRating",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "ratingsCount",
+      "storageKey": null
     }
   ],
   "type": "Event",
@@ -122,6 +138,6 @@ return {
 };
 })();
 
-(node as any).hash = "3d94a1656776e33d4a6c433edb5a5930";
+(node as any).hash = "2bcaa11ab0b67ed872ebcbab9260cbd9";
 
 export default node;

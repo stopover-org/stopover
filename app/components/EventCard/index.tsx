@@ -3,10 +3,9 @@ import styled from "styled-components";
 import DetailedInformation from "./DetailedInformation";
 import MainInformation from "./MainInformation";
 import Breadcrumbs from "./Breadcrumbs";
-import PreviewPhotos from "./PreviewPhotos";
 import Cheque from "./Cheque";
 import GoogleMaps from "./GoogleMaps";
-import { imageArray } from "../constants";
+import EventPreview from "./EventPreview";
 
 const Body = styled.div<{ fixed: string }>`
   max-width: 1600px;
@@ -22,10 +21,6 @@ const Bottom = styled.div`
 const Content = styled.div`
   max-width: 70%;
 `;
-/* type Content = {
-    tagName: string;
-    image: string;
-}[]; */
 
 type Props = {
   date?: string | string[];
@@ -42,18 +37,12 @@ const EventCard = ({ date, event, googleMapsApiKey }: Props) => {
   return (
     <Body fixed={fixed}>
       <Breadcrumbs eventReference={event} />
-      <MainInformation
-        eventReference={event}
-        date={date}
-        price="6000"
-        currency="$"
-        averageRating={2.4}
-      />
-      <PreviewPhotos blockScroll={blockScroll} images={imageArray} />
+      <MainInformation eventReference={event} date={date} currency="$" />
+      <EventPreview blockScroll={blockScroll} eventFragmentRef={event} />
 
       <Bottom>
         <Content>
-          <DetailedInformation description="textdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtextddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" />
+          <DetailedInformation description={event?.description} />
           <GoogleMaps
             googleMapsApiKey={googleMapsApiKey}
             latitude={40}
