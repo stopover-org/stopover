@@ -28,8 +28,6 @@ ActiveRecord::Base.connection_pool.flush!
 
 titles = (0...interests_count * 10).map{ Faker::Internet.username(specifier: 5..10) }.uniq
 
-puts __dir__
-
 event_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview.jpg"), filename: "event_preview.jpg")
 event_image1 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview1.png"), filename: "event_preview1.png")
 event_image2 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview2.png"), filename: "event_preview2.png")
@@ -84,6 +82,7 @@ random_day = -> { %w(Monday Tuesday Wednesday Thursday Friday Saturday Sunday).s
 
 ActiveRecord::Base.connection_pool.flush!
 
+
 (0...events_count).each_slice(30) do |subset|
   threads = []
 
@@ -93,29 +92,35 @@ ActiveRecord::Base.connection_pool.flush!
       price = random_from.call(100_000)
 
       event = Event.create!(
-          title: Faker::App.name,
-          description: Faker::Hipster.paragraphs.last,
-          event_type: :excursion,
-          recurring_type: :regular,
-          country: Faker::Address.country,
-          city: Faker::Address.city,
-          full_address: Faker::Address.full_address,
-          unit: Unit.find(random_from.call(Unit.count) + 1),
-          duration_time: random_hours.call,
-          status: :published,
-          interests: [
-                     Interest.find(random_from.call(Interest.count) + 1),
-                     Interest.find(random_from.call(Interest.count) + 1),
-                     Interest.find(random_from.call(Interest.count) + 1)
-                 ],
-          single_days_with_time: [
-                     now.change({ hour: random_hour.call, minute: random_minute.call }),
-                     (now + 1.day).change({ hour: random_hour.call, minute: random_minute.call }),
-                     (now + 3.months).change({ hour: random_hour.call, minute: random_minute.call })
-                 ],
-          recurring_days_with_time: ["#{random_day.call} #{random_hour.call}:#{random_minute.call}"],
-          organizer_cost_per_uom_cents: price,
-          attendee_cost_per_uom_cents: price * 0.8
+        title: Faker::App.name,
+        description: Faker::Hipster.paragraphs.last,
+        event_type: :excursion,
+        recurring_type: :regular,
+        country: Faker::Address.country,
+        city: Faker::Address.city,
+        full_address: Faker::Address.full_address,
+        unit: Unit.find(random_from.call(Unit.count) + 1),
+        duration_time: random_hours.call,
+        status: :published,
+        interests: [
+                  Interest.find(random_from.call(Interest.count) + 1),
+                  Interest.find(random_from.call(Interest.count) + 1),
+                  Interest.find(random_from.call(Interest.count) + 1)
+              ],
+        single_days_with_time: [
+                  now.change({ hour: random_hour.call, minute: random_minute.call }),
+                  (now + 1.day).change({ hour: random_hour.call, minute: random_minute.call }),
+                  (now + 3.months).change({ hour: random_hour.call, minute: random_minute.call })
+              ],
+        recurring_days_with_time: ["#{random_day.call} #{random_hour.call}:#{random_minute.call}"],
+        organizer_cost_per_uom_cents: price,
+        attendee_cost_per_uom_cents: price * 0.8,
+        event_options: [1..4].map{
+          EventOption.new(
+            title: Faker::Coffee.blend_name,
+            description: Faker::Coffee.notes
+          )
+        }
       )
       unless ENV['without_images'] == 'true'
         event.images.attach(event_image)
