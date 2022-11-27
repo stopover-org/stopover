@@ -46,6 +46,7 @@ class Event < ApplicationRecord
 
   before_validation :set_prices
   before_validation :update_tags
+  before_validation :adjust_costs
 
   default_scope { where(status: :published) }
   scope :by_city, ->(city) { where(city: city) }
@@ -56,6 +57,9 @@ class Event < ApplicationRecord
     state :unpublished
   end
 
+  def adjust_costs
+    self.attendee_cost_per_uom_cents = self.organizer_cost_per_uom_cents * (1 + ::Configuration.get_value('EVENT_MARGIN').value.to_i/100.0)
+  end
   # it's not a scope because it cannot be chained to other query
   def self.events_between(start_date, end_date = Time.zone.now + 1.year)
     Event.where(id: execute_events_by_dates(start_date, end_date).values.map { |v| v[0] })
@@ -73,7 +77,7 @@ class Event < ApplicationRecord
   def average_rating
     (ratings.sum(&:rating_value) / ratings.count.to_f).round(2)
   end
-
+  
   def ratings_count
     ratings.count
   end

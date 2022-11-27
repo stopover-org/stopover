@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_23_150900) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_25_143615) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -81,12 +81,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_23_150900) do
   end
 
   create_table "attendee_options", force: :cascade do |t|
-    t.bigint "attendees_id"
-    t.bigint "event_options_id"
+    t.bigint "attendee_id"
+    t.bigint "event_option_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["attendees_id"], name: "index_attendee_options_on_attendees_id"
-    t.index ["event_options_id"], name: "index_attendee_options_on_event_options_id"
+    t.decimal "attendee_cost_cents", default: "0.0"
+    t.decimal "organizer_cost_cents", default: "0.0"
+    t.index ["attendee_id"], name: "index_attendee_options_on_attendee_id"
+    t.index ["event_option_id"], name: "index_attendee_options_on_event_option_id"
   end
 
   create_table "attendees", force: :cascade do |t|
@@ -105,6 +107,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_23_150900) do
     t.bigint "event_option_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "attendee_cost_cents", default: "0.0"
+    t.decimal "organizer_cost_cents", default: "0.0"
     t.index ["booking_id"], name: "index_booking_options_on_booking_id"
     t.index ["event_option_id"], name: "index_booking_options_on_event_option_id"
   end
@@ -156,7 +160,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_23_150900) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
-    t.boolean "for_attendee"
+    t.boolean "for_attendee", default: false
     t.index ["event_id"], name: "index_event_options_on_event_id"
   end
 
@@ -262,4 +266,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_23_150900) do
     t.index ["phone"], name: "index_users_on_phone", unique: true
   end
 
+  add_foreign_key "account_interests", "accounts"
+  add_foreign_key "account_interests", "interests"
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "booking_options", "bookings"
+  add_foreign_key "booking_options", "event_options"
+  add_foreign_key "event_achievements", "achievements"
+  add_foreign_key "event_achievements", "events"
+  add_foreign_key "event_interests", "events"
+  add_foreign_key "event_interests", "interests"
+  add_foreign_key "events", "units"
 end

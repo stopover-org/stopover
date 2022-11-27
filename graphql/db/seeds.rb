@@ -118,7 +118,9 @@ ActiveRecord::Base.connection_pool.flush!
         event_options: [1..4].map{
           EventOption.new(
             title: Faker::Coffee.blend_name,
-            description: Faker::Coffee.notes
+            description: Faker::Coffee.notes,
+            built_in: [true, false].sample,
+            for_attendee: [true, false].sample
           )
         }
       )
