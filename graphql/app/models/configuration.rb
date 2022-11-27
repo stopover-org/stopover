@@ -24,7 +24,12 @@ class Configuration < ApplicationRecord
       key: 'GEOCODE_PROVIDER',
       value: 'osm',
       description: 'which one maps provider will be used. supports only osm.'
-    }
+    },
+    EVENT_MARGIN: {
+      key: 'EVENT_MARGIN',
+      value: 10,
+      description: 'payment to the holder of the website',
+    },
   }.freeze
   def self.get_value(key)
     return nil unless DEFAULT_VALUES.keys.include?(key.to_sym)
