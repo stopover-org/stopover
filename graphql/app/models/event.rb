@@ -58,7 +58,7 @@ class Event < ApplicationRecord
   end
 
   def adjust_costs
-    self.attendee_cost_per_uom_cents = self.organizer_cost_per_uom_cents * (1 + ::Configuration.get_value('EVENT_MARGIN').value.to_i/100.0)
+    self.attendee_cost_per_uom_cents = (self.organizer_cost_per_uom_cents * (1 + ::Configuration.get_value('EVENT_MARGIN').value.to_i/100.0)).round
   end
   # it's not a scope because it cannot be chained to other query
   def self.events_between(start_date, end_date = Time.zone.now + 1.year)

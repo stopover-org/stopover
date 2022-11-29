@@ -13,7 +13,7 @@ class EventOption < ApplicationRecord
   private
 
   def adjust_costs
-    self.attendee_cost_cents = self.organizer_cost_cents * (1 + ::Configuration.get_value('EVENT_MARGIN').value.to_i/100.0)
+    self.attendee_cost_cents = (self.organizer_cost_cents * (1 + ::Configuration.get_value('EVENT_MARGIN').value.to_i/100.0)).round
   end
   def update_total
     booking_options.each do |booking_option|

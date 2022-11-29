@@ -25,7 +25,7 @@ class Account < ApplicationRecord
     return unless user
 
     self.primary_phone = user.phone if user.phone
-    phones.concat[user.phone] if user.phone && !phones.include?(user.phone)
-    phones.concat[primary_phone] if primary_phone && !phones.include?(primary_phone)
+    phones.concat([user.phone]) if user.phone && !phones.include?(user.phone)
+    phones.concat([primary_phone]) if primary_phone && !phones.include?(primary_phone)
   end
 end
