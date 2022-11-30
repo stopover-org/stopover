@@ -153,8 +153,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_25_143615) do
 
   create_table "event_options", force: :cascade do |t|
     t.string "title"
-    t.decimal "organizer_cost_cents"
-    t.decimal "attendee_cost_cents"
+    t.decimal "organizer_cost_cents", default: "0.0"
+    t.decimal "attendee_cost_cents", default: "0.0"
     t.boolean "built_in", default: false
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
@@ -178,8 +178,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_25_143615) do
     t.text "description", null: false
     t.string "event_type", null: false
     t.string "recurring_type", null: false
-    t.decimal "organizer_cost_per_uom_cents"
-    t.decimal "attendee_cost_per_uom_cents"
+    t.decimal "organizer_cost_per_uom_cents", default: "0.0"
+    t.decimal "attendee_cost_per_uom_cents", default: "0.0"
     t.boolean "requires_contract", default: false, null: false
     t.boolean "requires_passport", default: false, null: false
     t.boolean "requires_check_in", default: false, null: false

@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Booking, type: :model do
   describe 'booking' do
-    let!(:event) {create(:event, event_options: [create(:built_in_attendee_option), create(:built_in_event_option)])}
-    let!(:booking) {create(:booking, event: event)}
+    let!(:event) { create(:event, event_options: [create(:built_in_attendee_option), create(:built_in_event_option)]) }
+    let!(:booking) { create(:booking, event: event) }
     it 'has one attendee' do
       expect(booking.attendees.count).to eq(1)
     end
@@ -22,7 +22,7 @@ RSpec.describe Booking, type: :model do
     it do
       event.event_options.first.update!(organizer_cost_cents: 500)
       event.event_options.last.update!(organizer_cost_cents: 500)
-      expect(booking.booking_options.first.attendee_cost_cents).to eq(550)
+      expect(booking.booking_options.first.reload.attendee_cost_cents).to eq(550)
       expect(booking.booking_options.first.organizer_cost_cents).to eq(500)
       expect(booking.attendees.first.attendee_options.first.attendee_cost_cents).to eq(550)
       expect(booking.attendees.first.attendee_options.first.organizer_cost_cents).to eq(500)

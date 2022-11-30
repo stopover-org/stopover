@@ -9,7 +9,7 @@ module Types
     field :link, String
 
     def link
-      return "/interests/#{object.id}"
+      "/interests/#{object.id}"
     end
 
     def preview

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe EventOption, type: :model do
   describe 'cost for attendee' do
-    let!(:event_option) {create(:event_option)}
+    let!(:event_option) { create(:event_option) }
     it 'is right amount' do
       expect(event_option.attendee_cost_cents).to eq(440)
     end

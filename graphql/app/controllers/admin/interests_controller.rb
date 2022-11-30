@@ -1,4 +1,3 @@
-
 class Admin::InterestsController < AdminController
   def index
     interests = Interest.all.reorder(get_user_order)

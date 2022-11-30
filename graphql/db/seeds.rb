@@ -26,17 +26,23 @@ user.activate!(code: user.confirmation_code)
 
 ActiveRecord::Base.connection_pool.flush!
 
-titles = (0...interests_count * 10).map{ Faker::Internet.username(specifier: 5..10) }.uniq
+titles = (0...interests_count * 10).map { Faker::Internet.username(specifier: 5..10) }.uniq
 
-event_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview.jpg"), filename: "event_preview.jpg")
-event_image1 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview1.png"), filename: "event_preview1.png")
-event_image2 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview2.png"), filename: "event_preview2.png")
-event_image3 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview3.png"), filename: "event_preview3.png")
-event_image4 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview4.png"), filename: "event_preview4.png")
-event_image5 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview5.png"), filename: "event_preview5.png")
+event_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview.jpg"),
+                                                     filename: 'event_preview.jpg')
+event_image1 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview1.png"),
+                                                      filename: 'event_preview1.png')
+event_image2 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview2.png"),
+                                                      filename: 'event_preview2.png')
+event_image3 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview3.png"),
+                                                      filename: 'event_preview3.png')
+event_image4 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview4.png"),
+                                                      filename: 'event_preview4.png')
+event_image5 = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/event_preview5.png"),
+                                                      filename: 'event_preview5.png')
 
-interest_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/interest_preview.jpg"), filename: "interest_preview.jpg")
-
+interest_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__}/interest_preview.jpg"),
+                                                        filename: 'interest_preview.jpg')
 
 (0...interests_count).each_slice(30) do |subset|
   threads = []
@@ -45,16 +51,16 @@ interest_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__
     threads << Thread.new do
       title = titles.pop
       slug = title.parameterize
-      unless Interest.find_by_title(title) || Interest.find_by_slug(slug)
+      if Interest.find_by_title(title) || Interest.find_by_slug(slug)
+        puts 'skip'
+      else
         interest = Interest.create!(title: title, slug: slug)
         interest.preview.attach(interest_image)
         puts "Interest was created #{interest.id}"
-      else
-        puts "skip"
       end
 
       ActiveRecord::Base.connection_pool.release_connection
-    rescue => e
+    rescue StandardError => e
       puts e.message
       ActiveRecord::Base.connection_pool.release_connection
     end
@@ -66,10 +72,11 @@ end
 %w[Снегоход Квадроцикл].map { |u| Unit.create!(name: u, unit_type: :technique) }
 %w[Место Столик].map { |u| Unit.create!(name: u, unit_type: :common) }
 
-random_from = -> (total, min = 0) do
-    value = (Random.rand * total).floor
-    return value if value >= min
-    min
+random_from = lambda do |total, min = 0|
+  value = (Random.rand * total).floor
+  return value if value >= min
+
+  min
 end
 
 random_hour = -> { rand(0...24) }
@@ -78,10 +85,9 @@ random_minute = -> { rand(0...60) }
 
 random_hours = -> { "#{random_minute.call}m #{random_hour.call}h" }
 
-random_day = -> { %w(Monday Tuesday Wednesday Thursday Friday Saturday Sunday).sample}
+random_day = -> { %w[Monday Tuesday Wednesday Thursday Friday Saturday Sunday].sample }
 
 ActiveRecord::Base.connection_pool.flush!
-
 
 (0...events_count).each_slice(30) do |subset|
   threads = []
@@ -103,26 +109,26 @@ ActiveRecord::Base.connection_pool.flush!
         duration_time: random_hours.call,
         status: :published,
         interests: [
-                  Interest.find(random_from.call(Interest.count) + 1),
-                  Interest.find(random_from.call(Interest.count) + 1),
-                  Interest.find(random_from.call(Interest.count) + 1)
-              ],
+          Interest.find(random_from.call(Interest.count) + 1),
+          Interest.find(random_from.call(Interest.count) + 1),
+          Interest.find(random_from.call(Interest.count) + 1)
+        ],
         single_days_with_time: [
-                  now.change({ hour: random_hour.call, minute: random_minute.call }),
-                  (now + 1.day).change({ hour: random_hour.call, minute: random_minute.call }),
-                  (now + 3.months).change({ hour: random_hour.call, minute: random_minute.call })
-              ],
+          now.change({ hour: random_hour.call, minute: random_minute.call }),
+          (now + 1.day).change({ hour: random_hour.call, minute: random_minute.call }),
+          (now + 3.months).change({ hour: random_hour.call, minute: random_minute.call })
+        ],
         recurring_days_with_time: ["#{random_day.call} #{random_hour.call}:#{random_minute.call}"],
         organizer_cost_per_uom_cents: price,
         attendee_cost_per_uom_cents: price * 0.8,
-        event_options: [1..4].map{
+        event_options: [1..4].map do
           EventOption.new(
             title: Faker::Coffee.blend_name,
             description: Faker::Coffee.notes,
             built_in: [true, false].sample,
             for_attendee: [true, false].sample
           )
-        }
+        end
       )
       unless ENV['without_images'] == 'true'
         event.images.attach(event_image)
@@ -132,11 +138,13 @@ ActiveRecord::Base.connection_pool.flush!
         event.images.attach(event_image4)
         event.images.attach(event_image5)
       end
-      (0...random_from.call(40)).map{ Rating.create!(account: Account.all.sample, event: event, rating_value: random_from.call(5, 1)) }
+      (0...random_from.call(40)).map do
+        Rating.create!(account: Account.all.sample, event: event, rating_value: random_from.call(5, 1))
+      end
       puts "#{event.id} #{event.title} was created"
 
       ActiveRecord::Base.connection_pool.release_connection
-    rescue => e
+    rescue StandardError => e
       puts e.message
       ActiveRecord::Base.connection_pool.release_connection
     end

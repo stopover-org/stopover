@@ -1,7 +1,7 @@
 require 'digest'
 
 class FilesSupport
-  def self.base64_to_file base64, filename = SecureRandom.hex
+  def self.base64_to_file(base64, filename = SecureRandom.hex)
     start_regex = %r{data:image/[a-z]{3,4};base64,}
     regex_result = start_regex.match(base64)
 

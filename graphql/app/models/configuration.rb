@@ -28,8 +28,8 @@ class Configuration < ApplicationRecord
     EVENT_MARGIN: {
       key: 'EVENT_MARGIN',
       value: 10,
-      description: 'payment to the holder of the website',
-    },
+      description: 'payment to the holder of the website'
+    }
   }.freeze
   def self.get_value(key)
     return nil unless DEFAULT_VALUES.keys.include?(key.to_sym)

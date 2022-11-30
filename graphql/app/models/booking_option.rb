@@ -11,12 +11,16 @@ class BookingOption < ApplicationRecord
     self.organizer_cost_cents = event_option&.organizer_cost_cents
   end
 
-  private
-  
-  def has_same_event
-    if event_option.event.id != booking.event.id
-      errors.add(:event_option, "different event.id in booking and event_option")
-    end
+  def adjust_costs!
+    adjust_costs
+    save!
   end
 
+  private
+
+  def has_same_event
+    if event_option.event.id != booking.event.id
+      errors.add(:event_option, 'different event.id in booking and event_option')
+    end
+  end
 end
