@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ModifyTables < ActiveRecord::Migration[7.0]
   def change
     add_column :booking_options, :attendee_cost_cents, :decimal, default: 0

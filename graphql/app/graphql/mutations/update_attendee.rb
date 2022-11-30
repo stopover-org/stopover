@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mutations
   class UpdateAttendee < BaseMutation
     argument :attendee_id, ID, loads: Types::AttendeeType

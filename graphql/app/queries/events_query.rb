@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventsQuery
   def initialize(params = {}, relations = Event.events_between(Time.zone.now), current_user = nil)
     @relations = relations

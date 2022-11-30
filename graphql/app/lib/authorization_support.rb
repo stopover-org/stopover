@@ -9,7 +9,7 @@ class AuthorizationSupport
     header = headers['Authorization']
     return nil unless header
 
-    access_token = header.split(' ')[1]
+    access_token = header.split[1]
     return nil unless access_token
 
     decoded_token = JWT.decode(access_token, nil, false, { algorithm: JWT_ALGORITHM })

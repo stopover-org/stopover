@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class EventFiltersType < Types::BaseObject
     field :city, String

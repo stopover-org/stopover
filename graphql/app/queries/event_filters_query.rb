@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventFiltersQuery
   def initialize(params = {})
     @start_date = DateTime.now.change({ hour: 0, minutes: 0 })

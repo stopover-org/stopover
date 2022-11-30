@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AttendeeOption < ApplicationRecord
   belongs_to :attendee
   belongs_to :event_option

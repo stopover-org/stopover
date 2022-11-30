@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'digest'
 
 class FilesSupport
@@ -10,7 +12,7 @@ class FilesSupport
     start = regex_result.to_s
     tempfile = Tempfile.new(filename)
     tempfile.binmode
-    tempfile.write(Base64.decode64(base64[start.length..-1]))
+    tempfile.write(Base64.decode64(base64[start.length..]))
 
     ActionDispatch::Http::UploadedFile.new(
       tempfile: tempfile,

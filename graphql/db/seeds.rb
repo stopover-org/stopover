@@ -51,17 +51,17 @@ interest_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__
     threads << Thread.new do
       title = titles.pop
       slug = title.parameterize
-      if Interest.find_by_title(title) || Interest.find_by_slug(slug)
-        puts 'skip'
+      if Interest.find_by(title: title) || Interest.find_by(slug: slug)
+        Rails.logger.debug 'skip'
       else
         interest = Interest.create!(title: title, slug: slug)
         interest.preview.attach(interest_image)
-        puts "Interest was created #{interest.id}"
+        Rails.logger.debug { "Interest was created #{interest.id}" }
       end
 
       ActiveRecord::Base.connection_pool.release_connection
     rescue StandardError => e
-      puts e.message
+      Rails.logger.debug e.message
       ActiveRecord::Base.connection_pool.release_connection
     end
   end
@@ -122,15 +122,15 @@ ActiveRecord::Base.connection_pool.flush!
         organizer_cost_per_uom_cents: price,
         attendee_cost_per_uom_cents: price * 0.8,
         event_options: [1..4].map do
-          EventOption.new(
-            title: Faker::Coffee.blend_name,
-            description: Faker::Coffee.notes,
-            built_in: [true, false].sample,
-            for_attendee: [true, false].sample
-          )
-        end
+                         EventOption.new(
+                           title: Faker::Coffee.blend_name,
+                           description: Faker::Coffee.notes,
+                           built_in: [true, false].sample,
+                           for_attendee: [true, false].sample
+                         )
+                       end
       )
-      unless ENV['without_images'] == 'true'
+      unless ENV.fetch('without_images', nil) == 'true'
         event.images.attach(event_image)
         event.images.attach(event_image1)
         event.images.attach(event_image2)
@@ -141,11 +141,11 @@ ActiveRecord::Base.connection_pool.flush!
       (0...random_from.call(40)).map do
         Rating.create!(account: Account.all.sample, event: event, rating_value: random_from.call(5, 1))
       end
-      puts "#{event.id} #{event.title} was created"
+      Rails.logger.debug { "#{event.id} #{event.title} was created" }
 
       ActiveRecord::Base.connection_pool.release_connection
     rescue StandardError => e
-      puts e.message
+      Rails.logger.debug e.message
       ActiveRecord::Base.connection_pool.release_connection
     end
   end

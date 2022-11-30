@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BookingOption < ApplicationRecord
   validate :has_same_event
 
@@ -19,8 +21,6 @@ class BookingOption < ApplicationRecord
   private
 
   def has_same_event
-    if event_option.event.id != booking.event.id
-      errors.add(:event_option, 'different event.id in booking and event_option')
-    end
+    errors.add(:event_option, 'different event.id in booking and event_option') if event_option.event.id != booking.event.id
   end
 end

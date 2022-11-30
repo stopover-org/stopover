@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class AdminInterestsSerializer < ActiveModel::Serializer
   attributes(*Interest.attribute_names, :images)
 
   def images
-    return [] unless object.preview.present?
+    return [] if object.preview.blank?
 
     [
       src: Rails.application.routes.url_helpers.rails_blob_url(object.preview),
-      id: object.preview.id
+        id: object.preview.id
     ]
   end
 end

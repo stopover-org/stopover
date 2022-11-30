@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 namespace :db do
   task :exec_sql, [:file] => :environment do |task, args|
-    sql_content = IO.read(args.file)
+    sql_content = File.read(args.file)
     puts args.file, task, sql_content
     ActiveRecord::Base.connection.execute(sql_content)
   end

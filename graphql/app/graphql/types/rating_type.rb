@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class RatingType < Types::ModelObject
     field :rating_value, Integer

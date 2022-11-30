@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mutations
   class BookEvent < BaseMutation
     argument :event_id, ID, loads: Types::EventType

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mutations
   class UpdateBooking < BaseMutation
     argument :booking_id, ID, loads: Types::BookingType

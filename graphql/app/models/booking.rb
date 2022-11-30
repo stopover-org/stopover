@@ -11,8 +11,8 @@ class Booking < ApplicationRecord
   has_many :attendees
 
   before_validation :create_trip, if: :should_create_trip
-  before_create :create_booking_options
   before_validation :create_attendee
+  before_create :create_booking_options
 
   aasm column: :status do
     state :active, initial: true

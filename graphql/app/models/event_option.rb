@@ -15,15 +15,13 @@ class EventOption < ApplicationRecord
   private
 
   def adjust_costs
-    self.attendee_cost_cents = (organizer_cost_cents * (1 + ::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0)).round(
+    self.attendee_cost_cents = (organizer_cost_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(
       2, :up
     )
   end
 
   def update_total
-    booking_options.reload.each do |booking_option|
-      booking_option.adjust_costs!
-    end
+    booking_options.reload.each(&:adjust_costs!)
 
     attendee_options.reload.each do |attendee_option|
       attendee_option.adjust_costs!
