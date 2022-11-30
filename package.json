@@ -7,6 +7,9 @@
   "lint-staged": {
     "app/{components,pages,lib}/**/*.{js,jsx,ts,tsx}": [
       "eslint -c app/.eslintrc.js --fix"
+    ],
+    "graphql/{app,spec}/**/*.rb": [
+      "bash ./lint_graphql.sh"
     ]
   },
   "scripts": {

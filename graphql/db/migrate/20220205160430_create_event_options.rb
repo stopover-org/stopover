@@ -4,8 +4,8 @@ class CreateEventOptions < ActiveRecord::Migration[7.0]
   def change
     create_table :event_options do |t|
       t.string :title
-      t.decimal :organizer_cost_cents
-      t.decimal :attendee_cost_cents
+      t.decimal :organizer_cost_cents, default: 0
+      t.decimal :attendee_cost_cents, default: 0
       t.boolean :built_in, default: false
 
       t.references :event, null: false

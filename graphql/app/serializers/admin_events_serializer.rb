@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AdminEventsSerializer < ActiveModel::Serializer
   attributes(*Event.attribute_names, :images)
 

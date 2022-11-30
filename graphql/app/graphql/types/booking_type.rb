@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class BookingType < Types::ModelObject
     field :id, ID, null: false

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class Configuration < ApplicationRecord
-  validates :key, uniqueness: true, presence: true
+  validates :key, uniqueness: true, presence: true # rubocop:disable Rails/UniqueValidationWithoutIndex
   default_scope { order(key: :asc) }
 
   DEFAULT_VALUES = {
     SIGN_IN_DELAY: {
       key: 'SIGN_IN_DELAY',
-      value: 60,
-      description: 'delay between sending confirmation code for sign in'
+        value: 60,
+        description: 'delay between sending confirmation code for sign in'
     },
     NOTIFICATION_EMAIL: {
       key: 'NOTIFICATION_EMAIL',
@@ -28,8 +28,8 @@ class Configuration < ApplicationRecord
     EVENT_MARGIN: {
       key: 'EVENT_MARGIN',
       value: 10,
-      description: 'payment to the holder of the website',
-    },
+      description: 'payment to the holder of the website'
+    }
   }.freeze
   def self.get_value(key)
     return nil unless DEFAULT_VALUES.keys.include?(key.to_sym)

@@ -24,7 +24,7 @@ module Types
       argument :id, ID, required: true, loads: Types::EventType
     end
 
-    field :bookings, [Types::BookingType]do
+    field :bookings, [Types::BookingType] do
       argument :id, ID, required: true
     end
 

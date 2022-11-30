@@ -57,11 +57,33 @@ class Event < ApplicationRecord
     state :unpublished
   end
 
-  def adjust_costs
-    self.attendee_cost_per_uom_cents = self.organizer_cost_per_uom_cents * (1 + ::Configuration.get_value('EVENT_MARGIN').value.to_i/100.0)
+  def self.execute_events_by_dates(start_date, end_date)
+    sql = <<-SQL.squish
+      WITH dates AS (
+          SELECT DISTINCT
+              *,
+              unnest(get_timestamp_from_weekday(unnest(recurring_days_with_time), :start_date::TIMESTAMP, :end_date::TIMESTAMP)) recurrent_date,
+              unnest(single_days_with_time::TIMESTAMP[]) single_date
+          FROM events
+      )
+      SELECT DISTINCT *
+      FROM dates
+      WHERE
+          recurrent_date BETWEEN :start_date::TIMESTAMP AND :end_date::TIMESTAMP
+          OR single_date BETWEEN :start_date::TIMESTAMP AND :end_date::TIMESTAMP
+    SQL
+
+    ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql([sql, {
+                                                                            start_date: start_date, end_date: end_date
+                                                                          }]))
   end
+
+  def adjust_costs
+    self.attendee_cost_per_uom_cents = (organizer_cost_per_uom_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round
+  end
+
   # it's not a scope because it cannot be chained to other query
-  def self.events_between(start_date, end_date = Time.zone.now + 1.year)
+  def self.events_between(start_date, end_date = 1.year.from_now)
     Event.where(id: execute_events_by_dates(start_date, end_date).values.map { |v| v[0] })
   end
 
@@ -71,18 +93,16 @@ class Event < ApplicationRecord
   end
 
   def available_dates
-    [single_days_with_time.map { |t| t.to_datetime }, recurrent_dates].flatten.compact.sort
+    [single_days_with_time.map(&:to_datetime), recurrent_dates].flatten.compact.sort
   end
 
   def average_rating
     (ratings.sum(&:rating_value) / ratings.count.to_f).round(2)
   end
-  
-  def ratings_count
-    ratings.count
-  end
 
-  def upload_images (images)
+  delegate :count, to: :ratings, prefix: true
+
+  def upload_images(images)
     images_to_attach = []
 
     images.each do |img|
@@ -90,14 +110,14 @@ class Event < ApplicationRecord
 
       next if img[:id]
 
-      tmpFile = FilesSupport.base64_to_file(img[:src], img[:title])
-      next unless tmpFile
+      tmp_file = FilesSupport.base64_to_file(img[:src], img[:title])
+      next unless tmp_file
 
-      images_to_attach.push tmpFile
+      images_to_attach.push tmp_file
     end.compact!
 
     event.images.each do |img|
-      img.purge unless images.map { |img_p| img_p[:id] }.include?(img.id)
+      img.purge unless images.pluck(:id).include?(img.id)
     end
 
     images_to_attach.each do |img|
@@ -141,7 +161,7 @@ class Event < ApplicationRecord
   def recurrent_dates
     res = []
     recurring_days_with_time.each do |weekday_with_time|
-      day = weekday_with_time.split(' ')
+      day = weekday_with_time.split
       time = day[1].split(':')
       expected_date = DateTime.now.change({ hour: time[0].to_i, min: time[1].to_i })
       today = expected_date > DateTime.now ? DateTime.now - 1.day : DateTime.now
@@ -155,26 +175,5 @@ class Event < ApplicationRecord
 
   def get_next_weekday(date, weekday, time)
     date.change(hour: time.hour, min: time.minute).next_occurring(weekday)
-  end
-
-  def self.execute_events_by_dates(start_date, end_date)
-    sql = <<-SQL
-      WITH dates AS (
-          SELECT DISTINCT
-              *,
-              unnest(get_timestamp_from_weekday(unnest(recurring_days_with_time), :start_date::TIMESTAMP, :end_date::TIMESTAMP)) recurrent_date,
-              unnest(single_days_with_time::TIMESTAMP[]) single_date
-          FROM events
-      )
-      SELECT DISTINCT *
-      FROM dates
-      WHERE
-          recurrent_date BETWEEN :start_date::TIMESTAMP AND :end_date::TIMESTAMP
-          OR single_date BETWEEN :start_date::TIMESTAMP AND :end_date::TIMESTAMP
-    SQL
-
-    ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql([sql, {
-                                                                            start_date: start_date, end_date: end_date
-                                                                          }]))
   end
 end

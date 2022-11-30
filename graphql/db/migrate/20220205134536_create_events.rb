@@ -8,8 +8,8 @@ class CreateEvents < ActiveRecord::Migration[7.0]
       t.string :event_type, null: false, index: true
       t.string :recurring_type, null: false
 
-      t.decimal :organizer_cost_per_uom_cents
-      t.decimal :attendee_cost_per_uom_cents
+      t.decimal :organizer_cost_per_uom_cents, default: 0
+      t.decimal :attendee_cost_per_uom_cents, default: 0
 
       t.boolean :requires_contract, default: false, null: false
       t.boolean :requires_passport, default: false, null: false

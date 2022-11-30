@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Trip < ApplicationRecord
   belongs_to :account
   has_many :bookings, dependent: :destroy

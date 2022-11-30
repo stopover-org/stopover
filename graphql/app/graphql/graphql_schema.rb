@@ -28,9 +28,7 @@ class GraphqlSchema < GraphQL::Schema
 
   # Given a string UUID, find the object
   def self.object_from_id(uuid, ctx = nil)
-    if !uuid.is_a?(String) || uuid.is_a?(Integer) || uuid.try(:to_i).try(:positive?)
-      raise GraphQL::ExecutionError, 'Cannot parse ID, invalid value'
-    end
+    raise GraphQL::ExecutionError, 'Cannot parse ID, invalid value' if !uuid.is_a?(String) || uuid.is_a?(Integer) || uuid.try(:to_i).try(:positive?)
 
     type_name, unique_id = GraphQL::Schema::UniqueWithinType.decode(uuid)
 

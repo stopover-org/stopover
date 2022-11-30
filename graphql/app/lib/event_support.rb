@@ -27,7 +27,7 @@ class EventSupport
         date = Date.parse date
         hours = hours.to_i
         minutes = minutes.to_i
-        return nil if date <= Date.today
+        return nil if date <= Time.zone.today
         return nil if hours > 12 || hours.negative?
         return nil if minutes > 59 || minutes.negative?
 
