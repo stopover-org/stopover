@@ -3,8 +3,8 @@
 FactoryBot.define do
   factory :booking do
     status { 'active' }
-    booked_for { DateTime.now + 2.days }
     event { create(:event) }
     trip { create(:trip) }
+    booked_for { event.available_dates.last }
   end
 end

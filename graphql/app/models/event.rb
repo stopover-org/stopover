@@ -125,6 +125,13 @@ class Event < ApplicationRecord
     end
   end
 
+  def check_date(date)
+    return true if recurring_days_with_time.include?("#{Date::DAYNAMES[date.wday]} #{date.hour}:#{date.min}")
+    return true if single_days_with_time.include?(date)
+    return true unless date.past?
+    false
+  end
+
   private
 
   def update_tags
@@ -163,8 +170,8 @@ class Event < ApplicationRecord
     recurring_days_with_time.each do |weekday_with_time|
       day = weekday_with_time.split
       time = day[1].split(':')
-      expected_date = DateTime.now.change({ hour: time[0].to_i, min: time[1].to_i })
-      today = expected_date > DateTime.now ? DateTime.now - 1.day : DateTime.now
+      expected_date = Time.zone.now.change({ hour: time[0].to_i, min: time[1].to_i })
+      today = expected_date > Time.zone.now ? 1.day.ago : Time.zone.now
       4.times.each do |t|
         res.push(get_next_weekday(today + t.weeks, day[0].downcase.to_sym, expected_date))
       end
@@ -174,6 +181,6 @@ class Event < ApplicationRecord
   end
 
   def get_next_weekday(date, weekday, time)
-    date.change(hour: time.hour, min: time.minute).next_occurring(weekday)
+    date.change(hour: time.hour, min: time.min).next_occurring(weekday)
   end
 end
