@@ -125,14 +125,14 @@ class Event < ApplicationRecord
     end
   end
 
+  private
+
   def check_date(date)
+    return false if date.past?
     return true if recurring_days_with_time.include?("#{Date::DAYNAMES[date.wday]} #{date.hour}:#{date.min}")
     return true if single_days_with_time.include?(date)
-    return true unless date.past?
     false
   end
-
-  private
 
   def update_tags
     interests.each do |interest|

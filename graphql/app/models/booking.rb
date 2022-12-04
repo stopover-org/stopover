@@ -24,12 +24,11 @@ class Booking < ApplicationRecord
       transitions from: :active, to: :paid
     end
   end
+  def validate_booked_for
+    errors.add(:booked_for, 'is invalid') unless event.check_date(booked_for)
+  end
 
   private
-
-  def validate_booked_for
-    errors.add(:booked_for, "there is no event's date") unless event.check_date(booked_for)
-  end
 
   def create_booking_options
     event.event_options.where(built_in: true, for_attendee: false).find_each do |event_option|
