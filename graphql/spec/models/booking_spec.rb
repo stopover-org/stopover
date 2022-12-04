@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Booking, type: :model do
   describe 'booking' do
-    let!(:event) { create(:event, event_options: [create(:built_in_attendee_option), create(:built_in_event_option)]) }
+    let!(:event) { create(:recurring_event, event_options: [create(:built_in_attendee_option), create(:built_in_event_option)]) }
     let!(:booking) { create(:booking, event: event) }
     it 'has one attendee' do
       expect(booking.attendees.count).to eq(1)
@@ -26,6 +26,15 @@ RSpec.describe Booking, type: :model do
       expect(booking.booking_options.first.organizer_cost_cents).to eq(500)
       expect(booking.attendees.first.attendee_options.first.attendee_cost_cents).to eq(550)
       expect(booking.attendees.first.attendee_options.first.organizer_cost_cents).to eq(500)
+    end
+
+    context 'for invalid booking' do
+      it 'cant find booked for in event' do
+        expect { create(:booking, event: event, booked_for: DateTime.now) }.to raise_exception(ActiveRecord::RecordInvalid)
+      end
+      it 'the date is in past' do
+        expect { create(:booking, event: event, booked_for: DateTime.now - 2.days) }.to raise_exception(ActiveRecord::RecordInvalid)
+      end
     end
   end
 end

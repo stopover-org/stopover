@@ -9,9 +9,11 @@ class Booking < ApplicationRecord
   belongs_to :trip
 
   has_many :attendees
+  validate :validate_booked_for
 
   before_validation :create_trip, if: :should_create_trip
   before_validation :create_attendee
+  before_validation :validate_booked_for
   before_create :create_booking_options
 
   aasm column: :status do
@@ -21,6 +23,9 @@ class Booking < ApplicationRecord
     event :paid do
       transitions from: :active, to: :paid
     end
+  end
+  def validate_booked_for
+    errors.add(:booked_for, 'is invalid') unless event.check_date(booked_for)
   end
 
   private
