@@ -94,3 +94,5 @@ gem 'active_model_serializers', '~> 0.10.0'
 gem 'api-pagination'
 gem 'image_processing', '>= 1.2'
 gem 'kaminari'
+
+gem "sidekiq", "~> 6.5"

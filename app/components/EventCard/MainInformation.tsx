@@ -64,7 +64,7 @@ const MainInformation = ({ currency, eventReference, date }: Props) => {
         title
         availableDates
         fullAddress
-        attendeeCostPerUomCents
+        attendeePricePerUomCents
         averageRating
         tags {
           id
@@ -86,7 +86,7 @@ const MainInformation = ({ currency, eventReference, date }: Props) => {
       <FunctionalBlock>
         <Button description={date} color="#ff8a00" />
         <Button
-          description={event?.attendeeCostPerUomCents}
+          description={event?.attendeePricePerUomCents}
           color="#ff8a00"
           contentAfterDescription={[
             currency,

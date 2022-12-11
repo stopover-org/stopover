@@ -18,6 +18,7 @@ class Event < ApplicationRecord
   belongs_to :unit, optional: true
   has_many :bookings, dependent: :destroy
   has_many :ratings, dependent: :destroy
+  has_many :schedules, dependent: :destroy
 
   enum recurring_type: { recurrent: 'recurrent', regular: 'regular' }
   enum event_type: {

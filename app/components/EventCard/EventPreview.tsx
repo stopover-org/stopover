@@ -17,7 +17,7 @@ type Props = {
 const EventPreview = ({ blockScroll, eventFragmentRef }: Props) => {
   const data = useFragment(
     graphql`
-      fragment PreviewEvent_EventFragment on Event {
+      fragment EventPreviewapp/controllers/admin/events_controller.rb:7:in_EventFragment on Event {
         images
       }
     `,

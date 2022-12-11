@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ddd75fcdf67d087ca345e3a7060014fd>>
+ * @generated SignedSource<<39aa879762e621669c13af449877a978>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -120,7 +120,7 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "attendeeCostPerUomCents",
+            "name": "attendeePricePerUomCents",
             "storageKey": null
           },
           {
@@ -149,12 +149,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f205db7a2a8f3edd04b81c10f1e2f75c",
+    "cacheID": "82fc8c38fe7a483ba723b12faa7b9c33",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    id\n    ...Breadcrumbs_Fragment\n    ...MainInformation_Fragment\n  }\n}\n\nfragment Breadcrumbs_Fragment on Event {\n  title\n}\n\nfragment MainInformation_Fragment on Event {\n  title\n  availableDates\n  fullAddress\n  attendeeCostPerUomCents\n  averageRating\n  tags {\n    id\n    title\n  }\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    id\n    ...Breadcrumbs_Fragment\n    ...MainInformation_Fragment\n  }\n}\n\nfragment Breadcrumbs_Fragment on Event {\n  title\n}\n\nfragment MainInformation_Fragment on Event {\n  title\n  availableDates\n  fullAddress\n  attendeePricePerUomCents\n  averageRating\n  tags {\n    id\n    title\n  }\n}\n"
   }
 };
 })();

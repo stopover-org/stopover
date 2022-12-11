@@ -68,7 +68,7 @@ const WideCard = ({ currency, eventRef }: Props) => {
     images,
     tags,
     interests,
-    attendeeCostPerUomCents,
+    attendeePricePerUomCents,
     averageRating,
     ratingsCount,
   } = useFragment(
@@ -79,7 +79,7 @@ const WideCard = ({ currency, eventRef }: Props) => {
         id
         availableDates
         images
-        attendeeCostPerUomCents
+        attendeePricePerUomCents
         tags {
           title
           link
@@ -137,7 +137,7 @@ const WideCard = ({ currency, eventRef }: Props) => {
                 size="26px"
                 as={TypographyTags.VERY_LARGE}
               >
-                {attendeeCostPerUomCents} {currency}
+                {attendeePricePerUomCents} {currency}
               </Typography>
             </TypographyWrapper>
             <Button

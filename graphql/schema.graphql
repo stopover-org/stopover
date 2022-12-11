@@ -86,7 +86,7 @@ input CreateEventInput {
   interestIds: [ID!]
   latitude: Float
   longitude: Float
-  organizerCostPerUomCents: Int
+  organizerPricePerUomCents: Int
   recurringType: RecurringTypeEnum
   region: String
   requiresCheckIn: Boolean
@@ -99,7 +99,7 @@ input CreateEventInput {
 
 input CreateEventOptionInput {
   builtIn: Boolean!
-  organizerCostCents: Int!
+  organizerPriceCents: Int!
   title: String!
 }
 
@@ -121,7 +121,7 @@ scalar DateTime
 
 type Event implements Node {
   achievements: [Achievement!]
-  attendeeCostPerUomCents: Int!
+  attendeePricePerUomCents: Int!
   availableDates: [DateTime!]!
   averageRating: Float
   city: String
@@ -137,7 +137,7 @@ type Event implements Node {
   interests: [Interest!]!
   latitude: Float
   longitude: Float
-  organizerCostPerUomCents: Int
+  organizerPricePerUomCents: Int
   ratingsCount: Int
   recurringDaysWithTime: [String!]
   recurringType: RecurringTypeEnum
@@ -197,10 +197,10 @@ type EventFilters {
 }
 
 type EventOption implements Node {
-  attendeeCostCents: Int!
+  attendeePriceCents: Int!
   builtIn: Boolean
   id: ID!
-  organizerCostCents: Int
+  organizerPriceCents: Int
   title: String!
 }
 
