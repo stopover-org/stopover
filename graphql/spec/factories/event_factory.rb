@@ -7,7 +7,7 @@ FactoryBot.define do
     event_type { :excursion }
     recurring_type { :regular }
     unit { create(:unit) }
-    organizer_cost_per_uom_cents { 500 }
+    organizer_price_per_uom_cents { 500 }
     country { Faker::Address.country }
     city { Faker::Address.city }
     full_address { Faker::Address.full_address }

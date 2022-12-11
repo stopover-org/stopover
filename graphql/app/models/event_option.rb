@@ -8,23 +8,23 @@ class EventOption < ApplicationRecord
 
   belongs_to :event
 
-  before_validation :adjust_costs
+  before_validation :adjust_prices
 
   after_commit :update_total
 
   private
 
-  def adjust_costs
-    self.attendee_cost_cents = (organizer_cost_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(
+  def adjust_prices
+    self.attendee_price_cents = (organizer_price_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(
       2, :up
     )
   end
 
   def update_total
-    booking_options.reload.each(&:adjust_costs!)
+    booking_options.reload.each(&:adjust_prices!)
 
     attendee_options.reload.each do |attendee_option|
-      attendee_option.adjust_costs!
+      attendee_option.adjust_prices!
     end
   end
 end

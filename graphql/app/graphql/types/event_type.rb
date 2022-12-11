@@ -8,8 +8,8 @@ module Types
     field :description, String, null: false
     field :event_type, Types::EventTypeEnum, null: false
     field :recurring_type, Types::RecurringTypeEnum
-    field :organizer_cost_per_uom_cents, Integer
-    field :attendee_cost_per_uom_cents, Integer, null: false
+    field :organizer_price_per_uom_cents, Integer
+    field :attendee_price_per_uom_cents, Integer, null: false
     field :requires_contract, Boolean
     field :requires_passport, Boolean
     field :requires_check_in, Boolean

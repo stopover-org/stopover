@@ -5,7 +5,7 @@ FactoryBot.define do
     event { create(:event) }
     title { Faker::Coffee.blend_name }
     description { Faker::Coffee.notes }
-    organizer_cost_cents { 400 }
+    organizer_price_cents { 400 }
 
     trait :built_in_option do
       built_in { true }

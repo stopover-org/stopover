@@ -25,7 +25,7 @@ module Admin
     private
 
     def update_event_params
-      params.permit(:title, :description, :organizer_cost_per_uom_cents, :attendee_cost_per_uom_cents, :duration_time,
+      params.permit(:title, :description, :organizer_price_per_uom_cents, :attendee_price_per_uom_cents, :duration_time,
                     :house_number, :street, :city, :country, :region, :full_address, :longitude, :latitude)
     end
   end

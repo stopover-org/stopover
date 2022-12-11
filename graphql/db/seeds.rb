@@ -119,8 +119,8 @@ ActiveRecord::Base.connection_pool.flush!
           (now + 3.months).change({ hour: random_hour.call, minute: random_minute.call })
         ],
         recurring_days_with_time: ["#{random_day.call} #{random_hour.call}:#{random_minute.call}"],
-        organizer_cost_per_uom_cents: price,
-        attendee_cost_per_uom_cents: price * 0.8,
+        organizer_price_per_uom_cents: price,
+        attendee_price_per_uom_cents: price * 0.8,
         event_options: [1..4].map do
                          EventOption.new(
                            title: Faker::Coffee.blend_name,

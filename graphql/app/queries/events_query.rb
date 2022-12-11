@@ -13,7 +13,7 @@ class EventsQuery
                                         @params[:end_date])
     end
     if @params[:min_price] && @params[:max_price]
-      @relations = @relations.where('attendee_cost_per_uom_cents BETWEEN ? AND ?', @params[:min_price],
+      @relations = @relations.where('attendee_price_per_uom_cents BETWEEN ? AND ?', @params[:min_price],
                                     @params[:max_price])
     end
     @relations

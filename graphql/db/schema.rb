@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_25_143615) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_11_174726) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -85,8 +85,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_25_143615) do
     t.bigint "event_option_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "attendee_cost_cents", default: "0.0"
-    t.decimal "organizer_cost_cents", default: "0.0"
+    t.decimal "attendee_price_cents", default: "0.0"
+    t.decimal "organizer_price_cents", default: "0.0"
     t.index ["attendee_id"], name: "index_attendee_options_on_attendee_id"
     t.index ["event_option_id"], name: "index_attendee_options_on_event_option_id"
   end
@@ -107,8 +107,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_25_143615) do
     t.bigint "event_option_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "attendee_cost_cents", default: "0.0"
-    t.decimal "organizer_cost_cents", default: "0.0"
+    t.decimal "attendee_price_cents", default: "0.0"
+    t.decimal "organizer_price_cents", default: "0.0"
     t.index ["booking_id"], name: "index_booking_options_on_booking_id"
     t.index ["event_option_id"], name: "index_booking_options_on_event_option_id"
   end
@@ -153,8 +153,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_25_143615) do
 
   create_table "event_options", force: :cascade do |t|
     t.string "title"
-    t.decimal "organizer_cost_cents", default: "0.0"
-    t.decimal "attendee_cost_cents", default: "0.0"
+    t.decimal "organizer_price_cents", default: "0.0"
+    t.decimal "attendee_price_cents", default: "0.0"
     t.boolean "built_in", default: false
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
@@ -178,8 +178,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_25_143615) do
     t.text "description", null: false
     t.string "event_type", null: false
     t.string "recurring_type", null: false
-    t.decimal "organizer_cost_per_uom_cents", default: "0.0"
-    t.decimal "attendee_cost_per_uom_cents", default: "0.0"
+    t.decimal "organizer_price_per_uom_cents", default: "0.0"
+    t.decimal "attendee_price_per_uom_cents", default: "0.0"
     t.boolean "requires_contract", default: false, null: false
     t.boolean "requires_passport", default: false, null: false
     t.boolean "requires_check_in", default: false, null: false

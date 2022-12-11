@@ -6,15 +6,15 @@ class BookingOption < ApplicationRecord
   belongs_to :booking
   belongs_to :event_option
 
-  before_validation :adjust_costs
+  before_validation :adjust_prices
 
-  def adjust_costs
-    self.attendee_cost_cents = event_option&.attendee_cost_cents
-    self.organizer_cost_cents = event_option&.organizer_cost_cents
+  def adjust_prices
+    self.attendee_price_cents = event_option&.attendee_price_cents
+    self.organizer_price_cents = event_option&.organizer_price_cents
   end
 
-  def adjust_costs!
-    adjust_costs
+  def adjust_prices!
+    adjust_prices
     save!
   end
 

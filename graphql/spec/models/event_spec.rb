@@ -16,11 +16,11 @@ RSpec.describe Event, type: :model do
   describe 'cost for attendee' do
     let!(:event) { create(:recurring_event) }
     it '10 percente greater' do
-      expect(event.attendee_cost_per_uom_cents).to eq(500 * 1.1)
+      expect(event.attendee_price_per_uom_cents).to eq(500 * 1.1)
     end
     it 'will be updated' do
-      event.update!(organizer_cost_per_uom_cents: 1000)
-      expect(event.attendee_cost_per_uom_cents).to eq(1100)
+      event.update!(organizer_price_per_uom_cents: 1000)
+      expect(event.attendee_price_per_uom_cents).to eq(1100)
     end
   end
 end

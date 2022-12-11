@@ -39,14 +39,14 @@ class Event < ApplicationRecord
   validates :title, length: { maximum: 100 }, unless: :draft?
   validates :title, :description,
             :event_type, :recurring_type,
-            :organizer_cost_per_uom_cents, :attendee_cost_per_uom_cents,
+            :organizer_price_per_uom_cents, :attendee_price_per_uom_cents,
             :unit, :city,
             :country, :full_address,
             :duration_time, presence: true, unless: :draft?
 
   before_validation :set_prices
   before_validation :update_tags
-  before_validation :adjust_costs
+  before_validation :adjust_prices
 
   default_scope { where(status: :published) }
   scope :by_city, ->(city) { where(city: city) }
@@ -78,8 +78,8 @@ class Event < ApplicationRecord
                                                                           }]))
   end
 
-  def adjust_costs
-    self.attendee_cost_per_uom_cents = (organizer_cost_per_uom_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round
+  def adjust_prices
+    self.attendee_price_per_uom_cents = (organizer_price_per_uom_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round
   end
 
   # it's not a scope because it cannot be chained to other query
@@ -88,8 +88,8 @@ class Event < ApplicationRecord
   end
 
   def set_prices
-    self.organizer_cost_per_uom_cents = 0 unless organizer_cost_per_uom_cents
-    self.attendee_cost_per_uom_cents = 0 unless attendee_cost_per_uom_cents
+    self.organizer_price_per_uom_cents = 0 unless organizer_price_per_uom_cents
+    self.attendee_price_per_uom_cents = 0 unless attendee_price_per_uom_cents
   end
 
   def available_dates

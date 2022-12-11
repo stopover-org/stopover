@@ -24,7 +24,7 @@ module Mutations
     argument :dates, [String], required: false
     argument :duration_time, Integer, required: false
 
-    argument :organizer_cost_per_uom_cents, Integer, required: false
+    argument :organizer_price_per_uom_cents, Integer, required: false
 
     argument :event_options, [Types::CreateEventOptionInput], required: false
 
@@ -49,7 +49,7 @@ module Mutations
         latitude: args[:latitude],
         recurring_type: args[:recurring_type],
         duration_time: args[:duration_time],
-        organizer_cost_per_uom_cents: args[:organizer_cost_per_uom_cents] || 0,
+        organizer_price_per_uom_cents: args[:organizer_price_per_uom_cents] || 0,
         requires_contract: args[:requires_contract],
         requires_passport: args[:requires_passport],
         requires_check_in: args[:requires_check_in],

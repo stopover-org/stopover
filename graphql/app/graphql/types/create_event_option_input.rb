@@ -3,7 +3,7 @@
 module Types
   class CreateEventOptionInput < Types::BaseInputObject
     argument :title, String
-    argument :organizer_cost_cents, Integer
+    argument :organizer_price_cents, Integer
     argument :built_in, Boolean
   end
 end

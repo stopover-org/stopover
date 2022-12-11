@@ -14,18 +14,18 @@ RSpec.describe Booking, type: :model do
       expect(booking.booking_options.count).to eq(1)
     end
     it do
-      expect(booking.booking_options.first.attendee_cost_cents).to eq(440)
-      expect(booking.booking_options.first.organizer_cost_cents).to eq(400)
-      expect(booking.attendees.first.attendee_options.first.attendee_cost_cents).to eq(440)
-      expect(booking.attendees.first.attendee_options.first.organizer_cost_cents).to eq(400)
+      expect(booking.booking_options.first.attendee_price_cents).to eq(440)
+      expect(booking.booking_options.first.organizer_price_cents).to eq(400)
+      expect(booking.attendees.first.attendee_options.first.attendee_price_cents).to eq(440)
+      expect(booking.attendees.first.attendee_options.first.organizer_price_cents).to eq(400)
     end
     it do
-      event.event_options.first.update!(organizer_cost_cents: 500)
-      event.event_options.last.update!(organizer_cost_cents: 500)
-      expect(booking.booking_options.first.reload.attendee_cost_cents).to eq(550)
-      expect(booking.booking_options.first.organizer_cost_cents).to eq(500)
-      expect(booking.attendees.first.attendee_options.first.attendee_cost_cents).to eq(550)
-      expect(booking.attendees.first.attendee_options.first.organizer_cost_cents).to eq(500)
+      event.event_options.first.update!(organizer_price_cents: 500)
+      event.event_options.last.update!(organizer_price_cents: 500)
+      expect(booking.booking_options.first.reload.attendee_price_cents).to eq(550)
+      expect(booking.booking_options.first.organizer_price_cents).to eq(500)
+      expect(booking.attendees.first.attendee_options.first.attendee_price_cents).to eq(550)
+      expect(booking.attendees.first.attendee_options.first.organizer_price_cents).to eq(500)
     end
 
     context 'for invalid booking' do
