@@ -20,4 +20,14 @@ class FilesSupport
       original_filename: "#{filename}.jpg"
     )
   end
+
+  def self.find_file(host:, username:, password:, remote_path:)
+    output = []
+    Net::SFTP.start(host, username, :password => password) do |sftp|
+      sftp.dir.foreach(remote_path) do |entry|
+        output << remote_path + entry.name
+      end
+    end
+    output
+  end
 end

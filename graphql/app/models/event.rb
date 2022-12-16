@@ -190,6 +190,8 @@ class Event < ApplicationRecord
     false
   end
 
+  private
+
   def get_time(date)
     date = date.to_date
     times = single_days_with_time.keep_if { |d| d.to_date == date }.map { |d| "#{d.hour}:#{d.min}" }.compact.uniq
