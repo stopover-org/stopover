@@ -1,5 +1,20 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: configurations
+#
+#  id          :bigint           not null, primary key
+#  description :string
+#  key         :string
+#  value       :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+# Indexes
+#
+#  index_configurations_on_key  (key)
+#
 class Configuration < ApplicationRecord
   validates :key, uniqueness: true, presence: true # rubocop:disable Rails/UniqueValidationWithoutIndex
   default_scope { order(key: :asc) }
@@ -29,6 +44,11 @@ class Configuration < ApplicationRecord
       key: 'EVENT_MARGIN',
       value: 10,
       description: 'payment to the holder of the website'
+    },
+    SCHEDULE_DAYS_IN_ADVANCE: {
+      key: 'SCHEDULE_DAYS_IN_ADVANCE',
+      value: Rails.env.test? ? 28 : 365,
+      description: 'how many days in advance can be scheduled for events'
     }
   }.freeze
   def self.get_value(key)

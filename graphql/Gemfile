@@ -54,6 +54,8 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'rails-erd'
+  gem 'rspec-rails'
+  gem 'faker', git: 'https://github.com/faker-ruby/faker.git', branch: 'master'
 end
 
 group :development do
@@ -66,6 +68,11 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
   gem 'factory_bot_rails'
+  gem 'annotate'
+  gem "yard"
+  gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
+  gem 'graphiql-rails', git: 'https://github.com/rmosolgo/graphiql-rails.git', branch: 'master'
 end
 
 group :test do
@@ -73,20 +80,16 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'webdrivers'
+  gem 'simplecov', require: false
 end
 
 gem 'aasm'
 gem 'after_commit_everywhere', '~> 1.0'
-gem 'faker', git: 'https://github.com/faker-ruby/faker.git', branch: 'master'
 gem 'geocoder'
-gem 'graphiql-rails', git: 'https://github.com/rmosolgo/graphiql-rails.git', branch: 'master', group: :development
 gem 'graphql', '~> 1.9'
 gem 'jwt'
 gem 'phonelib'
 gem 'rack-cors', require: 'rack/cors'
-gem 'rspec-rails', group: %i[development test]
-gem 'rubocop', group: [:development], require: false
-gem 'rubocop-rails', require: false
 gem 'sendgrid-ruby'
 gem 'twilio-ruby'
 

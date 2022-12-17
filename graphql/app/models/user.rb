@@ -1,5 +1,26 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: users
+#
+#  id                :bigint           not null, primary key
+#  confirmation_code :string
+#  confirmed_at      :datetime
+#  disabled_at       :datetime
+#  email             :string
+#  last_try          :datetime
+#  phone             :string
+#  session_password  :string
+#  status            :string           not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+# Indexes
+#
+#  index_users_on_email  (email) UNIQUE
+#  index_users_on_phone  (phone) UNIQUE
+#
 require 'jwt'
 
 class User < ApplicationRecord
@@ -27,7 +48,7 @@ class User < ApplicationRecord
     code = rand.to_s[2..6]
 
     self.confirmation_code = code
-    self.last_try = DateTime.now
+    self.last_try = Time.zone.now
 
     save!
 
@@ -48,8 +69,8 @@ class User < ApplicationRecord
     raise 'Confirmation code is incorrect' if code != confirmation_code || confirmation_code.nil?
 
     self.confirmation_code = nil
-    self.last_try = DateTime.now
-    self.confirmed_at = DateTime.now
+    self.last_try = Time.zone.now
+    self.confirmed_at = Time.zone.now
     self.status = :active
 
     self.account = Account.new(name: phone.presence || email, primary_phone: phone,
@@ -60,7 +81,7 @@ class User < ApplicationRecord
   end
 
   def delay
-    ::Configuration.get_value(:SIGN_IN_DELAY).value.to_i - (DateTime.now.to_i - last_try&.to_i)
+    ::Configuration.get_value(:SIGN_IN_DELAY).value.to_i - (Time.zone.now.to_i - last_try&.to_i)
   end
 
   def access_token
@@ -76,6 +97,6 @@ class User < ApplicationRecord
     return true unless last_try || confirmation_code
 
     required_delay = ::Configuration.get_value(:SIGN_IN_DELAY)&.value.to_i
-    required_delay <= DateTime.now.to_i - last_try.to_i
+    required_delay <= Time.zone.now.to_i - last_try.to_i
   end
 end
