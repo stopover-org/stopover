@@ -1,5 +1,24 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: event_options
+#
+#  id                    :bigint           not null, primary key
+#  attendee_price_cents  :decimal(, )      default(0.0)
+#  built_in              :boolean          default(FALSE)
+#  description           :text
+#  for_attendee          :boolean          default(FALSE)
+#  organizer_price_cents :decimal(, )      default(0.0)
+#  title                 :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  event_id              :bigint           not null
+#
+# Indexes
+#
+#  index_event_options_on_event_id  (event_id)
+#
 class EventOption < ApplicationRecord
   has_many :booking_options
   has_many :attendee_options

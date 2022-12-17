@@ -1,5 +1,45 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: events
+#
+#  id                            :bigint           not null, primary key
+#  attendee_price_per_uom_cents  :decimal(, )      default(0.0)
+#  city                          :string
+#  country                       :string
+#  description                   :text             not null
+#  duration_time                 :string
+#  event_type                    :string           not null
+#  full_address                  :string
+#  house_number                  :string
+#  latitude                      :float
+#  longitude                     :float
+#  organizer_price_per_uom_cents :decimal(, )      default(0.0)
+#  recurring_days_with_time      :string           default([]), is an Array
+#  recurring_type                :string           not null
+#  region                        :string
+#  requires_check_in             :boolean          default(FALSE), not null
+#  requires_contract             :boolean          default(FALSE), not null
+#  requires_passport             :boolean          default(FALSE), not null
+#  single_days_with_time         :datetime         default([]), is an Array
+#  status                        :string
+#  street                        :string
+#  title                         :string           not null
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  unit_id                       :bigint
+#
+# Indexes
+#
+#  index_events_on_event_type  (event_type)
+#  index_events_on_unit_id     (unit_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (unit_id => units.id)
+#
+
 require 'date'
 
 class Event < ApplicationRecord
@@ -52,12 +92,22 @@ class Event < ApplicationRecord
   default_scope { where(status: :published) }
   scope :by_city, ->(city) { where(city: city) }
 
+  delegate :count, to: :ratings, prefix: true
+
   aasm column: :status do
     state :draft, initial: true
     state :published
     state :unpublished
   end
 
+  def can_be_scheduled_for?(date)
+    return false if date.past?
+    return true if recurring_days_with_time.include?("#{Date::DAYNAMES[date.wday]} #{date.hour}:#{date.min}")
+    return true if single_days_with_time.include?(date)
+    false
+  end
+
+  # @deprecated this method will be removed in January. use schedules to get events for some specific dates
   def self.execute_events_by_dates(start_date, end_date)
     sql = <<-SQL.squish
       WITH dates AS (
@@ -83,6 +133,7 @@ class Event < ApplicationRecord
     self.attendee_price_per_uom_cents = (organizer_price_per_uom_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round
   end
 
+  # @deprecated this method will be removed in January. use schedules to get events for some specific dates
   # it's not a scope because it cannot be chained to other query
   def self.events_between(start_date, end_date = 1.year.from_now)
     Event.where(id: execute_events_by_dates(start_date, end_date).values.map { |v| v[0] })
@@ -97,11 +148,13 @@ class Event < ApplicationRecord
     [single_days_with_time.map(&:to_datetime), recurrent_dates].flatten.compact.sort
   end
 
+  def recurring_dates
+    recurring_days_with_time.map { |day| day.split(/\s/)[0].downcase.to_sym }.uniq.compact
+  end
+
   def average_rating
     (ratings.sum(&:rating_value) / ratings.count.to_f).round(2)
   end
-
-  delegate :count, to: :ratings, prefix: true
 
   def upload_images(images)
     images_to_attach = []
@@ -126,14 +179,31 @@ class Event < ApplicationRecord
     end
   end
 
-  private
-
-  def check_date(date)
+  def check_datetime(date)
+    date = date.to_datetime
     return false if date.past?
     return true if recurring_days_with_time.include?("#{Date::DAYNAMES[date.wday]} #{date.hour}:#{date.min}")
     return true if single_days_with_time.include?(date)
     false
   end
+
+  def check_date(date)
+    date = date.to_date
+    return false if date.past?
+    return true if recurring_dates.include?(Date::DAYNAMES[date.wday].downcase.to_sym)
+    return true if single_days_with_time.map(&:to_date).include?(date)
+    false
+  end
+
+  def get_time(date)
+    date = date.to_date
+    times = single_days_with_time.keep_if { |d| d.to_date == date }.map { |d| "#{d.hour}:#{d.min}" }.compact.uniq
+    times += recurring_days_with_time.keep_if { |d| d.split(/\s+/).first.downcase.to_sym == Date::DAYNAMES[date.wday].downcase.to_sym }.map { |d| d.split(/\s+/).last }.compact.uniq
+
+    times
+  end
+
+  private
 
   def update_tags
     interests.each do |interest|
@@ -166,10 +236,11 @@ class Event < ApplicationRecord
     end
   end
 
+  # @deprecated this method will be removed in January. use schedules to get events for some specific dates
   def recurrent_dates
     res = []
     recurring_days_with_time.each do |weekday_with_time|
-      day = weekday_with_time.split
+      day = weekday_with_time.split(/\s+/)
       time = day[1].split(':')
       expected_date = Time.zone.now.change({ hour: time[0].to_i, min: time[1].to_i })
       today = expected_date > Time.zone.now ? 1.day.ago : Time.zone.now
@@ -181,6 +252,7 @@ class Event < ApplicationRecord
     res.sort
   end
 
+  # @deprecated this method will be removed in January. use schedules to get events for some specific dates
   def get_next_weekday(date, weekday, time)
     date.change(hour: time.hour, min: time.min).next_occurring(weekday)
   end

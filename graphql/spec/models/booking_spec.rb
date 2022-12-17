@@ -1,5 +1,22 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: bookings
+#
+#  id         :bigint           not null, primary key
+#  booked_for :datetime         not null
+#  status     :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  event_id   :bigint
+#  trip_id    :bigint
+#
+# Indexes
+#
+#  index_bookings_on_event_id  (event_id)
+#  index_bookings_on_trip_id   (trip_id)
+#
 require 'rails_helper'
 
 RSpec.describe Booking, type: :model do
