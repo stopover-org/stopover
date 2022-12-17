@@ -153,6 +153,7 @@ GEM
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
     ffi (1.15.5)
+    foreman (0.87.2)
     geocoder (1.7.5)
     globalid (1.0.0)
       activesupport (>= 5.0)
@@ -369,6 +370,7 @@ DEPENDENCIES
   debug
   factory_bot_rails
   faker!
+  foreman
   geocoder
   graphiql-rails!
   graphql (~> 1.9)
