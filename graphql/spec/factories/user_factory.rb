@@ -29,7 +29,7 @@ FactoryBot.define do
     trait :active do
       session_password { Faker::Internet.password }
       status { 'active' }
-      confirmed_at { DateTime.now }
+      confirmed_at { Time.zone.now }
     end
 
     factory :active_user, traits: [:active]

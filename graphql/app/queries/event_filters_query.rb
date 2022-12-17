@@ -2,8 +2,8 @@
 
 class EventFiltersQuery
   def initialize(params = {})
-    @start_date = DateTime.now.change({ hour: 0, minutes: 0 })
-    @end_date = DateTime.now.change({ hour: 23, minutes: 59 }) + 1.year
+    @start_date = Time.zone.now.change({ hour: 0, minutes: 0 })
+    @end_date = Time.zone.now.change({ hour: 23, minutes: 59 }) + 1.year
     @min_price = 0
     @max_price = 0
     @city = params[:city] || nil

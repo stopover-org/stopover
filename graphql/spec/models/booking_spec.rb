@@ -47,10 +47,10 @@ RSpec.describe Booking, type: :model do
 
     context 'for invalid booking' do
       it 'cant find booked for in event' do
-        expect { create(:booking, event: event, booked_for: DateTime.now) }.to raise_exception(ActiveRecord::RecordInvalid)
+        expect { create(:booking, event: event, booked_for: Time.zone.now) }.to raise_exception(ActiveRecord::RecordInvalid)
       end
       it 'the date is in past' do
-        expect { create(:booking, event: event, booked_for: DateTime.now - 2.days) }.to raise_exception(ActiveRecord::RecordInvalid)
+        expect { create(:booking, event: event, booked_for: 2.days.ago) }.to raise_exception(ActiveRecord::RecordInvalid)
       end
     end
   end
