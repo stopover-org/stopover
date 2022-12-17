@@ -47,7 +47,7 @@ class Configuration < ApplicationRecord
     },
     SCHEDULE_DAYS_IN_ADVANCE: {
       key: 'SCHEDULE_DAYS_IN_ADVANCE',
-      value: 365,
+      value: Rails.env.test? ? 28 : 365,
       description: 'how many days in advance can be scheduled for events'
     }
   }.freeze

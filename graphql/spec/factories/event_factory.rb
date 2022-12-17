@@ -58,6 +58,10 @@ FactoryBot.define do
           ["#{d} 11:30", "#{d} 21:30"]
         end.flatten!
       end
+
+      after(:create) do |event|
+        EventSupport.schedule(event)
+      end
     end
 
     factory :recurring_event, traits: [:recurring]

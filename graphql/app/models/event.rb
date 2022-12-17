@@ -88,6 +88,7 @@ class Event < ApplicationRecord
   before_validation :set_prices
   before_validation :update_tags
   before_validation :adjust_prices
+  after_save :check_schedules
 
   default_scope { where(status: :published) }
   scope :by_city, ->(city) { where(city: city) }
@@ -145,7 +146,7 @@ class Event < ApplicationRecord
   end
 
   def available_dates
-    [single_days_with_time.map(&:to_datetime), recurrent_dates].flatten.compact.sort
+    schedules.where('scheduled_for > ?', Time.zone.now).map(&:scheduled_for)
   end
 
   def recurring_dates
@@ -179,14 +180,6 @@ class Event < ApplicationRecord
     end
   end
 
-  def check_datetime(date)
-    date = date.to_datetime
-    return false if date.past?
-    return true if recurring_days_with_time.include?("#{Date::DAYNAMES[date.wday]} #{date.hour}:#{date.min}")
-    return true if single_days_with_time.include?(date)
-    false
-  end
-
   def check_date(date)
     date = date.to_date
     return false if date.past?
@@ -204,6 +197,10 @@ class Event < ApplicationRecord
   end
 
   private
+
+  def check_schedules
+    ScheduleEventJob.perform_later(event_id: id)
+  end
 
   def update_tags
     interests.each do |interest|

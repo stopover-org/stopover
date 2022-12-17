@@ -42,7 +42,7 @@ class Booking < ApplicationRecord
     end
   end
   def validate_booked_for
-    errors.add(:booked_for, 'is invalid') unless event.check_datetime(booked_for)
+    errors.add(:booked_for, 'is invalid') unless event.schedules.exists?(scheduled_for: booked_for)
   end
 
   private
