@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import { graphql, useFragment } from "react-relay";
 import Card from "../Card";
-import AverageRating from "../EventCard/AverageRating";
+import AverageRating from "../AverageRating/AverageRating";
 import {
   CardImageLocation,
   TypographySize,

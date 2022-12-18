@@ -1,19 +1,17 @@
 import React from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import { Id_Query } from "./__generated__/Id_Query.graphql";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/Loading";
-import EventCard from "../../components/EventCard";
+import EventScene from "../../scenes/EventScene";
 
 const Query = graphql`
   query Id_Query($id: ID!) {
     event(id: $id) {
-      id
-      ...Breadcrumbs_Fragment
-      ...MainInformation_Fragment
+      ...EventScene_Event
     }
   }
 `;
@@ -23,17 +21,15 @@ type Props = {
   googleMapsApiKey: string;
 };
 
-const Event = ({ preloadedQuery, ...props }: RelayProps<Props, Id_Query>) => {
-  const router = useRouter();
-  const { date } = router.query;
+const Event = ({
+  preloadedQuery /* , ...props */,
+}: RelayProps<Props, Id_Query>) => {
+  // const router = useRouter();
+  // const { date } = router.query;
   const { event } = usePreloadedQuery(Query, preloadedQuery);
   return (
     <Layout>
-      <EventCard
-        event={event}
-        date={date}
-        googleMapsApiKey={props.googleMapsApiKey}
-      />
+      <EventScene eventFragmentRef={event} />
     </Layout>
   );
 };
