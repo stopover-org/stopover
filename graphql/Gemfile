@@ -99,4 +99,7 @@ gem 'image_processing', '>= 1.2'
 gem 'kaminari'
 
 gem "sidekiq", "~> 6.5"
+gem "net-sftp"
+gem "ed25519"
+gem "bcrypt_pbkdf"
 gem "foreman"
