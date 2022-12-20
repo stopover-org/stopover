@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_11_180310) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_20_152350) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -198,6 +198,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_11_180310) do
     t.bigint "unit_id"
     t.string "status"
     t.datetime "single_days_with_time", precision: nil, default: [], array: true
+    t.string "external_id"
+    t.string "landmark"
+    t.string "prepaid_type"
+    t.bigint "prepaid_amount_cents", default: 0, null: false
+    t.boolean "requires_prepaid", default: false, null: false
     t.index ["event_type"], name: "index_events_on_event_type"
     t.index ["unit_id"], name: "index_events_on_unit_id"
   end
