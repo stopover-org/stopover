@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<39aa879762e621669c13af449877a978>>
+ * @generated SignedSource<<b6ee8aee42e39d8a2cbc7ab91e9ae4fe>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,8 +15,7 @@ export type Id_Query$variables = {
 };
 export type Id_Query$data = {
   readonly event: {
-    readonly id: string;
-    readonly " $fragmentSpreads": FragmentRefs<"Breadcrumbs_Fragment" | "MainInformation_Fragment">;
+    readonly " $fragmentSpreads": FragmentRefs<"EventScene_Event">;
   } | null;
 };
 export type Id_Query = {
@@ -43,14 +42,14 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "title",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "id",
   "storageKey": null
 };
 return {
@@ -68,16 +67,10 @@ return {
         "name": "event",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "Breadcrumbs_Fragment"
-          },
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "MainInformation_Fragment"
+            "name": "EventScene_Event"
           }
         ],
         "storageKey": null
@@ -101,64 +94,36 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
-          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "availableDates",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "fullAddress",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "attendeePricePerUomCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "averageRating",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Tag",
+            "concreteType": "Interest",
             "kind": "LinkedField",
-            "name": "tags",
+            "name": "interests",
             "plural": true,
             "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/)
+              (v3/*: any*/),
+              (v2/*: any*/)
             ],
             "storageKey": null
-          }
+          },
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "82fc8c38fe7a483ba723b12faa7b9c33",
+    "cacheID": "4542f0088597f3416e6e3c19a314fdf6",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    id\n    ...Breadcrumbs_Fragment\n    ...MainInformation_Fragment\n  }\n}\n\nfragment Breadcrumbs_Fragment on Event {\n  title\n}\n\nfragment MainInformation_Fragment on Event {\n  title\n  availableDates\n  fullAddress\n  attendeePricePerUomCents\n  averageRating\n  tags {\n    id\n    title\n  }\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    ...EventScene_Event\n    id\n  }\n}\n\nfragment Breadcrumbs_Event on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventScene_Event on Event {\n  title\n  ...Breadcrumbs_Event\n}\n"
   }
 };
 })();
 
-(node as any).hash = "909edb74165e5db67a8db329b23155a1";
+(node as any).hash = "02494ab7b3cd39d60d9b0738fee88556";
 
 export default node;

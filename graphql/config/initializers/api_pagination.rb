@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: trueinitializer
 
 ApiPagination.configure do |config|
   # If you have more than one gem included, you can choose a paginator.

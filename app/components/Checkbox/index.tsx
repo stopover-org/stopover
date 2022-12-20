@@ -17,7 +17,7 @@ const CustomCheckboxWrapper = styled(Row)`
   cursor: pointer;
 `;
 
-const BoxContaner = styled.div<{ size: CheckboxSizes }>`
+const BoxContainer = styled.div<{ size: CheckboxSizes }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,7 +58,7 @@ const Checkbox = ({
 }: Props) => (
   <CustomCheckboxLabel htmlFor={id}>
     <CustomCheckboxWrapper container alignItems="center" justifyContent="start">
-      <BoxContaner size={size}>
+      <BoxContainer size={size}>
         {type === CheckboxType.RADIO && (
           <Radio
             animateOnClick={checked}
@@ -73,7 +73,7 @@ const Checkbox = ({
             animate={animate}
           />
         )}
-      </BoxContaner>
+      </BoxContainer>
       {children}
       <input
         type={type}

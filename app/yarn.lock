@@ -2999,6 +2999,11 @@
   "resolved" "https://registry.npmjs.org/@types/unist/-/unist-2.0.6.tgz"
   "version" "2.0.6"
 
+"@types/uuid@^9.0.0":
+  "integrity" "sha512-kr90f+ERiQtKWMz5rP32ltJ/BtULDI5RVO0uavn1HQUOwjx0R1h0rnDYNL0CepF1zL5bSY6FISAfd9tOdDhU5Q=="
+  "resolved" "https://registry.npmjs.org/@types/uuid/-/uuid-9.0.0.tgz"
+  "version" "9.0.0"
+
 "@types/webpack-env@^1.16.0":
   "integrity" "sha512-56/MAlX5WMsPVbOg7tAxnYvNYMMWr/QJiIp6BxVSW3JJXUVzzOn64qW8TzQyMSqSUFM2+PVI4aUHcHOzIz/1tg=="
   "resolved" "https://registry.npmjs.org/@types/webpack-env/-/webpack-env-1.18.0.tgz"
