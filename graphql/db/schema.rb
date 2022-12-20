@@ -201,7 +201,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_20_152350) do
     t.string "external_id"
     t.string "landmark"
     t.string "prepaid_type"
-    t.bigint "prepaid_amount_cents", default: 0, null: false
+    t.decimal "prepaid_amount_cents", default: "0.0", null: false
     t.boolean "requires_prepaid", default: false, null: false
     t.index ["event_type"], name: "index_events_on_event_type"
     t.index ["unit_id"], name: "index_events_on_unit_id"

@@ -17,7 +17,7 @@
 #  latitude                      :float
 #  longitude                     :float
 #  organizer_price_per_uom_cents :decimal(, )      default(0.0)
-#  prepaid_amount_cents          :bigint           default(0), not null
+#  prepaid_amount_cents          :decimal(, )      default(0.0), not null
 #  prepaid_type                  :string
 #  recurring_days_with_time      :string           default([]), is an Array
 #  recurring_type                :string           not null
