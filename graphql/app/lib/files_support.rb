@@ -21,13 +21,30 @@ class FilesSupport
     )
   end
 
-  def self.find_file(host:, username:, password:, remote_path:)
-    output = []
-    Net::SFTP.start(host, username, :password => password) do |sftp|
-      sftp.dir.foreach(remote_path) do |entry|
-        output << remote_path + entry.name
+  def self.get_files_recursively(sftp:, folders:, files:)
+    sftp.dir.foreach(folders) do |entry|
+      next if entry.name == '.' || entry.name == '..'
+      if File.directory?("#{folders[0]}/#{entry.name}")
+        folders << "#{folders[0]}/#{entry.name}"
+      else
+        files << "#{folders[0]}/#{entry.name}"
       end
     end
-    output
+
+    folders.shift
+    return files if folders.empty?
+
+    get_files_recursively(sftp: sftp, folders: folders, files: files)
+  end
+
+  def self.retrieve_files(host:, username:, password:, remote_path:)
+    files = []
+    folders = []
+    Net::SFTP.start(host, username, password: password) do |sftp|
+      folders << "/Users/maxhoga/#{remote_path}"
+      files = get_files_recursively(sftp: sftp, folders: folders, files: files)
+    end
+
+    files
   end
 end
