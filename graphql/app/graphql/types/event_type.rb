@@ -32,6 +32,11 @@ module Types
     field :tags, [Types::TagType], null: false
     field :average_rating, Float
     field :ratings_count, Integer
+    field :external_id, String
+    field :landmarks, String
+    field :prepaid_type, String
+    field :prepaid_amount_cents, Decimal, null: false
+    field :requires_prepaid, Boolean, null: false
 
     field :images, [String], null: false
 
