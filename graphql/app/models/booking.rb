@@ -19,14 +19,16 @@
 #
 class Booking < ApplicationRecord
   include AASM
-  has_many :booking_options, dependent: :destroy
 
   belongs_to :event
-  has_many :event_options, through: :booking_options
   belongs_to :trip
 
+  has_many :booking_options, dependent: :destroy
+  has_many :event_options, through: :booking_options
   has_many :attendees
+
   validate :validate_booked_for
+  validate :right_attendee_count
 
   before_validation :create_trip, if: :should_create_trip
   before_validation :create_attendee
@@ -42,10 +44,12 @@ class Booking < ApplicationRecord
     end
   end
   def validate_booked_for
-    errors.add(:booked_for, 'is invalid') unless event.schedules.exists?(scheduled_for: booked_for)
+    errors.add(:booked_for, 'is invalid') unless event&.schedules&.exists?(scheduled_for: booked_for)
   end
 
   private
+
+  def right_attendee_count; end
 
   def create_booking_options
     event.event_options.where(built_in: true, for_attendee: false).find_each do |event_option|

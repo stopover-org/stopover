@@ -16,6 +16,8 @@
 #  landmark                      :string
 #  latitude                      :float
 #  longitude                     :float
+#  max_attendees                 :integer
+#  min_attendees                 :integer          default(0)
 #  organizer_price_per_uom_cents :decimal(, )      default(0.0)
 #  prepaid_amount_cents          :decimal(, )      default(0.0), not null
 #  prepaid_type                  :string

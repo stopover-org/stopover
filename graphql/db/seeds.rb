@@ -106,6 +106,7 @@ ActiveRecord::Base.connection_pool.flush!
         city: Faker::Address.city,
         full_address: Faker::Address.full_address,
         unit: Unit.find(random_from.call(Unit.count) + 1),
+        max_attendees: [nil, rand(0..100)].sample,
         duration_time: random_hours.call,
         status: :published,
         interests: [

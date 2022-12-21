@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_20_152350) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_21_103018) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -203,6 +203,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_20_152350) do
     t.string "prepaid_type"
     t.decimal "prepaid_amount_cents", default: "0.0", null: false
     t.boolean "requires_prepaid", default: false, null: false
+    t.integer "max_attendees"
+    t.integer "min_attendees", default: 0
     t.index ["event_type"], name: "index_events_on_event_type"
     t.index ["unit_id"], name: "index_events_on_unit_id"
   end
