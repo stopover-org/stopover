@@ -13,21 +13,26 @@
 #  event_type                    :string           not null
 #  full_address                  :string
 #  house_number                  :string
+#  landmark                      :string
 #  latitude                      :float
 #  longitude                     :float
 #  organizer_price_per_uom_cents :decimal(, )      default(0.0)
+#  prepaid_amount_cents          :decimal(, )      default(0.0), not null
+#  prepaid_type                  :string
 #  recurring_days_with_time      :string           default([]), is an Array
 #  recurring_type                :string           not null
 #  region                        :string
 #  requires_check_in             :boolean          default(FALSE), not null
 #  requires_contract             :boolean          default(FALSE), not null
 #  requires_passport             :boolean          default(FALSE), not null
+#  requires_prepaid              :boolean          default(FALSE), not null
 #  single_days_with_time         :datetime         default([]), is an Array
 #  status                        :string
 #  street                        :string
 #  title                         :string           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  external_id                   :string
 #  unit_id                       :bigint
 #
 # Indexes
