@@ -130,14 +130,18 @@ type Event implements Node {
   durationTime: String!
   eventOptions: [EventOption!]!
   eventType: EventTypeEnum!
+  externalId: String
   fullAddress: String!
   houseNumber: String
   id: ID!
   images: [String!]!
   interests: [Interest!]!
+  landmarks: String
   latitude: Float
   longitude: Float
   organizerPricePerUomCents: Int
+  prepaidAmountCents: Int!
+  prepaidType: String
   ratingsCount: Int
   recurringDaysWithTime: [String!]
   recurringType: RecurringTypeEnum
@@ -145,6 +149,7 @@ type Event implements Node {
   requiresCheckIn: Boolean
   requiresContract: Boolean
   requiresPassport: Boolean
+  requiresPrepaid: Boolean!
   singleDaysWithTime: [String!]
   status: String!
   street: String

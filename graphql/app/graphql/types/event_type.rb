@@ -35,7 +35,7 @@ module Types
     field :external_id, String
     field :landmarks, String
     field :prepaid_type, String
-    field :prepaid_amount_cents, Decimal, null: false
+    field :prepaid_amount_cents, Integer, null: false
     field :requires_prepaid, Boolean, null: false
 
     field :images, [String], null: false
