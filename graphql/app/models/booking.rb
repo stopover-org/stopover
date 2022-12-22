@@ -47,9 +47,11 @@ class Booking < ApplicationRecord
     errors.add(:booked_for, 'is invalid') unless event&.schedules&.exists?(scheduled_for: booked_for)
   end
 
-  private
+  def test
+    Rails.logger.debug 'error' if Attendee.where(booking_id: Booking.where(event_id: event_id)).count > Event.find(event_id).max_attendees
+  end
 
-  def right_attendee_count; end
+  private
 
   def create_booking_options
     event.event_options.where(built_in: true, for_attendee: false).find_each do |event_option|
