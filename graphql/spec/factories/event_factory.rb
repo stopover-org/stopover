@@ -71,6 +71,10 @@ FactoryBot.define do
       end
     end
 
+    trait :limited_attendee do
+      max_attendees { 5 }
+    end
+    factory :limited_event, traits: [:limited_attendee]
     factory :recurring_event, traits: [:recurring]
   end
 end

@@ -22,7 +22,7 @@ require 'rails_helper'
 RSpec.describe Booking, type: :model do
   describe 'booking' do
     let!(:event) { create(:recurring_event, event_options: [create(:built_in_attendee_option), create(:built_in_event_option)]) }
-    let!(:booking) { create(:booking, event: event) }
+    let!(:booking) { create(:booking, event: event, attendees: create_list(attendees, 6)) }
     it 'has one attendee' do
       expect(booking.attendees.count).to eq(1)
     end
