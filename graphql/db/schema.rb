@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_21_103018) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_24_135459) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -205,8 +205,29 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_21_103018) do
     t.boolean "requires_prepaid", default: false, null: false
     t.integer "max_attendees"
     t.integer "min_attendees", default: 0
+    t.bigint "firm_id"
     t.index ["event_type"], name: "index_events_on_event_type"
+    t.index ["firm_id"], name: "index_events_on_firm_id"
     t.index ["unit_id"], name: "index_events_on_unit_id"
+  end
+
+  create_table "firms", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.string "contact_person"
+    t.string "primary_email", null: false
+    t.string "primary_phone"
+    t.string "website"
+    t.text "contacts"
+    t.string "status", default: "pending"
+    t.string "full_address"
+    t.string "house_number"
+    t.string "street"
+    t.string "city"
+    t.string "country"
+    t.string "region"
+    t.float "longitude"
+    t.float "latitude"
   end
 
   create_table "interests", force: :cascade do |t|
@@ -292,6 +313,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_21_103018) do
   add_foreign_key "event_achievements", "events"
   add_foreign_key "event_interests", "events"
   add_foreign_key "event_interests", "interests"
+  add_foreign_key "events", "firms"
   add_foreign_key "events", "units"
   add_foreign_key "schedules", "events"
 end
