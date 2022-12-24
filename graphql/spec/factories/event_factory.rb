@@ -72,9 +72,9 @@ FactoryBot.define do
     end
 
     trait :limited_attendee do
-      max_attendees { 5 }
+      max_attendees { 1 }
     end
-    factory :limited_event, traits: [:limited_attendee]
+    factory :limited_event, traits: %i[limited_attendee recurring]
     factory :recurring_event, traits: [:recurring]
   end
 end

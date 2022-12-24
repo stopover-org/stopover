@@ -28,7 +28,7 @@ class Booking < ApplicationRecord
   has_many :attendees
 
   validate :validate_booked_for
-  validate :right_attendee_count
+  validate :check_max_attendees
 
   before_validation :create_trip, if: :should_create_trip
   before_validation :create_attendee
@@ -48,7 +48,7 @@ class Booking < ApplicationRecord
   end
 
   def check_max_attendees
-    errors.add('to much attendees, no place for them on event') unless Attendee.where(booking_id: Booking.where(event_id: event_id), booked_for: booked_for).count + attendees.count > event.max_attendees
+    errors.add(:attendees, 'to much attendees, no place for them on event') unless Attendee.where(booking_id: Booking.where(event_id: event_id, booked_for: booked_for)).count + attendees.count < event.max_attendees
   end
 
   private

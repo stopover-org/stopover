@@ -22,7 +22,8 @@ require 'rails_helper'
 RSpec.describe Booking, type: :model do
   describe 'booking' do
     let!(:event) { create(:recurring_event, event_options: [create(:built_in_attendee_option), create(:built_in_event_option)]) }
-    let!(:booking) { create(:booking, event: event, attendees: create_list(attendees, 6)) }
+    let!(:booking) { create(:booking, event: event) }
+
     it 'has one attendee' do
       expect(booking.attendees.count).to eq(1)
     end
@@ -51,6 +52,15 @@ RSpec.describe Booking, type: :model do
       end
       it 'the date is in past' do
         expect { create(:booking, event: event, booked_for: 2.days.ago) }.to raise_exception(ActiveRecord::RecordInvalid)
+      end
+    end
+
+    context 'for multiple attendees' do
+      let!(:event) { create(:limited_event) }
+      let!(:booking) { create(:booking, event: event, booked_for: event.available_dates.last) }
+
+      it 'raise exception when limit was reached' do
+        expect { create(:booking, event: event, booked_for: event.available_dates.last) }.to raise_exception(ActiveRecord::RecordInvalid)
       end
     end
   end
