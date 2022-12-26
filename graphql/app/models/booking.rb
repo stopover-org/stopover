@@ -19,14 +19,16 @@
 #
 class Booking < ApplicationRecord
   include AASM
-  has_many :booking_options, dependent: :destroy
 
   belongs_to :event
-  has_many :event_options, through: :booking_options
   belongs_to :trip
 
+  has_many :booking_options, dependent: :destroy
+  has_many :event_options, through: :booking_options
   has_many :attendees
+
   validate :validate_booked_for
+  validate :check_max_attendees
 
   before_validation :create_trip, if: :should_create_trip
   before_validation :create_attendee
@@ -42,7 +44,11 @@ class Booking < ApplicationRecord
     end
   end
   def validate_booked_for
-    errors.add(:booked_for, 'is invalid') unless event.schedules.exists?(scheduled_for: booked_for)
+    errors.add(:booked_for, 'is invalid') unless event&.schedules&.exists?(scheduled_for: booked_for)
+  end
+
+  def check_max_attendees
+    errors.add(:attendees, 'to much attendees, no place for them on event') unless Attendee.where(booking_id: Booking.where(event_id: event_id, booked_for: booked_for)).count + attendees.count < event.max_attendees
   end
 
   private

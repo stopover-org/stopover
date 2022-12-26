@@ -16,6 +16,8 @@
 #  landmark                      :string
 #  latitude                      :float
 #  longitude                     :float
+#  max_attendees                 :integer
+#  min_attendees                 :integer          default(0)
 #  organizer_price_per_uom_cents :decimal(, )      default(0.0)
 #  prepaid_amount_cents          :decimal(, )      default(0.0), not null
 #  prepaid_type                  :string
@@ -69,6 +71,10 @@ FactoryBot.define do
       end
     end
 
+    trait :limited_attendee do
+      max_attendees { 1 }
+    end
+    factory :limited_event, traits: %i[limited_attendee recurring]
     factory :recurring_event, traits: [:recurring]
   end
 end
