@@ -35,15 +35,18 @@
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
 #  external_id                   :string
+#  firm_id                       :bigint
 #  unit_id                       :bigint
 #
 # Indexes
 #
 #  index_events_on_event_type  (event_type)
+#  index_events_on_firm_id     (firm_id)
 #  index_events_on_unit_id     (unit_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (firm_id => firms.id)
 #  fk_rails_...  (unit_id => units.id)
 #
 
@@ -63,6 +66,7 @@ class Event < ApplicationRecord
   has_many :tags, through: :event_tags
   has_many :event_options, dependent: :destroy
   belongs_to :unit, optional: true
+  belongs_to :firm, optional: false
   has_many :bookings, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_many :schedules, dependent: :destroy

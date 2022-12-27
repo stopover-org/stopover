@@ -91,6 +91,10 @@ ActiveRecord::Base.connection_pool.flush!
 
 (0...events_count).each_slice(30) do |subset|
   threads = []
+  firm = Firm.create!(
+    title: Faker::App.name,
+    primary_email: Faker::Internet.email,
+  )
 
   subset.each do |int|
     threads << Thread.new do
@@ -106,6 +110,7 @@ ActiveRecord::Base.connection_pool.flush!
         city: Faker::Address.city,
         full_address: Faker::Address.full_address,
         unit: Unit.find(random_from.call(Unit.count) + 1),
+        firm: firm,
         max_attendees: [nil, rand(0..100)].sample,
         duration_time: random_hours.call,
         status: :published,
@@ -159,5 +164,6 @@ Event.first((events_count * 0.25).to_i).each { |e| e.update!(status: :draft) }
 trip = Trip.create!(account: Account.last, status: :draft)
 
 Event.where.not(single_days_with_time: []).last(10).each do |event|
-  event.bookings.create!(booked_for: event.single_days_with_time.first, trip: trip)
+  EventSupport.schedule(event)
+  event.bookings.create!(booked_for: event.available_dates.first, trip: trip)
 end
