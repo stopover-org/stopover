@@ -62,6 +62,7 @@ FactoryBot.define do
     city { Faker::Address.city }
     full_address { Faker::Address.full_address }
     duration_time { '4h' }
+    firm { create(:firm) }
 
     trait :recurring do
       recurring_days_with_time do

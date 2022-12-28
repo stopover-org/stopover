@@ -60,16 +60,16 @@ class Event < ApplicationRecord
   has_many :event_achievements, dependent: :destroy
   has_many :event_interests, dependent: :destroy
   has_many :event_tags, dependent: :destroy
-
   has_many :achievements, through: :event_achievements
   has_many :interests, through: :event_interests
   has_many :tags, through: :event_tags
   has_many :event_options, dependent: :destroy
-  belongs_to :unit, optional: true
-  belongs_to :firm, optional: false
   has_many :bookings, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_many :schedules, dependent: :destroy
+
+  belongs_to :unit, optional: true
+  belongs_to :firm, optional: false
 
   enum recurring_type: { recurrent: 'recurrent', regular: 'regular' }
   enum event_type: {
@@ -101,7 +101,6 @@ class Event < ApplicationRecord
   before_validation :adjust_prices
   after_save :check_schedules
 
-  default_scope { where(status: :published) }
   scope :by_city, ->(city) { where(city: city) }
 
   delegate :count, to: :ratings, prefix: true
@@ -110,6 +109,13 @@ class Event < ApplicationRecord
     state :draft, initial: true
     state :published
     state :unpublished
+
+    event :publish do
+      transitions from: %i[draft unpublished], to: :published
+    end
+    event :unpublish do
+      transitions from: :published, to: :unpublished
+    end
   end
 
   def can_be_scheduled_for?(date)

@@ -23,7 +23,26 @@
 #  website        :string
 #
 class Firm < ApplicationRecord
+  include AASM
+
   validates :primary_email, :title, presence: true
 
   has_many :events, dependent: :destroy
+
+  aasm column: :status do
+    state :pending, initial: true
+    state :active
+    state :deleted
+
+    event :activate do
+      transitions from: %i[pending deleted], to: :active
+    end
+    event :soft_delete, after_commit: :unpublish_events do
+      transitions from: %i[active pending], to: :deleted
+    end
+  end
+
+  def unpublish_events
+    RemoveFirmJob.perform_later(id)
+  end
 end
