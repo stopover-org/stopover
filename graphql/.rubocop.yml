@@ -21,6 +21,9 @@ AllCops:
 
 # LAYOUT
 
+Rails/SkipsModelValidations:
+  Enabled: false
+
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 

@@ -56,6 +56,7 @@ FactoryBot.define do
     event_type { :excursion }
     recurring_type { :regular }
     unit { create(:unit) }
+    firm { create(:firm) }
     organizer_price_per_uom_cents { 500 }
     country { Faker::Address.country }
     city { Faker::Address.city }
@@ -77,6 +78,7 @@ FactoryBot.define do
     trait :limited_attendee do
       max_attendees { 1 }
     end
+
     factory :limited_event, traits: %i[limited_attendee recurring]
     factory :recurring_event, traits: [:recurring]
   end
