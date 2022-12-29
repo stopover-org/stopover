@@ -64,6 +64,10 @@ FactoryBot.define do
     duration_time { '4h' }
     firm { create(:firm) }
 
+    transient do
+      skip_schedules { false }
+    end
+
     trait :recurring do
       recurring_days_with_time do
         %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday].map do |d|
@@ -71,8 +75,8 @@ FactoryBot.define do
         end.flatten!
       end
 
-      after(:create) do |event|
-        EventSupport.schedule(event)
+      after(:create) do |event, evaluator|
+        EventSupport.schedule(event) unless evaluator.skip_schedules
       end
     end
 

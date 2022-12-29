@@ -109,12 +109,19 @@ class Event < ApplicationRecord
     state :draft, initial: true
     state :published
     state :unpublished
+    state :deleted
 
     event :publish do
       transitions from: %i[draft unpublished], to: :published
     end
     event :unpublish do
       transitions from: :published, to: :unpublished
+    end
+    event :soft_delete do
+      transitions from: %i[published unpublished draft], to: :deleted
+    end
+    event :restore do
+      transitions from: :deleted, to: :draft
     end
   end
 
