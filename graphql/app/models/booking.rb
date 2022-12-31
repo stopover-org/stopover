@@ -48,6 +48,7 @@ class Booking < ApplicationRecord
   end
 
   def check_max_attendees
+    return true if event.max_attendees.nil?
     errors.add(:attendees, 'to much attendees, no place for them on event') unless Attendee.where(booking_id: Booking.where(event_id: event_id, booked_for: booked_for)).count + attendees.count < event.max_attendees
   end
 

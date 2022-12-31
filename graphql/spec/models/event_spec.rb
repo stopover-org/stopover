@@ -198,6 +198,38 @@ RSpec.describe Event, type: :model do
         expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 24, 11, 30, 0, 0)).count).to eq(1)
         expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 25, 11, 30, 0, 0)).count).to eq(1)
       end
+
+      it 'schedules will be generated automatically when event was updated' do
+        expect(ScheduleEventJob).to receive(:perform_later).once.with(event_id: event.id)
+        event.update!(recurring_days_with_time: ['Monday 11:30'])
+      end
+
+      context 'with existing schedules' do
+        context 'in the future' do
+          let!(:schedule) { create(:schedule, event: event, scheduled_for: 1.day.from_now) }
+
+          it 'will be overwritten' do
+            expect(event.schedules.count).to eq(1)
+
+            event.update_columns(recurring_days_with_time: ['Monday 11:30'])
+
+            subject { EventSupport.schedule(event.reload) }
+            expect(event.schedules.count).to eq(4)
+          end
+        end
+        context 'in the past' do
+          let!(:schedule) { create(:schedule, event: event, scheduled_for: 1.day.from_now) }
+
+          it 'will be overwritten' do
+            expect(event.schedules.count).to eq(1)
+
+            event.update_columns(recurring_days_with_time: ['Monday 11:30'])
+
+            subject { EventSupport.schedule(event.reload) }
+            expect(event.schedules.count).to eq(4)
+          end
+        end
+      end
     end
   end
 end

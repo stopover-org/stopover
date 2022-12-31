@@ -39,9 +39,17 @@ class EventSupport
   def self.schedule(event)
     ::Configuration.get_value('SCHEDULE_DAYS_IN_ADVANCE').value.to_i.times do |i|
       date = Time.zone.now + i.days
-      next unless event.reload.check_date(date)
+
+      # [TODO] check that schedule don't have any bookings
+      event.schedules.where('scheduled_for::DATE = ?', date.to_date).each do |schedule|
+        schedule.destroy
+      end
+
+      should_create_schedules = event.reload.check_date(date)
+      next unless should_create_schedules
 
       times = event.reload.get_time(date)
+
       times.each do |time|
         time = time.split(':')
         new_date = date.change({ hour: time[0].to_i, min: time[1].to_i })
