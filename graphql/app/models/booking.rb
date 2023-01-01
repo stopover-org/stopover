@@ -18,23 +18,26 @@
 #  index_bookings_on_trip_id   (trip_id)
 #
 class Booking < ApplicationRecord
+  # MODULES ===============================================================
   include AASM
 
-  belongs_to :event
-  belongs_to :trip
-
+  # ATTACHMENTS ===========================================================
+  #
+  # HAS_ONE ASSOCIATIONS ==========================================================
+  #
+  # HAS_MANY ASSOCIATIONS =========================================================
   has_many :booking_options, dependent: :destroy
-  has_many :event_options, through: :booking_options
   has_many :attendees
 
-  validate :validate_booked_for
-  validate :check_max_attendees
+  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  has_many :event_options, through: :booking_options
 
-  before_validation :create_trip, if: :should_create_trip
-  before_validation :create_attendee
-  before_validation :validate_booked_for
-  before_create :create_booking_options
+  # BELONGS_TO ASSOCIATIONS =======================================================
+  belongs_to :event
+  belongs_to :trip
+  belongs_to :schedule
 
+  # AASM STATES ================================================================
   aasm column: :status do
     state :active, initial: true
     state :paid
@@ -43,13 +46,25 @@ class Booking < ApplicationRecord
       transitions from: :active, to: :paid
     end
   end
-  def validate_booked_for
-    errors.add(:booked_for, 'is invalid') unless event&.schedules&.exists?(scheduled_for: booked_for)
-  end
+
+  # ENUMS =======================================================================
+  #
+  # VALIDATIONS ================================================================
+  validate :check_max_attendees
+
+  # CALLBACKS ================================================================
+  before_validation :create_trip, if: :should_create_trip
+  before_validation :create_attendee
+  before_create :create_booking_options
+
+  # SCOPES =====================================================================
+  #
+  # DELEGATIONS ==============================================================
 
   def check_max_attendees
-    return true if event.max_attendees.nil?
-    errors.add(:attendees, 'to much attendees, no place for them on event') unless Attendee.where(booking_id: Booking.where(event_id: event_id, booked_for: booked_for)).count + attendees.count < event.max_attendees
+    return true if event.max_attendees
+    return true if event.min_attendees
+    errors.add(:attendees, 'to much attendees, no place for them on event') unless Attendee.where(booking_id: Booking.where(event_id: event_id)).count + attendees.count < event.max_attendees
   end
 
   private

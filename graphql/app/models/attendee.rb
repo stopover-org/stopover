@@ -18,11 +18,33 @@
 #  index_attendees_on_booking_id  (booking_id)
 #
 class Attendee < ApplicationRecord
-  belongs_to :booking
+  # MODULES ===============================================================
+  #
+  # ATTACHMENTS ===========================================================
+  #
+  # HAS_ONE ASSOCIATIONS ==========================================================
+  #
+  # HAS_MANY ASSOCIATIONS =========================================================
   has_many :attendee_options
+
+  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :event_options, through: :attendee_options
 
+  # BELONGS_TO ASSOCIATIONS =======================================================
+  belongs_to :booking
+
+  # AASM STATES ================================================================
+  #
+  # ENUMS =======================================================================
+  #
+  # VALIDATIONS ================================================================
+  #
+  # CALLBACKS ================================================================
   before_create :create_attendee_options
+
+  # SCOPES =====================================================================
+  #
+  # DELEGATIONS ==============================================================
 
   def full_name
     "#{first_name} #{last_name}"

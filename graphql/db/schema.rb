@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_24_135459) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_27_143102) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -115,12 +115,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_24_135459) do
 
   create_table "bookings", force: :cascade do |t|
     t.string "status"
-    t.datetime "booked_for", null: false
     t.bigint "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "trip_id"
+    t.bigint "schedule_id"
     t.index ["event_id"], name: "index_bookings_on_event_id"
+    t.index ["schedule_id"], name: "index_bookings_on_schedule_id"
     t.index ["trip_id"], name: "index_bookings_on_trip_id"
   end
 
@@ -309,6 +310,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_24_135459) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "booking_options", "bookings"
   add_foreign_key "booking_options", "event_options"
+  add_foreign_key "bookings", "schedules"
   add_foreign_key "event_achievements", "achievements"
   add_foreign_key "event_achievements", "events"
   add_foreign_key "event_interests", "events"

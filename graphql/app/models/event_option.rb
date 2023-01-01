@@ -20,22 +20,42 @@
 #  index_event_options_on_event_id  (event_id)
 #
 class EventOption < ApplicationRecord
+  # MODULES ===============================================================
+  #
+  # ATTACHMENTS ===========================================================
+  #
+  # HAS_ONE ASSOCIATIONS ==========================================================
+  #
+  # HAS_MANY ASSOCIATIONS =========================================================
   has_many :booking_options
   has_many :attendee_options
+
+  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :attendees, through: :attendee_options
   has_many :bookings, through: :booking_options
 
+  # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :event
 
+  # AASM STATES ================================================================
+  #
+  # ENUMS =======================================================================
+  #
+  # VALIDATIONS ================================================================
+  #
+  # CALLBACKS ================================================================
   before_validation :adjust_prices
-
   after_commit :update_total
+
+  # SCOPES =====================================================================
+  #
+  # DELEGATIONS ==============================================================
 
   private
 
   def adjust_prices
     self.attendee_price_cents = (organizer_price_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(
-      2, :up
+      2, BigDecimal::ROUND_UP
     )
   end
 

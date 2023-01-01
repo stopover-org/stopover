@@ -17,12 +17,33 @@
 #  index_interests_on_title  (title) UNIQUE
 #
 class Interest < ApplicationRecord
+  # MODULES ===============================================================
+  #
+  # ATTACHMENTS ===========================================================
   has_one_attached :preview
+
+  # HAS_ONE ASSOCIATIONS ==========================================================
+  #
+  # HAS_MANY ASSOCIATIONS =========================================================
   has_many :account_interests, dependent: :destroy
   has_many :event_interests, dependent: :destroy
 
+  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :accounts, through: :account_interests
   has_many :events, through: :event_interests
 
+  # BELONGS_TO ASSOCIATIONS =======================================================
+  #
+  # AASM STATES ================================================================
+  #
+  # ENUMS =======================================================================
+  #
+  # VALIDATIONS ================================================================
+  #
+  # CALLBACKS ================================================================
+  #
+  # SCOPES =====================================================================
   scope :title_autocomplete, ->(title) { where('title LIKE ?', "%#{title}%") }
+
+  # DELEGATIONS ==============================================================
 end

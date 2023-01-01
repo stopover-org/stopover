@@ -18,10 +18,32 @@
 #  index_attendee_options_on_event_option_id  (event_option_id)
 #
 class AttendeeOption < ApplicationRecord
+  # MODULES ===============================================================
+  #
+  # ATTACHMENTS ===========================================================
+  #
+  # HAS_ONE ASSOCIATIONS ==========================================================
+  #
+  # HAS_MANY ASSOCIATIONS =========================================================
+  #
+  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  #
+  # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :attendee
   belongs_to :event_option
 
+  # AASM STATES ================================================================
+  #
+  # ENUMS =======================================================================
+  #
+  # VALIDATIONS ================================================================
+  #
+  # CALLBACKS ================================================================
   before_validation :adjust_prices
+
+  # SCOPES =====================================================================
+  #
+  # DELEGATIONS ==============================================================
 
   def adjust_prices
     self.attendee_price_cents = event_option.attendee_price_cents

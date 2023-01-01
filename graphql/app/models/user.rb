@@ -24,23 +24,40 @@
 require 'jwt'
 
 class User < ApplicationRecord
+  # MODULES ===============================================================
   include AASM
 
-  validates :email, presence: true, unless: :phone
-  validates :email, uniqueness: true, unless: :phone
-
-  validates :phone, presence: true, unless: :email
-  validates :phone, uniqueness: true, unless: :email
-
+  # ATTACHMENTS ===========================================================
+  #
+  # HAS_ONE ASSOCIATIONS ==========================================================
   has_one :account, dependent: :destroy
 
-  default_scope { where(status: %i[active inactive]) }
-
+  # HAS_MANY ASSOCIATIONS =========================================================
+  #
+  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  #
+  # BELONGS_TO ASSOCIATIONS =======================================================
+  #
+  # AASM STATES ================================================================
   aasm column: :status do
     state :inactive, initial: true
     state :active
     state :disabled
   end
+
+  # ENUMS =======================================================================
+  #
+  # VALIDATIONS ================================================================
+  validates :email, presence:   true, unless: :phone
+  validates :email, uniqueness: true, unless: :phone
+  validates :phone, presence:   true, unless: :email
+  validates :phone, uniqueness: true, unless: :email
+
+  # CALLBACKS ================================================================
+  #
+  # SCOPES =====================================================================
+  #
+  # DELEGATIONS ==============================================================
 
   def send_confirmation_code!(primary:)
     raise 'You are trying to resend confirmation code too often' unless can_send_code?

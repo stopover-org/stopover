@@ -93,7 +93,7 @@ ActiveRecord::Base.connection_pool.flush!
   threads = []
   firm = Firm.create!(
     title: Faker::App.name,
-    primary_email: Faker::Internet.email,
+    primary_email: Faker::Internet.email
   )
 
   subset.each do |int|
@@ -165,5 +165,5 @@ trip = Trip.create!(account: Account.last, status: :draft)
 
 Event.where.not(single_days_with_time: []).last(10).each do |event|
   EventSupport.schedule(event)
-  event.bookings.create!(booked_for: event.available_dates.first, trip: trip)
+  event.bookings.create!(event_id: event.id, schedule_id: Schedule.last.id, trip: trip)
 end

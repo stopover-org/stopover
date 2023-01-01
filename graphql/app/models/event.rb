@@ -53,24 +53,54 @@
 require 'date'
 
 class Event < ApplicationRecord
-  has_many_attached :images
-
+  # MODULES ===============================================================
   include AASM
 
+  # ATTACHMENTS ===========================================================
+  has_many_attached :images
+
+  # HAS_ONE ASSOCIATIONS ==========================================================
+  #
+  # HAS_MANY ASSOCIATIONS =========================================================
   has_many :event_achievements, dependent: :destroy
   has_many :event_interests, dependent: :destroy
   has_many :event_tags, dependent: :destroy
-
-  has_many :achievements, through: :event_achievements
-  has_many :interests, through: :event_interests
-  has_many :tags, through: :event_tags
   has_many :event_options, dependent: :destroy
-  belongs_to :unit, optional: true
-  belongs_to :firm, optional: false
   has_many :bookings, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_many :schedules, dependent: :destroy
 
+  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  has_many :achievements, through: :event_achievements
+  has_many :interests, through: :event_interests
+  has_many :tags, through: :event_tags
+
+  # BELONGS_TO ASSOCIATIONS =======================================================
+  belongs_to :unit, optional: true
+  belongs_to :firm, optional: false
+
+  # AASM STATES ================================================================
+  aasm column: :status do
+    state :draft, initial: true
+    state :published
+    state :unpublished
+    state :deleted
+
+    event :publish do
+      transitions from: %i[draft unpublished], to: :published
+    end
+    event :unpublish do
+      transitions from: :published, to: :unpublished
+    end
+    event :soft_delete do
+      transitions from: %i[published unpublished draft], to: :deleted
+    end
+    event :restore do
+      transitions from: :deleted, to: :draft
+    end
+  end
+
+  # ENUMS =======================================================================
   enum recurring_type: { recurrent: 'recurrent', regular: 'regular' }
   enum event_type: {
     # old one
@@ -88,6 +118,7 @@ class Event < ApplicationRecord
     gastronomic: 'gastronomic'
   }
 
+  # VALIDATIONS ================================================================
   validates :title, length: { maximum: 100 }, unless: :draft?
   validates :title, :description,
             :event_type, :recurring_type,
@@ -96,21 +127,17 @@ class Event < ApplicationRecord
             :country, :full_address,
             :duration_time, presence: true, unless: :draft?
 
+  # CALLBACKS ================================================================
   before_validation :set_prices
   before_validation :update_tags
   before_validation :adjust_prices
   after_save :check_schedules
 
-  default_scope { where(status: :published) }
+  # SCOPES =====================================================================
   scope :by_city, ->(city) { where(city: city) }
 
+  # DELEGATIONS ==============================================================
   delegate :count, to: :ratings, prefix: true
-
-  aasm column: :status do
-    state :draft, initial: true
-    state :published
-    state :unpublished
-  end
 
   def can_be_scheduled_for?(date)
     return false if date.past?
@@ -143,7 +170,7 @@ class Event < ApplicationRecord
   end
 
   def adjust_prices
-    self.attendee_price_per_uom_cents = (organizer_price_per_uom_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round
+    self.attendee_price_per_uom_cents = (organizer_price_per_uom_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(0, BigDecimal::ROUND_UP)
   end
 
   # @deprecated this method will be removed in January. use schedules to get events for some specific dates

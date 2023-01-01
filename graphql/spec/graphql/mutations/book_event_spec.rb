@@ -25,8 +25,8 @@ RSpec.describe Mutations::BookEvent do
       GraphqlSchema.execute(mutation, variables: {
                               input: {
                                 eventId: GraphqlSchema.id_from_object(event),
-                                    bookedFor: event.available_dates.last,
-                                    attendeesCount: 1
+                                bookedFor: event.available_dates.last,
+                                attendeesCount: 1
                               }
                             })
     end

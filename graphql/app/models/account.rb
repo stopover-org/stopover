@@ -27,23 +27,39 @@
 #  index_accounts_on_user_id  (user_id) UNIQUE
 #
 class Account < ApplicationRecord
+  # MODULES ===============================================================
   include AASM
 
+  # HAS_ONE ASSOCIATIONS ==========================================================
+  #
+  # HAS_MANY ASSOCIATIONS =========================================================
   has_many :account_interests, dependent: :destroy
-
-  belongs_to :user, optional: false
-  has_many :interests, through: :account_interests
   has_many :trips, dependent: :destroy
   has_many :ratings
 
-  validates :name, presence: true
+  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  has_many :interests, through: :account_interests
 
-  before_validation :set_user_info
+  # BELONGS_TO ASSOCIATIONS =======================================================
+  belongs_to :user, optional: false
 
+  # AASM STATES ================================================================
   aasm column: :status do
     state :initial, initial: true
     state :verified
   end
+
+  # ENUMS =======================================================================
+  #
+  # VALIDATIONS ================================================================
+  validates :name, presence: true
+
+  # CALLBACKS ================================================================
+  before_validation :set_user_info
+
+  # SCOPES =====================================================================
+  #
+  # DELEGATIONS ==============================================================
 
   private
 

@@ -7,5 +7,9 @@ module Types
     field :event, Types::EventType, null: false
     field :event_options, [Types::EventOptionType]
     field :attendees, [Types::AttendeeType]
+
+    def booked_for
+      object.schedule.scheduled_for
+    end
   end
 end
