@@ -12,6 +12,7 @@ export function EventScene({ eventFragmentRef }: { eventFragmentRef: EventScene_
       ...Breadcrumbs_Event
     }
   `, eventFragmentRef)
+
   return (
     <Column>
       <Breadcrumbs eventFragmentRef={event} />
