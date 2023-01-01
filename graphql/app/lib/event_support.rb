@@ -40,21 +40,23 @@ class EventSupport
     ::Configuration.get_value('SCHEDULE_DAYS_IN_ADVANCE').value.to_i.times do |i|
       date = Time.zone.now + i.days
 
-      # [TODO] check that schedule don't have any bookings
-      event.schedules.where('scheduled_for::DATE = ?', date.to_date).each do |schedule|
+      times = event.reload.get_time(date)
+      dates_with_time = times.map do |time|
+        time = time.split(':')
+
+        date.change({ hour: time[0].to_i, min: time[1].to_i })
+      end
+
+      event.schedules.where('scheduled_for::DATE = ?', date.to_date).where.not(scheduled_for: dates_with_time).each do |schedule|
         schedule.destroy
       end
 
       should_create_schedules = event.reload.check_date(date)
       next unless should_create_schedules
 
-      times = event.reload.get_time(date)
-
-      times.each do |time|
-        time = time.split(':')
-        new_date = date.change({ hour: time[0].to_i, min: time[1].to_i })
-        next if event.schedules.where(scheduled_for: new_date).any?
-        event.schedules.create!(scheduled_for: new_date)
+      dates_with_time.each do |date_with_time|
+        next if event.schedules.where(scheduled_for: date_with_time).any?
+        event.schedules.create!(scheduled_for: date_with_time)
       end
     end
   end
