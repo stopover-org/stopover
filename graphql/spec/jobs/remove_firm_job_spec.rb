@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe RemoveFirmJob, type: :job do
-  describe 'remove_firm_job' do
+  describe 'remove firm job' do
     let!(:firm) { create(:firm) }
     let!(:events) { create_list(:recurring_event, 10, skip_schedules: true, firm_id: firm.id) }
 
