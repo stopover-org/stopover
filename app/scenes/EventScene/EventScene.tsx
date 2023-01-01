@@ -4,6 +4,8 @@ import {graphql, useFragment} from "react-relay";
 import {Breadcrumbs} from "./components/Breadcrumbs/Breadcrumbs";
 import {EventScene_Event$key} from "./__generated__/EventScene_Event.graphql";
 import Row from "../../components/Row";
+import Typography from "../../components/Typography";
+import Button from "../../components/Button";
 
 export function EventScene({ eventFragmentRef }: { eventFragmentRef: EventScene_Event$key }) {
   const event = useFragment(graphql`
@@ -16,14 +18,13 @@ export function EventScene({ eventFragmentRef }: { eventFragmentRef: EventScene_
   return (
     <Column>
       <Breadcrumbs eventFragmentRef={event} />
-      <div>
-        <Row>{event.title}</Row>
-        <div>button calendar</div>
-        <div>
-          <div>book button</div>
-          <div>price explanation</div>
-        </div>
-      </div>
+      <Row>
+        <Typography size="40px">
+          {event.title}
+        </Typography>
+        <Button>button calendar</Button>
+        <Button>book button</Button>
+      </Row>
       <div>
         <div>
           left column

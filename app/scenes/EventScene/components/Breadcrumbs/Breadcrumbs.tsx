@@ -16,8 +16,8 @@ export function Breadcrumbs({ eventFragmentRef }: { eventFragmentRef: Breadcrumb
     return (
       <Row>
         {event.interests?.map((interest, index) => (
-          <Typography key={interest.id} color="textSecondary">
-            {index > 0 && '>'} {interest.title}
+          <Typography key={interest.id} color="textSecondary" size="20px">
+            {index > 0 && <>&nbsp;&gt;&nbsp;</>} {interest.title}
           </Typography>
         ))}
       </Row>
