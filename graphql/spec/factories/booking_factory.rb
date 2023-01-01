@@ -27,5 +27,6 @@ FactoryBot.define do
     status { 'active' }
     event { create(:event) }
     trip { create(:trip) }
+    schedule { event.schedules.last }
   end
 end

@@ -10,7 +10,7 @@ module Mutations
 
     def resolve(event:, **args)
       booking = event.bookings.create!(
-        booked_for: args[:booked_for],
+        schedule: event.schedules.find_by(scheduled_for: args[:booked_for]),
         attendees: (1..args[:attendees_count]).map { Attendee.new }
       )
 
