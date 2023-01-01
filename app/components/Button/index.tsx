@@ -41,6 +41,7 @@ export type Props = {
   size?: ButtonSizes;
   disabled?: boolean;
   borderRadius?: string;
+  className?: string;
 };
 
 const getContent = (
@@ -80,12 +81,13 @@ const Button = ({
   color = "black",
   size = ButtonSizes.BIG,
   borderRadius = "3px",
+  className = "",
   ...props
 }: Props) => {
   const shownColor = (disabled && "grey") || backgroundColor;
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <ButtonStyle
         {...props}
         backgroundColor={
