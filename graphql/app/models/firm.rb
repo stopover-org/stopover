@@ -23,12 +23,21 @@
 #  website        :string
 #
 class Firm < ApplicationRecord
+  # MODULES ===============================================================
   include AASM
 
-  validates :primary_email, :title, presence: true
-
+  # ATTACHMENTS ===========================================================
+  #
+  # HAS_ONE ASSOCIATIONS ==========================================================
+  #
+  # HAS_MANY ASSOCIATIONS =========================================================
+  #
+  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  #
+  # BELONGS_TO ASSOCIATIONS =======================================================
   has_many :events, dependent: :destroy
 
+  # AASM STATES ================================================================
   aasm column: :status do
     state :pending, initial: true
     state :active
@@ -41,6 +50,17 @@ class Firm < ApplicationRecord
       transitions from: %i[active pending], to: :deleted
     end
   end
+
+  # ENUMS =======================================================================
+  #
+  # VALIDATIONS ================================================================
+  validates :primary_email, :title, presence: true
+
+  # CALLBACKS ================================================================
+  #
+  # SCOPES =====================================================================
+  #
+  # DELEGATIONS ==============================================================
 
   def unpublish_events
     RemoveFirmJob.perform_later(id)

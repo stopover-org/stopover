@@ -16,14 +16,37 @@
 #  index_configurations_on_key  (key)
 #
 class Configuration < ApplicationRecord
+  # MODULES ===============================================================
+  #
+  # ATTACHMENTS ===========================================================
+  #
+  # HAS_ONE ASSOCIATIONS ==========================================================
+  #
+  # HAS_MANY ASSOCIATIONS =========================================================
+  #
+  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  #
+  # BELONGS_TO ASSOCIATIONS =======================================================
+  #
+  # AASM STATES ================================================================
+  #
+  # ENUMS =======================================================================
+  #
+  # VALIDATIONS ================================================================
   validates :key, uniqueness: true, presence: true # rubocop:disable Rails/UniqueValidationWithoutIndex
+
+  # CALLBACKS ================================================================
+  #
+  # SCOPES =====================================================================
   default_scope { order(key: :asc) }
+
+  # DELEGATIONS ==============================================================
 
   DEFAULT_VALUES = {
     SIGN_IN_DELAY: {
       key: 'SIGN_IN_DELAY',
-        value: 60,
-        description: 'delay between sending confirmation code for sign in'
+      value: 60,
+      description: 'delay between sending confirmation code for sign in'
     },
     NOTIFICATION_EMAIL: {
       key: 'NOTIFICATION_EMAIL',
