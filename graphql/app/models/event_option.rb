@@ -55,7 +55,7 @@ class EventOption < ApplicationRecord
 
   def adjust_prices
     self.attendee_price_cents = (organizer_price_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(
-      2, :down
+      2, BigDecimal::ROUND_UP
     )
   end
 

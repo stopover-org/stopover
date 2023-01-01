@@ -170,7 +170,7 @@ class Event < ApplicationRecord
   end
 
   def adjust_prices
-    self.attendee_price_per_uom_cents = (organizer_price_per_uom_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(0, ROUND_UP)
+    self.attendee_price_per_uom_cents = (organizer_price_per_uom_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(0, BigDecimal::ROUND_UP)
   end
 
   # @deprecated this method will be removed in January. use schedules to get events for some specific dates
