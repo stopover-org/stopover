@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ModelFirma < ActiveRecord::Migration[7.0]
   def change
     create_table :firms do |t|
@@ -19,6 +21,6 @@ class ModelFirma < ActiveRecord::Migration[7.0]
       t.float :longitude
       t.float :latitude
     end
-    add_reference :events, :firm, index: true,  foreign_key: true
+    add_reference :events, :firm, index: true, foreign_key: true
   end
 end

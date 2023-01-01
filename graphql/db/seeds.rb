@@ -93,7 +93,7 @@ ActiveRecord::Base.connection_pool.flush!
   threads = []
   firm = Firm.create!(
     title: Faker::App.name,
-    primary_email: Faker::Internet.email,
+    primary_email: Faker::Internet.email
   )
 
   subset.each do |int|

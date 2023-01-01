@@ -1,5 +1,27 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: firms
+#
+#  id             :bigint           not null, primary key
+#  city           :string
+#  contact_person :string
+#  contacts       :text
+#  country        :string
+#  description    :text
+#  full_address   :string
+#  house_number   :string
+#  latitude       :float
+#  longitude      :float
+#  primary_email  :string           not null
+#  primary_phone  :string
+#  region         :string
+#  status         :string           default("pending")
+#  street         :string
+#  title          :string           not null
+#  website        :string
+#
 require 'rails_helper'
 
 RSpec.describe Firm, type: :model do
