@@ -7,20 +7,32 @@ import Row from "../../components/Row";
 import Typography from "../../components/Typography";
 import Button from "../../components/Button";
 import Calendar from '../../components/icons/Outline/General/Calendar.svg'
-import {ButtonIconPlace, ButtonVariants} from "../../components/StatesEnum";
+import {ButtonIconPlace, ButtonVariants, TagSizes} from "../../components/StatesEnum";
 import styled from "styled-components";
+import Rate from "../../components/Rate";
+import Tag from "../../components/Tag";
 
 const SBookButton = styled(Button)`
   padding-left: 10px;
+`
+const STag = styled(Tag)`
+  padding-right: 10px;
+  display: block;
 `
 
 export function EventScene({ eventFragmentRef }: { eventFragmentRef: EventScene_Event$key }) {
   const event = useFragment(graphql`
     fragment EventScene_Event on Event {
       title
+      tags {
+        title
+      }
       ...Breadcrumbs_Event
+      ...Rate_EventRate 
     }
   `, eventFragmentRef)
+
+  const tags = event?.tags || []
 
   return (
     <Column>
@@ -32,7 +44,12 @@ export function EventScene({ eventFragmentRef }: { eventFragmentRef: EventScene_
           </Typography>
         </Row>
         <Row justifyContent="flex-end">
-          <Button borderRadius="10px" iconPosition={ButtonIconPlace.WITH_RIGHT_ICON} variant={ButtonVariants.OUTLINED} icon={<img src={Calendar.src} />}>
+          <Button
+            borderRadius="10px"
+            iconPosition={ButtonIconPlace.WITH_RIGHT_ICON}
+            variant={ButtonVariants.OUTLINED}
+            icon={<img src={Calendar.src} />}
+          >
             <Typography size="28px">
               10.08.2022
             </Typography>
@@ -43,6 +60,16 @@ export function EventScene({ eventFragmentRef }: { eventFragmentRef: EventScene_
               book button
             </Typography>
           </SBookButton>
+        </Row>
+      </Row>
+      <Row>
+        <Row justifyContent="flex-start">
+          <Rate readonly eventFragment={event} />
+          {tags.map(({ title }) =>
+            <STag size={TagSizes.MEDIUM}>{title}</STag>)}
+        </Row>
+        <Row>
+          price for unit
         </Row>
       </Row>
       <div>
