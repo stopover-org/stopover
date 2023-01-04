@@ -83,7 +83,16 @@ FactoryBot.define do
       max_attendees { 1 }
     end
 
+    trait :past_schedules do
+      after(:create) do |event|
+        event.schedules.create!(scheduled_for: 1.day.ago)
+        event.schedules.create!(scheduled_for: 2.days.ago)
+        event.schedules.create!(scheduled_for: 3.days.ago)
+      end
+    end
+
     factory :limited_event, traits: %i[limited_attendee recurring]
     factory :recurring_event, traits: [:recurring]
+    factory :schedules_past_date, traits: %i[past_schedules recurring]
   end
 end
