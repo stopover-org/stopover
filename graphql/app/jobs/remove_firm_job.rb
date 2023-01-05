@@ -8,7 +8,7 @@ class RemoveFirmJob < ApplicationJob
     firm.events.each do |event|
       event.soft_delete!
       Schedule.where(event_id: event.id).left_outer_joins(:bookings).each do |schedule|
-        schedule.destroy if schedule.scheduled_for.to_datetime > Time.zone.now
+        schedule.destroy unless schedule.scheduled_for.to_datetime < Time.zone.now || Booking.where(schedule_id: schedule.id).count != 0
       end
     end
   end

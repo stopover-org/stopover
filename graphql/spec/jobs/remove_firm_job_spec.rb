@@ -37,7 +37,7 @@ RSpec.describe RemoveFirmJob, type: :job do
       end
     end
 
-    context 'with only future schedules' do
+    context 'with future and past schedules' do
       let!(:firm) { create(:firm) }
       let!(:events) { create_list(:schedules_past_date, 10, firm_id: firm.id) }
 
@@ -50,6 +50,25 @@ RSpec.describe RemoveFirmJob, type: :job do
         events.each do |event|
           expect(event.reload.status).to eq('deleted')
           expect(event.schedules.count).to eq(3)
+        end
+      end
+    end
+
+    context 'with schedule is booked' do
+      let!(:firm) { create(:firm) }
+      let!(:events) { create_list(:schedule_is_booked, 10, firm_id: firm.id) }
+
+      it 'deleted' do
+        expect(events.count).to eq(10)
+        expect(Booking.all.count).to eq(10)
+        events.each do |event|
+          expect(event.schedules.count).to eq(59)
+        end
+        RemoveFirmJob.perform_now(firm.id)
+        events.each do |event|
+          expect(event.reload.status).to eq('deleted')
+          expect(event.schedules.count).to eq(4)
+          expect(event.bookings.count).to eq(1)
         end
       end
     end

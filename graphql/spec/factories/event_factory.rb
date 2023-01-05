@@ -91,8 +91,15 @@ FactoryBot.define do
       end
     end
 
+    trait :booking_schedule do
+      after(:create) do |event|
+        event.bookings.create(event_id: event.id, schedule_id: event.schedules.last.id)
+      end
+    end
+
     factory :limited_event, traits: %i[limited_attendee recurring]
     factory :recurring_event, traits: [:recurring]
     factory :schedules_past_date, traits: %i[past_schedules recurring]
+    factory :schedule_is_booked, traits: %i[past_schedules recurring booking_schedule]
   end
 end
