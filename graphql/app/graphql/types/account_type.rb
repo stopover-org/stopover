@@ -17,6 +17,7 @@ module Types
     field :primary_phone, String
     field :verified_at, String
     field :interests, [Types::InterestType]
+    field :firm, Types::FirmType
 
     def authorized?(object, context)
       super && context[:current_user]&.account == object

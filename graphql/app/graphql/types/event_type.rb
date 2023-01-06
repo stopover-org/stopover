@@ -9,28 +9,28 @@ module Types
     field :event_type, Types::EventTypeEnum, null: false
     field :recurring_type, Types::RecurringTypeEnum
     field :organizer_price_per_uom_cents, Integer
-    field :attendee_price_per_uom_cents, Integer, null: false
+    field :attendee_price_per_uom_cents, Integer
     field :requires_contract, Boolean
     field :requires_passport, Boolean
     field :requires_check_in, Boolean
     field :recurring_days_with_time, [String]
     field :single_days_with_time, [String]
-    field :duration_time, String, null: false
+    field :duration_time, String
     field :house_number, String
     field :street, String
     field :city, String
     field :country, String
     field :region, String
-    field :full_address, String, null: false
+    field :full_address, String
     field :longitude, Float
     field :latitude, Float
     field :unit, Types::UnitType, null: false
     field :event_options, [Types::EventOptionType], null: false
     field :interests, [Types::InterestType], null: false
-    field :achievements, [Types::AchievementType]
+    field :achievements, [Types::AchievementType], null: false
     field :available_dates, [Types::DateTimeType], null: false
     field :tags, [Types::TagType], null: false
-    field :average_rating, Float
+    field :average_rating, Float, null: false
     field :ratings_count, Integer
     field :external_id, String
     field :landmarks, String
