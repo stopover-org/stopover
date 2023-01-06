@@ -211,12 +211,12 @@ class Event < ApplicationRecord
       images_to_attach.push tmp_file
     end.compact!
 
-    event.images.each do |img|
+    images.each do |img|
       img.purge unless images.pluck(:id).include?(img.id)
     end
 
     images_to_attach.each do |img|
-      event.images.attach(img)
+      images.attach(img)
     end
   end
 
@@ -243,12 +243,12 @@ class Event < ApplicationRecord
   end
 
   def update_tags
-    interests.each do |interest|
-      tag = tags.where(title: interest.title.downcase).last
-      tag ||= Tag.create!(title: interest.title.downcase)
-      tags.push(tag) unless tags.include?(tag)
-      tag = nil
-    end
+    # interests.each do |interest|
+    #   tag = tags.where(title: interest.title.downcase).last
+    #   tag ||= Tag.create!(title: interest.title.downcase)
+    #   tags.push(tag) unless tags.include?(tag)
+    #   tag = nil
+    # end
 
     achievements.each do |achievement|
       tag = Tag.where(title: achievement.title.downcase).last
@@ -277,7 +277,7 @@ class Event < ApplicationRecord
   def recurrent_dates
     Rails.logger.warn('Event.recurrent_dates is deprecated and will be removed in January. use schedules to get events for some specific dates')
     res = []
-    recurring_days_with_time.each do |weekday_with_time|
+    recurring_days_with_time&.each do |weekday_with_time|
       day = weekday_with_time.split(/\s+/)
       time = day[1].split(':')
       expected_date = Time.zone.now.change({ hour: time[0].to_i, min: time[1].to_i })

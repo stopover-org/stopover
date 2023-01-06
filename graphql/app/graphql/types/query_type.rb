@@ -25,13 +25,13 @@ module Types
     end
 
     field :bookings, [Types::BookingType] do
-      argument :id, ID, required: true
+      argument :trip_id, ID, required: true, loads: Types::TripType
     end
 
     field :trips, [Types::TripType]
 
     def bookings(**args)
-      Booking.where(trip_id: args[:id])
+      args[:trip].bookings
     end
 
     def current_user

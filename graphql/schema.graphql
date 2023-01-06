@@ -1,6 +1,7 @@
 type Account implements Node {
   city: String
   country: String
+  firm: Firm
   fullAddress: String
   id: ID!
   interests: [Interest!]
@@ -77,17 +78,17 @@ input CreateEventInput {
   clientMutationId: String
   country: String
   dates: [String!]
-  description: String
+  description: String!
   durationTime: Int
   eventOptions: [CreateEventOptionInput!]
-  eventType: EventTypeEnum
+  eventType: EventTypeEnum!
   fullAddress: String!
   houseNumber: String
   interestIds: [ID!]
   latitude: Float
   longitude: Float
   organizerPricePerUomCents: Int
-  recurringType: RecurringTypeEnum
+  recurringType: RecurringTypeEnum!
   region: String
   requiresCheckIn: Boolean
   requiresContract: Boolean
@@ -120,18 +121,18 @@ represents a timestamp of the ISO8601 format
 scalar DateTime
 
 type Event implements Node {
-  achievements: [Achievement!]
-  attendeePricePerUomCents: Int!
+  achievements: [Achievement!]!
+  attendeePricePerUomCents: Int
   availableDates: [DateTime!]!
-  averageRating: Float
+  averageRating: Float!
   city: String
   country: String
   description: String!
-  durationTime: String!
+  durationTime: String
   eventOptions: [EventOption!]!
   eventType: EventTypeEnum!
   externalId: String
-  fullAddress: String!
+  fullAddress: String
   houseNumber: String
   id: ID!
   images: [String!]!
@@ -229,6 +230,26 @@ input EventsFilter {
   startDate: DateTime
 }
 
+type Firm implements Node {
+  city: String
+  contactPerson: String
+  contacts: String
+  country: String
+  description: String
+  fullAddress: String
+  houseNumber: String
+  id: ID!
+  latitude: Float
+  longitude: Float
+  primaryEmail: String!
+  primaryPhone: String
+  region: String
+  status: String
+  street: String
+  title: String!
+  website: String
+}
+
 type Interest implements Node {
   id: ID!
   link: String
@@ -316,7 +337,7 @@ type PageInfo {
 }
 
 type Query {
-  bookings(id: ID!): [Booking!]
+  bookings(tripId: ID!): [Booking!]
   currentUser: User
   event(id: ID!): Event
   eventFilters(city: String): EventFilters!
