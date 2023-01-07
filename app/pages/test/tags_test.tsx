@@ -4,10 +4,10 @@ import Typography from "../../components/Typography";
 import Tag from "../../components/Tag";
 import icon from "../../components/icons/Outline/Brands/Chrome.svg";
 import {
-  TypographyTags,
-  TypographySize,
   TagSizes,
   TagType,
+  TypographySize,
+  TypographyTags,
 } from "../../components/StatesEnum";
 
 const Wrapper = styled.div`

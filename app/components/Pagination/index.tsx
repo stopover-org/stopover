@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Row from "../Row";
 import Column from "../Column";
 import Typography from "../Typography";
-import { TypographyTags, PaginationSize } from "../StatesEnum";
+import { PaginationSize, TypographyTags } from "../StatesEnum";
 
 const PageNumber = styled(Column)<{ size: string }>`
   margin-right: 10px;

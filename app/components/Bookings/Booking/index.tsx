@@ -11,9 +11,9 @@ import CaretUp from "../../icons/Outline/Interface/Caret_up.svg";
 import Row from "../../Row";
 import { TypographySize, TypographyTags } from "../../StatesEnum";
 import {
-  isDifferentDayMonth,
   calculateDate,
   getTime,
+  isDifferentDayMonth,
 } from "../../../lib/utils/dates";
 import { Booking_BookingsFragment$key } from "./__generated__/Booking_BookingsFragment.graphql";
 

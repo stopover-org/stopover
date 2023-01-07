@@ -1,10 +1,10 @@
 import {
   Edit,
+  ImageField,
+  ImageInput,
+  NumberInput,
   SimpleForm,
   TextInput,
-  NumberInput,
-  ImageInput,
-  ImageField,
 } from "react-admin";
 
 export const EditEvent = () => (

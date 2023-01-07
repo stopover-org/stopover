@@ -8,31 +8,31 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Fragment, ReaderFragment } from 'relay-runtime';
-import { FragmentRefs } from "relay-runtime";
+import {FragmentRefs, ReaderFragment} from 'relay-runtime';
+
 export type List_InterestsFragment$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"InterestGallery_InterestsFragment">;
-  readonly " $fragmentType": "List_InterestsFragment";
+    readonly " $fragmentSpreads": FragmentRefs<"InterestGallery_InterestsFragment">;
+    readonly " $fragmentType": "List_InterestsFragment";
 };
 export type List_InterestsFragment$key = {
-  readonly " $data"?: List_InterestsFragment$data;
-  readonly " $fragmentSpreads": FragmentRefs<"List_InterestsFragment">;
+    readonly " $data"?: List_InterestsFragment$data;
+    readonly " $fragmentSpreads": FragmentRefs<"List_InterestsFragment">;
 };
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
-  "kind": "Fragment",
-  "metadata": null,
-  "name": "List_InterestsFragment",
-  "selections": [
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "InterestGallery_InterestsFragment"
-    }
-  ],
-  "type": "Query",
-  "abstractKey": null
+    "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "List_InterestsFragment",
+    "selections": [
+        {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "InterestGallery_InterestsFragment"
+        }
+    ],
+    "type": "Query",
+    "abstractKey": null
 };
 
 (node as any).hash = "aae6ca5386748687cd63e30622ea086d";

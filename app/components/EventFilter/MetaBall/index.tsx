@@ -4,6 +4,7 @@ import React from "react";
 const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
+
   .blobs {
     border: 1px solid green;
     filter: url("#goo");
@@ -13,6 +14,7 @@ const Wrapper = styled.div`
     bottom: 0;
     right: 0;
   }
+
   @keyframes blob-left-top-anim {
     0% {
       transform: scale(1.1) translate(0, 0);
@@ -71,6 +73,7 @@ const Wrapper = styled.div`
       transform: scale(1.1) translate(0, 0);
     }
   }
+
   .blob {
     position: absolute;
     background: #e97b7a;
@@ -89,13 +92,16 @@ const Wrapper = styled.div`
     &:nth-child(2) {
       animation-name: blob-right-top-anim;
     }
+
     &:nth-child(3) {
       animation-name: blob-left-bottom-anim;
     }
+
     &:nth-child(4) {
       animation-name: blob-right-bottom-anim;
     }
   }
+
   /*.square{
     position:absolute;
     background:#5677fc;

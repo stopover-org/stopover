@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ButtonVariants, ButtonIconPlace, ButtonSizes } from "../StatesEnum";
+import { ButtonIconPlace, ButtonSizes, ButtonVariants } from "../StatesEnum";
 
 const Wrapper = styled.div``;
 const IconPadding = styled.div<{ padding: string }>`

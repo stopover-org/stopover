@@ -5,12 +5,12 @@ import { graphql, useFragment } from "react-relay";
 import Card from "../Card";
 import AverageRating from "../AverageRating/AverageRating";
 import {
+  ButtonIconPlace,
+  ButtonSizes,
   CardImageLocation,
+  TagSizes,
   TypographySize,
   TypographyTags,
-  TagSizes,
-  ButtonSizes,
-  ButtonIconPlace,
 } from "../StatesEnum";
 import Typography from "../Typography";
 import BaseImage from "../BaseImage";

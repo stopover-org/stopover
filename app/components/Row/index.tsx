@@ -11,6 +11,7 @@ const Row = styled.div<Props>`
   justify-content: ${(props) => props.justifyContent};
   align-items: ${(props) => props.alignItems};
   flex-wrap: ${(props) => props.wrap || "nowrap"};
+  padding: ${(props) => props.padding || "1px"};
 `;
 
 type Props = {
@@ -21,5 +22,6 @@ type Props = {
   wrap?: string;
   container?: boolean;
   item?: boolean;
+  padding?: string;
 };
 export default Row;

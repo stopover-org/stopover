@@ -19,6 +19,7 @@ const SolidStarsStyle = styled.div<{ width: number }>`
   overflow: hidden;
   width: ${(props) => props.width}%;
   z-index: 2;
+
   img {
     width: 25px;
     height: 25px;
@@ -31,6 +32,7 @@ const OutlineStarsStyle = styled.div`
   position: absolute;
   top: 0px;
   left: 0px;
+
   img {
     width: 25px;
     height: 25px;

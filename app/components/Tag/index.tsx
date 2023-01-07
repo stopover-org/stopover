@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import Row from "../Row";
-import { TagType, TagSizes } from "../StatesEnum";
+import { TagSizes, TagType } from "../StatesEnum";
 
 const Wrapper = styled.a`
   cursor: pointer;

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import Column from "../Column";
 import Row from "../Row";
-import { IconPosition, InputVariants, InputSizes } from "../StatesEnum";
+import { IconPosition, InputSizes, InputVariants } from "../StatesEnum";
 import CaretUp from "../icons/Outline/Interface/Caret_up.svg";
 import CaretDown from "../icons/Outline/Interface/Caret_down.svg";
 
