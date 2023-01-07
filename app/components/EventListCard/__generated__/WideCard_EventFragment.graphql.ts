@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7e7a04b5c3851acfd48c088f28769d91>>
+ * @generated SignedSource<<1244bb0d9f9841aff5fe5dbcf83ba36c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,9 +11,9 @@
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type WideCard_EventFragment$data = {
-  readonly attendeePricePerUomCents: number | null;
+  readonly attendeePricePerUomCents: number;
   readonly availableDates: ReadonlyArray<any>;
-  readonly averageRating: number;
+  readonly averageRating: number | null;
   readonly description: string;
   readonly id: string;
   readonly images: ReadonlyArray<string>;

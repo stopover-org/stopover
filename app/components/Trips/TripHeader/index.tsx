@@ -20,7 +20,7 @@ const TripHeader = ({
     graphql`
       fragment TripHeader_BookingsFragment on Query
       @argumentDefinitions(tripId: { type: "ID!" }) {
-        bookings(tripId: $tripId) {
+        bookings(id: $tripId) {
           bookedFor
           event {
             city
