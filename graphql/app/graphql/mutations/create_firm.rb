@@ -23,8 +23,11 @@ module Mutations
 
     def resolve(**args)
       firm = Firm.new(args)
+
       firm.accounts.push(context[:current_user].account)
-      firm.primary_email = context[:current_user].email
+      firm.primary_email = context[:current_user].email if args[:primary_email].blank?
+      firm.primary_phone = context[:current_user].phone if args[:primary_phone].blank?
+
       firm.save!
 
       { firm: firm }
