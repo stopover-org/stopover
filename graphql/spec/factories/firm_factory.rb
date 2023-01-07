@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: firms
@@ -12,7 +14,7 @@
 #  house_number   :string
 #  latitude       :float
 #  longitude      :float
-#  primary_email  :string           not null
+#  primary_email  :string
 #  primary_phone  :string
 #  region         :string
 #  status         :string           default("pending")
@@ -20,7 +22,6 @@
 #  title          :string           not null
 #  website        :string
 #
-# frozen_string_literal: true
 
 FactoryBot.define do
   factory :firm do
