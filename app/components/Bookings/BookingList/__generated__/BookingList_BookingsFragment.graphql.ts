@@ -8,72 +8,72 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import {FragmentRefs, ReaderFragment} from 'relay-runtime';
-
+import { Fragment, ReaderFragment } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
 export type BookingList_BookingsFragment$data = {
-    readonly bookings: ReadonlyArray<{
-        readonly bookedFor: any;
-        readonly id: string;
-        readonly " $fragmentSpreads": FragmentRefs<"Booking_BookingsFragment">;
-    }> | null;
-    readonly " $fragmentType": "BookingList_BookingsFragment";
+  readonly bookings: ReadonlyArray<{
+    readonly bookedFor: any;
+    readonly id: string;
+    readonly " $fragmentSpreads": FragmentRefs<"Booking_BookingsFragment">;
+  }> | null;
+  readonly " $fragmentType": "BookingList_BookingsFragment";
 };
 export type BookingList_BookingsFragment$key = {
-    readonly " $data"?: BookingList_BookingsFragment$data;
-    readonly " $fragmentSpreads": FragmentRefs<"BookingList_BookingsFragment">;
+  readonly " $data"?: BookingList_BookingsFragment$data;
+  readonly " $fragmentSpreads": FragmentRefs<"BookingList_BookingsFragment">;
 };
 
 const node: ReaderFragment = {
-    "argumentDefinitions": [
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "tripId"
+    }
+  ],
+  "kind": "Fragment",
+  "metadata": null,
+  "name": "BookingList_BookingsFragment",
+  "selections": [
+    {
+      "alias": null,
+      "args": [
         {
-            "defaultValue": null,
-            "kind": "LocalArgument",
-            "name": "tripId"
+          "kind": "Variable",
+          "name": "id",
+          "variableName": "tripId"
         }
-    ],
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "BookingList_BookingsFragment",
-    "selections": [
+      ],
+      "concreteType": "Booking",
+      "kind": "LinkedField",
+      "name": "bookings",
+      "plural": true,
+      "selections": [
         {
-            "alias": null,
-            "args": [
-                {
-                    "kind": "Variable",
-                    "name": "id",
-                    "variableName": "tripId"
-                }
-            ],
-            "concreteType": "Booking",
-            "kind": "LinkedField",
-            "name": "bookings",
-            "plural": true,
-            "selections": [
-                {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "id",
-                    "storageKey": null
-                },
-                {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "bookedFor",
-                    "storageKey": null
-                },
-                {
-                    "args": null,
-                    "kind": "FragmentSpread",
-                    "name": "Booking_BookingsFragment"
-                }
-            ],
-            "storageKey": null
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "id",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "bookedFor",
+          "storageKey": null
+        },
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "Booking_BookingsFragment"
         }
-    ],
-    "type": "Query",
-    "abstractKey": null
+      ],
+      "storageKey": null
+    }
+  ],
+  "type": "Query",
+  "abstractKey": null
 };
 
 (node as any).hash = "0489a075943b4ff0726392d98c015f58";
