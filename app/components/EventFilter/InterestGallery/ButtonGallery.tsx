@@ -17,6 +17,7 @@ const Wrapper = styled.div<{ gradient: string }>`
     #ffffff 25%,
     rgba(0, 212, 255, 0) 100%
   );
+
   img {
     width: 32px;
     height: 32px;

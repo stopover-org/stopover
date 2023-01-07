@@ -6,7 +6,6 @@ import Skeleton from "../../Skeleton";
 import Card from "../../Card";
 
 const Wrapper = styled.div``;
-
 const Content = styled(Column)`
   padding: 10px;
 `;

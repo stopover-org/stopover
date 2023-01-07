@@ -1,9 +1,9 @@
 import Document, {
   DocumentContext,
-  Html,
   Head,
-  NextScript,
+  Html,
   Main,
+  NextScript,
 } from "next/document";
 import { createRelayDocument, RelayDocument } from "relay-nextjs/document";
 
@@ -46,4 +46,5 @@ class MyDocument extends Document<DocumentProps> {
     );
   }
 }
+
 export default MyDocument;

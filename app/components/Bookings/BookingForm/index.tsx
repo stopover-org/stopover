@@ -14,8 +14,8 @@ import CallenderIcon from "../../icons/Outline/General/Calendar.svg";
 import ClockIcon from "../../icons/Outline/General/Clock.svg";
 import { getTime } from "../../../lib/utils/dates";
 import {
-  InputSizes,
   CheckboxType,
+  InputSizes,
   TypographySize,
   TypographyTags,
 } from "../../StatesEnum";

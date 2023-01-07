@@ -8,33 +8,33 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Fragment, ReaderFragment } from 'relay-runtime';
-import { FragmentRefs } from "relay-runtime";
+import {FragmentRefs, ReaderFragment} from 'relay-runtime';
+
 export type BookingsList_Fragment$data = {
-  readonly bookedFor: any;
-  readonly " $fragmentType": "BookingsList_Fragment";
+    readonly bookedFor: any;
+    readonly " $fragmentType": "BookingsList_Fragment";
 };
 export type BookingsList_Fragment$key = {
-  readonly " $data"?: BookingsList_Fragment$data;
-  readonly " $fragmentSpreads": FragmentRefs<"BookingsList_Fragment">;
+    readonly " $data"?: BookingsList_Fragment$data;
+    readonly " $fragmentSpreads": FragmentRefs<"BookingsList_Fragment">;
 };
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
-  "kind": "Fragment",
-  "metadata": null,
-  "name": "BookingsList_Fragment",
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "bookedFor",
-      "storageKey": null
-    }
-  ],
-  "type": "Booking",
-  "abstractKey": null
+    "argumentDefinitions": [],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "BookingsList_Fragment",
+    "selections": [
+        {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "bookedFor",
+            "storageKey": null
+        }
+    ],
+    "type": "Booking",
+    "abstractKey": null
 };
 
 (node as any).hash = "ae1f2f2729f7186c8e1d2d6b1cdd104b";

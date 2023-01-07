@@ -4,6 +4,7 @@ export enum TypographyWeight {
   THICK = "500",
   BOLD = "700",
 }
+
 export enum TypographySize {
   H1 = "36px",
   H2 = "32px",
@@ -35,14 +36,17 @@ export enum TypographyTags {
   DIV = "div",
   LINK = "a",
 }
+
 export enum ButtonVariants {
   COMMON = "common",
   OUTLINED = "outlined",
 }
+
 export enum ButtonIconPlace {
   WITH_RIGHT_ICON = "icon_on_right",
   WITH_LEFT_ICON = "icon_on_left",
 }
+
 export enum ButtonSizes {
   H1 = "6px",
   H2 = "5px",
@@ -57,54 +61,66 @@ export enum ButtonSizes {
   LARGE = "12px",
   VERY_LARGE = "15px",
 }
+
 export enum SkeletonType {
   BLOCK = "block",
   IMAGE = "image",
 }
+
 export enum InputSizes {
   SMALL = "5px",
   MEDIUM = "10px",
   LARGE = "15px",
 }
+
 export enum InputVariants {
   COMMON = "common",
   OUTLINED = "outlined",
 }
+
 export enum IconPosition {
   LEFT = "before",
   RIGHT = "after",
 }
+
 export enum CheckboxSizes {
   SMALL = "19px",
   MEDIUM = "24px",
 }
+
 export enum CheckboxType {
   CHECKBOX = "checkbox",
   RADIO = "radio",
 }
+
 export enum TagType {
   FULLFILLED = "fullfilled",
   OUTLINED = "outlined",
 }
+
 export enum TagSizes {
   NONE = "0px",
   SMALL = "5px",
   MEDIUM = "10px",
   LARGE = "15px",
 }
+
 export enum CardImageLocation {
   TOP = "top",
   BOTTOM = "bottom",
   RIGHT = "right",
   LEFT = "left",
 }
+
 export enum PaginationSize {
   SMALL = "55px",
   MEDIUM = "75px",
 }
+
 export enum Currencies {
   USD = "$",
 }
+
 export enum PopoverSizes {
   SMALL = "5px",
   MEDIUM = "10px",

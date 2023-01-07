@@ -3,7 +3,7 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import styled from "styled-components";
 import { BookingList_BookingsFragment$key } from "./__generated__/BookingList_BookingsFragment.graphql";
-import { isDifferentDayMonth, getDayMonth } from "../../../lib/utils/dates";
+import { getDayMonth, isDifferentDayMonth } from "../../../lib/utils/dates";
 import { TypographySize, TypographyTags } from "../../StatesEnum";
 import Booking from "../Booking";
 import Typography from "../../Typography";
@@ -20,8 +20,8 @@ const BookingList = ({
   const data = useFragment(
     graphql`
       fragment BookingList_BookingsFragment on Query
-      @argumentDefinitions(id: { type: "ID!" }) {
-        bookings(id: $id) {
+      @argumentDefinitions(tripId: { type: "ID!" }) {
+        bookings(id: $tripId) {
           id
           bookedFor
           ...Booking_BookingsFragment

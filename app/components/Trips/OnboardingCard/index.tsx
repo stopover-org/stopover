@@ -9,15 +9,14 @@ import BaseImage from "../../BaseImage";
 import Row from "../../Row";
 import Column from "../../Column";
 import {
-  ButtonVariants,
   ButtonIconPlace,
   ButtonSizes,
+  ButtonVariants,
   TypographySize,
   TypographyTags,
 } from "../../StatesEnum";
 
 const Wrapper = styled.div``;
-
 const Content = styled(Column)`
   padding: 10px;
 `;

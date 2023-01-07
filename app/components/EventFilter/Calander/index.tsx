@@ -11,12 +11,14 @@ const Wrapper = styled.div`
     font-weight: 400;
     line-height: 29px;
   }
+
   .DateInput_input {
     border: none;
     height: 50px;
     margin: -0px;
     font-size: 24px;
   }
+
   .DateRangePickerInput__withBorder {
     border: 2px solid #fdaa4c;
     border-radius: 3px;
@@ -24,29 +26,36 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
   }
+
   .DateRangePickerInput_arrow_svg {
     display: none;
   }
+
   .DateRangePickerInput_arrow {
     display: none;
   }
+
   .CalendarDay__selected_span {
     background: #fdaa4c;
     border: 1px solid #fdaa4c;
   }
+
   .CalendarDay__selected {
     background: #ef8336;
     border: 1px solid #ef8336;
   }
+
   .DayPickerKeyboardShortcuts_show__bottomRight::before {
     border-right: 33px solid #fdaa4c;
   }
+
   .CalendarDay__hovered_span,
   .CalendarDay__hovered_span:hover {
     background: #ffcca7;
     border: 1px double #ffcca7;
     color: white;
   }
+
   .CalendarDay__selected,
   .CalendarDay__selected:active,
   .CalendarDay__selected:hover {

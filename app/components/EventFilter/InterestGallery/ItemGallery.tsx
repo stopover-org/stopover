@@ -20,10 +20,12 @@ const ImageContainer = styled.div<{ color: string; cross: string }>`
   border: 4px solid ${(props) => props.color};
   border-radius: 5px;
   overflow: hidden;
+
   img {
     height: 100%;
     display: block;
   }
+
   div {
     display: ${(props) => props.cross};
     bottom: 137px;

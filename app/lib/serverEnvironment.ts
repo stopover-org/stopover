@@ -16,7 +16,6 @@ export function createServerNetwork(cookie?: string) {
     async (params: RequestParameters, variables: Variables) => {
       const results = await fetchGraphQLRaw(params.text!, variables, cookie);
       const text = await results.json();
-
       const data: GraphQLResponse = JSON.parse(
         JSON.stringify(text),
         withHydrateDatetime

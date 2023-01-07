@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import Row from "../Row";
-import { TagType, TagSizes } from "../StatesEnum";
+import { TagSizes, TagType } from "../StatesEnum";
 
 const Wrapper = styled.a`
   cursor: pointer;
@@ -28,7 +28,7 @@ const Content = styled.div`
 
 type Props = {
   image?: string;
-  children: React.ReactElement;
+  children: React.ReactNode;
   variant?: TagType;
   size?: TagSizes;
   href?: string;
@@ -42,8 +42,9 @@ const Tag = ({
   size = TagSizes.NONE,
   variant = TagType.FULLFILLED,
   href,
+  ...props
 }: Props) => (
-  <Wrapper href={href}>
+  <Wrapper href={href} {...props}>
     <STag
       justifyContent="space-around"
       border={variant === TagType.OUTLINED ? "1px solid #FF8A00" : "auto"}

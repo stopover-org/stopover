@@ -151,6 +151,7 @@ type Event implements Node {
   requiresContract: Boolean
   requiresPassport: Boolean
   requiresPrepaid: Boolean!
+  schedules: [Schedule!]!
   singleDaysWithTime: [String!]
   status: String!
   street: String
@@ -397,6 +398,12 @@ enum RecurringTypeEnum {
   uses for recurring events
   """
   recurrent
+}
+
+type Schedule implements Node {
+  id: ID!
+  scheduledFor: DateTime!
+  status: String!
 }
 
 """

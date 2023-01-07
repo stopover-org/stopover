@@ -1,12 +1,11 @@
 import { getRelaySerializedState } from "relay-nextjs";
 import { withHydrateDatetime } from "relay-nextjs/date";
-import { Environment, Network, Store, RecordSource } from "relay-runtime";
+import { Environment, Network, RecordSource, Store } from "relay-runtime";
 import { fetchGraphQLRaw } from "./fetchGraphQL";
 
 export function createClientNetwork() {
   return Network.create(async (params, variables) => {
     const response = await fetchGraphQLRaw(params.text!, variables);
-
     const json = await response.text();
     return JSON.parse(json, withHydrateDatetime);
   });

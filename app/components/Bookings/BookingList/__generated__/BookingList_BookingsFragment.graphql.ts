@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3bd35a85eca5e24bcbeb202547a90b34>>
+ * @generated SignedSource<<701c4160db4bc187f6aefb127f221e25>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -28,7 +28,7 @@ const node: ReaderFragment = {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "id"
+      "name": "tripId"
     }
   ],
   "kind": "Fragment",
@@ -41,7 +41,7 @@ const node: ReaderFragment = {
         {
           "kind": "Variable",
           "name": "id",
-          "variableName": "id"
+          "variableName": "tripId"
         }
       ],
       "concreteType": "Booking",
@@ -76,6 +76,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "8ffc3927ef6c22c062ac47ebf91d074f";
+(node as any).hash = "0489a075943b4ff0726392d98c015f58";
 
 export default node;

@@ -1,53 +1,47 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
+import { graphql, useFragment } from "react-relay";
 import RateStar from "./RateStar";
+import { Rate_EventRate$key } from "./__generated__/Rate_EventRate.graphql";
+import Row from "../Row";
 
-const Wrapper = styled.div`
+const Wrapper = styled(Row)`
   width: 100%;
   min-height: 24px;
   cursor: pointer;
-  display: flex;
-  justify-content: start;
-  align-items: center;
 `;
 
-const RateStyle = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-`;
 type Props = {
-  onClick: (rateIndex: number) => void;
+  onClick?: (rateIndex: number) => void;
+  readonly?: boolean;
+  eventFragment: Rate_EventRate$key;
 };
 
-const Rate = ({ onClick }: Props) => {
-  const stars = new Array(5).fill("");
-  const [selectedRate, setSelectedRate] = useState(0);
-  const [shownRate, setShownRate] = useState<number | null>(2);
+const Rate = ({ onClick, eventFragment, readonly }: Props) => {
+  const event = useFragment(
+    graphql`
+      fragment Rate_EventRate on Event {
+        ratingsCount
+      }
+    `,
+    eventFragment
+  );
+
   const rateChange = (index: number) => {
-    setSelectedRate(index);
-
+    if (readonly) return;
+    if (!(onClick instanceof Function)) return;
     onClick(index);
-  };
-
-  const showRate = (index: number | null) => {
-    setShownRate(index);
   };
 
   return (
     <Wrapper>
-      <RateStyle>
-        {stars.map((_, index) => (
-          <RateStar
-            index={index}
-            selectedRate={selectedRate}
-            shownRate={shownRate}
-            key={index}
-            onClick={rateChange}
-            showRate={showRate}
-          />
-        ))}
-      </RateStyle>
+      {new Array(5).fill("").map((_, index) => (
+        <RateStar
+          selected={index < (event?.ratingsCount || 0)}
+          key={index}
+          onClick={() => rateChange(index)}
+        />
+      ))}
     </Wrapper>
   );
 };

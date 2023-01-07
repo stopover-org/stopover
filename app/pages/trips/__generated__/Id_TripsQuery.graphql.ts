@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<be2c6dd334aba35108a910915fa277c5>>
+ * @generated SignedSource<<a5f7121854093d2aea1d1a011b32c9f7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -32,7 +32,7 @@ var v0 = [
 v1 = [
   {
     "kind": "Variable",
-    "name": "id",
+    "name": "tripId",
     "variableName": "id"
   }
 ],
@@ -72,7 +72,13 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": [
+          {
+            "kind": "Variable",
+            "name": "id",
+            "variableName": "id"
+          }
+        ],
         "concreteType": "Booking",
         "kind": "LinkedField",
         "name": "bookings",
@@ -139,16 +145,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "6f1781a679ab37e861ac33034a0eb948",
+    "cacheID": "742ad344afe96f15c244cfc73cb45781",
     "id": null,
     "metadata": {},
     "name": "Id_TripsQuery",
     "operationKind": "query",
-    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  ...BookingList_BookingsFragment_1Bmzm5\n  ...TripHeader_BookingsFragment_1Bmzm5\n}\n\nfragment BookingList_BookingsFragment_1Bmzm5 on Query {\n  bookings(id: $id) {\n    id\n    bookedFor\n    ...Booking_BookingsFragment\n  }\n}\n\nfragment Booking_BookingsFragment on Booking {\n  bookedFor\n  id\n  event {\n    description\n    durationTime\n    images\n    title\n    id\n  }\n}\n\nfragment TripHeader_BookingsFragment_1Bmzm5 on Query {\n  bookings(id: $id) {\n    bookedFor\n    event {\n      city\n      id\n    }\n    id\n  }\n}\n"
+    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  ...BookingList_BookingsFragment_3C7NLV\n  ...TripHeader_BookingsFragment_3C7NLV\n}\n\nfragment BookingList_BookingsFragment_3C7NLV on Query {\n  bookings(id: $id) {\n    id\n    bookedFor\n    ...Booking_BookingsFragment\n  }\n}\n\nfragment Booking_BookingsFragment on Booking {\n  bookedFor\n  id\n  event {\n    description\n    durationTime\n    images\n    title\n    id\n  }\n}\n\nfragment TripHeader_BookingsFragment_3C7NLV on Query {\n  bookings(id: $id) {\n    bookedFor\n    event {\n      city\n      id\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "4260f74cd6851f067a4aad064606ea5a";
+(node as any).hash = "baaefcb57fbae12fa555e5b35e4e602d";
 
 export default node;

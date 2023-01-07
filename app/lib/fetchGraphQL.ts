@@ -13,6 +13,7 @@ export async function fetchGraphQLRaw(
     "Content-Type": "application/json",
     Cookie: cookie!, // used in SSR
   };
+
   const settings: RequestInit = {
     method: "POST",
     headers,
