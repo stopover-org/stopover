@@ -8,8 +8,8 @@ import TripCard from "../../components/Trips/TripCard";
 
 const Query = graphql`
   query Id_TripsQuery($id: ID!) {
-    ...BookingList_BookingsFragment @arguments(id: $id)
-    ...TripHeader_BookingsFragment @arguments(id: $id)
+    ...BookingList_BookingsFragment @arguments(tripId: $id)
+    ...TripHeader_BookingsFragment @arguments(tripId: $id)
   }
 `;
 

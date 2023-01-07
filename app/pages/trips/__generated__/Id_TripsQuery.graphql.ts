@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<be2c6dd334aba35108a910915fa277c5>>
+ * @generated SignedSource<<d8764c4b02a427e40b43d2bd8839ef31>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -32,7 +32,7 @@ var v0 = [
 v1 = [
   {
     "kind": "Variable",
-    "name": "id",
+    "name": "tripId",
     "variableName": "id"
   }
 ],
@@ -139,16 +139,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "6f1781a679ab37e861ac33034a0eb948",
+    "cacheID": "17d3e8bcc67ce86b7ebf083770544cc7",
     "id": null,
     "metadata": {},
     "name": "Id_TripsQuery",
     "operationKind": "query",
-    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  ...BookingList_BookingsFragment_1Bmzm5\n  ...TripHeader_BookingsFragment_1Bmzm5\n}\n\nfragment BookingList_BookingsFragment_1Bmzm5 on Query {\n  bookings(id: $id) {\n    id\n    bookedFor\n    ...Booking_BookingsFragment\n  }\n}\n\nfragment Booking_BookingsFragment on Booking {\n  bookedFor\n  id\n  event {\n    description\n    durationTime\n    images\n    title\n    id\n  }\n}\n\nfragment TripHeader_BookingsFragment_1Bmzm5 on Query {\n  bookings(id: $id) {\n    bookedFor\n    event {\n      city\n      id\n    }\n    id\n  }\n}\n"
+    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  ...BookingList_BookingsFragment_3C7NLV\n  ...TripHeader_BookingsFragment_3C7NLV\n}\n\nfragment BookingList_BookingsFragment_3C7NLV on Query {\n  bookings(tripId: $id) {\n    id\n    bookedFor\n    ...Booking_BookingsFragment\n  }\n}\n\nfragment Booking_BookingsFragment on Booking {\n  bookedFor\n  id\n  event {\n    description\n    durationTime\n    images\n    title\n    id\n  }\n}\n\nfragment TripHeader_BookingsFragment_3C7NLV on Query {\n  bookings(tripId: $id) {\n    bookedFor\n    event {\n      city\n      id\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "4260f74cd6851f067a4aad064606ea5a";
+(node as any).hash = "baaefcb57fbae12fa555e5b35e4e602d";
 
 export default node;
