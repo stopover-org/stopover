@@ -41,6 +41,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_07_131542) do
     t.datetime "verified_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "firm_id"
+    t.index ["firm_id"], name: "index_accounts_on_firm_id"
     t.index ["user_id"], name: "index_accounts_on_user_id", unique: true
   end
 
@@ -306,6 +308,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_07_131542) do
 
   add_foreign_key "account_interests", "accounts"
   add_foreign_key "account_interests", "interests"
+  add_foreign_key "accounts", "firms"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "booking_options", "bookings"

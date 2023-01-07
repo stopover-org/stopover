@@ -19,5 +19,6 @@ module Types
     field :street, String
     field :title, String, null: false
     field :website, String
+    field :accounts, [Types::AccountType]
   end
 end
