@@ -42,5 +42,6 @@ FactoryBot.define do
     country { Faker::Address.country }
     full_address { Faker::Address.full_address }
     phones { 5.times.map { Faker::PhoneNumber.phone_number } }
+    primary_phone { user.phone }
   end
 end

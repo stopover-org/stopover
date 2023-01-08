@@ -22,6 +22,8 @@ module Mutations
     argument :website, String, required: false
 
     def resolve(**args)
+      raise 'not authorized' unless context[:current_user]
+
       firm = Firm.new(args)
 
       firm.accounts.push(context[:current_user].account)
