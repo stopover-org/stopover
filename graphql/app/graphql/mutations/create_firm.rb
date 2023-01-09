@@ -22,7 +22,9 @@ module Mutations
     argument :website, String, required: false
 
     def resolve(**args)
-      raise 'not authorized' unless context[:current_user]
+      raise GraphQL::ExecutionError, 'unauthorized' unless context[:current_user]
+      raise GraphQL::ExecutionError, 'user has no account' unless context[:current_user].account
+      raise GraphQL::ExecutionError, 'whatever' if context[:current_user].account.firm
 
       firm = Firm.new(args)
 

@@ -55,7 +55,9 @@ class Firm < ApplicationRecord
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  validates :primary_email, :title, presence: true
+  validates :primary_email, presence: true, unless: :primary_phone
+  validates :primary_phone, presence: true, unless: :primary_email
+  validates :title, presence: true
   validates :accounts, length: { minimum: 1 }
 
   # CALLBACKS ================================================================

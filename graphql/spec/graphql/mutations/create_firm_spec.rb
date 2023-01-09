@@ -59,9 +59,59 @@ RSpec.describe Mutations::CreateFirm do
                               })
       end
 
-      it '' do
-        expect { subject }.to raise_exception('not authorized')
+      it 'GraphQL::UnauthorizedError' do
+        res = subject.to_h
+        expect(res['data']['createFirm']).to eq(nil)
+        expect(res['errors']).not_to be_nil
       end
+    end
+
+    context 'account already has a firm' do
+      subject do
+        GraphqlSchema.execute(mutation, variables: {
+                                input: {
+                                  title: 'The best event'
+                                }
+                              }, context: { current_user: firm.accounts.last.user })
+      end
+
+      let!(:firm) { create(:firm) }
+
+      it 'no firms detected' do
+        expect { subject }.to change { Firm.count }.by(0)
+      end
+    end
+  end
+
+  describe 'user has no account' do
+    let!(:mutation) do
+      "
+        mutation CreateFirmMutation($input: CreateFirmInput!){
+          createFirm(input:$input) {
+            firm {
+              title
+              primaryEmail
+              primaryPhone
+            }
+          }
+        }
+      "
+    end
+
+    let!(:user) { create(:user) }
+
+    subject do
+      GraphqlSchema.execute(mutation, variables: {
+                              input: {
+                                title: 'The best event'
+                              }
+                            }, context: { current_user: user })
+    end
+
+    it 'create firm for user' do
+      res = subject.to_h
+      expect(res['data']['createFirm']).to eq(nil)
+      expect(res['errors']).not_to be_nil
     end
   end
 end

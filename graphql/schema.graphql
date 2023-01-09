@@ -133,12 +133,12 @@ input CreateFirmInput {
   houseNumber: String
   latitude: Float
   longitude: Float
-  primaryEmail: String!
+  primaryEmail: String
   primaryPhone: String
   region: String
   status: String
   street: String
-  title: String!
+  title: String
   website: String
 }
 
