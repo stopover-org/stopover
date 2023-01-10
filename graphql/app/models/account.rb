@@ -20,11 +20,17 @@
 #  verified_at   :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  firm_id       :bigint
 #  user_id       :bigint
 #
 # Indexes
 #
+#  index_accounts_on_firm_id  (firm_id)
 #  index_accounts_on_user_id  (user_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (firm_id => firms.id)
 #
 class Account < ApplicationRecord
   # MODULES ===============================================================
@@ -42,6 +48,7 @@ class Account < ApplicationRecord
 
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :user, optional: false
+  belongs_to :firm, optional: true
 
   # AASM STATES ================================================================
   aasm column: :status do
@@ -53,6 +60,7 @@ class Account < ApplicationRecord
   #
   # VALIDATIONS ================================================================
   validates :name, presence: true
+  validates :id, uniqueness: { scope: :firm_id }
 
   # CALLBACKS ================================================================
   before_validation :set_user_info

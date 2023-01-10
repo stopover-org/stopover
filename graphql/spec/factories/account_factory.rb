@@ -20,11 +20,17 @@
 #  verified_at   :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  firm_id       :bigint
 #  user_id       :bigint
 #
 # Indexes
 #
+#  index_accounts_on_firm_id  (firm_id)
 #  index_accounts_on_user_id  (user_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (firm_id => firms.id)
 #
 FactoryBot.define do
   factory :account do
@@ -36,5 +42,6 @@ FactoryBot.define do
     country { Faker::Address.country }
     full_address { Faker::Address.full_address }
     phones { 5.times.map { Faker::PhoneNumber.phone_number } }
+    primary_phone { user.phone }
   end
 end

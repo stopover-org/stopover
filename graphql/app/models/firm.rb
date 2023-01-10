@@ -31,7 +31,8 @@ class Firm < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==========================================================
   #
   # HAS_MANY ASSOCIATIONS =========================================================
-  #
+  has_many :accounts
+
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   #
   # BELONGS_TO ASSOCIATIONS =======================================================
@@ -54,8 +55,10 @@ class Firm < ApplicationRecord
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  validates :primary_email, :title, presence: true, unless: :primary_phone
-  validates :primary_phone, :title, presence: true, unless: :primary_email
+  validates :primary_email, presence: true, unless: :primary_phone
+  validates :primary_phone, presence: true, unless: :primary_email
+  validates :title, presence: true
+  validates :accounts, length: { minimum: 1 }
 
   # CALLBACKS ================================================================
   #

@@ -6,18 +6,18 @@ RSpec.describe Mutations::BookEvent do
   describe 'mutation book event' do
     let!(:mutation) do
       "
-      mutation BookEvent($input: BookEventInput!){
-        bookEvent(input:$input){
-          booking {
-            id
-            bookedFor
-            attendees {
+        mutation BookEvent($input: BookEventInput!){
+          bookEvent(input:$input){
+            booking {
               id
+              bookedFor
+              attendees {
+                id
+              }
             }
           }
         }
-      }
-    "
+      "
     end
     let!(:event) { create(:recurring_event) }
 
