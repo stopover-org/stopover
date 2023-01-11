@@ -7,7 +7,7 @@ RSpec.describe Mutations::CreateFirm do
     let!(:mutation) do
       "
         mutation CreateFirmMutation($input: CreateFirmInput!){
-          createFirm(input:$input) {
+          createFirm(input: $input) {
             firm {
               title
               primaryEmail
