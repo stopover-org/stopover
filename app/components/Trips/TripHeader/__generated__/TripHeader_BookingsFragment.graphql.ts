@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7912765b472c261a99b842d943151456>>
+ * @generated SignedSource<<fd703537446d4c8e6f6ab0f9e52342ef>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -41,7 +41,7 @@ const node: ReaderFragment = {
       "args": [
         {
           "kind": "Variable",
-          "name": "id",
+          "name": "tripId",
           "variableName": "tripId"
         }
       ],
@@ -83,6 +83,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "f6606822f200e889a2ee4d71df46a5e5";
+(node as any).hash = "bdfc2dedce98e4c1f618d97e754df232";
 
 export default node;
