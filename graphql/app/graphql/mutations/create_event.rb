@@ -38,6 +38,7 @@ module Mutations
 
     def resolve(**args)
       event = Event.new(args.except(:dates, :event_options))
+      event.house_number = 'f23'
       event.firm = context[:current_user].account.firm
       event.event_options = args[:event_options]&.map { |option| EventOption.new(**option) } if args[:event_options].present?
       if event.recurring_type == 'recurring'
