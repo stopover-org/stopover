@@ -3,6 +3,8 @@
 module Types
   class MutationType < Types::BaseObject
     field :create_event, mutation: Mutations::CreateEvent
+    field :update_event, mutation: Mutations::UpdateEvent
+    field :remove_event, mutation: Mutations::RemoveEvent
     field :create_firm, mutation: Mutations::CreateFirm
     field :update_firm, mutation: Mutations::UpdateFirm
     field :remove_firm, mutation: Mutations::RemoveFirm

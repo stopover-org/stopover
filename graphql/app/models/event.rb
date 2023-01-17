@@ -120,6 +120,7 @@ class Event < ApplicationRecord
 
   # VALIDATIONS ================================================================
   validates :title, length: { maximum: 100 }, unless: :draft?
+
   validates :title, :description,
             :event_type, :recurring_type,
             :organizer_price_per_uom_cents, :attendee_price_per_uom_cents,
