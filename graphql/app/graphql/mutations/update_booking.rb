@@ -9,9 +9,14 @@ module Mutations
     field :booking, Types::BookingType
     def resolve(booking:, **args)
       schedule = booking.event.schedules.find_by(scheduled_for: args[:booked_for])
-      booking.update(schedule: schedule, **args.except(:booked_for))
+      booking.update!(schedule: schedule, **args.except(:booked_for))
       {
         booking: booking
+      }
+    rescue StandardError => e
+      {
+        booking: nil,
+        error: e.message
       }
     end
   end

@@ -67,13 +67,8 @@ class Booking < ApplicationRecord
   # DELEGATIONS ==============================================================
 
   def check_max_attendees
-    return true if event.max_attendees
-    return true if event.min_attendees
-    unless Attendee.where(booking_id:
-                            Booking.where(schedule_id:
-                                            schedule_id)).count + attendees.count < event.max_attendees
-      errors.add(:attendees, 'to much attendees, no place for them on event')
-    end
+    return true if event.max_attendees.nil?
+    errors.add(:attendees, 'all places reserved') if Attendee.where(booking_id: Booking.where(schedule_id: schedule.id)).count + attendees.count > event.max_attendees
   end
 
   private
