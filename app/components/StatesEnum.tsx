@@ -94,7 +94,7 @@ export enum CheckboxType {
 }
 
 export enum TagType {
-  FULLFILLED = "fullfilled",
+  FULFILLED = "fulfilled",
   OUTLINED = "outlined",
 }
 
