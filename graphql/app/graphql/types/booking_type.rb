@@ -6,6 +6,7 @@ module Types
     field :booked_for, Types::DateTimeType, null: false
     field :event, Types::EventType, null: false
     field :event_options, [Types::EventOptionType]
+    field :status, String
     field :attendees, [Types::AttendeeType]
 
     def booked_for

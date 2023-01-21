@@ -18,17 +18,14 @@ RSpec.describe Firm, type: :model do
     let!(:firm) { create(:firm) }
 
     subject do
-      GraphqlSchema.execute(mutation, variables: {
-                              input: {
-                                firm: {
-                                  id: firm.id
-                                }
-                              }
-                            }, context: { current_user: firm.accounts.first.user })
+      GraphqlSchema.execute(mutation,
+                            variables: { input: {} },
+                            context: { current_user: firm.accounts.first.user })
     end
 
     it 'firm deleted' do
       expect(RemoveFirmJob).to receive(:perform_later).with(firm.id)
+      subject
     end
   end
 end
