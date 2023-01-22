@@ -42,7 +42,8 @@ class EventOption < ApplicationRecord
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  #
+  validates :organizer_price_cents, presence: true
+  validates :attendee_price_cents, presence: true
   # CALLBACKS ================================================================
   before_validation :adjust_prices
   after_commit :update_total

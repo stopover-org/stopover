@@ -6,17 +6,17 @@ RSpec.describe Mutations::UpdateAttendee do
   describe '' do
     let!(:mutation) do
       "
-			mutation UpdateAttendeeMutation($input: UpdateAttendeeInput!) {
-				updateAttendee(input: $input) {
-					attendee {
-						id
-						email
-						firstName
-						lastName
-						phone
-					}
-				}
-			}
+        mutation UpdateAttendeeMutation($input: UpdateAttendeeInput!) {
+          updateAttendee(input: $input) {
+            attendee {
+              id
+              email
+              firstName
+              lastName
+              phone
+            }
+          }
+        }
 			"
     end
 
@@ -28,41 +28,67 @@ RSpec.describe Mutations::UpdateAttendee do
       GraphqlSchema.execute(mutation, variables: {
                               input: {
                                 attendeeId: GraphqlSchema.id_from_object(attendee),
-                                 firstName: 'Max',
-                                 lastName: 'Gerasimov',
-                                 email: 'example@mail.com',
-                                 phone: '**** **** ****'
+                                firstName: 'Max',
+                                lastName: 'Gerasimov',
+                                email: 'example@mail.com',
+                                phone: '**** **** ****'
                               }
                             })
     end
 
     it '' do
       subject
-      # expect(attendee.reload.first_name).to eq('Max')
+      expect(attendee.reload.first_name).to eq('Max')
     end
 
     context '' do
       let!(:event) { create(:recurring_event) }
       let!(:booking) { create(:booking, event: event) }
       let!(:attendee) { create(:attendee, booking: booking) }
-      let!(:attendee_option) { create(:attendee_option, attendee: attendee) }
+      let!(:event_option) { create(:for_attendee_event_option, event: event) }
+      let!(:attendee_option) { create(:attendee_option, event_option: event_option, attendee: attendee) }
 
       subject do
         GraphqlSchema.execute(mutation, variables: {
                                 input: {
-                                  attendeeId: GraphqlSchema.id_from_object(attendee_option.attendee),
-                                 firstName: 'Max',
-                                   lastName: 'Gerasimov',
-                                   email: 'example@mail.com',
-                                   phone: '**** **** ****'
+                                  attendeeId: GraphqlSchema.id_from_object(attendee),
+                                  firstName: 'Max',
+                                  lastName: 'Gerasimov',
+                                  email: 'example@mail.com',
+                                  phone: '**** **** ****'
                                 }
                               })
       end
 
       it '' do
         res = subject.to_h
+        # debugger
         # expect(attendee.reload.first_name).to eq('Max')
       end
     end
+
+    # context '' do
+    #   let!(:event) { create(:recurring_event) }
+    #   let!(:booking) { create(:booking, event: event) }
+    #   let!(:attendee) { create(:attendee, booking: booking) }
+    #   let!(:attendee_option) { create(:attendee_option, attendee: attendee) }
+    #
+    #   subject do
+    #     GraphqlSchema.execute(mutation, variables: {
+    #                             input: {
+    #                               attendeeId: GraphqlSchema.id_from_object(attendee_option.attendee),
+    #                               firstName: 'Max',
+    #                               lastName: 'Gerasimov',
+    #                               email: 'example@mail.com',
+    #                               phone: '**** **** ****'
+    #                             }
+    #                           })
+    #   end
+    #
+    #   it '' do
+    #     res = subject.to_h
+    #     # expect(attendee.reload.first_name).to eq('Max')
+    #   end
+    # end
   end
 end

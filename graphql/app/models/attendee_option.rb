@@ -37,7 +37,8 @@ class AttendeeOption < ApplicationRecord
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  #
+  validate :event_option_has_for_attendee
+
   # CALLBACKS ================================================================
   before_validation :adjust_prices
 
@@ -45,9 +46,13 @@ class AttendeeOption < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
+  def event_option_has_for_attendee
+    errors.add(:attendee_option, 'event option is not for attendee') if event_option&.for_attendee == false
+  end
+
   def adjust_prices
-    self.attendee_price_cents = event_option.attendee_price_cents
-    self.organizer_price_cents = event_option.organizer_price_cents
+    self.attendee_price_cents = event_option&.attendee_price_cents
+    self.organizer_price_cents = event_option&.organizer_price_cents
   end
 
   def adjust_prices!
