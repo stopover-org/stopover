@@ -47,7 +47,7 @@ class AttendeeOption < ApplicationRecord
   # DELEGATIONS ==============================================================
 
   def event_option_has_for_attendee
-    errors.add(:attendee_option, 'event option is not for attendee') if event_option&.for_attendee == false
+    errors.add(:attendee_option, 'event option is not for attendee') unless event_option&.for_attendee
   end
 
   def adjust_prices
