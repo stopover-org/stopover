@@ -44,29 +44,66 @@ RSpec.describe Mutations::UpdateAttendee do
       expect(attendee.reload.phone).to eq('**** **** ****')
     end
 
-    # context '' do
-    #   let!(:event) { create(:recurring_event) }
-    #   let!(:booking) { create(:booking, event: event) }
-    #   let!(:attendee) { create(:attendee, booking: booking) }
-    #   let!(:event_option) { create(:for_attendee_event_option, event: event) }
-    #   let!(:attendee_option) { create(:attendee_option, event_option: event_option, attendee: attendee) }
-    #
-    #   subject do
-    #     GraphqlSchema.execute(mutation, variables: {
-    #                             input: {
-    #                               attendeeId: GraphqlSchema.id_from_object(attendee),
-    #                               firstName: 'Max',
-    #                               lastName: 'Gerasimov',
-    #                               email: 'example@mail.com',
-    #                               phone: '**** **** ****'
-    #                             }
-    #                           })
-    #   end
-    #
-    #   it '' do
-    #     res = subject.to_h
-    #     # expect(attendee.reload.first_name).to eq('Max')
-    #   end
-    # end
+    context 'adding attendee options' do
+      let!(:event) { create(:recurring_event) }
+      let!(:booking) { create(:booking, event: event) }
+      let!(:attendee) { create(:attendee, booking: booking) }
+      let!(:attendee_option1) { create(:attendee_option, attendee: attendee) }
+      let!(:attendee_option2) { create(:attendee_option, attendee: attendee) }
+
+      let!(:event_option) { create(:for_attendee_event_option, event: event) }
+
+      subject do
+        GraphqlSchema.execute(mutation, variables: {
+                                input: {
+                                  attendeeId: GraphqlSchema.id_from_object(attendee),
+                                  eventOptionsId: [
+                                    GraphqlSchema.id_from_object(event_option),
+                                    GraphqlSchema.id_from_object(attendee_option1.event_option),
+                                    GraphqlSchema.id_from_object(attendee_option2.event_option)
+                                  ],
+                                  firstName: 'Max',
+                                  lastName: 'Gerasimov',
+                                  email: 'example@mail.com',
+                                  phone: '**** **** ****'
+                                }
+                              })
+      end
+
+      it 'new event option added' do
+        expect(attendee.attendee_options.first).to eq(attendee_option1)
+        expect(attendee.attendee_options.second).to eq(attendee_option2)
+        subject
+        expect(attendee.reload.attendee_options.first.event_option).to eq(event_option)
+      end
+    end
+
+    context 'deleting attendee options' do
+      let!(:event) { create(:recurring_event) }
+      let!(:booking) { create(:booking, event: event) }
+      let!(:attendee) { create(:attendee, booking: booking) }
+      let!(:attendee_option1) { create(:attendee_option, attendee: attendee) }
+      let!(:attendee_option2) { create(:attendee_option, attendee: attendee) }
+
+      subject do
+        GraphqlSchema.execute(mutation, variables: {
+                                input: {
+                                  attendeeId: GraphqlSchema.id_from_object(attendee),
+                                  eventOptionsId: [],
+                                  firstName: 'Max',
+                                  lastName: 'Gerasimov',
+                                  email: 'example@mail.com',
+                                  phone: '**** **** ****'
+                                }
+                              })
+      end
+
+      it 'attendee options deleted' do
+        expect(attendee.attendee_options.first).to eq(attendee_option1)
+        expect(attendee.attendee_options.second).to eq(attendee_option2)
+        subject
+        expect(attendee.reload.attendee_options.count).to eq(0)
+      end
+    end
   end
 end
