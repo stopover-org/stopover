@@ -10,6 +10,11 @@ module Mutations
       {
         booking: booking
       }
+    rescue StandardError => e
+      {
+        booking: nil,
+        error: e.message
+      }
     end
   end
 end
