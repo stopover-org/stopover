@@ -40,7 +40,7 @@ const Tag = ({
   imageSize = "25px",
   children,
   size = TagSizes.NONE,
-  variant = TagType.FULLFILLED,
+  variant = TagType.FULFILLED,
   href,
   ...props
 }: Props) => (
@@ -48,8 +48,8 @@ const Tag = ({
     <STag
       justifyContent="space-around"
       border={variant === TagType.OUTLINED ? "1px solid #FF8A00" : "auto"}
-      background={variant === TagType.FULLFILLED ? "#FF8A00" : "auto"}
-      color={variant === TagType.FULLFILLED ? "white" : "black"}
+      background={variant === TagType.FULFILLED ? "#FF8A00" : "auto"}
+      color={variant === TagType.FULFILLED ? "white" : "black"}
       padding={size}
     >
       {image && (
