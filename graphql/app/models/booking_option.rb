@@ -64,6 +64,6 @@ class BookingOption < ApplicationRecord
   private
 
   def has_same_event
-    errors.add(:event_option, 'different event.id in booking and event_option') if event_option.event.id != booking.event.id
+    errors.add(:event_option, 'booking and event option belongs to different event') if event_option.event.id != booking.event.id
   end
 end
