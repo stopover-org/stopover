@@ -25,7 +25,7 @@ class Attendee < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==========================================================
   #
   # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :attendee_options
+  has_many :attendee_options, dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :event_options, through: :attendee_options

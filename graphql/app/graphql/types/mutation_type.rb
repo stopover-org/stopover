@@ -12,6 +12,7 @@ module Types
     field :set_up_account, mutation: Mutations::SetUpAccount
     field :book_event, mutation: Mutations::BookEvent
     field :update_booking, mutation: Mutations::UpdateBooking
+    field :remove_booking, mutation: Mutations::RemoveBooking
     field :update_attendee, mutation: Mutations::UpdateAttendee
   end
 end

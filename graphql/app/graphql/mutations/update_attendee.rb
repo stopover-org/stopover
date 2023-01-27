@@ -21,9 +21,14 @@ module Mutations
         end
       end
 
-      attendee.update(**args)
+      attendee.update!(**args)
       {
         attendee: attendee
+      }
+    rescue StandardError => e
+      {
+        attendee: nil,
+        error: e.message
       }
     end
   end

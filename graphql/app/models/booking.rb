@@ -32,7 +32,7 @@ class Booking < ApplicationRecord
   #
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :booking_options, dependent: :destroy
-  has_many :attendees
+  has_many :attendees, dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :event_options, through: :booking_options
