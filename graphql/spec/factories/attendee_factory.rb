@@ -19,6 +19,7 @@
 #
 FactoryBot.define do
   factory :attendee do
+    booking { create(:booking) }
     first_name { Faker::Hipster.name }
   end
 end

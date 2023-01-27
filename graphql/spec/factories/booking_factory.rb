@@ -25,7 +25,7 @@
 FactoryBot.define do
   factory :booking do
     status { 'active' }
-    event { create(:event) }
+    event { create(:recurring_event) }
     trip { create(:trip) }
     schedule { event.schedules.last }
   end

@@ -1,2 +1,6 @@
 .idea/
 node_modules/
+
+/.DS_Store
+/app/.DS_Store
+/graphql/.DS_Store

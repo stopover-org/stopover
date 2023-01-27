@@ -20,6 +20,6 @@
 FactoryBot.define do
   factory :attendee_option do
     attendee { create(:attendee) }
-    event_option { create(:event_option) }
+    event_option { create(:for_attendee_event_option) }
   end
 end

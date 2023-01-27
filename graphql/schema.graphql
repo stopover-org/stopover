@@ -621,10 +621,11 @@ input UpdateAttendeeInput {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
-  email: String!
-  firstName: String!
-  lastName: String!
-  phoneNumber: String!
+  email: String
+  eventOptionId: ID
+  firstName: String
+  lastName: String
+  phone: String
 }
 
 """
