@@ -36,6 +36,7 @@ class Booking < ApplicationRecord
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :event_options, through: :booking_options
+  has_many :booking_cancellation_options, through: :event
 
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :event

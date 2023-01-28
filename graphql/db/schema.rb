@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_07_131542) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_28_083448) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -102,6 +102,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_07_131542) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["booking_id"], name: "index_attendees_on_booking_id"
+  end
+
+  create_table "booking_cancellation_options", force: :cascade do |t|
+    t.integer "penalty_price_cents"
+    t.datetime "deadline", precision: nil
+    t.text "description", default: ""
+    t.string "status"
+    t.bigint "event_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_booking_cancellation_options_on_event_id"
   end
 
   create_table "booking_options", force: :cascade do |t|
