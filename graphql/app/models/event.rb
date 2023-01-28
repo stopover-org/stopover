@@ -69,6 +69,7 @@ class Event < ApplicationRecord
   has_many :bookings, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_many :schedules, dependent: :destroy
+  has_many :booking_cancellation_options, dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :achievements, through: :event_achievements
