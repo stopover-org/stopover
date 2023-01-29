@@ -22,6 +22,10 @@
 class EventOption < ApplicationRecord
   # MODULES ===============================================================
   #
+  # MONETIZE =====================================================================
+  monetize :attendee_price_cents
+  monetize :organizer_price_cents
+
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
@@ -56,7 +60,7 @@ class EventOption < ApplicationRecord
   private
 
   def adjust_prices
-    self.attendee_price_cents = (organizer_price_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(
+    self.attendee_price = (organizer_price * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(
       2, BigDecimal::ROUND_UP
     )
   end
