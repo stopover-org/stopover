@@ -56,6 +56,10 @@ class Event < ApplicationRecord
   # MODULES ===============================================================
   include AASM
 
+  # MONETIZE =====================================================================
+  monetize :attendee_price_per_uom_cents
+  monetize :organizer_price_per_uom_cents
+
   # ATTACHMENTS ===========================================================
   has_many_attached :images
 
@@ -124,7 +128,7 @@ class Event < ApplicationRecord
 
   validates :title, :description,
             :event_type, :recurring_type,
-            :organizer_price_per_uom_cents, :attendee_price_per_uom_cents,
+            :organizer_price_per_uom, :attendee_price_per_uom,
             :unit, :city,
             :country, :full_address,
             :duration_time, presence: true, unless: :draft?
@@ -172,7 +176,7 @@ class Event < ApplicationRecord
   end
 
   def adjust_prices
-    self.attendee_price_per_uom_cents = (organizer_price_per_uom_cents * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(0, BigDecimal::ROUND_UP)
+    self.attendee_price_per_uom = (organizer_price_per_uom * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0)))
   end
 
   # @deprecated this method will be removed in January. use schedules to get events for some specific dates
@@ -183,8 +187,8 @@ class Event < ApplicationRecord
   end
 
   def set_prices
-    self.organizer_price_per_uom_cents = 0 unless organizer_price_per_uom_cents
-    self.attendee_price_per_uom_cents = 0 unless attendee_price_per_uom_cents
+    self.organizer_price_per_uom = Money.new(0) unless organizer_price_per_uom
+    self.attendee_price_per_uom = Money.new(0) unless attendee_price_per_uom
   end
 
   def available_dates

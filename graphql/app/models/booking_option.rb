@@ -25,6 +25,10 @@
 class BookingOption < ApplicationRecord
   # MODULES ===============================================================
   #
+  # MONETIZE =====================================================================
+  monetize :attendee_price_cents
+  monetize :organizer_price_cents
+
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
@@ -52,8 +56,8 @@ class BookingOption < ApplicationRecord
   # DELEGATIONS ==============================================================
 
   def adjust_prices
-    self.attendee_price_cents = event_option&.attendee_price_cents
-    self.organizer_price_cents = event_option&.organizer_price_cents
+    self.attendee_price = event_option&.attendee_price
+    self.organizer_price = event_option&.organizer_price
   end
 
   def adjust_prices!

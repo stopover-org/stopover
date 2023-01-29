@@ -21,6 +21,9 @@ class BookingCancellationOption < ApplicationRecord
   # MODULES ===============================================================
   enum status: { active: 0, disabled: 1 }
 
+  # MONETIZE =====================================================================
+  monetize :penalty_price_cents
+
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
