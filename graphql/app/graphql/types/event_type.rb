@@ -8,8 +8,8 @@ module Types
     field :description, String, null: false
     field :event_type, Types::EventTypeEnum, null: false
     field :recurring_type, Types::RecurringTypeEnum
-    field :organizer_price_per_uom_cents, Integer
-    field :attendee_price_per_uom_cents, Integer
+    field :organizer_price_per_uom, Types::MoneyType
+    field :attendee_price_per_uom, Types::MoneyType
     field :requires_contract, Boolean
     field :requires_passport, Boolean
     field :requires_check_in, Boolean
@@ -35,7 +35,7 @@ module Types
     field :external_id, String
     field :landmarks, String
     field :prepaid_type, String
-    field :prepaid_amount_cents, Integer, null: false
+    field :prepaid_amount, Types::MoneyType, null: false
     field :requires_prepaid, Boolean, null: false
     field :schedules, [Types::ScheduleType], null: false
     field :booking_cancellation_options, [Types::BookingCancellationOptionType]

@@ -3,7 +3,7 @@
 module Types
   class BookingCancellationOptionType < Types::ModelObject
     field :id, ID, null: false
-    field :penalty_price_cents, Integer
+    field :penalty_price, Types::MoneyType
     field :deadline, Types::DateTimeType
     field :status, Types::BookingCancellationOptionStatusEnum
   end
