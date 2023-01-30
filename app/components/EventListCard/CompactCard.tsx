@@ -58,11 +58,10 @@ const TypographyWrapper = styled.div`
 `;
 
 type Props = {
-  currency?: string;
   eventRef: CompactCard_EventFragment$key;
 };
 
-const CompactCard = ({ currency, eventRef }: Props) => {
+const CompactCard = ({ eventRef }: Props) => {
   const {
     title,
     id,
@@ -157,7 +156,7 @@ const CompactCard = ({ currency, eventRef }: Props) => {
                 size="26px"
                 as={TypographyTags.VERY_LARGE}
               >
-                {attendeePricePerUom?.cents} {currency}
+                {attendeePricePerUom?.cents} {attendeePricePerUom?.currency}
               </Typography>
             </TypographyWrapper>
             <Button

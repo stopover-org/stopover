@@ -10,7 +10,6 @@ const Cards = () => (
     <Wrapper>
       <CompactCard
         averageRate={1.23}
-        currency="$"
         price={600}
         image="https://images.theconversation.com/files/315915/original/file-20200218-11023-1k78m5f.jpg?ixlib=rb-1.1.0&rect=53%2C0%2C3425%2C1712&q=45&auto=format&w=1356&h=668&fit=crop"
         title="Welcome to marc"
@@ -64,7 +63,6 @@ const Cards = () => (
       />
       <WideCard
         averageRate={4.5}
-        currency="$"
         price={600}
         image="https://images.theconversation.com/files/315915/original/file-20200218-11023-1k78m5f.jpg?ixlib=rb-1.1.0&rect=53%2C0%2C3425%2C1712&q=45&auto=format&w=1356&h=668&fit=crop"
         title="Welcome to marc"
