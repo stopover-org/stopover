@@ -21,12 +21,12 @@ export const EditEvent = () => (
         <ImageField source="src" title="title" />
       </ImageInput>
       <NumberInput
-        name="organizer_price_per_uom_cents"
-        source="organizer_price_per_uom_cents"
+        name="organizer_price_per_uom"
+        source="organizer_price_per_uom"
       />
       <NumberInput
-        name="attendee_price_per_uom_cents"
-        source="attendee_price_per_uom_cents"
+        name="attendee_price_per_uom_"
+        source="attendee_price_per_uom"
       />
       <TextInput name="duration_time" source="duration_time" />
       <TextInput name="house_number" source="house_number" />

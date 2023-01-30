@@ -7,8 +7,8 @@ export const EventsList = () => (
       <TextField source="title" />
       <TextField source="event_type" />
       <TextField source="recurring_type" />
-      <TextField source="organizer_price_per_uom_cents" />
-      <TextField source="attendee_price_per_uom_cents" />
+      <TextField source="organizer_price_per_uom" />
+      <TextField source="attendee_price_per_uom" />
       <EditButton />
     </Datagrid>
   </List>
