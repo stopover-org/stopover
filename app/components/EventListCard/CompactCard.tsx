@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { graphql, useFragment } from "react-relay";
@@ -21,6 +21,7 @@ import Row from "../Row";
 import Button from "../Button";
 import icon from "../icons/Outline/General/Shopping_cart_white.svg";
 import { CompactCard_EventFragment$key } from "./__generated__/CompactCard_EventFragment.graphql";
+import { getCurrencyFormat } from "../../lib/utils/currencyFormatter";
 
 const TextHeight = styled(Typography)`
   overflow: hidden;
@@ -82,7 +83,11 @@ const CompactCard = ({ eventRef }: Props) => {
         images
         attendeePricePerUom {
           cents
-          currency
+          currency {
+            name
+            symbol
+            fullName
+          }
         }
         tags {
           title
@@ -156,7 +161,12 @@ const CompactCard = ({ eventRef }: Props) => {
                 size="26px"
                 as={TypographyTags.VERY_LARGE}
               >
-                {attendeePricePerUom?.cents} {attendeePricePerUom?.currency}
+                <Suspense>
+                  {getCurrencyFormat(
+                    attendeePricePerUom?.cents,
+                    attendeePricePerUom?.currency.name
+                  )}
+                </Suspense>
               </Typography>
             </TypographyWrapper>
             <Button
