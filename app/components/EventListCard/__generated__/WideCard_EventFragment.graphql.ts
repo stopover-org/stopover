@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7e7a04b5c3851acfd48c088f28769d91>>
+ * @generated SignedSource<<06c15fe76b7e40b85027f02b9a3f2c50>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,7 +11,10 @@
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type WideCard_EventFragment$data = {
-  readonly attendeePricePerUomCents: number | null;
+  readonly attendeePricePerUom: {
+    readonly cents: number;
+    readonly currency: string;
+  } | null;
   readonly availableDates: ReadonlyArray<any>;
   readonly averageRating: number;
   readonly description: string;
@@ -94,8 +97,26 @@ return {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "attendeePricePerUomCents",
+      "concreteType": "Money",
+      "kind": "LinkedField",
+      "name": "attendeePricePerUom",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "cents",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "currency",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     },
     {
@@ -138,6 +159,6 @@ return {
 };
 })();
 
-(node as any).hash = "b384383f7e876ad3aa5542a3bc930bf2";
+(node as any).hash = "7e51d98c9d98bde76b621789705a9964";
 
 export default node;
