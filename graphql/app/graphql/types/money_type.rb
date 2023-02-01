@@ -5,12 +5,10 @@ module Types
     description 'represents money'
 
     field :cents, Integer, null: false
-    field :currency, String, null: false
+    field :currency, CurrencyType, null: false
 
     delegate :cents, to: :object
 
-    def currency
-      object.currency.id
-    end
+    delegate :currency, to: :object
   end
 end
