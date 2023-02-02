@@ -3,47 +3,30 @@ import styled from 'styled-components';
 import Column from '../Column';
 import Row from '../Row';
 import Typography from '../Typography';
+import { TypographyTags } from '../StatesEnum';
 
 
-const Gallerycontainer = styled(Column)`
-    //border: 1px solid black;
-    position: relative;
-    overflow: hidden;       
+const Frame = styled(Column)<{width: string}>`
+    width: ${props => props.width};
+    position: relative; 
 `;
 
-const Wrapper = styled(Column)<{overflow: string}>`
-    //border: 3px solid green; 
-    //position: relative;    
-    overflow: ${props => props.overflow};    
+const Wrapper = styled(Row)<{overflow: string}>`      
+    overflow-y: ${props => props.overflow};      
 `;
 
-const Shot = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    width: 49%;
-    //border: 1px solid red;
-`;
+const Shot = styled(Column)``;
 
 const Img = styled.img`
-    width: 100%;  
-    background: #ccc;  
+    width: 100%;    
 `;
 
-const Title = styled.div`
-    //border: 1px solid blue;    
-    width: 100%;
-    text-align: center;
-`;
+const Title = styled(Row)``;
 
-const WrapperClick = styled.div`
+const BtnWrapper = styled(Row)`
     position: absolute;
-    bottom: -1px;
-    width: 100%;
-    //text-align: center;
-    display: flex;
-    justify-content: center;
-    //border: 1px solid green;
+    bottom: 0px;
+    width: 100%;       
 `;
 
 const BtnClick = styled.button`
@@ -60,67 +43,65 @@ const BtnClick = styled.button`
     justify-content: center;
 `;
 
-
-type Props = {
+type Props= {
     opened: boolean;
     onOpen: () => void;
     onClose: () => void;
     images: Array<{src: string, title?: string}>;
-    minHeight?: string | "600px";
-    maxHeight?: string | "650px";
+    minHeight: string | "600px";
+    maxHeight: string | "none";
     width: string;
-};
+    numberInRow: number | 2;    
+}
 
 const Gallery = ({
-    opened =  false,
+    opened = false,
     onOpen,
-    onClose,
+    onClose,    
     images,
     minHeight,
     maxHeight,
     width,
-}:Props) => {
+    numberInRow,    
+}: Props) => {
+    
     const clickHandler = () => {opened? onClose() : onOpen()};
 
-    let arrEmpty = new Array(Math.floor(images.length/2));
-    arrEmpty.fill(' ');
-
     return (
-        <Gallerycontainer width={width} height={opened? maxHeight : minHeight}>
-
-            <Wrapper overflow={opened? "auto" : "hidden"}>
-                {arrEmpty.map((_, i) => {
-
+        <Frame width={width}>
+            <Wrapper                 
+                justifyContent="space-between"
+                wrap="wrap"
+                height={opened? maxHeight : minHeight}
+                overflow={!opened? "hidden" : "auto" }               
+            >
+                {images.map((image, i) => {
                     return (
-                        <Row 
-                            key={images[i].src} 
-                            justifyContent='space-between'
+                        <Shot 
+                            key={image.src+i}
                             alignItems="flex-end"
+                            width={Math.floor(100/numberInRow) -0.4 + "%"}
                         >
-                            <Shot>
-                                <Img src={images[i*2].src} />
-                                <Title>{images[i*2].title}</Title>
-                            </Shot>
-                            <Shot>
-                                <Img src={images[i*2+1].src} />
-                                <Title>{images[i*2+1].title}</Title>
-                                </Shot>
-                        </Row>
+                            <Img src={image.src} />                       
+                                <Title justifyContent='center'>
+                                    <Typography size='16px' as={TypographyTags.DIV}>
+                                        {image.title}
+                                    </Typography>
+                                </Title>                        
+                        </Shot>
                     )
-                })}           
+                })}
 
             </Wrapper>
-
-            <WrapperClick>
-                <BtnClick onClick={clickHandler}>
-                    <Typography size="16px">
-                        {!opened ? "I want to see more" : "roll up"}
-                    </Typography>
-                </BtnClick>
-            </WrapperClick>
-        </Gallerycontainer>
-    );
-};
-
+                <BtnWrapper justifyContent="center">
+                    <BtnClick onClick={clickHandler}>
+                        <Typography size="16px" as={TypographyTags.DIV}>
+                            {!opened ? "I want to see more" : "roll up"}
+                        </Typography>
+                    </BtnClick>
+                </BtnWrapper>
+        </Frame>
+    )
+}
 
 export default Gallery;
