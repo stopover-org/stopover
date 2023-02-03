@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EventsQuery
-  def initialize(params = {}, relations = Event.joins(:schedules).where('schedules.scheduled_for BETWEEN ? AND ?', Time.zone.now, 1.year.from_now), current_user = nil)
+  def initialize(params = {}, relations = Event.joins(:schedules).where('schedules.scheduled_for > NOW()'), current_user = nil)
     @relations = relations
     @params = params
     @current_user = current_user
@@ -9,9 +9,9 @@ class EventsQuery
 
   def all
     if @params[:start_date].present? && @params[:end_date].present?
-      @relation = @relations.joins(:schedules).where('schedules.scheduled_for BETWEEN ? AND ?',
-                                                     @params[:start_date],
-                                                     @params[:end_date])
+      @relations = @relations.joins(:schedules).where('schedules.scheduled_for BETWEEN ? AND ?',
+                                                      @params[:start_date],
+                                                      @params[:end_date])
     end
     if @params[:min_price].present? && @params[:max_price].present?
       @relations = @relations.where('attendee_price_per_uom_cents BETWEEN ? AND ?',
@@ -23,6 +23,7 @@ class EventsQuery
                                                    title: @params[:tags]
                                                  })
     end
+
     @relations
   end
 end

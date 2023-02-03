@@ -46,9 +46,9 @@ class EventSupport
 
         date.change({ hour: time[0].to_i, min: time[1].to_i })
       end
-      # TODO: check that schedule does not have bookings
+
       event.schedules.where('scheduled_for::DATE = ?', date.to_date).where.not(scheduled_for: dates_with_time).each do |schedule|
-        schedule.destroy
+        schedule.destroy if schedule.bookings.empty?
       end
 
       should_create_schedules = event.reload.check_date(date)

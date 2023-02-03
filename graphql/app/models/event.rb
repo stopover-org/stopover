@@ -152,38 +152,8 @@ class Event < ApplicationRecord
     false
   end
 
-  # @deprecated this method will be removed in January. use schedules to get events for some specific dates
-  def self.execute_events_by_dates(start_date, end_date)
-    Rails.logger.warn('Event.exectute_events_by_dates is deprecated and will be removed in January. use schedules to get events for some specific dates')
-    sql = <<-SQL.squish
-      WITH dates AS (
-          SELECT DISTINCT
-              *,
-              unnest(get_timestamp_from_weekday(unnest(recurring_days_with_time), :start_date::TIMESTAMP, :end_date::TIMESTAMP)) recurrent_date,
-              unnest(single_days_with_time::TIMESTAMP[]) single_date
-          FROM events
-      )
-      SELECT DISTINCT *
-      FROM dates
-      WHERE
-          recurrent_date BETWEEN :start_date::TIMESTAMP AND :end_date::TIMESTAMP
-          OR single_date BETWEEN :start_date::TIMESTAMP AND :end_date::TIMESTAMP
-    SQL
-
-    ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql([sql, {
-                                                                            start_date: start_date, end_date: end_date
-                                                                          }]))
-  end
-
   def adjust_prices
     self.attendee_price_per_uom = (organizer_price_per_uom * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0)))
-  end
-
-  # @deprecated this method will be removed in January. use schedules to get events for some specific dates
-  # it's not a scope because it cannot be chained to other query
-  def self.events_between(start_date, end_date = 1.year.from_now)
-    Rails.logger.warn('Event.events_between is deprecated and will be removed in January. use schedules to get events for some specific dates')
-    Event.where(id: execute_events_by_dates(start_date, end_date).values.map { |v| v[0] })
   end
 
   def set_prices
@@ -277,28 +247,5 @@ class Event < ApplicationRecord
       tags.push(tag) unless tags.include?(tag)
       tag = nil
     end
-  end
-
-  # @deprecated this method will be removed in January. use schedules to get events for some specific dates
-  def recurrent_dates
-    Rails.logger.warn('Event.recurrent_dates is deprecated and will be removed in January. use schedules to get events for some specific dates')
-    res = []
-    recurring_days_with_time&.each do |weekday_with_time|
-      day = weekday_with_time.split(/\s+/)
-      time = day[1].split(':')
-      expected_date = Time.zone.now.change({ hour: time[0].to_i, min: time[1].to_i })
-      today = expected_date > Time.zone.now ? 1.day.ago : Time.zone.now
-      4.times.each do |t|
-        res.push(get_next_weekday(today + t.weeks, day[0].downcase.to_sym, expected_date))
-      end
-    end
-
-    res.sort
-  end
-
-  # @deprecated this method will be removed in January. use schedules to get events for some specific dates
-  def get_next_weekday(date, weekday, time)
-    Rails.logger.warn('Event.get_next_weekday is deprecated and will be removed in January. use schedules to get events for some specific dates')
-    date.change(hour: time.hour, min: time.min).next_occurring(weekday)
   end
 end
