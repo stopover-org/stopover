@@ -7,5 +7,6 @@ module Types
     argument :min_price, Integer
     argument :max_price, Integer
     argument :city, String
+    argument :tags, [String], required: false
   end
 end
