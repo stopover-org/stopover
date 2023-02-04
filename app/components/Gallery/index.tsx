@@ -43,10 +43,10 @@ export type GalleryProps = {
   onOpen: () => void;
   onClose: () => void;
   images: Array<{ src: string; title?: string }>;
-  minHeight: string | "600px";
-  maxHeight: string | "none";
+  minHeight: string;
+  maxHeight: string;
   width: string;
-  numberInRow: number | 2;
+  numberInRow: number;
 };
 
 const Gallery = ({
@@ -54,10 +54,10 @@ const Gallery = ({
   onOpen,
   onClose,
   images,
-  minHeight,
-  maxHeight,
+  minHeight = "600px",
+  maxHeight = "none",
   width,
-  numberInRow,
+  numberInRow = 2,
 }: GalleryProps) => {
   const clickHandler = () => {
     if (opened) {
