@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe EventsQuery, type: :query do
+  travel_to DateTime.new(2022, 1, 1, 0, 0)
   let!(:now)          { Time.zone.now.at_beginning_of_day }
   let!(:past_date)    { now - 2.days }
   let!(:future_2_day) { now + 2.days }
