@@ -1,4 +1,4 @@
-import React from "react";
+import scReact, {Suspense} from "react";
 import { graphql, useFragment } from "react-relay";
 import styled from "styled-components";
 import Column from "../../components/Column";
@@ -15,6 +15,7 @@ import {
 } from "../../components/StatesEnum";
 import Rate from "../../components/Rate";
 import Tag from "../../components/Tag";
+import {getCurrencyFormat} from "../../lib/utils/currencyFormatter";
 
 const SBookButton = styled(Button)`
   padding-left: 10px;
@@ -31,6 +32,14 @@ export const EventScene = ({
         title
         tags {
           title
+        }
+        attendeePricePerUom {
+          cents
+          currency {
+            name
+            symbol
+            fullName
+          }
         }
         ...Breadcrumbs_Event
         ...Rate_EventRate
@@ -74,7 +83,13 @@ export const EventScene = ({
           ))}
         </Row>
         <Row justifyContent="flex-end" padding="10px 0 0 0">
-          Price for Unit: $100000
+          Price for Unit:
+          <Suspense>
+            {getCurrencyFormat(
+                attendeePricePerUom?.cents,
+                attendeePricePerUom?.currency.name
+            )}
+          </Suspense>
         </Row>
       </Row>
       <div>
