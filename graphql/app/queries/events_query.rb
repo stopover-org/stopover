@@ -21,7 +21,7 @@ class EventsQuery
     if @params[:tags].present?
       @relations = @relations.joins(:tags).where(tags: {
                                                    title: @params[:tags]
-                                                 })
+                                                 }).distinct
     end
 
     @relations

@@ -34,6 +34,31 @@ RSpec.describe EventsQuery, type: :query do
            schedules: [build(:schedule, scheduled_for: future_8_day)])
   end
 
+  describe 'search by tag' do
+    let(:query) { EventsQuery.new( {tags: 'excursion'} ) }
+    subject { query.all }
+
+    it 'events with tag excursion' do
+      expect(subject.count).to eq(2)
+    end
+  end
+
+  describe 'search by multiple tags' do
+    let(:query) { EventsQuery.new( {tags: ['excursion', 'tour']} ) }
+
+    before do
+      Tag.all.delete_all
+      # create(:tag, title: 'excursion', events: Event.first(2) )
+      # create(:tag, title: 'tour', events: Event.last(2) )
+    end
+
+    subject { query.all }
+
+    it 'events with tags excursion and ' do
+      debugger
+    end
+  end
+
   describe 'initialization' do
     let(:query) { EventsQuery.new }
 
