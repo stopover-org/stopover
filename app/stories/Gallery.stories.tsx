@@ -7,7 +7,7 @@ const imagesArray: any = [
     title: "Boating",
   },
   {
-    src: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg",
+    src: "https://via.placeholder.com/500x200",
     title: "cycling",
   },
   {
@@ -15,7 +15,7 @@ const imagesArray: any = [
     title: "nord hiking",
   },
   {
-    src: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg",
+    src: "https://via.placeholder.com/500x75",
     title: "eating",
   },
   {

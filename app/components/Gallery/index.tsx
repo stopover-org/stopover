@@ -13,7 +13,11 @@ const Frame = styled(Column)<{ width: string }>`
 const Wrapper = styled(Row)<{ overflow: string }>`
   overflow-y: ${(props) => props.overflow};
 `;
-const Shot = styled(Column)``;
+
+const Shot = styled(Row)`
+  align-content: flex-end;
+`;
+
 const Img = styled.img`
   width: 100%;
 `;
@@ -78,7 +82,7 @@ const Gallery = ({
         {images.map((image, i) => (
           <Shot
             key={image.src + i}
-            alignItems="flex-end"
+            wrap="wrap"
             width={`${Math.floor(100 / numberInRow) - 0.4}%`}
           >
             <Img src={image.src} />
