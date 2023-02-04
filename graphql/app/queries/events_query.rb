@@ -20,8 +20,8 @@ class EventsQuery
     end
     if @params[:tags].present?
       @relations = @relations.joins(:tags).where(tags: {
-                                                   title: @params[:tags]
-                                                 }).distinct
+                                                   title: @params[:tags].map(&:titleize)
+                                                 })
     end
 
     @relations

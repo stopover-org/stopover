@@ -227,24 +227,21 @@ class Event < ApplicationRecord
     # end
 
     achievements.each do |achievement|
-      tag = Tag.where(title: achievement.title.downcase).last
-      tag ||= Tag.create!(title: achievement.title.downcase)
-      tags.push(tag) unless tags.include?(tag)
+      tag = Tag.where(title: achievement.title.titleize).last
+      tags.build(title: achievement.title.titleize) unless tag
       tag = nil
     end
 
     if unit
-      tag = tags.where(title: unit.name.titleize.downcase).last
-      tag ||= Tag.create!(title: unit.name.titleize.downcase)
-      tags.push(tag) unless tags.include?(tag)
+      tag = Tag.where(title: unit.name.titleize).last
+      tags.build(title: unit.name.titleize) unless tag
       tag = nil
     end
 
     # [TODO] to add translations for every event_type
     if event_type
-      tag = tags.where(title: event_type.titleize.downcase).last
-      tag ||= Tag.create!(title: event_type.titleize.downcase)
-      tags.push(tag) unless tags.include?(tag)
+      tag = Tag.where(title: event_type.titleize).last
+      tags.build(title: event_type.titleize) unless tag
       tag = nil
     end
   end

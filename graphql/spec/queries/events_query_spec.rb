@@ -12,6 +12,9 @@ RSpec.describe EventsQuery, type: :query do
   let!(:future_8_day) { now + 8.days }
 
   before do
+    # create events
+    # this event will be out of scope by default
+    # because it's in the past
     create(:event,
            organizer_price_per_uom: Money.new(13, :usd),
            single_days_with_time: [past_date],
@@ -32,10 +35,19 @@ RSpec.describe EventsQuery, type: :query do
            organizer_price_per_uom: Money.new(130_000, :usd),
            single_days_with_time: [future_8_day],
            schedules: [build(:schedule, scheduled_for: future_8_day)])
+
+    # drop existing tags for test purposes
+    Tag.all.delete_all
+
+    # create new tags
+    create(:tag, title: 'excursion'.titleize)
+    create(:tag, title: 'tour'.titleize)
+    Event.offset(1).first(2).each { |event| event.tags << Tag.first }
+    Event.offset(1).last(2).each { |event| event.tags << Tag.last }
   end
 
   describe 'search by tag' do
-    let(:query) { EventsQuery.new( {tags: 'excursion'} ) }
+    let(:query) { EventsQuery.new({ tags: ['excursion'] }) }
     subject { query.all }
 
     it 'events with tag excursion' do
@@ -44,18 +56,12 @@ RSpec.describe EventsQuery, type: :query do
   end
 
   describe 'search by multiple tags' do
-    let(:query) { EventsQuery.new( {tags: ['excursion', 'tour']} ) }
-
-    before do
-      Tag.all.delete_all
-      # create(:tag, title: 'excursion', events: Event.first(2) )
-      # create(:tag, title: 'tour', events: Event.last(2) )
-    end
+    let(:query) { EventsQuery.new({ tags: %w[excursion tour] }) }
 
     subject { query.all }
 
-    it 'events with tags excursion and ' do
-      debugger
+    it 'events with tags excursion and tour' do
+      expect(subject.count).to eq(4)
     end
   end
 
