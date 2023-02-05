@@ -9,6 +9,10 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_tags_on_title  (title) UNIQUE
+#
 class Tag < ApplicationRecord
   # MODULES ===============================================================
   #
@@ -29,7 +33,8 @@ class Tag < ApplicationRecord
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  #
+  validates :title, presence: true, uniqueness: { case_sensitive: false }
+
   # CALLBACKS ================================================================
   #
   # SCOPES =====================================================================
