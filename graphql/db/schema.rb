@@ -101,6 +101,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_231253) do
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_registered", default: false
     t.index ["booking_id"], name: "index_attendees_on_booking_id"
   end
 
