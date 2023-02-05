@@ -75,9 +75,9 @@ export const EventScene = ({
           </SBookButton>
         </Row>
       </Row>
-      <Row>
-        <Row justifyContent="flex-start">
-          <Rate readonly eventFragment={event} />
+      <Row wrap="no-wrap">
+        <Rate readonly eventFragment={event} />
+        <Row>
           {tags.map(({ title }) => (
             <Row item padding="0 5px 0 5px">
               <Tag size={TagSizes.MEDIUM}>{title}</Tag>

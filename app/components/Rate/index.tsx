@@ -1,15 +1,8 @@
 import React from "react";
-import styled from "styled-components";
 import { graphql, useFragment } from "react-relay";
 import RateStar from "./RateStar";
 import { Rate_EventRate$key } from "./__generated__/Rate_EventRate.graphql";
 import Row from "../Row";
-
-const Wrapper = styled(Row)`
-  width: 100%;
-  min-height: 24px;
-  cursor: pointer;
-`;
 
 type Props = {
   onClick?: (rateIndex: number) => void;
@@ -34,7 +27,7 @@ const Rate = ({ onClick, eventFragment, readonly }: Props) => {
   };
 
   return (
-    <Wrapper>
+    <Row width="140px">
       {new Array(5).fill("").map((_, index) => (
         <RateStar
           selected={index < (event?.ratingsCount || 0)}
@@ -42,7 +35,7 @@ const Rate = ({ onClick, eventFragment, readonly }: Props) => {
           onClick={() => rateChange(index)}
         />
       ))}
-    </Wrapper>
+    </Row>
   );
 };
 
