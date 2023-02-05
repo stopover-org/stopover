@@ -30,6 +30,7 @@ class Attendee < ApplicationRecord
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :event_options, through: :attendee_options
+  has_many :schedules, through: :booking
 
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :booking

@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 class EventsQuery
-  def initialize(params = {}, relations = Event.joins(:schedules).where('schedules.scheduled_for > ?', Time.zone.now), current_user = nil)
+  def initialize(
+    params = {},
+    relations = Event.joins(:schedules).where('schedules.scheduled_for > ?', Time.zone.now),
+    current_user = nil
+  )
     @relations = relations
     @params = params
     @current_user = current_user
