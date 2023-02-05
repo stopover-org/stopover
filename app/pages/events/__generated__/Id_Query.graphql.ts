@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ea132595400ff9321bc4786a1a0874dd>>
+ * @generated SignedSource<<b92642902f37b990a561f8809209dd8e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -174,6 +174,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "averageRating",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "ratingsCount",
             "storageKey": null
           },
@@ -184,12 +191,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "563e7463e135a7d9937a49806cb88ed9",
+    "cacheID": "00742e8583d65c558226b7d3e989c2a6",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    ...EventScene_Event\n    id\n  }\n}\n\nfragment Breadcrumbs_Event on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventScene_Event on Event {\n  title\n  tags {\n    title\n    id\n  }\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n      symbol\n      fullName\n    }\n  }\n  ...Breadcrumbs_Event\n  ...Rate_EventRate\n}\n\nfragment Rate_EventRate on Event {\n  ratingsCount\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    ...EventScene_Event\n    id\n  }\n}\n\nfragment Breadcrumbs_Event on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventScene_Event on Event {\n  title\n  tags {\n    title\n    id\n  }\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n      symbol\n      fullName\n    }\n  }\n  ...Breadcrumbs_Event\n  ...Rate_EventRate\n}\n\nfragment Rate_EventRate on Event {\n  averageRating\n  ratingsCount\n}\n"
   }
 };
 })();

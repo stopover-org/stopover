@@ -39,10 +39,6 @@ const OutlineStarsStyle = styled.div`
   }
 `;
 
-const NumbericValueWrapper = styled.div`
-  padding-left: 12px;
-`;
-
 type Props = {
   averageRating?: number;
   countOfStars?: number;
@@ -53,7 +49,7 @@ const AverageRating = ({ averageRating = 0, countOfStars = 5 }: Props) => {
     Math.round((averageRate / maxRate) * 100);
 
   return (
-    <Wrapper justifyContent="start" alignItems="end" width="auto">
+    <Wrapper justifyContent="start" alignItems="end" containerZ>
       <StarsWrapper width={countOfStars * 25 + 2}>
         <SolidStarsStyle width={calculatePositon(countOfStars, averageRating)}>
           {new Array(countOfStars).fill("").map((_, index) => (
@@ -66,11 +62,11 @@ const AverageRating = ({ averageRating = 0, countOfStars = 5 }: Props) => {
           ))}
         </OutlineStarsStyle>
       </StarsWrapper>
-      <NumbericValueWrapper>
+      <Row padding="0 12px 0 0" item>
         <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
           {averageRating}
         </Typography>
-      </NumbericValueWrapper>
+      </Row>
     </Wrapper>
   );
 };

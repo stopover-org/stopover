@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Image from "next/image";
 import { graphql, useFragment } from "react-relay";
 import Card from "../Card";
-import AverageRating from "../AverageRating/AverageRating";
 import {
   ButtonIconPlace,
   ButtonSizes,
@@ -22,6 +21,7 @@ import Button from "../Button";
 import icon from "../icons/Outline/General/Shopping_cart_white.svg";
 import { CompactCard_EventFragment$key } from "./__generated__/CompactCard_EventFragment.graphql";
 import { getCurrencyFormat } from "../../lib/utils/currencyFormatter";
+import Rate from "../Rate";
 
 const TextHeight = styled(Typography)`
   overflow: hidden;
@@ -46,10 +46,6 @@ const STag = styled.div`
   padding-right: 10px;
 `;
 
-const SCommentsRating = styled(Typography)`
-  padding-left: 3px;
-`;
-
 const TagOverImage = styled.div`
   padding: 10px;
 `;
@@ -63,17 +59,7 @@ type Props = {
 };
 
 const CompactCard = ({ eventRef }: Props) => {
-  const {
-    title,
-    id,
-    description,
-    images,
-    tags,
-    interests,
-    attendeePricePerUom,
-    averageRating,
-    ratingsCount,
-  } = useFragment(
+  const event = useFragment(
     graphql`
       fragment CompactCard_EventFragment on Event {
         title
@@ -101,6 +87,7 @@ const CompactCard = ({ eventRef }: Props) => {
         }
         averageRating
         ratingsCount
+        ...Rate_EventRate
       }
     `,
     eventRef
@@ -109,7 +96,7 @@ const CompactCard = ({ eventRef }: Props) => {
   return (
     <Card
       as="a"
-      href={`/events/${id}`}
+      href={`/events/${event?.id}`}
       imageLocation={CardImageLocation.LEFT}
       height="440px"
       width="1060px"
@@ -118,31 +105,31 @@ const CompactCard = ({ eventRef }: Props) => {
         <SColumn justifyContent="start" height="100%">
           <SRow justifyContent="start">
             <Typography size="22px" as={TypographyTags.H5}>
-              {title}
+              {event?.title}
             </Typography>
           </SRow>
           <SRow justifyContent="start">
-            {interests.map(({ link, title: interestTitle, id: interestId }) => (
-              <SLink key={`interest-${id}-${interestId}`}>
-                <Link href={link!}>
-                  <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-                    {interestTitle}
-                  </Typography>
-                </Link>
-              </SLink>
-            ))}
+            {event?.interests.map(
+              ({ link, title: interestTitle, id: interestId }) => (
+                <SLink key={`interest-${event?.id}-${interestId}`}>
+                  <Link href={link!}>
+                    <Typography
+                      size={TypographySize.BIG}
+                      as={TypographyTags.BIG}
+                    >
+                      {interestTitle}
+                    </Typography>
+                  </Link>
+                </SLink>
+              )
+            )}
           </SRow>
           <SRow justifyContent="start" alignItems="end">
-            <AverageRating averageRating={averageRating} />
-            <SCommentsRating>
-              <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-                ({ratingsCount} отзыва)
-              </Typography>
-            </SCommentsRating>
+            <Rate eventFragment={event} />
           </SRow>
           <SRow justifyContent="start" wrap="wrap">
-            {tags.map(({ id: tagId, title: tagTitle }) => (
-              <STag key={`tag-${id}-${tagId}`}>
+            {event?.tags.map(({ id: tagId, title: tagTitle }) => (
+              <STag key={`tag-${event?.id}-${tagId}`}>
                 <Tag size={TagSizes.SMALL}>
                   <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
                     {tagTitle}
@@ -152,7 +139,9 @@ const CompactCard = ({ eventRef }: Props) => {
             ))}
           </SRow>
           <SRow alignItems="start" height="100%">
-            <TextHeight size={TypographySize.BIG}>{description}</TextHeight>
+            <TextHeight size={TypographySize.BIG}>
+              {event?.description}
+            </TextHeight>
           </SRow>
           <SRow justifyContent="end">
             <TypographyWrapper>
@@ -163,8 +152,8 @@ const CompactCard = ({ eventRef }: Props) => {
               >
                 <Suspense>
                   {getCurrencyFormat(
-                    attendeePricePerUom?.cents,
-                    attendeePricePerUom?.currency.name
+                    event?.attendeePricePerUom?.cents,
+                    event?.attendeePricePerUom?.currency.name
                   )}
                 </Suspense>
               </Typography>
@@ -184,15 +173,15 @@ const CompactCard = ({ eventRef }: Props) => {
       }
       image={
         <BaseImage width="40%">
-          <img src={images[0]} alt="event" height="100%" />
+          <img src={event?.images[0]} alt="event" height="100%" />
         </BaseImage>
       }
     >
-      {tags && (
+      {event?.tags && (
         <TagOverImage>
           <Tag size={TagSizes.SMALL}>
             <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-              {tags?.[0]?.title}
+              {event?.tags?.[0]?.title}
             </Typography>
           </Tag>
         </TagOverImage>

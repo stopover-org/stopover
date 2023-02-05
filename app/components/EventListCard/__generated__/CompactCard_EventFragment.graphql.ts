@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5267b05e1fe0b49b9cfc101f57eec070>>
+ * @generated SignedSource<<6ef0bda1fb7eb56927a84de7289a6b1f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -36,6 +36,7 @@ export type CompactCard_EventFragment$data = {
     readonly title: string;
   }>;
   readonly title: string;
+  readonly " $fragmentSpreads": FragmentRefs<"Rate_EventRate">;
   readonly " $fragmentType": "CompactCard_EventFragment";
 };
 export type CompactCard_EventFragment$key = {
@@ -181,6 +182,11 @@ return {
       "kind": "ScalarField",
       "name": "ratingsCount",
       "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "Rate_EventRate"
     }
   ],
   "type": "Event",
@@ -188,6 +194,6 @@ return {
 };
 })();
 
-(node as any).hash = "782cb5bd874b021d0d5305b6c2a4d8e8";
+(node as any).hash = "eb98257162baa3b7eeaf865af85b7c7f";
 
 export default node;
