@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fc8a1d7b62e9669bf93c66235fe5dc30>>
+ * @generated SignedSource<<db9dbd71343a3a42c24b5693b670f68d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,6 +16,7 @@ export type EventsFilter = {
   maxPrice: number;
   minPrice: number;
   startDate?: any | null;
+  tags?: ReadonlyArray<string> | null;
 };
 export type EventsListPaginationQuery$variables = {
   count?: number | null;

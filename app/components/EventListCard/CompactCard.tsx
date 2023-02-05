@@ -192,7 +192,7 @@ const CompactCard = ({ eventRef }: Props) => {
         <TagOverImage>
           <Tag size={TagSizes.SMALL}>
             <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-              {tags[0].title}
+              {tags?.[0]?.title}
             </Typography>
           </Tag>
         </TagOverImage>
