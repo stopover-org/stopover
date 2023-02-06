@@ -3,7 +3,7 @@
 class AttendeesQuery
   def initialize(
     params = {},
-    relations = Attendee.joins(booking: :schedules).where('schedules.scheduled_for > ?', Time.zone.now),
+    relations = Attendee.joins(booking: [:schedule]).where('schedules.scheduled_for > ?', Time.zone.now),
     current_user = nil
   )
     @relations = relations
@@ -12,12 +12,15 @@ class AttendeesQuery
   end
 
   def all
+    # debugger
     @relations = @relations.where(email: @params[:email]) if @params[:email].present?
     @relations = @relations.where(phone: @params[:phone]) if @params[:phone].present?
-    @relations = @relations.where(full_name: @params[:full_name]) if @params[:full_name].present?
+    @relations = @relations.where(first_name: @params[:full_name]) if @params[:full_name].present?
     @relations = @relations.where(last_name: @params[:last_name]) if @params[:last_name].present?
     @relations = @relations.where(is_registered: @params[:is_registered]) if @params[:is_registered].present?
-    @relations = @relations.where(booking_id: @params[:booking_id]) if @params[:booking_id].present?
-    @relations = @relations.where(event_id: @params[:event_id]) if @params[:event_id].present?
+    @relations = @relations.where(booking: @params[:booking]) if @params[:booking].present?
+    @relations = @relations.where(booking: { event: @params[:event] }) if @params[:event].present?
+
+    @relations
   end
 end
