@@ -8,8 +8,6 @@ RSpec.describe AttendeesQuery, type: :query do
   let!(:past_date)    { now - 2.days }
   let!(:future_2_day) { now + 2.days }
   let!(:future_4_day) { now + 4.days }
-  let!(:future_6_day) { now + 6.days }
-  let!(:future_8_day) { now + 8.days }
 
   let!(:event_in_to_past_date) do
     create(:event,
