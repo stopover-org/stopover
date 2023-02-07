@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b92642902f37b990a561f8809209dd8e>>
+ * @generated SignedSource<<b50d10787daef56b933b29abf9fe850c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -160,6 +160,27 @@ return {
           {
             "alias": null,
             "args": null,
+            "kind": "ScalarField",
+            "name": "images",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "fullAddress",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "description",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "Interest",
             "kind": "LinkedField",
             "name": "interests",
@@ -191,12 +212,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "00742e8583d65c558226b7d3e989c2a6",
+    "cacheID": "145d16bf050c9b8810e936adfd5602d3",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    ...EventScene_Event\n    id\n  }\n}\n\nfragment Breadcrumbs_Event on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventScene_Event on Event {\n  title\n  tags {\n    title\n    id\n  }\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n      symbol\n      fullName\n    }\n  }\n  ...Breadcrumbs_Event\n  ...Rate_EventRate\n}\n\nfragment Rate_EventRate on Event {\n  averageRating\n  ratingsCount\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    ...EventScene_Event\n    id\n  }\n}\n\nfragment Breadcrumbs_Event on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventScene_Event on Event {\n  title\n  tags {\n    title\n    id\n  }\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n      symbol\n      fullName\n    }\n  }\n  images\n  fullAddress\n  description\n  ...Breadcrumbs_Event\n  ...Rate_EventRate\n}\n\nfragment Rate_EventRate on Event {\n  averageRating\n  ratingsCount\n}\n"
   }
 };
 })();
