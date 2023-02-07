@@ -1,7 +1,6 @@
-import scReact, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { graphql, useFragment } from "react-relay";
 import styled from "styled-components";
-import React from "react";
 import Column from "../../components/Column";
 import { Breadcrumbs } from "./components/Breadcrumbs/Breadcrumbs";
 import { EventScene_Event$key } from "./__generated__/EventScene_Event.graphql";
@@ -17,7 +16,8 @@ import {
 import Rate from "../../components/Rate";
 import Tag from "../../components/Tag";
 import { getCurrencyFormat } from "../../lib/utils/currencyFormatter";
-import React from "react";
+import Gallery from "../../components/Gallery";
+import Description from "../../components/Description";
 
 const SBookButton = styled(Button)`
   padding-left: 10px;
@@ -43,6 +43,9 @@ export const EventScene = ({
             fullName
           }
         }
+        images
+        fullAddress
+        description
         ...Breadcrumbs_Event
         ...Rate_EventRate
       }
@@ -51,9 +54,38 @@ export const EventScene = ({
   );
   const tags = event?.tags || [];
   const attendeePricePerUom = event?.attendeePricePerUom;
+  const images = event?.images;
+  const address = event?.fullAddress;
+  const description = event?.description;
+  const [isOpen, setIsOpen] = useState(false);
+  // TODO: delete this array
+  const ZimagesArray: any = [
+    {
+      src: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg",
+      title: "Boating",
+    },
+    { src: "https://via.placeholder.com/500x200", title: "cycling" },
+    {
+      src: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg",
+      title: "nord hiking",
+    },
+    { src: "https://via.placeholder.com/500x75", title: "eating" },
+    {
+      src: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg",
+      title: "family cycling",
+    },
+    {
+      src: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg",
+      title: "diving",
+    },
+  ];
+  // TODO: delet this strings
+  const Zaddress = "Brno, Podebradova, Kralove-pole";
+  const Zdescription =
+    "<p> Lorem pisum dolor sit amet, consectetur adpisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscpit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><br><p> Lorem pisum dolor sit amet, consectetur adpisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscpit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><br><p> Lorem pisum dolor sit amet, consectetur adpisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscpit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><br><p> Lorem pisum dolor sit amet, consectetur adpisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscpit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
 
   return (
-    <Column>
+    <Column border="1px solid green">
       <Breadcrumbs eventFragmentRef={event} />
       <Row justifyContent="space-between">
         <Row>
@@ -95,6 +127,29 @@ export const EventScene = ({
           </Suspense>
         </Row>
       </Row>
+
+      <Row border="1px solid red" flex={1}>
+        <Column border="1px solid blue" flex={6}>
+          <Gallery
+            opened={isOpen}
+            onOpen={() => setIsOpen(true)}
+            onClose={() => setIsOpen(false)}
+            images={images.map((image) => ({ src: image }))}
+            numberInRow={2}
+            minHeight="450px"
+            maxHeight="none"
+            width="100%"
+          />
+        </Column>
+
+        <Column border="1px solid blue" flex={4}>
+          <Row flexDirection="row-reverse">
+            <Typography size="20px">{address}</Typography>
+          </Row>
+          <Description height="350px" background="#ddd" text={description} />
+        </Column>
+      </Row>
+
       <div>
         <div>
           left column

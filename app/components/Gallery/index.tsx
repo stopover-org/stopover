@@ -5,8 +5,9 @@ import Row from "../Row";
 import Typography from "../Typography";
 import { TypographyTags } from "../StatesEnum";
 
-const Frame = styled(Column)<{ width: string }>`
+const Frame = styled(Column)<{ width: string; height: string }>`
   width: ${(props) => props.width};
+  height: ${(props) => props.height};
   position: relative;
 `;
 
@@ -24,7 +25,7 @@ const Img = styled.img`
 const Title = styled(Row)``;
 const BtnWrapper = styled(Row)`
   position: absolute;
-  bottom: 0px;
+  bottom: -1px;
   width: 100%;
 `;
 
@@ -72,7 +73,7 @@ const Gallery = ({
   };
 
   return (
-    <Frame width={width}>
+    <Frame width={width} height={opened ? maxHeight : minHeight}>
       <Wrapper
         justifyContent="space-between"
         wrap="wrap"
