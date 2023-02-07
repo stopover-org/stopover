@@ -75,9 +75,9 @@ export const EventScene = ({
           </SBookButton>
         </Row>
       </Row>
-      <Row>
-        <Rate eventFragment={event} />
-        <Row>
+      <Row justifyContent="space-between">
+        <Row justifyContent="flex-start" container>
+          <Rate eventFragment={event} />
           {tags.map(({ title }) => (
             <Row item padding="0 5px 0 5px">
               <Tag size={TagSizes.MEDIUM}>{title}</Tag>
@@ -102,7 +102,9 @@ export const EventScene = ({
         </div>
         <div>
           <div>address</div>
-          <div>description</div>
+          <div>
+            <div dangerouslySetInnerHTML={{ __html: event?.description }} />
+          </div>
           <div>booking form</div>
         </div>
       </div>

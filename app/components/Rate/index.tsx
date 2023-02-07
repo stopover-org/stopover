@@ -23,13 +23,14 @@ const Rate = ({ eventFragment }: Props) => {
 
   return (
     <Suspense>
-      <AverageRating
-        averageRating={event?.averageRating || 1}
-        countOfStars={5}
-      />
-      <Row padding="0 0 0 3px">
+      <Row justifyContent="flex-start" alignItems="flex-end" item>
+        <AverageRating
+          averageRating={event?.averageRating || 1}
+          countOfStars={5}
+        />
         <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-          ({event?.ratingsCount} отзыва)
+          &nbsp;
+          {event?.averageRating} ({event?.ratingsCount} отзыва)
         </Typography>
       </Row>
     </Suspense>
