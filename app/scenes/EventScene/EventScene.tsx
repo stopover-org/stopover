@@ -1,6 +1,7 @@
-import scReact, {Suspense} from "react";
+import scReact, { Suspense } from "react";
 import { graphql, useFragment } from "react-relay";
 import styled from "styled-components";
+import React from "react";
 import Column from "../../components/Column";
 import { Breadcrumbs } from "./components/Breadcrumbs/Breadcrumbs";
 import { EventScene_Event$key } from "./__generated__/EventScene_Event.graphql";
@@ -15,7 +16,7 @@ import {
 } from "../../components/StatesEnum";
 import Rate from "../../components/Rate";
 import Tag from "../../components/Tag";
-import {getCurrencyFormat} from "../../lib/utils/currencyFormatter";
+import { getCurrencyFormat } from "../../lib/utils/currencyFormatter";
 
 const SBookButton = styled(Button)`
   padding-left: 10px;
@@ -48,6 +49,7 @@ export const EventScene = ({
     eventFragmentRef
   );
   const tags = event?.tags || [];
+  const attendeePricePerUom = event?.attendeePricePerUom;
 
   return (
     <Column>
@@ -73,9 +75,9 @@ export const EventScene = ({
           </SBookButton>
         </Row>
       </Row>
-      <Row>
-        <Row justifyContent="flex-start">
-          <Rate readonly eventFragment={event} />
+      <Row justifyContent="space-between">
+        <Row justifyContent="flex-start" container>
+          <Rate eventFragment={event} />
           {tags.map(({ title }) => (
             <Row item padding="0 5px 0 5px">
               <Tag size={TagSizes.MEDIUM}>{title}</Tag>
@@ -86,8 +88,8 @@ export const EventScene = ({
           Price for Unit:
           <Suspense>
             {getCurrencyFormat(
-                attendeePricePerUom?.cents,
-                attendeePricePerUom?.currency.name
+              attendeePricePerUom?.cents,
+              attendeePricePerUom?.currency.name
             )}
           </Suspense>
         </Row>
@@ -100,7 +102,9 @@ export const EventScene = ({
         </div>
         <div>
           <div>address</div>
-          <div>description</div>
+          <div>
+            <div dangerouslySetInnerHTML={{ __html: event?.description }} />
+          </div>
           <div>booking form</div>
         </div>
       </div>

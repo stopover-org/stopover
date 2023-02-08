@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e8b5921d906b314ec4239392e2caa939>>
+ * @generated SignedSource<<b92642902f37b990a561f8809209dd8e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -110,6 +110,56 @@ return {
           {
             "alias": null,
             "args": null,
+            "concreteType": "Money",
+            "kind": "LinkedField",
+            "name": "attendeePricePerUom",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "cents",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Currency",
+                "kind": "LinkedField",
+                "name": "currency",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "name",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "symbol",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "fullName",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "Interest",
             "kind": "LinkedField",
             "name": "interests",
@@ -118,6 +168,13 @@ return {
               (v3/*: any*/),
               (v2/*: any*/)
             ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "averageRating",
             "storageKey": null
           },
           {
@@ -134,12 +191,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3b80cf6356d36f0dd7cf3d20b82e7ebc",
+    "cacheID": "00742e8583d65c558226b7d3e989c2a6",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    ...EventScene_Event\n    id\n  }\n}\n\nfragment Breadcrumbs_Event on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventScene_Event on Event {\n  title\n  tags {\n    title\n    id\n  }\n  ...Breadcrumbs_Event\n  ...Rate_EventRate\n}\n\nfragment Rate_EventRate on Event {\n  ratingsCount\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    ...EventScene_Event\n    id\n  }\n}\n\nfragment Breadcrumbs_Event on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventScene_Event on Event {\n  title\n  tags {\n    title\n    id\n  }\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n      symbol\n      fullName\n    }\n  }\n  ...Breadcrumbs_Event\n  ...Rate_EventRate\n}\n\nfragment Rate_EventRate on Event {\n  averageRating\n  ratingsCount\n}\n"
   }
 };
 })();
