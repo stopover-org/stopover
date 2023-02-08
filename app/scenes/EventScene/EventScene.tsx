@@ -17,7 +17,6 @@ import {
 import Rate from "../../components/Rate";
 import Tag from "../../components/Tag";
 import { getCurrencyFormat } from "../../lib/utils/currencyFormatter";
-import React from "react";
 
 const SBookButton = styled(Button)`
   padding-left: 10px;
