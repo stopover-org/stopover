@@ -13,7 +13,6 @@ module Mutations
         schedule: event.schedules.find_by(scheduled_for: args[:booked_for]),
         attendees: (1..args[:attendees_count]).map { Attendee.new }
       )
-
       {
         booking: booking
       }
