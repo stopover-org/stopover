@@ -90,11 +90,11 @@ RSpec.describe AttendeesQuery, type: :query do
     end
   end
 
-  describe 'search by name' do
-    let(:query) { AttendeesQuery.new(full_name: 'Martin') }
+  describe 'searching by name' do
+    let(:query) { AttendeesQuery.new(first_name: 'Martin') }
     subject { query.all }
 
-    it 'found by name' do
+    it 'successfully found one attendee' do
       expect(subject.count).to eq(1)
     end
   end

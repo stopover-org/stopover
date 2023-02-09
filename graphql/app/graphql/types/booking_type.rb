@@ -16,7 +16,7 @@ module Types
     end
 
     def attendees(**args)
-      ::AttendeesQuery.new(args[:filters]&.to_h || {}, object.attendees)
+      ::AttendeesQuery.new(args[:filters]&.to_h || {}, object.attendees).all
     end
   end
 end
