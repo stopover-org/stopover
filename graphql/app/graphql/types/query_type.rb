@@ -57,7 +57,7 @@ module Types
     end
 
     def trips(**args)
-      ::TripsQuery.new(args[:filters]&.to_h || {}, Trips.all, current_user).all
+      ::TripsQuery.new(args[:filters]&.to_h || {}, Trip.all, current_user).all
     end
   end
 end

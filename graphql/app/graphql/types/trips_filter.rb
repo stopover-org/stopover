@@ -2,9 +2,9 @@
 
 module Types
   class TripsFilter < BaseInputObject
-    argument :bookings, [Types::BookingType]
-    argument :min_date, Types::DateTimeType
-    argument :max_date, Types::DateTimeType
-    argument :cities, [String]
+    argument :booking_ids, [ID], loads: Types::BookingType, required: false
+    argument :start_date, Types::DateTimeType, required: false
+    argument :end_date, Types::DateTimeType, required: false
+    argument :cities, [String], required: false
   end
 end
