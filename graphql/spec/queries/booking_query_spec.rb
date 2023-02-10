@@ -39,10 +39,10 @@ RSpec.describe BookingQuery, type: :query do
            event: event_in_to_4_days,
            trip: trip)
   end
+  subject { query.all }
 
   describe 'initialization' do
     let(:query) { BookingQuery.new }
-    subject { query.all }
 
     it 'by default only future bookings initialized' do
       expect(subject.count).to eq(2)
@@ -51,7 +51,6 @@ RSpec.describe BookingQuery, type: :query do
 
   describe 'search by scheduled for' do
     let(:query) { BookingQuery.new(scheduled_for: event_in_to_2_days.schedules.last.scheduled_for) }
-    subject { query.all }
 
     it 'scheduled_for is requested' do
       expect(subject.count).to eq(1)
@@ -60,7 +59,6 @@ RSpec.describe BookingQuery, type: :query do
 
   describe 'search by trip' do
     let(:query) { BookingQuery.new(trip_id: trip) }
-    subject { query.all }
 
     it 'trip is requested' do
       expect(subject.count).to eq(1)

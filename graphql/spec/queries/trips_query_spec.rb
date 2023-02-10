@@ -17,13 +17,32 @@ RSpec.describe TripsQuery, type: :query do
            start_date: 'Fri, 18 Jan 2024 12:19:00.000000000 UTC +00:00',
            end_date: 'Fri, 19 Jan 2024 12:19:00.000000000 UTC +00:00')
   end
+  let!(:booking) { create(:booking, trip: Trip.last) }
 
-  describe '' do
-    let(:query) { TripsQuery.new(start_date: 'Fri, 16 Jan 2024 12:19:00.000000000 UTC +00:00') }
+  describe 'initiate' do
+    let(:query) { TripsQuery.new }
     subject { query.all }
+
+    it 'all trips' do
+      expect(subject.count).to eq(4)
+    end
   end
 
-  it '' do
-    # expect(subject.count).to eq(1)
+  describe 'search by date' do
+    let(:query) { TripsQuery.new(start_date: 'Fri, 16 Jan 2024 12:19:00.000000000 UTC +00:00') }
+    subject { query.all }
+
+    it 'trips with date' do
+      expect(subject.count).to eq(1)
+    end
+  end
+
+  describe 'search by booking' do
+    let(:query) { TripsQuery.new({ bookings: [booking] }) }
+    subject { query.all }
+
+    it 'trips with booking' do
+      expect(subject.count).to eq(1)
+    end
   end
 end
