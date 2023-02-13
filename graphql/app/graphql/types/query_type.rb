@@ -25,13 +25,15 @@ module Types
     end
 
     field :bookings, [Types::BookingType] do
-      argument :trip_id, ID, required: true, loads: Types::TripType
+      argument :filters, Types::BookingsFilter, required: false
     end
 
-    field :trips, [Types::TripType]
+    field :trips, [Types::TripType] do
+      argument :filters, Types::TripsFilter, required: false
+    end
 
     def bookings(**args)
-      args[:trip].bookings
+      ::BookingQuery.new(args[:filters]&.to_h || {}, Booking.all, current_user).all
     end
 
     def current_user
@@ -54,8 +56,8 @@ module Types
       args[:id]
     end
 
-    def trips
-      Trip.all
+    def trips(**args)
+      ::TripsQuery.new(args[:filters]&.to_h || {}, Trip.all, current_user).all
     end
   end
 end
