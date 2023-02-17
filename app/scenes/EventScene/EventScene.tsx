@@ -58,32 +58,7 @@ export const EventScene = ({
   const address = event?.fullAddress;
   const description = event?.description;
   const [isOpen, setIsOpen] = useState(false);
-  // TODO: delete this array
-  const ZimagesArray: any = [
-    {
-      src: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg",
-      title: "Boating",
-    },
-    { src: "https://via.placeholder.com/500x200", title: "cycling" },
-    {
-      src: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg",
-      title: "nord hiking",
-    },
-    { src: "https://via.placeholder.com/500x75", title: "eating" },
-    {
-      src: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg",
-      title: "family cycling",
-    },
-    {
-      src: "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg",
-      title: "diving",
-    },
-  ];
-  // TODO: delet this strings
-  const Zaddress = "Brno, Podebradova, Kralove-pole";
-  const Zdescription =
-    "<p> Lorem pisum dolor sit amet, consectetur adpisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscpit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><br><p> Lorem pisum dolor sit amet, consectetur adpisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscpit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><br><p> Lorem pisum dolor sit amet, consectetur adpisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscpit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><br><p> Lorem pisum dolor sit amet, consectetur adpisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscpit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>";
-
+  
   return (
     <Column border="1px solid green">
       <Breadcrumbs eventFragmentRef={event} />
@@ -134,7 +109,7 @@ export const EventScene = ({
             opened={isOpen}
             onOpen={() => setIsOpen(true)}
             onClose={() => setIsOpen(false)}
-            images={images.map((image) => ({ src: image }))}
+            images={(images || []).map((image) => ({ src: image }))}
             numberInRow={2}
             minHeight="450px"
             maxHeight="none"
