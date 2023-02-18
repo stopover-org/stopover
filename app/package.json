@@ -30,6 +30,7 @@
     "react-dom": "18.2.0",
     "react-relay": "^14.1.0",
     "react-router-dom": "^6.3.0",
+    "react-scrollbars-custom": "^4.1.1",
     "relay-nextjs": "^0.9.0",
     "relay-runtime": "^14.1.0",
     "styled-components": "^5.3.5",
