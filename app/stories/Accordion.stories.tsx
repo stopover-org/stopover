@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Accordion from "../components/Accordion";
+import { ComponentStory } from "@storybook/react";
+import Accordion, { AccordionProps } from "../components/Accordion";
 import Column from "../components/Column";
 import Row from "../components/Row";
 import { TypographyTags } from "../components/StatesEnum";
@@ -27,7 +28,6 @@ const Content = () => (
   </AccordionPadding>
 );
 const Header = () => <Typography>Header H1</Typography>;
-
 export default {
   title: "Components/Accordion",
   component: Accordion,
@@ -85,7 +85,7 @@ const Preview = () => {
   );
 };
 
-export const DesignPreview = Preview.bind({});
+export const DesignPreview: ComponentStory<typeof Preview> = Preview.bind({});
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
 };
@@ -99,7 +99,7 @@ const Template = ({
   opened,
   content,
   ...args
-}: Props) => {
+}: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -149,7 +149,7 @@ const Template = ({
   );
 };
 
-export const Default = Template.bind({});
+export const Default: ComponentStory<typeof Accordion> = Template.bind({});
 
 Default.args = {
   opened: false,
@@ -157,5 +157,5 @@ Default.args = {
   showDivider: true,
   content: <Content />,
   header: <Header />,
-  height: "500px",
+  height: 500,
 };

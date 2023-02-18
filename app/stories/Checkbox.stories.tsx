@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Checkbox, { Props } from "../components/Checkbox";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import Checkbox, { CheckboxProps } from "../components/Checkbox";
 import Column from "../components/Column";
 import Row from "../components/Row";
 import {
@@ -28,7 +29,7 @@ export default {
     size: { control: "select" },
     animate: { control: "boolean" },
   },
-};
+} as ComponentMeta<typeof Checkbox>;
 
 const Preview = () => (
   <Row>
@@ -95,23 +96,13 @@ const Preview = () => (
     </Column>
   </Row>
 );
-export const DesignPreview = Preview;
-DesignPreview.args = {
-  id: "",
-  children: "",
-  disabled: "",
-  type: "",
-  checked: "",
-  size: "",
-  animate: "",
-};
-
+export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
 };
 
-const Template = (args: Props) => <Checkbox {...args} />;
-export const Default = Template.bind({});
+const Template = (args: CheckboxProps) => <Checkbox {...args} />;
+export const Default: ComponentStory<typeof Checkbox> = Template.bind({});
 Default.args = {
   id: "your_uniq_id",
   children: "my children",

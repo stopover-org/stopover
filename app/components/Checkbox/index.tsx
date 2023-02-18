@@ -29,7 +29,7 @@ const BoxContainer = styled.div<{ size: CheckboxSizes }>`
   margin-right: 5px;
 `;
 
-type CheckboxProps = {
+type CheckboxBaseProps = {
   id?: string;
   children: string | React.ReactNode;
   disabled?: boolean;
@@ -39,11 +39,11 @@ type CheckboxProps = {
   animate?: boolean;
 };
 
-export type Props = Omit<
+export type CheckboxProps = Omit<
   React.HTMLProps<HTMLInputElement>,
-  keyof CheckboxProps
+  keyof CheckboxBaseProps
 > &
-  CheckboxProps;
+  CheckboxBaseProps;
 
 const Checkbox = ({
   id = uuidv4(),
@@ -55,7 +55,7 @@ const Checkbox = ({
   animate,
   onClick,
   ...props
-}: Props) => (
+}: CheckboxProps) => (
   <CustomCheckboxLabel htmlFor={id}>
     <CustomCheckboxWrapper container alignItems="center" justifyContent="start">
       <BoxContainer size={size}>
