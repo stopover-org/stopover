@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 
 const Wrapper = styled.div`
+  width: 90%; //added by me;
   max-width: 1600px;
   min-width: 1024px;
   margin: auto;
