@@ -1,3 +1,3 @@
-export const SignIn = () => <div>SIGN IN</div>;
+import SignInScene from "../../scenes/Auth/SignInScene";
 
-export default SignIn;
+export default SignInScene;
