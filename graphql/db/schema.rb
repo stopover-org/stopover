@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_04_231253) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_19_144959) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -272,6 +272,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_231253) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_schedules_on_event_id"
+  end
+
+  create_table "stripe_integrations", force: :cascade do |t|
+    t.string "price_id"
+    t.string "product_id"
+    t.bigint "stripeable_id"
+    t.string "stripeable_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stripeable_id", "stripeable_type"], name: "index_stripe_integrations_on_stripeable_id_and_stripeable_type"
   end
 
   create_table "tags", force: :cascade do |t|

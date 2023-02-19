@@ -29,7 +29,8 @@ class EventOption < ApplicationRecord
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
-  #
+  has_one :stripe_integration, as: :stripeable
+
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :booking_options
   has_many :attendee_options

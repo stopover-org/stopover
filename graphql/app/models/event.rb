@@ -64,7 +64,8 @@ class Event < ApplicationRecord
   has_many_attached :images
 
   # HAS_ONE ASSOCIATIONS ==========================================================
-  #
+  has_one :stripe_integration, as: :stripeable
+
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :event_achievements, dependent: :destroy
   has_many :event_interests, dependent: :destroy
