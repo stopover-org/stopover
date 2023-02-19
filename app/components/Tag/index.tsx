@@ -26,7 +26,7 @@ const Content = styled.div`
   padding-right: 5px;
 `;
 
-type Props = {
+export type TagProps = {
   image?: string;
   children: React.ReactNode;
   variant?: TagType;
@@ -43,7 +43,7 @@ const Tag = ({
   variant = TagType.FULFILLED,
   href,
   ...props
-}: Props) => (
+}: TagProps) => (
   <Wrapper href={href} {...props}>
     <STag
       justifyContent="space-around"

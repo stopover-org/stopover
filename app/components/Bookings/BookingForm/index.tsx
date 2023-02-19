@@ -62,7 +62,7 @@ type AdditionalOptions = {
   price: string;
   currency: string;
 };
-type AllreadyInPrice = {
+type AlreadyInPrice = {
   text: string;
   price: string;
   currency: string;
@@ -70,14 +70,14 @@ type AllreadyInPrice = {
 
 type Props = {
   additionalOptions?: AdditionalOptions[];
-  allreadyInPrice?: AllreadyInPrice[];
+  alreadyInPrice?: AlreadyInPrice[];
   date?: Moment | null;
   time?: Moment;
 };
 
 export const Form = ({
   additionalOptions,
-  allreadyInPrice,
+  alreadyInPrice,
   date = null,
   time = moment("00:00"),
 }: Props) => {
@@ -220,8 +220,8 @@ export const Form = ({
         <Typography size={TypographySize.LARGE} as={TypographyTags.LARGE}>
           Уже входит в стоимость
         </Typography>
-        {allreadyInPrice &&
-          allreadyInPrice.map((item, index) => (
+        {alreadyInPrice &&
+          alreadyInPrice.map((item, index) => (
             <CheckboxPadding key={index}>
               <Checkbox
                 disabled // TODO: implement real functionality

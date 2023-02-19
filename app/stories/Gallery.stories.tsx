@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 import Gallery, { GalleryProps } from "../components/Gallery";
 
 const imagesArray: any = [
@@ -49,9 +50,10 @@ export default {
       control: { type: "radio" },
     },
   },
-};
+} as ComponentMeta<typeof Gallery>;
 
-const Template = ({ images, ...args }: GalleryProps) => {
+// onOpen and onClose was excluded from args but they will not be used
+const Template = ({ images, onOpen, onClose, ...args }: GalleryProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setIsOpen] = useState(false);
 
@@ -60,15 +62,12 @@ const Template = ({ images, ...args }: GalleryProps) => {
       onOpen={() => setIsOpen(true)}
       onClose={() => setIsOpen(false)}
       images={imagesArray}
-      numberInRow
-      minHeight={"100px" || "none"}
-      maxHeight="350px"
       {...args}
     />
   );
 };
 
-export const Default = Template.bind({});
+export const Default: ComponentStory<typeof Gallery> = Template.bind({});
 
 Default.args = {
   opened: false,

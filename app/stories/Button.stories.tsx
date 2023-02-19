@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import styled from "styled-components";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 import Typography from "../components/Typography";
 import Button, { Props } from "../components/Button";
 import Row from "../components/Row";
@@ -31,7 +32,7 @@ export default {
     disabled: { control: "boolean" },
     borderRadius: { control: "text" },
   },
-};
+} as ComponentMeta<typeof Button>;
 
 const Preview = () => (
   <Row>
@@ -97,13 +98,13 @@ const Preview = () => (
     </Column>
   </Row>
 );
-export const DesignPreview = Preview;
+export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
 };
 
 const Template = (args: Props) => <Button {...args} />;
-export const Default = Template.bind({});
+export const Default: ComponentStory<typeof Button> = Template.bind({});
 Default.args = {
   children: "Press me",
   icon: <Image src={icon} width="28px" height="28px" alt="icon button" />,

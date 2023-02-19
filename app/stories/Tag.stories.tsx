@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Tag from "../components/Tag";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import Tag, { TagProps } from "../components/Tag";
 import Row from "../components/Row";
 import Column from "../components/Column";
 import { TagSizes, TagType } from "../components/StatesEnum";
@@ -18,7 +19,7 @@ export default {
     size: { control: "select" },
     href: { control: "text" },
   },
-};
+} as ComponentMeta<typeof Tag>;
 
 const Preview = () => (
   <Row>
@@ -57,13 +58,13 @@ const Preview = () => (
   </Row>
 );
 
-export const DesignPreview = Preview.bind({});
+export const DesignPreview: ComponentStory<typeof Preview> = Preview.bind({});
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
 };
 
-const Template = (args: Props) => <Tag {...args} />;
-export const Default = Template.bind({});
+const Template = (args: TagProps) => <Tag {...args} />;
+export const Default: ComponentStory<typeof Tag> = Template.bind({});
 Default.args = {
   children: "6 June",
   variant: TagType.FULFILLED,
