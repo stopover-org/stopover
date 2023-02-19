@@ -15,8 +15,8 @@ const Header = styled(Row)`
   cursor: pointer;
 `;
 
-const Content = styled(Row)<{ height: number }>`
-  max-height: ${({ height }) => `${height}px`};
+const Content = styled(Row)<{ maxHeight: number }>`
+  max-height: ${({ maxHeight }: { maxHeight: number }) => `${maxHeight}px`};
   transition: max-height 0.5s ease-in-out;
 `;
 
@@ -72,7 +72,7 @@ const Accordion = ({
       </Header>
       {showDivider && <Divider />}
       <SlideWrapper>
-        <Content container alignItems="start" height={opened ? height : 0}>
+        <Content container alignItems="start" maxHeight={opened ? height : 0}>
           {content}
         </Content>
       </SlideWrapper>

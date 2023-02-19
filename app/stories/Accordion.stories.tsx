@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { ComponentStory } from "@storybook/react";
 import Accordion, { AccordionProps } from "../components/Accordion";
@@ -90,8 +90,6 @@ DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
 };
 
-// const Template = (args: Props) => <Accordion {...args} />;
-
 const Template = ({
   onClose,
   onOpen,
@@ -99,55 +97,51 @@ const Template = ({
   opened,
   content,
   ...args
-}: AccordionProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <AccordionPadding>
-      <Accordion
-        onOpen={() => setIsOpen(true)}
-        onClose={() => setIsOpen(false)}
-        opened={isOpen}
-        header={
-          <Typography color="#FF8A00" size="22px" as={TypographyTags.LARGE}>
-            Данные участников
-          </Typography>
-        }
-        content={
-          <BookingForm
-            // date={moment(bookedFor)}
-            // time={moment(bookedFor)}
-            additionalOptions={[
-              {
-                text: "большой снегоход",
-                price: "600",
-                currency: "$",
-              },
-              {
-                text: "камера",
-                price: "100",
-                currency: "$",
-              },
-            ]}
-            allreadyInPrice={[
-              {
-                text: "Куратор",
-                price: "100",
-                currency: "$",
-              },
-              {
-                text: "Кураторка",
-                price: "100000",
-                currency: "$",
-              },
-            ]}
-          />
-        }
-        {...args}
-      />
-    </AccordionPadding>
-  );
-};
+}: AccordionProps) => (
+  <AccordionPadding>
+    <Accordion
+      onClose={onClose}
+      onOpen={onOpen}
+      opened={opened}
+      header={
+        <Typography color="#FF8A00" size="22px" as={TypographyTags.LARGE}>
+          Данные участников
+        </Typography>
+      }
+      content={
+        <BookingForm
+          // date={moment(bookedFor)}
+          // time={moment(bookedFor)}
+          additionalOptions={[
+            {
+              text: "большой снегоход",
+              price: "600",
+              currency: "$",
+            },
+            {
+              text: "камера",
+              price: "100",
+              currency: "$",
+            },
+          ]}
+          alreadyInPrice={[
+            {
+              text: "Куратор",
+              price: "100",
+              currency: "$",
+            },
+            {
+              text: "Кураторка",
+              price: "100000",
+              currency: "$",
+            },
+          ]}
+        />
+      }
+      {...args}
+    />
+  </AccordionPadding>
+);
 
 export const Default: ComponentStory<typeof Accordion> = Template.bind({});
 
