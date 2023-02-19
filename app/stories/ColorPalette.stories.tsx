@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { ComponentStory } from "@storybook/react";
 import Row from "../components/Row";
 
 const SRow = styled(Row)`
@@ -36,7 +37,7 @@ const Preview = () => (
   </SRow>
 );
 
-export const DesignPreview = Preview;
+export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },

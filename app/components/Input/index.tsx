@@ -62,6 +62,7 @@ export type Props = {
   label?: string | React.ReactElement;
   hint?: string | React.ReactElement;
   errorMessage?: string | React.ReactElement;
+  placeholder?: string;
 };
 
 const Input = ({
@@ -78,6 +79,7 @@ const Input = ({
   icon,
   iconPosition = IconPosition.LEFT,
   variant = InputVariants.COMMON,
+  placeholder,
   ...props
 }: Props) => {
   const [valueState, setValueState] = useState<string>(value);
@@ -174,6 +176,7 @@ const Input = ({
                     onChange={(e) => changeHandler(e.target.value)}
                     value={valueState}
                     disabled={disabled}
+                    placeholder={placeholder}
                     {...props}
                   />
                   {type === "number" && (

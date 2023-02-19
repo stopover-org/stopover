@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 import Typography, { Props } from "../components/Typography";
 import Row from "../components/Row";
 import Column from "../components/Column";
@@ -15,7 +16,7 @@ export default {
   argTypes: {
     color: { control: "color" },
   },
-};
+} as ComponentMeta<typeof Typography>;
 
 const Preview = () => (
   <Row container>
@@ -68,30 +69,21 @@ const Preview = () => (
     </Column>
   </Row>
 );
-export const DesignPreview = Preview;
-DesignPreview.args = {
-  children: "",
-  color: "",
-  size: "",
-  as: "",
-  fontWeight: "",
-  strikeThrough: "",
-  italic: "",
-  underline: "",
-  lineHeight: "",
-};
+export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
 };
 
-const Template = (args: Props) => <Typography {...args} />;
+const Template: ComponentStory<typeof Typography> = (args: Props) => (
+  <Typography {...args} />
+);
 export const Default = Template.bind({});
 Default.args = {
   children: "Header",
   color: "black",
   size: "12px",
-  as: "span",
+  as: "span" as TypographyTags,
   fontWeight: "300",
   strikeThrough: false,
   italic: false,

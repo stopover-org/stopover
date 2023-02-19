@@ -96,7 +96,7 @@ export const Booking = ({
                   currency: "$",
                 },
               ]}
-              allreadyInPrice={[
+              alreadyInPrice={[
                 {
                   text: "Куратор",
                   price: "100",

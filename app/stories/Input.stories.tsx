@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 import Typography from "../components/Typography";
 import Row from "../components/Row";
 import Column from "../components/Column";
@@ -36,7 +37,7 @@ export default {
     hint: { control: "text" },
     errorMessage: { control: "text" },
   },
-};
+} as ComponentMeta<typeof Input>;
 
 const Preview = () => (
   <Row>
@@ -241,7 +242,7 @@ const Preview = () => (
     </Column>
   </Row>
 );
-export const DesignPreview = Preview;
+export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
 };
@@ -251,7 +252,7 @@ const Template = (args: Props) => (
     <Input {...args} />
   </InputSize>
 );
-export const Default = Template.bind({});
+export const Default: ComponentStory<typeof Input> = Template.bind({});
 Default.args = {
   value: "text",
   id: "your_uniq_id",
@@ -260,7 +261,7 @@ Default.args = {
   icon: "",
   minValue: undefined,
   maxValue: 0,
-  IconPosition: IconPosition.LEFT,
+  iconPosition: IconPosition.LEFT,
   variant: InputVariants.COMMON,
   disabled: false,
   label: "my_label",

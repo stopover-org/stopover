@@ -7,7 +7,7 @@ import Row from "../Row";
 
 const Wrapper = styled(Column)``;
 const Caret = styled(Image)<{ rotate: string }>`
-  rotate: ${(props) => props.rotate};
+  rotate: ${({ rotate }) => rotate};
   transition: rotate 0.5s ease-in-out;
 `;
 
@@ -15,9 +15,9 @@ const Header = styled(Row)`
   cursor: pointer;
 `;
 
-const Content = styled(Row)<{ height?: number }>`
-  max-height: ${(props) => props.height};
-  transition: max-height 0.5s ease-in-out forwards;
+const Content = styled(Row)<{ maxHeight: number }>`
+  max-height: ${({ maxHeight }: { maxHeight: number }) => `${maxHeight}px`};
+  transition: max-height 0.5s ease-in-out;
 `;
 
 const SlideWrapper = styled.div`
@@ -30,7 +30,7 @@ const Divider = styled.div`
   width: 100%;
 `;
 
-type Props = {
+export type AccordionProps = {
   opened?: boolean;
   showChevron?: boolean;
   showDivider?: boolean;
@@ -47,14 +47,15 @@ const Accordion = ({
   showDivider,
   content,
   header,
-  height,
+  height = 0,
   onOpen,
   onClose,
-}: Props) => {
+}: AccordionProps) => {
   const clickHandler = () => {
     if (!opened) onOpen();
     if (opened) onClose();
   };
+
   return (
     <Wrapper container>
       <Header alignItems="center" onClick={() => clickHandler()}>
@@ -71,7 +72,7 @@ const Accordion = ({
       </Header>
       {showDivider && <Divider />}
       <SlideWrapper>
-        <Content container alignItems="start" height={opened ? height : 0}>
+        <Content container alignItems="start" maxHeight={opened ? height : 0}>
           {content}
         </Content>
       </SlideWrapper>
