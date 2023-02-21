@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   .DateRangePickerInput__withBorder {
     border: 2px solid #fdaa4c;
     border-radius: 3px;
-    width: 360px;
+    width: 300px;
     display: flex;
     justify-content: space-between;
   }

@@ -16,7 +16,7 @@ export const BaseSlider = styled.div<{
   }
 
   .rc-slider {
-    width: 380px;
+    width: 315px;
     pointer-events: ${(props) => props.pointerEventsSlider};
   }
 

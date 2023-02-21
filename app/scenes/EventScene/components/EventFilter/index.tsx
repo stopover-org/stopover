@@ -12,21 +12,21 @@ import { EventFilter_EventFiltersFragment$key } from "./__generated__/EventFilte
 import Column from "../../../../components/Column";
 
 const MainFilters = styled.div`
-  padding: 5px 36px 30px 30px;
+  padding: 5px 12px 30px 0px;
   border-right: 1px solid;
-  height: 50%;
 `;
 
 const FilterBarItem = styled(Column)`
-  padding: 0px 0px 30px 0px;
+  padding: 0px 12px 30px 0px;
 `;
 
 const StartingPoint = styled(Column)`
-  padding: 0px 0px 30px 30px;
+  padding: 0px 0px 30px 0px;
 `;
 
 const Separator = styled.div`
-  padding: 0px 200px 30px 200px;
+  padding-bottom: 30px;
+  margin-right: 30px;
   border-top: 1px solid #d9d9d9;
 `;
 
@@ -142,7 +142,7 @@ const EventFilter = ({ onChange, eventFiltersRef }: Props) => {
       <StartingPoint justifyContent="space-between">
         <Search
           searchType="location"
-          width="372px"
+          width="300px"
           placeHolder="Напишите локацию"
           helpText="Вы выбрали"
           value={location || ""}
