@@ -17,6 +17,7 @@
     "@react-google-maps/api": "^2.12.2",
     "@storybook/react": "^6.5.16",
     "@types/styled-components": "^5.1.26",
+    "formik": "^2.2.9",
     "husky": "^8.0.1",
     "moment": "^2.29.4",
     "next": "12.2.5",
@@ -35,7 +36,8 @@
     "relay-nextjs": "^0.9.0",
     "relay-runtime": "^14.1.0",
     "styled-components": "^5.3.5",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "yup": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
