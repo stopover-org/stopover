@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import right from "../../icons/Solid/Interface/Caret right.svg";
-import left from "../../icons/Solid/Interface/Caret left.svg";
+import right from "../../../../../components/icons/Solid/Interface/Caret right.svg";
+import left from "../../../../../components/icons/Solid/Interface/Caret left.svg";
 
 const Wrapper = styled.div<{ gradient: string }>`
   z-index: 1;

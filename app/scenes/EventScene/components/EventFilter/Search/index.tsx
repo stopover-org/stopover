@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import editSvg from "../../icons/Outline/Interface/Edit-alt.svg";
-import searchSvg from "../../icons/Outline/Interface/Search.svg";
-import Column from "../../Column";
-import { TypographySize, TypographyWeight } from "../../StatesEnum";
-import Typography from "../../Typography";
+import editSvg from "../../../../../components/icons/Outline/Interface/Edit-alt.svg";
+import searchSvg from "../../../../../components/icons/Outline/Interface/Search.svg";
+import Column from "../../../../../components/Column";
+import {
+  TypographySize,
+  TypographyWeight,
+} from "../../../../../components/StatesEnum";
+import Typography from "../../../../../components/Typography";
 
 const ImageWrapper = styled.div<{ left: string; bottom: string }>`
   display: none;

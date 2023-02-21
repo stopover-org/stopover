@@ -9,26 +9,20 @@ import PriceInput from "./PriceInput";
 import { NumericSlider, RangeType } from "./Slider/NumericSlider";
 import DatesSlider from "./Slider/DatesSlider";
 import { EventFilter_EventFiltersFragment$key } from "./__generated__/EventFilter_EventFiltersFragment.graphql";
+import Column from "../../../../components/Column";
 
-const FilterBar = styled.div``;
 const MainFilters = styled.div`
   padding: 5px 36px 30px 30px;
   border-right: 1px solid;
   height: 50%;
 `;
 
-const FilterBarItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+const FilterBarItem = styled(Column)`
   padding: 0px 0px 30px 0px;
 `;
 
-const StartingPoint = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  padding: 0px 0px 244px 30px;
+const StartingPoint = styled(Column)`
+  padding: 0px 0px 30px 30px;
 `;
 
 const Separator = styled.div`
@@ -70,7 +64,7 @@ const EventFilter = ({ onChange, eventFiltersRef }: Props) => {
     `,
     eventFiltersRef
   );
-  const [location, setLocation] = React.useState<string>(city);
+  const [location, setLocation] = React.useState<string>(city || "");
   const [startPrice, setStartPrice] = React.useState<number>(minPrice);
   const [endPrice, setEndPrice] = React.useState<number>(maxPrice);
   const [startDate, setStartDate] = React.useState<moment.Moment | null>(null);
@@ -144,8 +138,8 @@ const EventFilter = ({ onChange, eventFiltersRef }: Props) => {
   };
 
   return (
-    <FilterBar>
-      <StartingPoint>
+    <div>
+      <StartingPoint justifyContent="space-between">
         <Search
           searchType="location"
           width="372px"
@@ -157,7 +151,7 @@ const EventFilter = ({ onChange, eventFiltersRef }: Props) => {
         <Calendar dateHandler={dateHandler} />
       </StartingPoint>
       <MainFilters>
-        <FilterBarItem>
+        <FilterBarItem alignItems="flex-start">
           <Help
             text="Выберите какие даты вы хотите просмотреть"
             content="Выберите дату"
@@ -196,7 +190,7 @@ const EventFilter = ({ onChange, eventFiltersRef }: Props) => {
           />
         </FilterBarItem>
       </MainFilters>
-    </FilterBar>
+    </div>
   );
 };
 

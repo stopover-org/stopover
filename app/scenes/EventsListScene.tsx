@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { graphql, useFragment, usePaginationFragment } from "react-relay";
-import InterestGallery from "../components/EventFilter/InterestGallery";
-import EventFilter, { ChangeFiltersProps } from "../components/EventFilter";
-import Search from "../components/EventFilter/Search";
+import InterestGallery from "./EventScene/components/EventFilter/InterestGallery";
+import EventFilter, {
+  ChangeFiltersProps,
+} from "./EventScene/components/EventFilter";
+import Search from "./EventScene/components/EventFilter/Search";
 import {
   events_Query,
   events_Query$data,
