@@ -2,15 +2,15 @@ import React from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
 import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
-import EventsList from "../../components/Events/List";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/Loading";
 import { events_Query } from "./__generated__/events_Query.graphql";
+import EventsListScene from "../../scenes/EventsListScene";
 
 const Query = graphql`
   query events_Query($filters: EventsFilter) {
-    ...List_EventsFragment @arguments(filters: $filters)
-    ...List_InterestsFragment
+    ...EventsListScene_EventsFragment @arguments(filters: $filters)
+    ...EventsListScene_InterestsFragment
   }
 `;
 
@@ -19,7 +19,7 @@ const Home = ({ preloadedQuery }: RelayProps<{}, events_Query>) => {
 
   return (
     <Layout>
-      <EventsList eventsReference={query} />
+      <EventsListScene eventsReference={query} />
     </Layout>
   );
 };

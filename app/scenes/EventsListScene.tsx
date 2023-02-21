@@ -1,21 +1,25 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { graphql, useFragment, usePaginationFragment } from "react-relay";
-import InterestGallery from "../../EventFilter/InterestGallery";
-import EventFilter, { ChangeFiltersProps } from "../../EventFilter";
-import Search from "../../EventFilter/Search";
+import InterestGallery from "../components/EventFilter/InterestGallery";
+import EventFilter, { ChangeFiltersProps } from "../components/EventFilter";
+import Search from "../components/EventFilter/Search";
 import {
   events_Query,
   events_Query$data,
-} from "../../../pages/events/__generated__/events_Query.graphql";
-import { List_EventsFragment$key } from "./__generated__/List_EventsFragment.graphql";
-import CompactCard from "../../EventListCard/CompactCard";
-import WideCard from "../../EventListCard/WideCard";
-import Row from "../../Row";
-import Pagination from "../../Pagination";
-import { Currencies, PaginationSize, TypographySize } from "../../StatesEnum";
-import Typography from "../../Typography";
-import { List_InterestsFragment$key } from "./__generated__/List_InterestsFragment.graphql";
+} from "../pages/events/__generated__/events_Query.graphql";
+import CompactCard from "../components/EventListCard/CompactCard";
+import WideCard from "../components/EventListCard/WideCard";
+import Row from "../components/Row";
+import Pagination from "../components/Pagination";
+import {
+  Currencies,
+  PaginationSize,
+  TypographySize,
+} from "../components/StatesEnum";
+import Typography from "../components/Typography";
+import { EventsListScene_EventsFragment$key } from "./__generated__/EventsListScene_EventsFragment.graphql";
+import { EventsListScene_InterestsFragment$key } from "./__generated__/EventsListScene_InterestsFragment.graphql";
 
 const Wrapper = styled.div`
   display: flex;
@@ -40,10 +44,13 @@ type Props = {
   eventsReference: events_Query$data;
 };
 
-const EventsList = ({ eventsReference }: Props) => {
-  const events = usePaginationFragment<events_Query, List_EventsFragment$key>(
+const EventsListScene = ({ eventsReference }: Props) => {
+  const events = usePaginationFragment<
+    events_Query,
+    EventsListScene_EventsFragment$key
+  >(
     graphql`
-      fragment List_EventsFragment on Query
+      fragment EventsListScene_EventsFragment on Query
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
@@ -67,9 +74,9 @@ const EventsList = ({ eventsReference }: Props) => {
     eventsReference
   );
 
-  const interests = useFragment<List_InterestsFragment$key>(
+  const interests = useFragment<EventsListScene_InterestsFragment$key>(
     graphql`
-      fragment List_InterestsFragment on Query {
+      fragment EventsListScene_InterestsFragment on Query {
         ...InterestGallery_InterestsFragment
       }
     `,
@@ -157,4 +164,4 @@ const EventsList = ({ eventsReference }: Props) => {
   );
 };
 
-export default React.memo(EventsList);
+export default React.memo(EventsListScene);
