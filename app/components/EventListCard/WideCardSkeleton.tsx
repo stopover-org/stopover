@@ -6,10 +6,7 @@ import { CardImageLocation, SkeletonType } from "../StatesEnum";
 import icon from "../icons/SkeletonImage.svg";
 import Column from "../Column";
 import Row from "../Row";
-
-const TagList = styled(Column)`
-  padding: 10px;
-`;
+import TagList from "./components/TagList";
 
 const SColumn = styled(Column)`
   padding: 20px;

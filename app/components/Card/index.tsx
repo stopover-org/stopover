@@ -17,12 +17,6 @@ const SRow = styled(Row)<{ width: string; height: string; padding: string }>`
   max-height: ${(props) => props.height};
 `;
 
-const SChildren = styled.div<{ top: string; right: string }>`
-  position: absolute;
-  top: ${(props) => props.top};
-  right: ${(props) => props.right};
-`;
-
 const SColumn = styled(Column)<{
   width?: string;
   height: string;
@@ -57,8 +51,6 @@ const Card = ({
   content,
   image,
   children,
-  childrenTop = "0px",
-  childrenRight = "0px",
   width = "auto",
   height = "auto",
   padding = "0px",
@@ -86,9 +78,7 @@ const Card = ({
       >
         {leftContent}
         {rightContent}
-        <SChildren top={childrenTop} right={childrenRight}>
-          {children}
-        </SChildren>
+        {children}
       </Component>
     </Wrapper>
   );

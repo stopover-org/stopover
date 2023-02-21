@@ -22,10 +22,7 @@ import Button from "../Button";
 import icon from "../icons/Outline/General/Shopping_cart_white.svg";
 import { WideCard_EventFragment$key } from "./__generated__/WideCard_EventFragment.graphql";
 import { getCurrencyFormat } from "../../lib/utils/currencyFormatter";
-
-const TagList = styled(Column)`
-  padding: 10px;
-`;
+import TagList from "./components/TagList";
 
 const SColumn = styled(Column)`
   padding: 20px;

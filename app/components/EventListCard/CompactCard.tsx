@@ -22,6 +22,7 @@ import icon from "../icons/Outline/General/Shopping_cart_white.svg";
 import { CompactCard_EventFragment$key } from "./__generated__/CompactCard_EventFragment.graphql";
 import { getCurrencyFormat } from "../../lib/utils/currencyFormatter";
 import Rate from "../Rate";
+import TagList from "./components/TagList";
 
 const TextHeight = styled(Typography)`
   overflow: hidden;
@@ -43,11 +44,7 @@ const SLink = styled.div`
 `;
 
 const STag = styled.div`
-  padding-right: 10px;
-`;
-
-const TagOverImage = styled.div`
-  padding: 10px;
+  padding-bottom: 10px;
 `;
 
 const TypographyWrapper = styled.div`
@@ -127,17 +124,6 @@ const CompactCard = ({ eventRef }: Props) => {
           <SRow justifyContent="start" alignItems="end">
             <Rate eventFragment={event} />
           </SRow>
-          <SRow justifyContent="start" wrap="wrap">
-            {event?.tags.map(({ id: tagId, title: tagTitle }) => (
-              <STag key={`tag-${event?.id}-${tagId}`}>
-                <Tag size={TagSizes.SMALL}>
-                  <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-                    {tagTitle}
-                  </Typography>
-                </Tag>
-              </STag>
-            ))}
-          </SRow>
           <SRow alignItems="start" height="100%">
             <TextHeight size={TypographySize.BIG}>
               {event?.description}
@@ -174,19 +160,20 @@ const CompactCard = ({ eventRef }: Props) => {
       image={
         <BaseImage width="40%">
           <img src={event?.images[0]} alt="event" height="100%" />
+          <TagList alignItems="end">
+            {event?.tags.map(({ id: tagId, title: tagTitle }) => (
+              <STag key={`tag-${tagId}`}>
+                <Tag size={TagSizes.SMALL}>
+                  <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
+                    {tagTitle}
+                  </Typography>
+                </Tag>
+              </STag>
+            ))}
+          </TagList>
         </BaseImage>
       }
-    >
-      {event?.tags && (
-        <TagOverImage>
-          <Tag size={TagSizes.SMALL}>
-            <Typography size={TypographySize.BIG} as={TypographyTags.BIG}>
-              {event?.tags?.[0]?.title}
-            </Typography>
-          </Tag>
-        </TagOverImage>
-      )}
-    </Card>
+    />
   );
 };
 

@@ -12,7 +12,7 @@ const Frame = styled.div<{ width: string; height: string }>`
 type Props = {
   width?: string;
   height?: string;
-  children: React.ReactElement;
+  children: React.ReactElement | React.ReactElement[];
 };
 const BaseImage = ({ width = "100%", height = "100%", children }: Props) => (
   <Frame width={width} height={height}>
