@@ -5,7 +5,9 @@
 # Table name: stripe_integrations
 #
 #  id              :bigint           not null, primary key
+#  name            :string
 #  stripeable_type :string
+#  unit_amount     :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  price_id        :string
