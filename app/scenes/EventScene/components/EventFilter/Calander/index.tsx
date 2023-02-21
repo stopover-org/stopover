@@ -15,8 +15,9 @@ const Wrapper = styled.div`
   .DateInput_input {
     border: none;
     height: 50px;
+    width: 120px;
     margin: -0px;
-    font-size: 24px;
+    font-size: 16px;
   }
 
   .DateRangePickerInput__withBorder {
