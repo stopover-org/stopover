@@ -2,36 +2,64 @@
 
 require 'stripe'
 class StripeIntegrator
-  def self.sync_data(model)
+  def self.retrieve(product_id, price_id)
+    product = nil
+    price = nil
+    product_id && product = Stripe::Product.retrieve(id: product_id)
+    price_id && price = Stripe::Price.retrieve(id: price_id)
+    {
+      product: product,
+      price: price
+    }
+  end
+
+  def self.delete(product_id, price_id)
+    price_id && Stripe::Price.update(
+      price_id,
+      {
+        active: false
+      }
+    )
+    product_id && Stripe::Product.delete(product_id)
+  end
+
+  def self.sync(model)
     if model.try(:stripe_integration)
+
       if model.stripe_integration.try(:product_id) && model.stripe_integration.try(:price_id)
-        Stripe::Product.update(
+        stripe = retrieve(
+          model.stripe_integration.product_id,
+          model.stripe_integration.price_id
+        )
+
+        stripe[:product][:name] == model.stripe_integration.name && Stripe::Product.update(
           id: model.stripe_integration.product_id,
           name: model.stripe_integration.name
         )
-        Stripe::Price.update(
+        stripe[:price][:unit_amount] == model.stripe_integration.name && Stripe::Price.update(
           id: model.stripe_integration.price_id,
           unit_amount: model.stripe_integration.unit_amount.to_i
         )
       end
     else
-      name = ''
-      unit_amount = 0
       class_name = model.class.name
 
-      if class_name == 'Event'
+      case class_name
+      when 'Event'
         name = model.title
-        unit_amount = model.attendee_price_per_uom_cents.to_i
-      end
-      if class_name == 'EventOption'
+        unit_amount = model.attendee_price_per_uom_cents
+      when 'EventOption'
         name = model.title
-        unit_amount = model.attendee_price_cents.to_i
+        unit_amount = model.attendee_price_cents
+      else
+        name = ''
+        unit_amount = 0
       end
 
       product = Stripe::Product.create(name: name)
       price = Stripe::Price.create(unit_amount_decimal: unit_amount,
                                    product: product.id,
-                                   currency: 'usd',
+                                   currency: model.attendee_price_cents.currency,
                                    billing_scheme: 'per_unit')
 
       StripeIntegration.create(

@@ -7,7 +7,7 @@
 #  id              :bigint           not null, primary key
 #  name            :string
 #  stripeable_type :string
-#  unit_amount     :integer
+#  unit_amount     :decimal(, )
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  price_id        :string
