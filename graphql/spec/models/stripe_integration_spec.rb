@@ -21,5 +21,11 @@
 require 'rails_helper'
 
 RSpec.describe StripeIntegration, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'stripe integration' do
+    let!(:event) { create(:event) }
+    it 'created' do
+      StripeIntegrator.sync(event)
+      expect(StripeIntegration.count).to eq(1)
+    end
+  end
 end

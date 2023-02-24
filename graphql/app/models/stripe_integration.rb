@@ -9,7 +9,7 @@
 #  stripeable_type :string
 #  unit_amount     :decimal(, )
 #  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  updated_at      :datet         not null
 #  price_id        :string
 #  product_id      :string
 #  stripeable_id   :bigint
@@ -39,8 +39,30 @@ class StripeIntegration < ApplicationRecord
   # VALIDATIONS ================================================================
   #
   # CALLBACKS ================================================================
-  #
+  after_commit :sync_stripe
+
   # SCOPES =====================================================================
   #
   # DELEGATIONS ==============================================================
+
+  def name
+    stripeable&.title
+  end
+
+  def unit_amount
+    case stripeable&.class&.name
+    when 'Event'
+      return stripeable&.attendee_price_per_uom
+    when 'EventOption'
+      return stripeable&.attendee_price
+    end
+
+    0
+  end
+
+  private
+
+  def sync_stripe
+    StripeIntegrator.sync(self)
+  end
 end
