@@ -5,9 +5,7 @@
 # Table name: stripe_integrations
 #
 #  id              :bigint           not null, primary key
-#  name            :string
 #  stripeable_type :string
-#  unit_amount     :decimal(, )
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  price_id        :string
@@ -26,6 +24,15 @@ RSpec.describe StripeIntegration, type: :model do
     it 'created' do
       StripeIntegrator.sync(event)
       expect(StripeIntegration.count).to eq(1)
+    end
+
+    context 'methods' do
+      let!(:event) { create(:event) }
+      it 'name and unit_amount' do
+        event.stripe_integration = StripeIntegration.new
+        expect(event.stripe_integration.name).to eq(event.title)
+        expect(event.stripe_integration.unit_amount).to eq(event.attendee_price_per_uom)
+      end
     end
   end
 end

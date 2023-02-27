@@ -97,6 +97,13 @@ FactoryBot.define do
       end
     end
 
+    trait :stripe_integration_trait do
+      after(:create) do |event|
+        create(:stripe_integration, stripeable: event)
+      end
+    end
+
+    factory :stripe_integration_factory, traits: %i[stripe_integration_trait recurring]
     factory :limited_event, traits: %i[limited_attendee recurring]
     factory :recurring_event, traits: [:recurring]
     factory :schedules_past_date, traits: %i[past_schedules recurring]

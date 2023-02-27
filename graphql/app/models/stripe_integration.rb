@@ -5,11 +5,9 @@
 # Table name: stripe_integrations
 #
 #  id              :bigint           not null, primary key
-#  name            :string
 #  stripeable_type :string
-#  unit_amount     :decimal(, )
 #  created_at      :datetime         not null
-#  updated_at      :datet         not null
+#  updated_at      :datetime         not null
 #  price_id        :string
 #  product_id      :string
 #  stripeable_id   :bigint
@@ -39,8 +37,7 @@ class StripeIntegration < ApplicationRecord
   # VALIDATIONS ================================================================
   #
   # CALLBACKS ================================================================
-  after_commit :sync_stripe
-
+  #
   # SCOPES =====================================================================
   #
   # DELEGATIONS ==============================================================
@@ -58,11 +55,5 @@ class StripeIntegration < ApplicationRecord
     end
 
     0
-  end
-
-  private
-
-  def sync_stripe
-    StripeIntegrator.sync(self)
   end
 end
