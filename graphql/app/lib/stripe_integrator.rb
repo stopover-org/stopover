@@ -15,8 +15,8 @@ class StripeIntegrator
     }
   rescue StandardError => e
     {
-      product: product || nil,
-      price: price || nil
+      product: product,
+      price: price
     }
   end
 
@@ -37,6 +37,16 @@ class StripeIntegrator
         }
       )
     end
+    model.stripe_integration.delete!
+    {
+      product: model.stripe_integration.product_id,
+      price: model.stripe_integration.price_id
+    }
+  rescue StandardError => e
+    {
+      product: nil,
+      price: nil
+    }
   end
 
   def self.sync(model)
@@ -64,5 +74,10 @@ class StripeIntegrator
     model.stripe_integration.price_id =   price[:id]
     model.stripe_integration.product_id = product[:id]
     model.stripe_integration.save!
+  rescue StandardError => e
+    {
+      product: nil,
+      price: nil
+    }
   end
 end

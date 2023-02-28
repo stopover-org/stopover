@@ -5,6 +5,7 @@
 # Table name: stripe_integrations
 #
 #  id              :bigint           not null, primary key
+#  status          :string
 #  stripeable_type :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -18,7 +19,8 @@
 #
 class StripeIntegration < ApplicationRecord
   # MODULES ===============================================================
-  #
+  include AASM
+
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
@@ -31,7 +33,17 @@ class StripeIntegration < ApplicationRecord
   belongs_to :stripeable, polymorphic: true
 
   # AASM STATES ================================================================
-  #
+  aasm column: :status do
+    state :active, initial: true
+    state :deleted
+
+    event :delete do
+      transitions from: :active, to: :deleted
+    end
+    event :activate do
+      transitions from: :deleted, to: :active
+    end
+  end
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
