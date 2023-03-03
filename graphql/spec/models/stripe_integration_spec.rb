@@ -28,9 +28,8 @@ RSpec.describe StripeIntegration, type: :model do
     end
 
     context 'methods' do
-      let!(:event) { create(:event) }
+      let!(:event) { create(:stripe_integration_factory) }
       it 'name and unit_amount' do
-        event.stripe_integration = StripeIntegration.new
         expect(event.stripe_integration.name).to eq(event.title)
         expect(event.stripe_integration.unit_amount).to eq(event.attendee_price_per_uom)
       end
