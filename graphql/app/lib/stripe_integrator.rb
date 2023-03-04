@@ -50,7 +50,7 @@ class StripeIntegrator
   end
 
   def self.sync(model)
-    if model.try(:stripe_integration) && (model.stripe_integration.price_id && model.stripe_integration.product_id)
+    if model.try(:stripe_integration)
       stripe = retrieve(model)
       if stripe[:product][:name] != model.stripe_integration.name
         Stripe::Product.update(
@@ -69,7 +69,10 @@ class StripeIntegrator
     end
     model.stripe_integration = StripeIntegration.new
     product = Stripe::Product.create(name: model.stripe_integration.name)
-    price = Stripe::Price.create(unit_amount_decimal: model.stripe_integration.unit_amount.cents, product: product[:id], currency: model.stripe_integration.unit_amount.currency.id, billing_scheme: 'per_unit')
+    price = Stripe::Price.create(unit_amount_decimal: model.stripe_integration.unit_amount.cents,
+                                 product: product[:id],
+                                 currency: model.stripe_integration.unit_amount.currency.id,
+                                 billing_scheme: 'per_unit')
 
     model.stripe_integration.price_id =   price[:id]
     model.stripe_integration.product_id = product[:id]
@@ -79,5 +82,37 @@ class StripeIntegrator
       product: nil,
       price: nil
     }
+  end
+
+  def self.pay_prepaid_amount(model)
+    # unless model.try(:stripe_integration)
+    model.stripe_integration = StripeIntegration.new
+    model.stripe_integration.pay_prepaid_amount
+    stripe = retrieve(model)
+    product = stripe[:product]
+    price = Stripe::Price.create(unit_amount_decimal: model.stripe_integration.prepaid_amount.cents,
+                                 product: product[:id],
+                                 currency: model.stripe_integration.unit_amount.currency.id,
+                                 billing_scheme: 'per_unit')
+    model.stripe_integration.price_id =   price[:id]
+    model.stripe_integration.product_id = product[:id]
+    model.stripe_integration.save!
+  end
+
+  private
+
+  def retrieve_product(model)
+    product = nil
+    product = Stripe::Product.retrieve(id: model.stripe_integration.first.product_id) if model.try(:stripe_integration) && model.stripe_integration.try(:product_id)
+    product
+  rescue StandardError => e
+    {
+      product: product
+    }
+  end
+
+  def retrieve_prices(model)
+    price = nil
+    price = Stripe::Price.retrieve(product: model.stripe_integration.first.product_id) if model.try(:stripe_integration) && model.stripe_integration.try(:product_id)
   end
 end
