@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "../../Card";
-import BaseImage from "../../BaseImage";
-import Typography from "../../Typography";
-import Row from "../../Row";
-import Column from "../../Column";
+import Card from "../../v2/Card";
+import BaseImage from "../../v1/BaseImage";
+import Typography from "../../v2/Typography";
+import Row from "../../Layout/Row";
+import Column from "../../Layout/Column";
 import {
   CardImageLocation,
   TypographySize,

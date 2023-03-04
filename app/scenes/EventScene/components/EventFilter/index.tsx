@@ -9,7 +9,7 @@ import PriceInput from "./PriceInput";
 import { NumericSlider, RangeType } from "./Slider/NumericSlider";
 import DatesSlider from "./Slider/DatesSlider";
 import { EventFilter_EventFiltersFragment$key } from "./__generated__/EventFilter_EventFiltersFragment.graphql";
-import Column from "../../../../components/Column";
+import Column from "../../../../components/Layout/Column";
 
 const MainFilters = styled.div`
   padding: 5px 12px 30px 0px;

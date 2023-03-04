@@ -3,12 +3,12 @@ import styled from "styled-components";
 import Image from "next/image";
 import editSvg from "../../../../../components/icons/Outline/Interface/Edit-alt.svg";
 import searchSvg from "../../../../../components/icons/Outline/Interface/Search.svg";
-import Column from "../../../../../components/Column";
+import Column from "../../../../../components/Layout/Column";
 import {
   TypographySize,
   TypographyWeight,
 } from "../../../../../components/StatesEnum";
-import Typography from "../../../../../components/Typography";
+import Typography from "../../../../../components/v2/Typography";
 
 const ImageWrapper = styled.div<{ left: string; bottom: string }>`
   display: none;

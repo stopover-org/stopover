@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Typography from "../../../../../components/Typography";
+import Typography from "../../../../../components/v2/Typography";
 import { TypographySize } from "../../../../../components/StatesEnum";
-import Row from "../../../../../components/Row";
+import Row from "../../../../../components/Layout/Row";
 
 const Wrapper = styled.div`
   padding: 0px 0px 0px 0px;

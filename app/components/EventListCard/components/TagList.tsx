@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React from "react";
-import Column from "../../Column";
+import Column from "../../Layout/Column";
 
 const TagList = styled(Column)`
   padding: 10px;

@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Column from "../../Column";
-import Row from "../../Row";
-import Skeleton from "../../Skeleton";
-import Card from "../../Card";
+import Column from "../../Layout/Column";
+import Row from "../../Layout/Row";
+import Skeleton from "../../v2/Skeleton";
+import Card from "../../v2/Card";
 
 const Wrapper = styled.div``;
 const Content = styled(Column)`

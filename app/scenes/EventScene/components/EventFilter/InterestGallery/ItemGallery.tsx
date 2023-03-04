@@ -2,9 +2,9 @@ import React, { Suspense } from "react";
 import styled from "styled-components";
 import { graphql, useFragment } from "react-relay";
 import cross from "../../../../../components/icons/Solid/Interface/Cross.svg";
-import Typography from "../../../../../components/Typography";
+import Typography from "../../../../../components/v2/Typography";
 import { TypographySize } from "../../../../../components/StatesEnum";
-import Column from "../../../../../components/Column";
+import Column from "../../../../../components/Layout/Column";
 import { ItemGallery_InterestFragment$key } from "./__generated__/ItemGallery_InterestFragment.graphql";
 
 const Wrapper = styled(Column)`

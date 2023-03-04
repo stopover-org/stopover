@@ -1,6 +1,6 @@
 import { graphql, useFragment } from "react-relay";
-import Typography from "../../../../components/Typography";
-import Row from "../../../../components/Row";
+import Typography from "../../../../components/v2/Typography";
+import Row from "../../../../components/Layout/Row";
 import { Breadcrumbs_Event$key } from "./__generated__/Breadcrumbs_Event.graphql";
 
 export const Breadcrumbs = ({

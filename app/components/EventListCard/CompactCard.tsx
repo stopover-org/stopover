@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { graphql, useFragment } from "react-relay";
-import Card from "../Card";
+import Card from "../v2/Card";
 import {
   ButtonIconPlace,
   ButtonSizes,
@@ -11,17 +11,17 @@ import {
   TypographySize,
   TypographyTags,
 } from "../StatesEnum";
-import Typography from "../Typography";
-import BaseImage from "../BaseImage";
-import Column from "../Column";
-import Link from "../Link";
-import Tag from "../Tag";
-import Row from "../Row";
-import Button from "../Button";
+import Typography from "../v2/Typography";
+import BaseImage from "../v1/BaseImage";
+import Column from "../Layout/Column";
+import Link from "../v1/Link";
+import Tag from "../v2/Tag";
+import Row from "../Layout/Row";
+import Button from "../v1/Button";
 import icon from "../icons/Outline/General/Shopping_cart_white.svg";
 import { CompactCard_EventFragment$key } from "./__generated__/CompactCard_EventFragment.graphql";
 import { getCurrencyFormat } from "../../lib/utils/currencyFormatter";
-import Rate from "../Rate";
+import Rate from "../v1/Rate";
 import TagList from "./components/TagList";
 
 const TextHeight = styled(Typography)`

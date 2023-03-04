@@ -1,16 +1,18 @@
 import React from "react";
 import { useRouter } from "next/router";
-import Card from "../../components/Card";
-import Column from "../../components/Column";
-import Row from "../../components/Row";
-import Typography from "../../components/Typography";
+import { Form, Formik } from "formik";
+import Card from "../../components/v2/Card";
+import Column from "../../components/Layout/Column";
+import Row from "../../components/Layout/Row";
+import Typography from "../../components/v2/Typography";
 import { TypographySize } from "../../components/StatesEnum";
 import { useSignInForm } from "./useSignInForm";
+import Input from "../../components/v2/Input";
 
 export const SignIn = () => {
   const router = useRouter();
   const form = useSignInForm();
-  console.log(form);
+
   return (
     <Column container alignItems="center" justifyContent="center">
       <Card width="500px" height="275px">
@@ -24,7 +26,11 @@ export const SignIn = () => {
             <Typography size={TypographySize.H3}>Sign In / Sign Up</Typography>
           </Row>
           <Row>
-            <Typography>form</Typography>
+            <Formik {...form}>
+              <Form>
+                <Input name="code" />
+              </Form>
+            </Formik>
           </Row>
         </Column>
       </Card>

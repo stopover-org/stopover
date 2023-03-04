@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Typography from "../../../../../components/Typography";
+import Typography from "../../../../../components/v2/Typography";
 
 const Wrapper = styled.div`
   padding: 0px 0px 0px 0px;

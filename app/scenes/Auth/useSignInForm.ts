@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { graphql, useMutation } from "react-relay";
 import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useSignInForm_AuthLoginMutation } from "./__generated__/useSignInForm_AuthLoginMutation.graphql";
 
 interface SignInFields {
   username: string;
@@ -17,10 +19,15 @@ function useDefaultValues(): SignInFields {
     []
   );
 }
+const validationSchema = Yup.object().shape({
+  username: Yup.string().required(),
+  code: Yup.string(),
+  type: Yup.mixed().oneOf(["email", "phone"]).required(),
+});
 
 export function useSignInForm() {
-  const [authLogin] = useMutation(graphql`
-    mutation useSignInForm_AuthLogin($input: SignInInput!) {
+  const [authLogin] = useMutation<useSignInForm_AuthLoginMutation>(graphql`
+    mutation useSignInForm_AuthLoginMutation($input: SignInInput!) {
       signIn(input: $input) {
         user {
           email
@@ -34,8 +41,9 @@ export function useSignInForm() {
     authLogin({ variables: { input: values } });
   }
   const initialValues = useDefaultValues();
-  return useFormik<SignInFields>({
+  return {
     initialValues,
+    validationSchema,
     onSubmit,
-  });
+  };
 }

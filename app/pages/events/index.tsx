@@ -3,7 +3,7 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
-import Loading from "../../components/Loading";
+import Loading from "../../components/v2/Loading";
 import { events_Query } from "./__generated__/events_Query.graphql";
 import EventsListScene from "../../scenes/EventsListScene";
 

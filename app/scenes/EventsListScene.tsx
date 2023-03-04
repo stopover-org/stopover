@@ -12,14 +12,14 @@ import {
 } from "../pages/events/__generated__/events_Query.graphql";
 import CompactCard from "../components/EventListCard/CompactCard";
 import WideCard from "../components/EventListCard/WideCard";
-import Row from "../components/Row";
-import Pagination from "../components/Pagination";
+import Row from "../components/Layout/Row";
+import Pagination from "../components/v1/Pagination";
 import {
   Currencies,
   PaginationSize,
   TypographySize,
 } from "../components/StatesEnum";
-import Typography from "../components/Typography";
+import Typography from "../components/v2/Typography";
 import { EventsListScene_EventsFragment$key } from "./__generated__/EventsListScene_EventsFragment.graphql";
 import { EventsListScene_InterestsFragment$key } from "./__generated__/EventsListScene_InterestsFragment.graphql";
 
