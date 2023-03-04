@@ -33,7 +33,7 @@ class EventOption < ApplicationRecord
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :booking_options
   has_many :attendee_options
-  has_many :stripe_integration, as: :stripeable
+  has_many :stripe_integrations, as: :stripeable
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :attendees, through: :attendee_options

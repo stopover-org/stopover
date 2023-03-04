@@ -59,6 +59,7 @@ class Event < ApplicationRecord
   # MONETIZE =====================================================================
   monetize :attendee_price_per_uom_cents
   monetize :organizer_price_per_uom_cents
+  monetize :prepaid_amount_cents
 
   # ATTACHMENTS ===========================================================
   has_many_attached :images
@@ -74,7 +75,7 @@ class Event < ApplicationRecord
   has_many :ratings, dependent: :destroy
   has_many :schedules, dependent: :destroy
   has_many :booking_cancellation_options, dependent: :destroy
-  has_many :stripe_integration, as: :stripeable
+  has_many :stripe_integrations, as: :stripeable
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :achievements, through: :event_achievements

@@ -5,7 +5,7 @@
 # Table name: stripe_integrations
 #
 #  id              :bigint           not null, primary key
-#  amount_type     :string
+#  price_type      :string
 #  status          :string
 #  stripeable_type :string
 #  created_at      :datetime         not null
@@ -34,6 +34,12 @@ class StripeIntegration < ApplicationRecord
   belongs_to :stripeable, polymorphic: true
 
   # AASM STATES ================================================================
+  aasm column: :price_type do
+    state :full_amount
+    state :prepaid_amount
+    state :remaining_amount
+  end
+
   aasm column: :status do
     state :active, initial: true
     state :deleted
@@ -43,22 +49,6 @@ class StripeIntegration < ApplicationRecord
     end
     event :activate do
       transitions from: :deleted, to: :active
-    end
-  end
-
-  aasm column: :amount_type do
-    state :full_amount, initial: true
-    state :prepaid_amount
-    state :remaining_amount
-
-    event :pay_prepaid_amount do
-      transitions from: :full_amount, to: :prepaid_amount
-    end
-    event :pay_remaining_amount do
-      transitions from: :full_amount, to: :remaining_amount
-    end
-    event :pay_full_amount do
-      transitions from: %i[remaining_amount prepaid_amount], to: :full_amount
     end
   end
   # ENUMS =======================================================================

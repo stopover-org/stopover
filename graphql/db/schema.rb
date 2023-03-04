@@ -282,7 +282,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_03_104943) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status"
-    t.string "amount_type"
+    t.string "price_type"
     t.index ["stripeable_id", "stripeable_type"], name: "index_stripe_integrations_on_stripeable_id_and_stripeable_type"
   end
 
