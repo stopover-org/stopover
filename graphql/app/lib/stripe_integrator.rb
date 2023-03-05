@@ -5,9 +5,7 @@ class StripeIntegrator
   def self.retrieve(model)
     product = nil
     prices = {}
-
     if model.try(:stripe_integrations)
-
       model.stripe_integrations.each do |stripe_integration|
         product = Stripe::Product.retrieve(id: stripe_integration.product_id) if !product && stripe_integration.try(:product_id)
         prices.store(stripe_integration.price_type.to_sym, Stripe::Price.retrieve(id: stripe_integration.price_id)) if stripe_integration.try(:price_id)
@@ -25,74 +23,55 @@ class StripeIntegrator
   end
 
   def self.delete(model)
-    if model.stripe_integration.try(:price_id)
+    product_id = model.stripe_integrations.first.product_id
+    Stripe::Product.update(
+      product_id,
+      {
+        active: false
+      }
+    )
+
+    price_ids = {}
+    model.stripe_integrations.each do |stripe_integration|
       Stripe::Price.update(
-        model.stripe_integration.price_id,
+        stripe_integration.price_id,
         {
           active: false
         }
       )
+      price_ids.store(stripe_integration.price_type.to_sym, stripe_integration.price_id)
+      stripe_integration.delete!
     end
-    if model.stripe_integration.try(:product_id)
-      Stripe::Product.update(
-        model.stripe_integration.product_id,
-        {
-          active: false
-        }
-      )
-    end
-    model.stripe_integration.delete!
+
     {
-      product: model.stripe_integration.product_id,
-      price: model.stripe_integration.price_id
+      product_id: product_id,
+      price_ids: price_ids
     }
   rescue StandardError => e
     {
-      product: nil,
-      price: nil
+      product_id: nil,
+      price_ids: nil
     }
   end
 
   def self.sync(model)
     if model.stripe_integrations.empty?
-
-      stripe = retrieve(model)
-      if stripe[:product][:name] != model.stripe_integration.name
-        Stripe::Product.update(
-          id: model.stripe_integration.product_id,
-          name: model.stripe_integration.name
-        )
-      end
-      if stripe[:price][:unit_amount] != model.stripe_integration.unit_amount
-        Stripe::Price.update(
-          id: model.stripe_integration.price_id,
-          unit_amount: model.stripe_integration.unit_amount.to_i
-        )
-      end
-
-      return
+      create_full_amount(model)
+      create_prepaid_amount(model)
+      create_remaining_amount(model)
+      return model.stripe_integrations
     end
-
-    model.stripe_integration = StripeIntegration.new
-    product = Stripe::Product.create(name: model.stripe_integration.name)
-    price = Stripe::Price.create(unit_amount_decimal: model.stripe_integration.unit_amount.cents,
-                                 product: product[:id],
-                                 currency: model.stripe_integration.unit_amount.currency.id,
-                                 billing_scheme: 'per_unit')
-
-    model.stripe_integration.price_id =   price[:id]
-    model.stripe_integration.product_id = product[:id]
-    model.stripe_integration.save!
+    update_full_amount(model)
+    update_prepaid_amount(model)
+    update_remaining_amount(model)
+    model.stripe_integrations
   rescue StandardError => e
-    {
-      product: nil,
-      price: nil
-    }
+    model.stripe_integrations
   end
 
   def self.create_full_amount(model)
-    model.stripe_integrations << StripeIntegration.new(price_type: :full_amount)
-    stripe_integration = model.stripe_integrations.last
+    stripe_integration = StripeIntegration.new(price_type: :full_amount)
+    model.stripe_integrations << stripe_integration
     product = Stripe::Product.create(name: stripe_integration.name)
     price = Stripe::Price.create(unit_amount_decimal: stripe_integration.unit_amount.cents,
                                  product: product[:id],
@@ -104,8 +83,10 @@ class StripeIntegrator
   end
 
   def self.create_prepaid_amount(model)
-    model.stripe_integrations << StripeIntegration.new(price_type: :prepaid_amount)
-    stripe_integration = model.stripe_integrations.last
+    stripe_integration = StripeIntegration.new(price_type: :prepaid_amount)
+    return unless stripe_integration.prepaid_amount
+
+    model.stripe_integrations << stripe_integration
     stripe = retrieve(model)
     product = stripe[:product]
     price = Stripe::Price.create(unit_amount_decimal: stripe_integration.prepaid_amount.cents,
@@ -118,11 +99,13 @@ class StripeIntegrator
   end
 
   def self.create_remaining_amount(model)
-    model.stripe_integrations << StripeIntegration.new(price_type: :remaining_amount)
-    stripe_integration = model.stripe_integrations.last
+    stripe_integration = StripeIntegration.new(price_type: :remaining_amount)
+    return unless stripe_integration.remaining_amount
+
+    model.stripe_integrations << stripe_integration
     stripe = retrieve(model)
     product = stripe[:product]
-    price = Stripe::Price.create(unit_amount_decimal: stripe_integration.unit_amount.cents - stripe_integration.prepaid_amount.cents,
+    price = Stripe::Price.create(unit_amount_decimal: stripe_integration.remaining_amount.cents,
                                  product: product[:id],
                                  currency: stripe_integration.unit_amount.currency.id,
                                  billing_scheme: 'per_unit')
@@ -132,18 +115,52 @@ class StripeIntegrator
   end
 
   def self.update_prepaid_amount(model)
-    stripe_integration = model.stripe_integrations.where(price_type: :prepaid_amount)
+    stripe_integration = model.stripe_integrations.where(price_type: :prepaid_amount).first
     stripe = retrieve(model)
-    if stripe[:product][:name] != model.stripe_integrations.first.name
+    if stripe[:product][:name] != stripe_integration.name
       Stripe::Product.update(
-        id: model.stripe_integrations.first.product_id,
-        name: model.stripe_integrations.first.name
+        id: stripe_integration.product_id,
+        name: stripe_integration.name
       )
     end
-    if stripe[:prices][:prepaid_amount][:unit_amount] != stripe_integration.unit_amount
+    if stripe[:prices][:prepaid_amount][:unit_amount] != stripe_integration.prepaid_amount
+      Stripe::Price.update(
+        id: stripe_integration.price_id,
+        unit_amount: stripe_integration.prepaid_amount.to_i
+      )
+    end
+  end
+
+  def self.update_full_amount(model)
+    stripe_integration = model.stripe_integrations.where(price_type: :full_amount).first
+    stripe = retrieve(model)
+    if stripe[:product][:name] != stripe_integration.name
+      Stripe::Product.update(
+        id: stripe_integration.product_id,
+        name: stripe_integration.name
+      )
+    end
+    if stripe[:prices][:full_amount][:unit_amount] != stripe_integration.unit_amount
       Stripe::Price.update(
         id: stripe_integration.price_id,
         unit_amount: stripe_integration.unit_amount.to_i
+      )
+    end
+  end
+
+  def self.update_remaining_amount(model)
+    stripe_integration = model.stripe_integrations.where(price_type: :remaining_amount).first
+    stripe = retrieve(model)
+    if stripe[:product][:name] != stripe_integration.name
+      Stripe::Product.update(
+        id: stripe_integration.product_id,
+        name: stripe_integration.name
+      )
+    end
+    if stripe[:prices][:remaining_amount][:unit_amount] != stripe_integration.remaining_amount
+      Stripe::Price.update(
+        id: stripe_integration.price_id,
+        unit_amount: stripe_integration.remaining_amount.to_i
       )
     end
   end

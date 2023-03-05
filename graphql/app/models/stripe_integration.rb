@@ -81,9 +81,20 @@ class StripeIntegration < ApplicationRecord
     when 'Event'
       return stripeable&.prepaid_amount
     when 'EventOption'
-      return stripeable&.attendee_price
+      return nil
     end
 
-    0
+    nil
+  end
+
+  def remaining_amount
+    case stripeable&.class&.name
+    when 'Event'
+      return unit_amount - prepaid_amount
+    when 'EventOption'
+      return nil
+    end
+
+    nil
   end
 end
