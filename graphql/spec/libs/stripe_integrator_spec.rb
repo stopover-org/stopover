@@ -18,34 +18,53 @@
 #
 require 'rails_helper'
 
-RSpec.describe StripeIntegration, type: :model do
-  describe 'stripe integration' do
-    let!(:event) { create(:event, organizer_price_per_uom: Money.new(20)) }
+RSpec.describe StripeIntegrator, type: :model do
+  describe 'stripe integrator' do
+    let!(:event) { create(:event, organizer_price_per_uom: Money.new(20), prepaid_amount: Money.new(5)) }
     it 'is created and product_id and price_id eq Stripe ids' do
-      expect(Stripe::Product).to receive(:create).with({ name: event.title }).and_return({ id: 'temp_product_id' })
+      expect(Stripe::Product).to receive(:create).with({ name: event.title }).and_return({ id: 'product_id' }).exactly(1).time
       expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 22,
-                                                      product: 'temp_product_id',
+                                                      product: 'product_id',
                                                       currency: :usd,
-                                                      billing_scheme: 'per_unit' }).and_return({ id: 'temp_price_id' })
+                                                      billing_scheme: 'per_unit' }).and_return({ id: 'price_id1' })
+      expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id' }).exactly(2).time
+      expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 5,
+                                                       product: 'product_id',
+                                                       currency: :usd,
+                                                       billing_scheme: 'per_unit' }).and_return({ id: 'price_id2' })
+      expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 17,
+                                                       product: 'product_id',
+                                                       currency: :usd,
+                                                       billing_scheme: 'per_unit' }).and_return({ id: 'price_id3' })
+
       StripeIntegrator.sync(event)
-      expect(event.stripe_integration.product_id).to eq('temp_product_id')
-      expect(event.stripe_integration.price_id).to eq('temp_price_id')
+
+      event.stripe_integrations.each do |stripe_integration|
+        expect(stripe_integration.product_id).to eq('product_id')
+      end
+      expect(event.stripe_integrations.first.price_id).to eq('price_id1')
+      expect(event.stripe_integrations.second.price_id).to eq('price_id2')
+      expect(event.stripe_integrations.third.price_id).to eq('price_id3')
     end
 
     context 'delete' do
       let!(:event) { create(:stripe_integration_factory) }
       it 'product and price. Active changing and ids returned' do
-        expect(Stripe::Price).to receive(:update).with(event.stripe_integration.price_id, { active: false }).and_return(price: { id: 'price_active_false' })
-        expect(Stripe::Product).to receive(:update).with(event.stripe_integration.product_id, { active: false }).and_return(product: { id: 'product_active_false' })
+        event.stripe_integrations.each do |stripe_integration|
+          expect(Stripe::Price).to receive(:update).with(stripe_integration.price_id, { active: false }).and_return(price: { id: stripe_integration.price_id }).exactly(1).time
+        end
+        expect(Stripe::Product).to receive(:update).with(event.stripe_integrations.first.product_id, { active: false }).and_return(product: { id: 'product_id' }).exactly(1).time
         StripeIntegrator.delete(event)
-        expect(event.reload.stripe_integration.status).to eq('deleted')
+        event.reload.stripe_integrations.each do |stripe_integration|
+          expect(stripe_integration.status).to eq('deleted')
+        end
       end
       let!(:event_no_stripe) { create(:event) }
       it 'model has no stripe integration, method rescued' do
-        expect(event_no_stripe.stripe_integration).to eq(nil)
+        expect(event_no_stripe.stripe_integrations).to match_array([])
         expect(StripeIntegrator.delete(event_no_stripe)).to eq({
-                                                                 product: nil,
-                                                                 price: nil
+                                                                 product_id: nil,
+                                                                 price_ids: nil
                                                                })
       end
     end
@@ -53,9 +72,15 @@ RSpec.describe StripeIntegration, type: :model do
     context 'retrieve' do
       let!(:event) { create(:stripe_integration_factory) }
       it 'price and product and stripe integrator returns two models' do
-        expect(Stripe::Price).to receive(:retrieve).with(id: event.stripe_integration.price_id).and_return('price')
-        expect(Stripe::Product).to receive(:retrieve).with(id: event.stripe_integration.product_id).and_return('product')
-        expect(StripeIntegrator.retrieve(event)).to eq({ product: 'product', price: 'price' })
+        event.stripe_integrations.each do |stripe_integration|
+          expect(Stripe::Price).to receive(:retrieve).with(id: stripe_integration.price_id).and_return('price').exactly(1).time
+        end
+        expect(Stripe::Product).to receive(:retrieve).with(id: event.stripe_integrations.first.product_id).and_return('product').exactly(1).time
+        expect(StripeIntegrator.retrieve(event)).to eq({ product: 'product', prices: {
+                                                         full_amount: 'price',
+          prepaid_amount: 'price',
+          remaining_amount: 'price'
+                                                       } })
       end
     end
   end

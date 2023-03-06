@@ -71,6 +71,8 @@ class StripeIntegrator
 
   def self.create_full_amount(model)
     stripe_integration = StripeIntegration.new(price_type: :full_amount)
+    return unless model.stripe_integrations.where(price_type: :full_amount)
+
     model.stripe_integrations << stripe_integration
     product = Stripe::Product.create(name: stripe_integration.name)
     price = Stripe::Price.create(unit_amount_decimal: stripe_integration.unit_amount.cents,
@@ -84,15 +86,17 @@ class StripeIntegrator
 
   def self.create_prepaid_amount(model)
     stripe_integration = StripeIntegration.new(price_type: :prepaid_amount)
-    return unless stripe_integration.prepaid_amount
+    return unless model.stripe_integrations.where(price_type: :prepaid_amount)
 
     model.stripe_integrations << stripe_integration
     stripe = retrieve(model)
+
     product = stripe[:product]
     price = Stripe::Price.create(unit_amount_decimal: stripe_integration.prepaid_amount.cents,
                                  product: product[:id],
                                  currency: stripe_integration.unit_amount.currency.id,
                                  billing_scheme: 'per_unit')
+
     stripe_integration.price_id =   price[:id]
     stripe_integration.product_id = product[:id]
     stripe_integration.save!
@@ -100,7 +104,7 @@ class StripeIntegrator
 
   def self.create_remaining_amount(model)
     stripe_integration = StripeIntegration.new(price_type: :remaining_amount)
-    return unless stripe_integration.remaining_amount
+    return unless model.stripe_integrations.where(price_type: :remaining_amount)
 
     model.stripe_integrations << stripe_integration
     stripe = retrieve(model)
