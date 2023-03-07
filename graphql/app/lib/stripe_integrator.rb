@@ -118,6 +118,24 @@ class StripeIntegrator
     stripe_integration.save!
   end
 
+  def self.update_full_amount(model)
+    stripe_integration = model.stripe_integrations.where(price_type: :full_amount).first
+    stripe = retrieve(model)
+
+    if stripe[:product][:name] != stripe_integration.name
+      Stripe::Product.update(
+        id: stripe_integration.product_id,
+        name: stripe_integration.name
+      )
+    end
+    if stripe[:prices][:full_amount][:unit_amount] != stripe_integration.unit_amount.cents
+      Stripe::Price.update(
+        id: stripe_integration.price_id,
+        unit_amount: stripe_integration.unit_amount.cents
+      )
+    end
+  end
+
   def self.update_prepaid_amount(model)
     stripe_integration = model.stripe_integrations.where(price_type: :prepaid_amount).first
     stripe = retrieve(model)
@@ -127,27 +145,11 @@ class StripeIntegrator
         name: stripe_integration.name
       )
     end
-    if stripe[:prices][:prepaid_amount][:unit_amount] != stripe_integration.prepaid_amount
-      Stripe::Price.update(
-        id: stripe_integration.price_id,
-        unit_amount: stripe_integration.prepaid_amount.to_i
-      )
-    end
-  end
 
-  def self.update_full_amount(model)
-    stripe_integration = model.stripe_integrations.where(price_type: :full_amount).first
-    stripe = retrieve(model)
-    if stripe[:product][:name] != stripe_integration.name
-      Stripe::Product.update(
-        id: stripe_integration.product_id,
-        name: stripe_integration.name
-      )
-    end
-    if stripe[:prices][:full_amount][:unit_amount] != stripe_integration.unit_amount
+    if stripe[:prices][:prepaid_amount][:unit_amount] != stripe_integration.prepaid_amount.cents
       Stripe::Price.update(
         id: stripe_integration.price_id,
-        unit_amount: stripe_integration.unit_amount.to_i
+        unit_amount: stripe_integration.prepaid_amount.cents
       )
     end
   end
@@ -161,10 +163,10 @@ class StripeIntegrator
         name: stripe_integration.name
       )
     end
-    if stripe[:prices][:remaining_amount][:unit_amount] != stripe_integration.remaining_amount
+    if stripe[:prices][:remaining_amount][:unit_amount] != stripe_integration.remaining_amount.cents
       Stripe::Price.update(
         id: stripe_integration.price_id,
-        unit_amount: stripe_integration.remaining_amount.to_i
+        unit_amount: stripe_integration.remaining_amount.cents
       )
     end
   end

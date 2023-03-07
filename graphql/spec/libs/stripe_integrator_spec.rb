@@ -83,5 +83,23 @@ RSpec.describe StripeIntegrator, type: :model do
                                                        } })
       end
     end
+
+    context 'update' do
+      let!(:event) { create(:stripe_integration_factory, organizer_price_per_uom: Money.new(10)) }
+      it 'update' do
+        event.update(title: 'new_title', organizer_price_per_uom: Money.new(10), prepaid_amount: Money.new(5))
+        expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id', name: 'product_name' }).exactly(3).time
+        expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_full_amount').and_return({ unit_amount: 22 }).exactly(3).time
+        expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_prepaid_amount').and_return({ unit_amount: 10 }).exactly(3).time
+        expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_remaining_amount').and_return({ unit_amount: 12 }).exactly(3).time
+
+        expect(Stripe::Product).to receive(:update).with({ id: 'product_id', name: 'new_title' }).and_return(product: { id: 'product_id' }).exactly(3).time
+        expect(Stripe::Price).to receive(:update).with({ id: 'price_id_full_amount', unit_amount: 11 }).and_return(price: { id: 'price_id' }).exactly(1).time
+        expect(Stripe::Price).to receive(:update).with({ id: 'price_id_prepaid_amount', unit_amount: 5 }).and_return(price: { id: 'price_id' }).exactly(1).time
+        expect(Stripe::Price).to receive(:update).with({ id: 'price_id_remaining_amount', unit_amount: 6 }).and_return(price: { id: 'price_id' }).exactly(1).time
+
+        StripeIntegrator.sync(event)
+      end
+    end
   end
 end

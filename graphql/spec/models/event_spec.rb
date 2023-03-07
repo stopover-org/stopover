@@ -229,6 +229,15 @@ RSpec.describe Event, type: :model do
             expect(event.schedules.count).to eq(4)
           end
         end
+
+        context 'integration with stripe' do
+          let(:event) { create(:event) }
+
+          it 'stripe integrator fired up' do
+            expect(StripeIntegrator).to receive(:sync).with(event).and_return('stripe_integrations')
+            event.save!
+          end
+        end
       end
     end
   end
