@@ -139,8 +139,8 @@ class Event < ApplicationRecord
   before_validation :set_prices
   before_validation :update_tags
   before_validation :adjust_prices
-  after_save :check_schedules
-  after_commit :sync_stripe
+  after_save        :check_schedules
+  after_commit      :sync_stripe
 
   # SCOPES =====================================================================
   scope :by_city, ->(city) { where(city: city) }

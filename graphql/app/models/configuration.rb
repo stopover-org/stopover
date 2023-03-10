@@ -75,7 +75,7 @@ class Configuration < ApplicationRecord
     },
     ENABLE_STRIPE_INTEGRATION: {
       key: 'ENABLE_STRIPE_INTEGRATION',
-      value: !Rails.env.test?,
+      value: Rails.env.test? ? 'false' : 'true',
       description: '???'
     }
   }.freeze
@@ -94,6 +94,9 @@ class Configuration < ApplicationRecord
     return nil unless DEFAULT_VALUES.keys.include?(key.to_sym)
 
     record = find_by(key: key)
+    record.value = value || default[:value]
+    record.save!
+
     return record if record
 
     default = DEFAULT_VALUES[key.to_sym]

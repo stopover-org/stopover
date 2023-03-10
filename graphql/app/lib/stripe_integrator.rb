@@ -76,8 +76,6 @@ class StripeIntegrator
   end
 
   def self.create_full_amount(model)
-    return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
-
     stripe_integration = StripeIntegration.new(price_type: :full_amount)
     return unless model.stripe_integrations.where(price_type: :full_amount)
 
@@ -93,8 +91,6 @@ class StripeIntegrator
   end
 
   def self.create_prepaid_amount(model)
-    return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
-
     stripe_integration = StripeIntegration.new(price_type: :prepaid_amount)
     return unless model.stripe_integrations.where(price_type: :prepaid_amount)
 
@@ -113,8 +109,6 @@ class StripeIntegrator
   end
 
   def self.create_remaining_amount(model)
-    return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
-
     stripe_integration = StripeIntegration.new(price_type: :remaining_amount)
     return unless model.stripe_integrations.where(price_type: :remaining_amount)
 
@@ -131,8 +125,6 @@ class StripeIntegrator
   end
 
   def self.update_full_amount(model)
-    return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
-
     stripe_integration = model.stripe_integrations.where(price_type: :full_amount).first
     stripe = retrieve(model)
 
@@ -151,8 +143,6 @@ class StripeIntegrator
   end
 
   def self.update_prepaid_amount(model)
-    return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
-
     stripe_integration = model.stripe_integrations.where(price_type: :prepaid_amount).first
     stripe = retrieve(model)
     if stripe[:product][:name] != stripe_integration.name
@@ -171,8 +161,6 @@ class StripeIntegrator
   end
 
   def self.update_remaining_amount(model)
-    return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
-
     stripe_integration = model.stripe_integrations.where(price_type: :remaining_amount).first
     stripe = retrieve(model)
     if stripe[:product][:name] != stripe_integration.name
