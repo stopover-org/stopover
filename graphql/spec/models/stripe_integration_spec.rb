@@ -21,6 +21,9 @@
 require 'rails_helper'
 
 RSpec.describe StripeIntegration, type: :model do
+  before do
+    ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
+  end
   describe 'stripe integration' do
     let!(:event) { create(:event) }
     it 'created' do

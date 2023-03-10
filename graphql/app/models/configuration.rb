@@ -72,6 +72,11 @@ class Configuration < ApplicationRecord
       key: 'SCHEDULE_DAYS_IN_ADVANCE',
       value: Rails.env.test? ? 28 : 365,
       description: 'how many days in advance can be scheduled for events'
+    },
+    ENABLE_STRIPE_INTEGRATION: {
+      key: 'ENABLE_STRIPE_INTEGRATION',
+      value: !Rails.env.test?,
+      description: '???'
     }
   }.freeze
   def self.get_value(key)
@@ -85,14 +90,14 @@ class Configuration < ApplicationRecord
     create!(key: key, value: default[:value], description: default[:description])
   end
 
-  def self.set_value(key)
+  def self.set_value(key, value = nil)
     return nil unless DEFAULT_VALUES.keys.include?(key.to_sym)
 
     record = find_by(key: key)
     return record if record
 
     default = DEFAULT_VALUES[key.to_sym]
-    create!(key: key, value: default[:value], description: default[:description])
+    create!(key: key, value: value || default[:value], description: default[:description])
   end
 
   def self.update_default
