@@ -140,12 +140,17 @@ class Event < ApplicationRecord
   before_validation :update_tags
   before_validation :adjust_prices
   after_save :check_schedules
+  after_commit :sync_stripe
 
   # SCOPES =====================================================================
   scope :by_city, ->(city) { where(city: city) }
 
   # DELEGATIONS ==============================================================
   delegate :count, to: :ratings, prefix: true
+
+  def sync_stripe
+    StripeIntegrator.sync(self)
+  end
 
   def can_be_scheduled_for?(date)
     return false if date.past?
