@@ -5,6 +5,7 @@
 # Table name: stripe_integrations
 #
 #  id              :bigint           not null, primary key
+#  price_type      :string
 #  status          :string
 #  stripeable_type :string
 #  created_at      :datetime         not null
@@ -33,6 +34,12 @@ class StripeIntegration < ApplicationRecord
   belongs_to :stripeable, polymorphic: true
 
   # AASM STATES ================================================================
+  aasm column: :price_type do
+    state :full_amount
+    state :prepaid_amount
+    state :remaining_amount
+  end
+
   aasm column: :status do
     state :active, initial: true
     state :deleted
@@ -67,5 +74,27 @@ class StripeIntegration < ApplicationRecord
     end
 
     0
+  end
+
+  def prepaid_amount
+    case stripeable&.class&.name
+    when 'Event'
+      return stripeable&.prepaid_amount
+    when 'EventOption'
+      return nil
+    end
+
+    nil
+  end
+
+  def remaining_amount
+    case stripeable&.class&.name
+    when 'Event'
+      return unit_amount - prepaid_amount
+    when 'EventOption'
+      return nil
+    end
+
+    nil
   end
 end

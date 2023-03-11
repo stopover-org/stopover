@@ -59,13 +59,13 @@ class Event < ApplicationRecord
   # MONETIZE =====================================================================
   monetize :attendee_price_per_uom_cents
   monetize :organizer_price_per_uom_cents
+  monetize :prepaid_amount_cents
 
   # ATTACHMENTS ===========================================================
   has_many_attached :images
 
   # HAS_ONE ASSOCIATIONS ==========================================================
-  has_one :stripe_integration, as: :stripeable
-
+  #
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :event_achievements, dependent: :destroy
   has_many :event_interests, dependent: :destroy
@@ -75,6 +75,7 @@ class Event < ApplicationRecord
   has_many :ratings, dependent: :destroy
   has_many :schedules, dependent: :destroy
   has_many :booking_cancellation_options, dependent: :destroy
+  has_many :stripe_integrations, as: :stripeable
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :achievements, through: :event_achievements
@@ -138,13 +139,18 @@ class Event < ApplicationRecord
   before_validation :set_prices
   before_validation :update_tags
   before_validation :adjust_prices
-  after_save :check_schedules
+  after_save        :check_schedules
+  after_commit      :sync_stripe
 
   # SCOPES =====================================================================
   scope :by_city, ->(city) { where(city: city) }
 
   # DELEGATIONS ==============================================================
   delegate :count, to: :ratings, prefix: true
+
+  def sync_stripe
+    StripeIntegrator.sync(self)
+  end
 
   def can_be_scheduled_for?(date)
     return false if date.past?
