@@ -27,18 +27,19 @@ class StripeIntegration < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==========================================================
   #
   # HAS_MANY ASSOCIATIONS =========================================================
-  #
+  has_many :payments
+
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   #
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :stripeable, polymorphic: true
 
   # AASM STATES ================================================================
-  aasm column: :price_type do
-    state :full_amount
-    state :prepaid_amount
-    state :remaining_amount
-  end
+  enum price_type: {
+    full_amount: 'full_amount',
+    prepaid_amount: 'prepaid_amount',
+    remaining_amount: 'remaining_amount'
+  }
 
   aasm column: :status do
     state :active, initial: true

@@ -15,5 +15,6 @@ module Types
     field :remove_booking, mutation: Mutations::RemoveBooking
     field :update_attendee, mutation: Mutations::UpdateAttendee
     field :register_attendee, mutation: Mutations::RegisterAttendee
+    field :create_checkout, mutation: Mutations::CreateCheckout
   end
 end
