@@ -1,0 +1,137 @@
+.react-datepicker {
+    /* border: none; */
+    /* left: 50px; */
+    /* border: 2px solid red; */
+    /* width: 400px; */
+    /* background: orange; */
+  }
+
+
+  .react-datepicker-wrapper {
+    /* border: 1px solid green; */
+    padding: 0px;
+    /* width: 20%; */
+  }
+
+
+  .react-datepicker__triangle {
+    display: none;
+  }
+
+  .react-datepicker-popper {
+    /* border: 1px solid black; */
+    /* background: #123aaa; */
+    /* width: 500px; */
+    
+    
+  }
+
+  .react-datepicker__header {
+    background-color: #fff;
+    border: none;
+    border-radius: 0;
+    
+    
+  }
+
+  .react-datepicker__navigation {
+    /* background-color: red; */
+  }
+
+  .react-datepicker__navigation-icon {
+    
+  }
+  .react-datepicker__month {
+     /* border: 1px solid black; */
+     /* width: 100%; */
+  }
+
+  .react-datepicker__day-names {
+    display: flex;
+    justify-content: space-around;
+    /* border: 1px solid blue; */
+    padding: 0 1.5%;
+  }
+
+  .react-datepicker__day-name {
+    /* background-color: red; */
+  }
+
+  .react-datepicker__day {
+    
+    width: 50px;
+    height: 50px;
+    /* width: 14%;  */
+    border: 1px solid #999;
+    margin: 0px;
+    line-height: 50px;
+   
+  }
+.react-datepicker__day:hover {
+        background-color: red;
+        border-radius: 0;
+        /* border-color: red; */
+        
+}
+
+.react-datepicker__day--highlighted {
+    
+}
+  
+.react-datepicker__day--selected {
+    background-color: black;
+    border-radius: 0;
+    border-color: #999;
+    color: green;
+}
+
+.react-datepicker__day--selected:hover {
+    background-color: green;
+} 
+
+.react-datepicker__input-container {
+    background-color: black;
+}
+
+.react-datepicker__today-button {
+    
+}
+
+.react-datepicker__current-month {
+    /* color: green; */
+    font-weight: lighter;
+}
+
+
+
+/* .pop {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    background-color: red;
+    
+} */
+
+.calend {
+    display: flexbox; 
+    flex:1;
+    /* width: 100%; */
+}
+
+.dayclass {
+    /* background-color: orange; */
+    /* width: 41.4% */
+    
+}
+
+.wrap {
+    width: 40%;
+}
+.calend > div {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    /* background-color: green; */
+    /* flex: 1; */
+    
+}

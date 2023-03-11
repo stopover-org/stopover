@@ -1,176 +1,126 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import getArrayOfDays from './functionModule';
-import {getStyleArray} from './functionModule';
-import {getImitateDatasArray, convertAvailableDates, fillInitialState, getInitialStateSchema} from './functionModule';
+// import getArrayOfDays from './functionModule';
+import {getImitateDatasArray, convertAvailableDates, fillTimeArray} from './functionModule';
+import Row from '../Row';
+import SingleDatePicker from './SingleDatePicker';
+import RangeDatePicker from './RangeDatePicker';
+import moment from 'moment';
+import DateWindow from './DateWindow';
+import DatePicker from 'react-datepicker';
+import TimeWindow from './TimeWindow';
+import Column from '../Column';
 
-let today = new Date();    
-let year: number = today.getFullYear();
-let month: number = today.getMonth()+1;
 
-let initialCurrentDate = {year: year, month: month}
-//const arrOfDaysNames = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-//const arrOfDaysNames = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
-const arrOfDaysNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-    
-let initialState: any;
+let readable: boolean = true;
 
-//let start = Date.now()
-let availableDatesString = getImitateDatasArray(30);
-//console.log(availableDatesString);
+let timeArray: any;
+
+let availableDatesString = getImitateDatasArray(1150);
+// console.log(availableDatesString);
 let availableDatesNumber = convertAvailableDates(availableDatesString);
-//console.log(availableDatesNumber);
-const initialStateSchema = getInitialStateSchema(availableDatesNumber);
-//let end = Date.now();
-//console.log(initialState);
-//console.log(end-start);
-initialState = fillInitialState(initialStateSchema, availableDatesNumber);
-//let end = Date.now();
-//console.log(end-start);
-//console.log(initialState);
+// console.log(availableDatesNumber);
 
+timeArray = fillTimeArray(availableDatesNumber);
+console.log(timeArray);
 
-
-
-
-const Table = styled.table`
-    //border: 1px solid black;
-    width: 300px;
-    height: 300px;
+const Block = styled.div`
+    display: flex;
+    /* flex-direction: column; */
 `;
 
-const Caption = styled.caption``;
 
-const Th = styled.th`
-    height: 50px;
-    border: 1px solid #ccc;
-`;
 
-const Tbody = styled.tbody<{height? : string}>`
-    height: ${props => props.height};
-`;
+const BaseDatePicker = () => { 
+    const [value, setValue] = useState(moment(new Date()).format('YYYY M D'));
 
-const Tr = styled.tr`
-    /* border: 1px solid red; */
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+
+    const [timeValue, setTimeValue] = useState(['']);
+    const [selectedTime, setSelectedTime] = useState(null);
+
+    console.log(selectedTime);
     
-`;
 
-const Td = styled.td<{
-    border: string,
-    color: string,
-    backgroundColor: string,
-}>`
-    border: ${props => props.border};
-    color: ${props => props.color};
-    background-color: ${props => props.backgroundColor};
-    text-align: center;
-`;
+    const onChange = (dates: any) => {
+      const [start, end] = dates;
+      setStartDate(start);
+      setEndDate(end);
+    };  
 
-const BaseDatePicker = () => {      
-    
-    const [mainState, setMainState] = useState(initialState);
-    const [currentDate, setCurrentDate] = useState(initialCurrentDate);
-    const [range, setRange] = useState();
-    
-    let arrayOfDays = [[]];
-    arrayOfDays = getArrayOfDays(currentDate.year, currentDate.month-1);
+    const changeHandler = (e) => {
+        readable = false;
+        setValue(e.target.value);           
+    };
 
-
-
-   
+    const blurHandler = () => {
+        readable = true;
+    };
    
 
+    useEffect(() => {
+        if (readable) {return}
+        if (!(value.match(/(\d|\d\d).(\d|\d\d).\d\d\d\d(...|..|.)(\d|\d\d).(\d|\d\d).\d\d\d\d/)) ||
+            !value.match(/(\d|\d\d).(\d|\d\d).\d\d\d\d/)) {return}
+        if (value.indexOf('-')<0) {return}
 
-    const clickHandler = (e) => {
+        let date: string[] = value.replace('-', '/').split('/');
+        setStartDate(new Date(+date[2], +date[1]-1, +date[0]));
+        date[3] ?  setEndDate(new Date(+date[5], +date[4]-1, +date[3])) : setEndDate(new Date());
+    }, [value]);
 
-       let index = Number(e.target.innerText); 
-       if (index==0) {return}
-       //let selectControl = [currentDate.year, currentDate.month, index]
 
-     
+    useEffect(() => {    
+        if (!readable)  {return}
+        let startDateForInput: string[] = (moment(startDate).format('YYYY M D')).split(' ');
+        let currentDateForInput: string = startDateForInput[2] + "/" + startDateForInput[1] + "/" +  startDateForInput[0];
+        let endDateForInput: string[];
+        if (endDate) {
+            endDateForInput = moment(endDate).format('YYYY M D').split(' ');
+            currentDateForInput += ' - ' + endDateForInput[2] + '/' + endDateForInput[1] + '/' + endDateForInput[0];
+        }
+        // console.log(currentDateForInput)
+        setValue(currentDateForInput);
+        // console.log(value)
+    }, [startDate, endDate]);
 
-        setMainState({
-            ...mainState,
-            [String(currentDate.year)]: {
-                [String(currentDate.month)]: [
-                    ...mainState[String(currentDate.year)][String(currentDate.month)],               
-                ].map((obj, i) => {                    
-                    if ((i==index-1) && (obj.workingDate==true)) {
-                        return {...obj, selectedDate: true};
-                    } else {return {...obj, selectedDate: false}};
-                })            
-            }
-        })      
-    }
 
-    let currentCellInRange=0;
-    const moveHandler = (e) => {return;
-        let date = Number(e.target.innerText);
-        if (date == 0) {return}
-        if (date == currentCellInRange) {return}
-        currentCellInRange = date;
-        //console.log(e.target.innerText)
+    useEffect(() => {
+        let date: string[] = (moment(startDate).format('YYYY M D')).split(' ');
+        let time: string[] = timeArray[+date[0]][+date[1]][+date[2]-1].time;
+        setTimeValue(time);
+        
+    }, [startDate]);
 
-        setMainState({
-            ...mainState,
-            [String(currentDate.year)]: {
-                [String(currentDate.month)]: [
-                    ...mainState[String(currentDate.year)][String(currentDate.month)],               
-                ].map((obj, i) => {                    
-                    if ((i==date-1) && (obj.workingDate==true)) {
-                        return {...obj, selectedDate: true};
-                    } else {return {...obj, selectedDate: false}};
-                })            
-            }
-        }) 
-    }
+    useEffect(() => {
+        setSelectedTime(timeValue[0])
+    }, [timeValue]);
 
 
 
-    let array = mainState[String(currentDate.year)][String(currentDate.month)];
     return (
- 
-        <Table  onMouseMove={moveHandler}>
-            <Caption>February</Caption>
-            <Tbody height='15px'>
-                <Tr>
-                    {arrOfDaysNames.map((item, i) => {
-                        return (
-                            <Th key={item + i}>{item}</Th>
-                        )
-                    })}
-                </Tr>
-            </Tbody>
-            <Tbody>
-                {
-                    arrayOfDays.map((row,i) => {
-                        return(
-                        <Tr key={i}>
-                            {row.map((cell, j) => {
-                                return (
-                                    <Td                                     
-                                        key={'td' + i + j}
-                                        border={cell ? "1px solid green" : "none"}
-                                        color={cell ? (array[cell-1]['workingDate'] ? "red" : "black") : "transparent"}
-                                       
-                                        backgroundColor={cell ? (array[cell-1]['selectedDate'] ? "blue" : (array[cell-1]['currentDate'] ? "orange" : "#fff")) : "#fff"}
-                                        onClick={clickHandler}
-                                    >
-                                        {cell}
+        <Block>             
+            <RangeDatePicker 
+                onChange={onChange}               
+                startDate={startDate}
+                endDate={endDate}
+                availableDates={availableDatesString}
+            />
+            {/* <Column>
+                <DateWindow 
+                    value={value}
+                    onChange={(e) => changeHandler(e)}
+                    onBlur={blurHandler}
+                />
+                <TimeWindow
+                    timeValue={timeValue}
+                    onClick={(e) => setSelectedTime(e.target.value)}                    
+                />
+             </Column> */}
 
-                                    </Td>
-                                )
-                            })}
-
-                        </Tr>
-                        )
-                    })
-
-                }
-            
-            </Tbody>
-        </Table>
-
+           
+         </Block>
     );
 
 };
