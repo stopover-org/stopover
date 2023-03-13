@@ -48,6 +48,7 @@ RSpec.describe StripeIntegrator, type: :model do
         expect(stripe_integration.product_id).to eq('product_id')
       end
 
+      expect(event.stripe_integrations.count).to eq(3)
       expect(event.stripe_integrations.first.price_id).to eq('price_id1')
       expect(event.stripe_integrations.second.price_id).to eq('price_id2')
       expect(event.stripe_integrations.third.price_id).to eq('price_id3')

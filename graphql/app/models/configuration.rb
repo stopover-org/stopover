@@ -93,7 +93,7 @@ class Configuration < ApplicationRecord
   def self.set_value(key, value = nil)
     return nil unless DEFAULT_VALUES.keys.include?(key.to_sym)
 
-    record = find_by(key: key)
+    record = get_value(key)
     record.value = value || default[:value]
     record.save!
 
