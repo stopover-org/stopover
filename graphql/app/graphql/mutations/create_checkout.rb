@@ -37,8 +37,7 @@ module Mutations
     rescue StandardError => e
       {
         url: nil,
-        booking: nil,
-        error: 'no stripe'
+        booking: nil
       }
     end
   end
