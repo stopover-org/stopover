@@ -20,8 +20,8 @@ const BookingList = ({
   const data = useFragment(
     graphql`
       fragment BookingList_BookingsFragment on Query
-      @argumentDefinitions(tripId: { type: "ID!" }) {
-        bookings(tripId: $tripId) {
+      @argumentDefinitions(filters: { type: "BookingsFilter!" }) {
+        bookings(filters: $filters) {
           id
           bookedFor
           ...Booking_BookingsFragment

@@ -63,13 +63,13 @@ class StripeIntegrator
 
     if model.stripe_integrations.empty?
       create_full_amount(model)
-      create_prepaid_amount(model)
-      create_remaining_amount(model)
+      create_prepaid_amount(model) if model.is_a? Event
+      create_remaining_amount(model) if model.is_a? Event
       return model.stripe_integrations
     end
     update_full_amount(model)
-    update_prepaid_amount(model)
-    update_remaining_amount(model)
+    update_prepaid_amount(model) if model.is_a? Event
+    update_remaining_amount(model) if model.is_a? Event
     model.stripe_integrations
   rescue StandardError => e
     model.stripe_integrations
