@@ -3,8 +3,8 @@
 module Types
   class PaymentType < Types::ModelObject
     field :id, ID, null: false
-    field :checkout_id, String
-    field :success_url, String
+    field :status, String
+    field :total_price_cents, Decimal
     field :cancel_url, String
   end
 end

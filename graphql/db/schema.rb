@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_11_150118) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_14_092508) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -256,13 +256,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_11_150118) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.bigint "stripe_integration_id"
-    t.string "checkout_id"
-    t.string "success_url"
-    t.string "cancel_url"
+    t.string "status"
+    t.decimal "total_price_cents", default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["stripe_integration_id"], name: "index_payments_on_stripe_integration_id"
   end
 
   create_table "ratings", force: :cascade do |t|

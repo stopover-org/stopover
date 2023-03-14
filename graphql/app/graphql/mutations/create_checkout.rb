@@ -27,7 +27,7 @@ module Mutations
                                                                  end],
          mode: 'payment',
          success_url: 'http://localhost:3000/checkouts/success',
-         cancel_url: 'http://localhost:3000/checkouts/success'
+         cancel_url: 'http://localhost:3000/checkouts/cancel'
                                                   })
 
       {
