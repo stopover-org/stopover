@@ -2,56 +2,38 @@
 
 # == Schema Information
 #
-# Table name: payments
+# Table name: payment_connections
 #
-#  id                :bigint           not null, primary key
-#  status            :string
-#  total_price_cents :decimal(, )      default(0.0)
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  booking_id        :bigint
+#  id                    :bigint           not null, primary key
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  payment_id            :bigint
+#  stripe_integration_id :bigint
 #
 # Indexes
 #
-#  index_payments_on_booking_id  (booking_id)
+#  index_payment_connections_on_payment_id             (payment_id)
+#  index_payment_connections_on_stripe_integration_id  (stripe_integration_id)
 #
-class Payment < ApplicationRecord
-  include AASM
+class PaymentConnection < ApplicationRecord
   # MODULES ===============================================================
   #
   # MONETIZE =====================================================================
-  monetize :total_price_cents
-
+  #
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
   #
   # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :payment_connections
-
+  #
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :stripe_integrations, through: :payment_connections
-
+  #
   # BELONGS_TO ASSOCIATIONS =======================================================
-  belongs_to :booking
+  belongs_to :stripe_integration
+  belongs_to :payment
 
   # AASM STATES ================================================================
-  aasm column: :status do
-    state :pending, initial: true
-    state :processing
-    state :canceled
-    state :successful
-
-    event :process do
-      transitions from: %i[pending canceled], to: :processing
-    end
-    event :cancel do
-      transitions from: :processing, to: :canceled
-    end
-    event :success do
-      transitions from: :processing, to: :successful
-    end
-  end
+  #
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================

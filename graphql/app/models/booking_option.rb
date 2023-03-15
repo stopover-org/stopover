@@ -61,6 +61,15 @@ class BookingOption < ApplicationRecord
   end
 
   def adjust_prices!
+    payments = Payment.where(booking: BookingOption.last.booking)
+    flag = false
+    payments.each do |payment|
+      if payment.processing? || payment.successful?
+        flag = !flag
+        break
+      end
+    end
+    return if flag
     adjust_prices
     save!
   end
