@@ -16,5 +16,7 @@ module Types
     field :update_attendee, mutation: Mutations::UpdateAttendee
     field :register_attendee, mutation: Mutations::RegisterAttendee
     field :create_checkout, mutation: Mutations::CreateCheckout
+    field :create_successful_payment, mutation: Mutations::CreateSuccessfulPayment
+    field :create_canceled_payment, mutation: Mutations::CreateCanceledPayment
   end
 end

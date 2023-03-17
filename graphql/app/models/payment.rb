@@ -43,7 +43,7 @@ class Payment < ApplicationRecord
     state :successful
 
     event :process do
-      transitions from: %i[pending canceled], to: :processing
+      transitions from: %i[successful pending canceled], to: :processing
     end
     event :cancel do
       transitions from: :processing, to: :canceled
