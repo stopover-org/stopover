@@ -4,15 +4,18 @@ module Mutations
   class CreateCheckout < BaseMutation
     field :booking, Types::BookingType
     field :url, String
+    field :payment, Types::PaymentType
 
     argument :payment_type, String, required: false
     argument :booking_id, ID, loads: Types::BookingType, required: false
 
     def resolve(booking:, **args)
       return { url: nil } if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
+      raise GraphQL::ExecutionError, 'payment in progress' if booking.payments.where(booking: booking, status: 'processing').any?
       event_stripe_integration = booking.event.stripe_integrations.where(price_type: args[:payment_type]).first
       event_options = booking.event_options
       # TODO: add attendee options to checkout
+      payment = Payment.create!(booking: booking)
 
       checkout = Stripe::Checkout::Session.create({
                                                     line_items: [{
@@ -26,18 +29,20 @@ module Mutations
                                                                    }
                                                                  end],
          mode: 'payment',
-         success_url: 'http://localhost:3000/checkouts/success',
-         cancel_url: 'http://localhost:3000/checkouts/success'
+         success_url: "http://localhost:3000/checkouts/success/#{GraphqlSchema.id_from_object(payment)}",
+         cancel_url: "http://localhost:3000/checkouts/cancel/#{GraphqlSchema.id_from_object(payment)}"
                                                   })
-
+      payment.process!
       {
         url: checkout[:url],
-        booking: booking
+        booking: booking,
+        payment: payment
       }
     rescue StandardError => e
       {
         url: nil,
-        booking: nil
+        booking: nil,
+        payment: payment
       }
     end
   end

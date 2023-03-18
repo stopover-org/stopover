@@ -27,10 +27,11 @@ class StripeIntegration < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==========================================================
   #
   # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :payments
+  has_many :payment_connections
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  #
+  has_many :payments, through: :payment_connections
+
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :stripeable, polymorphic: true
 
