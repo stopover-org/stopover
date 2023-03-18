@@ -4,7 +4,7 @@ module Mutations
   class CanceledPayment < BaseMutation
     field :payment, Types::PaymentType
 
-    argument :payment_id, ID, loads: Types::PaymentType, required: false
+    argument :payment_id, ID, loads: Types::PaymentType
     def resolve(payment:, **_args)
       payment.cancel!
       {

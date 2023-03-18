@@ -11,7 +11,7 @@ module Mutations
 
     def resolve(booking:, **args)
       return { url: nil } if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
-      raise GraphQL::ExecutionError, 'payment in progress' unless booking.payments.where(booking: booking, status: 'processing').empty?
+      raise GraphQL::ExecutionError, 'payment in progress' if booking.payments.where(booking: booking, status: 'processing').any?
       event_stripe_integration = booking.event.stripe_integrations.where(price_type: args[:payment_type]).first
       event_options = booking.event_options
       # TODO: add attendee options to checkout

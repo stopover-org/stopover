@@ -4,7 +4,7 @@ module Mutations
   class SuccessfulPayment < BaseMutation
     field :payment, Types::PaymentType
 
-    argument :payment_id, ID, loads: Types::PaymentType, required: false
+    argument :payment_id, ID, loads: Types::PaymentType
     def resolve(payment:, **_args)
       payment.success!
       {

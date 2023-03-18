@@ -60,7 +60,7 @@ class AttendeeOption < ApplicationRecord
   end
 
   def adjust_prices!
-    return unless attendee.booking.payments.where(status: %i[processing successful]).empty?
+    return if attendee.booking.payments.where(status: %i[processing successful]).any?
     adjust_prices
     save!
   end
