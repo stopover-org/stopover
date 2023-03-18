@@ -15,6 +15,7 @@ module Mutations
       event_options = booking.event_options
       # TODO: add attendee options to checkout
       payment = Payment.create!(booking: booking)
+
       checkout = Stripe::Checkout::Session.create({
                                                     line_items: [{
                                                       price: event_stripe_integration.price_id,

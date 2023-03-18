@@ -39,15 +39,19 @@ RSpec.describe Mutations::CreateCheckout do
                 }],
                                             mode: 'payment',
                                             success_url: 'http://localhost:3000/checkouts/success',
-                                            cancel_url: 'http://localhost:3000/checkouts/success'
+                                            cancel_url: 'http://localhost:3000/checkouts/cancel'
               })
         .and_return({ url: 'my_url' })
+
       res = subject.to_h
+      expect(Payment.count).to eq(1)
+      expect(Payment.last.status).to eq('processing')
       expect(res['data']['createCheckout']).to eq({
                                                     'url' => 'my_url',
                                'booking' => { 'id' => GraphqlSchema.id_from_object(booking) }
                                                   })
     end
+
     context 'checkout session was not created.' do
       let!(:event) { create(:stripe_integration_factory) }
       let!(:booking) { create(:booking, schedule: event.schedules.first, event: event) }
@@ -62,9 +66,11 @@ RSpec.describe Mutations::CreateCheckout do
                   }],
                                                        mode: 'payment',
                                                        success_url: 'http://localhost:3000/checkouts/success',
-                                                       cancel_url: 'http://localhost:3000/checkouts/success'
+                                                       cancel_url: 'http://localhost:3000/checkouts/cancel'
                 }).and_raise(StandardError)
         res = subject.to_h
+        expect(Payment.count).to eq(1)
+        expect(Payment.last.status).to eq('pending')
         expect(res['data']['createCheckout']).to eq({
                                                       'booking' => nil,
                                                       'url' => nil
