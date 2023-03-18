@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mutations
-  class CreateCanceledPayment < BaseMutation
+  class CanceledPayment < BaseMutation
     field :payment, Types::PaymentType
 
     argument :payment_id, ID, loads: Types::PaymentType, required: false

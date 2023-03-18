@@ -11,6 +11,7 @@ module Mutations
 
     def resolve(booking:, **args)
       return { url: nil } if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
+      raise GraphQL::ExecutionError, 'payment in progress' unless booking.payments.where(booking: booking, status: 'processing').empty?
       event_stripe_integration = booking.event.stripe_integrations.where(price_type: args[:payment_type]).first
       event_options = booking.event_options
       # TODO: add attendee options to checkout
@@ -28,8 +29,8 @@ module Mutations
                                                                    }
                                                                  end],
          mode: 'payment',
-         success_url: 'http://localhost:3000/checkouts/success',
-         cancel_url: 'http://localhost:3000/checkouts/cancel'
+         success_url: "http://localhost:3000/checkouts/success/#{GraphqlSchema.id_from_object(payment)}",
+         cancel_url: "http://localhost:3000/checkouts/cancel/#{GraphqlSchema.id_from_object(payment)}"
                                                   })
       payment.process!
       {

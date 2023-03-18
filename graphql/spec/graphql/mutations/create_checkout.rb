@@ -54,7 +54,8 @@ RSpec.describe Mutations::CreateCheckout do
 
     context 'checkout session was not created.' do
       let!(:event) { create(:stripe_integration_factory) }
-      let!(:booking) { create(:booking, schedule: event.schedules.first, event: event) }
+      let!(:payment) { create(:payment) }
+      let!(:booking) { create(:booking, schedule: event.schedules.first, event: event, payments: [payment]) }
 
       it 'booking was given, but without event options' do
         ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
@@ -71,6 +72,21 @@ RSpec.describe Mutations::CreateCheckout do
         res = subject.to_h
         expect(Payment.count).to eq(1)
         expect(Payment.last.status).to eq('pending')
+        expect(res['data']['createCheckout']).to eq({
+                                                      'booking' => nil,
+                                                      'url' => nil
+                                                    })
+      end
+    end
+
+    context 'payment in process' do
+      let!(:event) { create(:stripe_integration_factory) }
+      let!(:payment) { create(:payment_in_process) }
+      let!(:booking) { create(:booking, schedule: event.schedules.first, event: event, payments: [payment]) }
+
+      it 'raise error' do
+        ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
+        res = subject.to_h
         expect(res['data']['createCheckout']).to eq({
                                                       'booking' => nil,
                                                       'url' => nil
