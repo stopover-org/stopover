@@ -4,12 +4,14 @@
 #
 # Table name: payments
 #
-#  id                :bigint           not null, primary key
-#  status            :string
-#  total_price_cents :decimal(, )      default(0.0)
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  booking_id        :bigint
+#  id                         :bigint           not null, primary key
+#  provider                   :string
+#  status                     :string
+#  total_price_cents          :decimal(, )      default(0.0)
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  booking_id                 :bigint
+#  stripe_checkout_session_id :string
 #
 # Indexes
 #
@@ -53,7 +55,10 @@ class Payment < ApplicationRecord
     end
   end
   # ENUMS =======================================================================
-  #
+  enum provider: {
+    default: 'default',
+    stripe: 'stripe'
+  }
   # VALIDATIONS ================================================================
   #
   # CALLBACKS ================================================================

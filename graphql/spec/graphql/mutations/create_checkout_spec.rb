@@ -9,6 +9,9 @@ RSpec.describe Mutations::CreateCheckout do
         mutation CreateCheckout($input: CreateCheckoutInput!){
           createCheckout(input: $input) {
             url
+            payment {
+              id
+            }
             booking {
               id
             }
@@ -29,26 +32,20 @@ RSpec.describe Mutations::CreateCheckout do
                             })
     end
 
-    it 'create checkout session in stripe.' do
+    it 'create checkout session in stripe correctly' do
       ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
       expect(Stripe::Checkout::Session).to receive(:create)
-        .with({
-                line_items: [{
-                  price: 'price_id_full_amount',
-                                quantity: 1
-                }],
-                                            mode: 'payment',
-                                            success_url: 'http://localhost:3000/checkouts/success',
-                                            cancel_url: 'http://localhost:3000/checkouts/cancel'
-              })
-        .and_return({ url: 'my_url' })
+        .and_return({ url: 'my_url', id: 'checkout_id' })
 
+      expect { subject }.to change { Payment.count }.by(1)
       res = subject.to_h
-      expect(Payment.count).to eq(1)
+
       expect(Payment.last.status).to eq('processing')
+      expect(Payment.last.stripe_checkout_session_id).to eq('checkout_id')
       expect(res['data']['createCheckout']).to eq({
                                                     'url' => 'my_url',
-                               'booking' => { 'id' => GraphqlSchema.id_from_object(booking) }
+                                                    'booking' => { 'id' => GraphqlSchema.id_from_object(booking) },
+                                                    'payment' => { 'id' => GraphqlSchema.id_from_object(Payment.last) }
                                                   })
     end
 
@@ -59,22 +56,16 @@ RSpec.describe Mutations::CreateCheckout do
 
       it 'booking was given, but without event options' do
         ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
-        expect(Stripe::Checkout::Session).to receive(:create)
-          .with({
-                  line_items: [{
-                    price: 'price_id_full_amount',
-                                 quantity: 1
-                  }],
-                                                       mode: 'payment',
-                                                       success_url: 'http://localhost:3000/checkouts/success',
-                                                       cancel_url: 'http://localhost:3000/checkouts/cancel'
-                }).and_raise(StandardError)
+        expect(Stripe::Checkout::Session).to receive(:create).and_raise(StandardError)
+
+        expect { subject }.to change { Payment.count }.by(1)
         res = subject.to_h
-        expect(Payment.count).to eq(1)
+
         expect(Payment.last.status).to eq('pending')
         expect(res['data']['createCheckout']).to eq({
-                                                      'booking' => nil,
-                                                      'url' => nil
+                                                      'url' => nil,
+                                                      'booking' => { 'id' => GraphqlSchema.id_from_object(booking) },
+                                                      'payment' => { 'id' => GraphqlSchema.id_from_object(Payment.last) }
                                                     })
       end
     end
@@ -88,7 +79,8 @@ RSpec.describe Mutations::CreateCheckout do
         ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
         res = subject.to_h
         expect(res['data']['createCheckout']).to eq({
-                                                      'booking' => nil,
+                                                      'booking' => { 'id' => GraphqlSchema.id_from_object(booking) },
+                                                      'payment' => nil,
                                                       'url' => nil
                                                     })
       end
