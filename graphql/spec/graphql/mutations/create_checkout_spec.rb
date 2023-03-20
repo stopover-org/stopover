@@ -92,19 +92,21 @@ RSpec.describe Mutations::CreateCheckout do
 
       it 'expired' do
         ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
-
+        expect(Stripe::Checkout::Session).to receive(:create)
+          .and_return({ url: 'my_url', id: 'checkout_id' })
         expect(Stripe::Checkout::Session).to receive(:retrieve).with(
           payment.stripe_checkout_session_id
         ).and_return({ status: 'expired' })
-        expect(::StripeSupport).to receive(:generate_stripe_checkout_session).with(booking: booking, payment_type: 'full_amount').and_return({
-                                                                                                                                               url: 'my_url',
-                                                                                                                                               payment: 'payment_id'
-                                                                                                                                             })
+
+        expect { subject }.to change { Payment.count }.by(1)
+        expect(Payment.all.processing.any?).to eq(true)
+        expect(Payment.all.canceled.any?).to eq(true)
+
         res = subject.to_h
         expect(res['data']['createCheckout']).to eq({
                                                       'booking' => { 'id' => GraphqlSchema.id_from_object(booking) },
-                                                      'payment' => 'payment_id',
-                                                      'url' => nil
+                                                      'payment' => { 'id' => GraphqlSchema.id_from_object(Payment.last) },
+                                                      'url' => 'my_url'
                                                     })
       end
     end
