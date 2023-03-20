@@ -75,12 +75,35 @@ RSpec.describe Mutations::CreateCheckout do
       let!(:payment) { create(:payment_in_process) }
       let!(:booking) { create(:booking, schedule: event.schedules.first, event: event, payments: [payment]) }
 
-      it 'raise error' do
+      it 'not expired' do
         ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
+
+        expect(Stripe::Checkout::Session).to receive(:retrieve).with(
+          payment.stripe_checkout_session_id
+        ).and_return({ status: 'not_expired' })
+
         res = subject.to_h
         expect(res['data']['createCheckout']).to eq({
                                                       'booking' => { 'id' => GraphqlSchema.id_from_object(booking) },
-                                                      'payment' => nil,
+                                                      'payment' => { 'id' => GraphqlSchema.id_from_object(payment) },
+                                                      'url' => nil
+                                                    })
+      end
+
+      it 'expired' do
+        ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
+
+        expect(Stripe::Checkout::Session).to receive(:retrieve).with(
+          payment.stripe_checkout_session_id
+        ).and_return({ status: 'expired' })
+        expect(::StripeSupport).to receive(:generate_stripe_checkout_session).with(booking: booking, payment_type: 'full_amount').and_return({
+                                                                                                                                               url: 'my_url',
+                                                                                                                                               payment: 'payment_id'
+                                                                                                                                             })
+        res = subject.to_h
+        expect(res['data']['createCheckout']).to eq({
+                                                      'booking' => { 'id' => GraphqlSchema.id_from_object(booking) },
+                                                      'payment' => 'payment_id',
                                                       'url' => nil
                                                     })
       end

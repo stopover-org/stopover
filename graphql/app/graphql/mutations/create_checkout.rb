@@ -11,10 +11,31 @@ module Mutations
 
     def resolve(booking:, **args)
       return { url: nil } if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
+      raise GraphQL::ExecutionError, 'multiple payments in process' if booking.payments.processing.count > 1
 
-      raise GraphQL::ExecutionError, 'payment in progress' if booking.payments.where(booking: booking, status: 'processing').any?
-      checkout = ::Configuration.generate_stripe_checkout_session(booking, args[:payment_type])
+      if booking.payments.processing.any?
+        payment = booking.payments.processing.last
+        checkout = Stripe::Checkout::Session.retrieve(payment.stripe_checkout_session_id)
+        if checkout[:status] == 'expired'
+          payment.cancel!
+          checkout = ::StripeSupport.generate_stripe_checkout_session(booking, args[:payment_type])
+          return {
+            url: checkout[:url],
+            booking: booking,
+            payment: checkout[:payment]
+          }
+        else
 
+          return {
+            url: checkout[:url],
+            booking: booking,
+            payment: payment
+          }
+        end
+
+      end
+
+      checkout = ::StripeSupport.generate_stripe_checkout_session(booking, args[:payment_type])
       {
         url: checkout[:url],
         booking: booking,
