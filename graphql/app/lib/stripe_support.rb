@@ -25,7 +25,6 @@ class StripeSupport
         quantity: 1
       }
     end
-    # TODO: add attendee options to checkout
     # TODO: dont know how to covered by test
 
     checkout = Stripe::Checkout::Session.create({
@@ -38,7 +37,7 @@ class StripeSupport
                                                   mode: 'payment',
                                                   success_url: "http://localhost:3000/checkouts/success/#{GraphqlSchema.id_from_object(payment)}",
                                                   cancel_url: "http://localhost:3000/checkouts/cancel/#{GraphqlSchema.id_from_object(payment)}",
-                                                  expires_at: (Time.zone.now + 30.60).to_i
+                                                  expires_at: (Time.zone.now + (30 * 60)).to_i
                                                 })
 
     payment.stripe_checkout_session_id = checkout[:id]
