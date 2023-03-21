@@ -56,7 +56,6 @@ class Payment < ApplicationRecord
   end
   # ENUMS =======================================================================
   enum provider: {
-    default: 'default',
     stripe: 'stripe'
   }
   # VALIDATIONS ================================================================
