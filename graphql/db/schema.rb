@@ -270,6 +270,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_15_125748) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "booking_id"
+    t.string "stripe_checkout_session_id"
+    t.string "provider"
     t.index ["booking_id"], name: "index_payments_on_booking_id"
   end
 

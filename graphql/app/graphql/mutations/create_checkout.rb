@@ -6,43 +6,46 @@ module Mutations
     field :url, String
     field :payment, Types::PaymentType
 
-    argument :payment_type, String, required: false
-    argument :booking_id, ID, loads: Types::BookingType, required: false
+    argument :payment_type, String
+    argument :booking_id, ID, loads: Types::BookingType
 
     def resolve(booking:, **args)
       return { url: nil } if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
-      raise GraphQL::ExecutionError, 'payment in progress' if booking.payments.where(booking: booking, status: 'processing').any?
-      event_stripe_integration = booking.event.stripe_integrations.where(price_type: args[:payment_type]).first
-      event_options = booking.event_options
-      # TODO: add attendee options to checkout
-      payment = Payment.create!(booking: booking)
+      raise GraphQL::ExecutionError, 'multiple payments in process' if booking.payments.processing.count > 1
 
-      checkout = Stripe::Checkout::Session.create({
-                                                    line_items: [{
-                                                      price: event_stripe_integration.price_id,
-                                                                   quantity: booking.attendees.count
-                                                    },
-                                                                 *event_options.map do |opt|
-                                                                   {
-                                                                     price: opt.stripe_integration.price_id,
-                                                                                          quantity: 1
-                                                                   }
-                                                                 end],
-         mode: 'payment',
-         success_url: "http://localhost:3000/checkouts/success/#{GraphqlSchema.id_from_object(payment)}",
-         cancel_url: "http://localhost:3000/checkouts/cancel/#{GraphqlSchema.id_from_object(payment)}"
-                                                  })
-      payment.process!
+      if booking.payments.processing.any?
+        payment = booking.payments.processing.last
+        checkout = Stripe::Checkout::Session.retrieve(payment.stripe_checkout_session_id)
+        if checkout[:status] == 'expired'
+          payment.cancel!
+          checkout = ::StripeSupport.generate_stripe_checkout_session(booking, args[:payment_type])
+          return {
+            url: checkout[:url],
+            booking: booking,
+            payment: checkout[:payment]
+          }
+        else
+
+          return {
+            url: checkout[:url],
+            booking: booking,
+            payment: payment
+          }
+        end
+
+      end
+
+      checkout = ::StripeSupport.generate_stripe_checkout_session(booking, args[:payment_type])
       {
         url: checkout[:url],
         booking: booking,
-        payment: payment
+        payment: checkout[:payment]
       }
     rescue StandardError => e
       {
         url: nil,
-        booking: nil,
-        payment: payment
+        booking: booking,
+        payment: nil
       }
     end
   end
