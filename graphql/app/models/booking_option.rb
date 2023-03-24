@@ -61,7 +61,7 @@ class BookingOption < ApplicationRecord
   end
 
   def adjust_prices!
-    return unless Payment.where(booking: booking, status: %i[processing successful]).empty?
+    return unless booking.payments.where(status: %i[processing successful]).empty?
     adjust_prices
     save!
   end

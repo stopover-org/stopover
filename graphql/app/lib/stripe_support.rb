@@ -2,10 +2,11 @@
 
 class StripeSupport
   def self.generate_stripe_checkout_session(booking, payment_type)
-    event_stripe_integration = booking.event.stripe_integrations.where(price_type: payment_type).first
-    payment = Payment.create!(booking: booking)
+    event_stripe_integration = booking.event.stripe_integrations.find_by(price_type: payment_type)
 
+    payment = Payment.create!(booking: booking)
     attendee_options = {}
+
     booking.attendees.map do |att|
       att.attendee_options.each do |att_opt|
         if attendee_options[att_opt.event_option.id].nil?
@@ -21,7 +22,7 @@ class StripeSupport
 
     booking_options = booking.booking_options.map do |opt|
       {
-        price: opt.event_option.stripe_integration.price_id,
+        price: opt.event_option.stripe_integrations.full_amount.last.price_id,
         quantity: 1
       }
     end
@@ -39,7 +40,6 @@ class StripeSupport
                                                   cancel_url: "http://localhost:3000/checkouts/cancel/#{GraphqlSchema.id_from_object(payment)}",
                                                   expires_at: (Time.zone.now + (30 * 60)).to_i
                                                 })
-
     payment.stripe_checkout_session_id = checkout[:id]
     payment.process!
     {

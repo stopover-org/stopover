@@ -91,6 +91,6 @@ class Booking < ApplicationRecord
   end
 
   def create_trip
-    Trip.create(bookings: [self])
+    Trip.create!(bookings: [self])
   end
 end

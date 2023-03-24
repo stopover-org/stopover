@@ -53,10 +53,15 @@ class EventOption < ApplicationRecord
   # CALLBACKS ================================================================
   before_validation :adjust_prices
   after_commit :update_total
+  after_commit :sync_stripe
 
   # SCOPES =====================================================================
   #
   # DELEGATIONS ==============================================================
+
+  def sync_stripe
+    StripeIntegrator.sync(self)
+  end
 
   private
 
