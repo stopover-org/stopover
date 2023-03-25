@@ -15,6 +15,7 @@ type Props = {
   disabled?: boolean;
   children: React.ReactNode;
   color?: string;
+  onClick?: () => void;
 };
 
 const Link = ({
@@ -22,10 +23,13 @@ const Link = ({
   disabled,
   children,
   color = "#FF8A00",
+  onClick,
   ...props
 }: Props) => (
   <NextLink href={disabled ? "" : href} passHref {...props}>
-    <SLink color={disabled ? "grey" : color}>{children}</SLink>
+    <SLink color={disabled ? "grey" : color} onClick={onClick}>
+      {children}
+    </SLink>
   </NextLink>
 );
 

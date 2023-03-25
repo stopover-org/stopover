@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { ButtonIconPlace, ButtonSizes, ButtonVariants } from "../../StatesEnum";
+import Row from "../../Layout/Row";
 
-const Wrapper = styled.div``;
 const IconPadding = styled.div<{ padding: string }>`
   padding: ${(props) => props.padding};
 `;
@@ -23,14 +23,6 @@ const ButtonStyle = styled.button<{
   cursor: ${(props) => props.cursor};
 `;
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-`;
-
 export type Props = {
   children: React.ReactNode;
   icon?: React.ReactElement; // TODO i do have to have icon
@@ -42,6 +34,7 @@ export type Props = {
   disabled?: boolean;
   borderRadius?: string;
   className?: string;
+  type?: "submit" | "button";
 };
 
 const getContent = (
@@ -50,22 +43,22 @@ const getContent = (
   icon: Props["icon"]
 ) => {
   if (!icon) {
-    return <Content>{children}</Content>;
+    return <Row>{children}</Row>;
   }
   if (iconPosition === ButtonIconPlace.WITH_LEFT_ICON) {
     return (
-      <Content>
+      <Row>
         <IconPadding padding="0px 10px 0px 0px">{icon}</IconPadding>
         {children}
-      </Content>
+      </Row>
     );
   }
   if (iconPosition === ButtonIconPlace.WITH_RIGHT_ICON) {
     return (
-      <Content>
+      <Row>
         {children}
         <IconPadding padding="0px 0px 0px 10px">{icon}</IconPadding>
-      </Content>
+      </Row>
     );
   }
   return null;
@@ -82,12 +75,13 @@ const Button = ({
   size = ButtonSizes.BIG,
   borderRadius = "3px",
   className = "",
+  type,
   ...props
 }: Props) => {
   const shownColor = (disabled && "grey") || backgroundColor;
 
   return (
-    <Wrapper className={className}>
+    <div className={className}>
       <ButtonStyle
         {...props}
         backgroundColor={
@@ -101,10 +95,11 @@ const Button = ({
         cursor={disabled ? "not-allowed" : "pointer"}
         disabled={disabled}
         borderRadius={borderRadius}
+        type={type}
       >
         {getContent(iconPosition, children, icon)}
       </ButtonStyle>
-    </Wrapper>
+    </div>
   );
 };
 
