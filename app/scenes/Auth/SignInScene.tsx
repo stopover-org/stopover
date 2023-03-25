@@ -1,13 +1,12 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { Form, Formik } from "formik";
 import Card from "../../components/v2/Card";
 import Column from "../../components/Layout/Column";
 import Row from "../../components/Layout/Row";
 import Typography from "../../components/v2/Typography";
 import { TypographySize } from "../../components/StatesEnum";
 import { useSignInForm } from "./useSignInForm";
-import Input from "../../components/v2/Input";
+import Input from "../../components/v1/Input";
 
 export const SignIn = () => {
   const router = useRouter();
@@ -26,11 +25,12 @@ export const SignIn = () => {
             <Typography size={TypographySize.H3}>Sign In / Sign Up</Typography>
           </Row>
           <Row>
-            <Formik {...form}>
-              <Form>
-                <Input name="code" />
-              </Form>
-            </Formik>
+            <form onSubmit={form.handleSubmit()}>
+              <Input
+                {...form.useFormField('username')}
+              />
+            </form>
+          {/* form blah blah blah */}
           </Row>
         </Column>
       </Card>

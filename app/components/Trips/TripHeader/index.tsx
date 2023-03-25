@@ -19,8 +19,8 @@ const TripHeader = ({
   const { bookings } = useFragment(
     graphql`
       fragment TripHeader_BookingsFragment on Query
-      @argumentDefinitions(tripId: { type: "ID!" }) {
-        bookings(tripId: $tripId) {
+      @argumentDefinitions(filters: { type: "BookingsFilter!" }) {
+        bookings(filters: $filters) {
           bookedFor
           event {
             city

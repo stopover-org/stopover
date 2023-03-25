@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import { v4 as uuidv4 } from "uuid";
 import Column from "../../Layout/Column";
 import Row from "../../Layout/Row";
 import { IconPosition, InputSizes, InputVariants } from "../../StatesEnum";
 import CaretUp from "../../icons/Outline/Interface/Caret_up.svg";
 import CaretDown from "../../icons/Outline/Interface/Caret_down.svg";
 
-const Wrapper = styled.form``;
 const Content = styled(Row)`
   cursor: pointer;
 `;
@@ -48,104 +46,78 @@ const SImage = styled.div<{ margin: string }>`
   height: 25px;
 `;
 
-export type Props = {
-  value?: string;
+export type InputProps = {
+  disabled?: boolean;
+  errorMessage?: string | React.ReactElement;
+  hint?: string | React.ReactElement;
+  icon?: string;
+  iconPosition?: IconPosition;
   id?: string;
+  label?: string | React.ReactElement;
+  maxValue?: number;
+  minValue?: number;
+  name: string;
+  placeholder?: string;
   size?: string | InputSizes;
   type?: string;
-  icon?: string;
-  minValue?: number;
-  maxValue?: number;
-  iconPosition?: IconPosition;
+  value: string;
   variant?: InputVariants;
-  disabled?: boolean;
-  label?: string | React.ReactElement;
-  hint?: string | React.ReactElement;
-  errorMessage?: string | React.ReactElement;
-  placeholder?: string;
+  onChange: (value: string) => void;
 };
 
-const Input = ({
-  value = "",
-  size = InputSizes.MEDIUM,
-  id = uuidv4(),
-  type = "text",
-  label = "",
-  hint = "",
-  errorMessage = "",
-  minValue,
-  maxValue,
-  disabled,
-  icon,
-  iconPosition = IconPosition.LEFT,
-  variant = InputVariants.COMMON,
-  placeholder,
-  ...props
-}: Props) => {
-  const [valueState, setValueState] = useState<string>(value);
-  const changeValue = (delta: number) => {
-    if (
-      minValue &&
-      maxValue &&
-      +valueState + delta >= minValue &&
-      +valueState + delta <= maxValue
-    ) {
-      setValueState((+valueState + delta).toString());
-      return;
-    }
-    if (
-      minValue &&
-      +valueState + delta >= minValue &&
-      maxValue &&
-      +valueState + delta <= maxValue
-    ) {
-      setValueState((+valueState + delta).toString());
-    }
-  };
+const Input = React.forwardRef(
+  ({
+    disabled,
+    errorMessage = "",
+    hint = "",
+    icon,
+    iconPosition = IconPosition.LEFT,
+    id,
+    label = "",
+    maxValue,
+    minValue,
+    name,
+    onChange,
+    placeholder,
+    size = InputSizes.MEDIUM,
+    type = "text",
+    value,
+    variant = InputVariants.COMMON,
+    ...props
+  }: InputProps) => {
+    const changeHandler = (val: string) => {
+      if (type === "number") {
+        // validate max values
+        if (maxValue && maxValue < +val) {
+          onChange(maxValue.toString());
+          return;
+        }
 
-  const changeHandler = (inputValue: string) => {
-    if (type === "number") {
-      if (maxValue && maxValue < +inputValue) {
-        setValueState(maxValue.toString());
-        return;
-      }
-      if (minValue && minValue > +inputValue) {
-        setValueState(minValue.toString());
-        return;
-      }
-      if (
-        minValue &&
-        maxValue &&
-        +inputValue >= minValue &&
-        +inputValue <= maxValue
-      ) {
-        setValueState(inputValue);
-        return;
-      }
-      if (
-        minValue &&
-        +inputValue >= minValue &&
-        maxValue &&
-        +inputValue <= maxValue
-      ) {
-        setValueState(inputValue);
-        return;
+        // validate min value
+        if (minValue && minValue > +val) {
+          onChange(minValue.toString());
+          return;
+        }
       }
 
-      setValueState(inputValue);
-    } else {
-      setValueState(inputValue);
-    }
-  };
+      onChange(val);
+    };
 
-  const borderStyle = () => {
-    if (disabled) return "1px solid #797979";
-    if (errorMessage) return "1px solid #BE0000";
-    return "1px solid black";
-  };
+    const increaseValue = () => {
+      changeHandler((+value + 1).toString());
+    };
 
-  return (
-    <Wrapper>
+    const decreaseValue = () => {
+      changeHandler((+value - 1).toString());
+    };
+
+    const borderStyle = () => {
+      if (disabled) return "1px solid #797979";
+      if (errorMessage) return "1px solid #BE0000";
+      return "1px solid black";
+    };
+
+    return (
       <label htmlFor={id}>
         <Column>
           <Content container justifyContent="start">
@@ -172,24 +144,25 @@ const Input = ({
                     </SImage>
                   )}
                   <SInput
+                    {...props}
                     id={id}
                     onChange={(e) => changeHandler(e.target.value)}
-                    value={valueState}
+                    value={value}
                     disabled={disabled}
                     placeholder={placeholder}
-                    {...props}
+                    name={name}
                   />
                   {type === "number" && (
                     <SArrow justifyContent="center">
                       <Image
-                        onClick={() => changeValue(1)}
+                        onClick={increaseValue}
                         src={CaretUp as any}
                         width="10px"
                         height="10px"
                         alt="arrow"
                       />
                       <Image
-                        onClick={() => changeValue(-1)}
+                        onClick={decreaseValue}
                         src={CaretDown as any}
                         width="10px"
                         height="10px"
@@ -218,8 +191,8 @@ const Input = ({
           </Content>
         </Column>
       </label>
-    </Wrapper>
-  );
-};
+    );
+  }
+);
 
 export default React.memo(Input);
