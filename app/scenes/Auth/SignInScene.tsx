@@ -28,6 +28,7 @@ export const SignIn = () => {
             <form onSubmit={form.handleSubmit()}>
               <Input
                 {...form.useFormField('username')}
+                label="Enter Phone number"
               />
             </form>
           {/* form blah blah blah */}

@@ -48,7 +48,7 @@ const SImage = styled.div<{ margin: string }>`
 
 export type InputProps = {
   disabled?: boolean;
-  errorMessage?: string | React.ReactElement;
+  error?: string | React.ReactElement;
   hint?: string | React.ReactElement;
   icon?: string;
   iconPosition?: IconPosition;
@@ -68,7 +68,7 @@ export type InputProps = {
 const Input = React.forwardRef(
   ({
     disabled,
-    errorMessage = "",
+    error = "",
     hint = "",
     icon,
     iconPosition = IconPosition.LEFT,
@@ -113,7 +113,7 @@ const Input = React.forwardRef(
 
     const borderStyle = () => {
       if (disabled) return "1px solid #797979";
-      if (errorMessage) return "1px solid #BE0000";
+      if (error) return "1px solid #BE0000";
       return "1px solid black";
     };
 
@@ -185,8 +185,8 @@ const Input = React.forwardRef(
             </InputWrapper>
           </Content>
           <Content justifyContent="start">
-            <SErrorMessage color={errorMessage ? "#BE0000" : "black"}>
-              {errorMessage || hint}
+            <SErrorMessage color={error ? "#BE0000" : "black"}>
+              {error || hint}
             </SErrorMessage>
           </Content>
         </Column>

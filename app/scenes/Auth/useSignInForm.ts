@@ -24,7 +24,7 @@ function useDefaultValues(): SignInFields {
 }
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().required(),
+  username: Yup.string().required().nonNullable(),
   code: Yup.string(),
   type: Yup.mixed().oneOf(["email", "phone"]).required(),
 });
@@ -64,6 +64,7 @@ export const useSignInForm = () => {
         onChange: (value: string) => {
           form.setValue('username', value)
         },
+        error: form.formState.errors[name]?.message
       }), [field])
     }
   }), [])
