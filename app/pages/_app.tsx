@@ -4,6 +4,7 @@ import { RelayEnvironmentProvider } from "react-relay";
 import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";
 import { getClientEnvironment } from "../lib/clientEnvironment";
 import "rc-slider/assets/index.css";
+import "react-phone-input-2/lib/style.css";
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({

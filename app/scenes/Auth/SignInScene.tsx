@@ -9,13 +9,22 @@ import {useSignInForm} from "./useSignInForm";
 import Input from "../../components/v1/Input";
 import Button from "../../components/v1/Button";
 import Link from "../../components/v1/Link";
+import PhoneInput from "../../components/v2/PhoneInput/PhoneInput";
+import * as momentTimezones from 'moment-timezone/data/packed/latest.json'
+import {getCountryFromOffset} from "../../lib/utils/timezones";
+
+// @ts-ignore
+if (typeof window !== 'undefined') window.momentTimezones = momentTimezones
 
 export const SignIn = () => {
   const router = useRouter();
   const form = useSignInForm();
   const typeField = form.useFormField('type')
+  const usernameField = form.useFormField('username')
+  const country = React.useMemo(() => getCountryFromOffset(), [])
   const changeType = useCallback(() => {
     typeField.onChange(typeField.value === 'email' ? 'phone' : 'email')
+    form.resetField('username')
   }, [typeField.value, typeField.onChange])
 
   return (
@@ -32,10 +41,19 @@ export const SignIn = () => {
           </Row>
           <Row width="100%">
             <form style={{ width: '100%' }} onSubmit={form.handleSubmit()}>
-              <Input
-                {...form.useFormField('username')}
-                label={`Enter ${typeField.value === 'email' ? 'email' : 'phone number'}`}
+              {typeField.value === 'email' &&
+                <Input
+                  {...usernameField}
+                  label={`Enter email`}
+                />
+              }
+              {typeField.value === 'phone' &&
+              <PhoneInput
+                {...usernameField}
+                country={country}
+                label={`Enter phone number`}
               />
+              }
               <Row width="100%" justifyContent="flex-end">
                 <Link onClick={changeType}>
                   <Typography size={TypographySize.SMALL}>

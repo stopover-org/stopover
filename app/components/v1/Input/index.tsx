@@ -123,7 +123,7 @@ const Input = React.forwardRef(
           <Content container justifyContent="start">
             {label}
           </Content>
-          <Content container justifyContent="start">
+          <Content padding="0px" container justifyContent="start">
             <InputWrapper
               padding={size}
               border={variant === InputVariants.COMMON ? borderStyle() : ""}

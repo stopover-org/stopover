@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { graphql, useMutation } from "react-relay";
-import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSignInForm_AuthLoginMutation } from "./__generated__/useSignInForm_AuthLoginMutation.graphql";
 import {useForm} from "react-hook-form";
