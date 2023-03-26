@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import {useRouter} from "next/router";
 import Card from "../../components/v2/Card";
 import Column from "../../components/Layout/Column";
@@ -6,7 +6,7 @@ import Row from "../../components/Layout/Row";
 import Typography from "../../components/v2/Typography";
 import {TypographySize} from "../../components/StatesEnum";
 import {useSignInForm} from "./useSignInForm";
-import Input from "../../components/v1/Input";
+import Input from "../../components/v2/Input";
 import Button from "../../components/v1/Button";
 import Link from "../../components/v1/Link";
 import PhoneInput from "../../components/v2/PhoneInput/PhoneInput";
@@ -19,6 +19,7 @@ if (typeof window !== 'undefined') window.momentTimezones = momentTimezones
 export const SignIn = () => {
   const router = useRouter();
   const form = useSignInForm();
+  const [showCode, setShowCode] = useState(false)
   const typeField = form.useFormField('type')
   const usernameField = form.useFormField('username')
   const country = React.useMemo(() => getCountryFromOffset(), [])
@@ -48,11 +49,11 @@ export const SignIn = () => {
                 />
               }
               {typeField.value === 'phone' &&
-              <PhoneInput
-                {...usernameField}
-                country={country}
-                label={`Enter phone number`}
-              />
+                <PhoneInput
+                  {...usernameField}
+                  country={country}
+                  label={`Enter phone number`}
+                />
               }
               <Row width="100%" justifyContent="flex-end">
                 <Link onClick={changeType}>

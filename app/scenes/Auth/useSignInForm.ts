@@ -41,8 +41,13 @@ export const useSignInForm = () => {
     }
   `);
 
-  function onSubmit(values: SignInFields) {
-    authLogin({ variables: { input: values } });
+  function onSubmit({ code, ...values }: SignInFields) {
+    const optional: Partial<SignInFields> = {}
+    if (code) optional['code'] = code
+    authLogin({ variables: { input: {
+      ...values,
+      ...optional
+    } } });
   }
 
   const form =  useForm<SignInFields>({

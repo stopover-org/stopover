@@ -1,11 +1,11 @@
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import Column from "../../Layout/Column";
 import Row from "../../Layout/Row";
 import { IconPosition, InputSizes, InputVariants } from "../../StatesEnum";
-import CaretUp from "../../icons/Outline/Interface/Caret_up.svg";
-import CaretDown from "../../icons/Outline/Interface/Caret_down.svg";
+import BaseInput from "../BaseInput";
+import { Omit } from "../../../lib/types";
 
 const Content = styled(Row)`
   cursor: pointer;
@@ -27,19 +27,6 @@ const InputWrapper = styled.div<{
   border-bottom: ${(props) => props.borderBottom};
 `;
 
-const SInput = styled.input`
-  width: 100%;
-  font-weight: 300;
-  font-family: "Roboto";
-  font-size: 18px;
-`;
-
-const SArrow = styled(Column)`
-  height: 20px;
-  width: 16px;
-  margin-left: 10px;
-`;
-
 const SImage = styled.div<{ margin: string }>`
   margin: ${(props) => props.margin};
   min-width: 25px;
@@ -47,47 +34,38 @@ const SImage = styled.div<{ margin: string }>`
 `;
 
 export type InputProps = {
-  disabled?: boolean;
   error?: string | React.ReactElement;
   hint?: string | React.ReactElement;
   icon?: string;
   iconPosition?: IconPosition;
-  id?: string;
   label?: string | React.ReactElement;
   maxValue?: number;
   minValue?: number;
-  name?: string;
   onChange?: (value: string) => void;
-  placeholder?: string;
   size?: string | InputSizes;
-  type?: string;
   value: string;
   variant?: InputVariants;
 };
 
 const Input = React.forwardRef(
   ({
-    disabled,
     error = "",
     hint = "",
     icon,
     iconPosition = IconPosition.LEFT,
-    id,
     label = "",
     maxValue,
     minValue,
-    name,
     onChange,
-    placeholder,
     size = InputSizes.MEDIUM,
-    type = "text",
     value,
     variant = InputVariants.COMMON,
     ...props
-  }: InputProps) => {
+  }: Omit<React.HTMLProps<HTMLInputElement>, keyof InputProps> &
+    InputProps) => {
     const changeHandler = (val: string) => {
       if (!onChange) return;
-      if (type === "number") {
+      if (props.type === "number") {
         // validate max values
         if (maxValue && maxValue < +val) {
           onChange(maxValue.toString());
@@ -104,22 +82,14 @@ const Input = React.forwardRef(
       onChange(val);
     };
 
-    const increaseValue = () => {
-      changeHandler((+value + 1).toString());
-    };
-
-    const decreaseValue = () => {
-      changeHandler((+value - 1).toString());
-    };
-
     const borderStyle = () => {
-      if (disabled) return "1px solid #797979";
+      if (props.disabled) return "1px solid #797979";
       if (error) return "1px solid #BE0000";
       return "1px solid black";
     };
 
     return (
-      <label htmlFor={id}>
+      <label htmlFor={props.id}>
         <Column>
           <Content container justifyContent="start">
             {label}
@@ -144,33 +114,12 @@ const Input = React.forwardRef(
                       />
                     </SImage>
                   )}
-                  <SInput
+                  <BaseInput
                     {...props}
-                    id={id}
-                    onChange={(e) => changeHandler(e.target.value)}
-                    value={value}
-                    disabled={disabled}
-                    placeholder={placeholder}
-                    name={name}
+                    onChange={(e: SyntheticEvent<HTMLInputElement>) =>
+                      changeHandler((e.target as HTMLInputElement).value)
+                    }
                   />
-                  {type === "number" && (
-                    <SArrow justifyContent="center">
-                      <Image
-                        onClick={increaseValue}
-                        src={CaretUp as any}
-                        width="10px"
-                        height="10px"
-                        alt="arrow"
-                      />
-                      <Image
-                        onClick={decreaseValue}
-                        src={CaretDown as any}
-                        width="10px"
-                        height="10px"
-                        alt="arrow"
-                      />
-                    </SArrow>
-                  )}
                   {!!icon && IconPosition.RIGHT === iconPosition && (
                     <SImage margin="0px 0px 0px 10px">
                       <Image
