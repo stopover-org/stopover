@@ -5,7 +5,7 @@ import Typography from "../../components/v2/Typography";
 import Row from "../../components/Layout/Row";
 import Column from "../../components/Layout/Column";
 import icon from "../../components/icons/Outline/Interface/Search.svg";
-import Input, { Props } from "../../components/v1/Input";
+import Input, { InputProps } from "../../components/v1/Input";
 import {
   IconPosition,
   InputVariants,
@@ -46,12 +46,12 @@ const Preview = () => (
         <Input value="Забронировать" />
       </InputSize>
       <InputSize>
-        <Input placeholder="Placeholder" />
+        <Input value="" placeholder="Placeholder" />
       </InputSize>
       <InputSize>
         <Input
           value="Забронировать"
-          errorMessage={
+          error={
             <Typography size={TypographySize.MEDIUM} as={TypographyTags.MEDIUM}>
               You have some error
             </Typography>
@@ -148,7 +148,7 @@ const Preview = () => (
         <Input
           value="123"
           type="number"
-          errorMessage={
+          error={
             <Typography size={TypographySize.MEDIUM} as={TypographyTags.MEDIUM}>
               You have some error
             </Typography>
@@ -247,7 +247,7 @@ DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
 };
 
-const Template = (args: Props) => (
+const Template = (args: InputProps) => (
   <InputSize>
     <Input {...args} />
   </InputSize>
@@ -266,5 +266,5 @@ Default.args = {
   disabled: false,
   label: "my_label",
   hint: "my_hint",
-  errorMessage: "",
+  error: "",
 };

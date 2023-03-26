@@ -56,13 +56,13 @@ export type InputProps = {
   label?: string | React.ReactElement;
   maxValue?: number;
   minValue?: number;
-  name: string;
+  name?: string;
+  onChange?: (value: string) => void;
   placeholder?: string;
   size?: string | InputSizes;
   type?: string;
   value: string;
   variant?: InputVariants;
-  onChange: (value: string) => void;
 };
 
 const Input = React.forwardRef(
@@ -86,6 +86,7 @@ const Input = React.forwardRef(
     ...props
   }: InputProps) => {
     const changeHandler = (val: string) => {
+      if (!onChange) return;
       if (type === "number") {
         // validate max values
         if (maxValue && maxValue < +val) {
