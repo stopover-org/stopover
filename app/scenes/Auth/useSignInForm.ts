@@ -62,7 +62,7 @@ export const useSignInForm = () => {
         ref: field.ref,
         value: form.watch(name),
         onChange: (value: string) => {
-          form.setValue('username', value)
+          form.setValue(name, value)
         },
         error: form.formState.errors[name]?.message
       }), [field])
