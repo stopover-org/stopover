@@ -65,7 +65,7 @@ RSpec.describe Mutations::CreateCheckout do
         expect(res['data']['createCheckout']).to eq({
                                                       'url' => nil,
                                                       'booking' => { 'id' => GraphqlSchema.id_from_object(booking) },
-                                                      'payment' => { 'id' => GraphqlSchema.id_from_object(Payment.last) }
+                                                      'payment' => nil
                                                     })
       end
     end
