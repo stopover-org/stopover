@@ -128,12 +128,14 @@ ActiveRecord::Base.connection_pool.flush!
         recurring_days_with_time: ["#{random_day.call} #{random_hour.call}:#{random_minute.call}"],
         organizer_price_per_uom_cents: price,
         attendee_price_per_uom_cents: price * 0.8,
+        prepaid_amount_cents: price * 0.4,
         event_options: [1..4].map do
                          EventOption.new(
                            title: Faker::Coffee.blend_name,
                            description: Faker::Coffee.notes,
                            built_in: [true, false].sample,
-                           for_attendee: [true, false].sample
+                           for_attendee: [true, false].sample,
+                           organizer_price_cents: random_from.call(10_000),
                          )
                        end
       )
