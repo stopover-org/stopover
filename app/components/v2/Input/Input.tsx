@@ -91,7 +91,7 @@ const Input = React.forwardRef(
     return (
       <label htmlFor={props.id}>
         <Column>
-          <Content container justifyContent="start">
+          <Content padding="0 0 5px 0" container justifyContent="start">
             {label}
           </Content>
           <Content padding="0px" container justifyContent="start">
