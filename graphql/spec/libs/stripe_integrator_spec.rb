@@ -24,22 +24,44 @@ RSpec.describe StripeIntegrator, type: :model do
     it 'is created and product_id and price_id eq Stripe ids' do
       ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
 
-      expect(Stripe::Product).to receive(:create).with({ name: event.title }).and_return({ id: 'product_id' })
+      expect(Stripe::Product).to receive(:create).with({
+                                                         name: event.title,
+                                                         description: event.description,
+                                                         metadata: {
+                                                           stopover_id: event.id,
+                                                           stopover_model_name: event.class.name
+                                                         }
+                                                       }).and_return({ id: 'product_id' })
       expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 22,
                                                        product: 'product_id',
                                                        currency: :usd,
-                                                       billing_scheme: 'per_unit' })
+                                                       billing_scheme: 'per_unit',
+                                                       nickname: 'full_amount',
+                                                       metadata: {
+                                                         stopover_id: event.id,
+                                                         stopover_model_name: event.class.name
+                                                       } })
                                                .and_return({ id: 'price_id1' })
       expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id' }).exactly(2).times
       expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 5,
                                                        product: 'product_id',
                                                        currency: :usd,
-                                                       billing_scheme: 'per_unit' })
+                                                       billing_scheme: 'per_unit',
+                                                       nickname: 'prepaid_amount',
+                                                       metadata: {
+                                                         stopover_id: event.id,
+                                                         stopover_model_name: event.class.name
+                                                       } })
                                                .and_return({ id: 'price_id2' })
       expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 17,
                                                        product: 'product_id',
                                                        currency: :usd,
-                                                       billing_scheme: 'per_unit' })
+                                                       billing_scheme: 'per_unit',
+                                                       nickname: 'remaining_amount',
+                                                       metadata: {
+                                                         stopover_id: event.id,
+                                                         stopover_model_name: event.class.name
+                                                       } })
                                                .and_return({ id: 'price_id3' })
 
       StripeIntegrator.sync(event)
@@ -96,7 +118,7 @@ RSpec.describe StripeIntegrator, type: :model do
 
     context 'update' do
       let!(:event) { create(:stripe_integration_factory, organizer_price_per_uom: Money.new(10)) }
-      it 'update' do
+      it 'price and product' do
         ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
         event.update(title: 'new_title', organizer_price_per_uom: Money.new(10), prepaid_amount: Money.new(5))
         expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id', name: 'product_name' }).exactly(3).time
@@ -104,10 +126,40 @@ RSpec.describe StripeIntegrator, type: :model do
         expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_prepaid_amount').and_return({ unit_amount: 10 }).exactly(3).time
         expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_remaining_amount').and_return({ unit_amount: 12 }).exactly(3).time
 
-        expect(Stripe::Product).to receive(:update).with({ id: 'product_id', name: 'new_title' }).and_return(product: { id: 'product_id' }).exactly(3).time
-        expect(Stripe::Price).to receive(:update).with({ id: 'price_id_full_amount', unit_amount: 11 }).and_return(price: { id: 'price_id' }).exactly(1).time
-        expect(Stripe::Price).to receive(:update).with({ id: 'price_id_prepaid_amount', unit_amount: 5 }).and_return(price: { id: 'price_id' }).exactly(1).time
-        expect(Stripe::Price).to receive(:update).with({ id: 'price_id_remaining_amount', unit_amount: 6 }).and_return(price: { id: 'price_id' }).exactly(1).time
+        expect(Stripe::Product).to receive(:update).with({ id: 'product_id',
+                                                           name: 'new_title',
+                                                           description: event.description,
+                                                           metadata: {
+                                                             stopover_id: event.id,
+                                                             stopover_model_name: event.class.name
+                                                           } }).and_return(product: { id: 'product_id' }).exactly(3).time
+        expect(Stripe::Price).to receive(:update).with({
+                                                         id: 'price_id_full_amount',
+                                                         unit_amount: 11,
+                                                         nickname: 'full_amount',
+                                                         metadata: {
+                                                           stopover_id: event.id,
+                                                           stopover_model_name: event.class.name
+                                                         }
+                                                       }).and_return(price: { id: 'price_id' }).exactly(1).time
+        expect(Stripe::Price).to receive(:update).with({
+                                                         id: 'price_id_prepaid_amount',
+                                                         unit_amount: 5,
+                                                         nickname: 'prepaid_amount',
+                                                         metadata: {
+                                                           stopover_id: event.id,
+                                                           stopover_model_name: event.class.name
+                                                         }
+                                                       }).and_return(price: { id: 'price_id' }).exactly(1).time
+        expect(Stripe::Price).to receive(:update).with({
+                                                         id: 'price_id_remaining_amount',
+                                                         unit_amount: 6,
+                                                         nickname: 'remaining_amount',
+                                                         metadata: {
+                                                           stopover_id: event.id,
+                                                           stopover_model_name: event.class.name
+                                                         }
+                                                       }).and_return(price: { id: 'price_id' }).exactly(1).time
 
         StripeIntegrator.sync(event)
       end
