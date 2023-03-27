@@ -31,7 +31,8 @@ class AttendeeOption < ApplicationRecord
   # HAS_MANY ASSOCIATIONS ========================================================
   #
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  #
+  has_many :stripe_integrations, through: :event_option
+
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :attendee
   belongs_to :event_option
@@ -60,7 +61,7 @@ class AttendeeOption < ApplicationRecord
   end
 
   def adjust_prices!
-    return if attendee.booking.payments.where(status: %i[processing successful]).any?
+    return if attendee.booking.payments.where(status: %i[successful]).any?
     adjust_prices
     save!
   end

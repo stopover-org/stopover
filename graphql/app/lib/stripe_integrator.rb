@@ -61,6 +61,13 @@ class StripeIntegrator
   def self.sync(model)
     return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
 
+    model.stripe_integrations.each do |stripe_integration|
+      stripe_integration.payments.processing.each do |payment|
+        Stripe::Checkout::Session.expire(payment.stripe_checkout_session_id)
+        payment.cancel!
+      end
+    end
+
     if model.stripe_integrations.empty?
       create_full_amount(model)
       create_prepaid_amount(model) if model.is_a? Event

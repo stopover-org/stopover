@@ -91,6 +91,8 @@ class Booking < ApplicationRecord
   end
 
   def create_trip
+    # TODO: make bang create
+    # to raise an error
     Trip.create(bookings: [self])
   end
 end

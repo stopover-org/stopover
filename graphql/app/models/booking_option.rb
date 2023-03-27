@@ -36,7 +36,8 @@ class BookingOption < ApplicationRecord
   # HAS_MANY ASSOCIATIONS =========================================================
   #
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  #
+  has_many :stripe_integrations, through: :event_option
+
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :booking
   belongs_to :event_option
@@ -61,7 +62,7 @@ class BookingOption < ApplicationRecord
   end
 
   def adjust_prices!
-    return unless Payment.where(booking: booking, status: %i[processing successful]).empty?
+    return unless booking.payments.where(status: %i[successful]).empty?
     adjust_prices
     save!
   end
