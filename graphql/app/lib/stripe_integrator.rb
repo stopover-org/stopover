@@ -87,11 +87,23 @@ class StripeIntegrator
     return unless model.stripe_integrations.where(price_type: :full_amount)
 
     model.stripe_integrations << stripe_integration
-    product = Stripe::Product.create(name: stripe_integration.name)
+    product = Stripe::Product.create(
+      name: stripe_integration.name,
+      description: model.description,
+      metadata: {
+        stopover_id: model.id,
+        stopover_model_name: model.class.name
+      }
+    )
     price = Stripe::Price.create(unit_amount_decimal: stripe_integration.unit_amount.cents,
                                  product: product[:id],
                                  currency: stripe_integration.unit_amount.currency.id,
-                                 billing_scheme: 'per_unit')
+                                 billing_scheme: 'per_unit',
+                                 nickname: stripe_integration.price_type,
+                                 metadata: {
+                                   stopover_id: model.id,
+                                   stopover_model_name: model.class.name
+                                 })
     stripe_integration.price_id = price[:id]
     stripe_integration.product_id = product[:id]
     stripe_integration.save!
@@ -108,8 +120,12 @@ class StripeIntegrator
     price = Stripe::Price.create(unit_amount_decimal: stripe_integration.prepaid_amount.cents,
                                  product: product[:id],
                                  currency: stripe_integration.unit_amount.currency.id,
-                                 billing_scheme: 'per_unit')
-
+                                 billing_scheme: 'per_unit',
+                                 nickname: stripe_integration.price_type,
+                                 metadata: {
+                                   stopover_id: model.id,
+                                   stopover_model_name: model.class.name
+                                 })
     stripe_integration.price_id =   price[:id]
     stripe_integration.product_id = product[:id]
     stripe_integration.save!
@@ -125,7 +141,12 @@ class StripeIntegrator
     price = Stripe::Price.create(unit_amount_decimal: stripe_integration.remaining_amount.cents,
                                  product: product[:id],
                                  currency: stripe_integration.unit_amount.currency.id,
-                                 billing_scheme: 'per_unit')
+                                 billing_scheme: 'per_unit',
+                                 nickname: stripe_integration.price_type,
+                                 metadata: {
+                                   stopover_id: model.id,
+                                   stopover_model_name: model.class.name
+                                 })
     stripe_integration.price_id =   price[:id]
     stripe_integration.product_id = product[:id]
     stripe_integration.save!
@@ -138,13 +159,23 @@ class StripeIntegrator
     if stripe[:product][:name] != stripe_integration.name
       Stripe::Product.update(
         id: stripe_integration.product_id,
-        name: stripe_integration.name
+        name: stripe_integration.name,
+        description: model.description,
+        metadata: {
+          stopover_id: model.id,
+          stopover_model_name: model.class.name
+        }
       )
     end
     if stripe[:prices][:full_amount][:unit_amount] != stripe_integration.unit_amount.cents
       Stripe::Price.update(
         id: stripe_integration.price_id,
-        unit_amount: stripe_integration.unit_amount.cents
+        unit_amount: stripe_integration.unit_amount.cents,
+        nickname: stripe_integration.price_type,
+        metadata: {
+          stopover_id: model.id,
+          stopover_model_name: model.class.name
+        }
       )
     end
   end
@@ -155,14 +186,24 @@ class StripeIntegrator
     if stripe[:product][:name] != stripe_integration.name
       Stripe::Product.update(
         id: stripe_integration.product_id,
-        name: stripe_integration.name
+        name: stripe_integration.name,
+        description: model.description,
+        metadata: {
+          stopover_id: model.id,
+          stopover_model_name: model.class.name
+        }
       )
     end
 
     if stripe[:prices][:prepaid_amount][:unit_amount] != stripe_integration.prepaid_amount.cents
       Stripe::Price.update(
         id: stripe_integration.price_id,
-        unit_amount: stripe_integration.prepaid_amount.cents
+        unit_amount: stripe_integration.prepaid_amount.cents,
+        nickname: stripe_integration.price_type,
+        metadata: {
+          stopover_id: model.id,
+          stopover_model_name: model.class.name
+        }
       )
     end
   end
@@ -173,13 +214,23 @@ class StripeIntegrator
     if stripe[:product][:name] != stripe_integration.name
       Stripe::Product.update(
         id: stripe_integration.product_id,
-        name: stripe_integration.name
+        name: stripe_integration.name,
+        description: model.description,
+        metadata: {
+          stopover_id: model.id,
+          stopover_model_name: model.class.name
+        }
       )
     end
     if stripe[:prices][:remaining_amount][:unit_amount] != stripe_integration.remaining_amount.cents
       Stripe::Price.update(
         id: stripe_integration.price_id,
-        unit_amount: stripe_integration.remaining_amount.cents
+        unit_amount: stripe_integration.remaining_amount.cents,
+        nickname: stripe_integration.price_type,
+        metadata: {
+          stopover_id: model.id,
+          stopover_model_name: model.class.name
+        }
       )
     end
   end
