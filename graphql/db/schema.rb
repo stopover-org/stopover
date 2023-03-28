@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_15_125748) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_28_150552) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -103,6 +103,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_15_125748) do
     t.datetime "updated_at", null: false
     t.boolean "is_registered", default: false
     t.index ["booking_id"], name: "index_attendees_on_booking_id"
+  end
+
+  create_table "balances", force: :cascade do |t|
+    t.bigint "firm_id"
+    t.decimal "total_amount_cents", default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["firm_id"], name: "index_balances_on_firm_id"
   end
 
   create_table "booking_cancellation_options", force: :cascade do |t|
@@ -272,6 +280,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_15_125748) do
     t.bigint "booking_id"
     t.string "stripe_checkout_session_id"
     t.string "provider"
+    t.decimal "fee", default: "0.0"
+    t.string "payment_type"
     t.index ["booking_id"], name: "index_payments_on_booking_id"
   end
 

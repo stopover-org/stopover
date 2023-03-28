@@ -30,7 +30,7 @@
 #  requires_prepaid              :boolean          default(FALSE), not null
 #  single_days_with_time         :datetime         default([]), is an Array
 #  status                        :string
-#  street                    |    :string
+#  street                        :string
 #  title                         :string           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null

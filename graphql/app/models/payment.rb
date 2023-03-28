@@ -5,6 +5,8 @@
 # Table name: payments
 #
 #  id                         :bigint           not null, primary key
+#  fee                        :decimal(, )      default(0.0)
+#  payment_type               :string
 #  provider                   :string
 #  status                     :string
 #  total_price_cents          :decimal(, )      default(0.0)
@@ -36,6 +38,7 @@ class Payment < ApplicationRecord
 
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :booking
+  belongs_to :balance
 
   # AASM STATES ================================================================
   aasm column: :status do
@@ -51,6 +54,9 @@ class Payment < ApplicationRecord
       transitions from: :processing, to: :canceled
     end
     event :success do
+      before do
+        top_up_balance
+      end
       transitions from: :processing, to: :successful
     end
   end
@@ -61,8 +67,20 @@ class Payment < ApplicationRecord
   # VALIDATIONS ================================================================
   #
   # CALLBACKS ================================================================
-  #
+  before_validation :fee
+
   # SCOPES =====================================================================
   #
   # DELEGATIONS ==============================================================
+
+  private
+
+  def fee
+    fee = 0 if payment_type == 'remaining_amount'
+    fee = booking.event.organizer_price_per_uom_cents - booking.event.attendee_price_per_uom_cents
+  end
+
+  def top_up_balance
+    booking.event.firm.balance.update!(total_amount: Money.new(fee))
+  end
 end

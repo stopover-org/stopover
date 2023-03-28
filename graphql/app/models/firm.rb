@@ -61,10 +61,15 @@ class Firm < ApplicationRecord
   validates :accounts, length: { minimum: 1 }
 
   # CALLBACKS ================================================================
-  #
+  after_commit :create_balance
+
   # SCOPES =====================================================================
   #
   # DELEGATIONS ==============================================================
+
+  def create_balance
+    Balance.create!(firm: self)
+  end
 
   def unpublish_events
     RemoveFirmJob.perform_later(id)

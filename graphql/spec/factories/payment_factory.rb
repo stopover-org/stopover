@@ -5,6 +5,8 @@
 # Table name: payments
 #
 #  id                         :bigint           not null, primary key
+#  fee                        :decimal(, )      default(0.0)
+#  payment_type               :string
 #  provider                   :string
 #  status                     :string
 #  total_price_cents          :decimal(, )      default(0.0)
