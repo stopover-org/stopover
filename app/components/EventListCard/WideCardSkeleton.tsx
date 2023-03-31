@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "../v2/Card";
-import Skeleton from "../v2/Skeleton";
+import Card from "../v1/Card";
+import Skeleton from "../v1/Skeleton";
 import { CardImageLocation, SkeletonType } from "../StatesEnum";
 import icon from "../icons/SkeletonImage.svg";
 import Column from "../Layout/Column";

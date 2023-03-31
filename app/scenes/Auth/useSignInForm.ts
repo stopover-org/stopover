@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
 import { graphql, useMutation } from "react-relay";
 import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useSignInForm_AuthLoginMutation } from "./__generated__/useSignInForm_AuthLoginMutation.graphql";
-import {useForm} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
 
 interface SignInFields {
   username: string;
@@ -42,34 +42,44 @@ export const useSignInForm = () => {
   `);
 
   function onSubmit({ code, ...values }: SignInFields) {
-    const optional: Partial<SignInFields> = {}
-    if (code) optional['code'] = code
-    authLogin({ variables: { input: {
-      ...values,
-      ...optional
-    } } });
+    const optional: Partial<SignInFields> = {};
+    if (code) optional.code = code;
+    authLogin({
+      variables: {
+        input: {
+          ...values,
+          ...optional,
+        },
+      },
+    });
   }
 
-  const form =  useForm<SignInFields>({
+  const form = useForm<SignInFields>({
     resolver: yupResolver(validationSchema),
     defaultValues: useDefaultValues(),
-  })
+  });
 
-  return React.useMemo(() => ({
-    ...form,
-    handleSubmit: () => form.handleSubmit(onSubmit),
-    useFormField(name: keyof SignInFields) {
-      const field = form.register(name)
+  return React.useMemo(
+    () => ({
+      ...form,
+      handleSubmit: () => form.handleSubmit(onSubmit),
+      useFormField(name: keyof SignInFields) {
+        const field = form.register(name);
 
-      return React.useMemo(() => ({
-        ...field,
-        ref: field.ref,
-        value: form.watch(name),
-        onChange: (value: string) => {
-          form.setValue(name, value)
-        },
-        error: form.formState.errors[name]?.message
-      }), [field])
-    }
-  }), [])
-}
+        return React.useMemo(
+          () => ({
+            ...field,
+            ref: field.ref,
+            value: form.watch(name),
+            onChange: (event: any) => {
+              form.setValue(name, event.target.value);
+            },
+            error: form.formState.errors[name]?.message,
+          }),
+          [field]
+        );
+      },
+    }),
+    []
+  );
+};

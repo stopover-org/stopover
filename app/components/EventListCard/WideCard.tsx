@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { graphql, useFragment } from "react-relay";
-import Card from "../v2/Card";
+import Card from "../v1/Card";
 import AverageRating from "../v1/AverageRating/AverageRating";
 import {
   ButtonIconPlace,
@@ -12,11 +12,11 @@ import {
   TypographySize,
   TypographyTags,
 } from "../StatesEnum";
-import Typography from "../v2/Typography";
+import Typography from "../v1/Typography";
 import BaseImage from "../v1/BaseImage";
 import Column from "../Layout/Column";
 import Link from "../v1/Link";
-import Tag from "../v2/Tag";
+import Tag from "../v1/Tag";
 import Row from "../Layout/Row";
 import Button from "../v1/Button";
 import icon from "../icons/Outline/General/Shopping_cart_white.svg";

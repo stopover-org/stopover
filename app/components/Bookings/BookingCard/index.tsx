@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "../../v2/Card";
+import Card from "../../v1/Card";
 import BaseImage from "../../v1/BaseImage";
-import Typography from "../../v2/Typography";
+import Typography from "../../v1/Typography";
 import Row from "../../Layout/Row";
 import Column from "../../Layout/Column";
 import {

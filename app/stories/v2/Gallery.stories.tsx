@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import Gallery, { GalleryProps } from "../../components/v2/Gallery";
+import Gallery, { GalleryProps } from "../../components/v1/Gallery";
 
 const imagesArray: any = [
   {

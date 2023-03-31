@@ -8,7 +8,7 @@ import {
   TypographySize,
   TypographyWeight,
 } from "../../../../../components/StatesEnum";
-import Typography from "../../../../../components/v2/Typography";
+import Typography from "../../../../../components/v1/Typography";
 
 const ImageWrapper = styled.div<{ left: string; bottom: string }>`
   display: none;

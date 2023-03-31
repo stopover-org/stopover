@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import Tag, { TagProps } from "../../components/v2/Tag";
+import Tag, { TagProps } from "../../components/v1/Tag";
 import Row from "../../components/Layout/Row";
 import Column from "../../components/Layout/Column";
 import { TagSizes, TagType } from "../../components/StatesEnum";

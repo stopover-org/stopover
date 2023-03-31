@@ -1,9 +1,9 @@
-import { countries } from "moment-timezone/data/packed/latest.json";
+import * as momentTimezones from "moment-timezone/data/packed/latest.json";
 
 export function getCountryFromOffset() {
-  if (!countries) return undefined;
+  if (!momentTimezones.countries) return undefined;
   // @ts-ignore
-  return countries
+  return momentTimezones.countries
     .find((v) => v.match(Intl.DateTimeFormat().resolvedOptions().timeZone))
     ?.split("|")[0]
     .toLowerCase();

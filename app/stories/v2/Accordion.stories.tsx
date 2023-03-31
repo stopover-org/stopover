@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { ComponentStory } from "@storybook/react";
-import Accordion, { AccordionProps } from "../../components/v2/Accordion";
+import Accordion, { AccordionProps } from "../../components/v1/Accordion";
 import Column from "../../components/Layout/Column";
 import Row from "../../components/Layout/Row";
 import { TypographyTags } from "../../components/StatesEnum";
-import Typography from "../../components/v2/Typography";
+import Typography from "../../components/v1/Typography";
 import BookingForm from "../../components/Bookings/BookingForm";
 
 const AccordionPadding = styled.div`

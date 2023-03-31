@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import Typography, { Props } from "../../components/v2/Typography";
+import Typography, { Props } from "../../components/v1/Typography";
 import Row from "../../components/Layout/Row";
 import Column from "../../components/Layout/Column";
 import { TypographySize, TypographyTags } from "../../components/StatesEnum";

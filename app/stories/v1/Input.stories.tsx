@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import Typography from "../../components/v2/Typography";
+import Typography from "../../components/v1/Typography";
 import Row from "../../components/Layout/Row";
 import Column from "../../components/Layout/Column";
 import icon from "../../components/icons/Outline/Interface/Search.svg";
-import Input, { InputProps } from "../../components/v2/Input";
+import Input, { InputProps } from "../../components/v1/Input";
 import {
   IconPosition,
   InputVariants,

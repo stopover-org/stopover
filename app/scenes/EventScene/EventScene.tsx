@@ -5,7 +5,7 @@ import Column from "../../components/Layout/Column";
 import { Breadcrumbs } from "./components/Breadcrumbs/Breadcrumbs";
 import { EventScene_Event$key } from "./__generated__/EventScene_Event.graphql";
 import Row from "../../components/Layout/Row";
-import Typography from "../../components/v2/Typography";
+import Typography from "../../components/v1/Typography";
 import Button from "../../components/v1/Button";
 import Calendar from "../../components/icons/Outline/General/Calendar.svg";
 import {
@@ -14,9 +14,9 @@ import {
   TagSizes,
 } from "../../components/StatesEnum";
 import Rate from "../../components/v1/Rate";
-import Tag from "../../components/v2/Tag";
+import Tag from "../../components/v1/Tag";
 import { getCurrencyFormat } from "../../lib/utils/currencyFormatter";
-import Gallery from "../../components/v2/Gallery";
+import Gallery from "../../components/v1/Gallery";
 import Description from "../../components/Description";
 
 const SBookButton = styled(Button)`

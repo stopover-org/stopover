@@ -14,7 +14,11 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fontsource/public-sans": "^4.5.12",
     "@hookform/resolvers": "^3.0.0",
+    "@mui/joy": "^5.0.0-alpha.73",
     "@react-google-maps/api": "^2.12.2",
     "@storybook/react": "^6.5.16",
     "@types/styled-components": "^5.1.26",

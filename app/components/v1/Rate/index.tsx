@@ -3,7 +3,7 @@ import { graphql, useFragment } from "react-relay";
 import { Rate_EventRate$key } from "./__generated__/Rate_EventRate.graphql";
 import Row from "../../Layout/Row";
 import AverageRating from "../AverageRating/AverageRating";
-import Typography from "../../v2/Typography";
+import Typography from "../Typography";
 import { TypographySize, TypographyTags } from "../../StatesEnum";
 
 type Props = {

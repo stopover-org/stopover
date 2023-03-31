@@ -19,7 +19,7 @@ import {
   PaginationSize,
   TypographySize,
 } from "../components/StatesEnum";
-import Typography from "../components/v2/Typography";
+import Typography from "../components/v1/Typography";
 import { EventsListScene_EventsFragment$key } from "./__generated__/EventsListScene_EventsFragment.graphql";
 import { EventsListScene_InterestsFragment$key } from "./__generated__/EventsListScene_InterestsFragment.graphql";
 

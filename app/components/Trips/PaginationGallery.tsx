@@ -5,7 +5,7 @@ import TripCardComponent from "./CompactCard";
 import SkeletonTripCard from "./CompactCard/SkeletonCompactCard";
 import Row from "../Layout/Row";
 import Column from "../Layout/Column";
-import Typography from "../v2/Typography";
+import Typography from "../v1/Typography";
 import { TypographySize, TypographyTags } from "../StatesEnum";
 import right from "../icons/Solid/Interface/Caret right.svg";
 import left from "../icons/Solid/Interface/Caret left.svg";

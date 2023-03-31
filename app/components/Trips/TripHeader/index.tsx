@@ -2,7 +2,7 @@ import moment from "moment";
 import React from "react";
 import styled from "styled-components";
 import { graphql, useFragment } from "react-relay";
-import Typography from "../../v2/Typography";
+import Typography from "../../v1/Typography";
 import { TripHeader_BookingsFragment$key } from "./__generated__/TripHeader_BookingsFragment.graphql";
 import { TypographySize, TypographyTags } from "../../StatesEnum";
 import { getDayMonth, isDifferentDayMonth } from "../../../lib/utils/dates";

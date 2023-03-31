@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Row from "../../Layout/Row";
 import Column from "../../Layout/Column";
-import Typography from "../../v2/Typography";
+import Typography from "../Typography";
 import { PaginationSize, TypographyTags } from "../../StatesEnum";
 
 const PageNumber = styled(Column)<{ size: string }>`

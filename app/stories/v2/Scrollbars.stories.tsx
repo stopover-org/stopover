@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import Scrollbars from "react-custom-scrollbars-2";
 import React from "react";
-import Typography from "../../components/v2/Typography";
+import Typography from "../../components/v1/Typography";
 
 export default {
   title: "Components/V2/Scrollbars",

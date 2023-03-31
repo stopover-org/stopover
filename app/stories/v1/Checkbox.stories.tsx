@@ -10,7 +10,7 @@ import {
   TypographySize,
   TypographyTags,
 } from "../../components/StatesEnum";
-import Typography from "../../components/v2/Typography";
+import Typography from "../../components/v1/Typography";
 
 const CheckboxPadding = styled.div`
   width: 167px;

@@ -1,5 +1,5 @@
 import { graphql, useFragment } from "react-relay";
-import Typography from "../../../../components/v2/Typography";
+import Typography from "../../../../components/v1/Typography";
 import Row from "../../../../components/Layout/Row";
 import { Breadcrumbs_Event$key } from "./__generated__/Breadcrumbs_Event.graphql";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Typography from "../v2/Typography";
+import Typography from "../v1/Typography";
 import Row from "../Layout/Row";
 import { TypographySize, TypographyTags } from "../StatesEnum";
 

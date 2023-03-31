@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import Typography from "../../components/v2/Typography";
+import Typography from "../../components/v1/Typography";
 import Button, { Props } from "../../components/v1/Button";
 import Row from "../../components/Layout/Row";
 import Column from "../../components/Layout/Column";
