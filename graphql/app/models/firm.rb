@@ -61,7 +61,7 @@ class Firm < ApplicationRecord
   validates :accounts, length: { minimum: 1 }
 
   # CALLBACKS ================================================================
-  after_commit :create_balance
+  after_create :create_balance
 
   # SCOPES =====================================================================
   #
