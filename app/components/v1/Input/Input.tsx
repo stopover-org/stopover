@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from "react";
+import React, { ForwardedRef, SyntheticEvent } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import Column from "../../Layout/Column";
@@ -48,21 +48,23 @@ export type InputProps = {
 };
 
 const Input = React.forwardRef(
-  ({
-    error = "",
-    hint = "",
-    icon,
-    iconPosition = IconPosition.LEFT,
-    label = "",
-    maxValue,
-    minValue,
-    onChange,
-    size = InputSizes.MEDIUM,
-    value,
-    variant = InputVariants.COMMON,
-    ...props
-  }: Omit<React.HTMLProps<HTMLInputElement>, keyof InputProps> &
-    InputProps) => {
+  (
+    {
+      error = "",
+      hint = "",
+      icon,
+      iconPosition = IconPosition.LEFT,
+      label = "",
+      maxValue,
+      minValue,
+      onChange,
+      size = InputSizes.MEDIUM,
+      value,
+      variant = InputVariants.COMMON,
+      ...props
+    }: Omit<React.HTMLProps<HTMLInputElement>, keyof InputProps> & InputProps,
+    ref: ForwardedRef<HTMLInputElement>
+  ) => {
     const changeHandler = (val: string) => {
       if (!onChange) return;
       if (props.type === "number") {
@@ -116,6 +118,7 @@ const Input = React.forwardRef(
                   )}
                   <BaseInput
                     {...props}
+                    ref={ref}
                     onChange={(e: SyntheticEvent<HTMLInputElement>) =>
                       changeHandler((e.target as HTMLInputElement).value)
                     }

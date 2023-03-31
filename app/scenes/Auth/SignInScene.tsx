@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import * as momentTimezones from "moment-timezone/data/packed/latest.json";
 import { Card, Grid } from "@mui/joy";
@@ -10,22 +10,25 @@ import Typography from "../../components/v1/Typography";
 import { TypographySize } from "../../components/StatesEnum";
 import PhoneInput from "../../components/v1/PhoneInput/PhoneInput";
 import Button from "../../components/v1/Button";
+import CodeInput from "./components/CodeInput";
 
 // @ts-ignore
 if (typeof window !== "undefined") window.momentTimezones = momentTimezones;
 
 export const SignIn = () => {
   const router = useRouter();
-  const form = useSignInForm();
-  const typeField = form.useFormField("type");
-  const usernameField = form.useFormField("username");
+  const [showCode, setShowCode] = useState(false);
+  const { useFormField, resetField, handleSubmit } = useSignInForm(
+    () => setShowCode(true),
+    () => {}
+  );
+  const typeField = useFormField("type");
+  const usernameField = useFormField("username");
   const country = React.useMemo(() => getCountryFromOffset(), []);
   const changeType = useCallback(() => {
-    typeField.onChange({
-      target: { value: typeField.value === "email" ? "phone" : "email" },
-    });
+    typeField.onChange(typeField.value === "email" ? "phone" : "email");
 
-    form.resetField("username");
+    resetField("username");
   }, [typeField.value, typeField.onChange]);
 
   return (
@@ -46,26 +49,37 @@ export const SignIn = () => {
             <Typography size={TypographySize.H3}>Sign In / Sign Up</Typography>
           </Grid>
           <Grid xs={12}>
-            <form style={{ width: "100%" }} onSubmit={form.handleSubmit()}>
-              <Grid>
-                {typeField.value === "email" && (
-                  <Input {...usernameField} label="Enter email" />
-                )}
-                {typeField.value === "phone" && (
-                  <PhoneInput
-                    {...usernameField}
-                    country={country}
-                    label="Enter phone number"
-                  />
-                )}
-              </Grid>
-              <Grid container justifyContent="flex-end">
-                <Link onClick={changeType}>
-                  <Typography size={TypographySize.SMALL}>
-                    Use {typeField.value === "email" ? "phone number" : "email"}
-                  </Typography>
-                </Link>
-              </Grid>
+            <form style={{ width: "100%" }} onSubmit={handleSubmit()}>
+              {showCode && (
+                <Grid>
+                  <CodeInput {...useFormField("code")} />
+                </Grid>
+              )}
+
+              {!showCode && (
+                <>
+                  <Grid>
+                    {typeField.value === "email" && (
+                      <Input {...usernameField} label="Enter email" />
+                    )}
+                    {typeField.value === "phone" && (
+                      <PhoneInput
+                        {...usernameField}
+                        country={country}
+                        label="Enter phone number"
+                      />
+                    )}
+                  </Grid>
+                  <Grid container justifyContent="flex-end">
+                    <Link onClick={changeType}>
+                      <Typography size={TypographySize.SMALL}>
+                        Use{" "}
+                        {typeField.value === "email" ? "phone number" : "email"}
+                      </Typography>
+                    </Link>
+                  </Grid>
+                </>
+              )}
 
               <Grid container justifyContent="flex-end">
                 <Button type="submit">

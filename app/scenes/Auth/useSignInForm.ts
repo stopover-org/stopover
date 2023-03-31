@@ -28,11 +28,15 @@ const validationSchema = Yup.object().shape({
   type: Yup.mixed().oneOf(["email", "phone"]).required(),
 });
 
-export const useSignInForm = () => {
+export const useSignInForm = (
+  onNextStep: (delay: number) => void,
+  onFinalStep: () => void
+) => {
   const [authLogin] = useMutation<useSignInForm_AuthLoginMutation>(graphql`
     mutation useSignInForm_AuthLoginMutation($input: SignInInput!) {
       signIn(input: $input) {
         user {
+          id
           email
           phone
         }
@@ -50,6 +54,13 @@ export const useSignInForm = () => {
           ...values,
           ...optional,
         },
+      },
+      onCompleted(result) {
+        if (result.signIn?.delay) {
+          onNextStep(result.signIn?.delay);
+        } else if (result.signIn?.user?.id) {
+          onFinalStep();
+        }
       },
     });
   }
@@ -71,8 +82,8 @@ export const useSignInForm = () => {
             ...field,
             ref: field.ref,
             value: form.watch(name),
-            onChange: (event: any) => {
-              form.setValue(name, event.target.value);
+            onChange: (value: string) => {
+              form.setValue(name, value);
             },
             error: form.formState.errors[name]?.message,
           }),
