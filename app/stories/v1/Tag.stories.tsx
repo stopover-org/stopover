@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 `;
 
 export default {
-  title: "Components/V2/Tag",
+  title: "Components/V1/Tag",
   component: Tag,
   argTypes: {
     children: { control: "text" },

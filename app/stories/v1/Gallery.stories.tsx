@@ -30,7 +30,7 @@ const imagesArray: any = [
 ];
 
 export default {
-  title: "Components/V2/Gallery",
+  title: "Components/V1/Gallery",
   component: Gallery,
   argTypes: {
     maxHeight: {

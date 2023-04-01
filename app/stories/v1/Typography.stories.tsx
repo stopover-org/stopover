@@ -11,7 +11,7 @@ const TypographyPadding = styled.div`
 `;
 
 export default {
-  title: "Components/V2/Typography",
+  title: "Components/V1/Typography",
   component: Typography,
   argTypes: {
     color: { control: "color" },
