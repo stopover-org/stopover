@@ -9,6 +9,13 @@ export const theme = extendTheme({
         },
       },
     },
+    JoyButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+      },
+    },
   },
   fontFamily: {
     body: "'Roboto'",

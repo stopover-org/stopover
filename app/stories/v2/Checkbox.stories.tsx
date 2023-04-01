@@ -1,8 +1,9 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { Grid } from "@mui/joy";
+import { CssVarsProvider, Grid } from "@mui/joy";
 import { CheckboxProps } from "../../components/v2/Checkbox/Checkbox";
 import Checkbox from "../../components/v2/Checkbox";
+import { theme } from "../../lib/theme";
 
 export default {
   title: "Components/V2/Checkbox",
@@ -19,32 +20,34 @@ export default {
 } as ComponentMeta<typeof Checkbox>;
 
 const Preview = () => (
-  <Grid container spacing={2} xs={12}>
-    <Grid xs={6}>
-      <Grid xs={12}>
-        <Checkbox label="Label for checkbox" onChange={() => {}} />
+  <CssVarsProvider theme={theme}>
+    <Grid container spacing={2} xs={12}>
+      <Grid xs={6}>
+        <Grid xs={12}>
+          <Checkbox label="Label for checkbox" onChange={() => {}} />
+        </Grid>
+        <Grid xs={12}>
+          <Checkbox
+            defaultChecked
+            label="Label for checkbox"
+            onChange={() => {}}
+          />
+        </Grid>
       </Grid>
-      <Grid xs={12}>
-        <Checkbox
-          defaultChecked
-          label="Label for checkbox"
-          onChange={() => {}}
-        />
-      </Grid>
-    </Grid>
 
-    <Grid xs={6}>
-      <Grid xs={12}>
-        <Checkbox label="Label for checkbox" size="sm" onChange={() => {}} />
-      </Grid>
-      <Grid xs={12}>
-        <Checkbox label="Label for checkbox" size="md" onChange={() => {}} />
-      </Grid>
-      <Grid xs={12}>
-        <Checkbox label="Label for checkbox" size="lg" onChange={() => {}} />
+      <Grid xs={6}>
+        <Grid xs={12}>
+          <Checkbox label="Label for checkbox" size="sm" onChange={() => {}} />
+        </Grid>
+        <Grid xs={12}>
+          <Checkbox label="Label for checkbox" size="md" onChange={() => {}} />
+        </Grid>
+        <Grid xs={12}>
+          <Checkbox label="Label for checkbox" size="lg" onChange={() => {}} />
+        </Grid>
       </Grid>
     </Grid>
-  </Grid>
+  </CssVarsProvider>
 );
 export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 DesignPreview.parameters = {
