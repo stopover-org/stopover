@@ -94,6 +94,7 @@ const Preview = () => {
             />
           </Grid>
         </Grid>
+
         {/* Number Inputs */}
         <Grid container xs={6}>
           <Grid xs={12}>
@@ -172,6 +173,7 @@ const Preview = () => {
             />
           </Grid>
         </Grid>
+
         {/* Input sizes */}
         <Grid container xs={6}>
           <Grid xs={12}>
@@ -209,6 +211,7 @@ const Preview = () => {
             <Input onChange={onChange} value="solid variant" variant="solid" />
           </Grid>
         </Grid>
+
         {/* Different Palettes Input */}
         <Grid container xs={6}>
           <Grid xs={12}>

@@ -1,6 +1,15 @@
 import { extendTheme } from "@mui/joy";
 
 export const theme = extendTheme({
+  components: {
+    JoyInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+      },
+    },
+  },
   colorSchemes: {
     light: {
       palette: {
