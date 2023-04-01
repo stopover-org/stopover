@@ -10,6 +10,59 @@ export const theme = extendTheme({
       },
     },
   },
+  fontFamily: {
+    body: "'Roboto'",
+  },
+  fontWeight: {
+    xs: "300",
+    sm: "300",
+    md: "300",
+    lg: "300",
+    xl: "300",
+    xl2: "300",
+    xl3: "300",
+  },
+  typography: {
+    display1: {
+      fontWeight: 300,
+    },
+    display2: {
+      fontWeight: 300,
+    },
+    h1: {
+      fontWeight: 300,
+    },
+    h2: {
+      fontWeight: 300,
+    },
+    h3: {
+      fontWeight: 300,
+    },
+    h4: {
+      fontWeight: 300,
+    },
+    h5: {
+      fontWeight: 300,
+    },
+    h6: {
+      fontWeight: 300,
+    },
+    body1: {
+      fontWeight: 300,
+    },
+    body2: {
+      fontWeight: 300,
+    },
+    body3: {
+      fontWeight: 300,
+    },
+    body4: {
+      fontWeight: 300,
+    },
+    body5: {
+      fontWeight: 300,
+    },
+  },
   colorSchemes: {
     light: {
       palette: {
