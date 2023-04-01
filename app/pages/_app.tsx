@@ -7,6 +7,7 @@ import { getClientEnvironment } from "../lib/clientEnvironment";
 import "rc-slider/assets/index.css";
 import "react-phone-input-2/lib/style.css";
 import "@fontsource/public-sans";
+import { theme } from "../lib/theme";
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
@@ -19,7 +20,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <RelayEnvironmentProvider environment={env}>
-      <CssVarsProvider>
+      <CssVarsProvider theme={theme}>
         <Component {...pageProps} {...relayProps} />
       </CssVarsProvider>
     </RelayEnvironmentProvider>

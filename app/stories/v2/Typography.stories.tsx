@@ -1,14 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import Typography, { Props } from "../../components/v1/Typography";
-import Row from "../../components/Layout/Row";
-import Column from "../../components/Layout/Column";
-import { TypographySize, TypographyTags } from "../../components/StatesEnum";
-
-const TypographyPadding = styled.div`
-  padding-bottom: 5px;
-`;
+import { CssVarsProvider, Grid } from "@mui/joy";
+import Typography from "../../components/v2/Typography";
+import { TypographyProps } from "../../components/v2/Typography/Typography";
+import { theme } from "../../lib/theme";
 
 export default {
   title: "Components/V2/Typography",
@@ -19,55 +14,44 @@ export default {
 } as ComponentMeta<typeof Typography>;
 
 const Preview = () => (
-  <Row container>
-    <Column>
-      <TypographyPadding>
-        <Typography size={TypographySize.H1} as={TypographyTags.H1}>
-          Header H1
-        </Typography>
-      </TypographyPadding>
-      <TypographyPadding>
-        <Typography size={TypographySize.H2} as={TypographyTags.H2}>
-          Header H2
-        </Typography>
-      </TypographyPadding>
-      <TypographyPadding>
-        <Typography size={TypographySize.H3} as={TypographyTags.H3}>
-          Header H3
-        </Typography>
-      </TypographyPadding>
-      <TypographyPadding>
-        <Typography size={TypographySize.H4} as={TypographyTags.H4}>
-          Header H4
-        </Typography>
-      </TypographyPadding>
-      <TypographyPadding>
-        <Typography size={TypographySize.H5} as={TypographyTags.H5}>
-          Header H5
-        </Typography>
-      </TypographyPadding>
-      <TypographyPadding>
-        <Typography size={TypographySize.H6} as={TypographyTags.H6}>
-          Header H6
-        </Typography>
-      </TypographyPadding>
-      <TypographyPadding>
-        <Typography>Default text</Typography>
-      </TypographyPadding>
-      <TypographyPadding>
-        <Typography strikeThrough>Strikethrough text</Typography>
-      </TypographyPadding>
-      <TypographyPadding>
-        <Typography italic>Italic text</Typography>
-      </TypographyPadding>
-      <TypographyPadding>
-        <Typography underline>Underline text</Typography>
-      </TypographyPadding>
-      <TypographyPadding>
-        <Typography fontWeight="700">Bold text</Typography>
-      </TypographyPadding>
-    </Column>
-  </Row>
+  <CssVarsProvider theme={theme}>
+    <Grid container xs={12}>
+      <Grid spacing={2} container xs={6}>
+        {Object.keys(theme.typography)
+          // @ts-ignore
+          .filter((level: any) => Boolean(theme.typography[level]))
+          .map((level: any) => (
+            <Grid xs={12}>
+              <Typography key={level} level={level}>
+                {level}
+              </Typography>
+            </Grid>
+          ))}
+      </Grid>
+      <Grid
+        container
+        xs={6}
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
+        <Grid xs={12}>
+          <Typography>Default text</Typography>
+        </Grid>
+        <Grid xs={12}>
+          <Typography strikeThrough>Strikethrough text</Typography>
+        </Grid>
+        <Grid xs={12}>
+          <Typography fontStyle="italic">Italic text</Typography>
+        </Grid>
+        <Grid xs={12}>
+          <Typography underline>Underline text</Typography>
+        </Grid>
+        <Grid xs={12}>
+          <Typography fontWeight="700">Bold text</Typography>
+        </Grid>
+      </Grid>
+    </Grid>
+  </CssVarsProvider>
 );
 export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 
@@ -75,18 +59,15 @@ DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
 };
 
-const Template: ComponentStory<typeof Typography> = (args: Props) => (
-  <Typography {...args} />
+const Template: ComponentStory<typeof Typography> = (args: TypographyProps) => (
+  <CssVarsProvider theme={theme}>
+    <Typography {...args} />
+  </CssVarsProvider>
 );
 export const Default = Template.bind({});
 Default.args = {
   children: "Header",
-  color: "black",
-  size: "12px",
-  as: "span" as TypographyTags,
-  fontWeight: "300",
   strikeThrough: false,
-  italic: false,
   underline: false,
   lineHeight: "1.2em",
 };

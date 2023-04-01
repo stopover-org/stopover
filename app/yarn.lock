@@ -1581,12 +1581,12 @@
   resolved "https://registry.npmjs.org/@mui/core-downloads-tracker/-/core-downloads-tracker-5.11.15.tgz"
   integrity sha512-Q0e2oBsjHyIWWj1wLzl14btunvBYC0yl+px7zL9R69tF87uenj6q72ieS369BJ6jxYpJwvXfR6/f+TC+ZUsKKg==
 
-"@mui/icons-material@^5.0.1":
-  version "5.10.3"
-  resolved "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.10.3.tgz"
-  integrity sha512-o0kbUlsWCBtCE0wP33cGKbyryCh7kpm2EECYMPDmWrLhbA+HUODXIdhiTFS26szp2xXo9HY1lEx0ufeJ+tddYw==
+"@mui/icons-material@^5.0.1", "@mui/icons-material@^5.11.11":
+  version "5.11.11"
+  resolved "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.11.11.tgz"
+  integrity sha512-Eell3ADmQVE8HOpt/LZ3zIma8JSvPh3XgnhwZLT0k5HRqZcd6F/QDHc7xsWtgz09t+UEFvOYJXjtrwKmLdwwpw==
   dependencies:
-    "@babel/runtime" "^7.18.9"
+    "@babel/runtime" "^7.21.0"
 
 "@mui/joy@^5.0.0-alpha.73":
   version "5.0.0-alpha.73"

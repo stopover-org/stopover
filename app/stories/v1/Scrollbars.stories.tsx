@@ -4,7 +4,7 @@ import React from "react";
 import Typography from "../../components/v1/Typography";
 
 export default {
-  title: "Components/V2/Scrollbars",
+  title: "Components/V1/Scrollbars",
   component: Scrollbars,
 } as ComponentMeta<typeof Scrollbars>;
 

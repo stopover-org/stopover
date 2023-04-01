@@ -1,40 +1,59 @@
 import React from "react";
-import styled from "styled-components";
 import { ComponentStory } from "@storybook/react";
-import Row from "../components/Layout/Row";
-
-const SRow = styled(Row)`
-  width: calc(136px * 5);
-`;
-
-const ColorCube = styled.div<{ color: string }>`
-  background-color: ${(props) => props.color};
-  width: 135px;
-  height: 135px;
-`;
+import { Box, CssVarsProvider, Grid } from "@mui/joy";
+import { theme } from "../lib/theme";
+import Typography from "../components/v2/Typography";
 
 export default {
   title: "Global Properties/Color Palette",
 };
 
-const ColorPaletteList = [
-  "black",
-  "#FF8A00",
-  "#AD081B",
-  "#9D9D9D",
-  "#2B5A8C",
-  "white",
-  "#FFAB49",
-  "#007905",
-  "#D9D9D9",
+const colorNames = [
+  "common",
+  "danger",
+  "info",
+  "neutral",
+  "primary",
+  "success",
 ];
 
 const Preview = () => (
-  <SRow wrap="wrap">
-    {ColorPaletteList.map((item, index) => (
-      <ColorCube key={index} color={item} />
+  <CssVarsProvider theme={theme}>
+    {Object.keys(theme.colorSchemes).map((schemaName: string) => (
+      <>
+        <Typography level="h3">{schemaName.toUpperCase()} THEME</Typography>
+        <Grid container xs={12}>
+          {colorNames.map((name) => (
+            <>
+              <Typography>{name}</Typography>
+              <Grid spacing={2} container xs={12}>
+                {/* @ts-ignore */}
+                {Object.keys(theme.colorSchemes[schemaName].palette[name]).map(
+                  (colorIndex) =>
+                    !Number.isNaN(parseInt(colorIndex, 10)) && (
+                      <Grid xs={1}>
+                        <Box
+                          key={`${schemaName}-${name}-${colorIndex}`}
+                          sx={{
+                            width: "135px",
+                            height: "135px",
+                            backgroundColor:
+                              // @ts-ignore
+                              theme.colorSchemes[schemaName].palette[name][
+                                colorIndex
+                              ],
+                          }}
+                        />
+                      </Grid>
+                    )
+                )}
+              </Grid>
+            </>
+          ))}
+        </Grid>
+      </>
     ))}
-  </SRow>
+  </CssVarsProvider>
 );
 
 export const DesignPreview: ComponentStory<typeof Preview> = Preview;

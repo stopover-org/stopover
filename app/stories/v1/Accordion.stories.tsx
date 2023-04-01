@@ -29,7 +29,7 @@ const Content = () => (
 );
 const Header = () => <Typography>Header H1</Typography>;
 export default {
-  title: "Components/V2/Accordion",
+  title: "Components/V1/Accordion",
   component: Accordion,
 };
 
