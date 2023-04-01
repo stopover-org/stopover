@@ -10,7 +10,6 @@ import Typography from "../../components/v1/Typography";
 import { TypographySize } from "../../components/StatesEnum";
 import PhoneInput from "../../components/v1/PhoneInput/PhoneInput";
 import Button from "../../components/v1/Button";
-import CodeInput from "./components/CodeInput";
 
 // @ts-ignore
 if (typeof window !== "undefined") window.momentTimezones = momentTimezones;
@@ -24,6 +23,7 @@ export const SignIn = () => {
   );
   const typeField = useFormField("type");
   const usernameField = useFormField("username");
+  const codeField = useFormField("code");
   const country = React.useMemo(() => getCountryFromOffset(), []);
   const changeType = useCallback(() => {
     typeField.onChange(typeField.value === "email" ? "phone" : "email");
@@ -52,7 +52,7 @@ export const SignIn = () => {
             <form style={{ width: "100%" }} onSubmit={handleSubmit()}>
               {showCode && (
                 <Grid>
-                  <CodeInput {...useFormField("code")} />
+                  <Input {...codeField} label="Enter Code" />
                 </Grid>
               )}
 
