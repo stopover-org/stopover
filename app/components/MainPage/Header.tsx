@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Typography from "../Typography";
-import Row from "../Row";
+import Typography from "../v1/Typography";
+import Row from "../Layout/Row";
 import { TypographySize, TypographyTags } from "../StatesEnum";
 
 const Wrapper = styled.div`

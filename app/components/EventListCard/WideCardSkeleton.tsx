@@ -1,15 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "../Card";
-import Skeleton from "../Skeleton";
+import Card from "../v1/Card";
+import Skeleton from "../v1/Skeleton";
 import { CardImageLocation, SkeletonType } from "../StatesEnum";
 import icon from "../icons/SkeletonImage.svg";
-import Column from "../Column";
-import Row from "../Row";
-
-const TagList = styled(Column)`
-  padding: 10px;
-`;
+import Column from "../Layout/Column";
+import Row from "../Layout/Row";
+import TagList from "./components/TagList";
 
 const SColumn = styled(Column)`
   padding: 20px;

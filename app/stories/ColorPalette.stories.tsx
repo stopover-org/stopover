@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ComponentStory } from "@storybook/react";
-import Row from "../components/Row";
+import Row from "../components/Layout/Row";
 
 const SRow = styled(Row)`
   width: calc(136px * 5);

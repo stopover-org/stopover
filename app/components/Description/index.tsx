@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Row from "../Row";
-import Typography from "../Typography";
+import Row from "../Layout/Row";
+import Typography from "../v1/Typography";
 
 const SDescription = styled(Row)<{ background: string }>`
   overflow-y: scroll;

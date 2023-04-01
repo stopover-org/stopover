@@ -6,7 +6,7 @@ import { BookingList_BookingsFragment$key } from "./__generated__/BookingList_Bo
 import { getDayMonth, isDifferentDayMonth } from "../../../lib/utils/dates";
 import { TypographySize, TypographyTags } from "../../StatesEnum";
 import Booking from "../Booking";
-import Typography from "../../Typography";
+import Typography from "../../v1/Typography";
 
 const BookingPadding = styled.div`
   padding-top: 30px;

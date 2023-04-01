@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "../../Card";
-import Row from "../../Row";
-import Column from "../../Column";
-import Typography from "../../Typography";
-import BaseImage from "../../BaseImage";
+import Card from "../../v1/Card";
+import Row from "../../Layout/Row";
+import Column from "../../Layout/Column";
+import Typography from "../../v1/Typography";
+import BaseImage from "../../v1/BaseImage";
 import { TypographySize, TypographyTags } from "../../StatesEnum";
 
 const Content = styled(Column)`

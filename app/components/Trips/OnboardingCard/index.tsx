@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import Typography from "../../Typography";
-import Button from "../../Button";
-import Card from "../../Card";
+import Typography from "../../v1/Typography";
+import Button from "../../v1/Button";
+import Card from "../../v1/Card";
 import shoppingCart from "../../icons/Solid/General/Shopping-cart.svg";
-import BaseImage from "../../BaseImage";
-import Row from "../../Row";
-import Column from "../../Column";
+import BaseImage from "../../v1/BaseImage";
+import Row from "../../Layout/Row";
+import Column from "../../Layout/Column";
 import {
   ButtonIconPlace,
   ButtonSizes,

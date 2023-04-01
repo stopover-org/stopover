@@ -2,8 +2,8 @@ import React, { Suspense } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { graphql, useFragment } from "react-relay";
-import Card from "../Card";
-import AverageRating from "../AverageRating/AverageRating";
+import Card from "../v1/Card";
+import AverageRating from "../v1/AverageRating/AverageRating";
 import {
   ButtonIconPlace,
   ButtonSizes,
@@ -12,20 +12,17 @@ import {
   TypographySize,
   TypographyTags,
 } from "../StatesEnum";
-import Typography from "../Typography";
-import BaseImage from "../BaseImage";
-import Column from "../Column";
-import Link from "../Link";
-import Tag from "../Tag";
-import Row from "../Row";
-import Button from "../Button";
+import Typography from "../v1/Typography";
+import BaseImage from "../v1/BaseImage";
+import Column from "../Layout/Column";
+import Link from "../v1/Link";
+import Tag from "../v1/Tag";
+import Row from "../Layout/Row";
+import Button from "../v1/Button";
 import icon from "../icons/Outline/General/Shopping_cart_white.svg";
 import { WideCard_EventFragment$key } from "./__generated__/WideCard_EventFragment.graphql";
 import { getCurrencyFormat } from "../../lib/utils/currencyFormatter";
-
-const TagList = styled(Column)`
-  padding: 10px;
-`;
+import TagList from "./components/TagList";
 
 const SColumn = styled(Column)`
   padding: 20px;

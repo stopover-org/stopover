@@ -4,11 +4,11 @@ import Image from "next/image";
 import moment from "moment";
 import { graphql, useFragment } from "react-relay";
 import BookingForm from "../BookingForm";
-import Accordion from "../../Accordion";
-import Typography from "../../Typography";
+import Accordion from "../../v1/Accordion";
+import Typography from "../../v1/Typography";
 import BookingCard from "../BookingCard";
 import CaretUp from "../../icons/Outline/Interface/Caret_up.svg";
-import Row from "../../Row";
+import Row from "../../Layout/Row";
 import { TypographySize, TypographyTags } from "../../StatesEnum";
 import {
   calculateDate,

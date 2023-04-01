@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d8764c4b02a427e40b43d2bd8839ef31>>
+ * @generated SignedSource<<7874ca216ab5a5807089ae5cdb47e413>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,8 +10,14 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
+export type BookingsFilter = {
+  eventId?: string | null;
+  scheduledFor?: any | null;
+  status?: string | null;
+  tripId?: ReadonlyArray<string> | null;
+};
 export type Id_TripsQuery$variables = {
-  id: string;
+  filters: BookingsFilter;
 };
 export type Id_TripsQuery$data = {
   readonly " $fragmentSpreads": FragmentRefs<"BookingList_BookingsFragment" | "TripHeader_BookingsFragment">;
@@ -26,14 +32,14 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "id"
+    "name": "filters"
   }
 ],
 v1 = [
   {
     "kind": "Variable",
-    "name": "tripId",
-    "variableName": "id"
+    "name": "filters",
+    "variableName": "filters"
   }
 ],
 v2 = {
@@ -139,16 +145,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "17d3e8bcc67ce86b7ebf083770544cc7",
+    "cacheID": "c81c02e7410e04c08487d02fbd7ee32b",
     "id": null,
     "metadata": {},
     "name": "Id_TripsQuery",
     "operationKind": "query",
-    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  ...BookingList_BookingsFragment_3C7NLV\n  ...TripHeader_BookingsFragment_3C7NLV\n}\n\nfragment BookingList_BookingsFragment_3C7NLV on Query {\n  bookings(tripId: $id) {\n    id\n    bookedFor\n    ...Booking_BookingsFragment\n  }\n}\n\nfragment Booking_BookingsFragment on Booking {\n  bookedFor\n  id\n  event {\n    description\n    durationTime\n    images\n    title\n    id\n  }\n}\n\nfragment TripHeader_BookingsFragment_3C7NLV on Query {\n  bookings(tripId: $id) {\n    bookedFor\n    event {\n      city\n      id\n    }\n    id\n  }\n}\n"
+    "text": "query Id_TripsQuery(\n  $filters: BookingsFilter!\n) {\n  ...BookingList_BookingsFragment_VTAHT\n  ...TripHeader_BookingsFragment_VTAHT\n}\n\nfragment BookingList_BookingsFragment_VTAHT on Query {\n  bookings(filters: $filters) {\n    id\n    bookedFor\n    ...Booking_BookingsFragment\n  }\n}\n\nfragment Booking_BookingsFragment on Booking {\n  bookedFor\n  id\n  event {\n    description\n    durationTime\n    images\n    title\n    id\n  }\n}\n\nfragment TripHeader_BookingsFragment_VTAHT on Query {\n  bookings(filters: $filters) {\n    bookedFor\n    event {\n      city\n      id\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "baaefcb57fbae12fa555e5b35e4e602d";
+(node as any).hash = "14856de18d09621cbfbaf31715a897cf";
 
 export default node;

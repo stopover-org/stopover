@@ -2,7 +2,7 @@ import moment from "moment";
 import React from "react";
 import styled from "styled-components";
 import { graphql, useFragment } from "react-relay";
-import Typography from "../../Typography";
+import Typography from "../../v1/Typography";
 import { TripHeader_BookingsFragment$key } from "./__generated__/TripHeader_BookingsFragment.graphql";
 import { TypographySize, TypographyTags } from "../../StatesEnum";
 import { getDayMonth, isDifferentDayMonth } from "../../../lib/utils/dates";
@@ -19,8 +19,8 @@ const TripHeader = ({
   const { bookings } = useFragment(
     graphql`
       fragment TripHeader_BookingsFragment on Query
-      @argumentDefinitions(tripId: { type: "ID!" }) {
-        bookings(tripId: $tripId) {
+      @argumentDefinitions(filters: { type: "BookingsFilter!" }) {
+        bookings(filters: $filters) {
           bookedFor
           event {
             city

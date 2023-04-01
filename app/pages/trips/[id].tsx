@@ -7,9 +7,9 @@ import { Id_TripsQuery } from "./__generated__/Id_TripsQuery.graphql";
 import TripCard from "../../components/Trips/TripCard";
 
 const Query = graphql`
-  query Id_TripsQuery($id: ID!) {
-    ...BookingList_BookingsFragment @arguments(tripId: $id)
-    ...TripHeader_BookingsFragment @arguments(tripId: $id)
+  query Id_TripsQuery($filters: BookingsFilter!) {
+    ...BookingList_BookingsFragment @arguments(filters: $filters)
+    ...TripHeader_BookingsFragment @arguments(filters: $filters)
   }
 `;
 
@@ -31,7 +31,7 @@ export default withRelay(Trip, Query, {
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
   serverSideProps: async (ctx) => ({
-    id: +ctx.query.id!,
+    filters: { tripId: +ctx.query.id! },
     googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
   }),
   // Server-side props can be accessed as the second argument
