@@ -1,47 +1,49 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { CssVarsProvider, Grid } from "@mui/joy";
+import {
+  CssVarsProvider,
+  FormControl,
+  FormLabel,
+  Grid,
+  RadioGroup,
+} from "@mui/joy";
 import { Close } from "@mui/icons-material";
-import { CheckboxProps } from "../../components/v2/Checkbox/Checkbox";
-import Checkbox from "../../components/v2/Checkbox";
 import { theme } from "../../lib/theme";
+import Radio from "../../components/v2/Radio";
+import { RadioProps } from "../../components/v2/Radio/Radio";
 
 export default {
-  title: "Components/V2/Checkbox",
-  component: Checkbox,
-} as ComponentMeta<typeof Checkbox>;
+  title: "Components/V2/Radio",
+  component: Radio,
+} as ComponentMeta<typeof Radio>;
 
 const Preview = () => (
   <CssVarsProvider theme={theme}>
     <Grid container spacing={2} xs={12}>
       <Grid xs={3}>
         <Grid xs={12}>
-          <Checkbox label="Label for checkbox" onChange={() => {}} />
+          <Radio label="Label for radio" onChange={() => {}} />
         </Grid>
         <Grid xs={12}>
-          <Checkbox
+          <Radio defaultChecked label="Label for radio" onChange={() => {}} />
+        </Grid>
+        <Grid xs={12}>
+          <Radio
             defaultChecked
-            label="Label for checkbox"
+            label="Label for radio"
+            hint="A long explanation for this radio"
             onChange={() => {}}
           />
         </Grid>
         <Grid xs={12}>
-          <Checkbox
-            defaultChecked
-            label="Label for checkbox"
-            hint="A long explanation for this checkbox"
-            onChange={() => {}}
-          />
-        </Grid>
-        <Grid xs={12}>
-          <Checkbox
+          <Radio
             onChange={() => {}}
             uncheckedIcon={<Close />}
             label="I have an icon when unchecked"
           />
         </Grid>
         <Grid xs={12}>
-          <Checkbox
+          <Radio
             onChange={() => {}}
             checkedIcon={<Close />}
             label="I have an icon when checked"
@@ -51,19 +53,19 @@ const Preview = () => (
 
       <Grid xs={3}>
         <Grid xs={12}>
-          <Checkbox label="Label for checkbox" size="sm" onChange={() => {}} />
+          <Radio label="Label for radio" size="sm" onChange={() => {}} />
         </Grid>
         <Grid xs={12}>
-          <Checkbox label="Label for checkbox" size="md" onChange={() => {}} />
+          <Radio label="Label for radio" size="md" onChange={() => {}} />
         </Grid>
         <Grid xs={12}>
-          <Checkbox label="Label for checkbox" size="lg" onChange={() => {}} />
+          <Radio label="Label for radio" size="lg" onChange={() => {}} />
         </Grid>
       </Grid>
 
       <Grid xs={3}>
         <Grid xs={12}>
-          <Checkbox
+          <Radio
             label="Primary"
             color="primary"
             defaultChecked
@@ -71,7 +73,7 @@ const Preview = () => (
           />
         </Grid>
         <Grid xs={12}>
-          <Checkbox
+          <Radio
             label="Neutral"
             color="neutral"
             defaultChecked
@@ -79,7 +81,7 @@ const Preview = () => (
           />
         </Grid>
         <Grid xs={12}>
-          <Checkbox
+          <Radio
             label="Danger"
             color="danger"
             defaultChecked
@@ -87,15 +89,10 @@ const Preview = () => (
           />
         </Grid>
         <Grid xs={12}>
-          <Checkbox
-            label="Info"
-            color="info"
-            defaultChecked
-            onChange={() => {}}
-          />
+          <Radio label="Info" color="info" defaultChecked onChange={() => {}} />
         </Grid>
         <Grid xs={12}>
-          <Checkbox
+          <Radio
             label="Success"
             color="success"
             defaultChecked
@@ -103,12 +100,42 @@ const Preview = () => (
           />
         </Grid>
         <Grid xs={12}>
-          <Checkbox
+          <Radio
             label="Warning"
             color="warning"
             defaultChecked
             onChange={() => {}}
           />
+        </Grid>
+      </Grid>
+
+      <Grid xs={3}>
+        <Grid xs={12}>
+          <FormControl>
+            <FormLabel>Warning Group</FormLabel>
+
+            <RadioGroup>
+              <Radio
+                label="Warning 1"
+                color="warning"
+                value={1}
+                defaultChecked
+                onChange={() => {}}
+              />
+              <Radio
+                label="Warning 2"
+                color="warning"
+                value={2}
+                onChange={() => {}}
+              />
+              <Radio
+                label="Warning 3"
+                color="warning"
+                value={3}
+                onChange={() => {}}
+              />
+            </RadioGroup>
+          </FormControl>
         </Grid>
       </Grid>
     </Grid>
@@ -120,10 +147,8 @@ DesignPreview.parameters = {
 };
 
 // ref should be excluded from props
-const Template = ({ ...args }: CheckboxProps) => <Checkbox {...args} />;
-export const Default: ComponentStory<typeof Checkbox> = Template.bind({});
+const Template = ({ ...args }: RadioProps) => <Radio {...args} />;
+export const Default: ComponentStory<typeof Radio> = Template.bind({});
 Default.args = {
   id: "your_uniq_id",
-  children: "my children",
-  disabled: false,
 };
