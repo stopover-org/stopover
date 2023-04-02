@@ -89,13 +89,14 @@ random_day = -> { %w[Monday Tuesday Wednesday Thursday Friday Saturday Sunday].s
 
 ActiveRecord::Base.connection_pool.flush!
 
+firm = Firm.create!(
+  title: Faker::App.name,
+  primary_email: Faker::Internet.email,
+  accounts: [Account.last],
+)
+
 (0...events_count).each_slice(30) do |subset|
   threads = []
-  firm = Firm.create!(
-    title: Faker::App.name,
-    primary_email: Faker::Internet.email,
-    accounts: [Account.last],
-  )
 
   subset.each do |int|
     threads << Thread.new do
@@ -126,19 +127,29 @@ ActiveRecord::Base.connection_pool.flush!
           (now + 3.months).change({ hour: random_hour.call, minute: random_minute.call })
         ],
         recurring_days_with_time: ["#{random_day.call} #{random_hour.call}:#{random_minute.call}"],
-        organizer_price_per_uom_cents: price,
-        attendee_price_per_uom_cents: price * 0.8,
-        prepaid_amount_cents: price * 0.4,
-        event_options: [1..4].map do
-                         EventOption.new(
-                           title: Faker::Coffee.blend_name,
-                           description: Faker::Coffee.notes,
-                           built_in: [true, false].sample,
-                           for_attendee: [true, false].sample,
-                           organizer_price_cents: random_from.call(10_000),
-                         )
-                       end
+        organizer_price_per_uom: Money.new(price)
       )
+
+      (1..4).each do
+        EventOption.create!(
+          title: Faker::Coffee.blend_name,
+          description: Faker::Coffee.notes,
+          built_in: true,
+          for_attendee: false,
+          organizer_price: Money.new(random_from.call(10_000)),
+          event: event
+        )
+        EventOption.create!(
+          title: Faker::Coffee.blend_name,
+          description: Faker::Coffee.notes,
+          built_in: true,
+          for_attendee: true,
+          organizer_price: Money.new(random_from.call(10_000)),
+          event: event
+        )
+        Rails.logger.debug { "Event Options count: #{EventOption.count}" }
+      end
+
       unless ENV.fetch('without_images', nil) == 'true'
         event.images.attach(event_image)
         event.images.attach(event_image1)
@@ -147,6 +158,7 @@ ActiveRecord::Base.connection_pool.flush!
         event.images.attach(event_image4)
         event.images.attach(event_image5)
       end
+
       (0...random_from.call(40)).map do
         Rating.create!(account: Account.all.sample, event: event, rating_value: random_from.call(5, 1))
       end

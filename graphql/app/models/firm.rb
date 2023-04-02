@@ -29,7 +29,8 @@ class Firm < ApplicationRecord
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
-  #
+  has_one :balance
+
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :accounts
 
@@ -68,7 +69,7 @@ class Firm < ApplicationRecord
   # DELEGATIONS ==============================================================
 
   def create_balance
-    Balance.create!(firm: self)
+    self.balance = Balance.new
   end
 
   def unpublish_events

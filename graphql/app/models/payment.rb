@@ -77,6 +77,7 @@ class Payment < ApplicationRecord
   #
   # CALLBACKS ================================================================
   before_validation :calculate_fee, on: :create
+  before_validation :set_price, on: :create
 
   # SCOPES =====================================================================
   #
@@ -86,7 +87,11 @@ class Payment < ApplicationRecord
 
   def calculate_fee
     self.fee = Money.new(0) if remaining_amount?
-    self.fee = Money.new(booking.event.attendee_price_per_uom_cents - booking.event.organizer_price_per_uom_cents)
+    self.fee = booking.attendee_total_price - booking.organizer_total_price
+  end
+
+  def set_price
+    self.total_price = booking.attendee_total_price
   end
 
   def top_up_balance

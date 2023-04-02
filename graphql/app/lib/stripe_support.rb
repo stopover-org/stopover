@@ -36,12 +36,14 @@ class StripeSupport
     # TODO: dont know how to covered by test
 
     checkout = Stripe::Checkout::Session.create({
-                                                  line_items: [{
-                                                    price: event_stripe_integration.price_id,
-                                                                 quantity: booking.attendees.count
-                                                  },
-                                                               *booking_options,
-                                                               *attendee_options.values],
+                                                  line_items: [
+                                                    {
+                                                      price: event_stripe_integration.price_id,
+                                                      quantity: booking.attendees.count
+                                                    },
+                                                    *booking_options,
+                                                    *attendee_options.values
+                                                  ],
                                                   mode: 'payment',
                                                   success_url: "http://localhost:3000/checkouts/success/#{GraphqlSchema.id_from_object(payment)}",
                                                   cancel_url: "http://localhost:3000/checkouts/cancel/#{GraphqlSchema.id_from_object(payment)}",
