@@ -6,7 +6,7 @@ import { CalendarMonthTwoTone } from "@mui/icons-material";
 import Input from "../../components/v2/Input";
 import { InputProps } from "../../components/v2/Input/Input";
 import { theme } from "../../lib/theme";
-import PhoneInput from "../../components/v2/PhoneInput/PhoneInput";
+import PhoneInput from "../../components/v2/PhoneInput";
 
 const InputSize = styled.div`
   width: 180px;

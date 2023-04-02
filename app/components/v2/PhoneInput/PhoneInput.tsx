@@ -9,14 +9,15 @@ import { getCountryPhoneCodes } from "../../../lib/utils/phones";
 export interface PhoneInputProps {
   onChange: (value: string) => void;
   value: string;
-  error: boolean;
+  error?: string;
+  label: string;
 }
 
 const PhoneInput = ({
   placeholder,
   onChange,
   value,
-  error,
+  label,
   ...props
 }: Omit<JoyInputProps, keyof PhoneInputProps> & PhoneInputProps) => {
   const countryPhoneCodes = getCountryPhoneCodes();
@@ -70,7 +71,7 @@ const PhoneInput = ({
       placeholder={inputPlaceholder}
       onChange={onChangeHandler}
       value={value}
-      error={error}
+      label={label}
       {...props}
     />
   );

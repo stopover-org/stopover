@@ -26,6 +26,13 @@ export const theme = extendTheme({
         },
       },
     },
+    JoyCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+      },
+    },
   },
   fontFamily: {
     body: "'Roboto'",
