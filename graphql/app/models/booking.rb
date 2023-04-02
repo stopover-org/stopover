@@ -74,6 +74,37 @@ class Booking < ApplicationRecord
     errors.add(:attendees, 'all places reserved') if Attendee.where(booking_id: Booking.where(schedule_id: schedule.id)).count + attendees.count > event.max_attendees
   end
 
+  def attendee_total_price
+    event_price = event.attendee_price_per_uom * attendees.count
+
+    booking_options_price = booking_options.sum(Money.new(0)) { |option| option.attendee_price }
+    attendee_options_price = attendees.sum(Money.new(0)) do |att|
+      res = Money.new(0)
+      att.attendee_options.each do |att_opt|
+        res += att_opt.attendee_price
+      end
+
+      res
+    end
+
+    event_price + booking_options_price + attendee_options_price
+  end
+
+  def organizer_total_price
+    event_price = event.organizer_price_per_uom * attendees.count
+    booking_options_price = booking_options.sum(Money.new(0)) { |option| option.organizer_price }
+    attendee_options_price = attendees.sum(Money.new(0)) do |att|
+      res = Money.new(0)
+      att.attendee_options.each do |att_opt|
+        res += att_opt.organizer_price
+      end
+
+      res
+    end
+
+    event_price + booking_options_price + attendee_options_price
+  end
+
   private
 
   def create_booking_options

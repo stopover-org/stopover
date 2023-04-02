@@ -27,7 +27,7 @@ require 'rails_helper'
 RSpec.describe BookingOption, type: :model do
   describe 'booking option' do
     let!(:booking_option) { create(:booking_option) }
-    let!(:payment) { create(:payment, booking: booking_option.booking) }
+    let!(:payment) { create(:payment, booking: booking_option.booking, balance: booking_option.booking.event.firm.balance) }
 
     it 'attendee price and organizer price is not changing because of payment status' do
       expect(payment.pending?).to eq(true)
@@ -48,7 +48,7 @@ RSpec.describe BookingOption, type: :model do
 
     context 'attendee price and organizer price' do
       let!(:booking_option) { create(:booking_option) }
-      let!(:payment) { create(:payment, booking: booking_option.booking) }
+      let!(:payment) { create(:payment, booking: booking_option.booking, balance: booking_option.booking.event.firm.balance) }
 
       it 'are changing' do
         expect(payment.pending?).to eq(true)

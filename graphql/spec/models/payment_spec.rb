@@ -21,15 +21,25 @@
 #  index_payments_on_balance_id  (balance_id)
 #  index_payments_on_booking_id  (booking_id)
 #
-FactoryBot.define do
-  factory :payment do
-    total_price_cents { 200 }
-    booking { create(:booking) }
+require 'rails_helper'
 
-    trait :payment_in_process_trait do
-      status { 'processing' }
+RSpec.describe Payment do
+  describe 'payment' do
+    let!(:balance) { create(:balance) }
+    let!(:payment) { create(:payment_in_process, balance: balance, total_price: Money.new(250)) }
+    it 'first create' do
+      expect(payment).to receive(:calculate_fee).never
+      payment.update!(total_price: Money.new(350))
+
+      expect(payment.total_price.cents).to eq(350)
+      expect(payment.fee.cents).to eq(50)
     end
 
-    factory :payment_in_process, traits: [:payment_in_process_trait]
+    it 'success and top up balance' do
+      expect(payment).to receive(:top_up_balance)
+      expect(payment.balance.total_amount).to eq(Money.new(250))
+
+      payment.success!
+    end
   end
 end

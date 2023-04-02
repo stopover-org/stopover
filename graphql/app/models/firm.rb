@@ -29,7 +29,8 @@ class Firm < ApplicationRecord
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
-  #
+  has_one :balance
+
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :accounts
 
@@ -61,10 +62,15 @@ class Firm < ApplicationRecord
   validates :accounts, length: { minimum: 1 }
 
   # CALLBACKS ================================================================
-  #
+  after_create :create_balance
+
   # SCOPES =====================================================================
   #
   # DELEGATIONS ==============================================================
+
+  def create_balance
+    self.balance = Balance.new
+  end
 
   def unpublish_events
     RemoveFirmJob.perform_later(id)
