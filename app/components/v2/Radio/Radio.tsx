@@ -27,7 +27,7 @@ const Radio = React.forwardRef(
     return (
       <FormControl>
         <JoyRadio onChange={changeHandler} ref={ref} {...props} />
-        <FormHelperText>{hint}</FormHelperText>
+        {hint && <FormHelperText>{hint}</FormHelperText>}
       </FormControl>
     );
   }

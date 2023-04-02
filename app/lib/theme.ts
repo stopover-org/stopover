@@ -16,6 +16,16 @@ export const theme = extendTheme({
         },
       },
     },
+    JoySelect: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+        listbox: {
+          borderRadius: "2px",
+        },
+      },
+    },
   },
   fontFamily: {
     body: "'Roboto'",

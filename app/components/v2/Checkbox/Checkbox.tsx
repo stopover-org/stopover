@@ -28,7 +28,7 @@ const Checkbox = React.forwardRef(
     return (
       <FormControl>
         <JoyCheckbox ref={ref} onChange={changeHandler} {...props} />
-        <FormHelperText>{hint}</FormHelperText>
+        {hint && <FormHelperText>{hint}</FormHelperText>}
       </FormControl>
     );
   }
