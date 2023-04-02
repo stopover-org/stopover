@@ -12,7 +12,7 @@ export interface InputProps {
   label?: string;
   hint?: string;
   error?: string;
-  onChange: (value: string | number) => void;
+  onChange: (value: string) => void;
   value: string;
 }
 
