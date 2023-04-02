@@ -51,8 +51,8 @@ RSpec.describe Mutations::CreateCheckout do
 
     context 'checkout session was not created.' do
       let!(:event) { create(:stripe_integration_factory) }
-      let!(:payment) { create(:payment) }
-      let!(:booking) { create(:booking, schedule: event.schedules.first, event: event, payments: [payment]) }
+      let!(:booking) { create(:booking, schedule: event.schedules.first, event: event) }
+      let!(:payment) { create(:payment, balance: booking.event.firm.balance, booking: booking) }
 
       it 'booking was given, but without event options' do
         ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
@@ -72,8 +72,8 @@ RSpec.describe Mutations::CreateCheckout do
 
     context 'payment in process' do
       let!(:event) { create(:stripe_integration_factory) }
-      let!(:payment) { create(:payment_in_process) }
-      let!(:booking) { create(:booking, schedule: event.schedules.first, event: event, payments: [payment]) }
+      let!(:booking) { create(:booking, schedule: event.schedules.first, event: event) }
+      let!(:payment) { create(:payment_in_process, balance: booking.event.firm.balance, booking: booking) }
 
       it 'not expired' do
         ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')

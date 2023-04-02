@@ -35,7 +35,7 @@ RSpec.describe Payment do
       expect(payment.fee.cents).to eq(50)
     end
 
-    it 'succes and top up balance' do
+    it 'success and top up balance' do
       expect(payment).to receive(:top_up_balance)
       expect(payment.balance.total_amount).to eq(Money.new(250))
 

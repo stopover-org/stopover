@@ -13,9 +13,7 @@ module Mutations
       return { url: nil } if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
 
       raise GraphQL::ExecutionError, 'multiple payments in process' if booking.payments.processing.count > 1
-
       if booking.payments.processing.any?
-
         payment = booking.payments.processing.last
         checkout = Stripe::Checkout::Session.retrieve(payment.stripe_checkout_session_id)
 
