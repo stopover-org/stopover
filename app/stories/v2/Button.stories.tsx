@@ -8,9 +8,6 @@ import { theme } from "../../lib/theme";
 export default {
   title: "Components/v2/Button",
   component: Button,
-  argTypes: {
-    children: { control: "text" },
-  },
 } as ComponentMeta<typeof Button>;
 
 const Preview = () => (

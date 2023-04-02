@@ -1,6 +1,7 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
+import { Close } from "@mui/icons-material";
 import { CheckboxProps } from "../../components/v2/Checkbox/Checkbox";
 import Checkbox from "../../components/v2/Checkbox";
 import { theme } from "../../lib/theme";
@@ -8,21 +9,12 @@ import { theme } from "../../lib/theme";
 export default {
   title: "Components/V2/Checkbox",
   component: Checkbox,
-  argTypes: {
-    id: { control: "text" },
-    children: { control: "text" },
-    disabled: { control: "boolean" },
-    type: { control: "select" },
-    checked: { control: "boolean" },
-    size: { control: "select" },
-    animate: { control: "boolean" },
-  },
 } as ComponentMeta<typeof Checkbox>;
 
 const Preview = () => (
   <CssVarsProvider theme={theme}>
     <Grid container spacing={2} xs={12}>
-      <Grid xs={6}>
+      <Grid xs={3}>
         <Grid xs={12}>
           <Checkbox label="Label for checkbox" onChange={() => {}} />
         </Grid>
@@ -33,9 +25,23 @@ const Preview = () => (
             onChange={() => {}}
           />
         </Grid>
+        <Grid xs={12}>
+          <Checkbox
+            onChange={() => {}}
+            uncheckedIcon={<Close />}
+            label="I have an icon when unchecked"
+          />
+        </Grid>
+        <Grid xs={12}>
+          <Checkbox
+            onChange={() => {}}
+            checkedIcon={<Close />}
+            label="I have an icon when checked"
+          />
+        </Grid>
       </Grid>
 
-      <Grid xs={6}>
+      <Grid xs={3}>
         <Grid xs={12}>
           <Checkbox label="Label for checkbox" size="sm" onChange={() => {}} />
         </Grid>
@@ -44,6 +50,57 @@ const Preview = () => (
         </Grid>
         <Grid xs={12}>
           <Checkbox label="Label for checkbox" size="lg" onChange={() => {}} />
+        </Grid>
+      </Grid>
+
+      <Grid xs={3}>
+        <Grid xs={12}>
+          <Checkbox
+            label="Primary"
+            color="primary"
+            defaultChecked
+            onChange={() => {}}
+          />
+        </Grid>
+        <Grid xs={12}>
+          <Checkbox
+            label="Neutral"
+            color="neutral"
+            defaultChecked
+            onChange={() => {}}
+          />
+        </Grid>
+        <Grid xs={12}>
+          <Checkbox
+            label="Danger"
+            color="danger"
+            defaultChecked
+            onChange={() => {}}
+          />
+        </Grid>
+        <Grid xs={12}>
+          <Checkbox
+            label="Info"
+            color="info"
+            defaultChecked
+            onChange={() => {}}
+          />
+        </Grid>
+        <Grid xs={12}>
+          <Checkbox
+            label="Success"
+            color="success"
+            defaultChecked
+            onChange={() => {}}
+          />
+        </Grid>
+        <Grid xs={12}>
+          <Checkbox
+            label="Warning"
+            color="warning"
+            defaultChecked
+            onChange={() => {}}
+          />
         </Grid>
       </Grid>
     </Grid>

@@ -16,12 +16,6 @@ const InputSize = styled.div`
 export default {
   title: "Components/v2/Input",
   component: Input,
-  argTypes: {
-    value: { control: "text" },
-    label: { control: "text" },
-    hint: { control: "text" },
-    error: { control: "text" },
-  },
 } as ComponentMeta<typeof Input>;
 
 const Preview = () => {
