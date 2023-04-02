@@ -54,4 +54,11 @@ RSpec.describe Booking, type: :model do
       expect(booking.attendees.first.attendee_options.first.organizer_price_cents).to eq(500)
     end
   end
+  context '' do
+    let!(:event) { create(:recurring_event) }
+    let!(:booking) { create(:booking, event: event) }
+    it '' do
+      expect(booking.attendee_total_price).to eq(0)
+    end
+  end
 end
