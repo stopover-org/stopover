@@ -4,12 +4,12 @@ import * as momentTimezones from "moment-timezone/data/packed/latest.json";
 import { Card, Grid } from "@mui/joy";
 import { useSignInForm } from "./useSignInForm";
 import { getCountryFromOffset } from "../../lib/utils/timezones";
-import Input from "../../components/v1/Input";
 import Link from "../../components/v1/Link";
-import Typography from "../../components/v1/Typography";
 import { TypographySize } from "../../components/StatesEnum";
-import PhoneInput from "../../components/v1/PhoneInput/PhoneInput";
-import Button from "../../components/v1/Button";
+import Input from "../../components/v2/Input";
+import PhoneInput from "../../components/v2/PhoneInput";
+import Typography from "../../components/v2/Typography";
+import Button from "../../components/v2/Button";
 
 // @ts-ignore
 if (typeof window !== "undefined") window.momentTimezones = momentTimezones;
@@ -38,7 +38,7 @@ export const SignIn = () => {
       spacing={2}
       sx={{ flexGrow: 1, paddingTop: "50px" }}
     >
-      <Card variant="outlined" sx={{ width: 500, "--Card-radius": "2px" }}>
+      <Card variant="outlined" sx={{ width: 500 }}>
         <Grid container>
           <Grid xs={12}>
             <Link onClick={() => router.back()}>
@@ -46,7 +46,7 @@ export const SignIn = () => {
             </Link>
           </Grid>
           <Grid xs={12} container justifyContent="center">
-            <Typography size={TypographySize.H3}>Sign In / Sign Up</Typography>
+            <Typography level="h3">Sign In / Sign Up</Typography>
           </Grid>
           <Grid xs={12}>
             <form style={{ width: "100%" }} onSubmit={handleSubmit()}>
@@ -60,19 +60,22 @@ export const SignIn = () => {
                 <>
                   <Grid>
                     {typeField.value === "email" && (
-                      <Input {...usernameField} label="Enter email" />
+                      <Input
+                        {...usernameField}
+                        label="Enter email"
+                        placeholder="Enter your email"
+                      />
                     )}
                     {typeField.value === "phone" && (
                       <PhoneInput
                         {...usernameField}
-                        country={country}
                         label="Enter phone number"
                       />
                     )}
                   </Grid>
                   <Grid container justifyContent="flex-end">
                     <Link onClick={changeType}>
-                      <Typography size={TypographySize.SMALL}>
+                      <Typography fontSize="sm" color="primary">
                         Use{" "}
                         {typeField.value === "email" ? "phone number" : "email"}
                       </Typography>
@@ -82,11 +85,7 @@ export const SignIn = () => {
               )}
 
               <Grid container justifyContent="flex-end">
-                <Button type="submit">
-                  <Typography color="white" size={TypographySize.BIG}>
-                    Sign in
-                  </Typography>
-                </Button>
+                <Button type="submit">Sign in</Button>
               </Grid>
             </form>
           </Grid>

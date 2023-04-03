@@ -6,5 +6,5 @@ export function getCountryFromOffset() {
   return momentTimezones.countries
     .find((v) => v.match(Intl.DateTimeFormat().resolvedOptions().timeZone))
     ?.split("|")[0]
-    .toLowerCase();
+    .toUpperCase();
 }

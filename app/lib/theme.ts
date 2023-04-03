@@ -9,6 +9,30 @@ export const theme = extendTheme({
         },
       },
     },
+    JoyButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+      },
+    },
+    JoySelect: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+        listbox: {
+          borderRadius: "2px",
+        },
+      },
+    },
+    JoyCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+      },
+    },
   },
   fontFamily: {
     body: "'Roboto'",

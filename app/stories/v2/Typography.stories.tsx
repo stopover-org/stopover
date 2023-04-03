@@ -8,9 +8,6 @@ import { theme } from "../../lib/theme";
 export default {
   title: "Components/V2/Typography",
   component: Typography,
-  argTypes: {
-    color: { control: "color" },
-  },
 } as ComponentMeta<typeof Typography>;
 
 const Preview = () => (

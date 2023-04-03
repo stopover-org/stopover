@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { CssVarsProvider, Grid } from "@mui/joy";
+import { CssVarsProvider, Divider, Grid } from "@mui/joy";
 import { CalendarMonthTwoTone } from "@mui/icons-material";
 import Input from "../../components/v2/Input";
 import { InputProps } from "../../components/v2/Input/Input";
 import { theme } from "../../lib/theme";
+import PhoneInput from "../../components/v2/PhoneInput";
 
 const InputSize = styled.div`
   width: 180px;
@@ -16,19 +17,15 @@ const InputSize = styled.div`
 export default {
   title: "Components/v2/Input",
   component: Input,
-  argTypes: {
-    value: { control: "text" },
-    label: { control: "text" },
-    hint: { control: "text" },
-    error: { control: "text" },
-  },
 } as ComponentMeta<typeof Input>;
 
 const Preview = () => {
+  const [phone, setPhone] = React.useState("");
+  const phoneInputOnChange = (value: string) => setPhone(value);
   const onChange = () => {};
   return (
     <CssVarsProvider theme={theme}>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} xs={12}>
         {/* Common Inputs */}
         <Grid container xs={6}>
           <Grid xs={12}>
@@ -174,6 +171,10 @@ const Preview = () => {
           </Grid>
         </Grid>
 
+        <Grid xs={12}>
+          <Divider />
+        </Grid>
+
         {/* Input sizes */}
         <Grid container xs={6}>
           <Grid xs={12}>
@@ -189,6 +190,7 @@ const Preview = () => {
             <Input onChange={onChange} value="small size" size="lg" />
           </Grid>
         </Grid>
+
         {/* Input Variants */}
         <Grid container xs={6}>
           <Grid xs={12}>
@@ -210,6 +212,10 @@ const Preview = () => {
           <Grid xs={12}>
             <Input onChange={onChange} value="solid variant" variant="solid" />
           </Grid>
+        </Grid>
+
+        <Grid xs={12}>
+          <Divider />
         </Grid>
 
         {/* Different Palettes Input */}
@@ -234,6 +240,17 @@ const Preview = () => {
           </Grid>
           <Grid xs={12}>
             <Input onChange={onChange} value="warning color" color="warning" />
+          </Grid>
+        </Grid>
+
+        {/* Phone Input */}
+        <Grid container xs={6}>
+          <Grid xs={12}>
+            <PhoneInput
+              value={phone}
+              onChange={phoneInputOnChange}
+              placeholder="Choose country"
+            />
           </Grid>
         </Grid>
       </Grid>
