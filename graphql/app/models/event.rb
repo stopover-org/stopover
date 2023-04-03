@@ -149,7 +149,7 @@ class Event < ApplicationRecord
   delegate :count, to: :ratings, prefix: true
 
   def sync_stripe
-    StripeIntegrator.sync(self)
+    StripeIntegratorSyncJob.perform_later(self)
   end
 
   def can_be_scheduled_for?(date)

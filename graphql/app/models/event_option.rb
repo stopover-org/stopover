@@ -60,7 +60,7 @@ class EventOption < ApplicationRecord
   # DELEGATIONS ==============================================================
 
   def sync_stripe
-    StripeIntegrator.sync(self)
+    StripeIntegratorSyncJob.perform_later(self)
   end
 
   private
