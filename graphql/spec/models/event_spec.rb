@@ -234,7 +234,7 @@ RSpec.describe Event, type: :model do
           let(:event) { create(:event) }
 
           it 'stripe integrator fired up' do
-            expect(StripeIntegrator).to receive(:sync).with(event)
+            expect(StripeIntegratorSyncJob).to receive(:perform_later).with(event)
             event.save!
           end
         end

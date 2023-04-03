@@ -87,6 +87,7 @@ class StripeIntegrator
     return unless model.stripe_integrations.where(price_type: :full_amount)
 
     model.stripe_integrations << stripe_integration
+
     product = Stripe::Product.create(
       name: stripe_integration.name,
       description: model.description,
@@ -128,6 +129,7 @@ class StripeIntegrator
                                  })
     stripe_integration.price_id =   price[:id]
     stripe_integration.product_id = product[:id]
+
     stripe_integration.save!
   end
 
