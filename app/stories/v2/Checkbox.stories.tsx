@@ -119,7 +119,6 @@ DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
 };
 
-// ref should be excluded from props
 const Template = ({ ...args }: CheckboxProps) => <Checkbox {...args} />;
 export const Default: ComponentStory<typeof Checkbox> = Template.bind({});
 Default.args = {

@@ -146,7 +146,6 @@ DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
 };
 
-// ref should be excluded from props
 const Template = ({ ...args }: RadioProps) => <Radio {...args} />;
 export const Default: ComponentStory<typeof Radio> = Template.bind({});
 Default.args = {
