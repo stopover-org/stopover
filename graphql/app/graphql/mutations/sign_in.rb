@@ -33,7 +33,7 @@ module Mutations
         { user: nil, delay: user.delay }
       end
     rescue StandardError => e
-      raise GraphQL::ExecutionError, e.message
+      { user: nil, delay: user&.delay, reason: e.message }
     end
   end
 end

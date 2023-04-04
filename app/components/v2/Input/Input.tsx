@@ -1,6 +1,5 @@
 import {
   Input as JoyInput,
-  FormControl,
   FormHelperText,
   FormLabel,
   InputProps as JoyInputProps,
@@ -9,9 +8,9 @@ import {
 import React from "react";
 
 export interface InputProps {
-  label?: string;
-  hint?: string;
-  error?: string;
+  label?: React.ReactNode;
+  hint?: React.ReactNode;
+  error?: React.ReactNode;
   onChange: (value: string) => void;
   value: string;
 }
@@ -33,7 +32,7 @@ const Input = React.forwardRef(
     };
 
     return (
-      <FormControl>
+      <>
         {label && <FormLabel>{label}</FormLabel>}
         <JoyInput
           onChange={onChangeHandler}
@@ -50,7 +49,7 @@ const Input = React.forwardRef(
             </Typography>
           </FormHelperText>
         )}
-      </FormControl>
+      </>
     );
   }
 );
