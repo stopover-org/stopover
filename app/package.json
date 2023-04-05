@@ -20,6 +20,7 @@
     "@hookform/resolvers": "^3.0.0",
     "@mui/icons-material": "^5.11.11",
     "@mui/joy": "^5.0.0-alpha.73",
+    "@mui/material": "^5.11.16",
     "@react-google-maps/api": "^2.12.2",
     "@storybook/react": "^6.5.16",
     "@types/styled-components": "^5.1.26",

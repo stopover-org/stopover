@@ -1,43 +1,40 @@
 import React from "react";
-import styled from "styled-components";
-import Typography from "../v1/Typography";
-import Row from "../Layout/Row";
-import { TypographySize, TypographyTags } from "../StatesEnum";
+import { Grid, useTheme } from "@mui/joy";
+import Image from "next/image";
+import { useMediaQuery } from "@mui/material";
+import Typography from "../v2/Typography";
+import Link from "../v1/Link";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
+const Header = () => {
+  const theme = useTheme();
+  const isSmallDisplay = useMediaQuery(theme.breakpoints.up("sm"));
+  return (
+    <Grid container>
+      <Grid xs={9}>
+        <Image src="https://placehold.co/250x75" width={250} height={75} />
+      </Grid>
 
-const Logo = styled.div`
-  font-size: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 250px;
-  height: 75px;
-  background-color: grey;
-  color: white;
-`;
+      {isSmallDisplay && (
+        <>
+          <Grid xs={2}>
+            <Typography lineHeight="75px" textAlign="right">
+              <Link href="/bookings">Путешествие</Link>
+            </Typography>
+          </Grid>
+          <Grid
+            sx={{
+              paddingRight: "10px",
+            }}
+            xs={1}
+          >
+            <Typography lineHeight="75px" textAlign="right">
+              <Link href="/auth/sign_in">Вход</Link>
+            </Typography>
+          </Grid>
+        </>
+      )}
+    </Grid>
+  );
+};
 
-const NavBar = styled(Row)`
-  a {
-    padding-right: 38px;
-  }
-`;
-
-const Header = () => (
-  <Wrapper>
-    <Logo>250 x 75</Logo>
-    <NavBar justifyContent="flex-end">
-      <Typography size={TypographySize.BIG} as={TypographyTags.LINK}>
-        Путешествие
-      </Typography>
-      <Typography size={TypographySize.BIG} as={TypographyTags.LINK}>
-        Вход
-      </Typography>
-    </NavBar>
-  </Wrapper>
-);
-
-export default Header;
+export default React.memo(Header);
