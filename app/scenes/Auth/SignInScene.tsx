@@ -39,6 +39,7 @@ export const SignIn = () => {
       decreaseDelay(leftSeconds);
     },
     () => {
+      console.log('router')
       router.push("/events");
     }
   );
@@ -76,7 +77,7 @@ export const SignIn = () => {
                 <Grid>
                   <Input
                     {...codeField}
-                    label="Enter Code"
+                    label={`Enter Code from ${typeField.value}`}
                     hint={
                       delay ? (
                         `You can resend code in ${delay} seconds`

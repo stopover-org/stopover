@@ -90,8 +90,12 @@ class User < ApplicationRecord
     self.confirmed_at = Time.zone.now
     self.status = :active
 
-    self.account = Account.new(name: phone.presence || email, primary_phone: phone,
-                               phones: phone.present? ? [phone] : [], user: self)
+    unless account
+      self.account = Account.new(name: phone.presence || email,
+                                 primary_phone: phone,
+                                 phones: phone.present? ? [phone] : [],
+                                 user: self)
+    end
 
     self.session_password = SecureRandom.hex(50)
     save!
