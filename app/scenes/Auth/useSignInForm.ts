@@ -3,10 +3,15 @@ import { graphql, useMutation } from "react-relay";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router";
 import {
   SignInInput,
   useSignInForm_AuthLoginMutation,
 } from "./__generated__/useSignInForm_AuthLoginMutation.graphql";
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const __AUTH_COOKIE_NAME__ = "__stopover_session__";
 
 interface SignInFields {
   username: string;
@@ -31,10 +36,9 @@ const validationSchema = Yup.object().shape({
   type: Yup.mixed().oneOf(["email", "phone"]).required(),
 });
 
-export const useSignInForm = (
-  onNextStep: (delay: number) => void,
-  onFinalStep: () => void
-) => {
+export const useSignInForm = (onNextStep: (delay: number) => void) => {
+  const [_, setCookies] = useCookies();
+  const router = useRouter();
   const [authLogin] = useMutation<useSignInForm_AuthLoginMutation>(graphql`
     mutation useSignInForm_AuthLoginMutation($input: SignInInput!) {
       signIn(input: $input) {
@@ -43,6 +47,7 @@ export const useSignInForm = (
           email
           phone
         }
+        accessToken
         delay
         reason
       }
@@ -54,7 +59,7 @@ export const useSignInForm = (
     defaultValues: useDefaultValues(),
   });
 
-  function onSubmit(resetCode: boolean = false, step?: number = 0) {
+  function onSubmit(resetCode: boolean = false, step: number = 0) {
     return function submit({ code, ...values }: SignInFields) {
       const optional: Partial<SignInInput> = { resetCode };
       if (step === 1) optional.code = code;
@@ -76,7 +81,9 @@ export const useSignInForm = (
           if (result.signIn?.delay !== null) {
             onNextStep(result.signIn?.delay!);
           } else if (result.signIn?.user?.id) {
-            onFinalStep();
+            setCookies(__AUTH_COOKIE_NAME__, result.signIn?.accessToken!);
+
+            router.push("/events");
           }
         },
       });

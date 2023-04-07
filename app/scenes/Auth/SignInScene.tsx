@@ -37,9 +37,6 @@ export const SignIn = () => {
       }
 
       decreaseDelay(leftSeconds);
-    },
-    () => {
-      router.push("/events");
     }
   );
   const typeField = useFormField("type");
