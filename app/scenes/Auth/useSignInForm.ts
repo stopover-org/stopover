@@ -3,7 +3,10 @@ import { graphql, useMutation } from "react-relay";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useSignInForm_AuthLoginMutation } from "./__generated__/useSignInForm_AuthLoginMutation.graphql";
+import {
+  SignInInput,
+  useSignInForm_AuthLoginMutation,
+} from "./__generated__/useSignInForm_AuthLoginMutation.graphql";
 
 interface SignInFields {
   username: string;
@@ -41,39 +44,50 @@ export const useSignInForm = (
           phone
         }
         delay
+        reason
       }
     }
   `);
 
-  function onSubmit({ code, ...values }: SignInFields) {
-    const optional: Partial<SignInFields> = {};
-    if (code) optional.code = code;
-    authLogin({
-      variables: {
-        input: {
-          ...values,
-          ...optional,
-        },
-      },
-      onCompleted(result) {
-        if (result.signIn?.delay) {
-          onNextStep(result.signIn?.delay);
-        } else if (result.signIn?.user?.id) {
-          onFinalStep();
-        }
-      },
-    });
-  }
-
-  const form = useForm<SignInFields>({
+  const form = useForm<SignInFields & { general?: string }>({
     resolver: yupResolver(validationSchema),
     defaultValues: useDefaultValues(),
   });
 
+  function onSubmit(resetCode: boolean = false, step?: number = 0) {
+    return function submit({ code, ...values }: SignInFields) {
+      const optional: Partial<SignInInput> = { resetCode };
+      if (step === 1) optional.code = code;
+      authLogin({
+        variables: {
+          input: {
+            ...values,
+            ...optional,
+          },
+        },
+        onCompleted(result) {
+          if (result.signIn?.reason) {
+            form.setError("code", { message: result.signIn?.reason });
+
+            form.setError("username", { message: result.signIn?.reason });
+            return;
+          }
+
+          if (result.signIn?.delay !== null) {
+            onNextStep(result.signIn?.delay!);
+          } else if (result.signIn?.user?.id) {
+            onFinalStep();
+          }
+        },
+      });
+    };
+  }
+
   return React.useMemo(
     () => ({
       ...form,
-      handleSubmit: () => form.handleSubmit(onSubmit),
+      handleSubmit: (resendCode: boolean = false, step: number = 0) =>
+        form.handleSubmit(onSubmit(resendCode, step)),
       useFormField(name: keyof SignInFields) {
         const field = form.register(name);
 

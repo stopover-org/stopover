@@ -18,7 +18,7 @@ export const SignIn = () => {
   const [delay, setDelay] = useState<number | null>(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const decreaseDelay = (value: number) => {
-    if (value === 0) {
+    if (value <= 0) {
       setDelay(null);
       return;
     }
@@ -28,7 +28,7 @@ export const SignIn = () => {
     timeoutRef.current = setTimeout(() => decreaseDelay(value - 1), 1000);
   };
 
-  const { useFormField, resetField, handleSubmit } = useSignInForm(
+  const { useFormField, resetField, handleSubmit, reset } = useSignInForm(
     (leftSeconds: number) => {
       setShowCode(true);
 
@@ -39,7 +39,6 @@ export const SignIn = () => {
       decreaseDelay(leftSeconds);
     },
     () => {
-      console.log('router')
       router.push("/events");
     }
   );
@@ -52,6 +51,17 @@ export const SignIn = () => {
     resetField("username");
   }, [typeField.value, typeField.onChange]);
 
+  const onStepBack = () => {
+    reset();
+
+    setShowCode(false);
+
+    setDelay(null);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+
   return (
     <Grid
       container
@@ -62,17 +72,33 @@ export const SignIn = () => {
       <Card variant="outlined" sx={{ width: 500 }}>
         <Grid container>
           <Grid xs={12}>
-            <Link onClick={() => router.back()}>
+            <Link
+              onClick={() => {
+                if (showCode) {
+                  onStepBack();
+                } else {
+                  router.back();
+                }
+              }}
+            >
               <Typography underline>
                 &lt; {showCode ? `Change ${typeField.value}` : "Back"}
               </Typography>
             </Link>
+            {showCode && (
+              <Typography level="body2">{usernameField.value}</Typography>
+            )}
           </Grid>
+
           <Grid xs={12} container justifyContent="center">
             <Typography level="h3">Sign In / Sign Up</Typography>
           </Grid>
+
           <Grid xs={12}>
-            <form style={{ width: "100%" }} onSubmit={handleSubmit()}>
+            <form
+              style={{ width: "100%" }}
+              onSubmit={handleSubmit(false, showCode ? 1 : 0)}
+            >
               {showCode && (
                 <Grid>
                   <Input
@@ -82,7 +108,7 @@ export const SignIn = () => {
                       delay ? (
                         `You can resend code in ${delay} seconds`
                       ) : (
-                        <Link onClick={handleSubmit}>
+                        <Link onClick={handleSubmit(true, 0)}>
                           <Typography fontSize="sm" color="primary">
                             Resend Code
                           </Typography>
