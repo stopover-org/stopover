@@ -13,67 +13,74 @@ export interface PhoneInputProps {
   label: string;
 }
 
-const PhoneInput = ({
-  placeholder,
-  onChange,
-  value,
-  label,
-  ...props
-}: Omit<JoyInputProps, keyof PhoneInputProps> & PhoneInputProps) => {
-  const countryPhoneCodes = getCountryPhoneCodes();
-  const defaultCountry = React.useMemo(
-    () => getCountryFromOffset() || "RU",
-    []
-  );
-  const [country, setCountry] = React.useState(defaultCountry);
-  const inputPlaceholder =
-    placeholder || country
-      ? `+${countryPhoneCodes[country]}`
-      : "Choose country";
+const PhoneInput = React.forwardRef(
+  (
+    {
+      placeholder,
+      onChange,
+      value,
+      label,
+      ...props
+    }: Omit<Omit<JoyInputProps, keyof PhoneInputProps>, "ref"> &
+      PhoneInputProps,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ref: React.ForwardedRef<HTMLInputElement>
+  ) => {
+    const countryPhoneCodes = getCountryPhoneCodes();
+    const defaultCountry = React.useMemo(
+      () => getCountryFromOffset() || "RU",
+      []
+    );
+    const [country, setCountry] = React.useState(defaultCountry);
+    const inputPlaceholder =
+      placeholder || country
+        ? `+${countryPhoneCodes[country]}`
+        : "Choose country";
 
-  React.useEffect(() => {
-    if (defaultCountry) {
-      onChange(`+${countryPhoneCodes[country]}`);
-    }
-  }, []);
-
-  const onChangeHandler = (val: string) => {
-    if (!val.startsWith(`+${countryPhoneCodes[country]}`)) {
-      onChange(`+${countryPhoneCodes[country]}`);
-      return;
-    }
-    onChange(val);
-  };
-  return (
-    <Input
-      startDecorator={
-        <Select
-          variant="plain"
-          value={country}
-          onChange={(_, val) => {
-            if (!val) return;
-            onChange(`+${countryPhoneCodes[val]}`);
-
-            setCountry(val);
-          }}
-          sx={{ "&:hover": { bgcolor: "transparent" } }}
-        >
-          {Object.keys(countryPhoneCodes)
-            .filter(Boolean)
-            .map((countryCode: string) => (
-              <Option value={countryCode}>
-                {countryCodeEmoji(countryCode)}
-                (+{countryPhoneCodes[countryCode]})
-              </Option>
-            ))}
-        </Select>
+    React.useEffect(() => {
+      if (defaultCountry) {
+        onChange(`+${countryPhoneCodes[country]}`);
       }
-      placeholder={inputPlaceholder}
-      onChange={onChangeHandler}
-      value={value}
-      label={label}
-      {...props}
-    />
-  );
-};
+    }, []);
+
+    const onChangeHandler = (val: string) => {
+      if (!val.startsWith(`+${countryPhoneCodes[country]}`)) {
+        onChange(`+${countryPhoneCodes[country]}`);
+        return;
+      }
+      onChange(val);
+    };
+    return (
+      <Input
+        startDecorator={
+          <Select
+            variant="plain"
+            value={country}
+            onChange={(_, val) => {
+              if (!val) return;
+              onChange(`+${countryPhoneCodes[val]}`);
+
+              setCountry(val);
+            }}
+            sx={{ "&:hover": { bgcolor: "transparent" } }}
+          >
+            {Object.keys(countryPhoneCodes)
+              .filter(Boolean)
+              .map((countryCode: string) => (
+                <Option key={countryCode} value={countryCode}>
+                  {countryCodeEmoji(countryCode)}
+                  (+{countryPhoneCodes[countryCode]})
+                </Option>
+              ))}
+          </Select>
+        }
+        placeholder={inputPlaceholder}
+        onChange={onChangeHandler}
+        value={value}
+        label={label}
+        {...props}
+      />
+    );
+  }
+);
 export default React.memo(PhoneInput);

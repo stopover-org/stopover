@@ -3,9 +3,7 @@ import { useRouter } from "next/router";
 import * as momentTimezones from "moment-timezone/data/packed/latest.json";
 import { Card, Grid } from "@mui/joy";
 import { useSignInForm } from "./useSignInForm";
-import { getCountryFromOffset } from "../../lib/utils/timezones";
 import Link from "../../components/v1/Link";
-import { TypographySize } from "../../components/StatesEnum";
 import Input from "../../components/v2/Input";
 import PhoneInput from "../../components/v2/PhoneInput";
 import Typography from "../../components/v2/Typography";
@@ -17,19 +15,49 @@ if (typeof window !== "undefined") window.momentTimezones = momentTimezones;
 export const SignIn = () => {
   const router = useRouter();
   const [showCode, setShowCode] = useState(false);
-  const { useFormField, resetField, handleSubmit } = useSignInForm(
-    () => setShowCode(true),
-    () => {}
+  const [delay, setDelay] = useState<number | null>(null);
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const decreaseDelay = (value: number) => {
+    if (value <= 0) {
+      setDelay(null);
+      return;
+    }
+
+    setDelay(value);
+
+    timeoutRef.current = setTimeout(() => decreaseDelay(value - 1), 1000);
+  };
+
+  const { useFormField, resetField, handleSubmit, reset } = useSignInForm(
+    (leftSeconds: number) => {
+      setShowCode(true);
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      decreaseDelay(leftSeconds);
+    }
   );
   const typeField = useFormField("type");
   const usernameField = useFormField("username");
   const codeField = useFormField("code");
-  const country = React.useMemo(() => getCountryFromOffset(), []);
   const changeType = useCallback(() => {
     typeField.onChange(typeField.value === "email" ? "phone" : "email");
 
     resetField("username");
   }, [typeField.value, typeField.onChange]);
+
+  const onStepBack = () => {
+    reset();
+
+    setShowCode(false);
+
+    setDelay(null);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
 
   return (
     <Grid
@@ -41,18 +69,50 @@ export const SignIn = () => {
       <Card variant="outlined" sx={{ width: 500 }}>
         <Grid container>
           <Grid xs={12}>
-            <Link onClick={() => router.back()}>
-              <Typography underline>&lt; Back</Typography>
+            <Link
+              onClick={() => {
+                if (showCode) {
+                  onStepBack();
+                } else {
+                  router.back();
+                }
+              }}
+            >
+              <Typography underline>
+                &lt; {showCode ? `Change ${typeField.value}` : "Back"}
+              </Typography>
             </Link>
+            {showCode && (
+              <Typography level="body2">{usernameField.value}</Typography>
+            )}
           </Grid>
+
           <Grid xs={12} container justifyContent="center">
             <Typography level="h3">Sign In / Sign Up</Typography>
           </Grid>
+
           <Grid xs={12}>
-            <form style={{ width: "100%" }} onSubmit={handleSubmit()}>
+            <form
+              style={{ width: "100%" }}
+              onSubmit={handleSubmit(false, showCode ? 1 : 0)}
+            >
               {showCode && (
                 <Grid>
-                  <Input {...codeField} label="Enter Code" />
+                  <Input
+                    {...codeField}
+                    label={`Enter Code from ${typeField.value}`}
+                    hint={
+                      delay ? (
+                        `You can resend code in ${delay} seconds`
+                      ) : (
+                        <Link onClick={handleSubmit(true, 0)}>
+                          <Typography fontSize="sm" color="primary">
+                            Resend Code
+                          </Typography>
+                        </Link>
+                      )
+                    }
+                  />
                 </Grid>
               )}
 

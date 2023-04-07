@@ -1,4 +1,4 @@
-import * as momentTimezones from "moment-timezone/data/packed/latest.json";
+import momentTimezones from "moment-timezone/data/packed/latest.json";
 
 export function getCountryFromOffset() {
   if (!momentTimezones.countries) return undefined;

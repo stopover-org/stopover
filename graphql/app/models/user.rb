@@ -83,22 +83,28 @@ class User < ApplicationRecord
   end
 
   def activate!(code:)
-    raise 'Confirmation code is incorrect' if code != confirmation_code || confirmation_code.nil?
+    raise StandardError, 'Confirmation code is incorrect' if code != confirmation_code || confirmation_code.nil?
 
     self.confirmation_code = nil
     self.last_try = Time.zone.now
     self.confirmed_at = Time.zone.now
     self.status = :active
 
-    self.account = Account.new(name: phone.presence || email, primary_phone: phone,
-                               phones: phone.present? ? [phone] : [], user: self)
+    unless account
+      self.account = Account.new(name: phone.presence || email,
+                                 primary_phone: phone,
+                                 phones: phone.present? ? [phone] : [],
+                                 user: self)
+    end
 
     self.session_password = SecureRandom.hex(50)
     save!
   end
 
   def delay
-    ::Configuration.get_value(:SIGN_IN_DELAY).value.to_i - (Time.zone.now.to_i - last_try&.to_i)
+    actual_delay = ::Configuration.get_value(:SIGN_IN_DELAY).value.to_i - (Time.zone.now.to_i - (last_try&.to_i || 0))
+    return actual_delay if actual_delay.positive?
+    0
   end
 
   def access_token
