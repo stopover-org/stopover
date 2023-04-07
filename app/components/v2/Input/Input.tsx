@@ -4,11 +4,11 @@ import {
   FormLabel,
   InputProps as JoyInputProps,
   Typography,
-  Box,
+  Grid,
 } from "@mui/joy";
 import React from "react";
 
-export interface InputProps {
+interface BaseInputProps {
   label?: React.ReactNode;
   hint?: React.ReactNode;
   error?: React.ReactNode;
@@ -16,16 +16,13 @@ export interface InputProps {
   value: string;
 }
 
+export interface InputProps
+  extends Omit<JoyInputProps, keyof BaseInputProps>,
+    BaseInputProps {}
+
 const Input = React.forwardRef(
   (
-    {
-      label,
-      hint,
-      error,
-      onChange,
-      value,
-      ...props
-    }: Omit<JoyInputProps, keyof InputProps> & InputProps,
+    { label, hint, error, onChange, value, ...props }: InputProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
     const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +30,7 @@ const Input = React.forwardRef(
     };
 
     return (
-      <Box ref={ref}>
+      <Grid ref={ref}>
         {label && <FormLabel>{label}</FormLabel>}
         <JoyInput
           onChange={onChangeHandler}
@@ -49,7 +46,7 @@ const Input = React.forwardRef(
             </Typography>
           </FormHelperText>
         )}
-      </Box>
+      </Grid>
     );
   }
 );

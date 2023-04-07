@@ -3,100 +3,42 @@ import {
   DatePicker as MuiDatePicker,
   DatePickerProps as MaterialDatePickerProps,
 } from "@mui/x-date-pickers/DatePicker";
-import {
-  unstable_useDateField as useDateField,
-  UseDateFieldProps,
-} from "@mui/x-date-pickers/DateField";
 import { Moment } from "moment";
-import { FormControl, InputProps as JoyInputProps } from "@mui/joy";
-import Input from "../Input";
+import { FormControl } from "@mui/joy";
+import { DatePickerSlotsComponentsProps } from "@mui/x-date-pickers/DatePicker/DatePicker.types";
 import { InputProps } from "../Input/Input";
+import DatePickerField from "./DatePickerField";
 
-interface InputFieldProps
-  extends InputProps,
-    Omit<JoyInputProps, keyof InputProps> {
-  label?: React.ReactNode;
-  InputProps?: {
-    ref?: React.Ref<any>;
-    endAdornment?: React.ReactNode;
-    startAdornment?: React.ReactNode;
-  };
-  formControlSx?: JoyInputProps["sx"];
+interface BaseDatePickerSlotProps {
+  field: Partial<InputProps>;
 }
 
-type JoyFieldComponent = ((
-  props: InputFieldProps & React.RefAttributes<HTMLInputElement>
-) => JSX.Element) & { propTypes?: any };
+interface DatePickerSlotProps
+  extends Omit<
+      DatePickerSlotsComponentsProps<Moment>,
+      keyof BaseDatePickerSlotProps
+    >,
+    BaseDatePickerSlotProps {}
 
-const Field = React.forwardRef(
-  (props: InputFieldProps, inputRef: React.Ref<HTMLInputElement>) => {
-    const {
-      disabled,
-      id,
-      InputProps: { ref: containerRef, startAdornment, endAdornment } = {},
-      formControlSx,
-      ...other
-    } = props;
-
-    return (
-      <FormControl
-        disabled={disabled}
-        id={id}
-        sx={{ ...formControlSx }}
-        ref={containerRef}
-      >
-        <Input
-          disabled={disabled}
-          slotProps={{ input: { ref: inputRef } }}
-          startDecorator={startAdornment}
-          endDecorator={endAdornment}
-          {...other}
-        />
-      </FormControl>
-    );
-  }
-) as JoyFieldComponent;
-
-export interface DatePickerProps extends UseDateFieldProps<Moment> {
-  inputRef?: React.ForwardedRef<HTMLInputElement>;
-  slots: any;
-  slotProps: any;
+interface BaseDatePickerProps {
+  hint?: string;
+  error?: string;
+  slotProps: DatePickerSlotProps;
 }
-const DatePickerField = (props: DatePickerProps) => {
-  const {
-    inputRef: externalInputRef,
-    slots,
-    slotProps,
-    ...textFieldProps
-  } = props;
 
-  const response = useDateField<Moment, typeof textFieldProps>({
-    props: textFieldProps,
-    inputRef: externalInputRef,
-  });
+export interface DatePickerProps
+  extends Omit<MaterialDatePickerProps<Moment>, keyof BaseDatePickerProps>,
+    BaseDatePickerProps {}
 
-  return (
-    <Field
-      {...response}
-      onChange={(_, event: React.ChangeEvent<HTMLInputElement>) =>
-        response.onChange(event)
-      }
-    />
-  );
-};
-
-const DatePicker = ({
-  label,
-  error,
-  hint,
-  ...props
-}: MaterialDatePickerProps<Moment> & { hint?: string; error?: string }) => (
+const DatePicker = ({ label, error, hint, ...props }: DatePickerProps) => (
   <FormControl>
     <MuiDatePicker
       {...props}
       slots={{ field: DatePickerField, ...props.slots }}
       slotProps={{
+        ...props.slotProps,
         field: {
+          ...props.slotProps?.field,
           label,
           hint,
           error,

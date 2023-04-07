@@ -1,7 +1,6 @@
 import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import React, { useState } from "react";
 import { Grid } from "@mui/joy";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
   events_Query,
   events_Query$data,
@@ -10,6 +9,7 @@ import { EventsListScene_EventsFragment$key } from "../__generated__/EventsListS
 import { EventsListScene_InterestsFragment$key } from "../__generated__/EventsListScene_InterestsFragment.graphql";
 import { ChangeFiltersProps } from "../EventScene/components/EventFilter";
 import Input from "../../components/v2/Input";
+import DatePicker from "../../components/v2/DatePicker";
 
 type Props = {
   eventsReference: events_Query$data;
@@ -82,19 +82,23 @@ const EventsScene = ({ eventsReference }: Props) => {
   };
 
   return (
-    <Grid spacing={2} container>
-      <Grid xs={3}>
+    <Grid container>
+      <Grid spacing={1} xs={3} container>
         <Grid xs={12}>
           <Input onChange={() => {}} value="" label="City" />
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={6}>
           <DatePicker
-            slots={{
-              field: Input,
-            }}
-            onChange={() => {}}
-            value=""
-            label="City"
+            slotProps={{ field: { placeholder: "Start date" } }}
+            label="Start"
+            hint="Start of your trip"
+          />
+        </Grid>
+        <Grid xs={6}>
+          <DatePicker
+            slotProps={{ field: { placeholder: "End date" } }}
+            label="End"
+            hint="End of your trip"
           />
         </Grid>
       </Grid>
