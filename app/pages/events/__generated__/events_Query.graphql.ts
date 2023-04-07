@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<54e2addcde2b55650f1ee53c9b41d0d3>>
+ * @generated SignedSource<<ccbde9a66eb16585592bf0808894723b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -22,7 +22,7 @@ export type events_Query$variables = {
   filters?: EventsFilter | null;
 };
 export type events_Query$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"EventsListScene_EventsFragment" | "EventsListScene_InterestsFragment">;
+  readonly " $fragmentSpreads": FragmentRefs<"EventsScene_EventsFragment" | "EventsScene_InterestsFragment">;
 };
 export type events_Query = {
   response: events_Query$data;
@@ -87,12 +87,12 @@ return {
           (v1/*: any*/)
         ],
         "kind": "FragmentSpread",
-        "name": "EventsListScene_EventsFragment"
+        "name": "EventsScene_EventsFragment"
       },
       {
         "args": null,
         "kind": "FragmentSpread",
-        "name": "EventsListScene_InterestsFragment"
+        "name": "EventsScene_InterestsFragment"
       }
     ],
     "type": "Query",
@@ -363,16 +363,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d9590cb0094873b801644fc1962e5e1b",
+    "cacheID": "27d4e748d7a9eaa3ddaec1fedf6e9c20",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query(\n  $filters: EventsFilter\n) {\n  ...EventsListScene_EventsFragment_VTAHT\n  ...EventsListScene_InterestsFragment\n}\n\nfragment CompactCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n      symbol\n      fullName\n    }\n  }\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n  averageRating\n  ratingsCount\n  ...Rate_EventRate\n}\n\nfragment EventFilter_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice\n  maxPrice\n  city\n}\n\nfragment EventsListScene_EventsFragment_VTAHT on Query {\n  events(first: 10, filters: $filters) {\n    edges {\n      node {\n        ...CompactCard_EventFragment\n        ...WideCard_EventFragment\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...EventFilter_EventFiltersFragment\n  }\n}\n\nfragment EventsListScene_InterestsFragment on Query {\n  ...InterestGallery_InterestsFragment\n}\n\nfragment InterestGallery_InterestsFragment on Query {\n  interests {\n    id\n    ...ItemGallery_InterestFragment\n  }\n}\n\nfragment ItemGallery_InterestFragment on Interest {\n  id\n  title\n  preview\n}\n\nfragment Rate_EventRate on Event {\n  averageRating\n  ratingsCount\n}\n\nfragment WideCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n      symbol\n      fullName\n    }\n  }\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n  averageRating\n  ratingsCount\n}\n"
+    "text": "query events_Query(\n  $filters: EventsFilter\n) {\n  ...EventsScene_EventsFragment_VTAHT\n  ...EventsScene_InterestsFragment\n}\n\nfragment CompactCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n      symbol\n      fullName\n    }\n  }\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n  averageRating\n  ratingsCount\n  ...Rate_EventRate\n}\n\nfragment EventFilter_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice\n  maxPrice\n  city\n}\n\nfragment EventsScene_EventsFragment_VTAHT on Query {\n  events(first: 10, filters: $filters) {\n    edges {\n      node {\n        ...CompactCard_EventFragment\n        ...WideCard_EventFragment\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...EventFilter_EventFiltersFragment\n  }\n}\n\nfragment EventsScene_InterestsFragment on Query {\n  ...InterestGallery_InterestsFragment\n}\n\nfragment InterestGallery_InterestsFragment on Query {\n  interests {\n    id\n    ...ItemGallery_InterestFragment\n  }\n}\n\nfragment ItemGallery_InterestFragment on Interest {\n  id\n  title\n  preview\n}\n\nfragment Rate_EventRate on Event {\n  averageRating\n  ratingsCount\n}\n\nfragment WideCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n      symbol\n      fullName\n    }\n  }\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n  averageRating\n  ratingsCount\n}\n"
   }
 };
 })();
 
-(node as any).hash = "7493a76168064f39d13e2f839eea6985";
+(node as any).hash = "a6ff39bea691424c67a253ad08024dbc";
 
 export default node;
