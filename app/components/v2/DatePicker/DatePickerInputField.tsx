@@ -42,6 +42,7 @@ const DatePickerInputField = React.forwardRef(
           startDecorator={startAdornment}
           endDecorator={endAdornment}
           {...other}
+          fullWidth
         />
       </FormControl>
     );

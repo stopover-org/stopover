@@ -39,12 +39,16 @@ export const calculateDate = (
       .add(timeParser(delta).days, "d")
       .add(timeParser(delta).hours, "h")
       .add(timeParser(delta).minutes, "m");
-  if (modifyMethod === "substract")
+  if (modifyMethod === "subtract")
     return initialDate
       .subtract(timeParser(delta).days, "d")
       .subtract(timeParser(delta).hours, "h")
       .subtract(timeParser(delta).minutes, "m");
   return moment("00:00:00");
 };
-export const getTime = (arg: Moment) => arg.format("HH:mm");
-export const getDayMonth = (arg: Moment) => arg.format("D MMMM");
+export const getTime = (arg: Moment | null) =>
+  arg ? arg.format("HH:mm") : undefined;
+export const getDayMonth = (arg: Moment | null) =>
+  arg ? arg.format("D MMMM") : undefined;
+export const getDate = (arg: Moment | null) =>
+  arg ? arg.format("DD/MM/YYYY") : undefined;

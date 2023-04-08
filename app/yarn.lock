@@ -1602,10 +1602,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@mui/base@5.0.0-alpha.123":
-  version "5.0.0-alpha.123"
-  resolved "https://registry.npmjs.org/@mui/base/-/base-5.0.0-alpha.123.tgz"
-  integrity sha512-pxzcAfET3I6jvWqS4kijiLMn1OmdMw+mGmDa0SqmDZo3bXXdvLhpCCPqCkULG3UykhvFCOcU5HclOX3JCA+Zhg==
+"@mui/base@^5.0.0-alpha.124", "@mui/base@5.0.0-alpha.124":
+  version "5.0.0-alpha.124"
+  resolved "https://registry.npmjs.org/@mui/base/-/base-5.0.0-alpha.124.tgz"
+  integrity sha512-I6M+FrjRCybQCr8I8JTu6L2MkUobSQFgNIpOJyDNKL5zq/73LvZIQXvsKumAzthVGvI1PYaarM9vGDrDYbumKA==
   dependencies:
     "@babel/runtime" "^7.21.0"
     "@emotion/is-prop-valid" "^1.2.0"
@@ -1616,10 +1616,10 @@
     prop-types "^15.8.1"
     react-is "^18.2.0"
 
-"@mui/base@5.0.0-alpha.124":
-  version "5.0.0-alpha.124"
-  resolved "https://registry.npmjs.org/@mui/base/-/base-5.0.0-alpha.124.tgz"
-  integrity sha512-I6M+FrjRCybQCr8I8JTu6L2MkUobSQFgNIpOJyDNKL5zq/73LvZIQXvsKumAzthVGvI1PYaarM9vGDrDYbumKA==
+"@mui/base@5.0.0-alpha.123":
+  version "5.0.0-alpha.123"
+  resolved "https://registry.npmjs.org/@mui/base/-/base-5.0.0-alpha.123.tgz"
+  integrity sha512-pxzcAfET3I6jvWqS4kijiLMn1OmdMw+mGmDa0SqmDZo3bXXdvLhpCCPqCkULG3UykhvFCOcU5HclOX3JCA+Zhg==
   dependencies:
     "@babel/runtime" "^7.21.0"
     "@emotion/is-prop-valid" "^1.2.0"

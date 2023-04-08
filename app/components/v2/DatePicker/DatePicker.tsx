@@ -6,11 +6,11 @@ import {
 import { Moment } from "moment";
 import { FormControl } from "@mui/joy";
 import { DatePickerSlotsComponentsProps } from "@mui/x-date-pickers/DatePicker/DatePicker.types";
-import { InputProps } from "../Input/Input";
 import DatePickerField from "./DatePickerField";
+import { DatePickerInputFieldProps } from "./DatePickerInputField";
 
 interface BaseDatePickerSlotProps {
-  field?: Partial<InputProps>;
+  field?: Partial<DatePickerInputFieldProps>;
 }
 
 interface DatePickerSlotProps
@@ -36,16 +36,17 @@ const DatePicker = ({ label, error, hint, ...props }: DatePickerProps) => (
       {...props}
       slots={{ field: DatePickerField, ...props.slots }}
       slotProps={{
-        ...props.slotProps,
         field: {
-          ...props.slotProps?.field,
           label,
           hint,
           error,
+          fullWidth: true,
           formControlSx: {
             flexDirection: "row",
           },
+          ...props.slotProps?.field,
         } as any,
+        ...props.slotProps,
       }}
     />
   </FormControl>
