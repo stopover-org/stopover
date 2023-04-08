@@ -5,24 +5,34 @@ import { FormControl, Grid } from "@mui/joy";
 import { ClickAwayListener } from "@mui/base";
 import DatePicker from "../DatePicker";
 import { DatePickerProps as OriginDatePickerProps } from "../DatePicker/DatePicker";
-import Input from "../Input/Input";
+import Input, { InputProps } from "../Input/Input";
 import { getDate } from "../../../lib/utils/dates";
 import PickersDay from "./PickersDay";
 
 interface BaseDatePickerProps {
   onChange?: (dates: [Moment | null, Moment | null]) => void;
+  startInputProps?: InputProps;
+  endInputProps?: InputProps;
+  value: [Moment | null, Moment | null];
 }
 
 export interface DatePickerProps
   extends Omit<OriginDatePickerProps, keyof BaseDatePickerProps>,
     BaseDatePickerProps {}
 
-const DateRangePicker = ({ onChange, onClose, ...props }: DatePickerProps) => {
+const DateRangePicker = ({
+  onChange,
+  onClose,
+  startInputProps = {},
+  endInputProps = {},
+  value,
+  ...props
+}: DatePickerProps) => {
   const formControlRef = React.useRef<HTMLDivElement>(null);
   const [pickerVisible, setPickerVisible] = React.useState(false);
   const [selectedDates, setSelectedDays] = React.useState<
     [Moment | null, Moment | null]
-  >([null, null]);
+  >(value || [null, null]);
 
   const onPickerClose = React.useCallback(() => {
     if (pickerVisible && selectedDates.filter(Boolean).length === 2) {
@@ -81,6 +91,7 @@ const DateRangePicker = ({ onChange, onClose, ...props }: DatePickerProps) => {
         <Grid xs={6}>
           <Input
             value={getDate(selectedDates[0])}
+            {...startInputProps}
             onChange={() => {}}
             onClick={onInputClick}
             readOnly
@@ -89,6 +100,7 @@ const DateRangePicker = ({ onChange, onClose, ...props }: DatePickerProps) => {
         <Grid xs={6}>
           <Input
             value={getDate(selectedDates[1])}
+            {...endInputProps}
             onChange={() => {}}
             onClick={onInputClick}
             readOnly

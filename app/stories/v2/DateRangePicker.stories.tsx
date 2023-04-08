@@ -30,6 +30,16 @@ const Preview = () => {
             <DateRangePicker
               value={selectedDates}
               onChange={(dates) => setDates(dates)}
+              startInputProps={{
+                label: "Start Date",
+                placeholder: "Enter Start of your trip",
+                hint: "Enter Start of your trip",
+              }}
+              endInputProps={{
+                label: "End Date",
+                placeholder: "Enter End of your trip",
+                hint: "Enter End of your trip",
+              }}
             />
           </Grid>
         </Grid>

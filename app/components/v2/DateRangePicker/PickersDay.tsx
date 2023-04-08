@@ -1,7 +1,7 @@
 import { PickersDayProps } from "@mui/x-date-pickers";
 import { Moment } from "moment";
 import * as React from "react";
-import { PickersDay as JoyPickersDay } from "@mui/x-date-pickers/PickersDay/PickersDay";
+import { PickersDay as JoyPickersDay } from "@mui/x-date-pickers/PickersDay";
 
 interface DayPickerProps extends PickersDayProps<Moment> {
   selectedDays: [Moment | null, Moment | null];

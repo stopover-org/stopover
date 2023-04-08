@@ -1,49 +1,35 @@
 import React from "react";
 import { Grid } from "@mui/joy";
-import {} from "../../pages/events/__generated__/events_Query.graphql";
+import { Moment } from "moment";
 import Input from "../../components/v2/Input";
-import DatePicker from "../../components/v2/DatePicker";
+import DateRangePicker from "../../components/v2/DateRangePicker";
 
 type Props = {};
 
-const EventsScene = ({}: Props) => {
-  const startDateRef = React.useRef<HTMLInputElement | null>(null);
-  const endDateRef = React.useRef<HTMLInputElement | null>(null);
-  const [openedDatePicker, setOpenedDatePicker] = React.useState<number | null>(
-    null
-  );
-
-  console.log(startDateRef, endDateRef);
+const EventsScene = (props: Props) => {
+  const [selectedDates, setDates] = React.useState<
+    [Moment | null, Moment | null]
+  >([null, null]);
   return (
     <Grid container>
       <Grid spacing={1} xs={3} container>
         <Grid xs={12}>
           <Input onChange={() => {}} value="" label="City" />
         </Grid>
-        <Grid xs={6}>
-          <DatePicker
-            inputRef={startDateRef}
-            disablePast
-            slotProps={{
-              field: {
-                placeholder: "Start date",
-              },
+        <Grid xs={12}>
+          <DateRangePicker
+            value={selectedDates}
+            onChange={(dates) => setDates(dates)}
+            startInputProps={{
+              label: "Start Date",
+              placeholder: "Enter Start of your trip",
+              hint: "Enter Start of your trip",
             }}
-            label="Start"
-            hint="Start of your trip"
-          />
-        </Grid>
-        <Grid xs={6}>
-          <DatePicker
-            inputRef={endDateRef}
-            disablePast
-            slotProps={{
-              field: {
-                placeholder: "End date",
-              },
+            endInputProps={{
+              label: "End Date",
+              placeholder: "Enter End of your trip",
+              hint: "Enter End of your trip",
             }}
-            label="End"
-            hint="End of your trip"
           />
         </Grid>
       </Grid>
