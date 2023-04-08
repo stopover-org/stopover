@@ -5,7 +5,6 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { Moment } from "moment";
 import DatePicker from "../../components/v2/DatePicker";
-import Button from "../../components/v2/Button/Button";
 import { theme } from "../../lib/theme";
 import Typography from "../../components/v2/Typography";
 
@@ -57,7 +56,5 @@ DesignPreview.parameters = {
 };
 
 const Template = (args: any) => <DatePicker {...args} />;
-export const Default: ComponentStory<typeof Button> = Template.bind({});
-Default.args = {
-  children: "Press me",
-};
+export const Default: ComponentStory<typeof DatePicker> = Template.bind({});
+Default.args = {};

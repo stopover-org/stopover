@@ -10,7 +10,7 @@ import { InputProps } from "../Input/Input";
 import DatePickerField from "./DatePickerField";
 
 interface BaseDatePickerSlotProps {
-  field: Partial<InputProps>;
+  field?: Partial<InputProps>;
 }
 
 interface DatePickerSlotProps
@@ -23,7 +23,7 @@ interface DatePickerSlotProps
 interface BaseDatePickerProps {
   hint?: string;
   error?: string;
-  slotProps: DatePickerSlotProps;
+  slotProps?: DatePickerSlotProps;
 }
 
 export interface DatePickerProps

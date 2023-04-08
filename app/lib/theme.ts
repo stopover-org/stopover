@@ -154,20 +154,20 @@ const { unstable_sxConfig: muiSxConfig, ...muiTheme } = extendMuiTheme({
     light: {
       palette: {
         primary: {
-          main: colors.blue[500],
+          main: joyTheme.colorSchemes.light.palette.primary[500],
         },
-        grey: colors.grey,
+        grey: joyTheme.colorSchemes.light.palette.neutral,
         error: {
-          main: colors.red[500],
+          main: joyTheme.colorSchemes.light.palette.danger[500],
         },
         info: {
-          main: colors.purple[500],
+          main: joyTheme.colorSchemes.light.palette.info[500],
         },
         success: {
-          main: colors.green[500],
+          main: joyTheme.colorSchemes.light.palette.success[500],
         },
         warning: {
-          main: colors.yellow[200],
+          main: joyTheme.colorSchemes.light.palette.warning[200],
         },
         common: {
           white: "#FFF",

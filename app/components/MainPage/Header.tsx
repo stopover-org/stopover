@@ -7,14 +7,14 @@ import Link from "../v1/Link";
 
 const Header = () => {
   const theme = useTheme();
-  const isSmallDisplay = useMediaQuery(theme.breakpoints.up("sm"));
+  const isMediumDisplay = useMediaQuery(theme.breakpoints.up("sm"));
   return (
     <Grid container>
       <Grid xs={9}>
         <Image src="https://placehold.co/250x75" width={250} height={75} />
       </Grid>
 
-      {isSmallDisplay && (
+      {isMediumDisplay && (
         <>
           <Grid xs={2}>
             <Typography lineHeight="75px" textAlign="right">
