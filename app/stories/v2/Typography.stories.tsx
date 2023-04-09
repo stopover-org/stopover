@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import Typography from "../../components/v2/Typography";
-import { TypographyProps } from "../../components/v2/Typography/Typography";
 import { theme } from "../../lib/theme";
 
 export default {
@@ -54,17 +53,4 @@ export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
-};
-
-const Template: ComponentStory<typeof Typography> = (args: TypographyProps) => (
-  <CssVarsProvider theme={theme}>
-    <Typography {...args} />
-  </CssVarsProvider>
-);
-export const Default = Template.bind({});
-Default.args = {
-  children: "Header",
-  strikeThrough: false,
-  underline: false,
-  lineHeight: "1.2em",
 };

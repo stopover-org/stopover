@@ -10,7 +10,6 @@ import {
 import { Close } from "@mui/icons-material";
 import { theme } from "../../lib/theme";
 import Radio from "../../components/v2/Radio";
-import { RadioProps } from "../../components/v2/Radio/Radio";
 
 export default {
   title: "Components/V2/Radio",
@@ -144,10 +143,4 @@ const Preview = () => (
 export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
-};
-
-const Template = ({ ...args }: RadioProps) => <Radio {...args} />;
-export const Default: ComponentStory<typeof Radio> = Template.bind({});
-Default.args = {
-  id: "your_uniq_id",
 };

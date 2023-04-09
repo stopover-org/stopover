@@ -8,7 +8,6 @@ import {
 
 export interface CheckboxProps {
   onChange: (value: boolean | string | number) => void;
-  value: string | number | boolean;
   label: string;
   hint?: string;
   error?: string;
@@ -19,7 +18,6 @@ const Checkbox = React.forwardRef(
     {
       onChange,
       hint,
-      value,
       ...props
     }: Omit<JoyCheckboxProps, keyof CheckboxProps> & CheckboxProps,
     ref: ForwardedRef<HTMLInputElement>
@@ -37,7 +35,6 @@ const Checkbox = React.forwardRef(
           checked={Boolean(value)}
           ref={ref}
           onChange={changeHandler}
-          value={value.toString()}
           {...props}
         />
         {hint && <FormHelperText>{hint}</FormHelperText>}

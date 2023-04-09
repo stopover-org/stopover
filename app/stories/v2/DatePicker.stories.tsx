@@ -54,7 +54,3 @@ export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
 };
-
-const Template = (args: any) => <DatePicker {...args} />;
-export const Default: ComponentStory<typeof DatePicker> = Template.bind({});
-Default.args = {};

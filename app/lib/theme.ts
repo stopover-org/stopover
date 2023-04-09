@@ -227,6 +227,7 @@ theme.generateCssVars = (colorScheme) => ({
     ...muiTheme.generateCssVars(colorScheme).css,
     ...joyTheme.generateCssVars(colorScheme).css,
   },
+  // @ts-ignore
   vars: deepmerge(
     muiTheme.generateCssVars(colorScheme).vars,
     joyTheme.generateCssVars(colorScheme).vars

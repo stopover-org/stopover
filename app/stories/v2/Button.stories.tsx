@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { ButtonProps, CssVarsProvider, Grid } from "@mui/joy";
+import { CssVarsProvider, Grid } from "@mui/joy";
 import ThumbUp from "@mui/icons-material/ThumbUp";
 import Button from "../../components/v2/Button";
 import { theme } from "../../lib/theme";
@@ -86,10 +86,4 @@ const Preview = () => (
 export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
-};
-
-const Template = (args: ButtonProps) => <Button {...args} />;
-export const Default: ComponentStory<typeof Button> = Template.bind({});
-Default.args = {
-  children: "Press me",
 };

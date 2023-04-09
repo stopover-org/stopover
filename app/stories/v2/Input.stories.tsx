@@ -1,18 +1,10 @@
 import React from "react";
-import styled from "styled-components";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Divider, Grid } from "@mui/joy";
 import { CalendarMonthTwoTone } from "@mui/icons-material";
 import Input from "../../components/v2/Input";
-import { InputProps } from "../../components/v2/Input/Input";
 import { theme } from "../../lib/theme";
 import PhoneInput from "../../components/v2/PhoneInput";
-
-const InputSize = styled.div`
-  width: 180px;
-  padding-bottom: 10px;
-  padding-right: 10px;
-`;
 
 export default {
   title: "Components/v2/Input",
@@ -250,6 +242,7 @@ const Preview = () => {
               value={phone}
               onChange={phoneInputOnChange}
               placeholder="Choose country"
+              label="გამარჯობა"
             />
           </Grid>
         </Grid>
@@ -260,21 +253,4 @@ const Preview = () => {
 export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
-};
-
-const Template = (args: InputProps) => (
-  <InputSize>
-    <Input {...args} />
-  </InputSize>
-);
-export const Default: ComponentStory<typeof Input> = Template.bind({});
-Default.args = {
-  value: "text",
-  id: "your_uniq_id",
-  type: "text",
-  variant: "outlined",
-  disabled: false,
-  label: "my_label",
-  hint: "my_hint",
-  error: "",
 };

@@ -77,6 +77,7 @@ const EventsScene = (props: Props) => {
             label="Only Individual Events"
           />
         </Grid>
+        <Grid xs={12}>sdkfj</Grid>
       </Grid>
       <Grid xs={9}>{/* alksdfjaksldj */}</Grid>
     </Grid>

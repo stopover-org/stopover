@@ -3,14 +3,12 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { Chip, CssVarsProvider, Grid, Option } from "@mui/joy";
 import { FavoriteBorder } from "@mui/icons-material";
 import { theme } from "../../lib/theme";
-import Radio from "../../components/v2/Radio";
-import { RadioProps } from "../../components/v2/Radio/Radio";
 import Select from "../../components/v2/Select";
 
 export default {
   title: "Components/V2/Select",
-  component: Radio,
-} as ComponentMeta<typeof Radio>;
+  component: Select,
+} as ComponentMeta<typeof Select>;
 
 const Preview = () => (
   <CssVarsProvider theme={theme}>
@@ -247,11 +245,4 @@ const Preview = () => (
 export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
-};
-
-// ref should be excluded from props
-const Template = ({ ...args }: RadioProps) => <Radio {...args} />;
-export const Default: ComponentStory<typeof Radio> = Template.bind({});
-Default.args = {
-  id: "your_uniq_id",
 };
