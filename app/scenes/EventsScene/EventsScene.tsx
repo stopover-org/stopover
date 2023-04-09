@@ -4,6 +4,7 @@ import { Moment } from "moment";
 import Input from "../../components/v2/Input";
 import DateRangePicker from "../../components/v2/DateRangePicker";
 import SliderRange from "../../components/v2/SliderRange";
+import Checkbox from "../../components/v2/Checkbox";
 
 type Props = {};
 
@@ -12,9 +13,10 @@ const EventsScene = (props: Props) => {
     [Moment | null, Moment | null]
   >([null, null]);
   const [priceRange, setPriceRange] = React.useState<number[]>([0, 10000]);
+  const [onlyIndividual, setOnlyIndividual] = React.useState(false);
   return (
     <Grid container spacing={2} sx={{ paddingLeft: "20px" }}>
-      <Grid xs={2} container>
+      <Grid xs={2} container sx={{ maxWidth: "250px", minWidth: "250px" }}>
         <Grid xs={12}>
           <Input onChange={() => {}} value="" label="City" />
         </Grid>
@@ -24,12 +26,12 @@ const EventsScene = (props: Props) => {
           startInputProps={{
             label: "Start Date",
             placeholder: "Enter Start of your trip",
-            hint: "Enter Start of your trip",
+            hint: "Start of your trip",
           }}
           endInputProps={{
             label: "End Date",
             placeholder: "Enter End of your trip",
-            hint: "Enter End of your trip",
+            hint: "End of your trip",
           }}
         />
         <Grid xs={12}>
@@ -47,10 +49,10 @@ const EventsScene = (props: Props) => {
         <Grid xs={6}>
           <Input
             type="number"
-            value={priceRange[0]}
+            value={priceRange[0].toString()}
             onChange={(value) => {
               let newValue = parseInt(value, 10);
-              if (isNaN(newValue)) newValue = 0;
+              if (Number.isNaN(newValue)) newValue = 0;
               setPriceRange([newValue, priceRange[1]]);
             }}
             label="Min Price"
@@ -59,13 +61,20 @@ const EventsScene = (props: Props) => {
         <Grid xs={6}>
           <Input
             type="number"
-            value={priceRange[1]}
+            value={priceRange[1].toString()}
             onChange={(value) => {
               let newValue = parseInt(value, 10);
-              if (isNaN(newValue)) newValue = 0;
+              if (Number.isNaN(newValue)) newValue = 0;
               setPriceRange([priceRange[0], newValue]);
             }}
             label="Max Price"
+          />
+        </Grid>
+        <Grid xs={12}>
+          <Checkbox
+            onChange={() => setOnlyIndividual(!onlyIndividual)}
+            value={onlyIndividual}
+            label="Only Individual Events"
           />
         </Grid>
       </Grid>
