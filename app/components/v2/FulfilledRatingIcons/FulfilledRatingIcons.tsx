@@ -9,9 +9,9 @@ const Item = styled(Sheet)(({ theme }) => ({
 
 interface BaseIconProps {
   ratingPercentage: string;
-  onMouseEnter: (rating: number) => void;
-  onMouseLeave: () => void;
-  onClick: (rating: number) => void;
+  onMouseEnter?: (rating: number) => void;
+  onMouseLeave?: () => void;
+  onClick?: (rating: number) => void;
 }
 
 interface IconProps
