@@ -32,7 +32,7 @@ const Checkbox = React.forwardRef(
     return (
       <FormControl>
         <JoyCheckbox
-          checked={Boolean(value)}
+          checked={Boolean(props.value)}
           ref={ref}
           onChange={changeHandler}
           {...props}

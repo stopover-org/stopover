@@ -23,15 +23,12 @@ const OutlinedIcons = ({
   onClick,
   ...props
 }: IconProps) => (
-  <Stack
-    direction="row"
-    justifyContent="flex-start"
-    onMouseLeave={() => onMouseLeave}
-  >
+  <Stack direction="row" justifyContent="flex-start">
     {new Array(5).fill("").map((_, index) => (
       <Item
         key={`outlined-${index}`}
         {...props}
+        onMouseLeave={onMouseLeave}
         onMouseEnter={() => onMouseEnter(index + 1)}
         onClick={() => onClick(index + 1)}
       >

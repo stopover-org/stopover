@@ -5,6 +5,7 @@ import Input from "../../components/v2/Input";
 import DateRangePicker from "../../components/v2/DateRangePicker";
 import SliderRange from "../../components/v2/SliderRange";
 import Checkbox from "../../components/v2/Checkbox";
+import RatingSelector from "../../components/v2/RatingSelector";
 
 type Props = {};
 
@@ -12,6 +13,7 @@ const EventsScene = (props: Props) => {
   const [selectedDates, setDates] = React.useState<
     [Moment | null, Moment | null]
   >([null, null]);
+  const [rating, setRating] = React.useState(5);
   const [priceRange, setPriceRange] = React.useState<number[]>([0, 10000]);
   const [onlyIndividual, setOnlyIndividual] = React.useState(false);
   return (
@@ -73,11 +75,13 @@ const EventsScene = (props: Props) => {
         <Grid xs={12}>
           <Checkbox
             onChange={() => setOnlyIndividual(!onlyIndividual)}
-            value={onlyIndividual}
+            checked={onlyIndividual}
             label="Only Individual Events"
           />
         </Grid>
-        <Grid xs={12}>sdkfj</Grid>
+        <Grid xs={12}>
+          <RatingSelector onSelect={setRating} rating={rating} />
+        </Grid>
       </Grid>
       <Grid xs={9}>{/* alksdfjaksldj */}</Grid>
     </Grid>

@@ -66,12 +66,7 @@ export const RatingSelector = ({
           pointerEvents: "none",
         }}
       >
-        <FulfilledIcons
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          onClick={onRatingSelect}
-          ratingPercentage={ratingPercentage}
-        />
+        <FulfilledIcons ratingPercentage={ratingPercentage} />
       </Sheet>
     </Sheet>
   );
