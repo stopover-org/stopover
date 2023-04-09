@@ -48,9 +48,11 @@ const EventsScene = (props: Props) => {
           <Input
             type="number"
             value={priceRange[0]}
-            onChange={(value) =>
-              setPriceRange([parseInt(value, 10), priceRange[1]])
-            }
+            onChange={(value) => {
+              let newValue = parseInt(value, 10);
+              if (isNaN(newValue)) newValue = 0;
+              setPriceRange([newValue, priceRange[1]]);
+            }}
             label="Min Price"
           />
         </Grid>
@@ -58,9 +60,11 @@ const EventsScene = (props: Props) => {
           <Input
             type="number"
             value={priceRange[1]}
-            onChange={(value) =>
-              setPriceRange([priceRange[0], parseInt(value, 10)])
-            }
+            onChange={(value) => {
+              let newValue = parseInt(value, 10);
+              if (isNaN(newValue)) newValue = 0;
+              setPriceRange([priceRange[0], newValue]);
+            }}
             label="Max Price"
           />
         </Grid>
