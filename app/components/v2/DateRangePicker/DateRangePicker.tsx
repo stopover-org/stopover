@@ -87,7 +87,7 @@ const DateRangePicker = ({
         setPickerVisible(false);
       }}
     >
-      <Grid xs={12} container>
+      <Grid xs={12} container spacing={1}>
         <Grid xs={6}>
           <Input
             value={getDate(selectedDates[0])}
