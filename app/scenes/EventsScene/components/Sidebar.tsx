@@ -1,22 +1,29 @@
 import { Grid } from "@mui/joy";
 import React from "react";
 import { Moment } from "moment/moment";
+import { Edit as EditIcon } from "@mui/icons-material";
 import Input from "../../../components/v2/Input/Input";
 import DateRangePicker from "../../../components/v2/DateRangePicker/DateRangePicker";
 import SliderRange from "../../../components/v2/SliderRange/SliderRange";
 import Checkbox from "../../../components/v2/Checkbox/Checkbox";
+import RatingSelector from "../../../components/v2/RatingSelector";
 
 const Sidebar = () => {
   const [selectedDates, setDates] = React.useState<
     [Moment | null, Moment | null]
   >([null, null]);
-  const [rating, setRating] = React.useState(5);
+  const [rating, setRating] = React.useState(0);
   const [priceRange, setPriceRange] = React.useState<number[]>([0, 10000]);
   const [onlyIndividual, setOnlyIndividual] = React.useState(false);
   return (
     <>
       <Grid xs={12}>
-        <Input onChange={() => {}} value="" label="City" />
+        <Input
+          onChange={() => {}}
+          value=""
+          label="City"
+          endDecorator={<EditIcon />}
+        />
       </Grid>
       <DateRangePicker
         value={selectedDates}
