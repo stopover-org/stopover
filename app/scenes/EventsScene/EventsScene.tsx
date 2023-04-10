@@ -1,20 +1,43 @@
 import React from "react";
-import { Grid, Slider, useTheme } from "@mui/joy";
-import { Moment } from "moment";
+import { Grid, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
-import Input from "../../components/v2/Input";
-import DateRangePicker from "../../components/v2/DateRangePicker";
-import SliderRange from "../../components/v2/SliderRange";
-import Checkbox from "../../components/v2/Checkbox";
-import RatingSelector from "../../components/v2/RatingSelector";
+import { graphql, usePaginationFragment } from "react-relay";
 import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
+import { EventsScene_EventsPaginationFragment$key } from "./__generated__/EventsScene_EventsPaginationFragment.graphql";
 
-type Props = {};
+interface Props {
+  eventsFragmentRef: EventsScene_EventsPaginationFragment$key;
+}
 
-const EventsScene = () => {
+const EventsScene = ({ eventsFragmentRef }: Props) => {
   const theme = useTheme();
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
+  const data = usePaginationFragment(
+    graphql`
+      fragment EventsScene_EventsPaginationFragment on Query
+      @refetchable(queryName: "EventsScenePaginationQuery")
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String", defaultValue: "" }
+      ) {
+        events(first: $count, after: $cursor)
+          @connection(key: "EventsScene_query_events") {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+        eventFilters {
+          ...Sidebar_EventFiltersFragment
+        }
+      }
+    `,
+    eventsFragmentRef
+  );
+
+  console.log(data);
   return (
     <Grid
       container
@@ -23,9 +46,10 @@ const EventsScene = () => {
     >
       {showSidebar && (
         <Grid xs={2} container sx={{ maxWidth: "250px", minWidth: "250px" }}>
-          <Sidebar />
+          <Sidebar eventFiltersFragment={data?.data?.eventFilters} />
         </Grid>
       )}
+
       <Grid
         md={9}
         sm={12}

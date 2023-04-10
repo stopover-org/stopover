@@ -5,7 +5,7 @@ module Types
     field :city, String
     field :start_date, DateTimeType
     field :end_date, DateTimeType
-    field :min_price, Integer, null: false
-    field :max_price, Integer, null: false
+    field :min_price, MoneyType, null: false
+    field :max_price, MoneyType, null: false
   end
 end

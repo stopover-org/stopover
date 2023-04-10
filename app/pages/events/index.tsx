@@ -8,9 +8,8 @@ import { events_Query } from "./__generated__/events_Query.graphql";
 import EventsScene from "../../scenes/EventsScene";
 
 const Query = graphql`
-  query events_Query($filters: EventsFilter) {
-    ...EventsScene_EventsFragment @arguments(filters: $filters)
-    ...EventsScene_InterestsFragment
+  query events_Query {
+    ...EventsScene_EventsPaginationFragment
   }
 `;
 
@@ -19,7 +18,7 @@ const Home = ({ preloadedQuery }: RelayProps<{}, events_Query>) => {
 
   return (
     <Layout>
-      <EventsScene eventsReference={query} />
+      <EventsScene eventsFragmentRef={query} />
     </Layout>
   );
 };

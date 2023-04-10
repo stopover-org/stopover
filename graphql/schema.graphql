@@ -332,8 +332,8 @@ type EventEdge {
 type EventFilters {
   city: String
   endDate: DateTime
-  maxPrice: Int!
-  minPrice: Int!
+  maxPrice: Money!
+  minPrice: Money!
   startDate: DateTime
 }
 
