@@ -16,6 +16,7 @@ interface BaseInputProps {
     event: React.ChangeEvent<HTMLInputElement>
   ) => void;
   value?: string;
+  placeholder?: string;
 }
 
 export interface InputProps

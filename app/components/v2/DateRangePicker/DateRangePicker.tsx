@@ -11,8 +11,8 @@ import PickersDay from "./PickersDay";
 
 interface BaseDatePickerProps {
   onChange?: (dates: [Moment | null, Moment | null]) => void;
-  startInputProps?: InputProps;
-  endInputProps?: InputProps;
+  startInputProps?: Partial<InputProps>;
+  endInputProps?: Partial<InputProps>;
   value: [Moment | null, Moment | null];
 }
 
