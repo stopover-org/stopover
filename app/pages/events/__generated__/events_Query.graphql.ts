@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<829a3196bad5b29bb5ac096080e0f014>>
+ * @generated SignedSource<<65234e31710635d2ea14c9b6286373b4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -92,6 +92,20 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "id",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "title",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "images",
                     "storageKey": null
                   },
                   {
@@ -199,12 +213,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "4e83819a8eb8c408056c54bb43c4bda0",
+    "cacheID": "6dad6ddf82b085d2f8ba1220dc7c1e2b",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query {\n  ...EventsScene_EventsPaginationFragment\n}\n\nfragment EventsScene_EventsPaginationFragment on Query {\n  events(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...Sidebar_EventFiltersFragment\n  }\n}\n\nfragment Sidebar_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice {\n    cents\n  }\n  maxPrice {\n    cents\n  }\n}\n"
+    "text": "query events_Query {\n  ...EventsScene_EventsPaginationFragment\n}\n\nfragment EventCardCompacts_EventFragment on Event {\n  title\n  images\n}\n\nfragment EventsScene_EventsPaginationFragment on Query {\n  events(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        ...EventCardCompacts_EventFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...Sidebar_EventFiltersFragment\n  }\n}\n\nfragment Sidebar_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice {\n    cents\n  }\n  maxPrice {\n    cents\n  }\n}\n"
   }
 };
 })();

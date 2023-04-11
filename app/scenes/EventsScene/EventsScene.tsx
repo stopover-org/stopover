@@ -5,6 +5,8 @@ import { graphql, usePaginationFragment } from "react-relay";
 import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
 import { EventsScene_EventsPaginationFragment$key } from "./__generated__/EventsScene_EventsPaginationFragment.graphql";
+import EventCardCompact from "./components/EventCardCompact";
+import { useEdges } from "../../lib/utils/connections";
 
 interface Props {
   eventsFragmentRef: EventsScene_EventsPaginationFragment$key;
@@ -13,7 +15,7 @@ interface Props {
 const EventsScene = ({ eventsFragmentRef }: Props) => {
   const theme = useTheme();
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
-  const data = usePaginationFragment(
+  const { data } = usePaginationFragment(
     graphql`
       fragment EventsScene_EventsPaginationFragment on Query
       @refetchable(queryName: "EventsScenePaginationQuery")
@@ -26,6 +28,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           edges {
             node {
               id
+              ...EventCardCompacts_EventFragment
             }
           }
         }
@@ -36,8 +39,8 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     `,
     eventsFragmentRef
   );
+  const events = useEdges(data.events);
 
-  console.log(data);
   return (
     <Grid
       container
@@ -46,7 +49,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     >
       {showSidebar && (
         <Grid xs={2} container sx={{ maxWidth: "250px", minWidth: "250px" }}>
-          <Sidebar eventFiltersFragment={data?.data?.eventFilters} />
+          <Sidebar eventFiltersFragment={data?.eventFilters} />
         </Grid>
       )}
 
@@ -62,6 +65,11 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       >
         <Grid md={9} sm={12}>
           <SearchBar />
+        </Grid>
+        <Grid md={9} sm={12} container>
+          {events.map((event) => (
+            <EventCardCompact key={event.id} eventReference={event} />
+          ))}
         </Grid>
       </Grid>
     </Grid>
