@@ -36,6 +36,20 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
         },
       },
     },
+    JoyCardOverflow: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+      },
+    },
+    JoyAspectRatio: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+      },
+    },
   },
   fontFamily: {
     body: "'Roboto'",

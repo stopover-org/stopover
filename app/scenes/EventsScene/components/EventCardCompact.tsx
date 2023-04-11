@@ -17,7 +17,6 @@ const EventCardCompact = ({ eventReference }: Props) => {
     eventReference
   );
 
-  console.log(event);
   return (
     <Grid width="330px" padding="10px">
       <Card variant="outlined" sx={{ width: "310px" }}>

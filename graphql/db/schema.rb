@@ -275,7 +275,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_28_150552) do
   create_table "payments", force: :cascade do |t|
     t.string "status"
     t.decimal "total_price_cents", default: "0.0"
-    t.bigint "balance_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "booking_id"
@@ -283,7 +282,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_28_150552) do
     t.string "provider"
     t.decimal "fee_cents", default: "0.0"
     t.string "payment_type"
-    t.index ["balance_id"], name: "index_payments_on_balance_id"
     t.index ["booking_id"], name: "index_payments_on_booking_id"
   end
 
