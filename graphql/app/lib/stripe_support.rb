@@ -2,8 +2,7 @@
 
 class StripeSupport
   def self.create_stripe_account(user)
-    Stripe.api_key = 'sk_test_51KWf4bHK7sCplnDe1tDeNxW0rMNjeuq0ZOLVswasHgyK1J3zkwgDoaoEELP82NELzqg4cX8OaoO2G3vyxjAPv1AR00JveurXCL'
-
+    return if user.try(:firm)
     account = Stripe::Account.create({
                                        type: 'custom',
                              country: user.account.country,
@@ -13,6 +12,7 @@ class StripeSupport
                                transfers: { requested: true }
                              }
                                      })
+    user.firm.update(stripe_account: account)
 
     account_link = Stripe::AccountLink.create({
                                                 account: account.id,
@@ -24,16 +24,12 @@ class StripeSupport
       account: account,
       account_link: account_link
     }
-  end
-
-  def self.pay_out(account, amount)
-    Stripe.api_key = 'sk_test_RXHltS2OKzISvxWQ7NmRN57i001oa6x7o4'
-
-    Stripe::Transfer.create({
-                              amount: amount,
-                              currency: 'usd',
-                              destination: account.id
-                            })
+  rescue StandardError => e
+    Rails.logger.debug 'something went wrong when creating account and account link in stripe'
+    {
+      account: nil,
+      account_link: nil
+    }
   end
 
   def self.generate_stripe_checkout_session(booking, payment_type)
