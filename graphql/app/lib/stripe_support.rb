@@ -1,6 +1,41 @@
 # frozen_string_literal: true
 
 class StripeSupport
+  def self.create_stripe_account(user)
+    Stripe.api_key = 'sk_test_51KWf4bHK7sCplnDe1tDeNxW0rMNjeuq0ZOLVswasHgyK1J3zkwgDoaoEELP82NELzqg4cX8OaoO2G3vyxjAPv1AR00JveurXCL'
+
+    account = Stripe::Account.create({
+                                       type: 'custom',
+                             country: user.account.country,
+                             email: user.email,
+                             capabilities: {
+                               card_payments: { requested: true },
+                               transfers: { requested: true }
+                             }
+                                     })
+
+    account_link = Stripe::AccountLink.create({
+                                                account: account.id,
+                                     refresh_url: 'https://example.com/reauth',
+                                     return_url: 'https://example.com/return',
+                                     type: 'account_onboarding'
+                                              })
+    {
+      account: account,
+      account_link: account_link
+    }
+  end
+
+  def self.pay_out(account, amount)
+    Stripe.api_key = 'sk_test_RXHltS2OKzISvxWQ7NmRN57i001oa6x7o4'
+
+    Stripe::Transfer.create({
+                              amount: amount,
+                              currency: 'usd',
+                              destination: account.id
+                            })
+  end
+
   def self.generate_stripe_checkout_session(booking, payment_type)
     event_stripe_integration = booking.event.stripe_integrations.active.find_by(price_type: payment_type)
 
