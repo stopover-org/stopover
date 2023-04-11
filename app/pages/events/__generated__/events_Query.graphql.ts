@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<65234e31710635d2ea14c9b6286373b4>>
+ * @generated SignedSource<<a65d0d97fc2e614a0864e5615732e4ab>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -32,7 +32,21 @@ var v0 = [
     "value": 10
   }
 ],
-v1 = [
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v3 = [
   {
     "alias": null,
     "args": null,
@@ -87,25 +101,33 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "id",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "title",
-                    "storageKey": null
-                  },
+                  (v1/*: any*/),
+                  (v2/*: any*/),
                   {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
                     "name": "images",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Interest",
+                    "kind": "LinkedField",
+                    "name": "interests",
+                    "plural": true,
+                    "selections": [
+                      (v1/*: any*/),
+                      (v2/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "averageRating",
                     "storageKey": null
                   },
                   {
@@ -194,7 +216,7 @@ return {
             "kind": "LinkedField",
             "name": "minPrice",
             "plural": false,
-            "selections": (v1/*: any*/),
+            "selections": (v3/*: any*/),
             "storageKey": null
           },
           {
@@ -204,7 +226,7 @@ return {
             "kind": "LinkedField",
             "name": "maxPrice",
             "plural": false,
-            "selections": (v1/*: any*/),
+            "selections": (v3/*: any*/),
             "storageKey": null
           }
         ],
@@ -213,12 +235,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "6dad6ddf82b085d2f8ba1220dc7c1e2b",
+    "cacheID": "8d39800cab7f87d74ff044d68d94018e",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query {\n  ...EventsScene_EventsPaginationFragment\n}\n\nfragment EventCardCompacts_EventFragment on Event {\n  title\n  images\n}\n\nfragment EventsScene_EventsPaginationFragment on Query {\n  events(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        ...EventCardCompacts_EventFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...Sidebar_EventFiltersFragment\n  }\n}\n\nfragment Sidebar_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice {\n    cents\n  }\n  maxPrice {\n    cents\n  }\n}\n"
+    "text": "query events_Query {\n  ...EventsScene_EventsPaginationFragment\n}\n\nfragment EventCardCompacts_EventFragment on Event {\n  id\n  title\n  images\n  interests {\n    id\n    title\n  }\n  averageRating\n}\n\nfragment EventsScene_EventsPaginationFragment on Query {\n  events(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        ...EventCardCompacts_EventFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...Sidebar_EventFiltersFragment\n  }\n}\n\nfragment Sidebar_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice {\n    cents\n  }\n  maxPrice {\n    cents\n  }\n}\n"
   }
 };
 })();

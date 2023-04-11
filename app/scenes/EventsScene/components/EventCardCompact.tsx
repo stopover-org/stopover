@@ -1,17 +1,27 @@
 import React from "react";
 import { AspectRatio, Card, CardOverflow, Grid } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
+import Typography from "../../../components/v2/Typography";
+import Link from "../../../components/v1/Link";
+import {EventCardCompacts_EventFragment$key} from "./__generated__/EventCardCompacts_EventFragment.graphql";
+import Rating from "../../../components/v2/Rating/Rating";
 
 interface Props {
-  eventReference: any;
+  eventReference: EventCardCompacts_EventFragment$key;
 }
 
 const EventCardCompact = ({ eventReference }: Props) => {
   const event = useFragment(
     graphql`
       fragment EventCardCompacts_EventFragment on Event {
+        id
         title
         images
+        interests {
+          id
+          title
+        }
+        averageRating
       }
     `,
     eventReference
@@ -25,6 +35,20 @@ const EventCardCompact = ({ eventReference }: Props) => {
             <img src={event.images[0]} loading="lazy" alt="" />
           </AspectRatio>
         </CardOverflow>
+        <Typography sx={{ fontSize: 'xl', mt: 2 }}>
+          {event.title}
+        </Typography><Typography level="h4" sx={{ fontSize: 'md', mt: 2 }}>
+          {event.interests.map((interest) =>
+            <React.Fragment key={interest.id}>
+              <Link href={`/events?interests=${interest.id}`}>
+                {interest.title}
+              </Link>
+              &nbsp;
+            </React.Fragment>
+          )}
+        </Typography>
+        <Rating rating={event.averageRating} />
+        
       </Card>
     </Grid>
   );
