@@ -1,20 +1,25 @@
 import React from "react";
-import { Sheet } from "@mui/joy";
+import { Sheet, Stack } from "@mui/joy";
 import OutlinedIcons from "../OutlinedRatingIcons";
 import FulfilledIcons from "../FulfilledRatingIcons";
 
 interface RatingProps {
   rating: number;
+  label?: React.ReactNode;
 }
 
-export const Rating = ({ rating = 5 }: RatingProps) => {
+export const Rating = ({ rating = 5, label }: RatingProps) => {
   const ratingPercentage = React.useMemo(
     () => `${(rating / 5) * 100}%`,
     [rating]
   );
 
   return (
-    <Sheet sx={{ position: "relative" }}>
+    <Stack
+      flexDirection="row"
+      alignItems="flex-end"
+      sx={{ position: "relative" }}
+    >
       <Sheet
         sx={{
           display: "block",
@@ -38,7 +43,8 @@ export const Rating = ({ rating = 5 }: RatingProps) => {
       >
         <FulfilledIcons ratingPercentage={ratingPercentage} />
       </Sheet>
-    </Sheet>
+      <Sheet style={{ paddingBottom: "5px" }}>{label}</Sheet>
+    </Stack>
   );
 };
 

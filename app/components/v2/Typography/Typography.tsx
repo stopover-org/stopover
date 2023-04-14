@@ -13,16 +13,20 @@ const StrikeThroughStyle = styled("span")(() => ({
   textDecoration: "line-through",
 }));
 
-export interface TypographyProps {
+interface BaseTypographyProps {
   underline?: boolean;
   strikeThrough?: boolean;
 }
+
+export interface TypographyProps
+  extends Omit<JoyTypographyProps, keyof BaseTypographyProps>,
+    BaseTypographyProps {}
 const Typography = ({
   underline,
   strikeThrough,
   children,
   ...props
-}: Omit<JoyTypographyProps, keyof TypographyProps> & TypographyProps) => {
+}: TypographyProps) => {
   if (underline) {
     children = <UnderlineStyle>{children}</UnderlineStyle>;
   }

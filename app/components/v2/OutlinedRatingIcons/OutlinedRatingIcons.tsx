@@ -8,9 +8,9 @@ const Item = styled(Sheet)(({ theme }) => ({
 }));
 
 interface BaseIconProps {
-  onMouseEnter: (rating: number) => void;
-  onMouseLeave: () => void;
-  onClick: (rating: number) => void;
+  onMouseEnter?: (rating: number) => void;
+  onMouseLeave?: () => void;
+  onClick?: (rating: number) => void;
 }
 
 interface IconProps
@@ -29,8 +29,16 @@ const OutlinedIcons = ({
         key={`outlined-${index}`}
         {...props}
         onMouseLeave={onMouseLeave}
-        onMouseEnter={() => onMouseEnter(index + 1)}
-        onClick={() => onClick(index + 1)}
+        onMouseEnter={() => {
+          if (onMouseEnter instanceof Function) {
+            onMouseEnter(index + 1);
+          }
+        }}
+        onClick={() => {
+          if (onClick instanceof Function) {
+            onClick(index + 1);
+          }
+        }}
       >
         <OutlinedStarIcon
           color="primary"
