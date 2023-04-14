@@ -230,6 +230,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_141403) do
     t.integer "min_attendees", default: 0
     t.bigint "firm_id"
     t.index ["event_type"], name: "index_events_on_event_type"
+    t.index ["external_id"], name: "index_events_on_external_id"
     t.index ["firm_id"], name: "index_events_on_firm_id"
     t.index ["unit_id"], name: "index_events_on_unit_id"
   end
@@ -251,9 +252,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_141403) do
     t.string "region"
     t.float "longitude"
     t.float "latitude"
-    t.bigint "setup_intent_id"
-    t.string "stripe_account", default: ""
-    t.index ["setup_intent_id"], name: "index_firms_on_setup_intent_id"
+    t.string "stripe_account_id"
   end
 
   create_table "interests", force: :cascade do |t|
@@ -305,13 +304,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_141403) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_schedules_on_event_id"
-  end
-
-  create_table "setup_intents", force: :cascade do |t|
-    t.string "status", default: "pending"
-    t.string "stripe_setup_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "stripe_integrations", force: :cascade do |t|
@@ -385,6 +377,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_141403) do
   add_foreign_key "event_interests", "interests"
   add_foreign_key "events", "firms"
   add_foreign_key "events", "units"
-  add_foreign_key "firms", "setup_intents"
   add_foreign_key "schedules", "events"
 end

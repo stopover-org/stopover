@@ -3,7 +3,8 @@
 module Mutations
   class CreateStripeAccount < BaseMutation
     field :firm, Types::FirmType
-
-    argument :user, ID, loads: Types::UserType
+    def resolve
+      StripeSupport(context[:current_user])
+    end
   end
 end
