@@ -2,24 +2,26 @@
 
 class StripeSupport
   def self.create_stripe_account(user)
-    return if user.try(:firm)
+    raise StandardError('Account has\'t firm') unless user.account.firm
     account = Stripe::Account.create({
                                        type: 'custom',
-                             country: user.account.country,
-                             email: user.email,
-                             capabilities: {
-                               card_payments: { requested: true },
-                               transfers: { requested: true }
-                             }
+                                       country: user.account.country,
+                                       email: user.email,
+                                       capabilities: {
+                                         card_payments: { requested: true },
+                                         transfers: { requested: true }
+                                       }
                                      })
-    user.firm.update(stripe_account: account)
+
+    user.account.firm.update(stripe_account: account)
 
     account_link = Stripe::AccountLink.create({
-                                                account: account.id,
-                                     refresh_url: 'https://example.com/reauth',
-                                     return_url: 'https://example.com/return',
-                                     type: 'account_onboarding'
+                                                account: account[:id],
+                                                refresh_url: 'https://example.com/reauth',
+                                                return_url: 'https://example.com/return',
+                                                type: 'account_onboarding'
                                               })
+
     {
       account: account,
       account_link: account_link
