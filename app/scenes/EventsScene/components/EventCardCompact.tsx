@@ -28,16 +28,17 @@ const EventCardCompact = ({ eventReference }: Props) => {
   );
 
   return (
-    <Grid width="330px" padding="10px">
-      <Card variant="outlined" sx={{ width: "310px" }}>
-        <CardOverflow>
-          <AspectRatio ratio="2">
-            <img src={event.images[0]} loading="lazy" alt="" />
-          </AspectRatio>
-        </CardOverflow>
-        <Typography sx={{ fontSize: 'xl', mt: 2 }}>
-          {event.title}
-        </Typography><Typography level="h4" sx={{ fontSize: 'md', mt: 2 }}>
+      <Grid width="330px" padding="10px">
+        <Link href={`/events/${event.id}`}>
+        <Card variant="outlined" sx={{ width: "310px" }}>
+          <CardOverflow>
+            <AspectRatio ratio="2">
+              <img src={event.images[0]} loading="lazy" alt="" />
+            </AspectRatio>
+          </CardOverflow>
+          <Typography sx={{ fontSize: 'xl', mt: 2 }}>
+            {event.title}
+          </Typography><Typography level="h4" sx={{ fontSize: 'md', mt: 2 }}>
           {event.interests.map((interest) =>
             <React.Fragment key={interest.id}>
               <Link primary href={`/events?interests=${interest.id}`}>
@@ -47,9 +48,10 @@ const EventCardCompact = ({ eventReference }: Props) => {
             </React.Fragment>
           )}
         </Typography>
-        <Rating rating={event.averageRating} label={`(${event.averageRating} of 5)`} />
-      </Card>
-    </Grid>
+          <Rating rating={event.averageRating} label={`(${event.averageRating} of 5)`} />
+        </Card>
+        </Link>
+      </Grid>
   );
 };
 
