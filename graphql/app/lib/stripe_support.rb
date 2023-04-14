@@ -13,7 +13,7 @@ class StripeSupport
                                        }
                                      })
 
-    user.account.firm.update(stripe_account: account)
+    user.account.firm.update!(stripe_account_id: account)
 
     account_link = Stripe::AccountLink.create({
                                                 account: account[:id],
@@ -21,15 +21,12 @@ class StripeSupport
                                                 return_url: 'https://example.com/return',
                                                 type: 'account_onboarding'
                                               })
-
     {
-      account: account,
       account_link: account_link
     }
   rescue StandardError => e
     Rails.logger.debug 'something went wrong when creating account and account link in stripe'
     {
-      account: nil,
       account_link: nil
     }
   end

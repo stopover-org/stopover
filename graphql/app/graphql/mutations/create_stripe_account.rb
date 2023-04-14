@@ -2,9 +2,12 @@
 
 module Mutations
   class CreateStripeAccount < BaseMutation
-    field :firm, Types::FirmType
+    field :setup_account_url, String
     def resolve
-      StripeSupport(context[:current_user])
+      account_link = StripeSupport(context[:current_user])
+      {
+        setup_account_url: account_link[:account_link]
+      }
     end
   end
 end
