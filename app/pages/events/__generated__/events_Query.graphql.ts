@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a65d0d97fc2e614a0864e5615732e4ab>>
+ * @generated SignedSource<<5815b5de1c66f4813b7c28d8a5d829d4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -47,13 +47,18 @@ v2 = {
   "storageKey": null
 },
 v3 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "cents",
-    "storageKey": null
-  }
+  (v1/*: any*/),
+  (v2/*: any*/)
+],
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "cents",
+  "storageKey": null
+},
+v5 = [
+  (v4/*: any*/)
 ];
 return {
   "fragment": {
@@ -117,10 +122,47 @@ return {
                     "kind": "LinkedField",
                     "name": "interests",
                     "plural": true,
+                    "selections": (v3/*: any*/),
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Money",
+                    "kind": "LinkedField",
+                    "name": "attendeePricePerUom",
+                    "plural": false,
                     "selections": [
-                      (v1/*: any*/),
-                      (v2/*: any*/)
+                      (v4/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Currency",
+                        "kind": "LinkedField",
+                        "name": "currency",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
                     ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Tag",
+                    "kind": "LinkedField",
+                    "name": "tags",
+                    "plural": true,
+                    "selections": (v3/*: any*/),
                     "storageKey": null
                   },
                   {
@@ -216,7 +258,7 @@ return {
             "kind": "LinkedField",
             "name": "minPrice",
             "plural": false,
-            "selections": (v3/*: any*/),
+            "selections": (v5/*: any*/),
             "storageKey": null
           },
           {
@@ -226,7 +268,7 @@ return {
             "kind": "LinkedField",
             "name": "maxPrice",
             "plural": false,
-            "selections": (v3/*: any*/),
+            "selections": (v5/*: any*/),
             "storageKey": null
           }
         ],
@@ -235,12 +277,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8d39800cab7f87d74ff044d68d94018e",
+    "cacheID": "996bbadd66203c5c2afa26f5bef75180",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query {\n  ...EventsScene_EventsPaginationFragment\n}\n\nfragment EventCardCompacts_EventFragment on Event {\n  id\n  title\n  images\n  interests {\n    id\n    title\n  }\n  averageRating\n}\n\nfragment EventsScene_EventsPaginationFragment on Query {\n  events(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        ...EventCardCompacts_EventFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...Sidebar_EventFiltersFragment\n  }\n}\n\nfragment Sidebar_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice {\n    cents\n  }\n  maxPrice {\n    cents\n  }\n}\n"
+    "text": "query events_Query {\n  ...EventsScene_EventsPaginationFragment\n}\n\nfragment EventCardCompacts_EventFragment on Event {\n  id\n  title\n  images\n  interests {\n    id\n    title\n  }\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n  tags {\n    id\n    title\n  }\n  averageRating\n}\n\nfragment EventsScene_EventsPaginationFragment on Query {\n  events(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        ...EventCardCompacts_EventFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...Sidebar_EventFiltersFragment\n  }\n}\n\nfragment Sidebar_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice {\n    cents\n  }\n  maxPrice {\n    cents\n  }\n}\n"
   }
 };
 })();

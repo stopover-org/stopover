@@ -5,6 +5,25 @@ import { deepmerge } from "@mui/utils";
 
 const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
   components: {
+    JoyTypography: {
+      defaultProps: {
+        levelMapping: {
+          display1: "h1",
+          display2: "h1",
+          h1: "h2",
+          h2: "h2",
+          h3: "h3",
+          h4: "h3",
+          h5: "h3",
+          h6: "h3",
+          body1: "p",
+          body2: "div",
+          body3: "span",
+          body4: "span",
+          body5: "span",
+        },
+      },
+    },
     JoyInput: {
       styleOverrides: {
         root: {

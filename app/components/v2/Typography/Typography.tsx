@@ -21,19 +21,23 @@ interface BaseTypographyProps {
 export interface TypographyProps
   extends Omit<JoyTypographyProps, keyof BaseTypographyProps>,
     BaseTypographyProps {}
-const Typography = ({
-  underline,
-  strikeThrough,
-  children,
-  ...props
-}: TypographyProps) => {
-  if (underline) {
-    children = <UnderlineStyle>{children}</UnderlineStyle>;
+const Typography = React.forwardRef(
+  (
+    { underline, strikeThrough, children, ...props }: TypographyProps,
+    ref: React.ForwardedRef<HTMLParagraphElement>
+  ) => {
+    if (underline) {
+      children = <UnderlineStyle>{children}</UnderlineStyle>;
+    }
+    if (strikeThrough) {
+      children = <StrikeThroughStyle>{children}</StrikeThroughStyle>;
+    }
+    return (
+      <JoyTypography ref={ref} {...props}>
+        {children}
+      </JoyTypography>
+    );
   }
-  if (strikeThrough) {
-    children = <StrikeThroughStyle>{children}</StrikeThroughStyle>;
-  }
-  return <JoyTypography {...props}>{children}</JoyTypography>;
-};
+);
 
 export default React.memo(Typography);

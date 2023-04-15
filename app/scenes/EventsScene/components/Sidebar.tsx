@@ -41,7 +41,7 @@ const Sidebar = ({ eventFiltersFragment }: Props) => {
   ]);
   const [onlyIndividual, setOnlyIndividual] = React.useState(false);
   return (
-    <>
+    <Grid container flexDirection={'column'}>
       <Grid xs={12}>
         <Input
           onChange={() => {}}
@@ -78,6 +78,7 @@ const Sidebar = ({ eventFiltersFragment }: Props) => {
           label="Price range"
         />
       </Grid>
+      <Grid xs={12} container>
       <Grid xs={6}>
         <Input
           type="number"
@@ -102,6 +103,7 @@ const Sidebar = ({ eventFiltersFragment }: Props) => {
           label="Max Price"
         />
       </Grid>
+      </Grid>
       <Grid xs={12}>
         <Checkbox
           onChange={() => setOnlyIndividual(!onlyIndividual)}
@@ -112,7 +114,7 @@ const Sidebar = ({ eventFiltersFragment }: Props) => {
       <Grid xs={12}>
         <RatingSelector onSelect={setRating} rating={rating} />
       </Grid>
-    </>
+    </Grid>
   );
 };
 

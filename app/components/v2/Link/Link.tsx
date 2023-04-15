@@ -1,5 +1,6 @@
 import React from "react";
 import NextLink from "next/link";
+import { styled } from "@mui/joy";
 import Typography from "../Typography";
 import { TypographyProps } from "../Typography/Typography";
 
@@ -10,16 +11,31 @@ interface BaseLinkProps {
   primary?: boolean;
 }
 
-interface LinkProps
+export interface LinkProps
   extends Omit<TypographyProps, keyof BaseLinkProps>,
     BaseLinkProps {}
 
-const Link = ({ children, href, primary, color, ...props }: LinkProps) => (
-  <NextLink passHref href={href}>
-    <Typography {...props} color={primary ? "primary" : color}>
-      <a href={href}>{children}</a>
-    </Typography>
-  </NextLink>
+const TypographyLink = styled(Typography)(() => ({
+  textDecoration: "underline",
+  display: "inline-block",
+}));
+
+const Link = React.forwardRef(
+  (
+    { children, href, primary, color, ...props }: LinkProps,
+    ref: React.ForwardedRef<HTMLParagraphElement>
+  ) => (
+    <NextLink passHref href={href}>
+      <TypographyLink
+        {...props}
+        ref={ref}
+        color={primary ? "primary" : color}
+        level="body3"
+      >
+        <a href={href}>{children}</a>
+      </TypographyLink>
+    </NextLink>
+  )
 );
 
 export default React.memo(Link);
