@@ -13,7 +13,39 @@ class StripeSupport
                                        }
                                      })
 
-    user.account.firm.update!(stripe_account_id: account)
+    # Prefil company details before sending url to the customer
+    Stripe::Account.update(
+      account.id,
+      business_type: 'individual',
+      company: {
+        address: {
+          city: user.account.firm.city,
+          country: user.account.firm.country,
+          line1: user.account.firm.street,
+          line2: nil,
+          postal_code: 'POSTAL CODE',
+          state: user.account.firm.region
+        }
+      },
+      individual: {
+        address: {
+          city: 'Mambai',
+          country: 'CZ',
+          line1: 'fire pit',
+          postal_code: '11111'
+        },
+        dob: {
+          day: 21,
+          month: 0o1,
+          year: 1903
+        },
+        email: 'example@gmail.com',
+        first_name: 'Sauron',
+        last_name: 'White',
+        phone: '+420774586203'
+      }
+    )
+    user.account.firm.update!(stripe_account_id: account.id)
 
     account_link = Stripe::AccountLink.create({
                                                 account: account[:id],
