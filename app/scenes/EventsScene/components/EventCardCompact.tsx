@@ -3,44 +3,50 @@ import {AspectRatio, Card, CardOverflow, Grid, Box, Stack, IconButton} from "@mu
 import { graphql, useFragment } from "react-relay";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Typography from "../../../components/v2/Typography";
-import {EventCardCompacts_EventFragment$key} from "./__generated__/EventCardCompacts_EventFragment.graphql";
 import Rating from "../../../components/v2/Rating/Rating";
 import Link from "../../../components/v2/Link";
 import {getCurrencyFormat} from "../../../lib/utils/currencyFormatter";
 import Button from "../../../components/v2/Button";
-import {Favorite} from "@mui/icons-material";
 import Tag from "../../../components/v2/Tag";
+import {EventCardCompacts_ScheduleFragment$key} from "./__generated__/EventCardCompacts_ScheduleFragment.graphql";
+import {getDate, getDateTime, getHumanDateTime} from "../../../lib/utils/dates";
+import moment from "moment";
 
 interface Props {
-  eventReference: EventCardCompacts_EventFragment$key;
+  scheduleReference: EventCardCompacts_ScheduleFragment$key;
 }
 
-const EventCardCompact = ({ eventReference }: Props) => {
-  const event = useFragment(
+const EventCardCompact = ({ scheduleReference }: Props) => {
+  const schedule = useFragment(
     graphql`
-      fragment EventCardCompacts_EventFragment on Event {
-        id
-        title
-        images
-        interests {
-          id
-          title
-        }
-        attendeePricePerUom {
-          cents
-          currency {
-            name
+      fragment EventCardCompacts_ScheduleFragment on Schedule {
+          id 
+          scheduledFor
+          event {
+            id
+            title
+            images
+            interests {
+              id
+              title
+            }
+            attendeePricePerUom {
+                cents
+                currency {
+                    name
+                }
+            }
+            tags {
+                id
+                title
+            }
+            averageRating
           }
-        }
-        tags {
-          id
-          title
-        }
-        averageRating
       }
     `,
-    eventReference
+    scheduleReference
   );
+  const event = schedule.event
 
   return (
       <Grid width="330px" padding="10px">
@@ -58,10 +64,13 @@ const EventCardCompact = ({ eventReference }: Props) => {
               }}
             >
               {event.tags.map((tag) => (
-                <Tag key={tag.id} href={`/events?tag=${tag.id}`}>
+                <Tag key={tag.id} href={`/events?tag=${tag.id}`} primary>
                   {tag.title}
                 </Tag>
               ))}
+              <Tag key={schedule.id} href={`/events?date=${getDate(moment(schedule.scheduledFor))}`} primary>
+                {getHumanDateTime(moment(schedule.scheduledFor))}
+              </Tag>
             </Box>
           </CardOverflow>
           <Link href={`/events/${event.id}`}>

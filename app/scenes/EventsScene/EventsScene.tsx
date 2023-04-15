@@ -29,12 +29,12 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String", defaultValue: "" }
       ) {
-        events(first: $count, after: $cursor)
-          @connection(key: "EventsScene_query_events") {
+        schedules(first: $count, after: $cursor)
+          @connection(key: "EventsScene_query_schedules") {
           edges {
             node {
               id
-              ...EventCardCompacts_EventFragment
+              ...EventCardCompacts_ScheduleFragment
             }
           }
         }
@@ -45,7 +45,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     `,
     eventsFragmentRef
   );
-  const events = useEdges(data.events);
+  const schedules = useEdges(data.schedules);
 
   return (
     <Grid
@@ -73,8 +73,8 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           <SearchBar />
         </Grid>
         <Grid xl={9} lg={12} xs={12} container>
-          {events.map((event) => (
-            <EventCardCompact key={event.id} eventReference={event} />
+          {schedules.map((schedule) => (
+            <EventCardCompact key={schedule.id} scheduleReference={schedule} />
           ))}
         </Grid>
       </ContentWrapper>
