@@ -1,8 +1,9 @@
 import React from "react";
 import { AspectRatio, Box, Card, CardOverflow, Grid, Stack } from "@mui/joy";
-import { graphql, useFragment } from "react-relay";
+import { graphql, useFragment, useMutation } from "react-relay";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import moment from "moment";
+import { useCookies } from "react-cookie";
 import Typography from "../../../components/v2/Typography";
 import Rating from "../../../components/v2/Rating/Rating";
 import Link from "../../../components/v2/Link";
@@ -11,12 +12,15 @@ import Button from "../../../components/v2/Button";
 import Tag from "../../../components/v2/Tag";
 import { EventCardCompacts_ScheduleFragment$key } from "./__generated__/EventCardCompacts_ScheduleFragment.graphql";
 import { getDate, getHumanDateTime } from "../../../lib/utils/dates";
+import { EventCardCompact_BookEventMutation } from "./__generated__/EventCardCompact_BookEventMutation.graphql";
+import { __AUTH_COOKIE_NAME__ } from "../../Auth/useSignInForm";
 
 interface Props {
   scheduleReference: EventCardCompacts_ScheduleFragment$key;
 }
 
 const EventCardCompact = ({ scheduleReference }: Props) => {
+  const [_, setCookies] = useCookies();
   const schedule = useFragment(
     graphql`
       fragment EventCardCompacts_ScheduleFragment on Schedule {
@@ -46,6 +50,37 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
     `,
     scheduleReference
   );
+
+  const [mutation] = useMutation<EventCardCompact_BookEventMutation>(graphql`
+    mutation EventCardCompact_BookEventMutation($input: BookEventInput!) {
+      bookEvent(input: $input) {
+        accessToken
+        booking {
+          id
+          event {
+            id
+          }
+        }
+      }
+    }
+  `);
+
+  const bookEvent = (eventId: string, bookedFor: Date) => {
+    mutation({
+      variables: {
+        input: {
+          eventId,
+          bookedFor,
+          attendeesCount: 1,
+        },
+      },
+      onCompleted(result) {
+        if (result.bookEvent?.accessToken) {
+          setCookies(__AUTH_COOKIE_NAME__, result.bookEvent?.accessToken!);
+        }
+      },
+    });
+  };
   const { event } = schedule;
 
   return (
@@ -107,7 +142,10 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
               event?.attendeePricePerUom?.currency?.name
             )}
           </Typography>
-          <Button size="sm">
+          <Button
+            size="sm"
+            onClick={() => bookEvent(event.id, schedule.scheduledFor)}
+          >
             <AddShoppingCartIcon />
           </Button>
         </Stack>
