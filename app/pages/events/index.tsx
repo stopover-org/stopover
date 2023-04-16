@@ -5,12 +5,11 @@ import Layout from "../../components/MainPage/Layout";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/v1/Loading";
 import { events_Query } from "./__generated__/events_Query.graphql";
-import EventsListScene from "../../scenes/EventsListScene";
+import EventsScene from "../../scenes/EventsScene";
 
 const Query = graphql`
-  query events_Query($filters: EventsFilter) {
-    ...EventsListScene_EventsFragment @arguments(filters: $filters)
-    ...EventsListScene_InterestsFragment
+  query events_Query {
+    ...EventsScene_EventsPaginationFragment
   }
 `;
 
@@ -19,7 +18,7 @@ const Home = ({ preloadedQuery }: RelayProps<{}, events_Query>) => {
 
   return (
     <Layout>
-      <EventsListScene eventsReference={query} />
+      <EventsScene eventsFragmentRef={query} />
     </Layout>
   );
 };

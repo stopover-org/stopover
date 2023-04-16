@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<54e2addcde2b55650f1ee53c9b41d0d3>>
+ * @generated SignedSource<<a83ed26b09b56bb295511589926cbeb7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,19 +10,9 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type EventsFilter = {
-  city: string;
-  endDate?: any | null;
-  maxPrice: number;
-  minPrice: number;
-  startDate?: any | null;
-  tags?: ReadonlyArray<string> | null;
-};
-export type events_Query$variables = {
-  filters?: EventsFilter | null;
-};
+export type events_Query$variables = {};
 export type events_Query$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"EventsListScene_EventsFragment" | "EventsListScene_InterestsFragment">;
+  readonly " $fragmentSpreads": FragmentRefs<"EventsScene_EventsPaginationFragment">;
 };
 export type events_Query = {
   response: events_Query$data;
@@ -32,67 +22,55 @@ export type events_Query = {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "filters"
-  }
-],
-v1 = {
-  "kind": "Variable",
-  "name": "filters",
-  "variableName": "filters"
-},
-v2 = [
-  (v1/*: any*/),
+    "kind": "Literal",
+    "name": "after",
+    "value": ""
+  },
   {
     "kind": "Literal",
     "name": "first",
     "value": 10
   }
 ],
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "title",
-  "storageKey": null
-},
-v4 = {
+v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v3 = [
+  (v1/*: any*/),
+  (v2/*: any*/)
+],
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "cents",
+  "storageKey": null
+},
 v5 = [
-  (v3/*: any*/),
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "link",
-    "storageKey": null
-  },
   (v4/*: any*/)
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
     "name": "events_Query",
     "selections": [
       {
-        "args": [
-          (v1/*: any*/)
-        ],
-        "kind": "FragmentSpread",
-        "name": "EventsListScene_EventsFragment"
-      },
-      {
         "args": null,
         "kind": "FragmentSpread",
-        "name": "EventsListScene_InterestsFragment"
+        "name": "EventsScene_EventsPaginationFragment"
       }
     ],
     "type": "Query",
@@ -100,22 +78,22 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "events_Query",
     "selections": [
       {
         "alias": null,
-        "args": (v2/*: any*/),
-        "concreteType": "EventConnection",
+        "args": (v0/*: any*/),
+        "concreteType": "ScheduleConnection",
         "kind": "LinkedField",
-        "name": "events",
+        "name": "schedules",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "EventEdge",
+            "concreteType": "ScheduleEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -123,116 +101,94 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Event",
+                "concreteType": "Schedule",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/),
+                  (v1/*: any*/),
                   {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "description",
-                    "storageKey": null
-                  },
-                  (v4/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "availableDates",
+                    "name": "scheduledFor",
                     "storageKey": null
                   },
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "images",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "Money",
+                    "concreteType": "Event",
                     "kind": "LinkedField",
-                    "name": "attendeePricePerUom",
+                    "name": "event",
                     "plural": false,
                     "selections": [
+                      (v1/*: any*/),
+                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "cents",
+                        "name": "images",
                         "storageKey": null
                       },
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "Currency",
+                        "concreteType": "Interest",
                         "kind": "LinkedField",
-                        "name": "currency",
+                        "name": "interests",
+                        "plural": true,
+                        "selections": (v3/*: any*/),
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Money",
+                        "kind": "LinkedField",
+                        "name": "attendeePricePerUom",
                         "plural": false,
                         "selections": [
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
-                            "kind": "ScalarField",
-                            "name": "name",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "symbol",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "fullName",
+                            "concreteType": "Currency",
+                            "kind": "LinkedField",
+                            "name": "currency",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "name",
+                                "storageKey": null
+                              }
+                            ],
                             "storageKey": null
                           }
                         ],
                         "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Tag",
+                        "kind": "LinkedField",
+                        "name": "tags",
+                        "plural": true,
+                        "selections": (v3/*: any*/),
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "averageRating",
+                        "storageKey": null
                       }
                     ],
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "Tag",
-                    "kind": "LinkedField",
-                    "name": "tags",
-                    "plural": true,
-                    "selections": (v5/*: any*/),
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "Interest",
-                    "kind": "LinkedField",
-                    "name": "interests",
-                    "plural": true,
-                    "selections": (v5/*: any*/),
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "averageRating",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "ratingsCount",
                     "storageKey": null
                   },
                   {
@@ -281,18 +237,16 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": null
+        "storageKey": "schedules(after:\"\",first:10)"
       },
       {
         "alias": null,
-        "args": (v2/*: any*/),
-        "filters": [
-          "filters"
-        ],
+        "args": (v0/*: any*/),
+        "filters": null,
         "handle": "connection",
-        "key": "Events_events",
+        "key": "EventsScene_query_schedules",
         "kind": "LinkedHandle",
-        "name": "events"
+        "name": "schedules"
       },
       {
         "alias": null,
@@ -319,42 +273,21 @@ return {
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
+            "concreteType": "Money",
+            "kind": "LinkedField",
             "name": "minPrice",
+            "plural": false,
+            "selections": (v5/*: any*/),
             "storageKey": null
           },
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
+            "concreteType": "Money",
+            "kind": "LinkedField",
             "name": "maxPrice",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "city",
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "Interest",
-        "kind": "LinkedField",
-        "name": "interests",
-        "plural": true,
-        "selections": [
-          (v4/*: any*/),
-          (v3/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "preview",
+            "plural": false,
+            "selections": (v5/*: any*/),
             "storageKey": null
           }
         ],
@@ -363,16 +296,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d9590cb0094873b801644fc1962e5e1b",
+    "cacheID": "08a0fae0f3f78943e479e31b1e622896",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query(\n  $filters: EventsFilter\n) {\n  ...EventsListScene_EventsFragment_VTAHT\n  ...EventsListScene_InterestsFragment\n}\n\nfragment CompactCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n      symbol\n      fullName\n    }\n  }\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n  averageRating\n  ratingsCount\n  ...Rate_EventRate\n}\n\nfragment EventFilter_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice\n  maxPrice\n  city\n}\n\nfragment EventsListScene_EventsFragment_VTAHT on Query {\n  events(first: 10, filters: $filters) {\n    edges {\n      node {\n        ...CompactCard_EventFragment\n        ...WideCard_EventFragment\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...EventFilter_EventFiltersFragment\n  }\n}\n\nfragment EventsListScene_InterestsFragment on Query {\n  ...InterestGallery_InterestsFragment\n}\n\nfragment InterestGallery_InterestsFragment on Query {\n  interests {\n    id\n    ...ItemGallery_InterestFragment\n  }\n}\n\nfragment ItemGallery_InterestFragment on Interest {\n  id\n  title\n  preview\n}\n\nfragment Rate_EventRate on Event {\n  averageRating\n  ratingsCount\n}\n\nfragment WideCard_EventFragment on Event {\n  title\n  description\n  id\n  availableDates\n  images\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n      symbol\n      fullName\n    }\n  }\n  tags {\n    title\n    link\n    id\n  }\n  interests {\n    title\n    link\n    id\n  }\n  averageRating\n  ratingsCount\n}\n"
+    "text": "query events_Query {\n  ...EventsScene_EventsPaginationFragment\n}\n\nfragment EventCardCompacts_ScheduleFragment on Schedule {\n  id\n  scheduledFor\n  event {\n    id\n    title\n    images\n    interests {\n      id\n      title\n    }\n    attendeePricePerUom {\n      cents\n      currency {\n        name\n      }\n    }\n    tags {\n      id\n      title\n    }\n    averageRating\n  }\n}\n\nfragment EventsScene_EventsPaginationFragment on Query {\n  schedules(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        ...EventCardCompacts_ScheduleFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...Sidebar_EventFiltersFragment\n  }\n}\n\nfragment Sidebar_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice {\n    cents\n  }\n  maxPrice {\n    cents\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "7493a76168064f39d13e2f839eea6985";
+(node as any).hash = "e09a91b1f7b0befcd2f976358bdfef82";
 
 export default node;

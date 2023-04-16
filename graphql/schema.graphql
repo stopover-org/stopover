@@ -332,8 +332,8 @@ type EventEdge {
 type EventFilters {
   city: String
   endDate: DateTime
-  maxPrice: Int!
-  minPrice: Int!
+  maxPrice: Money!
+  minPrice: Money!
   startDate: DateTime
 }
 
@@ -596,6 +596,28 @@ type Query {
     """
     ids: [ID!]!
   ): [Node]!
+  schedules(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+    filters: EventsFilter
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): ScheduleConnection!
   trips(filters: TripsFilter): [Trip!]
 }
 
@@ -703,9 +725,45 @@ type RemoveFirmPayload {
 }
 
 type Schedule implements Node {
+  event: Event!
   id: ID!
   scheduledFor: DateTime!
   status: String!
+}
+
+"""
+The connection type for Schedule.
+"""
+type ScheduleConnection {
+  """
+  A list of edges.
+  """
+  edges: [ScheduleEdge!]!
+
+  """
+  A list of nodes.
+  """
+  nodes: [Schedule!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection.
+"""
+type ScheduleEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Schedule
 }
 
 """

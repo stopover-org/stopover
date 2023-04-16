@@ -7,32 +7,30 @@ import Link from "../v1/Link";
 
 const Header = () => {
   const theme = useTheme();
-  const isSmallDisplay = useMediaQuery(theme.breakpoints.up("sm"));
+  const isMediumDisplay = useMediaQuery(theme.breakpoints.up("sm"));
   return (
     <Grid container>
       <Grid xs={9}>
         <Image src="https://placehold.co/250x75" width={250} height={75} />
       </Grid>
 
-      {isSmallDisplay && (
-        <>
-          <Grid xs={2}>
-            <Typography lineHeight="75px" textAlign="right">
-              <Link href="/bookings">Путешествие</Link>
-            </Typography>
-          </Grid>
-          <Grid
-            sx={{
-              paddingRight: "10px",
-            }}
-            xs={1}
-          >
-            <Typography lineHeight="75px" textAlign="right">
-              <Link href="/auth/sign_in">Вход</Link>
-            </Typography>
-          </Grid>
-        </>
+      {isMediumDisplay && (
+        <Grid xs={2}>
+          <Typography lineHeight="75px" textAlign="right">
+            <Link href="/bookings">Путешествие</Link>
+          </Typography>
+        </Grid>
       )}
+      <Grid
+        sx={{
+          paddingRight: "10px",
+        }}
+        xs={1}
+      >
+        <Typography lineHeight="75px" textAlign="right">
+          <Link href="/auth/sign_in">Вход</Link>
+        </Typography>
+      </Grid>
     </Grid>
   );
 };

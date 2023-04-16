@@ -57,8 +57,12 @@ const EventFilter = ({ onChange, eventFiltersRef }: Props) => {
       fragment EventFilter_EventFiltersFragment on EventFilters {
         startDate
         endDate
-        minPrice
-        maxPrice
+        minPrice {
+          cents
+        }
+        maxPrice {
+          cents
+        }
         city
       }
     `,

@@ -1,7 +1,29 @@
-import { extendTheme } from "@mui/joy";
+import { extendTheme as extendJoyTheme } from "@mui/joy";
+import { colors } from "@mui/material";
+import { experimental_extendTheme as extendMuiTheme } from "@mui/material/styles";
+import { deepmerge } from "@mui/utils";
 
-export const theme = extendTheme({
+const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
   components: {
+    JoyTypography: {
+      defaultProps: {
+        levelMapping: {
+          display1: "h1",
+          display2: "h1",
+          h1: "h2",
+          h2: "h2",
+          h3: "h3",
+          h4: "h3",
+          h5: "h3",
+          h6: "h3",
+          body1: "p",
+          body2: "div",
+          body3: "span",
+          body4: "span",
+          body5: "span",
+        },
+      },
+    },
     JoyInput: {
       styleOverrides: {
         root: {
@@ -27,6 +49,20 @@ export const theme = extendTheme({
       },
     },
     JoyCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+      },
+    },
+    JoyCardOverflow: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+      },
+    },
+    JoyAspectRatio: {
       styleOverrides: {
         root: {
           borderRadius: "2px",
@@ -142,3 +178,96 @@ export const theme = extendTheme({
     },
   },
 });
+
+const { unstable_sxConfig: muiSxConfig, ...muiTheme } = extendMuiTheme({
+  // This is required to point to `var(--joy-*)` because we are using
+  // `CssVarsProvider` from Joy UI.
+  cssVarPrefix: "joy",
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          main: joyTheme.colorSchemes.light.palette.primary[500],
+        },
+        grey: joyTheme.colorSchemes.light.palette.neutral,
+        error: {
+          main: joyTheme.colorSchemes.light.palette.danger[500],
+        },
+        info: {
+          main: joyTheme.colorSchemes.light.palette.info[500],
+        },
+        success: {
+          main: joyTheme.colorSchemes.light.palette.success[500],
+        },
+        warning: {
+          main: joyTheme.colorSchemes.light.palette.warning[200],
+        },
+        common: {
+          white: "#FFF",
+          black: "#09090D",
+        },
+        divider: colors.grey[200],
+        text: {
+          primary: colors.grey[800],
+          secondary: colors.grey[600],
+        },
+      },
+    },
+    dark: {
+      palette: {
+        primary: {
+          main: colors.blue[600],
+        },
+        grey: colors.grey,
+        error: {
+          main: colors.red[600],
+        },
+        info: {
+          main: colors.purple[600],
+        },
+        success: {
+          main: colors.green[600],
+        },
+        warning: {
+          main: colors.yellow[300],
+        },
+        common: {
+          white: "#FFF",
+          black: "#09090D",
+        },
+        divider: colors.grey[800],
+        text: {
+          primary: colors.grey[100],
+          secondary: colors.grey[300],
+        },
+      },
+    },
+  },
+});
+
+export const theme = {
+  ...muiTheme,
+  ...joyTheme,
+  colorSchemes: deepmerge(muiTheme.colorSchemes, joyTheme.colorSchemes),
+  typography: {
+    ...muiTheme.typography,
+    ...joyTheme.typography,
+  },
+} as unknown as ReturnType<typeof extendJoyTheme>;
+
+theme.generateCssVars = (colorScheme) => ({
+  css: {
+    ...muiTheme.generateCssVars(colorScheme).css,
+    ...joyTheme.generateCssVars(colorScheme).css,
+  },
+  // @ts-ignore
+  vars: deepmerge(
+    muiTheme.generateCssVars(colorScheme).vars,
+    joyTheme.generateCssVars(colorScheme).vars
+  ),
+});
+
+theme.unstable_sxConfig = {
+  ...muiSxConfig,
+  ...joySxConfig,
+};

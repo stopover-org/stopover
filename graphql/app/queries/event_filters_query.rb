@@ -17,8 +17,8 @@ class EventFiltersQuery
       return {
         start_date: @start_date,
         end_date: @end_date,
-        min_price: @events.minimum(:attendee_price_per_uom_cents),
-        max_price: @events.maximum(:attendee_price_per_uom_cents),
+        min_price: Money.new(@events.minimum(:attendee_price_per_uom_cents)),
+        max_price: Money.new(@events.maximum(:attendee_price_per_uom_cents)),
         city: @city
       }
     end
@@ -26,8 +26,8 @@ class EventFiltersQuery
     {
       start_date: @start_date,
       end_date: @end_date,
-      min_price: @events.minimum(:attendee_price_per_uom_cents),
-      max_price: @events.maximum(:attendee_price_per_uom_cents),
+      min_price: Money.new(@events.minimum(:attendee_price_per_uom_cents)),
+      max_price: Money.new(@events.maximum(:attendee_price_per_uom_cents)),
       city: @city
     }
   end

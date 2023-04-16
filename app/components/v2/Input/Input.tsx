@@ -7,28 +7,31 @@ import {
 } from "@mui/joy";
 import React from "react";
 
-export interface InputProps {
+interface BaseInputProps {
   label?: React.ReactNode;
   hint?: React.ReactNode;
   error?: React.ReactNode;
-  onChange: (value: string) => void;
-  value: string;
+  onChange?: (
+    value: string,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  value?: string;
+  placeholder?: string;
 }
+
+export interface InputProps
+  extends Omit<JoyInputProps, keyof BaseInputProps>,
+    BaseInputProps {}
 
 const Input = React.forwardRef(
   (
-    {
-      label,
-      hint,
-      error,
-      onChange,
-      value,
-      ...props
-    }: Omit<JoyInputProps, keyof InputProps> & InputProps,
-    ref: React.ForwardedRef<HTMLInputElement>
+    { label, hint, error, onChange, value, ...props }: InputProps,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ref: React.Ref<HTMLDivElement>
   ) => {
     const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(event.target.value);
+      if (!(onChange instanceof Function)) return;
+      onChange(event.target.value, event);
     };
 
     return (
@@ -37,9 +40,9 @@ const Input = React.forwardRef(
         <JoyInput
           onChange={onChangeHandler}
           value={value}
-          ref={ref}
           error={Boolean(error)}
           {...props}
+          fullWidth
         />
         {hint && <FormHelperText>{hint}</FormHelperText>}
         {error && (

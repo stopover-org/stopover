@@ -22,12 +22,21 @@ const Checkbox = React.forwardRef(
     }: Omit<JoyCheckboxProps, keyof CheckboxProps> & CheckboxProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
-    const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(event.target.value);
-    };
+    const changeHandler = React.useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(event.target.value);
+      },
+      [onChange]
+    );
+
     return (
       <FormControl>
-        <JoyCheckbox ref={ref} onChange={changeHandler} {...props} />
+        <JoyCheckbox
+          checked={Boolean(props.value)}
+          ref={ref}
+          onChange={changeHandler}
+          {...props}
+        />
         {hint && <FormHelperText>{hint}</FormHelperText>}
       </FormControl>
     );

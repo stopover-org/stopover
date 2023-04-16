@@ -2,7 +2,6 @@ import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import { Close } from "@mui/icons-material";
-import { CheckboxProps } from "../../components/v2/Checkbox/Checkbox";
 import Checkbox from "../../components/v2/Checkbox";
 import { theme } from "../../lib/theme";
 
@@ -117,12 +116,4 @@ const Preview = () => (
 export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 DesignPreview.parameters = {
   controls: { hideNoControlsWarning: true },
-};
-
-const Template = ({ ...args }: CheckboxProps) => <Checkbox {...args} />;
-export const Default: ComponentStory<typeof Checkbox> = Template.bind({});
-Default.args = {
-  id: "your_uniq_id",
-  children: "my children",
-  disabled: false,
 };

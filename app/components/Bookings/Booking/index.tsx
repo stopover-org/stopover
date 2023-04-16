@@ -53,7 +53,7 @@ export const Booking = ({
   const { bookedFor, event } = data;
   const [isOpen, setIsOpen] = useState(false);
   const startDate = moment(bookedFor);
-  const endDate = calculateDate(moment(bookedFor), event.durationTime, "add");
+  const endDate = calculateDate(moment(bookedFor), event.durationTime!, "add");
   return (
     <>
       <BookingCard

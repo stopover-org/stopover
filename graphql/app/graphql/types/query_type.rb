@@ -16,6 +16,10 @@ module Types
       argument :filters, Types::EventsFilter, required: false
     end
 
+    field :schedules, Types::ScheduleType.connection_type, null: false do
+      argument :filters, Types::EventsFilter, required: false
+    end
+
     field :event_filters, Types::EventFiltersType, null: false do
       argument :city, String, required: false
     end
@@ -33,7 +37,7 @@ module Types
     end
 
     def bookings(**args)
-      ::BookingQuery.new(args[:filters]&.to_h || {}, Booking.all, current_user).all
+      ::BookingQuery.new(args[:filters].to_h || {}, Booking.all, current_user).all
     end
 
     def current_user
@@ -45,11 +49,15 @@ module Types
     end
 
     def interests(**args)
-      ::InterestsQuery.new(args[:filters]&.to_h || {}, Interest.all, current_user).all
+      ::InterestsQuery.new(args[:filters].to_h || {}, Interest.all, current_user).all
     end
 
     def events(**args)
-      ::EventsQuery.new(args[:filters]&.to_h || {}, Event.all, current_user).all
+      ::EventsQuery.new(args[:filters].to_h || {}, Event.all, current_user).all
+    end
+
+    def schedules(**args)
+      ::SchedulesQuery.new(args[:filters].to_h || [], Schedule.all, current_user).all
     end
 
     def event(**args)
