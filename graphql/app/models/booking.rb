@@ -29,7 +29,9 @@ class Booking < ApplicationRecord
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
-  #
+  has_one :account, through: :trip
+  has_one :user, through: :account
+
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :booking_options, dependent: :destroy
   has_many :attendees, dependent: :destroy

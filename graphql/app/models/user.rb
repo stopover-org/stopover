@@ -49,10 +49,10 @@ class User < ApplicationRecord
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  validates :email, presence:   true, unless: :phone
-  validates :email, uniqueness: true, unless: :phone
-  validates :phone, presence:   true, unless: :email
-  validates :phone, uniqueness: true, unless: :email
+  validates :email, presence:   true, if: :should_have_email?
+  validates :email, uniqueness: true, if: :should_have_email?
+  validates :phone, presence:   true, if: :should_have_phone?
+  validates :phone, uniqueness: true, if: :should_have_phone?
 
   # CALLBACKS ================================================================
   #
@@ -61,6 +61,8 @@ class User < ApplicationRecord
   # DELEGATIONS ==============================================================
 
   def send_confirmation_code!(primary:)
+    return if temporary?
+
     raise 'You are trying to resend confirmation code too often' unless can_send_code?
 
     code = rand.to_s[2..6]
@@ -84,6 +86,8 @@ class User < ApplicationRecord
   end
 
   def activate!(code:)
+    return if temporary?
+
     raise StandardError, 'Confirmation code is incorrect' if code != confirmation_code || confirmation_code.nil?
 
     self.confirmation_code = nil
@@ -103,6 +107,8 @@ class User < ApplicationRecord
   end
 
   def delay
+    return if temporary?
+
     actual_delay = ::Configuration.get_value(:SIGN_IN_DELAY).value.to_i - (Time.zone.now.to_i - (last_try&.to_i || 0))
     return actual_delay if actual_delay.positive?
     0
@@ -122,5 +128,17 @@ class User < ApplicationRecord
 
     required_delay = ::Configuration.get_value(:SIGN_IN_DELAY)&.value.to_i
     required_delay <= Time.zone.now.to_i - last_try.to_i
+  end
+
+  def should_have_email?
+    return false if temporary?
+    return true unless phone
+    false
+  end
+
+  def should_have_phone?
+    return false if temporary?
+    return true unless email
+    false
   end
 end
