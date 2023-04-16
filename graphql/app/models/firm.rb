@@ -5,6 +5,7 @@
 # Table name: firms
 #
 #  id                :bigint           not null, primary key
+#  business_type     :string           default(NULL), not null
 #  city              :string
 #  contact_person    :string
 #  contacts          :text
@@ -14,6 +15,7 @@
 #  house_number      :string
 #  latitude          :float
 #  longitude         :float
+#  postal_code       :string
 #  primary_email     :string
 #  primary_phone     :string
 #  region            :string
@@ -55,7 +57,14 @@ class Firm < ApplicationRecord
   end
 
   # ENUMS =======================================================================
-  #
+  enum business_type: {
+    individual: 'individual',
+    company: 'company',
+    non_profit: 'non_profit',
+    # US only
+    government_entity: 'government_entity'
+  }
+
   # VALIDATIONS ================================================================
   validates :primary_email, presence: true, unless: :primary_phone
   validates :primary_phone, presence: true, unless: :primary_email

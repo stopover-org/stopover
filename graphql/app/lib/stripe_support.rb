@@ -14,37 +14,39 @@ class StripeSupport
                                      })
 
     # Prefil company details before sending url to the customer
+    if user.account.firm.individual?
+      Stripe::Account.update(
+        account.id,
+        individual: {
+          address: {
+            city: user.account.city,
+            country: user.account.country,
+            line1: user.account.street,
+            postal_code: user.account.postal_code
+          },
+          email: user.email,
+          first_name: user.account.name,
+          last_name: user.account.last_name,
+          phone: user.account.phones.first
+        }
+      )
+    end
+
     Stripe::Account.update(
       account.id,
-      business_type: 'individual',
-      company: {
-        address: {
-          city: user.account.firm.city,
-          country: user.account.firm.country,
-          line1: user.account.firm.street,
-          line2: nil,
-          postal_code: 'POSTAL CODE',
-          state: user.account.firm.region
+      business_type: user.account.firm.business_type,
+        company: {
+          address: {
+            city: user.account.firm.city,
+            country: user.account.firm.country,
+            line1: user.account.firm.street,
+            line2: nil,
+            postal_code: user.account.firm.postal_code,
+            state: user.account.firm.region
+          }
         }
-      },
-      individual: {
-        address: {
-          city: 'Mambai',
-          country: 'CZ',
-          line1: 'fire pit',
-          postal_code: '11111'
-        },
-        dob: {
-          day: 21,
-          month: 0o1,
-          year: 1903
-        },
-        email: 'example@gmail.com',
-        first_name: 'Sauron',
-        last_name: 'White',
-        phone: '+420774586203'
-      }
     )
+
     user.account.firm.update!(stripe_account_id: account.id)
 
     account_link = Stripe::AccountLink.create({
@@ -54,7 +56,7 @@ class StripeSupport
                                                 type: 'account_onboarding'
                                               })
     {
-      account_link: account_link
+      account_link: account_link.url
     }
   rescue StandardError => e
     Rails.logger.debug 'something went wrong when creating account and account link in stripe'

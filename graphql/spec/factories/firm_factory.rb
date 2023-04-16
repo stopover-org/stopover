@@ -5,6 +5,7 @@
 # Table name: firms
 #
 #  id                :bigint           not null, primary key
+#  business_type     :string           default(NULL), not null
 #  city              :string
 #  contact_person    :string
 #  contacts          :text
@@ -14,6 +15,7 @@
 #  house_number      :string
 #  latitude          :float
 #  longitude         :float
+#  postal_code       :string
 #  primary_email     :string
 #  primary_phone     :string
 #  region            :string
