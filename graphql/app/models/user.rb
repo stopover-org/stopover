@@ -41,6 +41,7 @@ class User < ApplicationRecord
   # AASM STATES ================================================================
   aasm column: :status do
     state :inactive, initial: true
+    state :temporary
     state :active
     state :disabled
   end

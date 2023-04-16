@@ -8,5 +8,5 @@ export function useEdges<T>(data: {
     return data.edges
       .filter((edge: { node: T | null }) => Boolean(edge.node))
       .map((edge: { node: T | null }) => edge.node) as T[];
-  }, []);
+  }, [data]);
 }

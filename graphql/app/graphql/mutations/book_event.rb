@@ -7,6 +7,7 @@ module Mutations
     argument :attendees_count, Integer
 
     field :booking, Types::BookingType
+    field :access_token, String
 
     def resolve(event:, **args)
       booking = event.bookings.create!(

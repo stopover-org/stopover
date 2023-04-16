@@ -23,7 +23,7 @@ export interface TypographyProps
     BaseTypographyProps {}
 const Typography = React.forwardRef(
   (
-    { underline, strikeThrough, children, ...props }: TypographyProps,
+    { underline, strikeThrough, children, sx, ...props }: TypographyProps,
     ref: React.ForwardedRef<HTMLParagraphElement>
   ) => {
     if (underline) {
@@ -33,7 +33,11 @@ const Typography = React.forwardRef(
       children = <StrikeThroughStyle>{children}</StrikeThroughStyle>;
     }
     return (
-      <JoyTypography ref={ref} {...props}>
+      <JoyTypography
+        ref={ref}
+        sx={{ textOverflow: "ellipsis", ...sx }}
+        {...props}
+      >
         {children}
       </JoyTypography>
     );

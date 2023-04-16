@@ -177,7 +177,7 @@ class Event < ApplicationRecord
   end
 
   def average_rating
-    (ratings.sum(&:rating_value) / ratings.count.to_f).round(2)
+    (ratings.sum(&:rating_value) / ratings.count.to_f).round(2) || 0
   end
 
   def upload_images(images)
@@ -219,6 +219,11 @@ class Event < ApplicationRecord
     times
   end
 
+  def generate_tags
+    update_tags
+    tags.each(&:save!)
+  end
+
   private
 
   def check_schedules
@@ -234,21 +239,27 @@ class Event < ApplicationRecord
     # end
 
     achievements.each do |achievement|
-      tag = Tag.where(title: achievement.title.titleize).last
-      tags.build(title: achievement.title.titleize) unless tag
+      tag = Tag.find_or_initialize_by(title: achievement.title.titleize)
+      tag.save! unless tag.id
+      tags.push(tag) unless tags.include?(tag)
+
       tag = nil
     end
 
     if unit
-      tag = Tag.where(title: unit.name.titleize).last
-      tags.build(title: unit.name.titleize) unless tag
+      tag = Tag.find_or_initialize_by(title: unit.name.titleize)
+      tag.save! unless tag.id
+      tags.push(tag) unless tags.include?(tag)
+
       tag = nil
     end
 
     # [TODO] to add translations for every event_type
     if event_type
-      tag = Tag.where(title: event_type.titleize).last
-      tags.build(title: event_type.titleize) unless tag
+      tag = Tag.find_or_initialize_by(title: event_type.titleize)
+      tag.save! unless tag.id
+      tags.push(tag) unless tags.include?(tag)
+
       tag = nil
     end
   end
