@@ -64,7 +64,7 @@ class GraphqlController < ApplicationController
   end
 
   def authorize!
-    user = AuthorizationSupport.decode_user(headers: request.headers)
+    user = Stopover::AuthorizationSupport.decode_user(headers: request.headers)
     @current_user = user
   rescue StandardError => e
     raise e unless Rails.env.development?

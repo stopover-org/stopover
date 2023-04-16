@@ -26,8 +26,8 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   describe 'create user from scratch' do
     before(:each) do
-      allow(SmsProvider).to receive(:send_sms)
-      allow(MailProvider).to receive(:send_mail)
+      allow(Stopover::SmsProvider).to receive(:send_sms)
+      allow(Stopover::MailProvider).to receive(:send_mail)
     end
 
     let(:user) { create(:user) }
@@ -54,9 +54,9 @@ RSpec.describe User, type: :model do
       it 'should send notifications' do
         subject
         # if primary_method == 'phone'
-        #   expect(SmsProvider).to receive(:send_sms)
+        #   expect(Stopover::SmsProvider).to receive(:send_sms)
         # elsif primary_method == 'email'
-        #   expect(MailProvider).to receive(:send_mail)
+        #   expect(Stopover::MailProvider).to receive(:send_mail)
         # end
       end
     end

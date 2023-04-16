@@ -188,7 +188,7 @@ class Event < ApplicationRecord
 
       next if img[:id]
 
-      tmp_file = FilesSupport.base64_to_file(img[:src], img[:title])
+      tmp_file = Stopover::FilesSupport.base64_to_file(img[:src], img[:title])
       next unless tmp_file
 
       images_to_attach.push tmp_file

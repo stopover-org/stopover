@@ -7,6 +7,6 @@ class ScheduleEventJob < ApplicationJob
     event = Event.find args[0][:event_id]
     return unless event.is_a? Event
 
-    EventSupport.schedule(event)
+    Stopover::EventSupport.schedule(event)
   end
 end

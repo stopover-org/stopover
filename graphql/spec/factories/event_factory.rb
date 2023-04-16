@@ -75,7 +75,7 @@ FactoryBot.define do
       end
 
       after(:create) do |event, evaluator|
-        EventSupport.schedule(event) unless evaluator.skip_schedules
+        Stopover::EventSupport.schedule(event) unless evaluator.skip_schedules
       end
     end
 

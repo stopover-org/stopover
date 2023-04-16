@@ -41,12 +41,12 @@ module Mutations
       event.firm = context[:current_user].account.firm
       event.event_options = args[:event_options]&.map { |option| EventOption.new(**option) } if args[:event_options].present?
       if event.recurring_type == 'recurring'
-        event.recurring_days_with_time = ::EventSupport.prepare_dates(event,
-                                                                      args[:dates])
+        event.recurring_days_with_time = Stopover::EventSupport.prepare_dates(event,
+                                                                              args[:dates])
       end
       if event.recurring_type == 'non_recurring'
-        event.single_days_with_time = ::EventSupport.prepare_dates(event,
-                                                                   args[:dates])
+        event.single_days_with_time = Stopover::EventSupport.prepare_dates(event,
+                                                                           args[:dates])
       end
 
       event.save!

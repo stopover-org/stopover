@@ -71,13 +71,13 @@ class User < ApplicationRecord
     save!
 
     if primary == 'email' && email
-      MailProvider.send_mail(from: ::Configuration.get_value(:NOTIFICATION_EMAIL).value,
-                             to: email,
-                             subject: 'Confirmation code',
-                             content: MailProvider.prepare_content(file: 'mailer/confirmation_code',
-                                                                   locals: { confirmation_code: confirmation_code }))
+      Stopover::MailProvider.send_mail(from: ::Configuration.get_value(:NOTIFICATION_EMAIL).value,
+                                       to: email,
+                                       subject: 'Confirmation code',
+                                       content: Stopover::MailProvider.prepare_content(file: 'mailer/confirmation_code',
+                                                                                       locals: { confirmation_code: confirmation_code }))
     elsif primary == 'phone' && phone
-      # SmsProvider.send_sms(from: ::Configuration.get_value(:NOTIFICATION_PHONE).value,
+      # Stopover::SmsProvider.send_sms(from: ::Configuration.get_value(:NOTIFICATION_PHONE).value,
       #                      to: phone,
       #                      message: "Your confirmation code: ##{confirmation_code}")
     end
@@ -112,7 +112,7 @@ class User < ApplicationRecord
     self.session_password ||= SecureRandom.hex(50)
     save!
 
-    JWT.encode({ email: email, phone: phone, id: id }, session_password, AuthorizationSupport::JWT_ALGORITHM)
+    JWT.encode({ email: email, phone: phone, id: id }, session_password, Stopover::AuthorizationSupport::JWT_ALGORITHM)
   end
 
   private

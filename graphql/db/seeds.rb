@@ -179,6 +179,6 @@ Event.first((events_count * 0.25).to_i).each { |e| e.update!(status: :draft) }
 trip = Trip.create!(account: Account.last, status: :draft)
 
 Event.where.not(single_days_with_time: []).last(10).each do |event|
-  EventSupport.schedule(event)
+  Stopover::EventSupport.schedule(event)
   event.bookings.create!(event_id: event.id, schedule_id: Schedule.last.id, trip: trip)
 end
