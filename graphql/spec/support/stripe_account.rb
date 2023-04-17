@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe StripeSupport, type: :helper do
+RSpec.describe StripeAccount, type: :helper do
   describe 'stripe support' do
     let!(:user) { create(:user) }
     let!(:account_spec) { create(:account, user: user) }
@@ -25,7 +25,7 @@ RSpec.describe StripeSupport, type: :helper do
         type: 'account_onboarding'
       )
 
-      StripeSupport.create_stripe_account(user)
+      Stopover::StripeAccount.create_stripe_account(user)
       expect(user.account.firm.stripe_account).to eq('{:id=>"account_id"}')
     end
   end

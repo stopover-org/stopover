@@ -19,7 +19,7 @@ module Mutations
 
         if checkout[:status] == 'expired'
           payment.cancel!
-          checkout = ::StripeSupport.generate_stripe_checkout_session(booking, args[:payment_type])
+          checkout = Stopover::StripeCheckout.generate_stripe_checkout_session(booking, args[:payment_type])
           return {
             url: checkout[:url],
             booking: booking,
@@ -33,7 +33,7 @@ module Mutations
           }
         end
       end
-      checkout = ::StripeSupport.generate_stripe_checkout_session(booking, args[:payment_type])
+      checkout = Stopover::StripeCheckout.generate_stripe_checkout_session(booking, args[:payment_type])
       {
         url: checkout[:url],
         booking: booking,
