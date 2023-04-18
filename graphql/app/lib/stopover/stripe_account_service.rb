@@ -14,22 +14,41 @@ module Stopover
                                          }
                                        })
       # Prefil company details before sending url to the customer
-      Stripe::Account.update(account.id, business_type: user.account.firm.business_type, individual: { address: { city: user.account.city, country: user.account.country, line1: user.account.street, postal_code: user.account.postal_code }, email: user.email, first_name: user.account.name, last_name: user.account.last_name, phone: user.account.phones.first }) if user.account.firm.individual?
-
-      Stripe::Account.update(
-        account.id,
-        business_type: user.account.firm.business_type,
-        company: {
-          address: {
-            city: user.account.firm.city,
-            country: user.account.firm.country,
-            line1: user.account.firm.street,
-            line2: nil,
-            postal_code: user.account.firm.postal_code,
-            state: user.account.firm.region
+      if user.account.firm.individual?
+        Stripe::Account.update(
+          account.id,
+          business_type: user.account.firm.business_type,
+          individual: {
+            address: {
+              city: user.account.city,
+              country: user.account.country,
+              line1: user.account.street,
+              postal_code: user.account.postal_code
+            },
+            email: user.email,
+            first_name: user.account.name,
+            last_name: user.account.last_name,
+            phone: user.account.phones.first
           }
-        }
-      )
+        )
+      end
+
+      if user.account.firm.company?
+        Stripe::Account.update(
+          account.id,
+          business_type: user.account.firm.business_type,
+          company: {
+            address: {
+              city: user.account.firm.city,
+              country: user.account.firm.country,
+              line1: user.account.firm.street,
+              line2: nil,
+              postal_code: user.account.firm.postal_code,
+              state: user.account.firm.region
+            }
+          }
+        )
+      end
 
       user.account.firm.update!(stripe_account_id: account.id)
 
