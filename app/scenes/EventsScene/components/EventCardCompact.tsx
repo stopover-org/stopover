@@ -147,6 +147,7 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
             onClick={() => bookEvent(event.id, schedule.scheduledFor)}
           >
             <AddShoppingCartIcon />
+            Add
           </Button>
         </Stack>
       </Card>

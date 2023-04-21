@@ -11,7 +11,7 @@ import EventScene from "../../scenes/EventScene";
 const Query = graphql`
   query Id_Query($id: ID!) {
     event(id: $id) {
-      ...EventScene_Event
+      ...EventScene_EventFragment
     }
   }
 `;

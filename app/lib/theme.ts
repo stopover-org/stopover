@@ -35,6 +35,7 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
       styleOverrides: {
         root: {
           borderRadius: "2px",
+          fontWeight: 500,
         },
       },
     },
