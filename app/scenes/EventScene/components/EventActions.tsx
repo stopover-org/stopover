@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import { Box, Stack } from "@mui/joy";
+import { Box, Option, Stack } from "@mui/joy";
 import { useRouter } from "next/router";
 import moment, { Moment } from "moment";
 import { EventActions_EventFragment$key } from "./__generated__/EventActions_EventFragment.graphql";
@@ -10,6 +10,9 @@ import ButtonDatePicker from "../../../components/v2/ButtonDatePicker";
 import useClosestDate from "../../../lib/hooks/useClosestDate";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import Typography from "../../../components/v2/Typography";
+import useUniqueMomentDates from "../../../lib/hooks/useUniqueMomentDates";
+import useTimeFromDate from "../../../lib/hooks/useTimeFromDate";
+import Select from "../../../components/v2/Select";
 
 interface EventActionsProps {
   eventFragmentRef: EventActions_EventFragment$key;
@@ -36,6 +39,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
     eventFragmentRef
   );
   const closestDate = useClosestDate(event.availableDates as Date[]);
+  const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
   const parsedDate = React.useMemo(() => {
     const date = moment(router.query.date, dateFormat);
     if (date.isValid()) return date;
@@ -45,6 +49,10 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
   const [selectedDate, setSelectedDate] = React.useState<Moment | null>(
     parsedDate
   );
+  const availableTimes = useTimeFromDate(availableDates, selectedDate);
+  const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
+
+  console.log(availableTimes);
 
   return (
     selectedDate && (
@@ -52,14 +60,35 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
         <Stack flexDirection="row" justifyContent="flex-end">
           <Box paddingRight="10px">
             <ButtonDatePicker
-              onChange={(date) => setSelectedDate(date)}
+              onChange={(date) => {
+                setSelectedDate(date);
+
+                setSelectedTime(null);
+              }}
               variant="outlined"
+              datePickerProps={{
+                availableDates,
+              }}
             >
               {getDate(selectedDate)}
             </ButtonDatePicker>
           </Box>
+          <Box paddingRight="10px">
+            <Select
+              onChange={(_, value) => setSelectedTime(value as string)}
+              placeholder="Select time"
+            >
+              {availableTimes.map((time, index) => (
+                <Option key={index + time} value={time}>
+                  {time}
+                </Option>
+              ))}
+            </Select>
+          </Box>
           <Box>
-            <Button>Book Event</Button>
+            <Button disabled={!selectedDate || !selectedTime}>
+              Book Event
+            </Button>
           </Box>
         </Stack>
         <Stack flexDirection="row" justifyContent="flex-end" paddingTop="10px">

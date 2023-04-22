@@ -8,7 +8,7 @@ import {
 } from "@mui/joy";
 
 export interface SelectProps {
-  label: string;
+  label?: string;
   hint?: string;
 }
 
@@ -24,7 +24,7 @@ const Select = React.forwardRef(
     ref: React.ForwardedRef<HTMLButtonElement>
   ) => (
     <FormControl>
-      <FormLabel>{label}</FormLabel>
+      {label && <FormLabel>{label}</FormLabel>}
       <JoySelect ref={ref} {...props}>
         {children}
       </JoySelect>

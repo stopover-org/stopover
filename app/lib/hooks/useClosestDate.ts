@@ -1,22 +1,13 @@
 import moment, { Moment } from "moment";
 import React from "react";
-import { dateFormat } from "../utils/dates";
+import useUniqueMomentDates from "./useUniqueMomentDates";
 
 function useClosestDate(dates: Array<Moment | Date | string>) {
   const today = moment(Date.now());
-  const uniqueDates = React.useMemo(
+  const uniqueDates = useUniqueMomentDates(dates);
+  const sortedDates = React.useMemo(
     () =>
-      dates
-        // cast to moment
-        .map((date) => moment(date, dateFormat))
-        // compact array
-        .reduce((result, date) => {
-          const foundDate = result.find((dt) => date.isSame(dt, "day"));
-          if (!foundDate) {
-            result.push(date);
-          }
-          return result;
-        }, [] as Moment[])
+      uniqueDates
         // only future dates
         .filter((dt) => dt.isAfter(today))
         // sort
@@ -27,7 +18,7 @@ function useClosestDate(dates: Array<Moment | Date | string>) {
         }),
     [dates]
   );
-  if (uniqueDates.length > 0) return uniqueDates[0];
+  if (sortedDates.length > 0) return uniqueDates[0];
   return null;
 }
 

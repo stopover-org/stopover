@@ -37,7 +37,11 @@ const ButtonDatePicker = ({
         </Button>
         <DatePicker
           open={opened}
-          onChange={onChange}
+          onChange={(...rest) => {
+            onChange(...rest);
+
+            setOpened(false);
+          }}
           {...datePickerProps}
           slots={{
             field: () => null,
