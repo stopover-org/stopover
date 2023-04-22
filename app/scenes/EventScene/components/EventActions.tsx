@@ -77,7 +77,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             <Select
               onChange={(_, value) => {
                 if (!value) return;
-                setSelectedTime(value.split("-")[0]);
+                setSelectedTime((value as string).split("-")[0]);
               }}
               placeholder="Select time"
             >

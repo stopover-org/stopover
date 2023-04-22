@@ -32,6 +32,7 @@ const EventScene = ({ eventFragmentRef }: EventScheneProps) => {
       <Grid xs={3}>
         <EventActions eventFragmentRef={event} />
       </Grid>
+      <Grid xs={8}>asdfasdfasd</Grid>
     </Grid>
   );
 };
