@@ -11,8 +11,8 @@ const Img = styled.img`
 
 interface GalleryProps {
   opened?: boolean;
-  onOpen: () => void;
-  onClose: () => void;
+  onOpen?: () => void;
+  onClose?: () => void;
   images: Array<{ src: string; title?: string }>;
   minHeight?: string;
   maxHeight?: string;
@@ -30,17 +30,27 @@ const Gallery = ({
   width,
   numberInRow = 2,
 }: GalleryProps) => {
-  const clickHandler = React.useCallback(() => {
-    if (opened) {
-      onClose();
-    } else {
+  const [isOpened, setIsOpened] = React.useState(opened);
+
+  React.useEffect(() => {
+    if (isOpened) {
+      if (onClose instanceof Function) {
+        onClose();
+      }
+      return;
+    }
+    if (onOpen instanceof Function) {
       onOpen();
     }
+  }, [isOpened, onOpen, onClose]);
+
+  const clickHandler = React.useCallback(() => {
+    setIsOpened(!isOpened);
   }, [opened, onClose, onOpen]);
 
   const height = React.useMemo(
-    () => (opened ? maxHeight : minHeight),
-    [opened, maxHeight, minHeight]
+    () => (isOpened ? maxHeight : minHeight),
+    [isOpened, maxHeight, minHeight]
   );
 
   return (
@@ -86,7 +96,7 @@ const Gallery = ({
             }}
           >
             <Typography sx={{ color: "#fff" }} fontSize="16px">
-              {!opened ? "I want to see more" : "roll up"}
+              {!isOpened ? "I want to see more" : "roll up"}
             </Typography>
           </Button>
         </Box>

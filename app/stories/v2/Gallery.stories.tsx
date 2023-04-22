@@ -35,20 +35,9 @@ export default {
 } as ComponentMeta<typeof Gallery>;
 
 // onOpen and onClose was excluded from args but they will not be used
-const Preview = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  return (
-    <Gallery
-      onOpen={() => setIsOpen(true)}
-      onClose={() => setIsOpen(false)}
-      opened={isOpen}
-      images={imagesArray}
-      width="600px"
-      minHeight="350px"
-    />
-  );
-};
+const Preview = () => (
+  <Gallery images={imagesArray} width="600px" minHeight="350px" />
+);
 
 export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 DesignPreview.parameters = {

@@ -5,6 +5,7 @@ import { Breadcrumbs2 } from "./components/Breadcrumbs";
 import { EventScene_EventFragment$key } from "./__generated__/EventScene_EventFragment.graphql";
 import EventTitle from "./components/EventTitle";
 import EventActions from "./components/EventActions";
+import RightColumn from "./components/RightColumn";
 
 interface EventScheneProps {
   eventFragmentRef: EventScene_EventFragment$key;
@@ -17,6 +18,7 @@ const EventScene = ({ eventFragmentRef }: EventScheneProps) => {
         ...Breadcrumbs_EventFragment
         ...EventTitle_EventFragment
         ...EventActions_EventFragment
+        ...RightColumn_EventFragment
       }
     `,
     eventFragmentRef
@@ -32,7 +34,9 @@ const EventScene = ({ eventFragmentRef }: EventScheneProps) => {
       <Grid xs={3}>
         <EventActions eventFragmentRef={event} />
       </Grid>
-      <Grid xs={8}>asdfasdfasd</Grid>
+      <Grid xs={8}>
+        <RightColumn eventFragmentRef={event} />
+      </Grid>
     </Grid>
   );
 };
