@@ -1,6 +1,6 @@
 import React from "react";
 
-export function useEdges<T>(data: {
+function useEdges<T>(data: {
   readonly edges: ReadonlyArray<{ readonly node: T | null }>;
 }): readonly T[] {
   return React.useMemo(() => {
@@ -10,3 +10,5 @@ export function useEdges<T>(data: {
       .map((edge: { node: T | null }) => edge.node) as T[];
   }, [data]);
 }
+
+export default useEdges;

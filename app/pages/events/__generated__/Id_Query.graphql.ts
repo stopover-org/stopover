@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<404dc6e930793e4b58cd9b15ed7cd6d8>>
+ * @generated SignedSource<<3e1a3343dfac8b7ba1d183fb62d671ea>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -149,20 +149,8 @@ return {
           {
             "alias": null,
             "args": null,
-            "concreteType": "Schedule",
-            "kind": "LinkedField",
-            "name": "schedules",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "scheduledFor",
-                "storageKey": null
-              },
-              (v2/*: any*/)
-            ],
+            "kind": "ScalarField",
+            "name": "availableDates",
             "storageKey": null
           },
           {
@@ -201,12 +189,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "113f7c908d8da81b52e17fb9787de2f3",
+    "cacheID": "3af0b0c51cfa38675ff469a8edb0c5d9",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    ...EventScene_EventFragment\n    id\n  }\n}\n\nfragment Breadcrumbs_EventFragment on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventActions_EventFragment on Event {\n  id\n  unit {\n    name\n    id\n  }\n  schedules {\n    scheduledFor\n    id\n  }\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n}\n\nfragment EventScene_EventFragment on Event {\n  ...Breadcrumbs_EventFragment\n  ...EventTitle_EventFragment\n  ...EventActions_EventFragment\n}\n\nfragment EventTitle_EventFragment on Event {\n  title\n  averageRating\n  tags {\n    id\n    title\n  }\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    ...EventScene_EventFragment\n    id\n  }\n}\n\nfragment Breadcrumbs_EventFragment on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventActions_EventFragment on Event {\n  id\n  unit {\n    name\n    id\n  }\n  availableDates\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n}\n\nfragment EventScene_EventFragment on Event {\n  ...Breadcrumbs_EventFragment\n  ...EventTitle_EventFragment\n  ...EventActions_EventFragment\n}\n\nfragment EventTitle_EventFragment on Event {\n  title\n  averageRating\n  tags {\n    id\n    title\n  }\n}\n"
   }
 };
 })();

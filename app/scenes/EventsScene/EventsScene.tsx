@@ -6,7 +6,7 @@ import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
 import { EventsScene_EventsPaginationFragment$key } from "./__generated__/EventsScene_EventsPaginationFragment.graphql";
 import EventCardCompact from "./components/EventCardCompact";
-import { useEdges } from "../../lib/utils/connections";
+import useEdges from "../../lib/hooks/useEdges";
 import EventCardWide from "./components/EventCardWide";
 import Pagination from "./components/Pagination";
 

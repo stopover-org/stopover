@@ -1,13 +1,19 @@
-import { PickersDayProps } from "@mui/x-date-pickers";
 import { Moment } from "moment";
 import * as React from "react";
-import { PickersDay as JoyPickersDay } from "@mui/x-date-pickers/PickersDay";
+import {
+  PickersDay as JoyPickersDay,
+  PickersDayProps as JoyPickersDayProps,
+} from "@mui/x-date-pickers/PickersDay";
 
-interface DayPickerProps extends PickersDayProps<Moment> {
+interface BasePickersDayProps {
   selectedDays: [Moment | null, Moment | null];
 }
 
-const PickersDay = ({ day, selectedDays, ...props }: DayPickerProps) => {
+interface PickersDayProps
+  extends Omit<JoyPickersDayProps<Moment>, keyof BasePickersDayProps>,
+    BasePickersDayProps {}
+
+const PickersDay = ({ day, selectedDays, ...props }: PickersDayProps) => {
   const isIntermediarySelected = React.useMemo(
     () =>
       selectedDays.filter(Boolean).length === 2

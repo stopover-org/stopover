@@ -3,7 +3,7 @@ import { Button as JoyButton, ButtonProps as JoyButtonProps } from "@mui/joy";
 
 interface BaseButtonProps {}
 
-interface ButtonProps
+export interface ButtonProps
   extends Omit<JoyButtonProps, keyof BaseButtonProps>,
     BaseButtonProps {}
 
