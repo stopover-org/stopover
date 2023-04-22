@@ -26,7 +26,7 @@ const Gallery = ({
   onClose,
   images,
   minHeight = "600px",
-  maxHeight = "none",
+  maxHeight = "100vh",
   width,
   numberInRow = 2,
 }: GalleryProps) => {

@@ -46,7 +46,6 @@ const Preview = () => {
       images={imagesArray}
       width="600px"
       minHeight="350px"
-      maxHeight="1000px"
     />
   );
 };
