@@ -10,13 +10,16 @@ const Query = graphql`
   query Id_TripsQuery($filters: BookingsFilter!) {
     ...BookingList_BookingsFragment @arguments(filters: $filters)
     ...TripHeader_BookingsFragment @arguments(filters: $filters)
+    currentUser {
+      ...Layout_CurrentUserFragment
+    }
   }
 `;
 
 const Trip = ({ preloadedQuery }: any) => {
   const data = usePreloadedQuery<Id_TripsQuery>(Query, preloadedQuery);
   return (
-    <Layout>
+    <Layout currentUserFragment={data.currentUser}>
       <TripCard queryReference={data} />
     </Layout>
   );
@@ -36,11 +39,11 @@ export default withRelay(Trip, Query, {
   }),
   // Server-side props can be accessed as the second argument
   // to this function.
-  createServerEnvironment: async () => {
+  createServerEnvironment: async ({ req }) => {
     const { createServerEnvironment } = await import(
       "../../lib/serverEnvironment"
     );
 
-    return createServerEnvironment();
+    return createServerEnvironment(req.headers.cookie);
   },
 });

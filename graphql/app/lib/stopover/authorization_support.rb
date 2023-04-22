@@ -5,12 +5,16 @@ require 'jwt'
 module Stopover
   class AuthorizationSupport
     JWT_ALGORITHM = 'HS256'
+    COOKIE_KEY = 'access_token'
+    AUTHORIZATION_HEADER = 'Authorization'
 
-    def self.decode_user(headers:)
-      header = headers['Authorization']
-      return nil unless header
+    def self.decode_user(headers:, cookies:)
+      cookie_token = cookies.encrypted[COOKIE_KEY]
+      header = headers[AUTHORIZATION_HEADER]
+      return nil if !header && !cookie_token
 
-      access_token = header.split[1]
+      access_token = header.split[1] if header
+      access_token ||= cookie_token if cookie_token
       return nil unless access_token
 
       decoded_token = JWT.decode(access_token, nil, false, { algorithm: JWT_ALGORITHM })

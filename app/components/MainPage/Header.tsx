@@ -1,35 +1,108 @@
 import React from "react";
-import { Grid, useTheme } from "@mui/joy";
+import { Grid, Stack, useTheme } from "@mui/joy";
 import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
-import Typography from "../v2/Typography";
-import Link from "../v1/Link";
+import { graphql, useFragment, useMutation } from "react-relay";
+import { useRouter } from "next/router";
+import { Header_CurrentUserFragment$key } from "./__generated__/Header_CurrentUserFragment.graphql";
+import { Header_SignOutMutation } from "./__generated__/Header_SignOutMutation.graphql";
+import Link from "../v2/Link";
 
-const Header = () => {
+interface HeaderProps {
+  currentUserFragment: Header_CurrentUserFragment$key;
+}
+
+const Header = ({ currentUserFragment }: HeaderProps) => {
+  const router = useRouter();
   const theme = useTheme();
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("sm"));
+  const currentUser = useFragment(
+    graphql`
+      fragment Header_CurrentUserFragment on User {
+        id
+      }
+    `,
+    currentUserFragment
+  );
+
+  const [signOut] = useMutation<Header_SignOutMutation>(graphql`
+    mutation Header_SignOutMutation($input: SignOutInput!) {
+      signOut(input: $input) {
+        signedOut
+      }
+    }
+  `);
+
+  const onSignOut = React.useCallback(() => {
+    signOut({
+      variables: { input: {} },
+      onCompleted() {
+        router.push("/events");
+      },
+    });
+  }, [signOut, router]);
   return (
     <Grid container>
-      <Grid xs={9}>
+      <Grid xs={9} sm={6}>
         <Image src="https://placehold.co/250x75" width={250} height={75} />
       </Grid>
 
-      {isMediumDisplay && (
-        <Grid xs={2}>
-          <Typography lineHeight="75px" textAlign="right">
-            <Link href="/bookings">Путешествие</Link>
-          </Typography>
-        </Grid>
-      )}
-      <Grid
-        sx={{
-          paddingRight: "10px",
-        }}
-        xs={1}
-      >
-        <Typography lineHeight="75px" textAlign="right">
-          <Link href="/auth/sign_in">Вход</Link>
-        </Typography>
+      <Grid xs={3} sm={6}>
+        <Stack flexDirection="row" justifyContent="flex-end">
+          {isMediumDisplay && (
+            <Link
+              href="/bookings"
+              textAlign="right"
+              level="body1"
+              fontSize="lg"
+              lineHeight="75px"
+              paddingRight="10px"
+            >
+              My Trips
+            </Link>
+          )}
+          {!currentUser && (
+            <Link
+              href="/auth/sign_in"
+              textAlign="right"
+              level="body1"
+              fontSize="lg"
+              lineHeight="75px"
+              paddingRight="10px"
+            >
+              Log In
+            </Link>
+          )}
+          {currentUser && (
+            <>
+              <Link
+                href="?#register-firm"
+                textAlign="right"
+                level="body1"
+                fontSize="lg"
+                lineHeight="75px"
+                paddingRight="10px"
+              >
+                Register Firm
+              </Link>
+              <Link
+                href="?#sign-out"
+                textAlign="right"
+                level="body1"
+                fontSize="lg"
+                lineHeight="75px"
+                paddingRight="20px"
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  onSignOut();
+                }}
+              >
+                Log out
+              </Link>
+            </>
+          )}
+        </Stack>
       </Grid>
     </Grid>
   );

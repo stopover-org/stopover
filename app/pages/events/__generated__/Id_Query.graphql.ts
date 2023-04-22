@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<71bd48e3b6246928e56409ba861002f4>>
+ * @generated SignedSource<<263ddca7ca53574f90665fc4f1e444ab>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,6 +14,9 @@ export type Id_Query$variables = {
   id: string;
 };
 export type Id_Query$data = {
+  readonly currentUser: {
+    readonly " $fragmentSpreads": FragmentRefs<"Layout_CurrentUserFragment">;
+  } | null;
   readonly event: {
     readonly " $fragmentSpreads": FragmentRefs<"EventScene_EventFragment">;
   } | null;
@@ -72,6 +75,22 @@ return {
     "selections": [
       {
         "alias": null,
+        "args": null,
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "currentUser",
+        "plural": false,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "Layout_CurrentUserFragment"
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
         "args": (v1/*: any*/),
         "concreteType": "Event",
         "kind": "LinkedField",
@@ -96,6 +115,18 @@ return {
     "kind": "Operation",
     "name": "Id_Query",
     "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "currentUser",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/)
+        ],
+        "storageKey": null
+      },
       {
         "alias": null,
         "args": (v1/*: any*/),
@@ -189,6 +220,13 @@ return {
             "kind": "ScalarField",
             "name": "images",
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "description",
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -196,16 +234,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "93b482f3235ba77f01363ba8f56bd381",
+    "cacheID": "b6ef4caf387154d5cefa5ff9d3ef8257",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: ID!\n) {\n  event(id: $id) {\n    ...EventScene_EventFragment\n    id\n  }\n}\n\nfragment Breadcrumbs_EventFragment on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventActions_EventFragment on Event {\n  id\n  unit {\n    name\n    id\n  }\n  availableDates\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n}\n\nfragment EventScene_EventFragment on Event {\n  ...Breadcrumbs_EventFragment\n  ...EventTitle_EventFragment\n  ...EventActions_EventFragment\n  ...RightColumn_EventFragment\n}\n\nfragment EventTitle_EventFragment on Event {\n  title\n  averageRating\n  tags {\n    id\n    title\n  }\n}\n\nfragment RightColumn_EventFragment on Event {\n  images\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  currentUser {\n    ...Layout_CurrentUserFragment\n    id\n  }\n  event(id: $id) {\n    ...EventScene_EventFragment\n    id\n  }\n}\n\nfragment Breadcrumbs_EventFragment on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventActions_EventFragment on Event {\n  id\n  unit {\n    name\n    id\n  }\n  availableDates\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n}\n\nfragment EventScene_EventFragment on Event {\n  ...Breadcrumbs_EventFragment\n  ...EventTitle_EventFragment\n  ...EventActions_EventFragment\n  ...LeftColumn_EventFragment\n  ...RightColumn_EventFragment\n}\n\nfragment EventTitle_EventFragment on Event {\n  title\n  averageRating\n  tags {\n    id\n    title\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment LeftColumn_EventFragment on Event {\n  images\n}\n\nfragment RightColumn_EventFragment on Event {\n  title\n  description\n}\n"
   }
 };
 })();
 
-(node as any).hash = "ebc9a1f2cde6e49326c575009d114960";
+(node as any).hash = "77c773d91e97d3c5930293694cce2a1b";
 
 export default node;

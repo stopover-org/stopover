@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<bc1cfc0fc4172ffe3f587bcf4a131690>>
+ * @generated SignedSource<<5091fd4f0ed87164122e044245e09791>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,6 +12,9 @@ import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type events_Query$variables = {};
 export type events_Query$data = {
+  readonly currentUser: {
+    readonly " $fragmentSpreads": FragmentRefs<"Layout_CurrentUserFragment">;
+  } | null;
   readonly " $fragmentSpreads": FragmentRefs<"EventsScene_EventsPaginationFragment">;
 };
 export type events_Query = {
@@ -20,7 +23,14 @@ export type events_Query = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v1 = [
   {
     "kind": "Literal",
     "name": "after",
@@ -32,13 +42,6 @@ var v0 = [
     "value": 10
   }
 ],
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
 v2 = {
   "alias": null,
   "args": null,
@@ -47,7 +50,7 @@ v2 = {
   "storageKey": null
 },
 v3 = [
-  (v1/*: any*/),
+  (v0/*: any*/),
   (v2/*: any*/)
 ],
 v4 = {
@@ -68,6 +71,22 @@ return {
     "name": "events_Query",
     "selections": [
       {
+        "alias": null,
+        "args": null,
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "currentUser",
+        "plural": false,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "Layout_CurrentUserFragment"
+          }
+        ],
+        "storageKey": null
+      },
+      {
         "args": null,
         "kind": "FragmentSpread",
         "name": "EventsScene_EventsPaginationFragment"
@@ -84,7 +103,19 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": null,
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "currentUser",
+        "plural": false,
+        "selections": [
+          (v0/*: any*/)
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
         "concreteType": "ScheduleConnection",
         "kind": "LinkedField",
         "name": "schedules",
@@ -106,7 +137,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v1/*: any*/),
+                  (v0/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -122,7 +153,7 @@ return {
                     "name": "event",
                     "plural": false,
                     "selections": [
-                      (v1/*: any*/),
+                      (v0/*: any*/),
                       (v2/*: any*/),
                       {
                         "alias": null,
@@ -241,7 +272,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "filters": null,
         "handle": "connection",
         "key": "EventsScene_query_schedules",
@@ -296,16 +327,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "af9f8abe4c835454d1750da51bf53478",
+    "cacheID": "3b5cb4aa4316a26ae2a5bc642b679f36",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query {\n  ...EventsScene_EventsPaginationFragment\n}\n\nfragment EventCardCompacts_ScheduleFragment on Schedule {\n  id\n  scheduledFor\n  event {\n    id\n    title\n    images\n    interests {\n      id\n      title\n    }\n    attendeePricePerUom {\n      cents\n      currency {\n        name\n      }\n    }\n    tags {\n      id\n      title\n    }\n    averageRating\n  }\n}\n\nfragment EventCardWide_ScheduleFragment on Schedule {\n  id\n  scheduledFor\n  event {\n    id\n    title\n    images\n    interests {\n      id\n      title\n    }\n    attendeePricePerUom {\n      cents\n      currency {\n        name\n      }\n    }\n    tags {\n      id\n      title\n    }\n    averageRating\n  }\n}\n\nfragment EventsScene_EventsPaginationFragment on Query {\n  schedules(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        ...EventCardCompacts_ScheduleFragment\n        ...EventCardWide_ScheduleFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...Sidebar_EventFiltersFragment\n  }\n}\n\nfragment Sidebar_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice {\n    cents\n  }\n  maxPrice {\n    cents\n  }\n}\n"
+    "text": "query events_Query {\n  currentUser {\n    ...Layout_CurrentUserFragment\n    id\n  }\n  ...EventsScene_EventsPaginationFragment\n}\n\nfragment EventCardCompacts_ScheduleFragment on Schedule {\n  id\n  scheduledFor\n  event {\n    id\n    title\n    images\n    interests {\n      id\n      title\n    }\n    attendeePricePerUom {\n      cents\n      currency {\n        name\n      }\n    }\n    tags {\n      id\n      title\n    }\n    averageRating\n  }\n}\n\nfragment EventCardWide_ScheduleFragment on Schedule {\n  id\n  scheduledFor\n  event {\n    id\n    title\n    images\n    interests {\n      id\n      title\n    }\n    attendeePricePerUom {\n      cents\n      currency {\n        name\n      }\n    }\n    tags {\n      id\n      title\n    }\n    averageRating\n  }\n}\n\nfragment EventsScene_EventsPaginationFragment on Query {\n  schedules(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        ...EventCardCompacts_ScheduleFragment\n        ...EventCardWide_ScheduleFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...Sidebar_EventFiltersFragment\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment Sidebar_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice {\n    cents\n  }\n  maxPrice {\n    cents\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e09a91b1f7b0befcd2f976358bdfef82";
+(node as any).hash = "e60363e58862f7cd802807f4fcd5dc18";
 
 export default node;

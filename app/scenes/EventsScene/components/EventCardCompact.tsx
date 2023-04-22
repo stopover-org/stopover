@@ -3,7 +3,6 @@ import { AspectRatio, Box, Card, CardOverflow, Grid, Stack } from "@mui/joy";
 import { graphql, useFragment, useMutation } from "react-relay";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import moment from "moment";
-import { useCookies } from "react-cookie";
 import Typography from "../../../components/v2/Typography";
 import Rating from "../../../components/v2/Rating/Rating";
 import Link from "../../../components/v2/Link";
@@ -20,7 +19,6 @@ interface Props {
 }
 
 const EventCardCompact = ({ scheduleReference }: Props) => {
-  const [_, setCookies] = useCookies();
   const schedule = useFragment(
     graphql`
       fragment EventCardCompacts_ScheduleFragment on Schedule {

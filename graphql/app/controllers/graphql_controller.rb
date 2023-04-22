@@ -3,6 +3,8 @@
 require 'jwt'
 
 class GraphqlController < ApplicationController
+  include ActionController::Cookies
+
   # If accessing from outside this domain, nullify the session
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
@@ -15,11 +17,12 @@ class GraphqlController < ApplicationController
     query = params[:query]
     operation_name = params[:operationName]
     context = {
-      current_user: @current_user || nil
+      current_user: @current_user || nil,
+      cookies: cookies
     }
-    response.headers['Authorization'] = "Bearer #{@current_user.access_token}" if @current_user
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     status_code = result&.dig('errors', 0, 'extensions', 'statusCode') || 200
+    cookies.encrypted[Stopover::AuthorizationSupport::COOKIE_KEY] = context[:current_user]&.access_token
 
     render json: result, status_code: status_code
   rescue StandardError => e
@@ -64,7 +67,7 @@ class GraphqlController < ApplicationController
   end
 
   def authorize!
-    user = Stopover::AuthorizationSupport.decode_user(headers: request.headers)
+    user = Stopover::AuthorizationSupport.decode_user(headers: request.headers, cookies: cookies)
     @current_user = user
   rescue StandardError => e
     raise e unless Rails.env.development?

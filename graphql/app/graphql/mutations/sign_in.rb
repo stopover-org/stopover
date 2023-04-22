@@ -29,6 +29,8 @@ module Mutations
       if args[:code]
         user.activate!(code: args[:code])
 
+        context[:current_user] = user.reload
+
         return { user: user, access_token: user.access_token }
       elsif args[:reset_code] || !user.confirmation_code
         user.send_confirmation_code!(primary: type)
