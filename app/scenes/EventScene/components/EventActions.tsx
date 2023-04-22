@@ -42,7 +42,9 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
   const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
   const parsedDate = React.useMemo(() => {
     const date = moment(router.query.date, dateFormat);
-    if (date.isValid()) return date;
+    if (availableDates.find((dt) => dt.isSame(date, "day"))) {
+      if (date.isValid()) return date;
+    }
     return closestDate;
   }, []);
 
@@ -52,8 +54,6 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
   const availableTimes = useTimeFromDate(availableDates, selectedDate);
   const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
 
-  console.log(availableTimes);
-
   return (
     selectedDate && (
       <>
@@ -61,9 +61,9 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
           <Box paddingRight="10px">
             <ButtonDatePicker
               onChange={(date) => {
-                setSelectedDate(date);
-
                 setSelectedTime(null);
+
+                setSelectedDate(date);
               }}
               variant="outlined"
               datePickerProps={{
@@ -75,11 +75,17 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
           </Box>
           <Box paddingRight="10px">
             <Select
-              onChange={(_, value) => setSelectedTime(value as string)}
+              onChange={(_, value) => {
+                if (!value) return;
+                setSelectedTime(value.split("-")[0]);
+              }}
               placeholder="Select time"
             >
               {availableTimes.map((time, index) => (
-                <Option key={index + time} value={time}>
+                <Option
+                  key={`${index}-${time}-${selectedDate?.toISOString()}`}
+                  value={`${time}-${selectedDate?.toISOString()}`}
+                >
                   {time}
                 </Option>
               ))}

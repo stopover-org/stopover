@@ -2,7 +2,7 @@ import { Moment } from "moment";
 import React from "react";
 import { timeFormat } from "../utils/dates";
 
-function useTimeFromDate(dates: Moment[], selectedDate?: Moment) {
+function useTimeFromDate(dates: Moment[], selectedDate?: Moment | null) {
   return React.useMemo(() => {
     if (!selectedDate) return [];
     const sameDates = dates.filter((dt) => dt.isSame(selectedDate, "day"));
