@@ -84,7 +84,7 @@ RSpec.describe Event, type: :model do
     end
 
     context 'should have recurring schedules' do
-      subject { EventSupport.schedule(event.reload) }
+      subject { Stopover::EventSupport.schedule(event.reload) }
 
       before(:each) do
         event.schedules.delete_all
@@ -213,7 +213,7 @@ RSpec.describe Event, type: :model do
 
             event.update_columns(recurring_days_with_time: ['Monday 11:30'])
 
-            subject { EventSupport.schedule(event.reload) }
+            subject { Stopover::EventSupport.schedule(event.reload) }
             expect(event.schedules.count).to eq(4)
           end
         end
@@ -225,7 +225,7 @@ RSpec.describe Event, type: :model do
 
             event.update_columns(recurring_days_with_time: ['Monday 11:30'])
 
-            subject { EventSupport.schedule(event.reload) }
+            subject { Stopover::EventSupport.schedule(event.reload) }
             expect(event.schedules.count).to eq(4)
           end
         end

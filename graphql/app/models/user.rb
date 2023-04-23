@@ -41,6 +41,7 @@ class User < ApplicationRecord
   # AASM STATES ================================================================
   aasm column: :status do
     state :inactive, initial: true
+    state :temporary
     state :active
     state :disabled
   end
@@ -48,10 +49,10 @@ class User < ApplicationRecord
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  validates :email, presence:   true, unless: :phone
-  validates :email, uniqueness: true, unless: :phone
-  validates :phone, presence:   true, unless: :email
-  validates :phone, uniqueness: true, unless: :email
+  validates :email, presence:   true, if: :should_have_email?
+  validates :email, uniqueness: true, if: :should_have_email?
+  validates :phone, presence:   true, if: :should_have_phone?
+  validates :phone, uniqueness: true, if: :should_have_phone?
 
   # CALLBACKS ================================================================
   #
@@ -60,6 +61,8 @@ class User < ApplicationRecord
   # DELEGATIONS ==============================================================
 
   def send_confirmation_code!(primary:)
+    return if temporary?
+
     raise 'You are trying to resend confirmation code too often' unless can_send_code?
 
     code = rand.to_s[2..6]
@@ -70,19 +73,21 @@ class User < ApplicationRecord
     save!
 
     if primary == 'email' && email
-      MailProvider.send_mail(from: ::Configuration.get_value(:NOTIFICATION_EMAIL).value,
-                             to: email,
-                             subject: 'Confirmation code',
-                             content: MailProvider.prepare_content(file: 'mailer/confirmation_code',
-                                                                   locals: { confirmation_code: confirmation_code }))
+      Stopover::MailProvider.send_mail(from: ::Configuration.get_value(:NOTIFICATION_EMAIL).value,
+                                       to: email,
+                                       subject: 'Confirmation code',
+                                       content: Stopover::MailProvider.prepare_content(file: 'mailer/confirmation_code',
+                                                                                       locals: { confirmation_code: confirmation_code }))
     elsif primary == 'phone' && phone
-      # SmsProvider.send_sms(from: ::Configuration.get_value(:NOTIFICATION_PHONE).value,
+      # Stopover::SmsProvider.send_sms(from: ::Configuration.get_value(:NOTIFICATION_PHONE).value,
       #                      to: phone,
       #                      message: "Your confirmation code: ##{confirmation_code}")
     end
   end
 
   def activate!(code:)
+    return if temporary?
+
     raise StandardError, 'Confirmation code is incorrect' if code != confirmation_code || confirmation_code.nil?
 
     self.confirmation_code = nil
@@ -102,6 +107,8 @@ class User < ApplicationRecord
   end
 
   def delay
+    return if temporary?
+
     actual_delay = ::Configuration.get_value(:SIGN_IN_DELAY).value.to_i - (Time.zone.now.to_i - (last_try&.to_i || 0))
     return actual_delay if actual_delay.positive?
     0
@@ -111,7 +118,7 @@ class User < ApplicationRecord
     self.session_password ||= SecureRandom.hex(50)
     save!
 
-    JWT.encode({ email: email, phone: phone, id: id }, session_password, AuthorizationSupport::JWT_ALGORITHM)
+    JWT.encode({ email: email, phone: phone, id: id }, session_password, Stopover::AuthorizationSupport::JWT_ALGORITHM)
   end
 
   private
@@ -121,5 +128,17 @@ class User < ApplicationRecord
 
     required_delay = ::Configuration.get_value(:SIGN_IN_DELAY)&.value.to_i
     required_delay <= Time.zone.now.to_i - last_try.to_i
+  end
+
+  def should_have_email?
+    return false if temporary?
+    return true unless phone
+    false
+  end
+
+  def should_have_phone?
+    return false if temporary?
+    return true unless email
+    false
   end
 end

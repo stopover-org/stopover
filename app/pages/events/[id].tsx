@@ -10,8 +10,11 @@ import EventScene from "../../scenes/EventScene";
 
 const Query = graphql`
   query Id_Query($id: ID!) {
+    currentUser {
+      ...Layout_CurrentUserFragment
+    }
     event(id: $id) {
-      ...EventScene_Event
+      ...EventScene_EventFragment
     }
   }
 `;
@@ -26,9 +29,9 @@ const Event = ({
 }: RelayProps<Props, Id_Query>) => {
   // const router = useRouter();
   // const { date } = router.query;
-  const { event } = usePreloadedQuery(Query, preloadedQuery);
+  const { event, currentUser } = usePreloadedQuery(Query, preloadedQuery);
   return (
-    <Layout>
+    <Layout currentUserFragment={currentUser}>
       <EventScene eventFragmentRef={event} />
     </Layout>
   );
@@ -48,11 +51,11 @@ export default withRelay(Event, Query, {
   }),
   // Server-side props can be accessed as the second argument
   // to this function.
-  createServerEnvironment: async () => {
+  createServerEnvironment: async ({ req }) => {
     const { createServerEnvironment } = await import(
       "../../lib/serverEnvironment"
     );
 
-    return createServerEnvironment();
+    return createServerEnvironment(req.headers.cookie);
   },
 });

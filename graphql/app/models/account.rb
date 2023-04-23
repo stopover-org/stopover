@@ -59,7 +59,7 @@ class Account < ApplicationRecord
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  validates :name, presence: true
+  validates :name, presence: true, if: :should_have_name?
   validates :id, uniqueness: { scope: :firm_id }
 
   # CALLBACKS ================================================================
@@ -69,7 +69,15 @@ class Account < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
+  def current_trip
+    trips.last
+  end
+
   private
+
+  def should_have_name?
+    !user.temporary?
+  end
 
   def set_user_info
     return unless user

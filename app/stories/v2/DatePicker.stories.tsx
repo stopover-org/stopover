@@ -3,7 +3,7 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 import DatePicker from "../../components/v2/DatePicker";
 import { theme } from "../../lib/theme";
 import Typography from "../../components/v2/Typography";
@@ -36,6 +36,17 @@ const Preview = () => {
               label="Enter some date"
               error="some error is here"
               hint="both of them is here"
+            />
+          </Grid>
+          <Grid xs={6}>
+            <DatePicker
+              label="Datepicker with available dates"
+              hint="Available dates case"
+              availableDates={[
+                moment(),
+                moment().subtract(-2, "d"),
+                moment().subtract(-4, "d"),
+              ]}
             />
           </Grid>
           <Grid xs={12}>

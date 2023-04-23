@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7874ca216ab5a5807089ae5cdb47e413>>
+ * @generated SignedSource<<07df6ef4d8c3e6f608d199f7f1789a42>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -20,6 +20,9 @@ export type Id_TripsQuery$variables = {
   filters: BookingsFilter;
 };
 export type Id_TripsQuery$data = {
+  readonly currentUser: {
+    readonly " $fragmentSpreads": FragmentRefs<"Layout_CurrentUserFragment">;
+  } | null;
   readonly " $fragmentSpreads": FragmentRefs<"BookingList_BookingsFragment" | "TripHeader_BookingsFragment">;
 };
 export type Id_TripsQuery = {
@@ -65,6 +68,22 @@ return {
         "args": (v1/*: any*/),
         "kind": "FragmentSpread",
         "name": "TripHeader_BookingsFragment"
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "currentUser",
+        "plural": false,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "Layout_CurrentUserFragment"
+          }
+        ],
+        "storageKey": null
       }
     ],
     "type": "Query",
@@ -141,20 +160,32 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "User",
+        "kind": "LinkedField",
+        "name": "currentUser",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/)
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "c81c02e7410e04c08487d02fbd7ee32b",
+    "cacheID": "1874d67d2234ee3fa251890e2a3a0b54",
     "id": null,
     "metadata": {},
     "name": "Id_TripsQuery",
     "operationKind": "query",
-    "text": "query Id_TripsQuery(\n  $filters: BookingsFilter!\n) {\n  ...BookingList_BookingsFragment_VTAHT\n  ...TripHeader_BookingsFragment_VTAHT\n}\n\nfragment BookingList_BookingsFragment_VTAHT on Query {\n  bookings(filters: $filters) {\n    id\n    bookedFor\n    ...Booking_BookingsFragment\n  }\n}\n\nfragment Booking_BookingsFragment on Booking {\n  bookedFor\n  id\n  event {\n    description\n    durationTime\n    images\n    title\n    id\n  }\n}\n\nfragment TripHeader_BookingsFragment_VTAHT on Query {\n  bookings(filters: $filters) {\n    bookedFor\n    event {\n      city\n      id\n    }\n    id\n  }\n}\n"
+    "text": "query Id_TripsQuery(\n  $filters: BookingsFilter!\n) {\n  ...BookingList_BookingsFragment_VTAHT\n  ...TripHeader_BookingsFragment_VTAHT\n  currentUser {\n    ...Layout_CurrentUserFragment\n    id\n  }\n}\n\nfragment BookingList_BookingsFragment_VTAHT on Query {\n  bookings(filters: $filters) {\n    id\n    bookedFor\n    ...Booking_BookingsFragment\n  }\n}\n\nfragment Booking_BookingsFragment on Booking {\n  bookedFor\n  id\n  event {\n    description\n    durationTime\n    images\n    title\n    id\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment TripHeader_BookingsFragment_VTAHT on Query {\n  bookings(filters: $filters) {\n    bookedFor\n    event {\n      city\n      id\n    }\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "14856de18d09621cbfbaf31715a897cf";
+(node as any).hash = "05386d01f1efefc0323b488be976e4e1";
 
 export default node;

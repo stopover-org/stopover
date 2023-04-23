@@ -4,7 +4,7 @@ import { Moment } from "moment/moment";
 import { FormControl, Grid } from "@mui/joy";
 import { ClickAwayListener } from "@mui/base";
 import DatePicker from "../DatePicker";
-import { DatePickerProps as OriginDatePickerProps } from "../DatePicker/DatePicker";
+import { DatePickerProps as JoyDatePickerProps } from "../DatePicker/DatePicker";
 import Input, { InputProps } from "../Input/Input";
 import { getDate } from "../../../lib/utils/dates";
 import PickersDay from "./PickersDay";
@@ -14,10 +14,11 @@ interface BaseDatePickerProps {
   startInputProps?: Partial<InputProps>;
   endInputProps?: Partial<InputProps>;
   value: [Moment | null, Moment | null];
+  availableDates?: Moment[];
 }
 
 export interface DatePickerProps
-  extends Omit<OriginDatePickerProps, keyof BaseDatePickerProps>,
+  extends Omit<JoyDatePickerProps, keyof BaseDatePickerProps>,
     BaseDatePickerProps {}
 
 const DateRangePicker = ({
@@ -25,6 +26,7 @@ const DateRangePicker = ({
   onClose,
   startInputProps = {},
   endInputProps = {},
+  availableDates,
   value,
   ...props
 }: DatePickerProps) => {
@@ -81,6 +83,11 @@ const DateRangePicker = ({
     [selectedDates]
   );
 
+  const disableable = React.useMemo(
+    () => typeof availableDates !== "undefined",
+    [availableDates]
+  );
+
   return (
     <ClickAwayListener
       onClickAway={() => {
@@ -115,15 +122,28 @@ const DateRangePicker = ({
               slots={{
                 // eslint-disable-next-line react/no-unstable-nested-components
                 day: (dayProps: PickersDayProps<Moment>) => (
-                  <PickersDay {...dayProps} selectedDays={selectedDates} />
+                  <PickersDay
+                    {...dayProps}
+                    disabled={
+                      disableable
+                        ? !availableDates?.find((d) =>
+                            d.isSame(dayProps.day, "day")
+                          )
+                        : false
+                    }
+                    selectedDays={selectedDates}
+                  />
                 ),
                 field: () => null,
                 textField: () => null,
+                ...props.slots,
               }}
               slotProps={{
                 popper: {
                   anchorEl: formControlRef.current,
+                  ...props.slotProps?.popper,
                 },
+                ...props.slotProps,
               }}
             />
           </FormControl>

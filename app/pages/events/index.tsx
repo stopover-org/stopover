@@ -9,16 +9,19 @@ import EventsScene from "../../scenes/EventsScene";
 
 const Query = graphql`
   query events_Query {
+    currentUser {
+      ...Layout_CurrentUserFragment
+    }
     ...EventsScene_EventsPaginationFragment
   }
 `;
 
 const Home = ({ preloadedQuery }: RelayProps<{}, events_Query>) => {
-  const query = usePreloadedQuery(Query, preloadedQuery);
+  const data = usePreloadedQuery(Query, preloadedQuery);
 
   return (
-    <Layout>
-      <EventsScene eventsFragmentRef={query} />
+    <Layout currentUserFragment={data.currentUser}>
+      <EventsScene eventsFragmentRef={data} />
     </Layout>
   );
 };
@@ -34,11 +37,11 @@ export default withRelay(Home, Query, {
   serverSideProps: async () => ({}),
   // Server-side props can be accessed as the second argument
   // to this function.
-  createServerEnvironment: async () => {
+  createServerEnvironment: async ({ req }) => {
     const { createServerEnvironment } = await import(
       "../../lib/serverEnvironment"
     );
 
-    return createServerEnvironment();
+    return createServerEnvironment(req.headers.cookie);
   },
 });

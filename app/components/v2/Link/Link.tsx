@@ -9,6 +9,7 @@ interface BaseLinkProps {
   href: string;
   disabled?: boolean;
   primary?: boolean;
+  underline?: boolean;
 }
 
 export interface LinkProps
@@ -16,13 +17,20 @@ export interface LinkProps
     BaseLinkProps {}
 
 const TypographyLink = styled(Typography)(() => ({
-  textDecoration: "underline",
   display: "inline-block",
 }));
 
 const Link = React.forwardRef(
   (
-    { children, href, primary, color, ...props }: LinkProps,
+    {
+      children,
+      href,
+      primary,
+      color,
+      underline = true,
+      sx,
+      ...props
+    }: LinkProps,
     ref: React.ForwardedRef<HTMLParagraphElement>
   ) => (
     <NextLink passHref href={href}>
@@ -31,6 +39,10 @@ const Link = React.forwardRef(
         ref={ref}
         color={primary ? "primary" : color}
         level="body3"
+        sx={{
+          textDecoration: underline ? "underline" : "unset",
+          ...sx,
+        }}
       >
         <a href={href}>{children}</a>
       </TypographyLink>

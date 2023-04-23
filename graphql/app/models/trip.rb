@@ -24,7 +24,8 @@
 #
 class Trip < ApplicationRecord
   # MODULES ===============================================================
-  #
+  include AASM
+
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
@@ -38,7 +39,10 @@ class Trip < ApplicationRecord
   belongs_to :account
 
   # AASM STATES ================================================================
-  #
+  aasm :status do
+    state :draft, initial: true
+    state :active
+  end
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================

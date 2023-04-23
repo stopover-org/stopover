@@ -7,7 +7,7 @@ export const getAdminBaseUrl = () =>
 export async function fetchGraphQLRaw(
   query: string,
   variables: any = {},
-  cookie?: string
+  cookie?: any
 ) {
   const headers: HeadersInit = {
     "Content-Type": "application/json",

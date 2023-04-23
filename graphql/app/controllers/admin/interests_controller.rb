@@ -15,7 +15,7 @@ module Admin
 
     def update
       interest = Interest.find(params[:id])
-      tmp_file = FilesSupport.base64_to_file(params[:images][0][:src]) if params[:images][0]
+      tmp_file = Stopover::FilesSupport.base64_to_file(params[:images][0][:src]) if params[:images][0]
       interest.preview.attach(tmp_file) if tmp_file
       interest.preview.purge unless tmp_file
       interest.update!(**update_interest_params)

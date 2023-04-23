@@ -1,5 +1,11 @@
 import moment, { Moment } from "moment";
 
+export const dateFormat = "DD/MM/YYYY";
+export const dateTimeFormat = "DD/MM/YYYY HH:mm";
+export const timeFormat = "HH:mm";
+export const dayMonthFormat = "D MMMM";
+export const dayMonthTimeFormat = "D MMMM HH:mm";
+
 export const isDifferentDayMonth = (firstDate: Moment, secondDate: Moment) =>
   !firstDate.startOf("day").isSame(secondDate.startOf("day"));
 
@@ -49,16 +55,16 @@ export const calculateDate = (
 };
 
 export const getTime = (arg: Moment | null) =>
-  arg ? arg.format("HH:mm") : undefined;
+  arg ? arg.format(timeFormat) : undefined;
 
 export const getDayMonth = (arg: Moment | null) =>
-  arg ? arg.format("D MMMM") : undefined;
+  arg ? arg.format(dayMonthFormat) : undefined;
 
 export const getDate = (arg: Moment | null) =>
-  arg ? arg.format("DD/MM/YYYY") : undefined;
+  arg ? arg.format(dateFormat) : undefined;
 
 export const getDateTime = (arg: Moment | null) =>
-  arg ? arg.format("DD/MM/YYYY HH:mm") : undefined;
+  arg ? arg.format(dateTimeFormat) : undefined;
 
 export const getHumanDateTime = (arg: Moment | null) =>
-  arg ? arg.format("D MMMM HH:mm") : undefined;
+  arg ? arg.format(dayMonthTimeFormat) : undefined;
