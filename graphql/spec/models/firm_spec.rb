@@ -4,23 +4,26 @@
 #
 # Table name: firms
 #
-#  id             :bigint           not null, primary key
-#  city           :string
-#  contact_person :string
-#  contacts       :text
-#  country        :string
-#  description    :text
-#  full_address   :string
-#  house_number   :string
-#  latitude       :float
-#  longitude      :float
-#  primary_email  :string
-#  primary_phone  :string
-#  region         :string
-#  status         :string           default("pending")
-#  street         :string
-#  title          :string           not null
-#  website        :string
+#  id                :bigint           not null, primary key
+#  business_type     :string           default(NULL), not null
+#  city              :string
+#  contact_person    :string
+#  contacts          :text
+#  country           :string
+#  description       :text
+#  full_address      :string
+#  house_number      :string
+#  latitude          :float
+#  longitude         :float
+#  postal_code       :string
+#  primary_email     :string
+#  primary_phone     :string
+#  region            :string
+#  status            :string           default("pending")
+#  street            :string
+#  title             :string           not null
+#  website           :string
+#  stripe_account_id :string
 #
 require 'rails_helper'
 

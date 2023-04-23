@@ -7,12 +7,15 @@
 #  id            :bigint           not null, primary key
 #  city          :string
 #  country       :string
+#  date_of_birth :datetime
 #  full_address  :string
 #  house_number  :string
+#  last_name     :string
 #  latitude      :float
 #  longitude     :float
 #  name          :string
 #  phones        :string           default([]), is an Array
+#  postal_code   :string
 #  primary_phone :string
 #  region        :string
 #  status        :string           default("initial"), not null
