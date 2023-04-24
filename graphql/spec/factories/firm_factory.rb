@@ -5,7 +5,7 @@
 # Table name: firms
 #
 #  id                :bigint           not null, primary key
-#  business_type     :string           default(NULL), not null
+#  business_type     :string           default("individual"), not null
 #  city              :string
 #  contact_person    :string
 #  contacts          :text

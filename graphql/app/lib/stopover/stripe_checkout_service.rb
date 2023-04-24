@@ -6,7 +6,6 @@ module Stopover
       event_stripe_integration = booking.event.stripe_integrations.active.find_by(price_type: payment_type)
 
       payment = Payment.create!(booking: booking, payment_type: payment_type, balance: booking.event.firm.balance)
-
       payment.stripe_integrations << event_stripe_integration
       attendee_options = {}
 

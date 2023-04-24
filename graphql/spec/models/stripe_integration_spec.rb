@@ -27,7 +27,7 @@ RSpec.describe StripeIntegration, type: :model do
   describe 'stripe integration' do
     let!(:event) { create(:event) }
     it 'created' do
-      StripeIntegrator.sync(event)
+      Stopover::StripeIntegrator.sync(event)
 
       expect(StripeIntegration.count).to eq(3)
     end
