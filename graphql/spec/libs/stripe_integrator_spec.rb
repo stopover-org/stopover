@@ -18,7 +18,7 @@
 #
 require 'rails_helper'
 
-RSpec.describe StripeIntegrator, type: :model do
+RSpec.describe Stopover::StripeIntegrator, type: :model do
   describe 'stripe integrator' do
     let!(:event) { create(:event, organizer_price_per_uom: Money.new(20), prepaid_amount: Money.new(5)) }
     it 'is created and product_id and price_id eq Stripe ids' do
@@ -64,7 +64,7 @@ RSpec.describe StripeIntegrator, type: :model do
                                                        } })
                                                .and_return({ id: 'price_id3' })
 
-      StripeIntegrator.sync(event)
+      Stopover::StripeIntegrator.sync(event)
 
       event.stripe_integrations.each do |stripe_integration|
         expect(stripe_integration.product_id).to eq('product_id')
@@ -84,7 +84,7 @@ RSpec.describe StripeIntegrator, type: :model do
           expect(Stripe::Price).to receive(:update).with(stripe_integration.price_id, { active: false }).and_return(price: { id: stripe_integration.price_id }).exactly(1).time
         end
         expect(Stripe::Product).to receive(:update).with(event.stripe_integrations.first.product_id, { active: false }).and_return(product: { id: 'product_id' }).exactly(1).time
-        StripeIntegrator.delete(event)
+        Stopover::StripeIntegrator.delete(event)
         event.reload.stripe_integrations.each do |stripe_integration|
           expect(stripe_integration.status).to eq('deleted')
         end
@@ -93,10 +93,10 @@ RSpec.describe StripeIntegrator, type: :model do
       it 'model has no stripe integration, method rescued' do
         ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
         expect(event_no_stripe.stripe_integrations).to match_array([])
-        expect(StripeIntegrator.delete(event_no_stripe)).to eq({
-                                                                 product_id: nil,
+        expect(Stopover::StripeIntegrator.delete(event_no_stripe)).to eq({
+                                                                           product_id: nil,
                                                                  price_ids: nil
-                                                               })
+                                                                         })
       end
     end
 
@@ -108,11 +108,11 @@ RSpec.describe StripeIntegrator, type: :model do
           expect(Stripe::Price).to receive(:retrieve).with(id: stripe_integration.price_id).and_return('price').exactly(1).time
         end
         expect(Stripe::Product).to receive(:retrieve).with(id: event.stripe_integrations.first.product_id).and_return('product').exactly(1).time
-        expect(StripeIntegrator.retrieve(event)).to eq({ product: 'product', prices: {
-                                                         full_amount: 'price',
+        expect(Stopover::StripeIntegrator.retrieve(event)).to eq({ product: 'product', prices: {
+                                                                   full_amount: 'price',
                                                          prepaid_amount: 'price',
                                                          remaining_amount: 'price'
-                                                       } })
+                                                                 } })
       end
     end
 
@@ -161,7 +161,7 @@ RSpec.describe StripeIntegrator, type: :model do
                                                          }
                                                        }).and_return(price: { id: 'price_id' }).exactly(1).time
 
-        StripeIntegrator.sync(event)
+        Stopover::StripeIntegrator.sync(event)
       end
     end
   end
