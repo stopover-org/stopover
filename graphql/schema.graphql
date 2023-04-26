@@ -1085,4 +1085,22 @@ type User implements Node {
   email: String
   id: ID!
   phone: String
+  status: UserStatusEnum!
+}
+
+enum UserStatusEnum {
+  """
+  active user
+  """
+  active
+
+  """
+  inactive user
+  """
+  inactive
+
+  """
+  user was created for booking purposes
+  """
+  temporary
 }
