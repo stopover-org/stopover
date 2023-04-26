@@ -1,13 +1,16 @@
-import React, { useMemo } from "react";
-import { graphql, useMutation } from "react-relay";
+import { useMemo } from "react";
+import { graphql } from "react-relay";
 import * as Yup from "yup";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
+import { UseFormReturn } from "react-hook-form/dist/types";
+import { UseMutationConfig } from "react-relay/relay-hooks/useMutation";
+import { Disposable } from "relay-runtime";
 import {
   SignInInput,
   useSignInForm_AuthLoginMutation,
 } from "./__generated__/useSignInForm_AuthLoginMutation.graphql";
+import useMutationForm from "../../lib/hooks/useMutationForm";
 
 interface SignInFields {
   username: string;
@@ -32,29 +35,17 @@ const validationSchema = Yup.object().shape({
   type: Yup.mixed().oneOf(["email", "phone"]).required(),
 });
 
-export const useSignInForm = (onNextStep: (delay: number) => void) => {
+export function useSignInForm(onNextStep: (delay: number) => void) {
   const router = useRouter();
-  const [authLogin] = useMutation<useSignInForm_AuthLoginMutation>(graphql`
-    mutation useSignInForm_AuthLoginMutation($input: SignInInput!) {
-      signIn(input: $input) {
-        user {
-          id
-          email
-          phone
-        }
-        accessToken
-        delay
-        reason
-      }
-    }
-  `);
 
-  const form = useForm<SignInFields & { general?: string }>({
-    resolver: yupResolver(validationSchema),
-    defaultValues: useDefaultValues(),
-  });
-
-  function onSubmit(resetCode: boolean = false, step: number = 0) {
+  function onSubmit(
+    authLogin: (
+      config: UseMutationConfig<useSignInForm_AuthLoginMutation>
+    ) => Disposable,
+    form: UseFormReturn<SignInFields>,
+    resetCode: boolean = false,
+    step: number = 0
+  ) {
     return function submit({ code, ...values }: SignInFields) {
       const optional: Partial<SignInInput> = { resetCode };
       if (step === 1) optional.code = code;
@@ -83,28 +74,28 @@ export const useSignInForm = (onNextStep: (delay: number) => void) => {
     };
   }
 
-  return React.useMemo(
-    () => ({
-      ...form,
-      handleSubmit: (resendCode: boolean = false, step: number = 0) =>
-        form.handleSubmit(onSubmit(resendCode, step)),
-      useFormField(name: keyof SignInFields) {
-        const field = form.register(name);
-
-        return React.useMemo(
-          () => ({
-            ...field,
-            ref: field.ref,
-            value: form.watch(name),
-            onChange: (value: string) => {
-              form.setValue(name, value);
-            },
-            error: form.formState.errors[name]?.message,
-          }),
-          [field]
-        );
-      },
+  return useMutationForm<SignInFields, useSignInForm_AuthLoginMutation>(
+    graphql`
+      mutation useSignInForm_AuthLoginMutation($input: SignInInput!) {
+        signIn(input: $input) {
+          user {
+            id
+            email
+            phone
+          }
+          accessToken
+          delay
+          reason
+        }
+      }
+    `,
+    (input: SignInFields) => ({
+      input,
     }),
-    []
+    {
+      resolver: yupResolver(validationSchema),
+      defaultValues: useDefaultValues(),
+      onSubmit,
+    }
   );
-};
+}

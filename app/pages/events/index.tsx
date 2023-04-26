@@ -20,7 +20,7 @@ const Home = ({ preloadedQuery }: RelayProps<{}, events_Query>) => {
   const data = usePreloadedQuery(Query, preloadedQuery);
 
   return (
-    <Layout currentUserFragment={data.currentUser}>
+    <Layout currentUserFragment={data.currentUser!}>
       <EventsScene eventsFragmentRef={data} />
     </Layout>
   );
@@ -42,6 +42,6 @@ export default withRelay(Home, Query, {
       "../../lib/serverEnvironment"
     );
 
-    return createServerEnvironment(req.headers.cookie);
+    return createServerEnvironment(req!.headers.cookie);
   },
 });

@@ -31,8 +31,8 @@ const Event = ({
   // const { date } = router.query;
   const { event, currentUser } = usePreloadedQuery(Query, preloadedQuery);
   return (
-    <Layout currentUserFragment={currentUser}>
-      <EventScene eventFragmentRef={event} />
+    <Layout currentUserFragment={currentUser!}>
+      <EventScene eventFragmentRef={event!} />
     </Layout>
   );
 };
@@ -56,6 +56,6 @@ export default withRelay(Event, Query, {
       "../../lib/serverEnvironment"
     );
 
-    return createServerEnvironment(req.headers.cookie);
+    return createServerEnvironment(req!.headers.cookie);
   },
 });

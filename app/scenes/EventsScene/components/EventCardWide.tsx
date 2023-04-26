@@ -11,7 +11,6 @@ import Button from "../../../components/v2/Button";
 import Tag from "../../../components/v2/Tag";
 import { EventCardCompacts_ScheduleFragment$key } from "./__generated__/EventCardCompacts_ScheduleFragment.graphql";
 import { getDate, getHumanDateTime } from "../../../lib/utils/dates";
-import { __AUTH_COOKIE_NAME__ } from "../../Auth/useSignInForm";
 import { EventCardCompact_BookEventMutation } from "./__generated__/EventCardCompact_BookEventMutation.graphql";
 
 interface Props {
@@ -71,11 +70,6 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
           bookedFor,
           attendeesCount: 1,
         },
-      },
-      onCompleted(result) {
-        if (result.bookEvent?.accessToken) {
-          setCookies(__AUTH_COOKIE_NAME__, result.bookEvent?.accessToken!);
-        }
       },
     });
   };

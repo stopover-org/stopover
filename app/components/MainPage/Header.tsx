@@ -20,6 +20,7 @@ const Header = ({ currentUserFragment }: HeaderProps) => {
     graphql`
       fragment Header_CurrentUserFragment on User {
         id
+        status
       }
     `,
     currentUserFragment
@@ -61,19 +62,20 @@ const Header = ({ currentUserFragment }: HeaderProps) => {
               My Trips
             </Link>
           )}
-          {!currentUser && (
-            <Link
-              href="/auth/sign_in"
-              textAlign="right"
-              level="body1"
-              fontSize="lg"
-              lineHeight="75px"
-              paddingRight="10px"
-            >
-              Log In
-            </Link>
-          )}
-          {currentUser && (
+          {(!currentUser || currentUser?.status === "temporary") &&
+            currentUser && (
+              <Link
+                href="/auth/sign_in"
+                textAlign="right"
+                level="body1"
+                fontSize="lg"
+                lineHeight="75px"
+                paddingRight="10px"
+              >
+                Log In
+              </Link>
+            )}
+          {currentUser && currentUser?.status !== "temporary" && (
             <>
               <Link
                 href="?#register-firm"
