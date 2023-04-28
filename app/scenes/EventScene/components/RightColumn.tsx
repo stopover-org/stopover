@@ -29,7 +29,7 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
         </Typography>
       </Box>
       <Box>
-        <Scrollbars style={{ width: "100%", height: "600px" }}>
+        <Scrollbars style={{ width: "100%", height: "300px" }}>
           <Typography textAlign="justify">{event.description}</Typography>
         </Scrollbars>
       </Box>

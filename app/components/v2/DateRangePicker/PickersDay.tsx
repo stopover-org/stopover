@@ -1,5 +1,5 @@
 import { Moment } from "moment";
-import * as React from "react";
+import React from "react";
 import {
   PickersDay as JoyPickersDay,
   PickersDayProps as JoyPickersDayProps,

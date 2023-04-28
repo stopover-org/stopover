@@ -7,7 +7,7 @@ import { Moment } from "moment";
 import {
   PickersDay as JoyPickersDay,
   PickersDayProps as JoyPickersDayProps,
-} from "@mui/x-date-pickers/PickersDay/PickersDay";
+} from "@mui/x-date-pickers/PickersDay";
 
 interface BaseDateCalendarProps {
   availableDates?: Moment[];

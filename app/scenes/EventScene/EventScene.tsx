@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
-import { Breadcrumbs2 } from "./components/Breadcrumbs";
+import Breadcrumbs from "./components/Breadcrumbs";
 import { EventScene_EventFragment$key } from "./__generated__/EventScene_EventFragment.graphql";
 import EventTitle from "./components/EventTitle";
 import EventActions from "./components/EventActions";
@@ -28,7 +28,7 @@ const EventScene = ({ eventFragmentRef }: EventScheneProps) => {
   return (
     <Grid container spacing={2} padding={2}>
       <Grid xs={12}>
-        <Breadcrumbs2 eventFragmentRef={event} />
+        <Breadcrumbs eventFragmentRef={event} />
       </Grid>
       <Grid xs={9}>
         <EventTitle eventFragmentRef={event} />
