@@ -932,6 +932,7 @@ type Trip implements Node {
   cities: [String!]!
   endDate: DateTime!
   id: ID!
+  images: [String!]
   startDate: DateTime!
   status: String!
 }

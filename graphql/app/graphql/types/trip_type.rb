@@ -8,6 +8,15 @@ module Types
     field :cities, [String], null: false
     field :status, String, null: false
     field :attendees_count, Integer, null: false
+    field :images, [String]
+
+    def images
+      object.bookings.map do |booking|
+        booking.event.images.map do |img|
+          Rails.application.routes.url_helpers.rails_blob_url(img)
+        end
+      end.flatten.uniq
+    end
 
     def attendees_count
       object.bookings.map { |b| b.attendees.count }.max
