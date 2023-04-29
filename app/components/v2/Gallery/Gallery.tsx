@@ -46,7 +46,7 @@ const Gallery = ({
 
   const clickHandler = React.useCallback(() => {
     setIsOpened(!isOpened);
-  }, [opened, onClose, onOpen]);
+  }, [isOpened, setIsOpened, opened, onClose, onOpen]);
 
   const height = React.useMemo(
     () => (isOpened ? maxHeight : minHeight),

@@ -45,7 +45,7 @@ function useMutationForm<
     }
     return function submit(values: FieldsType) {
       mutation({
-        variables: values,
+        variables: variables(values),
         onCompleted,
       });
     };

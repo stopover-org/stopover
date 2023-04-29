@@ -1,25 +1,23 @@
 import React from "react";
 import { Box, Grid, Option } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
-import moment, { Moment } from "moment";
-import { useRouter } from "next/router";
 import { BookEvent_EventFragment$key } from "./__generated__/BookEvent_EventFragment.graphql";
 import DateCalendar from "../../../components/v2/DateCalendar/DateCalendar";
-import useTimeFromDate from "../../../lib/hooks/useTimeFromDate";
-import useUniqueMomentDates from "../../../lib/hooks/useUniqueMomentDates";
-import useClosestDate from "../../../lib/hooks/useClosestDate";
-import { dateFormat } from "../../../lib/utils/dates";
+import { dateFormat, setTime, timeFormat } from "../../../lib/utils/dates";
 import Input from "../../../components/v2/Input";
 import Select from "../../../components/v2/Select";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import Typography from "../../../components/v2/Typography";
+import Button from "../../../components/v2/Button";
+import useFormContext from "../../../lib/hooks/useFormContext";
+import useUniqueMomentDates from "../../../lib/hooks/useUniqueMomentDates";
+import useTimeFromDate from "../../../lib/hooks/useTimeFromDate";
 
 interface BookEventProps {
   eventFragmentRef: BookEvent_EventFragment$key;
 }
 
 const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
-  const router = useRouter();
   const event = useFragment(
     graphql`
       fragment BookEvent_EventFragment on Event {
@@ -35,37 +33,36 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
     `,
     eventFragmentRef
   );
-  const closestDate = useClosestDate(event.availableDates as Date[]);
+  const { useFormField } = useFormContext();
+  const dateField = useFormField("date");
+  const attendeesCountField = useFormField("attendeesCount");
   const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
-  const parsedDate = React.useMemo(() => {
-    const date = moment(router.query.date, dateFormat);
-    if (availableDates.find((dt) => dt.isSame(date, "day"))) {
-      if (date.isValid()) return date;
-    }
-    return closestDate;
-  }, []);
-
-  const [selectedDate, setSelectedDate] = React.useState<Moment | null>(
-    parsedDate
+  const availableTimes = useTimeFromDate(availableDates, dateField.value);
+  const isValidTime = availableTimes.includes(
+    dateField.value.format(timeFormat)
   );
-  const availableTimes = useTimeFromDate(availableDates, selectedDate);
-  const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
-  const [attendeesCount, setAttendeesCount] = React.useState("1");
 
   return (
     <Grid container>
       <Grid xs={6}>
         <DateCalendar
           availableDates={availableDates}
-          value={selectedDate}
-          onChange={setSelectedDate}
+          value={dateField.value}
+          disablePast
+          sx={{
+            maxWidth: "100%",
+          }}
+          onChange={(date) => {
+            if (!date) return;
+            dateField.onChange(date.startOf("day"));
+          }}
         />
       </Grid>
       <Grid xs={6}>
         <Box paddingBottom="10px">
           <Input
             label="Date of Event"
-            value={selectedDate?.format(dateFormat)}
+            value={dateField.value?.format(dateFormat)}
             disabled
           />
         </Box>
@@ -74,14 +71,18 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
             label="Choose Time"
             onChange={(_, value) => {
               if (!value) return;
-              setSelectedTime((value as string).split("-")[0]);
+              const time = (value as string).split("-")[0];
+              dateField.onChange(setTime(dateField.value, time));
             }}
+            value={`${dateField.value.format(
+              timeFormat
+            )}-${dateField.value?.toISOString()}`}
             placeholder="Select time"
           >
             {availableTimes.map((time, index) => (
               <Option
-                key={`${index}-${time}-${selectedDate?.toISOString()}`}
-                value={`${time}-${selectedDate?.toISOString()}`}
+                key={`${index}-${time}-${dateField.value?.toISOString()}`}
+                value={`${time}-${dateField.value?.toISOString()}`}
               >
                 {time}
               </Option>
@@ -92,21 +93,25 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
           <Input
             label="Attendees Count"
             type="number"
-            value={attendeesCount}
-            onChange={setAttendeesCount}
+            value={attendeesCountField.value}
+            onChange={attendeesCountField.onChange}
           />
         </Box>
-        <Box>
+        <Box paddingBottom="10px">
           <Typography textAlign="end" level="h3">
             {getCurrencyFormat(
-              parseInt(attendeesCount, 10) *
+              parseInt(attendeesCountField.value, 10) *
                 (event.attendeePricePerUom?.cents || 0),
               event.attendeePricePerUom?.currency?.name
             )}
           </Typography>
         </Box>
+        <Box textAlign="end">
+          <Button disabled={!dateField.value.isValid() || !isValidTime}>
+            Book Event
+          </Button>
+        </Box>
       </Grid>
-      <Grid xs={12} />
     </Grid>
   );
 };

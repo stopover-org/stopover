@@ -1,37 +1,48 @@
-import { graphql, useFragment, useMutation } from "react-relay";
+import { graphql, useFragment } from "react-relay";
 import React from "react";
 import * as Yup from "yup";
-import { useForm } from "react-hook-form";
+import moment, { Moment } from "moment";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Moment } from "moment";
+import { useRouter } from "next/router";
 import { useBookEventForm_EventFragment$key } from "./__generated__/useBookEventForm_EventFragment.graphql";
-import { useBookEventForm_BookEventMutation } from "./__generated__/useBookEventForm_BookEventMutation.graphql";
-import { setTime } from "../../lib/utils/dates";
+import useMutationForm from "../../lib/hooks/useMutationForm";
+import useClosestDate from "../../lib/hooks/useClosestDate";
+import useUniqueMomentDates from "../../lib/hooks/useUniqueMomentDates";
+import { dateFormat } from "../../lib/utils/dates";
 
 interface BookEventFields {
-  id: string;
-  date: Moment | null;
-  time: string | null;
+  eventId: string;
+  date: Moment | null | undefined;
   attendeesCount: number;
 }
 
 function useDefaultValues(
   eventFragmentRef: useBookEventForm_EventFragment$key
 ): BookEventFields {
+  const router = useRouter();
   const event = useFragment(
     graphql`
       fragment useBookEventForm_EventFragment on Event {
         id
+        availableDates
       }
     `,
     eventFragmentRef
   );
+  const closestDate = useClosestDate(event.availableDates as Date[]);
+  const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
+  const parsedDate = React.useMemo(() => {
+    const date = moment(router.query.date, dateFormat);
+    if (availableDates.find((dt) => dt.isSame(date, "day"))) {
+      if (date.isValid()) return date.startOf("day");
+    }
+    return closestDate?.startOf("day");
+  }, []);
 
   return React.useMemo(
     () => ({
-      id: event.id,
-      date: null,
-      time: null,
+      eventId: event.id,
+      date: parsedDate,
       attendeesCount: 1,
     }),
     [event]
@@ -39,41 +50,36 @@ function useDefaultValues(
 }
 
 const validationSchema = Yup.object().shape({
-  id: Yup.string().required(),
+  eventId: Yup.string().required(),
   date: Yup.date().required(),
-  time: Yup.string().required(),
   attendeesCount: Yup.number().required(),
 });
 
 export function useBookEventForm(
   eventFragmentRef: useBookEventForm_EventFragment$key
 ) {
-  const [bookEvent] = useMutation<useBookEventForm_BookEventMutation>(graphql`
-    mutation useBookEventForm_BookEventMutation($input: BookEventInput!) {
-      bookEvent(input: $input) {
-        booking {
-          id
+  return useMutationForm(
+    graphql`
+      mutation useBookEventForm_BookEventMutation($input: BookEventInput!) {
+        bookEvent(input: $input) {
+          booking {
+            id
+          }
         }
       }
+    `,
+    ({ date, ...values }) => ({
+      input: {
+        bookedFor: date,
+        ...values,
+      },
+    }),
+    {
+      defaultValues: useDefaultValues(eventFragmentRef),
+      resolver: yupResolver(validationSchema),
+      onCompleted(result) {
+        console.log(result);
+      },
     }
-  `);
-
-  const form = useForm<BookEventFields>({
-    resolver: yupResolver(validationSchema),
-    defaultValues: useDefaultValues(eventFragmentRef),
-  });
-
-  function onSubmit() {
-    return function submit({ date, time, id, ...values }: BookEventFields) {
-      bookEvent({
-        variables: {
-          input: {
-            ...values,
-            eventId: id,
-            bookedFor: setTime(date!, time!),
-          },
-        },
-      });
-    };
-  }
+  );
 }
