@@ -4,29 +4,32 @@ import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/v1/Loading";
-import { events_Query } from "./__generated__/events_Query.graphql";
-import EventsScene from "../../scenes/EventsScene";
+import { trips_Query } from "./__generated__/trips_Query.graphql";
+import TripsScene from "../../scenes/TripsScene";
 
 const Query = graphql`
-  query events_Query {
+  query trips_Query {
     currentUser {
       ...Layout_CurrentUserFragment
+      account {
+        ...TripsScene_TripsFragment
+      }
     }
-    ...EventsScene_EventsPaginationFragment
   }
 `;
 
-const Events = ({ preloadedQuery }: RelayProps<{}, events_Query>) => {
+const Trips = ({ preloadedQuery }: RelayProps<{}, trips_Query>) => {
   const data = usePreloadedQuery(Query, preloadedQuery);
 
   return (
     <Layout currentUserFragment={data.currentUser!}>
-      <EventsScene eventsFragmentRef={data} />
+      {/* <EventsScene eventsFragmentRef={data} /> */}
+      <TripsScene accountFragmentRef={data.currentUser?.account} />
     </Layout>
   );
 };
 
-export default withRelay(Events, Query, {
+export default withRelay(Trips, Query, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: <Loading />,

@@ -18,6 +18,7 @@ module Types
     field :verified_at, String
     field :interests, [Types::InterestType]
     field :firm, Types::FirmType
+    field :trips, [Types::TripType], null: false
 
     def authorized?(object, context)
       super && context[:current_user]&.account == object

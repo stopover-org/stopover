@@ -53,12 +53,12 @@ class Trip < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
-  def min_date
-    bookings.order(booked_for: :asc).first.booked_for
+  def start_date
+    bookings.includes(:schedule).order('schedules.scheduled_for ASC').last.schedule.scheduled_for
   end
 
-  def max_date
-    bookings.order(booked_for: :desc).first.booked_for
+  def end_date
+    bookings.includes(:schedule).order('schedules.scheduled_for DESC').last.schedule.scheduled_for
   end
 
   def cities

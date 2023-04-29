@@ -13,6 +13,7 @@ type Account implements Node {
   region: String
   status: String!
   street: String
+  trips: [Trip!]!
   verifiedAt: String
 }
 
@@ -926,11 +927,13 @@ type Tag implements Node {
 }
 
 type Trip implements Node {
-  bookings: [Booking!]
-  cities: [String!]
+  attendeesCount: Int!
+  bookings: [Booking!]!
+  cities: [String!]!
+  endDate: DateTime!
   id: ID!
-  maxDate: DateTime
-  minDate: DateTime
+  startDate: DateTime!
+  status: String!
 }
 
 input TripsFilter {
