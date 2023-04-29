@@ -60,6 +60,10 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
           event {
             id
           }
+          schedule {
+            ...EventCardCompacts_ScheduleFragment
+            ...EventCardWide_ScheduleFragment
+          }
         }
       }
     }
