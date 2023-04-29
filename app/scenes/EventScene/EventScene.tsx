@@ -29,7 +29,6 @@ const EventScene = ({ eventFragmentRef }: EventScheneProps) => {
     eventFragmentRef
   );
   const form = useBookEventForm(event);
-  console.log(form);
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit()}>

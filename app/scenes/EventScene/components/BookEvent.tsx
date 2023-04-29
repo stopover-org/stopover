@@ -12,6 +12,7 @@ import Button from "../../../components/v2/Button";
 import useFormContext from "../../../lib/hooks/useFormContext";
 import useUniqueMomentDates from "../../../lib/hooks/useUniqueMomentDates";
 import useTimeFromDate from "../../../lib/hooks/useTimeFromDate";
+import Link from "../../../components/v2/Link";
 
 interface BookEventProps {
   eventFragmentRef: BookEvent_EventFragment$key;
@@ -23,6 +24,9 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
       fragment BookEvent_EventFragment on Event {
         id
         availableDates
+        myBookings {
+          bookedFor
+        }
         attendeePricePerUom {
           cents
           currency {
@@ -39,23 +43,30 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
   const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
   const availableTimes = useTimeFromDate(availableDates, dateField.value);
   const isValidTime = availableTimes.includes(
-    dateField.value.format(timeFormat)
+    dateField?.value?.format(timeFormat)
+  );
+
+  const alreadyBooked = React.useMemo(
+    () => event?.myBookings?.length! > 0,
+    [event]
   );
 
   return (
     <Grid container>
       <Grid xs={6}>
         <DateCalendar
-          availableDates={availableDates}
+          availableDates={alreadyBooked ? [dateField.value] : availableDates}
           value={dateField.value}
           disablePast
           sx={{
             maxWidth: "100%",
           }}
           onChange={(date) => {
+            if (alreadyBooked) return;
             if (!date) return;
             dateField.onChange(date.startOf("day"));
           }}
+          disabled={alreadyBooked}
         />
       </Grid>
       <Grid xs={6}>
@@ -78,6 +89,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
               timeFormat
             )}-${dateField.value?.toISOString()}`}
             placeholder="Select time"
+            disabled={alreadyBooked}
           >
             {availableTimes.map((time, index) => (
               <Option
@@ -95,6 +107,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
             type="number"
             value={attendeesCountField.value}
             onChange={attendeesCountField.onChange}
+            disabled={alreadyBooked}
           />
         </Box>
         <Box paddingBottom="10px">
@@ -107,9 +120,19 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
           </Typography>
         </Box>
         <Box textAlign="end">
-          <Button disabled={!dateField.value.isValid() || !isValidTime}>
-            Book Event
-          </Button>
+          {!alreadyBooked && (
+            <Button
+              type="submit"
+              disabled={!dateField.value.isValid() || !isValidTime}
+            >
+              Book Event
+            </Button>
+          )}
+          {alreadyBooked && (
+            <Link href="/trips">
+              <Button>My Trips</Button>
+            </Link>
+          )}
         </Box>
       </Grid>
     </Grid>

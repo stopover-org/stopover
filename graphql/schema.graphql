@@ -296,6 +296,7 @@ type Event implements Node {
   landmarks: String
   latitude: Float
   longitude: Float
+  myBookings: [Booking!]!
   organizerPricePerUom: Money
   prepaidAmount: Money!
   prepaidType: String

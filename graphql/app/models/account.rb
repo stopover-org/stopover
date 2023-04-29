@@ -42,12 +42,13 @@ class Account < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==========================================================
   #
   # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :account_interests, dependent: :destroy
-  has_many :trips, dependent: :destroy
+  has_many :account_interests,  dependent: :destroy
+  has_many :trips,              dependent: :destroy
   has_many :ratings
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :interests, through: :account_interests
+  has_many :interests,  through: :account_interests
+  has_many :bookings,   through: :trips
 
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :user, optional: false

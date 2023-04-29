@@ -42,10 +42,16 @@ module Types
 
     field :images, [String], null: false
 
+    field :my_bookings, [BookingType], null: false
+
     def images
       object.images.map do |img|
         Rails.application.routes.url_helpers.rails_blob_url(img)
       end
+    end
+
+    def my_bookings
+      context[:current_user].account.bookings
     end
   end
 end

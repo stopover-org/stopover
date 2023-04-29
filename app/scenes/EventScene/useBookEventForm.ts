@@ -25,6 +25,9 @@ function useDefaultValues(
       fragment useBookEventForm_EventFragment on Event {
         id
         availableDates
+        myBookings {
+          bookedFor
+        }
       }
     `,
     eventFragmentRef
@@ -32,6 +35,10 @@ function useDefaultValues(
   const closestDate = useClosestDate(event.availableDates as Date[]);
   const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
   const parsedDate = React.useMemo(() => {
+    if (event?.myBookings?.length! > 0) {
+      return moment(event?.myBookings?.[0]?.bookedFor);
+    }
+
     const date = moment(router.query.date, dateFormat);
     if (availableDates.find((dt) => dt.isSame(date, "day"))) {
       if (date.isValid()) return date.startOf("day");

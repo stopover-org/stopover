@@ -11,6 +11,7 @@ import useTimeFromDate from "../../../lib/hooks/useTimeFromDate";
 import Select from "../../../components/v2/Select";
 import useFormContext from "../../../lib/hooks/useFormContext";
 import useUniqueMomentDates from "../../../lib/hooks/useUniqueMomentDates";
+import Link from "../../../components/v2/Link";
 
 interface EventActionsProps {
   eventFragmentRef: EventActions_EventFragment$key;
@@ -31,6 +32,9 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             name
           }
         }
+        myBookings {
+          id
+        }
       }
     `,
     eventFragmentRef
@@ -41,7 +45,12 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
   const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
   const availableTimes = useTimeFromDate(availableDates, dateField.value);
   const isValidTime = availableTimes.includes(
-    dateField.value.format(timeFormat)
+    dateField?.value?.format(timeFormat)
+  );
+
+  const alreadyBooked = React.useMemo(
+    () => event?.myBookings?.length! > 0,
+    [event]
   );
 
   return (
@@ -58,6 +67,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
               datePickerProps={{
                 availableDates,
               }}
+              disabled={alreadyBooked}
             >
               {getDate(dateField.value)}
             </ButtonDatePicker>
@@ -73,6 +83,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
                 timeFormat
               )}-${dateField.value?.toISOString()}`}
               placeholder="Select time"
+              disabled={alreadyBooked}
             >
               {availableTimes.map((time, index) => (
                 <Option
@@ -85,12 +96,19 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             </Select>
           </Box>
           <Box>
-            <Button
-              type="submit"
-              disabled={!dateField.value.isValid() || !isValidTime}
-            >
-              Book Event
-            </Button>
+            {!alreadyBooked && (
+              <Button
+                type="submit"
+                disabled={!dateField.value.isValid() || !isValidTime}
+              >
+                Book Event
+              </Button>
+            )}
+            {alreadyBooked && (
+              <Link href="/trips">
+                <Button>My Trips</Button>
+              </Link>
+            )}
           </Box>
         </Stack>
         <Stack flexDirection="row" justifyContent="flex-end" paddingTop="10px">
