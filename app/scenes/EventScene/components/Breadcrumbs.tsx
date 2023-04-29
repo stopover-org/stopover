@@ -1,9 +1,10 @@
 import { graphql, useFragment } from "react-relay";
 import { Stack } from "@mui/joy";
+import React from "react";
 import Typography from "../../../components/v2/Typography";
 import { Breadcrumbs_EventFragment$key } from "./__generated__/Breadcrumbs_EventFragment.graphql";
 
-export const Breadcrumbs2 = ({
+export const Breadcrumbs = ({
   eventFragmentRef,
 }: {
   eventFragmentRef: Breadcrumbs_EventFragment$key;
@@ -30,3 +31,5 @@ export const Breadcrumbs2 = ({
     </Stack>
   );
 };
+
+export default React.memo(Breadcrumbs);

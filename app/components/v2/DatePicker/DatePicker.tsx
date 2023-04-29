@@ -57,6 +57,7 @@ const DatePicker = ({
           day: (dayProps: JoyPickersDayProps<Moment>) => (
             <JoyPickersDay
               {...dayProps}
+              sx={{ borderRadius: 0 }}
               disabled={
                 disableable
                   ? !availableDates?.find((d) => d.isSame(dayProps.day, "day"))

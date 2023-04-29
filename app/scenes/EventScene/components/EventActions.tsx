@@ -1,25 +1,23 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { Box, Option, Stack } from "@mui/joy";
-import { useRouter } from "next/router";
-import moment, { Moment } from "moment";
 import { EventActions_EventFragment$key } from "./__generated__/EventActions_EventFragment.graphql";
 import Button from "../../../components/v2/Button";
-import { dateFormat, getDate } from "../../../lib/utils/dates";
+import { getDate, setTime, timeFormat } from "../../../lib/utils/dates";
 import ButtonDatePicker from "../../../components/v2/ButtonDatePicker";
-import useClosestDate from "../../../lib/hooks/useClosestDate";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import Typography from "../../../components/v2/Typography";
-import useUniqueMomentDates from "../../../lib/hooks/useUniqueMomentDates";
 import useTimeFromDate from "../../../lib/hooks/useTimeFromDate";
 import Select from "../../../components/v2/Select";
+import useFormContext from "../../../lib/hooks/useFormContext";
+import useUniqueMomentDates from "../../../lib/hooks/useUniqueMomentDates";
+import Link from "../../../components/v2/Link";
 
 interface EventActionsProps {
   eventFragmentRef: EventActions_EventFragment$key;
 }
 
 const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
-  const router = useRouter();
   const event = useFragment(
     graphql`
       fragment EventActions_EventFragment on Event {
@@ -34,57 +32,63 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             name
           }
         }
+        myBookings {
+          id
+        }
       }
     `,
     eventFragmentRef
   );
-  const closestDate = useClosestDate(event.availableDates as Date[]);
+  const { useFormField } = useFormContext();
+  const dateField = useFormField("date");
+  const attendeesCountField = useFormField("attendeesCount");
   const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
-  const parsedDate = React.useMemo(() => {
-    const date = moment(router.query.date, dateFormat);
-    if (availableDates.find((dt) => dt.isSame(date, "day"))) {
-      if (date.isValid()) return date;
-    }
-    return closestDate;
-  }, []);
-
-  const [selectedDate, setSelectedDate] = React.useState<Moment | null>(
-    parsedDate
+  const availableTimes = useTimeFromDate(availableDates, dateField.value);
+  const isValidTime = availableTimes.includes(
+    dateField?.value?.format(timeFormat)
   );
-  const availableTimes = useTimeFromDate(availableDates, selectedDate);
-  const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
+
+  const alreadyBooked = React.useMemo(
+    () => event?.myBookings?.length! > 0,
+    [event]
+  );
 
   return (
-    selectedDate && (
+    dateField.value && (
       <>
         <Stack flexDirection="row" justifyContent="flex-end">
           <Box paddingRight="10px">
             <ButtonDatePicker
               onChange={(date) => {
-                setSelectedTime(null);
-
-                setSelectedDate(date);
+                if (!date) return;
+                dateField.onChange(date.startOf("day"));
               }}
               variant="outlined"
               datePickerProps={{
                 availableDates,
               }}
+              disabled={alreadyBooked}
             >
-              {getDate(selectedDate)}
+              {getDate(dateField.value)}
             </ButtonDatePicker>
           </Box>
           <Box paddingRight="10px">
             <Select
               onChange={(_, value) => {
                 if (!value) return;
-                setSelectedTime((value as string).split("-")[0]);
+                const time = (value as string).split("-")[0];
+                dateField.onChange(setTime(dateField.value, time));
               }}
+              value={`${dateField.value.format(
+                timeFormat
+              )}-${dateField.value?.toISOString()}`}
               placeholder="Select time"
+              disabled={alreadyBooked}
             >
               {availableTimes.map((time, index) => (
                 <Option
-                  key={`${index}-${time}-${selectedDate?.toISOString()}`}
-                  value={`${time}-${selectedDate?.toISOString()}`}
+                  key={`${index}-${time}-${dateField.value?.toISOString()}`}
+                  value={`${time}-${dateField.value?.toISOString()}`}
                 >
                   {time}
                 </Option>
@@ -92,16 +96,33 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             </Select>
           </Box>
           <Box>
-            <Button disabled={!selectedDate || !selectedTime}>
-              Book Event
-            </Button>
+            {!alreadyBooked && (
+              <Button
+                type="submit"
+                disabled={!dateField.value.isValid() || !isValidTime}
+              >
+                Book Event
+              </Button>
+            )}
+            {alreadyBooked && (
+              <Link href="/trips">
+                <Button>My Trips</Button>
+              </Link>
+            )}
           </Box>
         </Stack>
         <Stack flexDirection="row" justifyContent="flex-end" paddingTop="10px">
-          <Typography>
-            Price for {event.unit.name}:{" "}
+          <Typography textAlign="end">
             {getCurrencyFormat(
               event.attendeePricePerUom?.cents,
+              event.attendeePricePerUom?.currency?.name
+            )}{" "}
+            x {attendeesCountField.value} attendee
+            <br />
+            Total:{" "}
+            {getCurrencyFormat(
+              parseInt(attendeesCountField.value, 10) *
+                (event.attendeePricePerUom?.cents || 0),
               event.attendeePricePerUom?.currency?.name
             )}
           </Typography>

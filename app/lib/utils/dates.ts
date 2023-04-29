@@ -54,6 +54,14 @@ export const calculateDate = (
   return moment("00:00:00");
 };
 
+export const setTime = (date: Moment, time: string) => {
+  const [hours, minutes] = time.split(":");
+  date.set("hour", parseInt(hours, 10));
+
+  date.set("minutes", parseInt(minutes, 10));
+  return date;
+};
+
 export const getTime = (arg: Moment | null) =>
   arg ? arg.format(timeFormat) : undefined;
 

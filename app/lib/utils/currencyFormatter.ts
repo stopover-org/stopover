@@ -3,7 +3,9 @@ export const getCurrencyFormat = (
   currency?: string,
   cents: boolean = true
 ) => {
-  if (!value) return null;
+  if (!value) {
+    value = 0;
+  }
   if (!currency) currency = "usd";
   const language = navigator?.language || "de-DE";
   if (cents) {

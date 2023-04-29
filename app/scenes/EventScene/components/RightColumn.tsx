@@ -4,6 +4,7 @@ import React from "react";
 import Scrollbars from "react-custom-scrollbars-2";
 import Typography from "../../../components/v2/Typography";
 import { RightColumn_EventFragment$key } from "./__generated__/RightColumn_EventFragment.graphql";
+import BookEvent from "./BookEvent";
 
 interface RightColumnProps {
   eventFragmentRef: RightColumn_EventFragment$key;
@@ -15,6 +16,7 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
       fragment RightColumn_EventFragment on Event {
         title
         description
+        ...BookEvent_EventFragment
       }
     `,
     eventFragmentRef
@@ -27,9 +29,12 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
         </Typography>
       </Box>
       <Box>
-        <Scrollbars style={{ width: "100%", height: "600px" }}>
+        <Scrollbars style={{ width: "100%", height: "300px" }}>
           <Typography textAlign="justify">{event.description}</Typography>
         </Scrollbars>
+      </Box>
+      <Box>
+        <BookEvent eventFragmentRef={event} />
       </Box>
     </Stack>
   );

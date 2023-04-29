@@ -19,7 +19,7 @@ const Query = graphql`
 const Trip = ({ preloadedQuery }: any) => {
   const data = usePreloadedQuery<Id_TripsQuery>(Query, preloadedQuery);
   return (
-    <Layout currentUserFragment={data.currentUser}>
+    <Layout currentUserFragment={data.currentUser!}>
       <TripCard queryReference={data} />
     </Layout>
   );
@@ -44,6 +44,6 @@ export default withRelay(Trip, Query, {
       "../../lib/serverEnvironment"
     );
 
-    return createServerEnvironment(req.headers.cookie);
+    return createServerEnvironment(req!.headers.cookie);
   },
 });

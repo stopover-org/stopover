@@ -2,8 +2,8 @@
 
 module Stopover
   class BookingService
-    def initialize(_user = nil)
-      @user = User.create!(status: :temporary)
+    def initialize(user = nil)
+      @user = user || User.create!(status: :temporary)
       @account = @user.account
       @current_trip = @account&.current_trip
     end

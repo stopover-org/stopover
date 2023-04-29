@@ -46,7 +46,7 @@ const Gallery = ({
 
   const clickHandler = React.useCallback(() => {
     setIsOpened(!isOpened);
-  }, [opened, onClose, onOpen]);
+  }, [isOpened, setIsOpened, opened, onClose, onOpen]);
 
   const height = React.useMemo(
     () => (isOpened ? maxHeight : minHeight),
@@ -96,7 +96,7 @@ const Gallery = ({
             }}
           >
             <Typography sx={{ color: "#fff" }} fontSize="16px">
-              {!isOpened ? "I want to see more" : "roll up"}
+              {!isOpened ? "I want to see more" : "Roll Up"}
             </Typography>
           </Button>
         </Box>

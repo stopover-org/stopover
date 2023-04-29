@@ -10,8 +10,8 @@ module Mutations
     field :access_token, String
 
     def resolve(event:, **args)
-      booking_support = Stopover::BookingService.new(context[:current_user])
-      booking = booking_support.book_event(event, args[:booked_for], args[:attendees_count])
+      service = Stopover::BookingService.new(context[:current_user])
+      booking = service.book_event(event, args[:booked_for], args[:attendees_count])
       {
         booking: booking,
         access_token: booking.user.access_token
