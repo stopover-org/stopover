@@ -42,6 +42,9 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
             title
           }
           averageRating
+          myBookings {
+            bookedFor
+          }
         }
       }
     `,
@@ -74,6 +77,9 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
     });
   };
   const { event } = schedule;
+  const alreadyBooked = event.myBookings.find((booking) =>
+    moment(booking.bookedFor).isSame(schedule.scheduledFor, "day")
+  );
 
   return (
     <Grid width="720px" padding="10px">
@@ -139,13 +145,26 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
                 event?.attendeePricePerUom?.currency?.name
               )}
             </Typography>
-            <Button
-              size="sm"
-              onClick={() => bookEvent(event.id, schedule.scheduledFor)}
-            >
-              <AddShoppingCartIcon />
-              Add
-            </Button>
+            {alreadyBooked && (
+              <Link href="/trips">
+                <Button
+                  size="sm"
+                  onClick={() => bookEvent(event.id, schedule.scheduledFor)}
+                >
+                  <AddShoppingCartIcon />
+                  My Trips
+                </Button>
+              </Link>
+            )}
+            {!alreadyBooked && (
+              <Button
+                size="sm"
+                onClick={() => bookEvent(event.id, schedule.scheduledFor)}
+              >
+                <AddShoppingCartIcon />
+                Add
+              </Button>
+            )}
           </Stack>
         </Stack>
       </Card>
