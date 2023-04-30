@@ -1,17 +1,10 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   tests:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/configuration-reference/#executor-job
     docker:
       - image: cimg/ruby:3.0.4
-    # Add steps to the job
-    # See: https://circleci.com/docs/configuration-reference/#steps
+      - image: cimg/postgres:15.2.0
     steps:
       - checkout
       - run:
@@ -20,8 +13,8 @@ jobs:
             cd ./graphql
             ruby --version
             bundle install
-            rake db:migrate
-#            rake db:schema-load
+            rake db:create
+            rake db:schema-load
 #            cd ../app
 #            npm run generate
 #            npm run dev
@@ -30,8 +23,6 @@ jobs:
 #            foreman start
             
 
-# Orchestrate jobs using workflows
-# See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   test-workflow:
     jobs:
