@@ -4,14 +4,17 @@ import { withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import { Id_TripsQuery } from "./__generated__/Id_TripsQuery.graphql";
-import TripCard from "../../components/Trips/TripCard";
+import TripScene from "../../scenes/TripScene";
 
 const Query = graphql`
-  query Id_TripsQuery($filters: BookingsFilter!) {
-    ...BookingList_BookingsFragment @arguments(filters: $filters)
-    ...TripHeader_BookingsFragment @arguments(filters: $filters)
+  query Id_TripsQuery($id: ID!) {
     currentUser {
       ...Layout_CurrentUserFragment
+      account {
+        trip(tripId: $id) {
+          ...TripScene_TripFragment
+        }
+      }
     }
   }
 `;
@@ -20,7 +23,7 @@ const Trip = ({ preloadedQuery }: any) => {
   const data = usePreloadedQuery<Id_TripsQuery>(Query, preloadedQuery);
   return (
     <Layout currentUserFragment={data.currentUser!}>
-      <TripCard queryReference={data} />
+      <TripScene tripFragmentRef={data.currentUser?.account?.trip} />
     </Layout>
   );
 };
@@ -34,7 +37,7 @@ export default withRelay(Trip, Query, {
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
   serverSideProps: async (ctx) => ({
-    filters: { tripId: +ctx.query.id! },
+    id: +ctx.query.id!,
     googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
   }),
   // Server-side props can be accessed as the second argument
@@ -44,6 +47,6 @@ export default withRelay(Trip, Query, {
       "../../lib/serverEnvironment"
     );
 
-    return createServerEnvironment(req!.headers.cookie);
+    return createServerEnvironment(req!.headers.cookie!);
   },
 });

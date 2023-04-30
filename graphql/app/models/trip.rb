@@ -31,7 +31,7 @@ class Trip < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==========================================================
   #
   # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :bookings, dependent: :destroy
+  has_many :bookings, -> { includes(:schedule).order('schedules.scheduled_for ASC') }, dependent: :destroy, inverse_of: :trip
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   #
@@ -70,17 +70,17 @@ class Trip < ApplicationRecord
   end
 
   def start_date
-    bookings.includes(:schedule).order('schedules.scheduled_for DESC').last.schedule.scheduled_for
+    bookings.first.schedule.scheduled_for
   end
 
   def end_date
-    bookings.includes(:schedule).order('schedules.scheduled_for ASC').last.schedule.scheduled_for
+    bookings.last.schedule.scheduled_for
   end
 
   def cities
     bookings.map do |booking|
       booking.event.city
-    end
+    end.uniq
   end
 
   def cancel_trip

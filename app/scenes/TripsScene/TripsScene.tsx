@@ -2,12 +2,11 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import moment from "moment";
 import { Grid, Stack } from "@mui/joy";
-import { TripsScene_TripsFragment$key } from "./__generated__/TripsScene_TripsFragment.graphql";
 import Typography from "../../components/v2/Typography";
 import TripCard from "./components/TripCard";
 
 interface TripsSceneProps {
-  accountFragmentRef: TripsScene_TripsFragment$key;
+  accountFragmentRef: TripsScene_AccountFragment$key;
 }
 
 const TripsScene = ({ accountFragmentRef }: TripsSceneProps) => {
