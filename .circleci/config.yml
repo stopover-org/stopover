@@ -2,13 +2,8 @@ version: 2.1
 
 jobs:
   tests:
-    working_directory: ~/stopover
     docker:
       - image: cimg/ruby:3.0.4
-        environment:
-          HOST: localhost
-          USER: stopover
-          RAILS_ENV: test
       - image: cimg/postgres:15.2
         environment:
           POSTGRES_USER: $GRAPHQL_DATABASE_USERNAME
