@@ -60,6 +60,8 @@ development:
 test:
   <<: *default
   database: graphql_test
+  username: <%= ENV["GRAPHQL_DATABASE_USERNAME"] %>
+  password: <%= ENV["GRAPHQL_DATABASE_PASSWORD"] %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -84,5 +86,5 @@ test:
 production:
   <<: *default
   database: graphql_production
-  username: graphql
+  username: <%= ENV["GRAPHQL_DATABASE_USERNAME"] %>
   password: <%= ENV["GRAPHQL_DATABASE_PASSWORD"] %>
