@@ -14,11 +14,10 @@ jobs:
       - run:
           name: Starting project
           command: |
-            ls .
-#            cd ./project/graphql
-#            ruby --version
-#            bundle install
-#            cp config/database.example.yml config/database.yml
+            cd graphql
+            ruby --version
+            bundle install
+            cp config/database.example.yml config/database.yml
 #            rake db:create
 #            rake db:schema-load
 #            cd ../app
