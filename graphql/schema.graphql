@@ -74,13 +74,15 @@ type BookEventPayload {
 }
 
 type Booking implements Node {
-  attendeeTotalPrice: Money
+  alreadyPaidPrice: Money!
+  attendeeTotalPrice: Money!
   attendees(filters: AttendeesFilter): [Attendee!]
   bookedFor: DateTime!
   event: Event!
   eventOptions: [EventOption!]
   id: ID!
-  organizerTotalPrice: Money
+  leftToPayPrice: Money!
+  organizerTotalPrice: Money!
   paymentsType: Payment
   schedule: Schedule!
   status: String
@@ -311,7 +313,7 @@ type Event implements Node {
   city: String
   country: String
   description: String!
-  durationTime: String
+  durationTime: String!
   eventOptions: [EventOption!]!
   eventType: EventTypeEnum!
   externalId: String

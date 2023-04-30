@@ -9,8 +9,10 @@ module Types
     field :status, String
     field :payments_type, Types::PaymentType
     field :schedule, Types::ScheduleType, null: false
-    field :attendee_total_price, Types::MoneyType
-    field :organizer_total_price, Types::MoneyType
+    field :attendee_total_price, Types::MoneyType, null: false
+    field :organizer_total_price, Types::MoneyType, null: false
+    field :left_to_pay_price, Types::MoneyType, null: false
+    field :already_paid_price, Types::MoneyType, null: false
     field :attendees, [Types::AttendeeType] do
       argument :filters, Types::AttendeesFilter, required: false
     end

@@ -112,6 +112,14 @@ class Booking < ApplicationRecord
     event_price + booking_options_price + attendee_options_price
   end
 
+  def left_to_pay_price
+    attendee_total_price - already_paid_price
+  end
+
+  def already_paid_price
+    payments.successful.map(&:total_price).sum(Money.new(0))
+  end
+
   private
 
   def can_cancel

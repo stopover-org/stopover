@@ -84,9 +84,6 @@ export function useBookEventForm(
     {
       defaultValues: useDefaultValues(eventFragmentRef),
       resolver: yupResolver(validationSchema),
-      onCompleted(result) {
-        console.log(result);
-      },
     }
   );
 }

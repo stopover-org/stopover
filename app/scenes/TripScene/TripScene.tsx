@@ -47,8 +47,6 @@ const TripScene = ({ tripFragmentRef }: TripSceneProps) => {
     [trip.bookings]
   );
 
-  console.log(dates);
-
   return (
     <Grid container spacing={2} padding={2}>
       <Grid xs={12}>

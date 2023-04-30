@@ -9,7 +9,7 @@ import Typography from "../../../components/v2/Typography/Typography";
 import { TripCard_TripFragment$key } from "./__generated__/TripCard_TripFragment.graphql";
 
 interface TripCardProps {
-  tripsFragmentRef: TripCard_TripFragment$key;
+  tripFragmentRef: TripCard_TripFragment$key;
 }
 
 const TripCard = ({ tripFragmentRef }: TripCardProps) => {
