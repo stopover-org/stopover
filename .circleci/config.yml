@@ -5,9 +5,9 @@ jobs:
     docker:
       - image: cimg/ruby:3.0.4
       - image: cimg/postgres:15.2
-        environment:
-          POSTGRES_USER: $GRAPHQL_DATABASE_USERNAME
-          POSTGRES_PASSWORD: $GRAPHQL_DATABASE_PASSWORD
+        auth:
+          username: $GRAPHQL_DATABASE_USERNAME
+          password: $GRAPHQL_DATABASE_PASSWORD
 
     steps:
       - checkout
