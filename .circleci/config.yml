@@ -14,11 +14,17 @@ jobs:
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
       - checkout
-      - run: ruby --version
+      - run:
+          name: Starting project
+          command: |
+            ls
+            cd ./graphql
+            ruby --version
+            bundle install
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  test-workflow:
     jobs:
       - tests
