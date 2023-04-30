@@ -81,8 +81,12 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
     });
   };
   const { event } = schedule;
-  const alreadyBooked = event.myBookings.find((booking) =>
-    moment(booking.bookedFor).isSame(schedule.scheduledFor, "day")
+  const alreadyBooked = React.useMemo(
+    () =>
+      event.myBookings.find((booking) =>
+        moment(booking.bookedFor).isSame(schedule.scheduledFor, "day")
+      ),
+    [event, schedule]
   );
 
   return (

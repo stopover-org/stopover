@@ -53,11 +53,11 @@ module Types
     end
 
     def events(**args)
-      ::EventsQuery.new(args[:filters].to_h || {}, Event.all, current_user).all
+      ::EventsQuery.new(args[:filters].to_h || {}).all
     end
 
     def schedules(**args)
-      ::SchedulesQuery.new(args[:filters].to_h || [], Schedule.all, current_user).all
+      ::SchedulesQuery.new(args[:filters].to_h || {}).all
     end
 
     def event(**args)
