@@ -18,8 +18,8 @@ jobs:
             ruby --version
             bundle install
             cp config/database.example.yml config/database.yml
-            rake db:create
-            rake db:schema-load
+#            rake db:create
+#            rake db:schema-load
 #            cd ../app
 #            npm run generate
 #            npm run dev
