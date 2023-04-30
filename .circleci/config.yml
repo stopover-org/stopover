@@ -4,7 +4,7 @@ jobs:
   tests:
     docker:
       - image: cimg/ruby:3.0.4
-      - image: cimg/postgres:15.2.0
+      - image: cimg/postgres:15.2
     steps:
       - checkout
       - run:
