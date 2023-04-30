@@ -13,7 +13,7 @@ interface TripsSceneProps {
 const TripsScene = ({ accountFragmentRef }: TripsSceneProps) => {
   const { trips } = useFragment(
     graphql`
-      fragment TripsScene_TripsFragment on Account {
+      fragment TripsScene_AccountFragment on Account {
         trips {
           id
           status
@@ -61,6 +61,11 @@ const TripsScene = ({ accountFragmentRef }: TripsSceneProps) => {
       ),
     [trips]
   );
+
+  const cancelledTrips = React.useMemo(
+    () => trips.filter((trip) => trip.status === "cancelled"),
+    [trips]
+  );
   return (
     <Grid container spacing={2} padding={2}>
       <Grid xs={12}>
@@ -102,6 +107,17 @@ const TripsScene = ({ accountFragmentRef }: TripsSceneProps) => {
       <Grid xs={12}>
         <Stack>
           {pastTrips.map((trip) => (
+            <TripCard key={trip.id} tripFragmentRef={trip} />
+          ))}
+        </Stack>
+      </Grid>
+
+      <Grid xs={12}>
+        <Typography level="h3">Cancelled</Typography>
+      </Grid>
+      <Grid xs={12}>
+        <Stack>
+          {cancelledTrips.map((trip) => (
             <TripCard key={trip.id} tripFragmentRef={trip} />
           ))}
         </Stack>

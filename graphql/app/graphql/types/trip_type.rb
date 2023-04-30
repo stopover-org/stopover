@@ -8,7 +8,9 @@ module Types
     field :cities, [String], null: false
     field :status, String, null: false
     field :attendees_count, Integer, null: false
-    field :images, [String]
+    field :images, [String], null: false
+    field :can_cancel, Boolean, null: false
+    field :account, Types::AccountType, null: false
 
     def images
       object.bookings.map do |booking|

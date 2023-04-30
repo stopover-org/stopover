@@ -1,7 +1,9 @@
 import React from "react";
 import { AspectRatio, Box, Card, CardOverflow, Grid, Stack } from "@mui/joy";
-import { graphql, useFragment } from "react-relay";
+import { graphql, useFragment, useMutation } from "react-relay";
 import moment from "moment";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import IconButton from "@mui/joy/IconButton";
 import Link from "../../../components/v2/Link/Link";
 import Typography from "../../../components/v2/Typography/Typography";
 
@@ -15,10 +17,27 @@ const TripCard = ({ tripFragmentRef }: any) => {
         attendeesCount
         cities
         images
+        canCancel
       }
     `,
     tripFragmentRef
   );
+
+  const [cancelTrip] = useMutation(graphql`
+    mutation TripCard_CancelTripMutation($input: CancelTripInput!) {
+      cancelTrip(input: $input) {
+        trip {
+          ...TripCard_TripFragment
+          account {
+            ...TripsScene_AccountFragment
+          }
+        }
+      }
+    }
+  `);
+
+  const onCancelTrip = () =>
+    cancelTrip({ variables: { input: { tripId: trip.id } } });
 
   return (
     <Grid width="420px" padding="10px">
@@ -35,13 +54,26 @@ const TripCard = ({ tripFragmentRef }: any) => {
           </AspectRatio>
         </CardOverflow>
         <Stack paddingLeft="10px" width="100%" sx={{ position: "relative" }}>
+          {trip.canCancel && (
+            <Box>
+              <IconButton
+                variant="outlined"
+                color="danger"
+                size="sm"
+                onClick={onCancelTrip}
+                sx={{ position: "absolute", top: 0, right: 0 }}
+              >
+                <DeleteOutlineIcon />
+              </IconButton>
+            </Box>
+          )}
           <Link href={`/trips/${trip.id}`}>
             <Typography
               sx={{
                 fontSize: "md",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
-                width: "250px",
+                width: "200px",
                 display: "inline-block",
                 overflow: "hidden",
               }}

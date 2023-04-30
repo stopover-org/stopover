@@ -12,7 +12,7 @@ const Query = graphql`
     currentUser {
       ...Layout_CurrentUserFragment
       account {
-        ...TripsScene_TripsFragment
+        ...TripsScene_AccountFragment
       }
     }
   }
@@ -24,7 +24,7 @@ const Trips = ({ preloadedQuery }: RelayProps<{}, trips_Query>) => {
   return (
     <Layout currentUserFragment={data.currentUser!}>
       {/* <EventsScene eventsFragmentRef={data} /> */}
-      <TripsScene accountFragmentRef={data.currentUser?.account} />
+      <TripsScene accountFragmentRef={data.currentUser?.account!} />
     </Layout>
   );
 };

@@ -42,6 +42,15 @@ class Trip < ApplicationRecord
   aasm :status do
     state :draft, initial: true
     state :active
+    state :cancelled
+
+    event :cancel do
+      after_commit do
+        cancel_trip
+      end
+
+      transitions from: %i[active draft], to: :cancelled, guard: :can_cancel
+    end
   end
   # ENUMS =======================================================================
   #
@@ -53,17 +62,30 @@ class Trip < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
+  def can_cancel
+    return false if cancelled?
+    return false if bookings.paid.any?
+    return false if end_date.past?
+    true
+  end
+
   def start_date
-    bookings.includes(:schedule).order('schedules.scheduled_for ASC').last.schedule.scheduled_for
+    bookings.includes(:schedule).order('schedules.scheduled_for DESC').last.schedule.scheduled_for
   end
 
   def end_date
-    bookings.includes(:schedule).order('schedules.scheduled_for DESC').last.schedule.scheduled_for
+    bookings.includes(:schedule).order('schedules.scheduled_for ASC').last.schedule.scheduled_for
   end
 
   def cities
     bookings.map do |booking|
       booking.event.city
+    end
+  end
+
+  def cancel_trip
+    bookings.each do |booking|
+      booking.cancel!
     end
   end
 end

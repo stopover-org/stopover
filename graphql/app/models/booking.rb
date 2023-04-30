@@ -30,16 +30,16 @@ class Booking < ApplicationRecord
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
   has_one :account, through: :trip
-  has_one :user, through: :account
+  has_one :user,    through: :account
 
   # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :booking_options, dependent: :destroy
-  has_many :attendees, dependent: :destroy
-  has_many :payments, dependent: :destroy
+  has_many :booking_options,  dependent: :destroy
+  has_many :attendees,        dependent: :destroy
+  has_many :payments,         dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :event_options, through: :booking_options
-  has_many :attendee_options, through: :attendees
+  has_many :event_options,                through: :booking_options
+  has_many :attendee_options,             through: :attendees
   has_many :booking_cancellation_options, through: :event
 
   # BELONGS_TO ASSOCIATIONS =======================================================
@@ -50,10 +50,15 @@ class Booking < ApplicationRecord
   # AASM STATES ================================================================
   aasm column: :status do
     state :active, initial: true
+    state :cancelled
     state :paid
 
     event :paid do
       transitions from: :active, to: :paid
+    end
+
+    event :cancel do
+      transitions from: %i[active paid], to: :cancelled, guard: :can_cancel
     end
   end
 
@@ -108,6 +113,10 @@ class Booking < ApplicationRecord
   end
 
   private
+
+  def can_cancel
+    !paid?
+  end
 
   def create_booking_options
     event.event_options.where(built_in: true, for_attendee: false).find_each do |event_option|
