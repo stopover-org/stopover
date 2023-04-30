@@ -21,13 +21,13 @@ jobs:
             ruby --version
             bundle install
             rake db:migrate
-            rake db:schema-load
-            cd ../app
-            npm run generate
-            npm run dev
-            cd ../graphql
-            rails s
-            foreman start
+#            rake db:schema-load
+#            cd ../app
+#            npm run generate
+#            npm run dev
+#            cd ../graphql
+#            rails s
+#            foreman start
             
 
 # Orchestrate jobs using workflows
