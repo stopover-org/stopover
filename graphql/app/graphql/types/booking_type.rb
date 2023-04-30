@@ -8,6 +8,7 @@ module Types
     field :event_options, [Types::EventOptionType]
     field :status, String
     field :payments_type, Types::PaymentType
+    field :schedule, Types::ScheduleType, null: false
     field :attendees, [Types::AttendeeType] do
       argument :filters, Types::AttendeesFilter, required: false
     end

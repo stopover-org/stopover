@@ -78,6 +78,7 @@ type Booking implements Node {
   eventOptions: [EventOption!]
   id: ID!
   paymentsType: Payment
+  schedule: Schedule!
   status: String
 }
 
