@@ -76,7 +76,7 @@ type BookEventPayload {
 type Booking implements Node {
   alreadyPaidPrice: Money!
   attendeeTotalPrice: Money!
-  attendees(filters: AttendeesFilter): [Attendee!]
+  attendees(filters: AttendeesFilter): [Attendee!]!
   bookedFor: DateTime!
   event: Event!
   eventOptions: [EventOption!]

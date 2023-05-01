@@ -1,7 +1,6 @@
 import { graphql, useFragment } from "react-relay";
-import { CardOverflow, Grid, useTheme } from "@mui/joy";
+import { CardOverflow, Grid } from "@mui/joy";
 import React from "react";
-import { useMediaQuery } from "@mui/material";
 import Typography from "../../../components/v2/Typography/Typography";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import { BookingSummary_BookingFragment$key } from "./__generated__/BookingSummary_BookingFragment.graphql";
@@ -33,22 +32,18 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
     `,
     bookingFragmentRef
   );
-  const theme = useTheme();
-  const isMobileView = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <CardOverflow
-      sx={
-        isMobileView
-          ? {}
-          : {
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              width: "100%",
-              padding: "10px 5px 5px",
-            }
-      }
+      sx={(theme) => ({
+        [theme.breakpoints.up("md")]: {
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          padding: "10px 5px 5px",
+        },
+      })}
     >
       <Grid container>
         <Grid xs={6} alignItems="flex-end" display="flex">
@@ -76,8 +71,8 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
           <Typography fontSize="sm" textAlign="end" color="success">
             Already paid:{" "}
             {getCurrencyFormat(
-              booking.leftToPayPrice.cents,
-              booking.leftToPayPrice.currency.name
+              booking.alreadyPaidPrice.cents,
+              booking.alreadyPaidPrice.currency.name
             )}
           </Typography>
         </Grid>
