@@ -9,11 +9,13 @@ import {
   useTheme,
 } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Typography from "../../../components/v2/Typography/Typography";
 import Link from "../../../components/v2/Link";
 import BookingTime from "./BookingTime";
 import BookingSummary from "./BookingSummary";
 import BookingDescription from "./BookingDescription";
+import BookingEditForm from "./BookingEditForm";
 
 interface BookingCardProps {
   bookingFragmentRef: any;
@@ -50,9 +52,15 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
         ...BookingTime_BookingFragment
         ...BookingSummary_BookingFragment
         ...BookingDescription_BookingFragment
+        ...BookingEditForm_BookingFragment
       }
     `,
     bookingFragmentRef
+  );
+  const [isFormOpened, setIsFormOpened] = React.useState(false);
+  const onShowBookingInfo = React.useCallback(
+    () => setIsFormOpened(!isFormOpened),
+    [isFormOpened, setIsFormOpened]
   );
   const thme = useTheme();
   const isMobileView = useMediaQuery(thme.breakpoints.down("md"));
@@ -131,6 +139,28 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
           <BookingSummary bookingFragmentRef={booking} />
         </Stack>
       </Card>
+      <Box width="100%">
+        <Typography
+          alignItems="flex-end"
+          color="primary"
+          onClick={onShowBookingInfo}
+          sx={{
+            "&:hover": {
+              cursor: "pointer",
+            },
+          }}
+        >
+          Booking Info&nbsp;
+          <KeyboardArrowDownIcon
+            sx={{
+              transform: isFormOpened ? "rotate(180deg)" : "unset",
+              lineHeight: "1.5em",
+              verticalAlign: "middle",
+            }}
+          />
+        </Typography>
+        {isFormOpened && <BookingEditForm bookingFragmentRef={booking} />}
+      </Box>
     </Box>
   );
 };

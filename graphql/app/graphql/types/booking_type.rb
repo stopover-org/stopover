@@ -5,8 +5,8 @@ module Types
     field :id, ID, null: false
     field :booked_for, Types::DateTimeType, null: false
     field :event, Types::EventType, null: false
-    field :event_options, [Types::EventOptionType]
-    field :status, String
+    field :event_options, [Types::EventOptionType], null: false
+    field :status, String, null: false
     field :payments_type, Types::PaymentType
     field :schedule, Types::ScheduleType, null: false
     field :attendee_total_price, Types::MoneyType, null: false

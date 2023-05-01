@@ -49,26 +49,41 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
         <Grid xs={6} alignItems="flex-end" display="flex">
           <Typography
             level="body3"
-            sx={{
+            sx={(theme) => ({
               fontSize: "22px",
-            }}
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "16px",
+              },
+            })}
           >
             {booking.attendees.length} attendee(-s)
           </Typography>
         </Grid>
         <Grid xs={6}>
           <Typography
-            sx={{
+            sx={(theme) => ({
               fontSize: "32px",
               textAlign: "end",
-            }}
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "22px",
+              },
+            })}
           >
             {getCurrencyFormat(
               booking.leftToPayPrice.cents,
               booking.leftToPayPrice.currency.name
             )}
           </Typography>
-          <Typography fontSize="sm" textAlign="end" color="success">
+          <Typography
+            fontSize="sm"
+            textAlign="end"
+            color="success"
+            sx={(theme) => ({
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "12px",
+              },
+            })}
+          >
             Already paid:{" "}
             {getCurrencyFormat(
               booking.alreadyPaidPrice.cents,

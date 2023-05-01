@@ -25,9 +25,9 @@ type Achievement implements Node {
 }
 
 type Attendee implements Node {
-  booking: Booking
+  booking: Booking!
   email: String
-  eventOption: EventOption
+  eventOptions: [EventOption!]!
   firstName: String
   fullName: String
   id: ID!
@@ -79,13 +79,13 @@ type Booking implements Node {
   attendees(filters: AttendeesFilter): [Attendee!]!
   bookedFor: DateTime!
   event: Event!
-  eventOptions: [EventOption!]
+  eventOptions: [EventOption!]!
   id: ID!
   leftToPayPrice: Money!
   organizerTotalPrice: Money!
   paymentsType: Payment
   schedule: Schedule!
-  status: String
+  status: String!
 }
 
 type BookingCancellationOption implements Node {
@@ -391,7 +391,7 @@ type EventFilters {
 
 type EventOption implements Node {
   attendeePrice: Money!
-  builtIn: Boolean
+  builtIn: Boolean!
   id: ID!
   organizerPrice: Money
   title: String!

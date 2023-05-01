@@ -38,7 +38,6 @@ class Booking < ApplicationRecord
   has_many :payments,         dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :event_options,                through: :booking_options
   has_many :attendee_options,             through: :attendees
   has_many :booking_cancellation_options, through: :event
 
@@ -47,6 +46,9 @@ class Booking < ApplicationRecord
   belongs_to :trip
   belongs_to :schedule
 
+  has_many :event_options,
+           -> { where(for_attendee: false) },
+           through: :event
   # AASM STATES ================================================================
   aasm column: :status do
     state :active, initial: true
