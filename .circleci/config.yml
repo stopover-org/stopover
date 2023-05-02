@@ -1,7 +1,8 @@
 version: 2.1
 
 jobs:
-  tests:
+  build:
+    working_directory: ~/stopover-project
     docker:
       - image: cimg/ruby:3.0.4
       - image: cimg/postgres:15.2
@@ -29,6 +30,6 @@ jobs:
             
 
 workflows:
-  test-workflow:
+  backend:
     jobs:
-      - tests
+      - build
