@@ -175,6 +175,10 @@ firm = Firm.create!(
   threads.each(&:join)
 end
 
+Event.all.each do |event|
+  Stopover::EventSupport.schedule(event) if event.schedules.count == 0
+end
+
 trip = Trip.create!(account: User.find_by(email: 'mikhail@dorokhovich.ru').account, status: :draft)
 
 Event.last(10).each do |event|

@@ -43,7 +43,7 @@ module Stopover
         Rails.logger.debug { "failed #{@retry} times" }
         Rails.logger.debug response.body.inspect
 
-        sleep_time = 60 + rand(60 + 1)
+        sleep_time = 15 + rand(30 + 1)
         Rails.logger.debug { "sleep #{sleep_time}" }
         sleep sleep_time.seconds
 
@@ -59,7 +59,7 @@ module Stopover
         Rails.logger.debug { "failed #{@retry} times" }
         Rails.logger.debug response.body.inspect
 
-        sleep_time = 60 + rand(60 + 1)
+        sleep_time = 15 + rand(30 + 1)
         Rails.logger.debug { "sleep #{sleep_time}" }
         sleep sleep_time.seconds
 
