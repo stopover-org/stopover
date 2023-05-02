@@ -5,7 +5,13 @@ jobs:
     working_directory: ~/stopover-project
     docker:
       - image: cimg/ruby:3.0.4
+        auth:
+          username: mydockerhub-user
+          password: test1234
       - image: cimg/postgres:15.2
+        auth:
+          username: mydockerhub-user
+          password: test1234
         environment:
           POSTGRES_USER: $GRAPHQL_DATABASE_USERNAME
           POSTGRES_PASSWORD: $GRAPHQL_DATABASE_PASSWORD
