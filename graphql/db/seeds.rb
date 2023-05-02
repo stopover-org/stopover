@@ -31,7 +31,7 @@ titles = ['Active mobility', 'Adventure travel', 'Air travel', 'Backpacking (tra
 
 Rails.logger.info "let's generate cover for all interest"
 Rails.logger.info "for query: The man that interested in #{titles.join(' ')} "
-interest_image = Stopover::AiCoverService.new("The man that interested in #{titles.join(' ')}").fetch
+interest_image = Stopover::AiCoverService.new("Photorealistic women that interested in #{titles.join(' ')}").fetch
 Rails.logger.info interest_image
 Rails.logger.info 'interest cover was generated'
 
@@ -194,7 +194,7 @@ Event.all.each_slice(30) do |events|
   events.each do |event|
     threads << Thread.new do
       unless ENV.fetch('without_images', nil) == 'true'
-        query = "art of #{event.interests.map(&:title).join(' and ')} #{event.tags.map(&:title).join(' ')} in #{event.country} #{event.city} #{event.street} with #{event.unit.name} #{event.unit.unit_type}. #{event.description}"
+        query = "Photorealistic art of #{event.interests.map(&:title).join(' and ')} #{event.tags.map(&:title).join(' ')} in #{event.country} #{event.city} #{event.street} with #{event.unit.name} #{event.unit.unit_type}. #{event.description}"
         Rails.logger.debug { "Starting cover generating for #{event.title} with query: #{query}" }
         AiCoverJob.perform_now(query, event.id)
         Rails.logger.debug 'Cover was generated'
