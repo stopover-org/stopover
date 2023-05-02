@@ -4,6 +4,7 @@ import moment from "moment";
 import { Grid, Stack } from "@mui/joy";
 import Typography from "../../components/v2/Typography";
 import TripCard from "./components/TripCard";
+import { TripsScene_AccountFragment$key } from "./__generated__/TripsScene_AccountFragment.graphql";
 
 interface TripsSceneProps {
   accountFragmentRef: TripsScene_AccountFragment$key;

@@ -12,6 +12,8 @@ require 'uri'
 events_count = ENV['count'] ? ENV['count'].to_i : 1000
 interests_count = 100
 
+Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'false')
+
 user = User.create!(phone: '+79829320283')
 user.send_confirmation_code!(primary: 'phone')
 user.activate!(code: user.confirmation_code)
@@ -52,16 +54,16 @@ interest_image = ActiveStorage::Blob.create_and_upload!(io: File.open("#{__dir__
       title = titles.pop
       slug = title.parameterize
       if Interest.find_by(title: title) || Interest.find_by(slug: slug)
-        Rails.logger.debug 'skip'
+        Rails.logger.info 'skip'
       else
         interest = Interest.create!(title: title, slug: slug)
         interest.preview.attach(interest_image)
-        Rails.logger.debug { "Interest was created #{interest.id}" }
+        Rails.logger.info { "Interest was created #{interest.id}" }
       end
 
       ActiveRecord::Base.connection_pool.release_connection
     rescue StandardError => e
-      Rails.logger.debug e.message
+      Rails.logger.info e.message
       ActiveRecord::Base.connection_pool.release_connection
     end
   end
@@ -113,7 +115,7 @@ firm = Firm.create!(
         full_address: Faker::Address.full_address,
         unit: Unit.find(random_from.call(Unit.count) + 1),
         firm: firm,
-        max_attendees: [nil, rand(0..100)].sample,
+        max_attendees: [nil, 100].sample,
         duration_time: random_hours.call,
         status: :published,
         interests: [
@@ -134,9 +136,25 @@ firm = Firm.create!(
         EventOption.create!(
           title: Faker::Coffee.blend_name,
           description: Faker::Coffee.notes,
+          built_in: false,
+          for_attendee: false,
+          organizer_price: Money.new(random_from.call(1_000)),
+          event: event
+        )
+        EventOption.create!(
+          title: Faker::Coffee.blend_name,
+          description: Faker::Coffee.notes,
+          built_in: false,
+          for_attendee: true,
+          organizer_price: Money.new(random_from.call(4_000)),
+          event: event
+        )
+        EventOption.create!(
+          title: Faker::Coffee.blend_name,
+          description: Faker::Coffee.notes,
           built_in: true,
           for_attendee: false,
-          organizer_price: Money.new(random_from.call(10_000)),
+          organizer_price: Money.new(random_from.call(8_000)),
           event: event
         )
         EventOption.create!(
@@ -144,10 +162,10 @@ firm = Firm.create!(
           description: Faker::Coffee.notes,
           built_in: true,
           for_attendee: true,
-          organizer_price: Money.new(random_from.call(10_000)),
+          organizer_price: Money.new(random_from.call(12_000)),
           event: event
         )
-        Rails.logger.debug { "Event Options count: #{EventOption.count}" }
+        Rails.logger.info { "Event Options count: #{EventOption.count}, #{EventOption.last(4).map(&:id)}" }
       end
 
       unless ENV.fetch('without_images', nil) == 'true'
@@ -159,14 +177,15 @@ firm = Firm.create!(
         event.images.attach(event_image5)
       end
 
-      (0...random_from.call(40)).map do
+      40.times.each do
         Rating.create!(account: Account.all.sample, event: event, rating_value: random_from.call(5, 1))
       end
-      Rails.logger.debug { "#{event.id} #{event.title} was created" }
+
+      Rails.logger.info { "#{event.id} #{event.title} was created" }
 
       ActiveRecord::Base.connection_pool.release_connection
     rescue StandardError => e
-      Rails.logger.debug e.message
+      Rails.logger.info e.message
       ActiveRecord::Base.connection_pool.release_connection
     end
   end
@@ -174,11 +193,18 @@ firm = Firm.create!(
   threads.each(&:join)
 end
 
-Event.first((events_count * 0.25).to_i).each { |e| e.update!(status: :draft) }
+trip = Trip.create!(account: User.find_by(email: 'mikhail@dorokhovich.ru').account, status: :draft)
 
-trip = Trip.create!(account: Account.last, status: :draft)
-
-Event.where.not(single_days_with_time: []).last(10).each do |event|
+Event.all.each do |event|
   Stopover::EventSupport.schedule(event)
-  event.bookings.create!(event_id: event.id, schedule_id: Schedule.last.id, trip: trip)
+
+  Rails.logger.info { "#{event.id} #{event.title} was scheduled" }
+end
+
+Event.last(10).each do |event|
+  event.bookings.create!(event_id: event.id,
+                         schedule: event.schedules.first,
+                         trip: trip,
+                         attendees: 5.times.map{ Attendee.new }
+  )
 end

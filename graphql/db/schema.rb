@@ -233,6 +233,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_16_075134) do
     t.integer "min_attendees", default: 0
     t.bigint "firm_id"
     t.index ["event_type"], name: "index_events_on_event_type"
+    t.index ["external_id"], name: "index_events_on_external_id"
     t.index ["firm_id"], name: "index_events_on_firm_id"
     t.index ["unit_id"], name: "index_events_on_unit_id"
   end
@@ -281,6 +282,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_16_075134) do
   create_table "payments", force: :cascade do |t|
     t.string "status"
     t.decimal "total_price_cents", default: "0.0"
+    t.bigint "balance_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "booking_id"
@@ -288,6 +290,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_16_075134) do
     t.string "provider"
     t.decimal "fee_cents", default: "0.0"
     t.string "payment_type"
+    t.index ["balance_id"], name: "index_payments_on_balance_id"
     t.index ["booking_id"], name: "index_payments_on_booking_id"
   end
 

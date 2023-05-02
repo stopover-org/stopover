@@ -29,8 +29,6 @@ class Booking < ApplicationRecord
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
-  has_one :account, through: :trip
-  has_one :user,    through: :account
 
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :booking_options,  dependent: :destroy
@@ -38,13 +36,18 @@ class Booking < ApplicationRecord
   has_many :payments,         dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :attendee_options,             through: :attendees
-  has_many :booking_cancellation_options, through: :event
+  has_many :attendee_options, through: :attendees
 
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :event
   belongs_to :trip
   belongs_to :schedule
+
+  has_one :account, through: :trip
+
+  has_one :user,    through: :account
+
+  has_many :booking_cancellation_options, through: :event
 
   has_many :event_options,
            -> { where(for_attendee: false) },
@@ -80,7 +83,7 @@ class Booking < ApplicationRecord
 
   def check_max_attendees
     return true if event.max_attendees.nil?
-    errors.add(:attendees, 'all places reserved') if Attendee.where(booking_id: Booking.where(schedule_id: schedule.id)).count + attendees.count > event.max_attendees
+    errors.add(:attendees, 'all places reserved') if Attendee.where(booking_id: Booking.where(schedule_id: schedule.reload.id)).count + attendees.count > event.max_attendees
   end
 
   def attendee_total_price

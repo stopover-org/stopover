@@ -86,6 +86,7 @@ type Booking implements Node {
   paymentsType: Payment
   schedule: Schedule!
   status: String!
+  trip: Trip!
 }
 
 type BookingCancellationOption implements Node {

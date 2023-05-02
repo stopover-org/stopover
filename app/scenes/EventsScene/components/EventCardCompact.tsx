@@ -44,6 +44,9 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
           averageRating
           myBookings {
             bookedFor
+            trip {
+              id
+            }
           }
         }
       }
@@ -149,7 +152,7 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
             )}
           </Typography>
           {alreadyBooked && (
-            <Link href="/trips">
+            <Link href={`/trips/${event?.myBookings?.[0]?.trip?.id}`}>
               <Button
                 size="sm"
                 onClick={() => bookEvent(event.id, schedule.scheduledFor)}

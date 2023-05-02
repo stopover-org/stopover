@@ -13,6 +13,7 @@ module Types
     field :organizer_total_price, Types::MoneyType, null: false
     field :left_to_pay_price, Types::MoneyType, null: false
     field :already_paid_price, Types::MoneyType, null: false
+    field :trip, Types::TripType, null: false
     field :attendees, [Types::AttendeeType], null: false do
       argument :filters, Types::AttendeesFilter, required: false
     end

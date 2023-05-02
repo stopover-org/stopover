@@ -12,6 +12,7 @@ module Mutations
     def resolve(event:, **args)
       service = Stopover::BookingService.new(context[:current_user])
       booking = service.book_event(event, args[:booked_for], args[:attendees_count])
+      context[:current_user] = booking.account.user
       {
         booking: booking,
         access_token: booking.user.access_token
