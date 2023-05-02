@@ -1,8 +1,9 @@
-import moment, { Moment } from "moment";
+import { Moment } from "moment";
 
 export const dateFormat = "DD/MM/YYYY";
 export const dateTimeFormat = "DD/MM/YYYY HH:mm";
 export const timeFormat = "HH:mm";
+export const shortDayMonthFormat = "DD/MM";
 export const dayMonthFormat = "D MMMM";
 export const dayMonthTimeFormat = "D MMMM HH:mm";
 
@@ -12,12 +13,12 @@ export const isDifferentDayMonth = (firstDate: Moment, secondDate: Moment) =>
 export const calculateDate = (
   initialDate: Moment,
   delta: string,
-  modifyMethod: string
+  modifyMethod: "add" | "subtract"
 ) => {
   /* allowed values
-   *initialDate: Moment,
-   *delta: "10d 10h 10m",
-   *modifyMethod: add | substract
+   * initialDate: Moment,
+   * delta: "10d 10h 10m",
+   * modifyMethod: add | substract
    */
   const timeParser = (initialTime: string) => {
     const deltaTime = {
@@ -51,7 +52,7 @@ export const calculateDate = (
       .subtract(timeParser(delta).days, "d")
       .subtract(timeParser(delta).hours, "h")
       .subtract(timeParser(delta).minutes, "m");
-  return moment("00:00:00");
+  return initialDate;
 };
 
 export const setTime = (date: Moment, time: string) => {

@@ -1,7 +1,7 @@
 import {
+  styled,
   Typography as JoyTypography,
   TypographyProps as JoyTypographyProps,
-  styled,
 } from "@mui/joy";
 import React from "react";
 
@@ -33,11 +33,7 @@ const Typography = React.forwardRef(
       children = <StrikeThroughStyle>{children}</StrikeThroughStyle>;
     }
     return (
-      <JoyTypography
-        ref={ref}
-        sx={{ textOverflow: "ellipsis", ...sx }}
-        {...props}
-      >
+      <JoyTypography ref={ref} sx={sx} {...props}>
         {children}
       </JoyTypography>
     );

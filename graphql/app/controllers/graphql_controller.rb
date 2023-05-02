@@ -70,6 +70,7 @@ class GraphqlController < ApplicationController
     user = Stopover::AuthorizationSupport.decode_user(headers: request.headers, cookies: cookies)
     @current_user = user
   rescue StandardError => e
+    cookies.delete Stopover::AuthorizationSupport::COOKIE_KEY if e.is_a? JWT::VerificationError
     raise e unless Rails.env.development?
 
     handle_error_in_development(e)

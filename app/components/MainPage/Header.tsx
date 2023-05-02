@@ -52,7 +52,7 @@ const Header = ({ currentUserFragment }: HeaderProps) => {
         <Stack flexDirection="row" justifyContent="flex-end">
           {isMediumDisplay && (
             <Link
-              href="/bookings"
+              href="/trips"
               textAlign="right"
               level="body1"
               fontSize="lg"

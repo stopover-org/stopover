@@ -16,7 +16,7 @@ const Query = graphql`
   }
 `;
 
-const Home = ({ preloadedQuery }: RelayProps<{}, events_Query>) => {
+const Events = ({ preloadedQuery }: RelayProps<{}, events_Query>) => {
   const data = usePreloadedQuery(Query, preloadedQuery);
 
   return (
@@ -26,7 +26,7 @@ const Home = ({ preloadedQuery }: RelayProps<{}, events_Query>) => {
   );
 };
 
-export default withRelay(Home, Query, {
+export default withRelay(Events, Query, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: <Loading />,

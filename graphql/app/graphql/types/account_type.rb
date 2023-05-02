@@ -5,7 +5,7 @@ module Types
     field :id, ID, null: false
     field :status, String, null: false
 
-    field :name, String
+    field :name, String, null: false
     field :street, String
     field :city, String
     field :region, String
@@ -14,13 +14,17 @@ module Types
     field :longitude, Float
     field :latitude, Float
     field :phone, [String]
-    field :primary_phone, String
+    field :primary_phone, String, null: false
     field :verified_at, String
     field :interests, [Types::InterestType]
     field :firm, Types::FirmType
+    field :trips, [Types::TripType], null: false
+    field :trip, Types::TripType, null: false do
+      argument :trip_id, ID, loads: Types::TripType
+    end
 
-    def authorized?(object, context)
-      super && context[:current_user]&.account == object
+    def trip(trip:)
+      trip
     end
   end
 end

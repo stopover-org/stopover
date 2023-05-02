@@ -15,7 +15,7 @@ module Types
     field :requires_check_in, Boolean
     field :recurring_days_with_time, [String]
     field :single_days_with_time, [String]
-    field :duration_time, String
+    field :duration_time, String, null: false
     field :house_number, String
     field :street, String
     field :city, String
@@ -51,7 +51,8 @@ module Types
     end
 
     def my_bookings
-      context[:current_user].account.bookings
+      return [] unless context[:current_user]
+      context[:current_user].account.bookings.joins(:schedule).where('schedules.scheduled_for > ?', Time.zone.now)
     end
   end
 end

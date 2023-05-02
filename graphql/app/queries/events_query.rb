@@ -3,12 +3,10 @@
 class EventsQuery
   def initialize(
     params = {},
-    relations = Event.joins(:schedules).where('schedules.scheduled_for > ?', Time.zone.now),
-    current_user = nil
+    relations = Event.joins(:schedules).where('schedules.scheduled_for > ?', Time.zone.now)
   )
     @relations = relations
     @params = params
-    @current_user = current_user
   end
 
   def all

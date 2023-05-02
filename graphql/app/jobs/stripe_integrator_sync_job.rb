@@ -4,6 +4,6 @@ class StripeIntegratorSyncJob < ApplicationJob
   queue_as :default
 
   def perform(model)
-    StripeIntegrator.sync(model)
+    Stopover::StripeIntegrator.sync(model)
   end
 end

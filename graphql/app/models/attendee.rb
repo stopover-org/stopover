@@ -24,16 +24,21 @@ class Attendee < ApplicationRecord
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
-  #
+
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :attendee_options, dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :event_options, through: :attendee_options
   has_many :schedules, through: :booking
 
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :booking
+
+  # this has_one should be defined after belongs_to booking
+  has_one :event, through: :booking
+
+  # this has_one should be defined after has_one event
+  has_many :event_options, -> { where(for_attendee: true) }, through: :event, inverse_of: :event
 
   # AASM STATES ================================================================
   #

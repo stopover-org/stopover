@@ -44,6 +44,9 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
           averageRating
           myBookings {
             bookedFor
+            trip {
+              id
+            }
           }
         }
       }
@@ -81,8 +84,12 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
     });
   };
   const { event } = schedule;
-  const alreadyBooked = event.myBookings.find((booking) =>
-    moment(booking.bookedFor).isSame(schedule.scheduledFor, "day")
+  const alreadyBooked = React.useMemo(
+    () =>
+      event.myBookings.find((booking) =>
+        moment(booking.bookedFor).isSame(schedule.scheduledFor, "day")
+      ),
+    [event, schedule]
   );
 
   return (
@@ -150,7 +157,7 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
               )}
             </Typography>
             {alreadyBooked && (
-              <Link href="/trips">
+              <Link href={`/trips/${event?.myBookings?.[0]?.trip?.id}`}>
                 <Button
                   size="sm"
                   onClick={() => bookEvent(event.id, schedule.scheduledFor)}

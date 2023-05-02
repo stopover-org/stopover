@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<72ffe9530fb0d8f9a1c0a706272431f3>>
+ * @generated SignedSource<<db4bf79990ccc80031f0c5524e24c16f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,7 +14,7 @@ export type Booking_BookingsFragment$data = {
   readonly bookedFor: any;
   readonly event: {
     readonly description: string;
-    readonly durationTime: string | null;
+    readonly durationTime: string;
     readonly images: ReadonlyArray<string>;
     readonly title: string;
   };

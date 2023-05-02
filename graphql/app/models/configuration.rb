@@ -76,7 +76,7 @@ class Configuration < ApplicationRecord
     ENABLE_STRIPE_INTEGRATION: {
       key: 'ENABLE_STRIPE_INTEGRATION',
       value: Rails.env.test? ? 'false' : 'true',
-      description: '???'
+      description: 'enable creating strip products and prices'
     }
   }.freeze
   def self.get_value(key)

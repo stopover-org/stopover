@@ -31,7 +31,7 @@ class Trip < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==========================================================
   #
   # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :bookings, dependent: :destroy
+  has_many :bookings, -> { includes(:schedule).order('schedules.scheduled_for ASC') }, dependent: :destroy, inverse_of: :trip
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   #
@@ -42,6 +42,15 @@ class Trip < ApplicationRecord
   aasm :status do
     state :draft, initial: true
     state :active
+    state :cancelled
+
+    event :cancel do
+      after_commit do
+        cancel_trip
+      end
+
+      transitions from: %i[active draft], to: :cancelled, guard: :can_cancel
+    end
   end
   # ENUMS =======================================================================
   #
@@ -53,17 +62,30 @@ class Trip < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
-  def min_date
-    bookings.order(booked_for: :asc).first.booked_for
+  def can_cancel
+    return false if cancelled?
+    return false if bookings.paid.any?
+    return false if end_date.past?
+    true
   end
 
-  def max_date
-    bookings.order(booked_for: :desc).first.booked_for
+  def start_date
+    bookings.first.schedule.scheduled_for
+  end
+
+  def end_date
+    bookings.last.schedule.scheduled_for
   end
 
   def cities
     bookings.map do |booking|
       booking.event.city
+    end.uniq
+  end
+
+  def cancel_trip
+    bookings.each do |booking|
+      booking.cancel!
     end
   end
 end

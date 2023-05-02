@@ -40,9 +40,10 @@
 #
 # Indexes
 #
-#  index_events_on_event_type  (event_type)
-#  index_events_on_firm_id     (firm_id)
-#  index_events_on_unit_id     (unit_id)
+#  index_events_on_event_type   (event_type)
+#  index_events_on_external_id  (external_id)
+#  index_events_on_firm_id      (firm_id)
+#  index_events_on_unit_id      (unit_id)
 #
 # Foreign Keys
 #

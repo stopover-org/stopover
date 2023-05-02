@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3bca7fb03a32cfc45733c91a48e73cad>>
+ * @generated SignedSource<<b4cc59dd12af1fb56a09d403778e13a3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,20 +10,18 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type BookingsFilter = {
-  eventId?: string | null;
-  scheduledFor?: any | null;
-  status?: string | null;
-  tripId?: ReadonlyArray<string> | null;
-};
 export type Id_TripsQuery$variables = {
-  filters: BookingsFilter;
+  id: string;
 };
 export type Id_TripsQuery$data = {
   readonly currentUser: {
+    readonly account: {
+      readonly trip: {
+        readonly " $fragmentSpreads": FragmentRefs<"TripScene_TripFragment">;
+      };
+    };
     readonly " $fragmentSpreads": FragmentRefs<"Layout_CurrentUserFragment">;
   } | null;
-  readonly " $fragmentSpreads": FragmentRefs<"BookingList_BookingsFragment" | "TripHeader_BookingsFragment">;
 };
 export type Id_TripsQuery = {
   response: Id_TripsQuery$data;
@@ -35,14 +33,14 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "filters"
+    "name": "id"
   }
 ],
 v1 = [
   {
     "kind": "Variable",
-    "name": "filters",
-    "variableName": "filters"
+    "name": "tripId",
+    "variableName": "id"
   }
 ],
 v2 = {
@@ -50,6 +48,77 @@ v2 = {
   "args": null,
   "kind": "ScalarField",
   "name": "id",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "status",
+  "storageKey": null
+},
+v4 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "cents",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "concreteType": "Currency",
+    "kind": "LinkedField",
+    "name": "currency",
+    "plural": false,
+    "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "name",
+        "storageKey": null
+      }
+    ],
+    "storageKey": null
+  }
+],
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "EventOption",
+  "kind": "LinkedField",
+  "name": "eventOptions",
+  "plural": true,
+  "selections": [
+    (v2/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "builtIn",
+      "storageKey": null
+    },
+    (v5/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Money",
+      "kind": "LinkedField",
+      "name": "attendeePrice",
+      "plural": false,
+      "selections": (v4/*: any*/),
+      "storageKey": null
+    }
+  ],
   "storageKey": null
 };
 return {
@@ -59,16 +128,6 @@ return {
     "metadata": null,
     "name": "Id_TripsQuery",
     "selections": [
-      {
-        "args": (v1/*: any*/),
-        "kind": "FragmentSpread",
-        "name": "BookingList_BookingsFragment"
-      },
-      {
-        "args": (v1/*: any*/),
-        "kind": "FragmentSpread",
-        "name": "TripHeader_BookingsFragment"
-      },
       {
         "alias": null,
         "args": null,
@@ -81,6 +140,33 @@ return {
             "args": null,
             "kind": "FragmentSpread",
             "name": "Layout_CurrentUserFragment"
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Account",
+            "kind": "LinkedField",
+            "name": "account",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": (v1/*: any*/),
+                "concreteType": "Trip",
+                "kind": "LinkedField",
+                "name": "trip",
+                "plural": false,
+                "selections": [
+                  {
+                    "args": null,
+                    "kind": "FragmentSpread",
+                    "name": "TripScene_TripFragment"
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -97,72 +183,6 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "Booking",
-        "kind": "LinkedField",
-        "name": "bookings",
-        "plural": true,
-        "selections": [
-          (v2/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "bookedFor",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Event",
-            "kind": "LinkedField",
-            "name": "event",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "description",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "durationTime",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "images",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "title",
-                "storageKey": null
-              },
-              (v2/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "city",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      },
-      {
-        "alias": null,
         "args": null,
         "concreteType": "User",
         "kind": "LinkedField",
@@ -170,11 +190,138 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
+          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "status",
+            "concreteType": "Account",
+            "kind": "LinkedField",
+            "name": "account",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": (v1/*: any*/),
+                "concreteType": "Trip",
+                "kind": "LinkedField",
+                "name": "trip",
+                "plural": false,
+                "selections": [
+                  (v2/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "cities",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "startDate",
+                    "storageKey": null
+                  },
+                  (v3/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "endDate",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Booking",
+                    "kind": "LinkedField",
+                    "name": "bookings",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "bookedFor",
+                        "storageKey": null
+                      },
+                      (v2/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Money",
+                        "kind": "LinkedField",
+                        "name": "leftToPayPrice",
+                        "plural": false,
+                        "selections": (v4/*: any*/),
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Money",
+                        "kind": "LinkedField",
+                        "name": "alreadyPaidPrice",
+                        "plural": false,
+                        "selections": (v4/*: any*/),
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Attendee",
+                        "kind": "LinkedField",
+                        "name": "attendees",
+                        "plural": true,
+                        "selections": [
+                          (v2/*: any*/),
+                          (v6/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Event",
+                        "kind": "LinkedField",
+                        "name": "event",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "images",
+                            "storageKey": null
+                          },
+                          (v5/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "description",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "durationTime",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      (v6/*: any*/)
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
+              (v2/*: any*/)
+            ],
             "storageKey": null
           }
         ],
@@ -183,16 +330,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0661a1825a973e05cb33bf938586de8b",
+    "cacheID": "d39c7e6803f21b4c8f78feab9640462a",
     "id": null,
     "metadata": {},
     "name": "Id_TripsQuery",
     "operationKind": "query",
-    "text": "query Id_TripsQuery(\n  $filters: BookingsFilter!\n) {\n  ...BookingList_BookingsFragment_VTAHT\n  ...TripHeader_BookingsFragment_VTAHT\n  currentUser {\n    ...Layout_CurrentUserFragment\n    id\n  }\n}\n\nfragment BookingList_BookingsFragment_VTAHT on Query {\n  bookings(filters: $filters) {\n    id\n    bookedFor\n    ...Booking_BookingsFragment\n  }\n}\n\nfragment Booking_BookingsFragment on Booking {\n  bookedFor\n  id\n  event {\n    description\n    durationTime\n    images\n    title\n    id\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n  status\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment TripHeader_BookingsFragment_VTAHT on Query {\n  bookings(filters: $filters) {\n    bookedFor\n    event {\n      city\n      id\n    }\n    id\n  }\n}\n"
+    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  currentUser {\n    ...Layout_CurrentUserFragment\n    account {\n      trip(tripId: $id) {\n        ...TripScene_TripFragment\n        id\n      }\n      id\n    }\n    id\n  }\n}\n\nfragment AttendeeEditForm_AttendeeFragment on Attendee {\n  id\n  eventOptions {\n    id\n    ...EventOptionEditForm_EventOptionFragment\n  }\n}\n\nfragment BookingCard_BookingFragment on Booking {\n  id\n  bookedFor\n  leftToPayPrice {\n    cents\n    currency {\n      name\n    }\n  }\n  alreadyPaidPrice {\n    cents\n    currency {\n      name\n    }\n  }\n  attendees {\n    id\n  }\n  event {\n    id\n    images\n    title\n    description\n    durationTime\n  }\n  ...BookingTime_BookingFragment\n  ...BookingSummary_BookingFragment\n  ...BookingDescription_BookingFragment\n  ...BookingEditForm_BookingFragment\n}\n\nfragment BookingDescription_BookingFragment on Booking {\n  bookedFor\n  event {\n    durationTime\n    description\n    id\n  }\n}\n\nfragment BookingEditForm_BookingFragment on Booking {\n  id\n  attendees {\n    ...AttendeeEditForm_AttendeeFragment\n    id\n  }\n  ...BookingOptionsEditForm_BookingFragment\n}\n\nfragment BookingOptionsEditForm_BookingFragment on Booking {\n  id\n  eventOptions {\n    id\n    builtIn\n    ...EventOptionEditForm_EventOptionFragment\n  }\n}\n\nfragment BookingSummary_BookingFragment on Booking {\n  leftToPayPrice {\n    cents\n    currency {\n      name\n    }\n  }\n  alreadyPaidPrice {\n    cents\n    currency {\n      name\n    }\n  }\n  attendees {\n    id\n  }\n}\n\nfragment BookingTime_BookingFragment on Booking {\n  bookedFor\n  event {\n    durationTime\n    id\n  }\n}\n\nfragment DateBookingsSection_TripFragment on Trip {\n  bookings {\n    id\n    bookedFor\n    ...BookingCard_BookingFragment\n  }\n}\n\nfragment EventOptionEditForm_EventOptionFragment on EventOption {\n  builtIn\n  title\n  attendeePrice {\n    cents\n    currency {\n      name\n    }\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n  status\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment TripScene_TripFragment on Trip {\n  id\n  cities\n  startDate\n  status\n  endDate\n  bookings {\n    bookedFor\n    id\n  }\n  ...DateBookingsSection_TripFragment\n}\n"
   }
 };
 })();
 
-(node as any).hash = "05386d01f1efefc0323b488be976e4e1";
+(node as any).hash = "d6a8015d1ccb3c24cb4a8e55734c987b";
 
 export default node;
