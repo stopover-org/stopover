@@ -194,7 +194,7 @@ Event.all.each_slice(30) do |events|
   events.each do |event|
     threads << Thread.new do
       unless ENV.fetch('without_images', nil) == 'true'
-        query = "art of #{event.interests.map(&:title).join(' and ')} #{event.tags.map(&:title).join(' ')} in #{event.country} #{event.city} #{event.street} with #{event.unit.name} #{event.unit.unit_type}"
+        query = "art of #{event.interests.map(&:title).join(' and ')} #{event.tags.map(&:title).join(' ')} in #{event.country} #{event.city} #{event.street} with #{event.unit.name} #{event.unit.unit_type}. #{event.description}"
         Rails.logger.debug { "Starting cover generating for #{event.title} with query: #{query}" }
         AiCoverJob.perform_now(query, event.id)
         Rails.logger.debug 'Cover was generated'
