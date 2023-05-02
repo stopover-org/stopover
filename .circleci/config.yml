@@ -8,7 +8,7 @@ jobs:
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD
-      - image: cimg/postgres:15.2
+      - image: cimg/postgres:15.0
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD
