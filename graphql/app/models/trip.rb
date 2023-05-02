@@ -62,6 +62,10 @@ class Trip < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
+  def is_in_window_range(booking)
+    return bookings.first.schedule.scheduled_for - ::Configuration.get_value('GET_TRIP_WINDOW').value.to_date.day <= booking.schedule.scheduled_for &&
+      bookings.last.schedule.scheduled_for + ::Configuration.get_value('GET_TRIP_WINDOW').value.to_date.day >= booking.schedule.scheduled_for
+  end
   def can_cancel
     return false if cancelled?
     return false if bookings.paid.any?

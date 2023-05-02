@@ -77,6 +77,11 @@ class Configuration < ApplicationRecord
       key: 'ENABLE_STRIPE_INTEGRATION',
       value: Rails.env.test? ? 'false' : 'true',
       description: 'enable creating strip products and prices'
+    },
+    GET_TRIP_WINDOW: {
+      key: 'GET_TRIP_WINDOW',
+      value: 14,
+      description: 'window gap where booking will be added to the trip'
     }
   }.freeze
   def self.get_value(key)
