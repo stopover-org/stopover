@@ -7,11 +7,11 @@ jobs:
       - image: cimg/ruby:3.0.4
         auth:
           username: mydockerhub-user
-          password: test1234
+          password: $DOCKERHUB_PASSWORD
       - image: cimg/postgres:15.2
         auth:
           username: mydockerhub-user
-          password: test1234
+          password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_USER: $GRAPHQL_DATABASE_USERNAME
           POSTGRES_PASSWORD: $GRAPHQL_DATABASE_PASSWORD
