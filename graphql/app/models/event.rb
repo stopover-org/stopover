@@ -239,29 +239,29 @@ class Event < ApplicationRecord
     #   tag = nil
     # end
 
-    achievements.each do |achievement|
-      tag = Tag.find_or_initialize_by(title: achievement.title.titleize)
-      tag.save! unless tag.id
-      tags.push(tag) unless tags.include?(tag)
-
-      tag = nil
-    end
-
-    if unit
-      tag = Tag.find_or_initialize_by(title: unit.name.titleize)
-      tag.save! unless tag.id
-      tags.push(tag) unless tags.include?(tag)
-
-      tag = nil
-    end
-
-    # [TODO] to add translations for every event_type
-    if event_type
-      tag = Tag.find_or_initialize_by(title: event_type.titleize)
-      tag.save! unless tag.id
-      tags.push(tag) unless tags.include?(tag)
-
-      tag = nil
-    end
+    # achievements.each do |achievement|
+    #   tag = Tag.find_or_initialize_by(title: achievement.title.titleize)
+    #   tag.save unless tag.id
+    #   tags.push(tag) unless tags.include?(tag)
+    #
+    #   tag = nil
+    # end
+    #
+    # if unit
+    #   tag = Tag.find_or_initialize_by(title: unit.name.titleize)
+    #   tag.save unless tag.id
+    #   tags.push(tag) unless tags.include?(tag)
+    #
+    #   tag = nil
+    # end
+    #
+    # # [TODO] to add translations for every event_type
+    # if event_type
+    #   tag = Tag.find_or_initialize_by(title: event_type.titleize)
+    #   tag.save unless tag.id
+    #   tags.push(tag) unless tags.include?(tag)
+    #
+    #   tag = nil
+    # end
   end
 end

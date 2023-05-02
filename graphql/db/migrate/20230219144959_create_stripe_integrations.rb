@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateStripeIntegrations < ActiveRecord::Migration[7.0]
   def change
     create_table :stripe_integrations do |t|
@@ -8,6 +10,6 @@ class CreateStripeIntegrations < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_index :stripe_integrations, [:stripeable_id, :stripeable_type]
+    add_index :stripe_integrations, %i[stripeable_id stripeable_type]
   end
 end
