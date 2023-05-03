@@ -71,6 +71,9 @@ export function useBookEventForm(
         bookEvent(input: $input) {
           booking {
             id
+            event {
+              ...EventScene_EventFragment
+            }
           }
         }
       }
