@@ -52,7 +52,10 @@ module Types
 
     def my_bookings
       return [] unless context[:current_user]
-      context[:current_user].account.bookings.joins(:schedule).where('schedules.scheduled_for > ?', Time.zone.now)
+      context[:current_user].account
+                            .bookings
+                            .joins(:schedule)
+                            .where('schedules.scheduled_for > ? AND bookings.event_id = ?', Time.zone.now, object.id)
     end
   end
 end

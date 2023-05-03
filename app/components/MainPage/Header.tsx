@@ -42,6 +42,11 @@ const Header = ({ currentUserFragment }: HeaderProps) => {
       },
     });
   }, [signOut, router]);
+
+  const isAuthorized = React.useMemo(
+    () => currentUser && currentUser?.status !== "temporary",
+    [currentUser]
+  );
   return (
     <Grid container>
       <Grid xs={9} sm={6}>
@@ -62,20 +67,19 @@ const Header = ({ currentUserFragment }: HeaderProps) => {
               My Trips
             </Link>
           )}
-          {(!currentUser || currentUser?.status === "temporary") &&
-            currentUser && (
-              <Link
-                href="/auth/sign_in"
-                textAlign="right"
-                level="body1"
-                fontSize="lg"
-                lineHeight="75px"
-                paddingRight="10px"
-              >
-                Log In
-              </Link>
-            )}
-          {currentUser && currentUser?.status !== "temporary" && (
+          {!isAuthorized && (
+            <Link
+              href="/auth/sign_in"
+              textAlign="right"
+              level="body1"
+              fontSize="lg"
+              lineHeight="75px"
+              paddingRight="10px"
+            >
+              Log In
+            </Link>
+          )}
+          {isAuthorized && (
             <>
               <Link
                 href="?#register-firm"
