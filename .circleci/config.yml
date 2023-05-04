@@ -5,7 +5,7 @@ jobs:
     working_directory: ~/stopover-project
     docker:
       - image: cimg/ruby:3.0.4
-      - image: cimg/postgres:15.2.0
+      - image: cimg/postgres:15.2
         environment:
           POSTGRES_USER: circleci-demo-go
           POSTGRES_DB: circle_test
