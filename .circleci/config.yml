@@ -8,7 +8,7 @@ jobs:
       - image: cimg/postgres:15.2
         environment:
           POSTGRES_USER: robot
-          POSTGRES_PASSWORD: '''
+          POSTGRES_PASSWORD: ''
           POSTGRES_DB: graphql_test
 
     steps:
