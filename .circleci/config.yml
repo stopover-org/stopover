@@ -2,7 +2,7 @@ version: 2.1
 
 jobs:
   build:
-    working_directory: working-directory
+    working_directory: working-directorylokdo
     docker:
       - image: cimg/ruby:3.0.4
       - image: cimg/postgres:15.2
