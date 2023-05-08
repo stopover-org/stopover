@@ -1,41 +1,4 @@
-#version: 2.1
-#
-#jobs:
-#  build:
-#    working_directory: working-directorylokdo
-#    docker:
-#      - image: cimg/ruby:3.0.4
-#      - image: cimg/postgres:15.2
-#        environment:
-#          POSTGRES_USER: robot
-#          POSTGRES_PASSWORD: ''
-#          POSTGRES_DB: graphql_test
-#
-#    steps:
-#      - checkout
-#      - run:
-#          name: Starting project
-#          command: |
-#            cd graphql
-#            ruby --version
-#            bundle install
-#            cp config/database.example.yml config/database.yml
-##            rake db:create
-##            rake db:schema-load
-##            cd ../app
-##            npm run generate
-##            npm run dev
-##            cd ../graphql
-##            rails s
-##            foreman start
-#
-#
-#workflows:
-#  backend:
-#    jobs:
-#      - build
-
-version: 2
+version: 2.1
 jobs:
   build:
     working_directory: /stopover
