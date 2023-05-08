@@ -11,7 +11,7 @@ jobs:
           name: Run tests
           command: |
             docker-compose up -d
-            docker-compose run stopover-web rspec
+            docker-compose run web rspec
 workflows:
   backend:
     jobs:
