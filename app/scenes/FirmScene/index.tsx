@@ -1,70 +1,72 @@
 import React from "react";
 import { Grid } from "@mui/joy";
-import { FormProvider } from "react-hook-form";
 import Input from "../../components/v2/Input";
 import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
 
 const FirmScene = () => (
-  <FormProvider>
+  <form>
     <Grid container spacing={2} padding={2}>
       <Grid xs={12}>
-        <Typography>Firm title</Typography>
+        <Typography level="h3">Firm title</Typography>
       </Grid>
       <Grid xs={6}>
-        <Input hint="title" />
+        <Input label="Title" />
       </Grid>
       <Grid xs={6}>
-        <Input hint="contact_person" />
+        <Input label="Contact Person" />
       </Grid>
 
       <Grid xs={12} pt={5}>
-        <Typography>Address</Typography>
+        <Typography level="h3">Address</Typography>
       </Grid>
       <Grid xs={6}>
-        <Input hint="country" />
+        <Input label="Country" />
       </Grid>
       <Grid xs={6}>
-        <Input hint="city" />
+        <Input label="Region" />
       </Grid>
       <Grid xs={6}>
-        <Input hint="street" />
+        <Input label="City" />
       </Grid>
       <Grid xs={6}>
-        <Input hint="house_number" />
+        <Input label="Street" />
+      </Grid>
+      <Grid xs={6}>
+        <Input label="House Number" />
       </Grid>
       <Grid xs={12}>
-        <Input hint="full_address" />
+        <Input label="Full Address" hint="<lattitude>, <longitude>" />
       </Grid>
 
       <Grid xs={12} pt={5}>
-        <Typography>Contact information</Typography>
-      </Grid>
-      <Grid xs={12}>
-        <Input hint="contacts" />
+        <Typography level="h3">Contact Information</Typography>
       </Grid>
       <Grid xs={6}>
-        <Input hint="primary_email" />
+        <Input label="Primary Email" />
       </Grid>
       <Grid xs={6}>
-        <Input hint="primary_phone" />
+        <Input label="Primary Phone" />
       </Grid>
       <Grid xs={12}>
-        <Input hint="website" />
+        <Input label="Contacts" />
+      </Grid>
+      <Grid xs={12}>
+        <Input label="WebSite" />
       </Grid>
 
       <Grid xs={12} pt={5}>
-        <Typography>Description</Typography>
+        <Typography level="h3">Description</Typography>
       </Grid>
       <Grid xs={12}>
-        <Input hint="description" />
+        <Input label="Description" />
       </Grid>
 
       <Grid xs={6}>
         <Button type="submit">Submit</Button>
       </Grid>
     </Grid>
-  </FormProvider>
+  </form>
 );
 
 export default React.memo(FirmScene);
