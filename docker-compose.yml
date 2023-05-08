@@ -29,8 +29,6 @@ services:
       DATABASE_PASSWORD: password
       DATABASE_HOST: db
       REDIS_URL: redis://redis:6379/12
-    volumes:
-      - .:/app:cached
     ports:
       - 3000:3000
     depends_on:
@@ -44,8 +42,6 @@ services:
       DATABASE_PASSWORD: password
       DATABASE_HOST: db
       REDIS_URL: redis://redis:6379/12
-    volumes:
-      - .:/app:cached
     depends_on:
       - db
       - redis
