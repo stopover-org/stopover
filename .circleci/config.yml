@@ -17,8 +17,8 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            docker-compose up --build -d
             docker-compose run web rake db:create db:schema:load
+            docker-compose up -d
             docker-compose run web rspec
 workflows:
   backend:
