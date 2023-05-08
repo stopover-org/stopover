@@ -6,6 +6,7 @@ jobs:
       - image: docker:23.0.5-cli-alpine3.17
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Run tests
           command: |
