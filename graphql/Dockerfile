@@ -4,13 +4,16 @@ RUN mkdir /app
 WORKDIR /app/graphql
 
 COPY ./Gemfile* .
-COPY ./config/database.yml ./config/database.yml
+COPY ./config/database.example.yml ./config/database.example.yml
+COPY ./tmp ./tmp
 
 RUN gem install bundler
 
 RUN bundle install
 
 RUN bundle binstubs --all
+
+RUN cp config/database.example.yml config/database.yml
 
 #RUN bundle exec rake db:schema:load
 CMD ["/bin/bash"]
