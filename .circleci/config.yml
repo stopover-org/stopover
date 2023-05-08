@@ -1,7 +1,7 @@
 version: 2.1
 jobs:
   build:
-    working_directory: /stopover
+    working_directory: ~/stopover
     docker:
       - image: cimg/base:2023.05
     steps:
