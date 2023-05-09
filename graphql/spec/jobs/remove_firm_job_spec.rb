@@ -13,7 +13,9 @@ RSpec.describe RemoveFirmJob, type: :job do
       events.each do |event|
         expect(event.schedules.count).to eq(0)
       end
+
       RemoveFirmJob.perform_now(firm.id)
+
       events.each do |event|
         expect(event.reload.status).to eq('deleted')
         expect(event.schedules.count).to eq(0)

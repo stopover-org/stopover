@@ -138,10 +138,10 @@ class Event < ApplicationRecord
 
   # CALLBACKS ================================================================
   before_validation :set_prices
-  before_validation :update_tags
-  before_validation :adjust_prices
-  after_save        :check_schedules
-  after_commit      :sync_stripe
+  before_validation :update_tags,     unless: :deleted?
+  before_validation :adjust_prices,   unless: :deleted?
+  after_save        :check_schedules, unless: :deleted?
+  after_commit      :sync_stripe,     unless: :deleted?
 
   # SCOPES =====================================================================
   scope :by_city, ->(city) { where(city: city) }
@@ -232,12 +232,13 @@ class Event < ApplicationRecord
   end
 
   def update_tags
-    # interests.each do |interest|
-    #   tag = tags.where(title: interest.title.downcase).last
-    #   tag ||= Tag.create!(title: interest.title.downcase)
-    #   tags.push(tag) unless tags.include?(tag)
-    #   tag = nil
-    # end
+    interests.each do |interest|
+      tag = Tag.find_or_initialize_by(title: interest.title.downcase)
+      tag.save! unless tag.id
+      tags.push(tag) unless tags.include?(tag)
+
+      tag = nil
+    end
 
     # achievements.each do |achievement|
     #   tag = Tag.find_or_initialize_by(title: achievement.title.titleize)

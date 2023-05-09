@@ -108,3 +108,5 @@ gem 'net-sftp'
 gem 'sidekiq', '~> 6.5'
 
 gem "stripe", "~> 8.3"
+
+gem "rspec-sidekiq", "~> 3.1"
