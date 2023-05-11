@@ -20,6 +20,7 @@ RSpec.describe Mutations::BookEvent do
       "
     end
     let!(:event) { create(:recurring_event) }
+    let!(:user) { create(:account).user }
 
     subject do
       GraphqlSchema.execute(mutation, variables: {
@@ -28,7 +29,7 @@ RSpec.describe Mutations::BookEvent do
                                 bookedFor: event.available_dates.last,
                                 attendeesCount: 1
                               }
-                            })
+                            }, context: { current_user: user })
     end
 
     it 'booking was created' do
