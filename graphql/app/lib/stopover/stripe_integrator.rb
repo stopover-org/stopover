@@ -85,7 +85,7 @@ module Stopover
 
     def self.create_full_amount(model)
       stripe_integration = StripeIntegration.new(price_type: :full_amount)
-      return unless model.stripe_integrations.where(price_type: :full_amount)
+      return unless model.stripe_integrations.where(price_type: :full_amount).empty?
 
       model.stripe_integrations << stripe_integration
 
@@ -113,7 +113,7 @@ module Stopover
 
     def self.create_prepaid_amount(model)
       stripe_integration = StripeIntegration.new(price_type: :prepaid_amount)
-      return unless model.stripe_integrations.where(price_type: :prepaid_amount)
+      return unless model.stripe_integrations.where(price_type: :prepaid_amount).empty?
 
       model.stripe_integrations << stripe_integration
       stripe = retrieve(model)
@@ -136,7 +136,7 @@ module Stopover
 
     def self.create_remaining_amount(model)
       stripe_integration = StripeIntegration.new(price_type: :remaining_amount)
-      return unless model.stripe_integrations.where(price_type: :remaining_amount)
+      return unless model.stripe_integrations.where(price_type: :remaining_amount).empty?
 
       model.stripe_integrations << stripe_integration
       stripe = retrieve(model)

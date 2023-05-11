@@ -59,11 +59,11 @@ class EventOption < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
+  private
+
   def sync_stripe
     StripeIntegratorSyncJob.perform_later(self)
   end
-
-  private
 
   def adjust_prices
     self.attendee_price = (organizer_price * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(

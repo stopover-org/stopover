@@ -59,6 +59,7 @@ FactoryBot.define do
     unit { create(:unit) }
     firm { create(:firm) }
     organizer_price_per_uom_cents { 500 }
+    prepaid_amount_cents { 100 }
     country { Faker::Address.country }
     city { Faker::Address.city }
     full_address { Faker::Address.full_address }

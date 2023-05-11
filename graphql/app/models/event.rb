@@ -138,20 +138,16 @@ class Event < ApplicationRecord
 
   # CALLBACKS ================================================================
   before_validation :set_prices
-  before_validation :update_tags
-  before_validation :adjust_prices
-  after_save        :check_schedules
-  after_commit      :sync_stripe
+  before_validation :update_tags,     unless: :deleted?
+  before_validation :adjust_prices,   unless: :deleted?
+  after_save        :check_schedules, unless: :deleted?
+  after_commit      :sync_stripe,     unless: :deleted?
 
   # SCOPES =====================================================================
   scope :by_city, ->(city) { where(city: city) }
 
   # DELEGATIONS ==============================================================
   delegate :count, to: :ratings, prefix: true
-
-  def sync_stripe
-    StripeIntegratorSyncJob.perform_later(self)
-  end
 
   def can_be_scheduled_for?(date)
     return false if date.past?
@@ -227,17 +223,22 @@ class Event < ApplicationRecord
 
   private
 
+  def sync_stripe
+    StripeIntegratorSyncJob.perform_later(self)
+  end
+
   def check_schedules
     ScheduleEventJob.perform_later(event_id: id)
   end
 
   def update_tags
-    # interests.each do |interest|
-    #   tag = tags.where(title: interest.title.downcase).last
-    #   tag ||= Tag.create!(title: interest.title.downcase)
-    #   tags.push(tag) unless tags.include?(tag)
-    #   tag = nil
-    # end
+    interests.each do |interest|
+      tag = Tag.find_or_initialize_by(title: interest.title.downcase)
+      tag.save! unless tag.id
+      tags.push(tag) unless tags.include?(tag)
+
+      tag = nil
+    end
 
     # achievements.each do |achievement|
     #   tag = Tag.find_or_initialize_by(title: achievement.title.titleize)
