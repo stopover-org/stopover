@@ -21,7 +21,8 @@
 # Indexes
 #
 #  index_trips_on_account_id  (account_id)
-#
+
+# TODO: remove start_date end_date from the table
 class Trip < ApplicationRecord
   # MODULES ===============================================================
   include AASM
