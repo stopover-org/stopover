@@ -8,7 +8,7 @@ RSpec.describe ScheduleEventJob, type: :job do
 
     it 'schedules event' do
       expect(event.schedules.count).to eq(0)
-      ScheduleEventJob.perform_now(event_id: event.id, force: true)
+      ScheduleEventJob.perform_now(event_id: event.id)
       expect(event.reload.schedules.count).to eq(56)
     end
   end

@@ -149,10 +149,6 @@ class Event < ApplicationRecord
   # DELEGATIONS ==============================================================
   delegate :count, to: :ratings, prefix: true
 
-  def sync_stripe
-    StripeIntegratorSyncJob.perform_later(self)
-  end
-
   def can_be_scheduled_for?(date)
     return false if date.past?
     return true if recurring_days_with_time.include?("#{Date::DAYNAMES[date.wday]} #{date.hour}:#{date.min}")
@@ -226,6 +222,10 @@ class Event < ApplicationRecord
   end
 
   private
+
+  def sync_stripe
+    StripeIntegratorSyncJob.perform_later(self)
+  end
 
   def check_schedules
     ScheduleEventJob.perform_later(event_id: id)

@@ -57,7 +57,7 @@ RSpec.describe Mutations::UpdateAttendee do
         GraphqlSchema.execute(mutation, variables: {
                                 input: {
                                   attendeeId: GraphqlSchema.id_from_object(attendee),
-                                  eventOptionsId: [
+                                  eventOptionIds: [
                                     GraphqlSchema.id_from_object(event_option),
                                     GraphqlSchema.id_from_object(attendee_option1.event_option),
                                     GraphqlSchema.id_from_object(attendee_option2.event_option)
@@ -89,7 +89,7 @@ RSpec.describe Mutations::UpdateAttendee do
         GraphqlSchema.execute(mutation, variables: {
                                 input: {
                                   attendeeId: GraphqlSchema.id_from_object(attendee),
-                                  eventOptionsId: [],
+                                  eventOptionIds: [],
                                   firstName: 'Max',
                                   lastName: 'Gerasimov',
                                   email: 'example@mail.com',
@@ -102,7 +102,7 @@ RSpec.describe Mutations::UpdateAttendee do
         expect(attendee.attendee_options.first).to eq(attendee_option1)
         expect(attendee.attendee_options.second).to eq(attendee_option2)
         subject
-        expect(attendee.reload.attendee_options.count).to eq(0)
+        expect(attendee.attendee_options.reload.count).to eq(0)
       end
     end
   end

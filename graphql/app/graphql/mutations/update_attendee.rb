@@ -5,7 +5,7 @@ module Mutations
     field :attendee, Types::AttendeeType
 
     argument :attendee_id, ID, loads: Types::AttendeeType
-    argument :event_options_id, [ID],
+    argument :event_option_ids, [ID],
              loads: Types::EventOptionType,
              required: false
     argument :first_name, String, required: false
@@ -14,14 +14,14 @@ module Mutations
     argument :phone, String, required: false
 
     def resolve(attendee:, **args)
-      if args[:event_options].present?
+      if args[:event_options].is_a? Array
         attendee.attendee_options.destroy_all
         args[:event_options].each do |option|
-          option.attendee_options.create!(attendee: attendee)
+          option.attendee_options.create!(attendee: attendee, event_option: option)
         end
       end
 
-      attendee.update!(**args)
+      attendee.update!(**args.except(:event_options))
       {
         attendee: attendee
       }
