@@ -232,6 +232,8 @@ GEM
       timeout
     net-ssh (7.0.1)
     nio4r (2.5.8)
+    nokogiri (1.13.4-aarch64-linux)
+      racc (~> 1.4)
     nokogiri (1.13.4-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.13.4-x86_64-linux)
@@ -304,6 +306,9 @@ GEM
       rspec-expectations (~> 3.10)
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
+    rspec-sidekiq (3.1.0)
+      rspec-core (~> 3.0, >= 3.0.0)
+      sidekiq (>= 2.4.0)
     rspec-support (3.11.0)
     rubocop (1.28.2)
       parallel (~> 1.10)
@@ -387,6 +392,7 @@ GEM
     zeitwerk (2.5.4)
 
 PLATFORMS
+  aarch64-linux
   arm64-darwin-21
   arm64-darwin-22
   x86_64-linux
@@ -423,6 +429,7 @@ DEPENDENCIES
   rails (~> 7.0.0)
   rails-erd
   rspec-rails
+  rspec-sidekiq (~> 3.1)
   rubocop
   rubocop-rails
   selenium-webdriver

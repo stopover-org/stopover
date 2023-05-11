@@ -51,7 +51,7 @@ class Firm < ApplicationRecord
     event :activate do
       transitions from: %i[pending deleted], to: :active
     end
-    event :soft_delete, after_commit: :unpublish_events do
+    event :soft_delete, after_commit: :soft_delete_callback do
       transitions from: %i[active pending], to: :deleted
     end
   end
@@ -82,7 +82,7 @@ class Firm < ApplicationRecord
     self.balance = Balance.new
   end
 
-  def unpublish_events
+  def soft_delete_callback
     RemoveFirmJob.perform_later(id)
   end
 end

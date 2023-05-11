@@ -23,6 +23,10 @@ require 'rails_helper'
 RSpec.describe StripeIntegration, type: :model do
   before do
     ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
+    allow(Stripe::Product).to receive(:create).and_return({ id: SecureRandom.hex(50) })
+    allow(Stripe::Price).to receive(:create).and_return({ id: SecureRandom.hex(50) })
+    allow(Stripe::Product).to receive(:retrieve).and_return({ id: SecureRandom.hex(50) })
+    allow(Stripe::Price).to receive(:retrieve).and_return({ id: SecureRandom.hex(50) })
   end
   describe 'stripe integration' do
     let!(:event) { create(:event) }

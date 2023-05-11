@@ -1,0 +1,54 @@
+version: '3.1'
+
+services:
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: robot
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+  web:
+    image: graphql
+    build:
+      dockerfile: ./Dockerfile
+      context: graphql
+    command: bash -c "bundle exec rails s -p 3000 -b '0.0.0.0'"
+    environment:
+      DATABASE_USERNAME: robot
+      DATABASE_PASSWORD: password
+      DATABASE_HOST: db
+      REDIS_URL: redis://redis:6379/12
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+      - redis
+  worker:
+    image: graphql
+    command: bash -c "foreman start"
+    environment:
+      DATABASE_USERNAME: robot
+      DATABASE_PASSWORD: password
+      DATABASE_HOST: db
+      REDIS_URL: redis://redis:6379/12
+    depends_on:
+      - db
+      - redis
+volumes:
+  postgres_data: {}
+  cache:
+    driver: local
+networks:
+  default:
+    name: graphql_default
