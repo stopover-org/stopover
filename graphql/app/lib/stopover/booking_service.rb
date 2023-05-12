@@ -4,12 +4,11 @@ module Stopover
   class BookingService
     def initialize(user = nil)
       @user = user || User.create!(status: :temporary)
-      @account = @user.account
+      @account = @user.account || Account.create!(user: @user)
       @current_trip_service = Stopover::CurrentTripService.new(user: @user)
     end
 
     def book_event(event, booked_for, attendees_count = 1)
-      @account ||= Account.create!(user: @user)
       @current_trip = @current_trip_service.get_current_trip(booked_for)
       bookings = event.bookings.includes(:schedule)
                       .where(schedule: { scheduled_for: booked_for })

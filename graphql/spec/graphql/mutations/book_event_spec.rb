@@ -39,5 +39,31 @@ RSpec.describe Mutations::BookEvent do
     it 'attendee was created' do
       expect { subject }.to change { Attendee.count }.by(1)
     end
+
+    context 'no user provided' do
+      let!(:event) { create(:recurring_event) }
+
+      subject do
+        GraphqlSchema.execute(mutation, variables: {
+                                input: {
+                                  eventId: GraphqlSchema.id_from_object(event),
+                                  bookedFor: event.available_dates.last,
+                                  attendeesCount: 1
+                                }
+                              }, context: nil)
+      end
+
+      it 'guest created' do
+        expect { subject }.to change { User.count }.by(1)
+      end
+
+      it 'attendee created' do
+        expect { subject }.to change { Attendee.count }.by(1)
+      end
+
+      it 'Booking created' do
+        expect { subject }.to change { Booking.count }.by(1)
+      end
+    end
   end
 end
