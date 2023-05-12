@@ -37,8 +37,8 @@ const ButtonDatePicker = ({
         </Button>
         <DatePicker
           open={opened}
-          onChange={(...rest) => {
-            onChange(...rest);
+          onChange={(value) => {
+            onChange(value);
 
             setOpened(false);
           }}

@@ -23,7 +23,7 @@ const Trip = ({ preloadedQuery }: any) => {
   const data = usePreloadedQuery<Id_TripsQuery>(Query, preloadedQuery);
   return (
     <Layout currentUserFragment={data.currentUser!}>
-      <TripScene tripFragmentRef={data.currentUser?.account?.trip} />
+      <TripScene tripFragmentRef={data.currentUser?.account?.trip!} />
     </Layout>
   );
 };
