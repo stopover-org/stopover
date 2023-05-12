@@ -70,13 +70,13 @@ const Popover = ({
   onClose,
   size = PopoverSizes.SMALL,
 }: Props) => {
-  const popoverWindowRef = useRef();
+  const popoverWindowRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
     const handler = (event: Event) => {
       if (
         popoverWindowRef.current &&
-        !popoverWindowRef.current.contains(event.target)
+        !popoverWindowRef.current?.contains(event.target as HTMLDivElement)
       ) {
         onClose();
       }

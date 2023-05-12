@@ -11,7 +11,7 @@ interface TripsSceneProps {
 }
 
 const TripsScene = ({ accountFragmentRef }: TripsSceneProps) => {
-  const { trips } = useFragment(
+  const data = useFragment(
     graphql`
       fragment TripsScene_AccountFragment on Account {
         trips {
@@ -25,7 +25,7 @@ const TripsScene = ({ accountFragmentRef }: TripsSceneProps) => {
     `,
     accountFragmentRef
   );
-
+  const trips = data?.trips || [];
   const draftTrips = React.useMemo(
     () => trips.filter((trip) => trip.status === "draft"),
     [trips]
