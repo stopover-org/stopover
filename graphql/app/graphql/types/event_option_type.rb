@@ -7,5 +7,6 @@ module Types
     field :organizer_price, Types::MoneyType
     field :attendee_price, Types::MoneyType, null: false
     field :built_in, Boolean, null: false
+    field :for_attendee, Boolean, null: false
   end
 end

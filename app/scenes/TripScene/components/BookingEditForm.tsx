@@ -15,6 +15,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
       fragment BookingEditForm_BookingFragment on Booking {
         id
         attendees {
+          id
           ...AttendeeEditForm_AttendeeFragment
         }
         ...BookingOptionsEditForm_BookingFragment
@@ -24,18 +25,16 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
   );
 
   return (
-    <form>
-      <Grid container>
-        <Grid xs={7}>
-          {booking.attendees.map((attendee) => (
-            <AttendeeEditForm attendeeFragmentRef={attendee} />
-          ))}
-        </Grid>
-        <Grid xs={5}>
-          <BookingOptionsEditForm bookingFragmentRef={booking} />
-        </Grid>
+    <Grid container>
+      <Grid xs={7}>
+        {booking.attendees.map((attendee) => (
+          <AttendeeEditForm key={attendee.id} attendeeFragmentRef={attendee} />
+        ))}
       </Grid>
-    </form>
+      <Grid xs={5}>
+        <BookingOptionsEditForm bookingFragmentRef={booking} />
+      </Grid>
+    </Grid>
   );
 };
 

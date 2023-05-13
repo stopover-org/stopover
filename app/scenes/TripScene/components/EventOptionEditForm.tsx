@@ -5,6 +5,7 @@ import Checkbox from "../../../components/v2/Checkbox/Checkbox";
 import Typography from "../../../components/v2/Typography/Typography";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import { EventOptionEditForm_EventOptionFragment$key } from "./__generated__/EventOptionEditForm_EventOptionFragment.graphql";
+import useFormContext from "../../../lib/hooks/useFormContext";
 
 interface EventOptionEditFormProps {
   eventOptionFragmentRef: EventOptionEditForm_EventOptionFragment$key;
@@ -18,6 +19,7 @@ const EventOptionEditForm = ({
       fragment EventOptionEditForm_EventOptionFragment on EventOption {
         builtIn
         title
+        id
         attendeePrice {
           cents
           currency {
@@ -28,14 +30,30 @@ const EventOptionEditForm = ({
     `,
     eventOptionFragmentRef
   );
+  const form = useFormContext();
+  const eventOptions = form.useFormField<string[]>("eventOptionIds");
+  const onChange = React.useCallback(() => {
+    if (eventOptions.value.find((id) => id === eventOption.id)) {
+      eventOptions.onChange(
+        eventOptions.value.filter((id) => id !== eventOption.id)
+      );
+    } else {
+      eventOptions.onChange(eventOptions.value.push(eventOption.id));
+    }
+  }, [eventOptions.value]);
+
+  const checked = React.useMemo(
+    () => !!eventOptions.value.find((id) => id === eventOption.id),
+    [eventOption, eventOptions]
+  );
 
   return (
     <Grid container xs={12}>
       <Grid xs={6}>
         <Checkbox
-          onChange={() => {}}
+          onChange={onChange}
           label={eventOption.title}
-          checked={eventOption.builtIn}
+          checked={checked}
         />
       </Grid>
       <Grid xs={3}>

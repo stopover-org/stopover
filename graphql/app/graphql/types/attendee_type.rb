@@ -3,6 +3,7 @@
 module Types
   class AttendeeType < Types::ModelObject
     field :booking, Types::BookingType, null: false
+    field :attendee_options, [Types::AttendeeOptionType], null: false
     field :event_options, [Types::EventOptionType], null: false
     field :first_name, String
     field :last_name, String

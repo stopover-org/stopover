@@ -9,14 +9,14 @@ import React from "react";
 function useFormContext<FieldsType extends FieldValues>() {
   const form = useFormContextOrigin<FieldsType>();
 
-  function useFormField(name: Path<FieldsType>) {
+  function useFormField<ValueType = string>(name: Path<FieldsType>) {
     const field = form.register(name);
 
     return React.useMemo(
       () => ({
         ...field,
         ref: field.ref,
-        value: form.watch(name),
+        value: form.watch(name) as ValueType,
         onChange: (value: PathValue<FieldsType, Path<FieldsType>>) => {
           form.setValue(name, value);
         },
