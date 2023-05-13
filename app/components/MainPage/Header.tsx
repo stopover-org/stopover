@@ -10,9 +10,10 @@ import Link from "../v2/Link";
 
 interface HeaderProps {
   currentUserFragment: Header_CurrentUserFragment$key;
+  showRegisterFirm: boolean;
 }
 
-const Header = ({ currentUserFragment }: HeaderProps) => {
+const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
   const router = useRouter();
   const theme = useTheme();
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("sm"));
@@ -21,6 +22,11 @@ const Header = ({ currentUserFragment }: HeaderProps) => {
       fragment Header_CurrentUserFragment on User {
         id
         status
+        account {
+          firm {
+            id
+          }
+        }
       }
     `,
     currentUserFragment
@@ -79,18 +85,31 @@ const Header = ({ currentUserFragment }: HeaderProps) => {
               Log In
             </Link>
           )}
-          {isAuthorized && (
+          {isAuthorized && showRegisterFirm && (
             <>
-              <Link
-                href="?#register-firm"
-                textAlign="right"
-                level="body1"
-                fontSize="lg"
-                lineHeight="75px"
-                paddingRight="10px"
-              >
-                Register Firm
-              </Link>
+              {currentUser.account?.firm?.id ? (
+                <Link
+                  href={`/firms/${currentUser.account?.firm?.id}`}
+                  textAlign="right"
+                  level="body1"
+                  fontSize="lg"
+                  lineHeight="75px"
+                  paddingRight="10px"
+                >
+                  My Firm
+                </Link>
+              ) : (
+                <Link
+                  href="/firms/new"
+                  textAlign="right"
+                  level="body1"
+                  fontSize="lg"
+                  lineHeight="75px"
+                  paddingRight="10px"
+                >
+                  Register Firm
+                </Link>
+              )}
               <Link
                 href="?#sign-out"
                 textAlign="right"

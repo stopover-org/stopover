@@ -1,39 +1,32 @@
 import React from "react";
-import { graphql, usePreloadedQuery } from "react-relay";
-// import { useRouter } from "next/router";
 import { RelayProps, withRelay } from "relay-nextjs";
+import { graphql, usePreloadedQuery } from "react-relay";
+import FirmScene from "../../scenes/FirmScene";
 import Layout from "../../components/MainPage/Layout";
-import { Id_Query } from "./__generated__/Id_Query.graphql";
-import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/v1/Loading";
-import EventScene from "../../scenes/EventScene";
+import { getClientEnvironment } from "../../lib/clientEnvironment";
+import { new_NewFirmQuery } from "./__generated__/new_NewFirmQuery.graphql";
 
 const Query = graphql`
-  query Id_Query($id: ID!) {
+  query new_NewFirmQuery {
     currentUser {
       ...Layout_CurrentUserFragment
-    }
-    event(id: $id) {
-      ...EventScene_EventFragment
     }
   }
 `;
 
-interface Props {
-  id: number;
-  googleMapsApiKey: string;
-}
+interface Props {}
 
-const Event = ({ preloadedQuery }: RelayProps<Props, Id_Query>) => {
-  const { event, currentUser } = usePreloadedQuery(Query, preloadedQuery);
+const NewFirm = ({ preloadedQuery }: RelayProps<Props, new_NewFirmQuery>) => {
+  const { currentUser } = usePreloadedQuery(Query, preloadedQuery);
   return (
-    <Layout currentUserFragment={currentUser!}>
-      <EventScene eventFragmentRef={event!} />
+    <Layout currentUserFragment={currentUser!} showRegisterFirm={false}>
+      <FirmScene />
     </Layout>
   );
 };
 
-export default withRelay(Event, Query, {
+export default withRelay(NewFirm, Query, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: <Loading />,
@@ -41,10 +34,7 @@ export default withRelay(Event, Query, {
   // Note: This function must always return the same value.
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
-  serverSideProps: async (ctx) => ({
-    id: +ctx.query.id!,
-    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
-  }),
+  serverSideProps: async () => ({}),
   // Server-side props can be accessed as the second argument
   // to this function.
   createServerEnvironment: async ({ req }) => {
