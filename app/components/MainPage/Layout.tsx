@@ -8,9 +8,14 @@ import { Layout_CurrentUserFragment$key } from "./__generated__/Layout_CurrentUs
 type LayoutProps = {
   children: React.ReactElement;
   currentUserFragment: Layout_CurrentUserFragment$key;
+  showRegisterFirm?: boolean;
 };
 
-const Layout = ({ children, currentUserFragment }: LayoutProps) => {
+const Layout = ({
+  children,
+  currentUserFragment,
+  showRegisterFirm = true,
+}: LayoutProps) => {
   const [isSSR, setIsSSR] = React.useState(true);
 
   React.useEffect(() => {
@@ -29,7 +34,10 @@ const Layout = ({ children, currentUserFragment }: LayoutProps) => {
   return (
     <Sheet>
       <div id="gallery-portal" />
-      <Header currentUserFragment={currentUser} />
+      <Header
+        currentUserFragment={currentUser}
+        showRegisterFirm={showRegisterFirm}
+      />
       {!isSSR ? children : null}
       <Footer />
     </Sheet>

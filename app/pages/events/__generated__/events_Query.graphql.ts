@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1558dce6d70f60469997f7b7121bce05>>
+ * @generated SignedSource<<a700aeec6234a6bdb433e644920a69f3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -31,6 +31,9 @@ var v0 = {
   "storageKey": null
 },
 v1 = [
+  (v0/*: any*/)
+],
+v2 = [
   {
     "kind": "Literal",
     "name": "after",
@@ -42,26 +45,26 @@ v1 = [
     "value": 10
   }
 ],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "title",
   "storageKey": null
 },
-v3 = [
+v4 = [
   (v0/*: any*/),
-  (v2/*: any*/)
+  (v3/*: any*/)
 ],
-v4 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "cents",
   "storageKey": null
 },
-v5 = [
-  (v4/*: any*/)
+v6 = [
+  (v5/*: any*/)
 ];
 return {
   "fragment": {
@@ -116,13 +119,35 @@ return {
             "kind": "ScalarField",
             "name": "status",
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Account",
+            "kind": "LinkedField",
+            "name": "account",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Firm",
+                "kind": "LinkedField",
+                "name": "firm",
+                "plural": false,
+                "selections": (v1/*: any*/),
+                "storageKey": null
+              },
+              (v0/*: any*/)
+            ],
+            "storageKey": null
           }
         ],
         "storageKey": null
       },
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "ScheduleConnection",
         "kind": "LinkedField",
         "name": "schedules",
@@ -161,7 +186,7 @@ return {
                     "plural": false,
                     "selections": [
                       (v0/*: any*/),
-                      (v2/*: any*/),
+                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -176,7 +201,7 @@ return {
                         "kind": "LinkedField",
                         "name": "interests",
                         "plural": true,
-                        "selections": (v3/*: any*/),
+                        "selections": (v4/*: any*/),
                         "storageKey": null
                       },
                       {
@@ -187,7 +212,7 @@ return {
                         "name": "attendeePricePerUom",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -216,7 +241,7 @@ return {
                         "kind": "LinkedField",
                         "name": "tags",
                         "plural": true,
-                        "selections": (v3/*: any*/),
+                        "selections": (v4/*: any*/),
                         "storageKey": null
                       },
                       {
@@ -248,9 +273,7 @@ return {
                             "kind": "LinkedField",
                             "name": "trip",
                             "plural": false,
-                            "selections": [
-                              (v0/*: any*/)
-                            ],
+                            "selections": (v1/*: any*/),
                             "storageKey": null
                           },
                           (v0/*: any*/)
@@ -310,7 +333,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "filters": null,
         "handle": "connection",
         "key": "EventsScene_query_schedules",
@@ -346,7 +369,7 @@ return {
             "kind": "LinkedField",
             "name": "minPrice",
             "plural": false,
-            "selections": (v5/*: any*/),
+            "selections": (v6/*: any*/),
             "storageKey": null
           },
           {
@@ -356,7 +379,7 @@ return {
             "kind": "LinkedField",
             "name": "maxPrice",
             "plural": false,
-            "selections": (v5/*: any*/),
+            "selections": (v6/*: any*/),
             "storageKey": null
           }
         ],
@@ -365,12 +388,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "9c9ec2bd81c31cea761087c1d5fc1556",
+    "cacheID": "5698dcafd5c0c21be18ef1a1e5fb8c3a",
     "id": null,
     "metadata": {},
     "name": "events_Query",
     "operationKind": "query",
-    "text": "query events_Query {\n  currentUser {\n    ...Layout_CurrentUserFragment\n    id\n  }\n  ...EventsScene_EventsPaginationFragment\n}\n\nfragment EventCardCompacts_ScheduleFragment on Schedule {\n  id\n  scheduledFor\n  event {\n    id\n    title\n    images\n    interests {\n      id\n      title\n    }\n    attendeePricePerUom {\n      cents\n      currency {\n        name\n      }\n    }\n    tags {\n      id\n      title\n    }\n    averageRating\n    myBookings {\n      bookedFor\n      trip {\n        id\n      }\n      id\n    }\n  }\n}\n\nfragment EventCardWide_ScheduleFragment on Schedule {\n  id\n  scheduledFor\n  event {\n    id\n    title\n    images\n    interests {\n      id\n      title\n    }\n    attendeePricePerUom {\n      cents\n      currency {\n        name\n      }\n    }\n    tags {\n      id\n      title\n    }\n    averageRating\n    myBookings {\n      bookedFor\n      trip {\n        id\n      }\n      id\n    }\n  }\n}\n\nfragment EventsScene_EventsPaginationFragment on Query {\n  schedules(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        ...EventCardCompacts_ScheduleFragment\n        ...EventCardWide_ScheduleFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...Sidebar_EventFiltersFragment\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n  status\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment Sidebar_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice {\n    cents\n  }\n  maxPrice {\n    cents\n  }\n}\n"
+    "text": "query events_Query {\n  currentUser {\n    ...Layout_CurrentUserFragment\n    id\n  }\n  ...EventsScene_EventsPaginationFragment\n}\n\nfragment EventCardCompacts_ScheduleFragment on Schedule {\n  id\n  scheduledFor\n  event {\n    id\n    title\n    images\n    interests {\n      id\n      title\n    }\n    attendeePricePerUom {\n      cents\n      currency {\n        name\n      }\n    }\n    tags {\n      id\n      title\n    }\n    averageRating\n    myBookings {\n      bookedFor\n      trip {\n        id\n      }\n      id\n    }\n  }\n}\n\nfragment EventCardWide_ScheduleFragment on Schedule {\n  id\n  scheduledFor\n  event {\n    id\n    title\n    images\n    interests {\n      id\n      title\n    }\n    attendeePricePerUom {\n      cents\n      currency {\n        name\n      }\n    }\n    tags {\n      id\n      title\n    }\n    averageRating\n    myBookings {\n      bookedFor\n      trip {\n        id\n      }\n      id\n    }\n  }\n}\n\nfragment EventsScene_EventsPaginationFragment on Query {\n  schedules(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        ...EventCardCompacts_ScheduleFragment\n        ...EventCardWide_ScheduleFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  eventFilters {\n    ...Sidebar_EventFiltersFragment\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n  status\n  account {\n    firm {\n      id\n    }\n    id\n  }\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment Sidebar_EventFiltersFragment on EventFilters {\n  startDate\n  endDate\n  minPrice {\n    cents\n  }\n  maxPrice {\n    cents\n  }\n}\n"
   }
 };
 })();
