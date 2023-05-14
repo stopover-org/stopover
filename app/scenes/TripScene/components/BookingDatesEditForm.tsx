@@ -2,6 +2,7 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { Box, Option, Stack } from "@mui/joy";
 import { Moment } from "moment";
+import moment from "moment/moment";
 import { BookingDatesEditForm_BookingFragment$key } from "./__generated__/BookingDatesEditForm_BookingFragment.graphql";
 import { useBookingDatesEditForm } from "./useBookingDatesEditForm";
 import ButtonDatePicker from "../../../components/v2/ButtonDatePicker/ButtonDatePicker";
@@ -21,6 +22,8 @@ const BookingDatesEditForm = ({
   const booking = useFragment(
     graphql`
       fragment BookingDatesEditForm_BookingFragment on Booking {
+        status
+        bookedFor
         event {
           availableDates
         }
@@ -36,6 +39,12 @@ const BookingDatesEditForm = ({
     booking.event.availableDates as Date[]
   );
   const availableTimes = useTimeFromDate(availableDates, dateField.value);
+  const disabled = React.useMemo(
+    () =>
+      booking.status === "paid" ||
+      moment(booking.bookedFor).isBefore(new Date()),
+    [booking.status, booking.bookedFor]
+  );
   return (
     <form onSubmit={form.handleSubmit()}>
       <Stack flexDirection="row" justifyContent="flex-start">
@@ -49,6 +58,7 @@ const BookingDatesEditForm = ({
             datePickerProps={{
               availableDates,
             }}
+            disabled={disabled}
           >
             {getDate(dateField.value)}
           </ButtonDatePicker>
@@ -61,6 +71,7 @@ const BookingDatesEditForm = ({
             }}
             value={timeField.value}
             placeholder="Select time"
+            disabled={disabled}
           >
             {availableTimes.map((time, index) => (
               <Option
@@ -73,7 +84,9 @@ const BookingDatesEditForm = ({
           </Select>
         </Box>
         <Box>
-          <Button type="submit">Change Dates</Button>
+          <Button type="submit" disabled={disabled}>
+            Change Dates
+          </Button>
         </Box>
       </Stack>
     </form>

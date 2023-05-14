@@ -18,11 +18,13 @@ const BookingOptionsEditForm = ({
     graphql`
       fragment BookingOptionsEditForm_BookingFragment on Booking {
         id
+        status
         eventOptions {
           id
           builtIn
           ...EventOptionEditForm_EventOptionFragment
         }
+        ...EventOptionEditForm_BookingFragment
         ...useBookingEditForm_BookingFragment
       }
     `,
@@ -38,7 +40,7 @@ const BookingOptionsEditForm = ({
     () => booking.eventOptions.filter((option) => option.builtIn),
     [booking]
   );
-  const form = useBookingEditForm(booking);
+  const form = useBookingEditForm(booking, booking.status === "paid");
 
   return (
     <FormProvider {...form}>
@@ -53,6 +55,7 @@ const BookingOptionsEditForm = ({
                 <EventOptionEditForm
                   key={option.id}
                   eventOptionFragmentRef={option}
+                  bookingFragmentRef={booking}
                 />
               ))}
             </>
@@ -66,6 +69,7 @@ const BookingOptionsEditForm = ({
                 <EventOptionEditForm
                   key={option.id}
                   eventOptionFragmentRef={option}
+                  bookingFragmentRef={booking}
                 />
               ))}
             </>

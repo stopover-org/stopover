@@ -45,7 +45,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useBookingEditForm(
-  bookingFragmentRef: useBookingEditForm_BookingFragment$key
+  bookingFragmentRef: useBookingEditForm_BookingFragment$key,
+  disabled?: boolean
 ) {
   return useMutationForm(
     graphql`
@@ -72,7 +73,7 @@ export function useBookingEditForm(
     {
       defaultValues: useDefaultValues(bookingFragmentRef),
       resolver: yupResolver(validationSchema),
-      autosave: true,
+      autosave: !disabled,
     }
   );
 }

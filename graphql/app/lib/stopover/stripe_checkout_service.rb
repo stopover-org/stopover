@@ -2,6 +2,14 @@
 
 module Stopover
   class StripeCheckoutService
+    def self.complete(payment)
+      payment.success!
+      payment.booking.paid! if payment.full_amount? || payment.remaining_amount?
+      payment.booking.trip.activate!
+
+      payment
+    end
+
     def self.generate_stripe_checkout_session(booking, payment_type)
       event_stripe_integration = booking.event.stripe_integrations.active.find_by(price_type: payment_type)
 

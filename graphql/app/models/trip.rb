@@ -52,6 +52,10 @@ class Trip < ApplicationRecord
 
       transitions from: %i[active draft], to: :cancelled, guard: :can_cancel
     end
+
+    event :activate do
+      transitions from: :draft, to: :active
+    end
   end
   # ENUMS =======================================================================
   #

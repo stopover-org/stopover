@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<28e2a7e4f910da1d503ae747d7a257f1>>
+ * @generated SignedSource<<44953775f954ff9923c302a284fefacc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -60,7 +60,14 @@ v3 = {
 v4 = [
   (v2/*: any*/)
 ],
-v5 = [
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "bookedFor",
+  "storageKey": null
+},
+v6 = [
   {
     "alias": null,
     "args": null,
@@ -87,14 +94,14 @@ v5 = [
     "storageKey": null
   }
 ],
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "title",
   "storageKey": null
 },
-v7 = {
+v8 = {
   "alias": null,
   "args": null,
   "concreteType": "EventOption",
@@ -110,7 +117,7 @@ v7 = {
       "name": "builtIn",
       "storageKey": null
     },
-    (v6/*: any*/),
+    (v7/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -118,13 +125,13 @@ v7 = {
       "kind": "LinkedField",
       "name": "attendeePrice",
       "plural": false,
-      "selections": (v5/*: any*/),
+      "selections": (v6/*: any*/),
       "storageKey": null
     }
   ],
   "storageKey": null
 },
-v8 = [
+v9 = [
   (v2/*: any*/),
   {
     "alias": null,
@@ -265,14 +272,9 @@ return {
                     "name": "bookings",
                     "plural": true,
                     "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "bookedFor",
-                        "storageKey": null
-                      },
+                      (v5/*: any*/),
                       (v2/*: any*/),
+                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -280,7 +282,7 @@ return {
                         "kind": "LinkedField",
                         "name": "leftToPayPrice",
                         "plural": false,
-                        "selections": (v5/*: any*/),
+                        "selections": (v6/*: any*/),
                         "storageKey": null
                       },
                       {
@@ -290,7 +292,7 @@ return {
                         "kind": "LinkedField",
                         "name": "alreadyPaidPrice",
                         "plural": false,
-                        "selections": (v5/*: any*/),
+                        "selections": (v6/*: any*/),
                         "storageKey": null
                       },
                       {
@@ -302,7 +304,21 @@ return {
                         "plural": true,
                         "selections": [
                           (v2/*: any*/),
-                          (v7/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Booking",
+                            "kind": "LinkedField",
+                            "name": "booking",
+                            "plural": false,
+                            "selections": [
+                              (v5/*: any*/),
+                              (v3/*: any*/),
+                              (v2/*: any*/)
+                            ],
+                            "storageKey": null
+                          },
+                          (v8/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -338,7 +354,7 @@ return {
                             "kind": "LinkedField",
                             "name": "attendeeOptions",
                             "plural": true,
-                            "selections": (v8/*: any*/),
+                            "selections": (v9/*: any*/),
                             "storageKey": null
                           }
                         ],
@@ -360,7 +376,7 @@ return {
                             "name": "images",
                             "storageKey": null
                           },
-                          (v6/*: any*/),
+                          (v7/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -392,10 +408,10 @@ return {
                         "kind": "LinkedField",
                         "name": "bookingOptions",
                         "plural": true,
-                        "selections": (v8/*: any*/),
+                        "selections": (v9/*: any*/),
                         "storageKey": null
                       },
-                      (v7/*: any*/)
+                      (v8/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -411,12 +427,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3c0fd71a08d46213c44469fc7c77afcb",
+    "cacheID": "71ec20613788d72b4fb146b20e2d3c31",
     "id": null,
     "metadata": {},
     "name": "Id_TripsQuery",
     "operationKind": "query",
-    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  currentUser {\n    ...Layout_CurrentUserFragment\n    account {\n      trip(tripId: $id) {\n        ...TripScene_TripFragment\n        id\n      }\n      id\n    }\n    id\n  }\n}\n\nfragment AttendeeEditForm_AttendeeFragment on Attendee {\n  id\n  eventOptions {\n    id\n    builtIn\n    ...EventOptionEditForm_EventOptionFragment\n  }\n  ...useAttendeeEditForm_AttendeeFragment\n}\n\nfragment BookingCard_BookingFragment on Booking {\n  id\n  bookedFor\n  leftToPayPrice {\n    cents\n    currency {\n      name\n    }\n  }\n  alreadyPaidPrice {\n    cents\n    currency {\n      name\n    }\n  }\n  attendees {\n    id\n  }\n  event {\n    id\n    images\n    title\n    description\n    durationTime\n  }\n  ...BookingTime_BookingFragment\n  ...BookingSummary_BookingFragment\n  ...BookingDescription_BookingFragment\n  ...BookingEditForm_BookingFragment\n}\n\nfragment BookingDatesEditForm_BookingFragment on Booking {\n  event {\n    availableDates\n    id\n  }\n  ...useBookingDatesEditForm_BookingFragment\n}\n\nfragment BookingDescription_BookingFragment on Booking {\n  bookedFor\n  event {\n    durationTime\n    description\n    id\n  }\n}\n\nfragment BookingEditForm_BookingFragment on Booking {\n  id\n  attendees {\n    id\n    ...AttendeeEditForm_AttendeeFragment\n  }\n  ...BookingDatesEditForm_BookingFragment\n  ...BookingOptionsEditForm_BookingFragment\n  ...CheckoutForm_BookingFragmentRef\n}\n\nfragment BookingOptionsEditForm_BookingFragment on Booking {\n  id\n  eventOptions {\n    id\n    builtIn\n    ...EventOptionEditForm_EventOptionFragment\n  }\n  ...useBookingEditForm_BookingFragment\n}\n\nfragment BookingSummary_BookingFragment on Booking {\n  leftToPayPrice {\n    cents\n    currency {\n      name\n    }\n  }\n  alreadyPaidPrice {\n    cents\n    currency {\n      name\n    }\n  }\n  attendees {\n    id\n  }\n}\n\nfragment BookingTime_BookingFragment on Booking {\n  bookedFor\n  event {\n    durationTime\n    id\n  }\n}\n\nfragment CheckoutForm_BookingFragmentRef on Booking {\n  ...useCheckoutForm_BookingFragment\n}\n\nfragment DateBookingsSection_TripFragment on Trip {\n  bookings {\n    id\n    bookedFor\n    ...BookingCard_BookingFragment\n  }\n}\n\nfragment EventOptionEditForm_EventOptionFragment on EventOption {\n  builtIn\n  title\n  id\n  attendeePrice {\n    cents\n    currency {\n      name\n    }\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n  status\n  account {\n    firm {\n      id\n    }\n    id\n  }\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment TripScene_TripFragment on Trip {\n  id\n  cities\n  startDate\n  status\n  endDate\n  bookings {\n    bookedFor\n    id\n  }\n  ...DateBookingsSection_TripFragment\n}\n\nfragment useAttendeeEditForm_AttendeeFragment on Attendee {\n  firstName\n  lastName\n  email\n  phone\n  id\n  attendeeOptions {\n    id\n    eventOption {\n      id\n    }\n  }\n}\n\nfragment useBookingDatesEditForm_BookingFragment on Booking {\n  id\n  bookedFor\n  bookingOptions {\n    id\n    eventOption {\n      id\n    }\n  }\n}\n\nfragment useBookingEditForm_BookingFragment on Booking {\n  id\n  bookingOptions {\n    id\n    eventOption {\n      id\n    }\n  }\n}\n\nfragment useCheckoutForm_BookingFragment on Booking {\n  id\n}\n"
+    "text": "query Id_TripsQuery(\n  $id: ID!\n) {\n  currentUser {\n    ...Layout_CurrentUserFragment\n    account {\n      trip(tripId: $id) {\n        ...TripScene_TripFragment\n        id\n      }\n      id\n    }\n    id\n  }\n}\n\nfragment AttendeeEditForm_AttendeeFragment on Attendee {\n  id\n  booking {\n    bookedFor\n    status\n    ...EventOptionEditForm_BookingFragment\n    id\n  }\n  eventOptions {\n    id\n    builtIn\n    ...EventOptionEditForm_EventOptionFragment\n  }\n  ...useAttendeeEditForm_AttendeeFragment\n}\n\nfragment BookingCard_BookingFragment on Booking {\n  id\n  bookedFor\n  status\n  leftToPayPrice {\n    cents\n    currency {\n      name\n    }\n  }\n  alreadyPaidPrice {\n    cents\n    currency {\n      name\n    }\n  }\n  attendees {\n    id\n  }\n  event {\n    id\n    images\n    title\n    description\n    durationTime\n  }\n  ...BookingTime_BookingFragment\n  ...BookingSummary_BookingFragment\n  ...BookingDescription_BookingFragment\n  ...BookingEditForm_BookingFragment\n}\n\nfragment BookingDatesEditForm_BookingFragment on Booking {\n  status\n  bookedFor\n  event {\n    availableDates\n    id\n  }\n  ...useBookingDatesEditForm_BookingFragment\n}\n\nfragment BookingDescription_BookingFragment on Booking {\n  bookedFor\n  event {\n    durationTime\n    description\n    id\n  }\n}\n\nfragment BookingEditForm_BookingFragment on Booking {\n  id\n  attendees {\n    id\n    ...AttendeeEditForm_AttendeeFragment\n  }\n  ...BookingDatesEditForm_BookingFragment\n  ...BookingOptionsEditForm_BookingFragment\n  ...CheckoutForm_BookingFragmentRef\n}\n\nfragment BookingOptionsEditForm_BookingFragment on Booking {\n  id\n  status\n  eventOptions {\n    id\n    builtIn\n    ...EventOptionEditForm_EventOptionFragment\n  }\n  ...EventOptionEditForm_BookingFragment\n  ...useBookingEditForm_BookingFragment\n}\n\nfragment BookingSummary_BookingFragment on Booking {\n  leftToPayPrice {\n    cents\n    currency {\n      name\n    }\n  }\n  alreadyPaidPrice {\n    cents\n    currency {\n      name\n    }\n  }\n  attendees {\n    id\n  }\n}\n\nfragment BookingTime_BookingFragment on Booking {\n  bookedFor\n  event {\n    durationTime\n    id\n  }\n}\n\nfragment CheckoutForm_BookingFragmentRef on Booking {\n  status\n  bookedFor\n  ...useCheckoutForm_BookingFragment\n}\n\nfragment DateBookingsSection_TripFragment on Trip {\n  bookings {\n    id\n    bookedFor\n    ...BookingCard_BookingFragment\n  }\n}\n\nfragment EventOptionEditForm_BookingFragment on Booking {\n  status\n  bookedFor\n}\n\nfragment EventOptionEditForm_EventOptionFragment on EventOption {\n  builtIn\n  title\n  id\n  attendeePrice {\n    cents\n    currency {\n      name\n    }\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n  status\n  account {\n    firm {\n      id\n    }\n    id\n  }\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment TripScene_TripFragment on Trip {\n  id\n  cities\n  startDate\n  status\n  endDate\n  bookings {\n    bookedFor\n    id\n  }\n  ...DateBookingsSection_TripFragment\n}\n\nfragment useAttendeeEditForm_AttendeeFragment on Attendee {\n  firstName\n  lastName\n  email\n  phone\n  id\n  attendeeOptions {\n    id\n    eventOption {\n      id\n    }\n  }\n}\n\nfragment useBookingDatesEditForm_BookingFragment on Booking {\n  id\n  bookedFor\n  bookingOptions {\n    id\n    eventOption {\n      id\n    }\n  }\n}\n\nfragment useBookingEditForm_BookingFragment on Booking {\n  id\n  bookingOptions {\n    id\n    eventOption {\n      id\n    }\n  }\n}\n\nfragment useCheckoutForm_BookingFragment on Booking {\n  id\n}\n"
   }
 };
 })();

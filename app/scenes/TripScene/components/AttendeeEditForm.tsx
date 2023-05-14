@@ -2,6 +2,7 @@ import { Divider, Grid } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { FormProvider } from "react-hook-form";
+import moment from "moment/moment";
 import Input from "../../../components/v2/Input";
 import { AttendeeEditForm_AttendeeFragment$key } from "./__generated__/AttendeeEditForm_AttendeeFragment.graphql";
 import EventOptionEditForm from "./EventOptionEditForm";
@@ -16,6 +17,11 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
     graphql`
       fragment AttendeeEditForm_AttendeeFragment on Attendee {
         id
+        booking {
+          bookedFor
+          status
+          ...EventOptionEditForm_BookingFragment
+        }
         eventOptions {
           id
           builtIn
@@ -27,6 +33,12 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
     attendeeFragmentRef
   );
   const form = useAttendeeEditForm(attendee);
+  const disabled = React.useMemo(
+    () =>
+      attendee.booking.status === "paid" ||
+      moment(attendee.booking.bookedFor).isBefore(new Date()),
+    [attendee.booking.status, attendee.booking.bookedFor]
+  );
 
   return (
     <FormProvider {...form}>
@@ -36,6 +48,7 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
             <Input
               label="First Name"
               placeholder="First Name"
+              disabled={disabled}
               {...form.useFormField("firstName")}
             />
           </Grid>
@@ -43,6 +56,7 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
             <Input
               label="Last Name"
               placeholder="Last Name"
+              disabled={disabled}
               {...form.useFormField("lastName")}
             />
           </Grid>
@@ -50,6 +64,7 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
             <Input
               label="Email"
               placeholder="Email"
+              disabled={disabled}
               {...form.useFormField("email")}
             />
           </Grid>
@@ -57,6 +72,7 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
             <Input
               label="Phone"
               placeholder="Phone"
+              disabled={disabled}
               {...form.useFormField("phone")}
             />
           </Grid>
@@ -64,6 +80,7 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
             <EventOptionEditForm
               key={option.id}
               eventOptionFragmentRef={option}
+              bookingFragmentRef={attendee.booking}
             />
           ))}
           <Grid xs={12}>

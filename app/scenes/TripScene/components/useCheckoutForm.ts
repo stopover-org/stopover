@@ -49,6 +49,16 @@ export function useCheckoutForm(
       ) {
         createCheckout(input: $input) {
           url
+          booking {
+            ...CheckoutForm_BookingFragmentRef
+            ...useCheckoutForm_BookingFragment
+            ...BookingDatesEditForm_BookingFragment
+            ...BookingEditForm_BookingFragment
+            ...BookingOptionsEditForm_BookingFragment
+            attendees {
+              ...AttendeeEditForm_AttendeeFragment
+            }
+          }
         }
       }
     `,

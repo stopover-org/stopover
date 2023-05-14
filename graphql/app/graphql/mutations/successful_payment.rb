@@ -6,7 +6,7 @@ module Mutations
 
     argument :payment_id, ID, loads: Types::PaymentType
     def resolve(payment:, **_args)
-      payment.success!
+      Stopover::StripeCheckoutService.complete(payment)
       {
         payment: payment
       }
