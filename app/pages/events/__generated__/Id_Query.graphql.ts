@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ad9f1c861c1c45f2c67e1cf4519ddaab>>
+ * @generated SignedSource<<4f5e36b95a517fc26720d88f7f507d75>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -48,18 +48,21 @@ v2 = {
   "name": "id",
   "storageKey": null
 },
-v3 = {
+v3 = [
+  (v2/*: any*/)
+],
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "title",
   "storageKey": null
 },
-v4 = [
+v5 = [
   (v2/*: any*/),
-  (v3/*: any*/)
+  (v4/*: any*/)
 ],
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -146,9 +149,7 @@ return {
                 "kind": "LinkedField",
                 "name": "firm",
                 "plural": false,
-                "selections": [
-                  (v2/*: any*/)
-                ],
+                "selections": (v3/*: any*/),
                 "storageKey": null
               },
               (v2/*: any*/)
@@ -173,10 +174,10 @@ return {
             "kind": "LinkedField",
             "name": "interests",
             "plural": true,
-            "selections": (v4/*: any*/),
+            "selections": (v5/*: any*/),
             "storageKey": null
           },
-          (v3/*: any*/),
+          (v4/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -191,7 +192,7 @@ return {
             "kind": "LinkedField",
             "name": "tags",
             "plural": true,
-            "selections": (v4/*: any*/),
+            "selections": (v5/*: any*/),
             "storageKey": null
           },
           (v2/*: any*/),
@@ -203,7 +204,7 @@ return {
             "name": "unit",
             "plural": false,
             "selections": [
-              (v5/*: any*/),
+              (v6/*: any*/),
               (v2/*: any*/)
             ],
             "storageKey": null
@@ -238,7 +239,7 @@ return {
                 "name": "currency",
                 "plural": false,
                 "selections": [
-                  (v5/*: any*/)
+                  (v6/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -259,6 +260,16 @@ return {
                 "args": null,
                 "kind": "ScalarField",
                 "name": "bookedFor",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Trip",
+                "kind": "LinkedField",
+                "name": "trip",
+                "plural": false,
+                "selections": (v3/*: any*/),
                 "storageKey": null
               }
             ],
@@ -284,12 +295,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "60767fec6725aeb8df56d067e202f524",
+    "cacheID": "58d7008469c379fbbccc057617efb626",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: ID!\n) {\n  currentUser {\n    ...Layout_CurrentUserFragment\n    id\n  }\n  event(id: $id) {\n    ...EventScene_EventFragment\n    id\n  }\n}\n\nfragment BookEvent_EventFragment on Event {\n  id\n  availableDates\n  myBookings {\n    bookedFor\n    id\n  }\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n}\n\nfragment Breadcrumbs_EventFragment on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventActions_EventFragment on Event {\n  id\n  unit {\n    name\n    id\n  }\n  availableDates\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n  myBookings {\n    id\n  }\n}\n\nfragment EventScene_EventFragment on Event {\n  ...Breadcrumbs_EventFragment\n  ...EventTitle_EventFragment\n  ...EventActions_EventFragment\n  ...LeftColumn_EventFragment\n  ...RightColumn_EventFragment\n  ...useBookEventForm_EventFragment\n}\n\nfragment EventTitle_EventFragment on Event {\n  title\n  averageRating\n  tags {\n    id\n    title\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n  status\n  account {\n    firm {\n      id\n    }\n    id\n  }\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment LeftColumn_EventFragment on Event {\n  images\n}\n\nfragment RightColumn_EventFragment on Event {\n  title\n  description\n  ...BookEvent_EventFragment\n}\n\nfragment useBookEventForm_EventFragment on Event {\n  id\n  availableDates\n  myBookings {\n    bookedFor\n    id\n  }\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  currentUser {\n    ...Layout_CurrentUserFragment\n    id\n  }\n  event(id: $id) {\n    ...EventScene_EventFragment\n    id\n  }\n}\n\nfragment BookEvent_EventFragment on Event {\n  id\n  availableDates\n  myBookings {\n    bookedFor\n    trip {\n      id\n    }\n    id\n  }\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n}\n\nfragment Breadcrumbs_EventFragment on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventActions_EventFragment on Event {\n  id\n  unit {\n    name\n    id\n  }\n  availableDates\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n  myBookings {\n    id\n    bookedFor\n    trip {\n      id\n    }\n  }\n}\n\nfragment EventScene_EventFragment on Event {\n  ...Breadcrumbs_EventFragment\n  ...EventTitle_EventFragment\n  ...EventActions_EventFragment\n  ...LeftColumn_EventFragment\n  ...RightColumn_EventFragment\n  ...useBookEventForm_EventFragment\n}\n\nfragment EventTitle_EventFragment on Event {\n  title\n  averageRating\n  tags {\n    id\n    title\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n  status\n  account {\n    firm {\n      id\n    }\n    id\n  }\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment LeftColumn_EventFragment on Event {\n  images\n}\n\nfragment RightColumn_EventFragment on Event {\n  title\n  description\n  ...BookEvent_EventFragment\n}\n\nfragment useBookEventForm_EventFragment on Event {\n  id\n  availableDates\n  myBookings {\n    bookedFor\n    id\n  }\n}\n"
   }
 };
 })();

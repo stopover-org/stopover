@@ -9,6 +9,7 @@ import useMutationForm from "../../lib/hooks/useMutationForm";
 import useClosestDate from "../../lib/hooks/useClosestDate";
 import useUniqueMomentDates from "../../lib/hooks/useUniqueMomentDates";
 import { dateFormat } from "../../lib/utils/dates";
+import useMomentDates from "../../lib/hooks/useMomentDates";
 
 interface BookEventFields {
   eventId: string;
@@ -34,16 +35,17 @@ function useDefaultValues(
   );
   const closestDate = useClosestDate(event.availableDates as Date[]);
   const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
+  const bookedDates = useMomentDates(
+    event?.myBookings?.map((b) => b.bookedFor)
+  );
+  const closestBookedDate = useClosestDate(bookedDates);
   const parsedDate = React.useMemo(() => {
-    if (event?.myBookings?.length! > 0) {
-      return moment(event?.myBookings?.[0]?.bookedFor);
-    }
-
     const date = moment(router.query.date, dateFormat);
     if (availableDates.find((dt) => dt.isSame(date, "day"))) {
       if (date.isValid()) return date.startOf("day");
     }
-    return closestDate?.startOf("day");
+    if (closestBookedDate) return closestBookedDate;
+    return closestDate;
   }, []);
 
   return React.useMemo(

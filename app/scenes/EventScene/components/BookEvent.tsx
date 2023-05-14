@@ -27,6 +27,9 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
         availableDates
         myBookings {
           bookedFor
+          trip {
+            id
+          }
         }
         attendeePricePerUom {
           cents
@@ -47,27 +50,35 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
     dateField?.value?.format(timeFormat)
   );
 
-  const alreadyBooked = React.useMemo(
-    () => event?.myBookings?.length! > 0,
-    [event]
+  const bookedDates = useUniqueMomentDates(
+    event.myBookings.map((b) => b.bookedFor)
+  );
+
+  const booking = React.useMemo(
+    () => event.myBookings.find((b) => dateField.value.isSame(b.bookedFor)),
+    [dateField.value, bookedDates]
+  );
+
+  const selectedTime = React.useMemo(
+    () => dateField.value.format(timeFormat),
+    [dateField]
   );
 
   return (
     <Grid container>
       <Grid xs={6}>
         <DateCalendar
-          availableDates={alreadyBooked ? [dateField.value] : availableDates}
+          availableDates={availableDates}
+          highlightedDates={bookedDates}
           value={dateField.value}
           disablePast
           sx={{
             maxWidth: "100%",
           }}
           onChange={(date) => {
-            if (alreadyBooked) return;
             if (!date) return;
             dateField.onChange(date.startOf("day"));
           }}
-          disabled={alreadyBooked}
         />
       </Grid>
       <Grid xs={6}>
@@ -75,7 +86,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
           <Input
             label="Date of Event"
             value={dateField.value?.format(dateFormat)}
-            disabled
+            readOnly
           />
         </Box>
         <Box paddingBottom="10px">
@@ -83,20 +94,13 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
             label="Choose Time"
             onChange={(_, value) => {
               if (!value) return;
-              const time = (value as string).split("-")[0];
-              dateField.onChange(setTime(dateField.value, time));
+              dateField.onChange(setTime(dateField.value, value.toString()));
             }}
-            value={`${dateField.value.format(
-              timeFormat
-            )}-${dateField.value?.toISOString()}`}
+            value={selectedTime}
             placeholder="Select time"
-            disabled={alreadyBooked}
           >
-            {availableTimes.map((time, index) => (
-              <Option
-                key={`${index}-${time}-${dateField.value?.toISOString()}`}
-                value={`${time}-${dateField.value?.toISOString()}`}
-              >
+            {availableTimes.map((time) => (
+              <Option key={time} value={time}>
                 {time}
               </Option>
             ))}
@@ -108,7 +112,6 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
             type="number"
             value={attendeesCountField.value}
             onChange={attendeesCountField.onChange}
-            disabled={alreadyBooked}
           />
         </Box>
         <Box paddingBottom="10px">
@@ -121,7 +124,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
           </Typography>
         </Box>
         <Box textAlign="end">
-          {!alreadyBooked && (
+          {!booking && (
             <Button
               type="submit"
               disabled={!dateField.value.isValid() || !isValidTime}
@@ -129,8 +132,8 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
               Book Event
             </Button>
           )}
-          {alreadyBooked && (
-            <Link href="/trips">
+          {booking && (
+            <Link href={`/trips/${booking.trip.id}`} underline={false}>
               <Button>My Trips</Button>
             </Link>
           )}

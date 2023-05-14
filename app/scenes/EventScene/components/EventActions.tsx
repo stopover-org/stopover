@@ -35,6 +35,10 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
         }
         myBookings {
           id
+          bookedFor
+          trip {
+            id
+          }
         }
       }
     `,
@@ -49,88 +53,90 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
     dateField?.value?.format(timeFormat)
   );
 
-  const alreadyBooked = React.useMemo(
-    () => event?.myBookings?.length! > 0,
-    [event]
+  const bookedDates = useUniqueMomentDates(
+    event.myBookings.map((b) => b.bookedFor)
   );
 
-  return (
-    dateField.value && (
-      <>
-        <Stack flexDirection="row" justifyContent="flex-end">
-          <Box paddingRight="10px">
-            <ButtonDatePicker
-              onChange={(date) => {
-                if (!date) return;
-                dateField.onChange(date.startOf("day"));
-              }}
-              variant="outlined"
-              datePickerProps={{
-                availableDates,
-              }}
-              disabled={alreadyBooked}
-            >
-              {getDate(dateField.value)}
-            </ButtonDatePicker>
-          </Box>
-          <Box paddingRight="10px">
-            <Select
-              onChange={(_, value) => {
-                if (!value) return;
-                const time = (value as string).split("-")[0];
-                dateField.onChange(setTime(dateField.value, time));
-              }}
-              value={`${dateField.value.format(
-                timeFormat
-              )}-${dateField.value?.toISOString()}`}
-              placeholder="Select time"
-              disabled={alreadyBooked}
-            >
-              {availableTimes.map((time, index) => (
-                <Option
-                  key={`${index}-${time}-${dateField.value?.toISOString()}`}
-                  value={time}
-                >
-                  {time}
-                </Option>
-              ))}
-            </Select>
-          </Box>
-          <Box>
-            {!alreadyBooked && (
-              <Button
-                type="submit"
-                disabled={!dateField.value.isValid() || !isValidTime}
-              >
-                Book Event
-              </Button>
-            )}
-            {alreadyBooked && (
-              <Link href="/trips">
-                <Button>My Trips</Button>
-              </Link>
-            )}
-          </Box>
-        </Stack>
-        <Stack flexDirection="row" justifyContent="flex-end" paddingTop="10px">
-          <Typography textAlign="end">
-            {getCurrencyFormat(
-              event.attendeePricePerUom?.cents,
-              event.attendeePricePerUom?.currency?.name
-            )}{" "}
-            x {attendeesCountField.value} attendee
-            <br />
-            Total:{" "}
-            {getCurrencyFormat(
-              attendeesCountField.value *
-                (event.attendeePricePerUom?.cents || 0),
-              event.attendeePricePerUom?.currency?.name
-            )}
-          </Typography>
-        </Stack>
-      </>
-    )
+  const booking = React.useMemo(
+    () => event.myBookings.find((b) => dateField.value.isSame(b.bookedFor)),
+    [dateField.value, bookedDates]
   );
+
+  const selectedTime = React.useMemo(
+    () => dateField.value.format(timeFormat),
+    [dateField]
+  );
+
+  return availableDates.length > 0 ? (
+    <>
+      <Stack flexDirection="row" justifyContent="flex-end">
+        <Box paddingRight="10px">
+          <ButtonDatePicker
+            onChange={(date) => {
+              if (!date) return;
+              dateField.onChange(date.startOf("day"));
+            }}
+            variant="outlined"
+            datePickerProps={{
+              availableDates,
+              highlightedDates: bookedDates,
+            }}
+          >
+            {getDate(dateField.value)}
+          </ButtonDatePicker>
+        </Box>
+        <Box paddingRight="10px">
+          <Select
+            onChange={(_, value) => {
+              if (!value) return;
+
+              dateField.onChange(setTime(dateField.value, value.toString()));
+            }}
+            value={selectedTime}
+            placeholder="Select time"
+          >
+            {availableTimes.map((time) => (
+              <Option key={time} value={time}
+                >
+                {time}
+              </Option>
+            ))}
+          </Select>
+        </Box>
+        <Box>
+          {!booking && (
+            <Button
+              type="submit"
+              disabled={!dateField.value.isValid() || !isValidTime}
+            >
+              Book Event
+            </Button>
+          )}
+          {booking && (
+            <Link href={`/trips/${booking.trip.id}`} underline={false}>
+              <Button>My Trips</Button>
+            </Link>
+          )}
+        </Box>
+      </Stack>
+      <Stack flexDirection="row" justifyContent="flex-end" paddingTop="10px">
+        <Typography textAlign="end">
+          {getCurrencyFormat(
+            event.attendeePricePerUom?.cents,
+            event.attendeePricePerUom?.currency?.name
+          )}{" "}
+          x {attendeesCountField.value} attendee
+          <br />
+          Total:{" "}
+          {getCurrencyFormat(
+            attendeesCountField.value *
+              (event.attendeePricePerUom?.cents || 0),
+            event.attendeePricePerUom?.currency?.name
+          )}
+        </Typography>
+      </Stack>
+    </>
+  ) : null;
 };
 
 export default React.memo(EventActions);
