@@ -36,11 +36,6 @@ const BookingDatesEditForm = ({
     booking.event.availableDates as Date[]
   );
   const availableTimes = useTimeFromDate(availableDates, dateField.value);
-  console.log(
-    timeField.value,
-    dateField.value,
-    dateField.value.format(timeFormat)
-  );
   return (
     <form onSubmit={form.handleSubmit()}>
       <Stack flexDirection="row" justifyContent="flex-start">

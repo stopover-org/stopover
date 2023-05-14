@@ -53,7 +53,7 @@ export function useBookingDatesEditForm(
 ) {
   return useMutationForm(
     graphql`
-      mutation useBookingDatesEditForm_UpdateBookingAttendeeMutation(
+      mutation useBookingDatesEditForm_UpdateBookingMutation(
         $input: UpdateBookingInput!
       ) {
         updateBooking(input: $input) {
@@ -64,15 +64,12 @@ export function useBookingDatesEditForm(
         }
       }
     `,
-    ({ date, time, ...values }) => {
-      console.log(date, time, setTime(moment(date), time));
-      return {
-        input: {
-          bookedFor: setTime(moment(date), time).toISOString(),
-          ...values,
-        },
-      };
-    },
+    ({ date, time, ...values }) => ({
+      input: {
+        bookedFor: setTime(moment(date), time).toISOString(),
+        ...values,
+      },
+    }),
     {
       defaultValues: useDefaultValues(bookingFragmentRef),
       resolver: yupResolver(validationSchema),

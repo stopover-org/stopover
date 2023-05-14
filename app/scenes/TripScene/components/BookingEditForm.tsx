@@ -5,6 +5,7 @@ import AttendeeEditForm from "./AttendeeEditForm";
 import { BookingEditForm_BookingFragment$key } from "./__generated__/BookingEditForm_BookingFragment.graphql";
 import BookingOptionsEditForm from "./BookingOptionsEditForm";
 import BookingDatesEditForm from "./BookingDatesEditForm";
+import CheckoutForm from "./CheckoutForm";
 
 interface BookingEditFormProps {
   bookingFragmentRef: BookingEditForm_BookingFragment$key;
@@ -21,6 +22,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
         }
         ...BookingDatesEditForm_BookingFragment
         ...BookingOptionsEditForm_BookingFragment
+        ...CheckoutForm_BookingFragmentRef
       }
     `,
     bookingFragmentRef
@@ -36,6 +38,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
       </Grid>
       <Grid xs={5}>
         <BookingOptionsEditForm bookingFragmentRef={booking} />
+        <CheckoutForm bookingFragmentRef={booking} />
       </Grid>
     </Grid>
   );
