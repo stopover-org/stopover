@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4f5e36b95a517fc26720d88f7f507d75>>
+ * @generated SignedSource<<9fed241a404e027ec81784f61dbdeb12>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -271,6 +271,16 @@ return {
                 "plural": false,
                 "selections": (v3/*: any*/),
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Attendee",
+                "kind": "LinkedField",
+                "name": "attendees",
+                "plural": true,
+                "selections": (v3/*: any*/),
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -295,12 +305,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "58d7008469c379fbbccc057617efb626",
+    "cacheID": "9cb8223a2de3e07aeedd0a3f682d086b",
     "id": null,
     "metadata": {},
     "name": "Id_Query",
     "operationKind": "query",
-    "text": "query Id_Query(\n  $id: ID!\n) {\n  currentUser {\n    ...Layout_CurrentUserFragment\n    id\n  }\n  event(id: $id) {\n    ...EventScene_EventFragment\n    id\n  }\n}\n\nfragment BookEvent_EventFragment on Event {\n  id\n  availableDates\n  myBookings {\n    bookedFor\n    trip {\n      id\n    }\n    id\n  }\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n}\n\nfragment Breadcrumbs_EventFragment on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventActions_EventFragment on Event {\n  id\n  unit {\n    name\n    id\n  }\n  availableDates\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n  myBookings {\n    id\n    bookedFor\n    trip {\n      id\n    }\n  }\n}\n\nfragment EventScene_EventFragment on Event {\n  ...Breadcrumbs_EventFragment\n  ...EventTitle_EventFragment\n  ...EventActions_EventFragment\n  ...LeftColumn_EventFragment\n  ...RightColumn_EventFragment\n  ...useBookEventForm_EventFragment\n}\n\nfragment EventTitle_EventFragment on Event {\n  title\n  averageRating\n  tags {\n    id\n    title\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n  status\n  account {\n    firm {\n      id\n    }\n    id\n  }\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment LeftColumn_EventFragment on Event {\n  images\n}\n\nfragment RightColumn_EventFragment on Event {\n  title\n  description\n  ...BookEvent_EventFragment\n}\n\nfragment useBookEventForm_EventFragment on Event {\n  id\n  availableDates\n  myBookings {\n    bookedFor\n    id\n  }\n}\n"
+    "text": "query Id_Query(\n  $id: ID!\n) {\n  currentUser {\n    ...Layout_CurrentUserFragment\n    id\n  }\n  event(id: $id) {\n    ...EventScene_EventFragment\n    id\n  }\n}\n\nfragment BookEvent_EventFragment on Event {\n  id\n  availableDates\n  myBookings {\n    bookedFor\n    trip {\n      id\n    }\n    attendees {\n      id\n    }\n    id\n  }\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n}\n\nfragment Breadcrumbs_EventFragment on Event {\n  interests {\n    id\n    title\n  }\n}\n\nfragment EventActions_EventFragment on Event {\n  id\n  unit {\n    name\n    id\n  }\n  availableDates\n  attendeePricePerUom {\n    cents\n    currency {\n      name\n    }\n  }\n  myBookings {\n    id\n    bookedFor\n    trip {\n      id\n    }\n  }\n}\n\nfragment EventScene_EventFragment on Event {\n  ...Breadcrumbs_EventFragment\n  ...EventTitle_EventFragment\n  ...EventActions_EventFragment\n  ...LeftColumn_EventFragment\n  ...RightColumn_EventFragment\n  ...useBookEventForm_EventFragment\n}\n\nfragment EventTitle_EventFragment on Event {\n  title\n  averageRating\n  tags {\n    id\n    title\n  }\n}\n\nfragment Header_CurrentUserFragment on User {\n  id\n  status\n  account {\n    firm {\n      id\n    }\n    id\n  }\n}\n\nfragment Layout_CurrentUserFragment on User {\n  ...Header_CurrentUserFragment\n}\n\nfragment LeftColumn_EventFragment on Event {\n  images\n}\n\nfragment RightColumn_EventFragment on Event {\n  title\n  description\n  ...BookEvent_EventFragment\n}\n\nfragment useBookEventForm_EventFragment on Event {\n  id\n  availableDates\n  myBookings {\n    bookedFor\n    id\n  }\n}\n"
   }
 };
 })();

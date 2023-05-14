@@ -30,6 +30,9 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
           trip {
             id
           }
+          attendees {
+            id
+          }
         }
         attendeePricePerUom {
           cents
@@ -110,8 +113,11 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
           <Input
             label="Attendees Count"
             type="number"
-            value={attendeesCountField.value}
+            value={
+              booking ? booking.attendees.length : attendeesCountField.value
+            }
             onChange={attendeesCountField.onChange}
+            readOnly={booking}
           />
         </Box>
         <Box paddingBottom="10px">
