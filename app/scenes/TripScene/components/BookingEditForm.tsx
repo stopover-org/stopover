@@ -4,6 +4,7 @@ import { Grid } from "@mui/joy";
 import AttendeeEditForm from "./AttendeeEditForm";
 import { BookingEditForm_BookingFragment$key } from "./__generated__/BookingEditForm_BookingFragment.graphql";
 import BookingOptionsEditForm from "./BookingOptionsEditForm";
+import BookingDatesEditForm from "./BookingDatesEditForm";
 
 interface BookingEditFormProps {
   bookingFragmentRef: BookingEditForm_BookingFragment$key;
@@ -18,6 +19,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
           id
           ...AttendeeEditForm_AttendeeFragment
         }
+        ...BookingDatesEditForm_BookingFragment
         ...BookingOptionsEditForm_BookingFragment
       }
     `,
@@ -30,6 +32,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
         {booking.attendees.map((attendee) => (
           <AttendeeEditForm key={attendee.id} attendeeFragmentRef={attendee} />
         ))}
+        <BookingDatesEditForm bookingFragmentRef={booking} />
       </Grid>
       <Grid xs={5}>
         <BookingOptionsEditForm bookingFragmentRef={booking} />

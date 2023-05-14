@@ -73,6 +73,7 @@ export function useAttendeeEditForm(
       ) {
         updateAttendee(input: $input) {
           attendee {
+            ...AttendeeEditForm_AttendeeFragment
             id
             attendeeOptions {
               id

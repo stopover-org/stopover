@@ -63,17 +63,8 @@ export const setTime = (date: Moment, time: string) => {
   return date;
 };
 
-export const getTime = (arg: Moment | null) =>
-  arg ? arg.format(timeFormat) : undefined;
-
-export const getDayMonth = (arg: Moment | null) =>
-  arg ? arg.format(dayMonthFormat) : undefined;
-
 export const getDate = (arg: Moment | null) =>
   arg ? arg.format(dateFormat) : undefined;
-
-export const getDateTime = (arg: Moment | null) =>
-  arg ? arg.format(dateTimeFormat) : undefined;
 
 export const getHumanDateTime = (arg: Moment | null) =>
   arg ? arg.format(dayMonthTimeFormat) : undefined;
