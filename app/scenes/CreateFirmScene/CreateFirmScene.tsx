@@ -5,10 +5,8 @@ import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
 
 import { useCreateFirmForm } from "./useCreateFirmForm";
-import ChipsInput from "../../components/v2/ChipsInput";
-import TextArea from "../../components/v2/TextArea";
 
-const FirmScene = () => {
+const CreateFirmScene = () => {
   const form = useCreateFirmForm();
   return (
     <form onSubmit={form.handleSubmit()}>
@@ -62,7 +60,7 @@ const FirmScene = () => {
           <Input {...form.useFormField("primaryPhone")} label="Primary Phone" />
         </Grid>
         <Grid xs={12}>
-          <ChipsInput {...form.useFormField("contacts")} label="Contacts" />
+          <Input {...form.useFormField("contacts")} label="Contacts" />
         </Grid>
         <Grid xs={12}>
           <Input {...form.useFormField("website")} label="Website" />
@@ -72,15 +70,15 @@ const FirmScene = () => {
           <Typography level="h3">Description</Typography>
         </Grid>
         <Grid xs={12}>
-          <TextArea
-            {...form.useFormField("description")}
-            minRows={3}
-            label="Description"
-          />
+          <Input {...form.useFormField("description")} label="Description" />
         </Grid>
 
-  console.log(firm);
-  return <div>{firm.title}</div>;
+        <Grid xs={6}>
+          <Button type="submit">Submit</Button>
+        </Grid>
+      </Grid>
+    </form>
+  );
 };
 
-export default React.memo(FirmScene);
+export default React.memo(CreateFirmScene);

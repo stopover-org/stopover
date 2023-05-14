@@ -1,34 +1,35 @@
 import React from "react";
+import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay";
-import { RelayProps, withRelay } from "relay-nextjs";
-import Layout from "../../components/MainPage/Layout";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
-import { Id_TripsQuery } from "./__generated__/Id_TripsQuery.graphql";
-import TripScene from "../../scenes/TripScene";
+import { myFirm_FirmQuery } from "./__generated__/myFirm_FirmQuery.graphql";
+import Layout from "../../components/MainPage/Layout";
+import FirmScene from "../../scenes/FirmScene";
 
 const Query = graphql`
-  query Id_TripsQuery($id: ID!) {
+  query myFirm_FirmQuery {
     currentUser {
       ...Layout_CurrentUserFragment
       account {
-        trip(tripId: $id) {
-          ...TripScene_TripFragment
+        firm {
+          ...FirmScene_FirmFragment
         }
       }
     }
   }
 `;
 
-const Trip = ({ preloadedQuery }: RelayProps<{}, Id_TripsQuery>) => {
-  const data = usePreloadedQuery<Id_TripsQuery>(Query, preloadedQuery);
+const MyFirm = ({ preloadedQuery }: any) => {
+  const data = usePreloadedQuery<myFirm_FirmQuery>(Query, preloadedQuery);
+
   return (
     <Layout currentUserFragment={data.currentUser!}>
-      <TripScene tripFragmentRef={data.currentUser?.account?.trip!} />
+      <FirmScene firmFragmentRef={data.currentUser?.account?.firm!} />
     </Layout>
   );
 };
 
-export default withRelay(Trip, Query, {
+export default withRelay(MyFirm, Query, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: null,
@@ -36,10 +37,7 @@ export default withRelay(Trip, Query, {
   // Note: This function must always return the same value.
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
-  serverSideProps: async (ctx) => ({
-    id: +ctx.query.id!,
-    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
-  }),
+  serverSideProps: async () => ({}),
   // Server-side props can be accessed as the second argument
   // to this function.
   createServerEnvironment: async ({ req }) => {
