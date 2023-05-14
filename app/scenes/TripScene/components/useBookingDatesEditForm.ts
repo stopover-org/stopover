@@ -7,7 +7,7 @@ import { setTime, timeFormat } from "../../../lib/utils/dates";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useBookingDatesEditForm_BookingFragment$key } from "./__generated__/useBookingDatesEditForm_BookingFragment.graphql";
 
-interface BookingEditFormFields {
+interface BookingDatesEditFormFields {
   bookingId: string;
   date: Moment;
   time: string;
@@ -15,7 +15,7 @@ interface BookingEditFormFields {
 
 function useDefaultValues(
   bookingFragmentRef: useBookingDatesEditForm_BookingFragment$key
-): BookingEditFormFields {
+): BookingDatesEditFormFields {
   const booking = useFragment(
     graphql`
       fragment useBookingDatesEditForm_BookingFragment on Booking {

@@ -3,8 +3,6 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useBookingEditForm_BookingFragment$key } from "./__generated__/useBookingEditForm_BookingFragment.graphql";
-import { setTime, timeFormat } from "../../../lib/utils/dates";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useAttendeeEditForm_AttendeeFragment$key } from "./__generated__/useAttendeeEditForm_AttendeeFragment.graphql";
 

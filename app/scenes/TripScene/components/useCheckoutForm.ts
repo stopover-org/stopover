@@ -1,4 +1,3 @@
-import moment, { Moment } from "moment";
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import * as Yup from "yup";
@@ -6,14 +5,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useCheckoutForm_BookingFragment$key } from "./__generated__/useCheckoutForm_BookingFragment.graphql";
+import { useCheckoutForm_CreateCheckoutMutation } from "./__generated__/useCheckoutForm_CreateCheckoutMutation.graphql";
 
-interface BookingEditFormFields {
+interface CreateCheckoutFields {
   bookingId: string;
 }
 
 function useDefaultValues(
   bookingFragmentRef: useCheckoutForm_BookingFragment$key
-): BookingEditFormFields {
+): CreateCheckoutFields {
   const booking = useFragment(
     graphql`
       fragment useCheckoutForm_BookingFragment on Booking {
@@ -39,7 +39,10 @@ export function useCheckoutForm(
   bookingFragmentRef: useCheckoutForm_BookingFragment$key
 ) {
   const router = useRouter();
-  return useMutationForm(
+  return useMutationForm<
+    CreateCheckoutFields,
+    useCheckoutForm_CreateCheckoutMutation
+  >(
     graphql`
       mutation useCheckoutForm_CreateCheckoutMutation(
         $input: CreateCheckoutInput!
@@ -56,7 +59,9 @@ export function useCheckoutForm(
       defaultValues: useDefaultValues(bookingFragmentRef),
       resolver: yupResolver(validationSchema),
       onCompleted: (result) => {
-        router.push(result.createCheckout.url);
+        if (result?.createCheckout?.url) {
+          router.push(result.createCheckout.url);
+        }
       },
     }
   );
