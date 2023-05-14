@@ -47,6 +47,7 @@ function useDefaultValues(
 }
 
 const validationSchema = Yup.object().shape({
+  bookingId: Yup.string().required(),
   date: Yup.date().required(),
   time: Yup.string().required(),
   eventOptionIds: Yup.array().of(Yup.string().required()).required(),
@@ -63,19 +64,26 @@ export function useBookingEditForm(
         updateBooking(input: $updateBookingInput) {
           booking {
             id
+            bookingOptions {
+              id
+              eventOption {
+                id
+              }
+            }
           }
         }
       }
     `,
     ({ date, time, ...values }) => ({
       updateBookingInput: {
-        bookedForm: setTime(moment(date), time),
-        eventOptionIds: values.eventOptionIds,
+        bookedFor: setTime(moment(date), time),
+        ...values,
       },
     }),
     {
       defaultValues: useDefaultValues(bookingFragmentRef),
       resolver: yupResolver(validationSchema),
+      autosave: true,
     }
   );
 }

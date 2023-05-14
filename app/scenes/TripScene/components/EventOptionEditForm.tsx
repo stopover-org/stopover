@@ -38,7 +38,7 @@ const EventOptionEditForm = ({
         eventOptions.value.filter((id) => id !== eventOption.id)
       );
     } else {
-      eventOptions.onChange(eventOptions.value.push(eventOption.id));
+      eventOptions.onChange([...eventOptions.value, eventOption.id]);
     }
   }, [eventOptions.value]);
 

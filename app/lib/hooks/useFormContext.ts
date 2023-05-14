@@ -9,6 +9,10 @@ import React from "react";
 function useFormContext<FieldsType extends FieldValues>() {
   const form = useFormContextOrigin<FieldsType>();
 
+  // useFormField is not shared function
+  // because it uses form reference inside
+  // if you modify this function don't forget
+  // to change useFormField in useMutationForm too
   function useFormField<ValueType = string>(name: Path<FieldsType>) {
     const field = form.register(name);
 

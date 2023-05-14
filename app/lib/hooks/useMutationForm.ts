@@ -22,6 +22,8 @@ interface UseMutationFormProps<
     form: UseFormReturn<Fields>,
     ...rest: any
   ) => (values: Fields) => void;
+  autosave?: boolean;
+  autosaveTimeout?: number;
 }
 
 function useMutationForm<
@@ -33,6 +35,8 @@ function useMutationForm<
   {
     onSubmit: submitHandler,
     onCompleted,
+    autosave,
+    autosaveTimeout = 500,
     ...opts
   }: UseMutationFormProps<FieldsType, MutationType>
 ) {
@@ -51,6 +55,10 @@ function useMutationForm<
     };
   }
 
+  // useFormField is not shared function
+  // because it uses form reference inside
+  // if you modify this function don't forget
+  // to change useFormField in useFormContext too
   function useFormField<ValueType = string>(name: Path<FieldsType>) {
     const field = form.register(name);
 
@@ -68,10 +76,30 @@ function useMutationForm<
     );
   }
 
+  const requestRef = React.useRef<null | NodeJS.Timer>(null);
+  const handleSubmit = (...rest: any) => form.handleSubmit(onSubmit(...rest));
+  const currentValues = React.useMemo(
+    () => form.getValues(),
+    [JSON.stringify(form.getValues())]
+  );
+
+  React.useEffect(() => {
+    if (autosave) {
+      if (requestRef.current) {
+        return;
+      }
+      requestRef.current = setTimeout(() => {
+        requestRef.current = null;
+
+        handleSubmit()();
+      }, autosaveTimeout);
+    }
+  }, [JSON.stringify(currentValues)]);
+
   return React.useMemo(
     () => ({
       ...form,
-      handleSubmit: (...rest: any) => form.handleSubmit(onSubmit(...rest)),
+      handleSubmit,
       useFormField,
     }),
     []

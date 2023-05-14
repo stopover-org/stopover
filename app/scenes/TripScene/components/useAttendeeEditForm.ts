@@ -9,7 +9,7 @@ import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useAttendeeEditForm_AttendeeFragment$key } from "./__generated__/useAttendeeEditForm_AttendeeFragment.graphql";
 
 interface AttendeeEditFormFields {
-  id: string;
+  attendeeId: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -41,7 +41,7 @@ function useDefaultValues(
 
   return React.useMemo(
     () => ({
-      id: attendee.id,
+      attendeeId: attendee.id,
       firstName: attendee.firstName || "",
       lastName: attendee.lastName || "",
       email: attendee.email || "",
@@ -55,6 +55,7 @@ function useDefaultValues(
 }
 
 const validationSchema = Yup.object().shape({
+  attendeeId: Yup.string().required(),
   firstName: Yup.string(),
   lastName: Yup.string(),
   email: Yup.string(),
@@ -68,23 +69,30 @@ export function useAttendeeEditForm(
   return useMutationForm(
     graphql`
       mutation useAttendeeEditForm_UpdateBookingAttendeeMutation(
-        $updateAttendeeInput: UpdateAttendeeInput!
+        $input: UpdateAttendeeInput!
       ) {
-        updateAttendee(input: $updateAttendeeInput) {
+        updateAttendee(input: $input) {
           attendee {
             id
+            attendeeOptions {
+              id
+              eventOption {
+                id
+              }
+            }
           }
         }
       }
     `,
     (values) => ({
-      updateAttendeeInput: {
-        values,
+      input: {
+        ...values,
       },
     }),
     {
       defaultValues: useDefaultValues(attendeeFragmentRef),
       resolver: yupResolver(validationSchema),
+      autosave: true,
     }
   );
 }
