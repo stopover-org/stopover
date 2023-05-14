@@ -89,7 +89,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
             <>
               {currentUser.account?.firm?.id ? (
                 <Link
-                  href={`/firms/${currentUser.account?.firm?.id}`}
+                  href="/firms/my-firm"
                   textAlign="right"
                   level="body1"
                   fontSize="lg"
