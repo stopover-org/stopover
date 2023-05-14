@@ -3,15 +3,13 @@ import {
   DatePicker as JoyDatePicker,
   DatePickerProps as JoyDatePickerProps,
 } from "@mui/x-date-pickers/DatePicker";
-import {
-  PickersDay as JoyPickersDay,
-  PickersDayProps as JoyPickersDayProps,
-} from "@mui/x-date-pickers/PickersDay";
+import { PickersDayProps as JoyPickersDayProps } from "@mui/x-date-pickers/PickersDay";
 import { Moment } from "moment";
 import { FormControl } from "@mui/joy";
 import { DatePickerSlotsComponentsProps } from "@mui/x-date-pickers/DatePicker/DatePicker.types";
 import DatePickerField from "./DatePickerField";
 import { DatePickerInputFieldProps } from "./DatePickerInputField";
+import PickersDay from "./PickersDay";
 
 interface BaseDatePickerSlotProps {
   field?: Partial<DatePickerInputFieldProps>;
@@ -29,6 +27,7 @@ interface BaseDatePickerProps {
   error?: string;
   slotProps?: DatePickerSlotProps;
   availableDates?: Moment[];
+  highlightedDates?: Moment[];
 }
 
 export interface DatePickerProps
@@ -40,6 +39,7 @@ const DatePicker = ({
   error,
   hint,
   availableDates,
+  highlightedDates = [],
   ...props
 }: DatePickerProps) => {
   const disableable = React.useMemo(
@@ -55,13 +55,16 @@ const DatePicker = ({
           field: DatePickerField,
           // eslint-disable-next-line react/no-unstable-nested-components
           day: (dayProps: JoyPickersDayProps<Moment>) => (
-            <JoyPickersDay
+            <PickersDay
               {...dayProps}
               sx={{ borderRadius: 0 }}
               disabled={
                 disableable
                   ? !availableDates?.find((d) => d.isSame(dayProps.day, "day"))
                   : false
+              }
+              highlighted={
+                !!highlightedDates?.find((d) => d.isSame(dayProps.day, "day"))
               }
             />
           ),

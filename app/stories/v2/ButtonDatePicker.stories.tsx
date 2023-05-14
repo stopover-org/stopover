@@ -45,6 +45,26 @@ const Preview = () => (
               Available Dates case
             </ButtonDatePicker>
           </Grid>
+          <Grid xs={12}>
+            <ButtonDatePicker
+              variant="outlined"
+              onChange={(date) => console.log(date)}
+              datePickerProps={{
+                availableDates: [
+                  moment(),
+                  moment().subtract(-2, "d"),
+                  moment().subtract(-4, "d"),
+                ],
+                highlightedDates: [
+                  moment(),
+                  moment().subtract(-2, "d"),
+                  moment().subtract(-4, "d"),
+                ],
+              }}
+            >
+              Available and highlighted dates case
+            </ButtonDatePicker>
+          </Grid>
         </Grid>
       </Grid>
     </LocalizationProvider>
