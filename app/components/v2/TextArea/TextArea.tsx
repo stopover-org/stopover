@@ -1,35 +1,37 @@
 import {
-  Input as JoyInput,
   FormHelperText,
   FormLabel,
-  InputProps as JoyInputProps,
+  Textarea as JoyTextArea,
+  TextareaProps as JoyTextAreaProps,
   Typography,
 } from "@mui/joy";
 import React from "react";
 
-interface BaseInputProps {
+interface BaseTextAreaProps {
+  onChange: (
+    value: string,
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => void;
   label?: React.ReactNode;
   hint?: React.ReactNode;
   error?: React.ReactNode;
-  onChange?: (
-    value: string,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
   value?: string;
   placeholder?: string;
 }
 
-export interface InputProps
-  extends Omit<JoyInputProps, keyof BaseInputProps>,
-    BaseInputProps {}
+interface TextAreaProps
+  extends Omit<JoyTextAreaProps, keyof BaseTextAreaProps>,
+    BaseTextAreaProps {}
 
-const Input = React.forwardRef(
+const TextArea = React.forwardRef(
   (
-    { label, hint, error, onChange, value, ...props }: InputProps,
+    { onChange, label, hint, error, value, ...props }: TextAreaProps,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref: React.Ref<HTMLDivElement>
   ) => {
-    const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("don't collapse me");
+
+    const onChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       if (!(onChange instanceof Function)) return;
       onChange(event.target.value, event);
     };
@@ -37,12 +39,11 @@ const Input = React.forwardRef(
     return (
       <>
         {label && <FormLabel>{label}</FormLabel>}
-        <JoyInput
+        <JoyTextArea
           onChange={onChangeHandler}
           value={value}
           error={Boolean(error)}
           {...props}
-          fullWidth
         />
         {hint && <FormHelperText>{hint}</FormHelperText>}
         {error && (
@@ -57,4 +58,4 @@ const Input = React.forwardRef(
   }
 );
 
-export default React.memo(Input);
+export default React.memo(TextArea);

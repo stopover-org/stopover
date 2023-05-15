@@ -20,7 +20,7 @@ const ChipsInput = ({ hint, value, onChange, ...props }: ChipsInputProps) => {
       case "Enter":
       case "Comma":
         if (onChange instanceof Function) {
-          onChange(`${chips.join(", ")}, ${newChip}`);
+          onChange(`${chips.join(", ")}, ${newChip}`, event as any);
         }
         setNewChip("");
         break;

@@ -6,6 +6,7 @@ import Input from "../../components/v2/Input";
 import { theme } from "../../lib/theme";
 import PhoneInput from "../../components/v2/PhoneInput";
 import ChipsInput from "../../components/v2/ChipsInput";
+import TextArea from "../../components/v2/TextArea";
 
 export default {
   title: "Components/v2/Input",
@@ -260,6 +261,23 @@ const Preview = () => {
               onChange={setChips}
               label="Input with chips"
               hint="it should inherit props from common input"
+            />
+          </Grid>
+        </Grid>
+
+        <Grid xs={12}>
+          <Divider />
+        </Grid>
+
+        <Grid xs={12}>
+          <Grid xs={4}>
+            <TextArea
+              value={chips}
+              onChange={setChips}
+              label="TextAream"
+              hint="it should have 6 rows"
+              minRows={6}
+              maxRows={12}
             />
           </Grid>
         </Grid>
