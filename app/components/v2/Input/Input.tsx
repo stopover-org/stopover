@@ -13,7 +13,7 @@ interface BaseInputProps {
   error?: React.ReactNode;
   onChange?: (
     value: string,
-    event: React.ChangeEvent<HTMLInputElement>
+    event?: React.ChangeEvent<HTMLInputElement>
   ) => void;
   value?: string;
   placeholder?: string;

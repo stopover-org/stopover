@@ -5,6 +5,7 @@ import { CalendarMonthTwoTone } from "@mui/icons-material";
 import Input from "../../components/v2/Input";
 import { theme } from "../../lib/theme";
 import PhoneInput from "../../components/v2/PhoneInput";
+import ChipsInput from "../../components/v2/ChipsInput";
 
 export default {
   title: "Components/v2/Input",
@@ -15,6 +16,7 @@ const Preview = () => {
   const [phone, setPhone] = React.useState("");
   const phoneInputOnChange = (value: string) => setPhone(value);
   const onChange = () => {};
+  const [chips, setChips] = React.useState("");
   return (
     <CssVarsProvider theme={theme}>
       <Grid container spacing={2} xs={12}>
@@ -243,6 +245,21 @@ const Preview = () => {
               onChange={phoneInputOnChange}
               placeholder="Choose country"
               label="გამარჯობა"
+            />
+          </Grid>
+        </Grid>
+
+        <Grid xs={12}>
+          <Divider />
+        </Grid>
+
+        <Grid xs={12}>
+          <Grid xs={4}>
+            <ChipsInput
+              value={chips}
+              onChange={setChips}
+              label="Input with chips"
+              hint="it should inherit props from common input"
             />
           </Grid>
         </Grid>
