@@ -3,6 +3,10 @@
 require 'stripe'
 module Stopover
   class StripeIntegrator
+    def self.empty_price(stripe_integration)
+      { currency: 'usd', product: stripe_integration.product_id, unit_amount: 0 }
+    end
+
     def self.retrieve(model)
       return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
 

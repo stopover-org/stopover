@@ -1,6 +1,7 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { Box, Option, Stack } from "@mui/joy";
+import { Moment } from "moment";
 import { EventActions_EventFragment$key } from "./__generated__/EventActions_EventFragment.graphql";
 import Button from "../../../components/v2/Button";
 import { getDate, setTime, timeFormat } from "../../../lib/utils/dates";
@@ -40,8 +41,8 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
     eventFragmentRef
   );
   const { useFormField } = useFormContext();
-  const dateField = useFormField("date");
-  const attendeesCountField = useFormField("attendeesCount");
+  const dateField = useFormField<Moment>("date");
+  const attendeesCountField = useFormField<number>("attendeesCount");
   const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
   const availableTimes = useTimeFromDate(availableDates, dateField.value);
   const isValidTime = availableTimes.includes(
@@ -88,7 +89,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
               {availableTimes.map((time, index) => (
                 <Option
                   key={`${index}-${time}-${dateField.value?.toISOString()}`}
-                  value={`${time}-${dateField.value?.toISOString()}`}
+                  value={time}
                 >
                   {time}
                 </Option>
@@ -121,7 +122,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             <br />
             Total:{" "}
             {getCurrencyFormat(
-              parseInt(attendeesCountField.value, 10) *
+              attendeesCountField.value *
                 (event.attendeePricePerUom?.cents || 0),
               event.attendeePricePerUom?.currency?.name
             )}

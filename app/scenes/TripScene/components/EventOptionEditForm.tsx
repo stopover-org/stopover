@@ -1,23 +1,39 @@
 import { graphql, useFragment } from "react-relay";
 import { Grid } from "@mui/joy";
 import React from "react";
+import moment from "moment";
 import Checkbox from "../../../components/v2/Checkbox/Checkbox";
 import Typography from "../../../components/v2/Typography/Typography";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import { EventOptionEditForm_EventOptionFragment$key } from "./__generated__/EventOptionEditForm_EventOptionFragment.graphql";
+import useFormContext from "../../../lib/hooks/useFormContext";
+import { EventOptionEditForm_BookingFragment$key } from "./__generated__/EventOptionEditForm_BookingFragment.graphql";
 
 interface EventOptionEditFormProps {
   eventOptionFragmentRef: EventOptionEditForm_EventOptionFragment$key;
+  bookingFragmentRef: EventOptionEditForm_BookingFragment$key;
 }
 
 const EventOptionEditForm = ({
   eventOptionFragmentRef,
+  bookingFragmentRef,
 }: EventOptionEditFormProps) => {
+  const booking = useFragment(
+    graphql`
+      fragment EventOptionEditForm_BookingFragment on Booking {
+        status
+        bookedFor
+      }
+    `,
+    bookingFragmentRef
+  );
+
   const eventOption = useFragment(
     graphql`
       fragment EventOptionEditForm_EventOptionFragment on EventOption {
         builtIn
         title
+        id
         attendeePrice {
           cents
           currency {
@@ -28,14 +44,38 @@ const EventOptionEditForm = ({
     `,
     eventOptionFragmentRef
   );
+  const form = useFormContext();
+  const eventOptions = form.useFormField<string[]>("eventOptionIds");
+  const onChange = React.useCallback(() => {
+    if (eventOptions.value.find((id) => id === eventOption.id)) {
+      eventOptions.onChange(
+        eventOptions.value.filter((id) => id !== eventOption.id)
+      );
+    } else {
+      eventOptions.onChange([...eventOptions.value, eventOption.id]);
+    }
+  }, [eventOptions.value]);
+
+  const checked = React.useMemo(
+    () => !!eventOptions.value.find((id) => id === eventOption.id),
+    [eventOption, eventOptions]
+  );
+
+  const disabled = React.useMemo(
+    () =>
+      booking.status === "paid" ||
+      moment(booking.bookedFor).isBefore(new Date()),
+    [booking.status, booking.bookedFor]
+  );
 
   return (
     <Grid container xs={12}>
       <Grid xs={6}>
         <Checkbox
-          onChange={() => {}}
+          onChange={onChange}
           label={eventOption.title}
-          checked={eventOption.builtIn}
+          checked={checked}
+          disabled={disabled}
         />
       </Grid>
       <Grid xs={3}>

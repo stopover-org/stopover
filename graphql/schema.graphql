@@ -25,6 +25,7 @@ type Achievement implements Node {
 }
 
 type Attendee implements Node {
+  attendeeOptions: [AttendeeOption!]!
   booking: Booking!
   email: String
   eventOptions: [EventOption!]!
@@ -34,6 +35,15 @@ type Attendee implements Node {
   isRegistered: Boolean
   lastName: String
   phone: String
+}
+
+type AttendeeOption implements Node {
+  attendee: Attendee!
+  attendeePrice: Money!
+  builtIn: Boolean!
+  eventOption: EventOption!
+  id: ID!
+  organizerPrice: Money!
 }
 
 input AttendeesFilter {
@@ -78,6 +88,7 @@ type Booking implements Node {
   attendeeTotalPrice: Money!
   attendees(filters: AttendeesFilter): [Attendee!]!
   bookedFor: DateTime!
+  bookingOptions: [BookingOption!]!
   event: Event!
   eventOptions: [EventOption!]!
   id: ID!
@@ -106,6 +117,15 @@ enum BookingCancellationOptionStatusEnum {
   disabled cancellation option
   """
   disabled
+}
+
+type BookingOption implements Node {
+  attendeePrice: Money!
+  booking: Booking!
+  builtIn: Boolean!
+  eventOption: EventOption!
+  id: ID!
+  organizerPrice: Money!
 }
 
 input BookingsFilter {
@@ -393,6 +413,7 @@ type EventFilters {
 type EventOption implements Node {
   attendeePrice: Money!
   builtIn: Boolean!
+  forAttendee: Boolean!
   id: ID!
   organizerPrice: Money
   title: String!
@@ -751,6 +772,7 @@ type RemoveBookingPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  trip: Trip
 }
 
 """
@@ -997,7 +1019,7 @@ input UpdateAttendeeInput {
   """
   clientMutationId: String
   email: String
-  eventOptionsId: [ID!]
+  eventOptionIds: [ID!]
   firstName: String
   lastName: String
   phone: String
@@ -1026,6 +1048,7 @@ input UpdateBookingInput {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  eventOptionIds: [ID!]
   status: String
 }
 

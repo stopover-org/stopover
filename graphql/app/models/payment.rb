@@ -95,6 +95,6 @@ class Payment < ApplicationRecord
   end
 
   def top_up_balance
-    balance.update!(total_amount: Money.new(total_price))
+    balance.update!(total_amount: balance.total_amount + Money.new(total_price))
   end
 end

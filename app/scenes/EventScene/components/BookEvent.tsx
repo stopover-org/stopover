@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Grid, Option } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
+import { Moment } from "moment";
 import { BookEvent_EventFragment$key } from "./__generated__/BookEvent_EventFragment.graphql";
 import DateCalendar from "../../../components/v2/DateCalendar/DateCalendar";
 import { dateFormat, setTime, timeFormat } from "../../../lib/utils/dates";
@@ -38,7 +39,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
     eventFragmentRef
   );
   const { useFormField } = useFormContext();
-  const dateField = useFormField("date");
+  const dateField = useFormField<Moment>("date");
   const attendeesCountField = useFormField("attendeesCount");
   const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
   const availableTimes = useTimeFromDate(availableDates, dateField.value);

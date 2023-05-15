@@ -17,6 +17,15 @@ module Mutations
         payment = booking.payments.processing.last
         checkout = Stripe::Checkout::Session.retrieve(payment.stripe_checkout_session_id)
 
+        if checkout[:status] == 'complete'
+          ::Stopover::StripeCheckoutService.complete(payment)
+          return {
+            url: nil,
+            booking: booking.reload,
+            payment: payment.reload
+          }
+        end
+
         if checkout[:status] == 'expired'
           payment.cancel!
           checkout = Stopover::StripeCheckoutService.generate_stripe_checkout_session(booking, args[:payment_type])
