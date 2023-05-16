@@ -6,6 +6,7 @@ import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
 import { Breadcrumbs } from "./components/Breadcrumbs";
 import RemoveFirm from "./components/RemoveFirm";
+import Tag from "../../components/v2/Tag";
 
 interface FirmSceneProps {
   firmFragmentRef: FirmScene_FirmFragment$key;
@@ -27,6 +28,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
         description
         city
         houseNumber
+        status
       }
     `,
     firmFragmentRef
@@ -36,13 +38,22 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
     () => (firm.contacts ? firm.contacts.split(/\s*,\s*/) : []).filter(Boolean),
     [firm.contacts]
   );
+  let tagColor = "";
+  if (firm.status == "active") tagColor = "primary";
+  if (firm.status == "deleted") tagColor = "secondary";
+  if (firm.status == "pending") tagColor = "tercial";
   return (
     <Grid container spacing={2} padding={4}>
       <Grid xs={12}>
         <Breadcrumbs />
       </Grid>
-      <Grid xs={12}>
+      <Grid xs={12} container>
         <Typography level="h3">Firm Title</Typography>
+        <Grid xs={2}>
+          <Tag href="#" color={tagColor}>
+            {firm.status}
+          </Tag>
+        </Grid>
       </Grid>
       <Grid xs={6} container>
         <Grid xs={4}>
@@ -171,9 +182,11 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
 
       <Grid xs={2}>
         <Stack flexDirection="row" justifyContent="flex-start">
-          <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
-            Edit
-          </Button>
+          {firm.status != "deleted" && (
+            <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
+              Edit
+            </Button>
+          )}
           <RemoveFirm>Delete</RemoveFirm>
         </Stack>
       </Grid>

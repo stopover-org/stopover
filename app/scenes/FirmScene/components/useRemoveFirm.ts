@@ -26,7 +26,7 @@ export function useRemoveFirm() {
     () => ({ input: {} }),
     {
       defaultValues: useDefaultValues(),
-      // resolver: yupResolver(validationSchema)
+      resolver: yupResolver(validationSchema),
     }
   );
 }
