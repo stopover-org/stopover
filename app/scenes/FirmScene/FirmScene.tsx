@@ -4,7 +4,7 @@ import { Chip, Grid, Stack } from "@mui/joy";
 import { FirmScene_FirmFragment$key } from "./__generated__/FirmScene_FirmFragment.graphql";
 import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
-import { Breadcrumbs } from "./components/breadcrumbs";
+import { Breadcrumbs } from "./components/Breadcrumbs";
 
 interface FirmSceneProps {
   firmFragmentRef: FirmScene_FirmFragment$key;
