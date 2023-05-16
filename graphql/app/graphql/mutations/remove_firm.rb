@@ -5,10 +5,9 @@ module Mutations
     field :firm, Types::FirmType
 
     def resolve(**_args)
-      RemoveFirmJob.perform_later(context[:current_user].account.firm.id)
-
+      context[:current_user].account.firm.soft_delete!
       {
-        firm: context[:current_user].account.firm
+        firm: context[:current_user].account.firm.reload
       }
     end
   end

@@ -5,6 +5,7 @@ import { FirmScene_FirmFragment$key } from "./__generated__/FirmScene_FirmFragme
 import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
 import { Breadcrumbs } from "./components/Breadcrumbs";
+import RemoveFirm from "./components/RemoveFirm";
 
 interface FirmSceneProps {
   firmFragmentRef: FirmScene_FirmFragment$key;
@@ -173,9 +174,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
           <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
             Edit
           </Button>
-          <Button color="danger" size="sm" variant="outlined">
-            Delete
-          </Button>
+          <RemoveFirm>Delete</RemoveFirm>
         </Stack>
       </Grid>
     </Grid>
