@@ -4,6 +4,7 @@ import { Chip, Grid, Stack } from "@mui/joy";
 import { FirmScene_FirmFragment$key } from "./__generated__/FirmScene_FirmFragment.graphql";
 import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
+import { Breadcrumbs } from "./components/breadcrumbs";
 
 interface FirmSceneProps {
   firmFragmentRef: FirmScene_FirmFragment$key;
@@ -36,6 +37,9 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
   );
   return (
     <Grid container spacing={2} padding={4}>
+      <Grid xs={12}>
+        <Breadcrumbs />
+      </Grid>
       <Grid xs={12}>
         <Typography level="h3">Firm Title</Typography>
       </Grid>
