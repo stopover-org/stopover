@@ -6,6 +6,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import moment from "moment";
 import { theme } from "../../lib/theme";
 import DateCalendar from "../../components/v2/DateCalendar/DateCalendar";
+import Typography from "../../components/v2/Typography";
 
 export default {
   title: "Components/v2/DateCalendar",
@@ -22,6 +23,21 @@ const Preview = () => (
         <Grid xs={6}>
           <DateCalendar
             availableDates={[
+              moment(),
+              moment().subtract(-2, "d"),
+              moment().subtract(-4, "d"),
+            ]}
+          />
+        </Grid>
+        <Grid xs={6}>
+          <Typography>Highlighted and available dates</Typography>
+          <DateCalendar
+            availableDates={[
+              moment(),
+              moment().subtract(-2, "d"),
+              moment().subtract(-4, "d"),
+            ]}
+            highlightedDates={[
               moment(),
               moment().subtract(-2, "d"),
               moment().subtract(-4, "d"),
