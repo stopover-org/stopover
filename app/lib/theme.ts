@@ -31,6 +31,13 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
         },
       },
     },
+    JoyTextarea: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+      },
+    },
     JoyButton: {
       styleOverrides: {
         root: {

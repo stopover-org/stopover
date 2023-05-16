@@ -5,6 +5,8 @@ import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
 
 import { useCreateFirmForm } from "./useCreateFirmForm";
+import ChipsInput from "../../components/v2/ChipsInput";
+import TextArea from "../../components/v2/TextArea";
 
 const FirmScene = () => {
   const form = useCreateFirmForm();
@@ -60,7 +62,7 @@ const FirmScene = () => {
           <Input {...form.useFormField("primaryPhone")} label="Primary Phone" />
         </Grid>
         <Grid xs={12}>
-          <Input {...form.useFormField("contacts")} label="Contacts" />
+          <ChipsInput {...form.useFormField("contacts")} label="Contacts" />
         </Grid>
         <Grid xs={12}>
           <Input {...form.useFormField("website")} label="Website" />
@@ -70,7 +72,11 @@ const FirmScene = () => {
           <Typography level="h3">Description</Typography>
         </Grid>
         <Grid xs={12}>
-          <Input {...form.useFormField("description")} label="Description" />
+          <TextArea
+            {...form.useFormField("description")}
+            minRows={3}
+            label="Description"
+          />
         </Grid>
 
         <Grid xs={6}>
