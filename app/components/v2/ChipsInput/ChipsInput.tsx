@@ -15,19 +15,36 @@ const ChipsInput = ({ hint, value, onChange, ...props }: ChipsInputProps) => {
     [value]
   );
   const [newChip, setNewChip] = React.useState("");
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    switch (event.code) {
-      case "Enter":
-      case "Comma":
-        if (onChange instanceof Function) {
-          onChange(`${chips.join(", ")}, ${newChip}`, event as any);
-        }
-        setNewChip("");
-        break;
-      default:
-        break;
-    }
-  };
+  const handleKeyPress = React.useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      switch (event.code) {
+        case "Enter":
+        case "Comma":
+          if (onChange instanceof Function) {
+            onChange(`${chips.join(", ")}, ${newChip}`, event as any);
+          }
+          setNewChip("");
+          break;
+        default:
+          break;
+      }
+    },
+    [onChange, chips, newChip]
+  );
+
+  const removeChip = React.useCallback(
+    (index: number) => () => {
+      if (onChange instanceof Function) {
+        onChange(
+          [
+            ...chips.slice(0, index),
+            ...chips.slice(index + 1, chips.length),
+          ].join(", ")
+        );
+      }
+    },
+    [onChange, chips]
+  );
   return (
     <>
       <Input
@@ -44,7 +61,7 @@ const ChipsInput = ({ hint, value, onChange, ...props }: ChipsInputProps) => {
               key={`${chip}-${index}`}
               size="sm"
               variant="outlined"
-              endDecorator={<ChipDelete onDelete={() => alert("Delete")} />}
+              endDecorator={<ChipDelete onDelete={removeChip(index)} />}
             >
               {chip}
             </Chip>

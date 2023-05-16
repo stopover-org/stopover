@@ -35,9 +35,11 @@ const DatePickerField = (props: DatePickerFieldProps) => {
   return (
     <DatePickerInputField
       {...response}
-      onChange={(_, event: React.ChangeEvent<HTMLInputElement>) =>
-        response.onChange(event)
-      }
+      onChange={(_, event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event) {
+          response.onChange(event);
+        }
+      }}
     />
   );
 };

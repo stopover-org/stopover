@@ -11,10 +11,7 @@ interface BaseInputProps {
   label?: React.ReactNode;
   hint?: React.ReactNode;
   error?: React.ReactNode;
-  onChange?: (
-    value: string,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
+  onChange?: (value: string, event?: React.SyntheticEvent<any>) => void;
   value?: string;
   placeholder?: string;
 }

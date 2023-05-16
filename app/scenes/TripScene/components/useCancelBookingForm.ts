@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useCheckoutForm_CreateCheckoutMutation } from "./__generated__/useCheckoutForm_CreateCheckoutMutation.graphql";
 import { useCancelBookingForm_BookingFragment$key } from "./__generated__/useCancelBookingForm_BookingFragment.graphql";
+import { useCancelBookingForm_RemoveBookingMutation } from "./__generated__/useCancelBookingForm_RemoveBookingMutation.graphql";
 
 interface CancelBookingFormFields {
   bookingId: string;
@@ -39,7 +40,7 @@ export function useCancelBookingForm(
 ) {
   return useMutationForm<
     CancelBookingFormFields,
-    useCheckoutForm_CreateCheckoutMutation
+    useCancelBookingForm_RemoveBookingMutation
   >(
     graphql`
       mutation useCancelBookingForm_RemoveBookingMutation(
