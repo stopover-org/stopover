@@ -5,6 +5,7 @@ import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
 
 import { useCreateFirmForm } from "./useCreateFirmForm";
+import PhoneInput from "../../components/v2/PhoneInput";
 
 const CreateFirmScene = () => {
   const form = useCreateFirmForm();
@@ -57,7 +58,10 @@ const CreateFirmScene = () => {
           <Input {...form.useFormField("primaryEmail")} label="Primary Email" />
         </Grid>
         <Grid xs={6}>
-          <Input {...form.useFormField("primaryPhone")} label="Primary Phone" />
+          <PhoneInput
+            {...form.useFormField("primaryPhone")}
+            label="Primary Phone"
+          />
         </Grid>
         <Grid xs={12}>
           <Input {...form.useFormField("contacts")} label="Contacts" />
