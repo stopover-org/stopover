@@ -39,9 +39,9 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
     [firm.contacts]
   );
   let tagColor = "";
-  if (firm.status == "active") tagColor = "primary";
-  if (firm.status == "deleted") tagColor = "secondary";
-  if (firm.status == "pending") tagColor = "tercial";
+  if (firm.status === "active") tagColor = "primary";
+  if (firm.status === "deleted") tagColor = "secondary";
+  if (firm.status === "pending") tagColor = "tercial";
   return (
     <Grid container spacing={2} padding={4}>
       <Grid xs={12}>
