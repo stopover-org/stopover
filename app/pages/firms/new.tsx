@@ -1,7 +1,7 @@
 import React from "react";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay";
-import FirmScene from "../../scenes/CreateFirmScene";
+import CreateFirmScene from "../../scenes/CreateFirmScene";
 import Layout from "../../components/MainPage/Layout";
 import Loading from "../../components/v1/Loading";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
@@ -21,7 +21,7 @@ const NewFirm = ({ preloadedQuery }: RelayProps<Props, new_NewFirmQuery>) => {
   const { currentUser } = usePreloadedQuery(Query, preloadedQuery);
   return (
     <Layout currentUserFragment={currentUser!} showRegisterFirm={false}>
-      <FirmScene />
+      <CreateFirmScene />
     </Layout>
   );
 };

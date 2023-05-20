@@ -114,10 +114,12 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
             label="Attendees Count"
             type="number"
             value={
-              booking ? booking.attendees.length : attendeesCountField.value
+              booking
+                ? booking.attendees.length.toString()
+                : attendeesCountField.value.toString()
             }
             onChange={attendeesCountField.onChange}
-            readOnly={booking}
+            readOnly={Boolean(booking)}
           />
         </Box>
         <Box paddingBottom="10px">
