@@ -26,7 +26,7 @@ RSpec.describe StripeAccount, type: :helper do
       )
 
       Stopover::StripeAccount.create_stripe_account(user)
-      expect(user.account.firm.stripe_account).to eq('{:id=>"account_id"}')
+      expect(user.account.current_firm.stripe_account).to eq('{:id=>"account_id"}')
     end
   end
 end

@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_14_172438) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_20_092937) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "account_firms", force: :cascade do |t|
+    t.bigint "account_id"
+    t.bigint "firm_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_account_firms_on_account_id"
+    t.index ["firm_id"], name: "index_account_firms_on_firm_id"
+  end
 
   create_table "account_interests", force: :cascade do |t|
     t.bigint "account_id"
@@ -41,11 +50,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_172438) do
     t.datetime "verified_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "firm_id"
     t.string "postal_code"
     t.datetime "date_of_birth"
     t.string "last_name"
-    t.index ["firm_id"], name: "index_accounts_on_firm_id"
     t.index ["user_id"], name: "index_accounts_on_user_id", unique: true
   end
 
@@ -378,9 +385,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_172438) do
     t.index ["phone"], name: "index_users_on_phone", unique: true
   end
 
+  add_foreign_key "account_firms", "accounts"
+  add_foreign_key "account_firms", "firms"
   add_foreign_key "account_interests", "accounts"
   add_foreign_key "account_interests", "interests"
-  add_foreign_key "accounts", "firms"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "booking_options", "bookings"

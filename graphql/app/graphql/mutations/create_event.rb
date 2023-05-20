@@ -38,7 +38,7 @@ module Mutations
 
     def resolve(**args)
       event = Event.new(args.except(:dates, :event_options))
-      event.firm = context[:current_user].account.firm
+      event.firm = context[:current_user].account.current_firm
       event.event_options = args[:event_options]&.map { |option| EventOption.new(**option) } if args[:event_options].present?
       if event.recurring_type == 'recurring'
         event.recurring_days_with_time = Stopover::EventSupport.prepare_dates(event,

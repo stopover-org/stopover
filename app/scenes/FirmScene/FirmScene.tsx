@@ -39,10 +39,13 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
     () => (firm.contacts ? firm.contacts.split(/\s*,\s*/) : []).filter(Boolean),
     [firm.contacts]
   );
-  let tagColor = "";
-  if (firm.status === "active") tagColor = "primary";
-  if (firm.status === "deleted") tagColor = "secondary";
-  if (firm.status === "pending") tagColor = "tercial";
+
+  const tagColor = React.useMemo(() => {
+    if (firm.status === "active") return "primary";
+    if (firm.status === "deleted") return "danger";
+    if (firm.status === "pending") return "info";
+    return "primary";
+  }, [firm]);
   return (
     <Grid container spacing={2} padding={4}>
       <Grid xs={12}>
@@ -183,12 +186,12 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
 
       <Grid xs={2}>
         <Stack flexDirection="row" justifyContent="flex-start">
-          {firm.status != "deleted" && (
+          {firm.status !== "deleted" && (
             <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
               Edit
             </Button>
           )}
-          <RemoveFirm>Delete</RemoveFirm>
+          <RemoveFirm />
         </Stack>
       </Grid>
     </Grid>

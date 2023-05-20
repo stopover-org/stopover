@@ -13,7 +13,7 @@ module Stopover
     def self.generate_stripe_checkout_session(booking, payment_type)
       event_stripe_integration = booking.event.stripe_integrations.active.find_by(price_type: payment_type)
 
-      payment = Payment.create!(booking: booking, payment_type: payment_type, balance: booking.event.firm.balance)
+      payment = Payment.create!(booking: booking, payment_type: payment_type, balance: booking.event.current_firm.balance)
       payment.stripe_integrations << event_stripe_integration
       attendee_options = {}
 

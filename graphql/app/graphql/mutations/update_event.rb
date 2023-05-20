@@ -36,8 +36,8 @@ module Mutations
     argument :unit_id, ID, loads: Types::UnitType, required: false
 
     def resolve(event:, **args)
-      raise GraphQL::ExecutionError, 'account has no firm' unless context[:current_user].account.firm
-      raise GraphQL::ExecutionError, 'firm does not have current event' unless context[:current_user].account.firm.events.include?(event)
+      raise GraphQL::ExecutionError, 'account has no firm' unless context[:current_user].account.current_firm
+      raise GraphQL::ExecutionError, 'firm does not have current event' unless context[:current_user].account.current_firm.events.include?(event)
 
       event.update(**args)
       {

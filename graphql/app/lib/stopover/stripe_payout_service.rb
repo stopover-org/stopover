@@ -6,7 +6,7 @@ module Stopover
       Stripe::Transfer.create({
                                 amount: amount,
                                 currency: 'czk',
-                                destination: user.account.firm.stripe_account_id
+                                destination: user.account.current_firm.stripe_account_id
                               })
     end
   end
