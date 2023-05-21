@@ -25,21 +25,20 @@ module Mutations
     def resolve(**args)
       raise GraphQL::ExecutionError, 'unauthorized' unless context[:current_user]
       raise GraphQL::ExecutionError, 'user has no account' unless context[:current_user].account
-      raise GraphQL::ExecutionError, 'account already has a firm' if context[:current_user].account.firm
+      raise GraphQL::ExecutionError, 'account already has a firm' if context[:current_user].account.current_firm
 
       firm = Firm.new(args.except(:base64_image))
 
-      firm.accounts.push(context[:current_user].account)
       firm.primary_email = context[:current_user].email if args[:primary_email].blank?
       firm.primary_phone = context[:current_user].phone if args[:primary_phone].blank?
 
+      firm.account_firms.build(firm: firm, account: context[:current_user].account)
       firm.save!
 
       if args[:base64_image]
         tmp_file = Stopover::FilesSupport.base64_to_file(args[:base64_image])
         firm.image.attach(tmp_file)
       end
-
       { firm: firm }
     end
   end

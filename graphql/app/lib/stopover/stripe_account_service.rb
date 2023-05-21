@@ -3,7 +3,7 @@
 module Stopover
   class StripeAccountService
     def self.create_stripe_account(user)
-      raise StandardError('Account has\'t firm') unless user.account.firm
+      raise StandardError('Account has\'t firm') unless user.account.current_firm
       account = Stripe::Account.create({
                                          type: 'custom',
                                          country: user.account.country,
@@ -14,10 +14,10 @@ module Stopover
                                          }
                                        })
       # Prefil company details before sending url to the customer
-      if user.account.firm.individual?
+      if user.account.current_firm.individual?
         Stripe::Account.update(
           account.id,
-          business_type: user.account.firm.business_type,
+          business_type: user.account.current_firm.business_type,
           individual: {
             address: {
               city: user.account.city,
@@ -33,24 +33,24 @@ module Stopover
         )
       end
 
-      if user.account.firm.company?
+      if user.account.current_firm.company?
         Stripe::Account.update(
           account.id,
-          business_type: user.account.firm.business_type,
+          business_type: user.account.current_firm.business_type,
           company: {
             address: {
-              city: user.account.firm.city,
-              country: user.account.firm.country,
-              line1: user.account.firm.street,
+              city: user.account.current_firm.city,
+              country: user.account.current_firm.country,
+              line1: user.account.current_firm.street,
               line2: nil,
-              postal_code: user.account.firm.postal_code,
-              state: user.account.firm.region
+              postal_code: user.account.current_firm.postal_code,
+              state: user.account.current_firm.region
             }
           }
         )
       end
 
-      user.account.firm.update!(stripe_account_id: account.id)
+      user.account.current_firm.update!(stripe_account_id: account.id)
 
       account_link = Stripe::AccountLink.create({
                                                   account: account[:id],

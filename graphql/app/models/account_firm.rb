@@ -25,67 +25,30 @@
 #  website           :string
 #  stripe_account_id :string
 #
-class Firm < ApplicationRecord
+class AccountFirm < ApplicationRecord
   # MODULES ===============================================================
-  include AASM
-
+  #
   # ATTACHMENTS ===========================================================
-  has_one_attached :image
-
+  #
   # HAS_ONE ASSOCIATIONS ==========================================================
-  has_one :balance
-
+  #
   # HAS_MANY ASSOCIATIONS =========================================================
-  # has_many :accounts
-  has_many :account_firms
-
+  #
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :accounts, through: :account_firms
-
+  #
   # BELONGS_TO ASSOCIATIONS =======================================================
-  has_many :events, dependent: :destroy
+  belongs_to :firm
+  belongs_to :account
 
   # AASM STATES ================================================================
-  aasm column: :status do
-    state :pending, initial: true
-    state :active
-    state :deleted
-
-    event :activate do
-      transitions from: %i[pending deleted], to: :active
-    end
-    event :soft_delete, after_commit: :soft_delete_callback do
-      transitions from: %i[active pending], to: :deleted
-    end
-  end
-
+  #
   # ENUMS =======================================================================
-  enum business_type: {
-    individual: 'individual',
-    company: 'company',
-    non_profit: 'non_profit',
-    # US only
-    government_entity: 'government_entity'
-  }
-
+  #
   # VALIDATIONS ================================================================
-  validates :primary_email, presence: true, unless: :primary_phone
-  validates :primary_phone, presence: true, unless: :primary_email
-  validates :title, presence: true
-  validates :account_firms, length: { minimum: 1 }
-
+  #
   # CALLBACKS ================================================================
-  after_create :create_balance
-
+  #
   # SCOPES =====================================================================
   #
   # DELEGATIONS ==============================================================
-
-  def create_balance
-    self.balance = Balance.new
-  end
-
-  def soft_delete_callback
-    RemoveFirmJob.perform_later(id)
-  end
 end

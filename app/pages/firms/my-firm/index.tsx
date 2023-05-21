@@ -1,10 +1,10 @@
 import React from "react";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay";
-import { getClientEnvironment } from "../../lib/clientEnvironment";
+import { getClientEnvironment } from "../../../lib/clientEnvironment";
 import { myFirm_FirmQuery } from "./__generated__/myFirm_FirmQuery.graphql";
-import Layout from "../../components/MainPage/Layout";
-import FirmScene from "../../scenes/FirmScene";
+import Layout from "../../../components/MainPage/Layout";
+import FirmScene from "../../../scenes/FirmScene";
 
 const Query = graphql`
   query myFirm_FirmQuery {
@@ -19,7 +19,7 @@ const Query = graphql`
   }
 `;
 
-const MyFirm = ({ preloadedQuery }: any) => {
+const Index = ({ preloadedQuery }: any) => {
   const data = usePreloadedQuery<myFirm_FirmQuery>(Query, preloadedQuery);
 
   return (
@@ -29,7 +29,7 @@ const MyFirm = ({ preloadedQuery }: any) => {
   );
 };
 
-export default withRelay(MyFirm, Query, {
+export default withRelay(Index, Query, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: null,
@@ -42,7 +42,7 @@ export default withRelay(MyFirm, Query, {
   // to this function.
   createServerEnvironment: async ({ req }) => {
     const { createServerEnvironment } = await import(
-      "../../lib/serverEnvironment"
+      "../../../lib/serverEnvironment"
     );
 
     return createServerEnvironment(req!.headers.cookie!);

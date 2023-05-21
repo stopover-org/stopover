@@ -17,8 +17,8 @@ RSpec.describe Mutations::UpdateEvent do
     end
 
     let!(:firm) { create(:firm) }
-    let!(:event) { create(:event, firm_id: firm.id) }
-    let!(:account) { create(:account, firm_id: firm.id) }
+    let!(:event) { create(:event, firm: firm) }
+    let!(:account) { create(:account, account_firms: create_list(:account_firm, 1, firm: firm)) }
 
     subject do
       GraphqlSchema.execute(mutation, variables: {
@@ -36,7 +36,7 @@ RSpec.describe Mutations::UpdateEvent do
     context 'event do not exist in specific firm' do
       let!(:firm) { create(:firm) }
       let!(:event) { create(:event) }
-      let!(:account) { create(:account, firm_id: firm.id) }
+      let!(:account) { create(:account, account_firms: create_list(:account_firm, 1, firm: firm)) }
 
       subject do
         GraphqlSchema.execute(mutation, variables: {

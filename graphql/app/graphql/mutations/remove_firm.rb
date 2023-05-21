@@ -5,9 +5,9 @@ module Mutations
     field :firm, Types::FirmType
 
     def resolve(**_args)
-      context[:current_user].account.firm.soft_delete!
+      context[:current_user].account.current_firm.soft_delete!
       {
-        firm: context[:current_user].account.firm.reload
+        firm: context[:current_user].account.current_firm
       }
     end
   end

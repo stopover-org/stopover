@@ -15,6 +15,7 @@ module Mutations
       raise GraphQL::ExecutionError, 'multiple payments in process' if booking.payments.processing.count > 1
       if booking.payments.processing.any?
         payment = booking.payments.processing.last
+
         checkout = Stripe::Checkout::Session.retrieve(payment.stripe_checkout_session_id)
 
         if checkout[:status] == 'complete'
@@ -42,7 +43,9 @@ module Mutations
           }
         end
       end
+
       checkout = Stopover::StripeCheckoutService.generate_stripe_checkout_session(booking, args[:payment_type])
+
       {
         url: checkout[:url],
         booking: booking,

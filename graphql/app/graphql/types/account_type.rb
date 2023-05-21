@@ -26,5 +26,9 @@ module Types
     def trip(trip:)
       trip
     end
+
+    def firm
+      object.current_firm
+    end
   end
 end

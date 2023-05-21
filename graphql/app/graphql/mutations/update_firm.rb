@@ -23,11 +23,11 @@ module Mutations
     def resolve(**args)
       raise GraphQL::ExecutionError, 'unauthorized' unless context[:current_user]
       raise GraphQL::ExecutionError, 'user has no account' unless context[:current_user].account
-      raise GraphQL::ExecutionError, 'firm does not exist' unless context[:current_user].account.firm
+      raise GraphQL::ExecutionError, 'firm does not exist' unless context[:current_user].account.current_firm
 
-      context[:current_user].account.firm.update!(**args)
+      context[:current_user].account.current_firm.update!(**args)
       {
-        firm: context[:current_user].account.firm
+        firm: context[:current_user].account.current_firm
       }
     end
   end

@@ -5,16 +5,16 @@ import Input from "../../../components/v2/Input";
 import Typography from "../../../components/v2/Typography";
 import Button from "../../../components/v2/Button";
 import { useUpdateFirmForm } from "../../CreateFirmScene/useUpdateFirmForm";
-import { FirmEditForm_FirmFragment$key } from "./__generated__/FirmEditForm_FirmFragment.graphql";
+import { EditForm_FirmFragment$key } from "./__generated__/EditForm_FirmFragment.graphql";
 
-const FirmEditForm = ({
+const EditForm = ({
   firmFragmentRef,
 }: {
-  firmFragmentRef: FirmEditForm_FirmFragment$key;
+  firmFragmentRef: EditForm_FirmFragment$key;
 }) => {
   const firm = useFragment(
     graphql`
-      fragment FirmEditForm_FirmFragment on Firm {
+      fragment EditForm_FirmFragment on Firm {
         ...useUpdateFirmForm_FirmFragment
       }
     `,
@@ -94,4 +94,4 @@ const FirmEditForm = ({
   );
 };
 
-export default React.memo(FirmEditForm);
+export default React.memo(EditForm);
