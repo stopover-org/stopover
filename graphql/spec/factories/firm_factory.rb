@@ -19,7 +19,7 @@
 #  primary_email     :string
 #  primary_phone     :string
 #  region            :string
-#  status            :string           default("pending")
+#  status            :string           default("pending")\
 #  street            :string
 #  title             :string           not null
 #  website           :string
@@ -30,6 +30,14 @@ FactoryBot.define do
   factory :firm do
     title { Faker::App.name }
     primary_email { Faker::Internet.email }
-    accounts { create_list(:account, 1) }
+
+    transient do
+      accounts { create_list(:account, 1) }
+      skip_accounts { false }
+    end
+
+    before(:create) do |firm, evaluator|
+      firm.account_firms << evaluator.accounts.map { |account| firm.account_firms.build(account: account) } unless evaluator.skip_accounts
+    end
   end
 end

@@ -32,13 +32,13 @@ module Mutations
       firm.primary_email = context[:current_user].email if args[:primary_email].blank?
       firm.primary_phone = context[:current_user].phone if args[:primary_phone].blank?
 
-      AccountFirm.create!(firm: firm, account: context[:current_user].account)
+      firm.account_firms.build(firm: firm, account: context[:current_user].account)
+      firm.save!
 
       if args[:base64_image]
         tmp_file = Stopover::FilesSupport.base64_to_file(args[:base64_image])
         firm.image.attach(tmp_file)
       end
-
       { firm: firm }
     end
   end

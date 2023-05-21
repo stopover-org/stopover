@@ -7,7 +7,7 @@ module Mutations
     def resolve(**_args)
       context[:current_user].account.current_firm.soft_delete!
       {
-        firm: context[:current_user].account.current_firm.reload
+        firm: context[:current_user].account.current_firm
       }
     end
   end

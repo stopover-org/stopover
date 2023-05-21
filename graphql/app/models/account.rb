@@ -59,7 +59,6 @@ class Account < ApplicationRecord
   #
   # VALIDATIONS ================================================================
   validates :name, presence: true, if: :should_have_name?
-  validates :id, uniqueness: { scope: :firm_id }
 
   # CALLBACKS ================================================================
   before_validation :set_user_info
