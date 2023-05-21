@@ -30,7 +30,8 @@ class Firm < ApplicationRecord
   include AASM
 
   # ATTACHMENTS ===========================================================
-  #
+  has_one_attached :image
+
   # HAS_ONE ASSOCIATIONS ==========================================================
   has_one :balance
 

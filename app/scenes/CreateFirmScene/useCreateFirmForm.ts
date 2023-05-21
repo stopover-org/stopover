@@ -18,6 +18,7 @@ interface CreateFirmFields {
   contacts: string;
   website: string;
   description: string;
+  image: string;
 }
 
 function useDefaultValues(): CreateFirmFields {
@@ -36,6 +37,7 @@ function useDefaultValues(): CreateFirmFields {
       contacts: "",
       website: "",
       description: "",
+      image: "",
     }),
     []
   );
@@ -54,6 +56,7 @@ const validationSchema = Yup.object().shape({
   contacts: Yup.string(),
   website: Yup.string(),
   description: Yup.string(),
+  images: Yup.string(),
 });
 
 export function useCreateFirmForm() {
@@ -67,7 +70,12 @@ export function useCreateFirmForm() {
         }
       }
     `,
-    (values) => ({ input: values }),
+    ({ image, ...values }) => ({
+      input: {
+        ...values,
+        base64Image: image,
+      },
+    }),
     {
       defaultValues: useDefaultValues(),
       resolver: yupResolver(validationSchema),

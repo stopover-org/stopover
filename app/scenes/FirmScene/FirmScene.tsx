@@ -1,12 +1,13 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { Chip, Grid, Stack } from "@mui/joy";
-import { FirmScene_FirmFragment$key } from "./__generated__/FirmScene_FirmFragment.graphql";
+
 import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
 import { Breadcrumbs } from "./components/Breadcrumbs";
 import RemoveFirm from "./components/RemoveFirm";
 import Tag from "../../components/v2/Tag";
+import { FirmScene_FirmFragment$key } from "./__generated__/FirmScene_FirmFragment.graphql";
 
 interface FirmSceneProps {
   firmFragmentRef: FirmScene_FirmFragment$key;
@@ -150,7 +151,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
         </Grid>
         <Grid xs={8}>
           <Stack flexDirection="row" flexWrap="wrap">
-            {chips.map((chip, index) => (
+            {chips.map((chip: string, index: number) => (
               <Chip
                 sx={{ marginRight: 1, marginBottom: 1 }}
                 color="primary"
