@@ -86,13 +86,14 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
           <Grid xs={12}>
             <Breadcrumbs />
           </Grid>
-          <Grid xs={12} >
+          <Grid xs={12}>
             <Stack flexDirection="row">
-            <Typography level="h3">Firm Title
-              <Tag href="#" color={tagColor}>
-                {firm.status}
-              </Tag>
-            </Typography>
+              <Typography level="h3">
+                Firm Title
+                <Tag href="#" color={tagColor}>
+                  {firm.status}
+                </Tag>
+              </Typography>
             </Stack>
           </Grid>
           <Grid xs={6} container>
