@@ -88,7 +88,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
           )}
           {isAuthorized && showRegisterFirm && (
             <>
-              {!currentUser.account?.firm?.id ? (
+              {currentUser.account?.firm?.id ? (
                 <Link
                   href="/firms/my-firm"
                   textAlign="right"
