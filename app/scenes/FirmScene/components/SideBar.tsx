@@ -5,7 +5,6 @@ import React from "react";
 
 const Sidebar = () => (
   <Grid
-    container
     flexDirection="column"
     sx={{ maxWidth: 250, width: "100%", minWidth: 0 }}
   >
