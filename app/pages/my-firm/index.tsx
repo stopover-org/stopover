@@ -1,34 +1,35 @@
 import React from "react";
-import { graphql, usePreloadedQuery } from "react-relay";
 import { withRelay } from "relay-nextjs";
-import Layout from "../../../components/MainPage/Layout";
-import EditForm from "../../../scenes/FirmScene/components/EditForm";
-import { getClientEnvironment } from "../../../lib/clientEnvironment";
-import { editFirm_FirmQuery } from "./__generated__/editFirm_FirmQuery.graphql";
+import { graphql, usePreloadedQuery } from "react-relay";
+import { getClientEnvironment } from "../../lib/clientEnvironment";
+import { myFirm_FirmQuery } from "./__generated__/myFirm_FirmQuery.graphql";
+import Layout from "../../components/MainPage/Layout";
+import FirmScene from "../../scenes/FirmScene";
 
 const Query = graphql`
-  query editFirm_FirmQuery {
+  query myFirm_FirmQuery {
     currentUser {
       ...Layout_CurrentUserFragment
       account {
         firm {
-          ...EditForm_FirmFragment
+          ...FirmScene_FirmFragment
         }
       }
     }
   }
 `;
 
-const Edit = ({ preloadedQuery }: any) => {
-  const data = usePreloadedQuery<editFirm_FirmQuery>(Query, preloadedQuery);
+const Index = ({ preloadedQuery }: any) => {
+  const data = usePreloadedQuery<myFirm_FirmQuery>(Query, preloadedQuery);
+
   return (
     <Layout currentUserFragment={data.currentUser!}>
-      <EditForm firmFragmentRef={data.currentUser?.account?.firm!} />
+      <FirmScene firmFragmentRef={data.currentUser?.account?.firm!} />
     </Layout>
   );
 };
 
-export default withRelay(Edit, Query, {
+export default withRelay(Index, Query, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: null,
@@ -41,7 +42,7 @@ export default withRelay(Edit, Query, {
   // to this function.
   createServerEnvironment: async ({ req }) => {
     const { createServerEnvironment } = await import(
-      "../../../lib/serverEnvironment"
+      "../../lib/serverEnvironment"
     );
 
     return createServerEnvironment(req!.headers.cookie!);
