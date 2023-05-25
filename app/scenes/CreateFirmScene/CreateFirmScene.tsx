@@ -22,7 +22,7 @@ const CreateFirmScene = () => {
         <Grid container spacing={2} md={8} sm={12}>
           <Fieldset>
             <Grid xs={12}>
-              <Typography level="h3">Firm title</Typography>
+              <Typography level="h3">Create Your Firm</Typography>
             </Grid>
             <Grid md={6} sm={12}>
               <Input {...form.useFormField("title")} label="Title" />

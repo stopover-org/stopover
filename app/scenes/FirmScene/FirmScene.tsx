@@ -55,25 +55,19 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
         <Fieldset>
           <Grid xs={12}>
             <Typography level="h3" sx={{ display: "inline" }}>
-              Firm Title
+              {firm.title}
             </Typography>
             <Tag href="#" color={tagColor} sx={{ display: "inline" }}>
               {firm.status}
             </Tag>
           </Grid>
-          <Grid xs={1}>
-            <Typography>Title:</Typography>
-          </Grid>
-          <Grid xs={3}>
-            <Typography>{firm.title}</Typography>
-          </Grid>
-          <Grid xs={1}>
+          <Grid xs={2}>
             <Typography>Contact Person:</Typography>
           </Grid>
-          <Grid xs={3}>
+          <Grid xs={4}>
             <Typography>{firm.contactPerson}</Typography>
           </Grid>
-          <Grid xs={4}>
+          <Grid xs={6}>
             {firm.image && (
               <AspectRatio
                 variant="outlined"
