@@ -18,7 +18,7 @@ const CreateFirmScene = () => {
         <Grid xs={12}>
           <Card sx={{ margin: "20px" }} variant="outlined">
             <CardContent>
-              <Grid container spacing={2}>
+              <Grid container>
                 <Grid xs={12}>
                   <Typography level="h3">Firm title</Typography>
                 </Grid>
@@ -79,7 +79,7 @@ const CreateFirmScene = () => {
         <Grid xs={12}>
           <Card sx={{ margin: "20px" }} variant="outlined">
             <CardContent>
-              <Grid container padding={2}>
+              <Grid container>
                 <Grid xs={12}>
                   <Typography level="h3">Address</Typography>
                 </Grid>
@@ -116,7 +116,7 @@ const CreateFirmScene = () => {
         <Grid xs={12}>
           <Card sx={{ margin: "20px" }} variant="outlined">
             <CardContent>
-              <Grid container padding={2}>
+              <Grid container>
                 <Grid xs={12}>
                   <Typography level="h3">Contact Information</Typography>
                 </Grid>
@@ -146,15 +146,17 @@ const CreateFirmScene = () => {
         <Grid xs={12}>
           <Card sx={{ margin: "20px" }} variant="outlined">
             <CardContent>
-              <Grid xs={12}>
-                <Typography level="h3">Description</Typography>
-              </Grid>
-              <Grid xs={12}>
-                <TextArea
-                  {...form.useFormField("description")}
-                  label="Description"
-                  minRows={5}
-                />
+              <Grid container>
+                <Grid xs={12}>
+                  <Typography level="h3">Description</Typography>
+                </Grid>
+                <Grid xs={12}>
+                  <TextArea
+                    {...form.useFormField("description")}
+                    label="Description"
+                    minRows={5}
+                  />
+                </Grid>
               </Grid>
             </CardContent>
           </Card>
