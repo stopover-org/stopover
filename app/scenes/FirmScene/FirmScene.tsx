@@ -5,7 +5,7 @@ import { Chip, Grid, Stack, styled, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
 import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
-import { Breadcrumbs } from "./components/Breadcrumbs";
+import Breadcrumbs from "../../components/v2/Breadcrumbs";
 import RemoveFirm from "./components/RemoveFirm";
 import Tag from "../../components/v2/Tag";
 import Link from "../../components/v2/Link";
@@ -60,138 +60,138 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
     return "primary";
   }, [firm]);
   return (
-    <Grid container spacing={2} sm={12} md={8}>
-      <Grid xs={12} pl={4}>
-        <Breadcrumbs />
+    <>
+      <Breadcrumbs items={["My Firm"]} />
+      <Grid container spacing={2} sm={12} md={8}>
+        <Fieldset>
+          <Grid xs={12}>
+            <Typography level="h3" sx={{ display: "inline" }}>
+              Firm Title
+            </Typography>
+            <Tag href="#" color={tagColor} sx={{ display: "inline" }}>
+              {firm.status}
+            </Tag>
+          </Grid>
+          <Grid xs={2}>
+            <Typography>Title:</Typography>
+          </Grid>
+          <Grid xs={4}>
+            <Typography>{firm.title}</Typography>
+          </Grid>
+          <Grid xs={2}>
+            <Typography>Contact Person:</Typography>
+          </Grid>
+          <Grid xs={4}>
+            <Typography>{firm.contactPerson}</Typography>
+          </Grid>
+        </Fieldset>
+
+        <Fieldset>
+          <Grid xs={12}>
+            <Typography level="h3">Address</Typography>
+          </Grid>
+          <Grid xs={2}>
+            <Typography>Country:</Typography>
+          </Grid>
+          <Grid xs={4}>
+            <Typography>{firm.country}</Typography>
+          </Grid>
+          <Grid xs={2}>
+            <Typography>Region:</Typography>
+          </Grid>
+          <Grid xs={4}>
+            <Typography>{firm.region}</Typography>
+          </Grid>
+          <Grid xs={2}>
+            <Typography>City:</Typography>
+          </Grid>
+          <Grid xs={4}>
+            <Typography>{firm.city}</Typography>
+          </Grid>
+          <Grid xs={2}>
+            <Typography>Street:</Typography>
+          </Grid>
+          <Grid xs={4}>
+            <Typography>{firm.street}</Typography>
+          </Grid>
+          <Grid xs={2}>
+            <Typography>House Number:</Typography>
+          </Grid>
+          <Grid xs={4}>
+            <Typography>{firm.houseNumber}</Typography>
+          </Grid>
+          <Grid xs={2}>
+            <Typography>Full Address:</Typography>
+          </Grid>
+          <Grid xs={4}>
+            <Typography>{firm.fullAddress}</Typography>
+          </Grid>
+        </Fieldset>
+        <Fieldset>
+          <Grid xs={12}>
+            <Typography level="h3">Contact Information</Typography>
+          </Grid>
+          <Grid xs={2}>
+            <Typography>Primary Email:</Typography>
+          </Grid>
+          <Grid xs={4}>
+            <Typography>{firm.primaryEmail}</Typography>
+          </Grid>
+          <Grid xs={2}>
+            <Typography>Primary Phone:</Typography>
+          </Grid>
+          <Grid xs={4}>
+            <Typography>{firm.primaryPhone}</Typography>
+          </Grid>
+          <Grid xs={2}>
+            <Typography>Contacts:</Typography>
+          </Grid>
+          <Grid xs={10}>
+            <Stack flexDirection="row" flexWrap="wrap">
+              {chips.map((chip: string, index: number) => (
+                <Chip
+                  sx={{ marginRight: 1, marginBottom: 1 }}
+                  color="primary"
+                  key={index}
+                  size="sm"
+                >
+                  {chip}
+                </Chip>
+              ))}
+            </Stack>
+          </Grid>
+          <Grid xs={2}>
+            <Typography>Website:</Typography>
+          </Grid>
+          <Grid xs={4}>
+            <Typography>{firm.website}</Typography>
+          </Grid>
+        </Fieldset>
+        <Fieldset>
+          <Grid xs={12}>
+            <Typography level="h3">Description</Typography>
+          </Grid>
+          <Grid xs={12}>
+            <Typography>{firm.description}</Typography>
+          </Grid>
+        </Fieldset>
+
+        <Fieldset>
+          <Grid xs={12}>
+            <Stack flexDirection="row" justifyContent="flex-start">
+              {firm.status !== "deleted" && (
+                <Link href="/firms//my-firm/edit">
+                  <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
+                    Edit
+                  </Button>
+                </Link>
+              )}
+              <RemoveFirm />
+            </Stack>
+          </Grid>
+        </Fieldset>
       </Grid>
-      <Fieldset>
-        <Grid xs={12}>
-          <Typography level="h3" sx={{ display: "inline" }}>
-            Firm Title
-          </Typography>
-          <Tag href="#" color={tagColor} sx={{ display: "inline" }}>
-            {firm.status}
-          </Tag>
-        </Grid>
-        <Grid xs={2}>
-          <Typography>Title:</Typography>
-        </Grid>
-        <Grid xs={4}>
-          <Typography>{firm.title}</Typography>
-        </Grid>
-        <Grid xs={2}>
-          <Typography>Contact Person:</Typography>
-        </Grid>
-        <Grid xs={4}>
-          <Typography>{firm.contactPerson}</Typography>
-        </Grid>
-      </Fieldset>
-
-      <Fieldset>
-        <Grid xs={12}>
-          <Typography level="h3">Address</Typography>
-        </Grid>
-        <Grid xs={2}>
-          <Typography>Country:</Typography>
-        </Grid>
-        <Grid xs={4}>
-          <Typography>{firm.country}</Typography>
-        </Grid>
-        <Grid xs={2}>
-          <Typography>Region:</Typography>
-        </Grid>
-        <Grid xs={4}>
-          <Typography>{firm.region}</Typography>
-        </Grid>
-        <Grid xs={2}>
-          <Typography>City:</Typography>
-        </Grid>
-        <Grid xs={4}>
-          <Typography>{firm.city}</Typography>
-        </Grid>
-        <Grid xs={2}>
-          <Typography>Street:</Typography>
-        </Grid>
-        <Grid xs={4}>
-          <Typography>{firm.street}</Typography>
-        </Grid>
-        <Grid xs={2}>
-          <Typography>House Number:</Typography>
-        </Grid>
-        <Grid xs={4}>
-          <Typography>{firm.houseNumber}</Typography>
-        </Grid>
-        <Grid xs={2}>
-          <Typography>Full Address:</Typography>
-        </Grid>
-        <Grid xs={4}>
-          <Typography>{firm.fullAddress}</Typography>
-        </Grid>
-      </Fieldset>
-      <Fieldset>
-        <Grid xs={12}>
-          <Typography level="h3">Contact Information</Typography>
-        </Grid>
-        <Grid xs={2}>
-          <Typography>Primary Email:</Typography>
-        </Grid>
-        <Grid xs={4}>
-          <Typography>{firm.primaryEmail}</Typography>
-        </Grid>
-        <Grid xs={2}>
-          <Typography>Primary Phone:</Typography>
-        </Grid>
-        <Grid xs={4}>
-          <Typography>{firm.primaryPhone}</Typography>
-        </Grid>
-        <Grid xs={2}>
-          <Typography>Contacts:</Typography>
-        </Grid>
-        <Grid xs={10}>
-          <Stack flexDirection="row" flexWrap="wrap">
-            {chips.map((chip: string, index: number) => (
-              <Chip
-                sx={{ marginRight: 1, marginBottom: 1 }}
-                color="primary"
-                key={index}
-                size="sm"
-              >
-                {chip}
-              </Chip>
-            ))}
-          </Stack>
-        </Grid>
-        <Grid xs={2}>
-          <Typography>Website:</Typography>
-        </Grid>
-        <Grid xs={4}>
-          <Typography>{firm.website}</Typography>
-        </Grid>
-      </Fieldset>
-      <Fieldset>
-        <Grid xs={12}>
-          <Typography level="h3">Description</Typography>
-        </Grid>
-        <Grid xs={12}>
-          <Typography>{firm.description}</Typography>
-        </Grid>
-      </Fieldset>
-
-      <Fieldset>
-        <Grid xs={12}>
-          <Stack flexDirection="row" justifyContent="flex-start">
-            {firm.status !== "deleted" && (
-              <Link href="/firms//my-firm/edit">
-                <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
-                  Edit
-                </Button>
-              </Link>
-            )}
-            <RemoveFirm />
-          </Stack>
-        </Grid>
-      </Fieldset>
-    </Grid>
+    </>
   );
 };
 
