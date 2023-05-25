@@ -17,6 +17,10 @@ const ChipsInput = ({ hint, value, onChange, ...props }: ChipsInputProps) => {
   const [newChip, setNewChip] = React.useState("");
   const handleKeyPress = React.useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
+      event.preventDefault();
+
+      event.stopPropagation();
+
       switch (event.code) {
         case "Enter":
         case "Comma":

@@ -8,6 +8,7 @@ import Button from "../../components/v2/Button";
 import { Breadcrumbs } from "./components/Breadcrumbs";
 import RemoveFirm from "./components/RemoveFirm";
 import Tag from "../../components/v2/Tag";
+import Link from "../../components/v2/Link";
 import { FirmScene_FirmFragment$key } from "./__generated__/FirmScene_FirmFragment.graphql";
 import { useCreateFirmForm } from "../CreateFirmScene/useCreateFirmForm";
 import SideBar from "./components/SideBar";
@@ -224,9 +225,11 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
           <Grid xs={2}>
             <Stack flexDirection="row" justifyContent="flex-start">
               {firm.status !== "deleted" && (
-                <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
-                  Edit
-                </Button>
+                <Link href="/firms//my-firm/edit">
+              <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
+                Edit
+              </Button>
+            </Link>
               )}
               <RemoveFirm />
             </Stack>
