@@ -44,7 +44,7 @@ module Mutations
         event.recurring_days_with_time = Stopover::EventSupport.prepare_dates(event,
                                                                               args[:dates])
       end
-      if event.recurring_type == 'non_recurring'
+      if event.recurring_type == 'regular'
         event.single_days_with_time = Stopover::EventSupport.prepare_dates(event,
                                                                            args[:dates])
       end

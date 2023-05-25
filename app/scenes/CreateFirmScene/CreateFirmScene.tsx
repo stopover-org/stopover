@@ -15,136 +15,137 @@ const CreateFirmScene = () => {
   return (
     <form onSubmit={form.handleSubmit()}>
       <Grid container spacing={2} md={8} sm={12}>
-        <Card sx={{ margin: "20px" }} variant="outlined">
-          <CardContent>
-            <Grid container spacing={2}>
-              <Grid xs={12}>
-                <Typography level="h3">Firm title</Typography>
-              </Grid>
-              <Grid md={6} sm={12}>
-                <Input {...form.useFormField("title")} label="Title" />
-              </Grid>
-              <Grid md={6} sm={12}>
-                <Input
-                  {...form.useFormField("contactPerson")}
-                  label="Contact Person"
-                />
-              </Grid>
-              <Grid xs={12}>
-                <FileUploader
-                  onChange={(images) => imagesField.onChange(images[0])}
-                  maxFiles={1}
-                />
-              </Grid>
-              {imagesField.value && (
+        <Grid xs={12}>
+          <Card sx={{ margin: "20px" }} variant="outlined">
+            <CardContent>
+              <Grid container spacing={2}>
                 <Grid xs={12}>
-                  <AspectRatio
-                    variant="outlined"
-                    ratio="4/3"
-                    sx={{
-                      width: 300,
-                      bgcolor: "background.level2",
-                      borderRadius: "md",
-                      position: "relative",
-                    }}
-                  >
-                    <img alt="Logo Preview" src={imagesField.value} />
-
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        zIndex: 2,
-                        right: "1rem",
-                        top: "1rem",
-                        borderRadius: "50%",
-                        backgroundColor: "white",
-                        width: "30px",
-                        height: "30px",
-                        padding: "5px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => imagesField.onChange("")}
-                    >
-                      <ClearIcon sx={{ color: "black" }} />
-                    </Box>
-                  </AspectRatio>
+                  <Typography level="h3">Firm title</Typography>
                 </Grid>
-              )}
-            </Grid>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid container spacing={2} md={8} sm={12}>
-        <Card sx={{ margin: "20px" }} variant="outlined">
-          <CardContent>
-            <Grid container padding={2}>
-              <Grid xs={12}>
-                <Typography level="h3">Address</Typography>
-              </Grid>
-              <Grid md={6} sm={12}>
-                <Input {...form.useFormField("country")} label="Country" />
-              </Grid>
-              <Grid md={6} sm={12}>
-                <Input {...form.useFormField("region")} label="Region" />
-              </Grid>
-              <Grid md={6} sm={12}>
-                <Input {...form.useFormField("city")} label="City" />
-              </Grid>
-              <Grid md={6} sm={12}>
-                <Input {...form.useFormField("street")} label="Street" />
-              </Grid>
-              <Grid md={6} sm={12}>
-                <Input
-                  {...form.useFormField("houseNumber")}
-                  label="House Number"
-                />
-              </Grid>
-              <Grid xs={12}>
-                <Input
-                  {...form.useFormField("fullAddress")}
-                  label="Full Address"
-                  hint="<lattitude>, <longitude>"
-                />
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-      </Grid>
+                <Grid md={6} sm={12}>
+                  <Input {...form.useFormField("title")} label="Title" />
+                </Grid>
+                <Grid md={6} sm={12}>
+                  <Input
+                    {...form.useFormField("contactPerson")}
+                    label="Contact Person"
+                  />
+                </Grid>
+                <Grid xs={12}>
+                  <FileUploader
+                    onChange={(images) => imagesField.onChange(images[0])}
+                    maxFiles={1}
+                  />
+                </Grid>
+                {imagesField.value && (
+                  <Grid xs={12}>
+                    <AspectRatio
+                      variant="outlined"
+                      ratio="4/3"
+                      sx={{
+                        width: 300,
+                        bgcolor: "background.level2",
+                        borderRadius: "md",
+                        position: "relative",
+                      }}
+                    >
+                      <img alt="Logo Preview" src={imagesField.value} />
 
-      <Grid container spacing={2} md={8} sm={12}>
-        <Card sx={{ margin: "20px" }} variant="outlined">
-          <CardContent>
-            <Grid container padding={2}>
-              <Grid xs={12}>
-                <Typography level="h3">Contact Information</Typography>
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          zIndex: 2,
+                          right: "1rem",
+                          top: "1rem",
+                          borderRadius: "50%",
+                          backgroundColor: "white",
+                          width: "30px",
+                          height: "30px",
+                          padding: "5px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => imagesField.onChange("")}
+                      >
+                        <ClearIcon sx={{ color: "black" }} />
+                      </Box>
+                    </AspectRatio>
+                  </Grid>
+                )}
               </Grid>
-              <Grid md={6} sm={12}>
-                <Input
-                  {...form.useFormField("primaryEmail")}
-                  label="Primary Email"
-                />
-              </Grid>
-              <Grid md={6} sm={12}>
-                <PhoneInput
-                  {...form.useFormField("primaryPhone")}
-                  label="Primary Phone"
-                />
-              </Grid>
-              <Grid xs={12}>
-                <Input {...form.useFormField("contacts")} label="Contacts" />
-              </Grid>
-              <Grid xs={12}>
-                <Input {...form.useFormField("website")} label="Website" />
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-      </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
 
-      <Grid container spacing={2} md={8} sm={12}>
-        <Card sx={{ margin: "20px" }} variant="outlined">
-          <CardContent>
-            <Grid container padding={2}>
+        <Grid xs={12}>
+          <Card sx={{ margin: "20px" }} variant="outlined">
+            <CardContent>
+              <Grid container padding={2}>
+                <Grid xs={12}>
+                  <Typography level="h3">Address</Typography>
+                </Grid>
+                <Grid md={6} sm={12}>
+                  <Input {...form.useFormField("country")} label="Country" />
+                </Grid>
+                <Grid md={6} sm={12}>
+                  <Input {...form.useFormField("region")} label="Region" />
+                </Grid>
+                <Grid md={6} sm={12}>
+                  <Input {...form.useFormField("city")} label="City" />
+                </Grid>
+                <Grid md={6} sm={12}>
+                  <Input {...form.useFormField("street")} label="Street" />
+                </Grid>
+                <Grid md={6} sm={12}>
+                  <Input
+                    {...form.useFormField("houseNumber")}
+                    label="House Number"
+                  />
+                </Grid>
+                <Grid xs={12}>
+                  <Input
+                    {...form.useFormField("fullAddress")}
+                    label="Full Address"
+                    hint="<lattitude>, <longitude>"
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid xs={12}>
+          <Card sx={{ margin: "20px" }} variant="outlined">
+            <CardContent>
+              <Grid container padding={2}>
+                <Grid xs={12}>
+                  <Typography level="h3">Contact Information</Typography>
+                </Grid>
+                <Grid md={6} sm={12}>
+                  <Input
+                    {...form.useFormField("primaryEmail")}
+                    label="Primary Email"
+                  />
+                </Grid>
+                <Grid md={6} sm={12}>
+                  <PhoneInput
+                    {...form.useFormField("primaryPhone")}
+                    label="Primary Phone"
+                  />
+                </Grid>
+                <Grid xs={12}>
+                  <Input {...form.useFormField("contacts")} label="Contacts" />
+                </Grid>
+                <Grid xs={12}>
+                  <Input {...form.useFormField("website")} label="Website" />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid xs={12}>
+          <Card sx={{ margin: "20px" }} variant="outlined">
+            <CardContent>
               <Grid xs={12}>
                 <Typography level="h3">Description</Typography>
               </Grid>
@@ -155,21 +156,19 @@ const CreateFirmScene = () => {
                   minRows={5}
                 />
               </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-      </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
 
-      <Grid container spacing={2} md={8} sm={12}>
-        <Card sx={{ margin: "20px" }} variant="outlined">
-          <CardContent>
-            <Grid container padding={2}>
-              <Grid xs={12}>
+        <Grid xs={12}>
+          <Card sx={{ margin: "20px" }} variant="outlined">
+            <CardContent>
+              <Grid xs={12} container>
                 <Button type="submit">Submit</Button>
               </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
     </form>
   );
