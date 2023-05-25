@@ -16,9 +16,9 @@ const Breadcrumbs = ({ items }: BreadcrumbsProps) => (
     <Stack flexDirection="row">
       {items.map((item) =>
         typeof item === "string" ? (
-          <Typography>&nbsp;/&nbsp;{item}</Typography>
+          <Typography key={item}>&nbsp;/&nbsp;{item}</Typography>
         ) : (
-          <Typography>
+          <Typography key={item.title}>
             &nbsp;/&nbsp;
             <Link level="body1" href={item.href}>
               {item.title}

@@ -32,8 +32,13 @@ module Mutations
       firm.update!(args.except(:base64_image))
 
       if args[:base64_image]
-        tmp_file = Stopover::FilesSupport.base64_to_file(args[:base64_image])
-        firm.image.attach(tmp_file)
+        if Stopover::FilesSupport.base64?(args[:base64_image])
+          firm.image.purge if firm.image.present?
+          tmp_file = Stopover::FilesSupport.base64_to_file(args[:base64_image])
+          firm.image.attach(tmp_file)
+        end
+      elsif firm.image.present?
+        firm.image.purge
       end
 
       { firm: firm }

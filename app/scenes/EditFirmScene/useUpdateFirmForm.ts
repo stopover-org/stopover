@@ -51,20 +51,20 @@ function useDefaultValues(
 
   return React.useMemo(
     () => ({
-      title: firm.title,
-      contactPerson: firm.contactPerson,
-      country: firm.country,
-      region: firm.region,
-      street: firm.street,
-      fullAddress: firm.fullAddress,
-      primaryEmail: firm.primaryEmail,
-      primaryPhone: firm.primaryPhone,
-      contacts: firm.contacts,
-      website: firm.website,
-      description: firm.description,
-      city: firm.city,
-      houseNumber: firm.houseNumber,
-      image: firm.image,
+      title: firm?.title,
+      contactPerson: firm?.contactPerson,
+      country: firm?.country,
+      region: firm?.region,
+      street: firm?.street,
+      fullAddress: firm?.fullAddress,
+      primaryEmail: firm?.primaryEmail,
+      primaryPhone: firm?.primaryPhone,
+      contacts: firm?.contacts,
+      website: firm?.website,
+      description: firm?.description,
+      city: firm?.city,
+      houseNumber: firm?.houseNumber,
+      image: firm?.image,
     }),
     [firm]
   );
@@ -115,7 +115,7 @@ export function useUpdateFirmForm(
       resolver: yupResolver(validationSchema),
       onCompleted(result) {
         if (result.updateFirm?.firm?.id) {
-          router.replace("/firms/my-firm");
+          router.push("/firms/my-firm");
         }
       },
     }

@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import { Chip, Grid, Stack, styled, useTheme } from "@mui/joy";
+import { AspectRatio, Chip, Grid, Stack, styled, useTheme } from "@mui/joy";
 
 import { useMediaQuery } from "@mui/material";
 import Typography from "../../components/v2/Typography";
@@ -43,6 +43,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
         city
         houseNumber
         status
+        image
       }
     `,
     firmFragmentRef
@@ -72,17 +73,33 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
               {firm.status}
             </Tag>
           </Grid>
-          <Grid xs={2}>
+          <Grid xs={1}>
             <Typography>Title:</Typography>
           </Grid>
-          <Grid xs={4}>
+          <Grid xs={3}>
             <Typography>{firm.title}</Typography>
           </Grid>
-          <Grid xs={2}>
+          <Grid xs={1}>
             <Typography>Contact Person:</Typography>
           </Grid>
-          <Grid xs={4}>
+          <Grid xs={3}>
             <Typography>{firm.contactPerson}</Typography>
+          </Grid>
+          <Grid xs={4}>
+            {firm.image && (
+              <AspectRatio
+                variant="outlined"
+                ratio="4/3"
+                sx={{
+                  width: 300,
+                  bgcolor: "background.level2",
+                  borderRadius: "md",
+                  position: "relative",
+                }}
+              >
+                <img alt="Logo Preview" src={firm.image} />
+              </AspectRatio>
+            )}
           </Grid>
         </Fieldset>
 

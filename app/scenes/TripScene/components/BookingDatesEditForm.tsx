@@ -83,11 +83,13 @@ const BookingDatesEditForm = ({
             ))}
           </Select>
         </Box>
-        <Box>
-          <Button type="submit" disabled={disabled}>
-            Change Dates
-          </Button>
-        </Box>
+        {!disabled && (
+          <Box>
+            <Button type="submit" disabled={disabled}>
+              Change Dates
+            </Button>
+          </Box>
+        )}
       </Stack>
     </form>
   );
