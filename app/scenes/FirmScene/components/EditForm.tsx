@@ -4,7 +4,7 @@ import { graphql, useFragment } from "react-relay";
 import Input from "../../../components/v2/Input";
 import Typography from "../../../components/v2/Typography";
 import Button from "../../../components/v2/Button";
-import { useUpdateFirmForm } from "../../CreateFirmScene/useUpdateFirmForm";
+import { useUpdateFirmForm } from "../useUpdateFirmForm";
 import { EditForm_FirmFragment$key } from "./__generated__/EditForm_FirmFragment.graphql";
 
 const EditForm = ({
