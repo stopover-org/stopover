@@ -1,8 +1,6 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import { AspectRatio, Chip, Grid, Stack, styled, useTheme } from "@mui/joy";
-
-import { useMediaQuery } from "@mui/material";
+import { AspectRatio, Box, Chip, Grid, Stack } from "@mui/joy";
 import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
 import Breadcrumbs from "../../components/v2/Breadcrumbs";
@@ -11,21 +9,11 @@ import Tag from "../../components/v2/Tag";
 import Link from "../../components/v2/Link";
 import { FirmScene_FirmFragment$key } from "./__generated__/FirmScene_FirmFragment.graphql";
 import Fieldset from "../../components/v2/Fieldset";
-import { useCreateFirmForm } from "../CreateFirmScene/useCreateFirmForm";
-import SideBar from "./components/SideBar";
 
-const ContentWrapper = styled(Grid)(({ theme }) => ({
-  [theme.breakpoints.up("md")]: {
-    maxWidth: "calc(100vw - 260px)",
-  },
-}));
 interface FirmSceneProps {
   firmFragmentRef: FirmScene_FirmFragment$key;
 }
 const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
-  const theme = useTheme();
-  const form = useCreateFirmForm();
-  const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   const firm = useFragment(
     graphql`
       fragment FirmScene_FirmFragment on Firm {
@@ -61,7 +49,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
     return "primary";
   }, [firm]);
   return (
-    <>
+    <Box>
       <Breadcrumbs items={["My Firm"]} />
       <Grid container spacing={2} sm={12} md={8}>
         <Fieldset>
@@ -91,7 +79,6 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
                 variant="outlined"
                 ratio="4/3"
                 sx={{
-                  width: 300,
                   bgcolor: "background.level2",
                   borderRadius: "md",
                   position: "relative",
@@ -197,7 +184,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
           <Grid xs={12}>
             <Stack flexDirection="row" justifyContent="flex-start">
               {firm.status !== "deleted" && (
-                <Link href="/firms//my-firm/edit">
+                <Link href="/my-firm/edit">
                   <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
                     Edit
                   </Button>
@@ -208,7 +195,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
           </Grid>
         </Fieldset>
       </Grid>
-    </>
+    </Box>
   );
 };
 

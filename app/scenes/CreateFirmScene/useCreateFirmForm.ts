@@ -87,7 +87,7 @@ export function useCreateFirmForm() {
       resolver: yupResolver(validationSchema),
       onCompleted(result) {
         if (result.createFirm?.firm?.id) {
-          router.replace("/firms/my-firm");
+          router.replace("/my-firm");
         }
       },
     }

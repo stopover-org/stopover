@@ -115,7 +115,7 @@ export function useUpdateFirmForm(
       resolver: yupResolver(validationSchema),
       onCompleted(result) {
         if (result.updateFirm?.firm?.id) {
-          router.push("/firms/my-firm");
+          router.push("/my-firm");
         }
       },
     }

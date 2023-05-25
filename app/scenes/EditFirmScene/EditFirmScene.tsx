@@ -32,9 +32,7 @@ const EditFirmScene = ({
 
   return (
     <>
-      <Breadcrumbs
-        items={[{ title: "My Firm", href: "/firms/my-firm" }, "Edit"]}
-      />
+      <Breadcrumbs items={[{ title: "My Firm", href: "/my-firm" }, "Edit"]} />
       <form onSubmit={form.handleSubmit()}>
         <Grid container spacing={2} md={8} sm={12}>
           <Fieldset>

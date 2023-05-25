@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../../../components/v2/Button";
-import { useRemoveFirm } from "./useRemoveFirm";
+import { useRemoveFirm } from "../useRemoveFirm";
 
 const RemoveFirm = () => {
   const form = useRemoveFirm();

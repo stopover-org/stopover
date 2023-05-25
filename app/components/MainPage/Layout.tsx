@@ -6,7 +6,11 @@ import Header from "./Header";
 import { Layout_CurrentUserFragment$key } from "./__generated__/Layout_CurrentUserFragment.graphql";
 
 type LayoutProps = {
-  children: React.ReactElement;
+  children:
+    | React.ReactElement
+    | React.ReactElement[]
+    | React.ReactNode
+    | React.ReactNode[];
   currentUserFragment: Layout_CurrentUserFragment$key;
   showRegisterFirm?: boolean;
 };

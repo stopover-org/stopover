@@ -5,6 +5,7 @@ import { getClientEnvironment } from "../../lib/clientEnvironment";
 import { myFirm_FirmQuery } from "./__generated__/myFirm_FirmQuery.graphql";
 import Layout from "../../components/MainPage/Layout";
 import FirmScene from "../../scenes/FirmScene";
+import SidebarContent from "../../components/MainPage/SidebarContent";
 
 const Query = graphql`
   query myFirm_FirmQuery {
@@ -24,7 +25,9 @@ const Index = ({ preloadedQuery }: any) => {
 
   return (
     <Layout currentUserFragment={data.currentUser!}>
-      <FirmScene firmFragmentRef={data.currentUser?.account?.firm!} />
+      <SidebarContent>
+        <FirmScene firmFragmentRef={data.currentUser?.account?.firm!} />
+      </SidebarContent>
     </Layout>
   );
 };
