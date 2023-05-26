@@ -1,27 +1,26 @@
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import React from "react";
+import { useApiKey } from "./useApiKey";
 
-export function useCountryCodeFromGMaps(
-  apiKey: string,
-  country: string | null
-) {
+export function usePlaceIdFromGMaps(placeId: string | null) {
+  const googleMapsApiKey = useApiKey("googleMaps");
   const { placesService } = usePlacesService({
-    apiKey,
+    apiKey: googleMapsApiKey || "",
   });
   const [result, setResult] = React.useState<any>(null);
   React.useEffect(() => {
-    if (country) {
+    if (placeId) {
       placesService?.getDetails(
         {
-          placeId: country,
+          placeId,
         },
         (placeDetails) => setResult(placeDetails)
       );
     }
-  }, [country, apiKey]);
+  }, [placeId, googleMapsApiKey]);
 
   return React.useMemo(
     () => result?.address_components?.[0].short_name,
-    [result, country]
+    [result, placeId]
   );
 }

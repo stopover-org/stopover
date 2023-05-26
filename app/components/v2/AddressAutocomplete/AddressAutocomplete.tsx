@@ -9,9 +9,10 @@ import {
 import React from "react";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import Typography from "../Typography";
+import { useApiKey } from "../../../lib/hooks/useApiKey";
 
 interface BaseAddressAutocompleteProps {
-  types: Array<
+  types?: Array<
     | "geocode"
     | "address"
     | "establishment"
@@ -22,15 +23,12 @@ interface BaseAddressAutocompleteProps {
     | "administrative_area_level_1"
     | "administrative_area_level_2"
     | "administrative_area_level_3"
-    | "street_number"
-    | "street_address"
   >;
   onChange?: (value: string, placeId: string) => void;
   value?: string;
   countries?: string[];
-  apiKey: string;
-  label?: string;
-  hint?: string;
+  label?: string | null;
+  hint?: string | null;
   error?: string;
 }
 
@@ -52,7 +50,6 @@ const AddressAutocomplete = React.forwardRef(
       onChange,
       value,
       countries,
-      apiKey,
       label,
       hint,
       error,
@@ -61,9 +58,20 @@ const AddressAutocomplete = React.forwardRef(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref: React.Ref<HTMLDivElement>
   ) => {
+    const googleMapsApiKey = useApiKey("googleMaps");
     const { placePredictions, getPlacePredictions } = usePlacesService({
-      apiKey,
+      apiKey: googleMapsApiKey || "",
     });
+
+    const options = React.useMemo(
+      () =>
+        placePredictions.map((pred) => ({
+          label: pred.structured_formatting.main_text,
+          secondary: pred.structured_formatting.secondary_text,
+          placeId: pred.place_id,
+        })),
+      [placePredictions]
+    );
 
     return (
       <>
@@ -71,11 +79,7 @@ const AddressAutocomplete = React.forwardRef(
         <Autocomplete
           {...props}
           value={value}
-          options={placePredictions.map((pred) => ({
-            label: pred.structured_formatting.main_text,
-            secondary: pred.structured_formatting.secondary_text,
-            placeId: pred.place_id,
-          }))}
+          options={options}
           onChange={(_, val, __, opt) => {
             if (onChange instanceof Function) {
               onChange(val ? val.label : null, opt?.option?.placeId);
@@ -104,6 +108,7 @@ const AddressAutocomplete = React.forwardRef(
               </Stack>
             </AutocompleteOption>
           )}
+          filterOptions={(opts) => opts}
         />
         {hint && <FormHelperText>{hint}</FormHelperText>}
         {error && (

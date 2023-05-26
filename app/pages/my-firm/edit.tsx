@@ -1,11 +1,12 @@
 import React from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
-import { withRelay } from "relay-nextjs";
+import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import SidebarContent from "../../components/MainPage/SidebarContent";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import EditFirmScene from "../../scenes/EditFirmScene";
 import { editFirm_FirmQuery } from "./__generated__/editFirm_FirmQuery.graphql";
+import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
 
 const Query = graphql`
   query editFirm_FirmQuery {
@@ -20,14 +21,23 @@ const Query = graphql`
   }
 `;
 
-const Edit = ({ preloadedQuery }: any) => {
+interface Props {
+  apiKeys: IApiKeys;
+}
+
+const Edit = ({
+  preloadedQuery,
+  apiKeys,
+}: RelayProps<Props, editFirm_FirmQuery>) => {
   const data = usePreloadedQuery<editFirm_FirmQuery>(Query, preloadedQuery);
   return (
-    <Layout currentUserFragment={data.currentUser!}>
-      <SidebarContent>
-        <EditFirmScene firmFragmentRef={data.currentUser?.account?.firm!} />
-      </SidebarContent>
-    </Layout>
+    <ApiKeysProvider apiKeys={apiKeys}>
+      <Layout currentUserFragment={data.currentUser!}>
+        <SidebarContent>
+          <EditFirmScene firmFragmentRef={data.currentUser?.account?.firm!} />
+        </SidebarContent>
+      </Layout>
+    </ApiKeysProvider>
   );
 };
 
@@ -39,7 +49,9 @@ export default withRelay(Edit, Query, {
   // Note: This function must always return the same value.
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
-  serverSideProps: async () => ({}),
+  serverSideProps: async () => ({
+    apiKeys: { googleMaps: process.env.GOOGLE_MAPS_API_KEY },
+  }),
   // Server-side props can be accessed as the second argument
   // to this function.
   createServerEnvironment: async ({ req }) => {

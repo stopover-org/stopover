@@ -71,7 +71,7 @@ function useMutationForm<
         onChange: (value: PathValue<FieldsType, Path<FieldsType>>) => {
           form.setValue(name, value);
         },
-        error: form.formState.errors[name]?.message,
+        error: form.formState.errors[name]?.message as string,
       }),
       [field]
     );

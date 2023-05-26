@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import useMutationForm from "../../lib/hooks/useMutationForm";
 import { useCreateFirmForm_CreateFirmMutation } from "./__generated__/useCreateFirmForm_CreateFirmMutation.graphql";
 
-interface CreateFirmFields {
+export interface CreateFirmFields {
   title: string;
   contactPerson: string;
   country: string;

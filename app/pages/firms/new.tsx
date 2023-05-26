@@ -3,9 +3,10 @@ import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay";
 import CreateFirmScene from "../../scenes/CreateFirmScene";
 import Layout from "../../components/MainPage/Layout";
-import Loading from "../../components/v1/Loading";
+import Loading from "../../components/v2/Loading";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import { new_NewFirmQuery } from "./__generated__/new_NewFirmQuery.graphql";
+import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
 
 const Query = graphql`
   query new_NewFirmQuery {
@@ -15,14 +16,21 @@ const Query = graphql`
   }
 `;
 
-interface Props {}
+interface Props {
+  apiKeys: IApiKeys;
+}
 
-const NewFirm = ({ preloadedQuery }: RelayProps<Props, new_NewFirmQuery>) => {
+const NewFirm = ({
+  preloadedQuery,
+  apiKeys,
+}: RelayProps<Props, new_NewFirmQuery>) => {
   const { currentUser } = usePreloadedQuery(Query, preloadedQuery);
   return (
-    <Layout currentUserFragment={currentUser!} showRegisterFirm={false}>
-      <CreateFirmScene />
-    </Layout>
+    <ApiKeysProvider apiKeys={apiKeys}>
+      <Layout currentUserFragment={currentUser!} showRegisterFirm={false}>
+        <CreateFirmScene />
+      </Layout>
+    </ApiKeysProvider>
   );
 };
 
@@ -34,7 +42,9 @@ export default withRelay(NewFirm, Query, {
   // Note: This function must always return the same value.
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
-  serverSideProps: async () => ({}),
+  serverSideProps: async () => ({
+    apiKeys: { googleMaps: process.env.GOOGLE_MAPS_API_KEY },
+  }),
   // Server-side props can be accessed as the second argument
   // to this function.
   createServerEnvironment: async ({ req }) => {

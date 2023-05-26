@@ -5,7 +5,7 @@ import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import { Id_Query } from "./__generated__/Id_Query.graphql";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
-import Loading from "../../components/v1/Loading";
+import Loading from "../../components/v2/Loading";
 import EventScene from "../../scenes/EventScene";
 
 const Query = graphql`
