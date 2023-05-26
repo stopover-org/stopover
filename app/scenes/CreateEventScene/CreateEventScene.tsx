@@ -3,6 +3,7 @@ import {
   Box,
   Divider,
   Grid,
+  ListItem,
   Option,
   Stack,
   styled,
@@ -11,6 +12,7 @@ import {
 import React from "react";
 import { useMediaQuery } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+import List from "@mui/joy/List";
 import Typography from "../../components/v2/Typography";
 import Input from "../../components/v2/Input";
 import SideBar from "../FirmScene/components/SideBar";
@@ -34,6 +36,9 @@ const CreateEventScene = () => {
   const [currency, setCurrency] = React.useState("dollar");
   const minutes = React.useMemo(() => Array.from(Array(60).keys()), []);
   const hours = React.useMemo(() => Array.from(Array(24).keys()), []);
+  const requiresCheckInField = form.useFormField("requiresCheckIn");
+  const requiresContractField = form.useFormField("requiresContract");
+  const requiresPassport = form.useFormField("requiresPassport");
 
   return (
     <Grid
@@ -148,24 +153,59 @@ const CreateEventScene = () => {
         </Grid>
 
         <Grid xs={12}>
+          <Typography level="h3">Days event</Typography>
+        </Grid>
+        <Grid xs={12}>
+          <List>
+            {[
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday ",
+              "Sunday",
+            ].map((day, index) => (
+              <ListItem>
+                <Checkbox
+                  key={index}
+                  color="primary"
+                  overlay
+                  disableIcon
+                  variant="soft"
+                  label={day}
+                  onChange={() => {}}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Grid>
+
+        <Grid xs={12}>
           <Typography level="h3">Event Requirements</Typography>
         </Grid>
         <Grid xs={12}>
           <Stack>
             <Checkbox
               label="requires_check_in"
-              checked={false}
-              onChange={() => {}}
+              checked={Boolean(requiresCheckInField.value)}
+              onChange={() =>
+                requiresCheckInField.onChange(!requiresCheckInField.value)
+              }
             />
             <Checkbox
               label="requires_contract"
-              checked={false}
-              onChange={() => {}}
+              checked={Boolean(requiresContractField.value)}
+              onChange={() =>
+                requiresContractField.onChange(!requiresContractField.value)
+              }
             />
             <Checkbox
               label="requires_passport"
-              checked={false}
-              onChange={() => {}}
+              checked={Boolean(requiresPassport.value)}
+              onChange={() =>
+                requiresPassport.onChange(!requiresPassport.value)
+              }
             />
             <Checkbox
               label="requires_prepaid"

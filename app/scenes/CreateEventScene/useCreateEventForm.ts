@@ -13,6 +13,16 @@ interface CreateEventFields {
   country: string;
   region: string;
   fullAddress: string;
+  durationTime: string;
+  eventType: string;
+  maxAttendees: number;
+  minAttendees: number;
+  organizerPricePerUomCents: number;
+  recurringType: string;
+  requiresCheckIn: boolean;
+  requiresContract: boolean;
+  requiresPassport: boolean;
+  requiresPrepaid: boolean;
 }
 
 function useDefaultValues(): CreateEventFields {
@@ -26,6 +36,16 @@ function useDefaultValues(): CreateEventFields {
       country: "",
       region: "",
       fullAddress: "",
+      durationTime: "",
+      eventType: "excursion",
+      maxAttendees: 0,
+      minAttendees: 0,
+      organizerPricePerUomCents: 0,
+      recurringType: "regular",
+      requiresCheckIn: false,
+      requiresContract: false,
+      requiresPassport: false,
+      requiresPrepaid: false,
     }),
     []
   );
@@ -40,6 +60,16 @@ const validationSchema = Yup.object().shape({
   country: Yup.string(),
   region: Yup.string(),
   fullAddress: Yup.string(),
+  durationTime: Yup.string(),
+  eventType: Yup.string(),
+  maxAttendees: Yup.number(),
+  minAttendees: Yup.number(),
+  organizerPricePerUomCents: Yup.number(),
+  recurringType: Yup.string(),
+  requiresCheckIn: Yup.boolean(),
+  requiresContract: Yup.boolean(),
+  requiresPassport: Yup.boolean(),
+  requiresPrepaid: Yup.boolean(),
 });
 
 export function useCreateEventForm() {
