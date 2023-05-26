@@ -2,7 +2,9 @@ import React from "react";
 import { graphql } from "react-relay";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 import useMutationForm from "../../lib/hooks/useMutationForm";
+import { useRemoveFirm_RemoveFirmMutation } from "./__generated__/useRemoveFirm_RemoveFirmMutation.graphql";
 
 interface RemoveFirmFields {}
 
@@ -13,7 +15,8 @@ function useDefaultValues(): RemoveFirmFields {
 const validationSchema = Yup.object().shape({});
 
 export function useRemoveFirm() {
-  return useMutationForm(
+  const router = useRouter();
+  return useMutationForm<RemoveFirmFields, useRemoveFirm_RemoveFirmMutation>(
     graphql`
       mutation useRemoveFirm_RemoveFirmMutation($input: RemoveFirmInput!) {
         removeFirm(input: $input) {
@@ -27,6 +30,11 @@ export function useRemoveFirm() {
     {
       defaultValues: useDefaultValues(),
       resolver: yupResolver(validationSchema),
+      onCompleted(result) {
+        if (result.removeFirm?.firm?.id) {
+          router.replace("/events");
+        }
+      },
     }
   );
 }

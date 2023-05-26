@@ -11,10 +11,19 @@ import TextArea from "../../components/v2/TextArea";
 import Fieldset from "../../components/v2/Fieldset";
 import Breadcrumbs from "../../components/v2/Breadcrumbs";
 import ChipsInput from "../../components/v2/ChipsInput";
+import AddressAutocomplete from "../../components/v2/AddressAutocomplete";
+import { useCountryCodeFromGMaps } from "../../lib/hooks/useCountryCodeFromGMaps";
 
 const CreateFirmScene = () => {
   const form = useCreateFirmForm();
   const imagesField = form.useFormField("image");
+  const [countryCode, setCountryCode] = React.useState<string | null>(null);
+  const countryField = form.useFormField("country");
+  const gMapCountryCode = useCountryCodeFromGMaps(
+    "AIzaSyCTU4ixqqGNU3RFKQEVw5WZP6kTfhyrCic",
+    countryCode
+  );
+
   return (
     <>
       <Breadcrumbs items={["Create Your Firm"]} />
@@ -80,30 +89,67 @@ const CreateFirmScene = () => {
               <Typography level="h3">Address</Typography>
             </Grid>
             <Grid md={6} sm={12}>
-              <Input {...form.useFormField("country")} label="Country" />
+              <AddressAutocomplete
+                apiKey="AIzaSyCTU4ixqqGNU3RFKQEVw5WZP6kTfhyrCic"
+                types={["country"]}
+                value={countryField.value}
+                onChange={(value, placeId) => {
+                  countryField.onChange(value);
+
+                  setCountryCode(placeId);
+                }}
+                label="Country"
+              />
             </Grid>
             <Grid md={6} sm={12}>
-              <Input {...form.useFormField("region")} label="Region" />
+              <AddressAutocomplete
+                apiKey="AIzaSyCTU4ixqqGNU3RFKQEVw5WZP6kTfhyrCic"
+                types={[
+                  "administrative_area_level_1",
+                  "administrative_area_level_2",
+                  "administrative_area_level_3",
+                ]}
+                countries={gMapCountryCode ? [gMapCountryCode] : undefined}
+                {...form.useFormField("region")}
+                label="Region"
+              />
             </Grid>
             <Grid md={6} sm={12}>
-              <Input {...form.useFormField("city")} label="City" />
+              <AddressAutocomplete
+                apiKey="AIzaSyCTU4ixqqGNU3RFKQEVw5WZP6kTfhyrCic"
+                types={["locality", "administrative_area_level_3"]}
+                countries={gMapCountryCode ? [gMapCountryCode] : undefined}
+                {...form.useFormField("city")}
+                label="City"
+              />
             </Grid>
             <Grid md={6} sm={12}>
-              <Input {...form.useFormField("street")} label="Street" />
+              <AddressAutocomplete
+                apiKey="AIzaSyCTU4ixqqGNU3RFKQEVw5WZP6kTfhyrCic"
+                types={["address"]}
+                countries={gMapCountryCode ? [gMapCountryCode] : undefined}
+                {...form.useFormField("street")}
+                label="Street"
+              />
             </Grid>
             <Grid md={6} sm={12}>
-              <Input
+              <AddressAutocomplete
+                apiKey="AIzaSyCTU4ixqqGNU3RFKQEVw5WZP6kTfhyrCic"
+                types={["street_number"]}
+                countries={gMapCountryCode ? [gMapCountryCode] : undefined}
                 {...form.useFormField("houseNumber")}
                 label="House Number"
               />
             </Grid>
-            <Grid xs={12}>
-              <Input
-                {...form.useFormField("fullAddress")}
-                label="Full Address"
-                hint="<lattitude>, <longitude>"
-              />
-            </Grid>
+            {/* <Grid xs={12}> */}
+            {/*  <AddressAutocomplete */}
+            {/*    apiKey="AIzaSyCTU4ixqqGNU3RFKQEVw5WZP6kTfhyrCic" */}
+            {/*    types={["address"]} */}
+            {/*    countries={gMapCountryCode ? [gMapCountryCode] : undefined} */}
+            {/*    {...form.useFormField("fullAddress")} */}
+            {/*    label="Full Address" */}
+            {/*  /> */}
+            {/* </Grid> */}
           </Fieldset>
 
           <Fieldset>
