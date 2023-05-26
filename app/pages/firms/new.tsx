@@ -1,6 +1,7 @@
 import React from "react";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay";
+import { useRouter } from "next/router";
 import CreateFirmScene from "../../scenes/CreateFirmScene";
 import Layout from "../../components/MainPage/Layout";
 import Loading from "../../components/v2/Loading";
@@ -12,6 +13,11 @@ const Query = graphql`
   query new_NewFirmQuery {
     currentUser {
       ...Layout_CurrentUserFragment
+      account {
+        firm {
+          id
+        }
+      }
     }
   }
 `;
@@ -25,6 +31,12 @@ const NewFirm = ({
   apiKeys,
 }: RelayProps<Props, new_NewFirmQuery>) => {
   const { currentUser } = usePreloadedQuery(Query, preloadedQuery);
+  const router = useRouter();
+
+  if (currentUser?.account?.firm?.id && typeof window !== "undefined") {
+    router.replace("/my-firm");
+  }
+
   return (
     <ApiKeysProvider apiKeys={apiKeys}>
       <Layout currentUserFragment={currentUser!} showRegisterFirm={false}>
