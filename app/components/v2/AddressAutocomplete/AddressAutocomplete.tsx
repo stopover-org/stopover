@@ -78,7 +78,7 @@ const AddressAutocomplete = React.forwardRef(
           }))}
           onChange={(_, val, __, opt) => {
             if (onChange instanceof Function) {
-              onChange(val || "", opt?.option?.placeId);
+              onChange(val ? val.label : null, opt?.option?.placeId);
             }
           }}
           onInputChange={(event, val) =>

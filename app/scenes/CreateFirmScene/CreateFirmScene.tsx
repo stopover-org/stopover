@@ -133,10 +133,7 @@ const CreateFirmScene = () => {
               />
             </Grid>
             <Grid md={6} sm={12}>
-              <AddressAutocomplete
-                apiKey="AIzaSyCTU4ixqqGNU3RFKQEVw5WZP6kTfhyrCic"
-                types={["street_number"]}
-                countries={gMapCountryCode ? [gMapCountryCode] : undefined}
+              <Input
                 {...form.useFormField("houseNumber")}
                 label="House Number"
               />
