@@ -4,13 +4,10 @@ import Fieldset from "../../../components/v2/Fieldset/Fieldset";
 import Typography from "../../../components/v2/Typography/Typography";
 import AddressAutocomplete from "../../../components/v2/AddressAutocomplete/AddressAutocomplete";
 import Input from "../../../components/v2/Input/Input";
-import useFormContext from "../../../lib/hooks/useFormContext";
-import { CreateFirmFields } from "../useCreateFirmForm";
-import { usePlaceIdFromGMaps } from "../../../lib/hooks/usePlaceIdFromGMaps";
-import {
-  IAddress,
-  useDetailedAddress,
-} from "../../../lib/hooks/useDetailedAddress";
+import useFormContext from "../../hooks/useFormContext";
+import { CreateFirmFields } from "../../../scenes/CreateFirmScene/useCreateFirmForm";
+import { usePlaceIdFromGMaps } from "../../hooks/usePlaceIdFromGMaps";
+import { IAddress, useDetailedAddress } from "../../hooks/useDetailedAddress";
 
 const AddressFieldset = () => {
   const form = useFormContext<CreateFirmFields>();

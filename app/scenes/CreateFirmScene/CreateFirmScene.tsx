@@ -12,7 +12,7 @@ import TextArea from "../../components/v2/TextArea";
 import Fieldset from "../../components/v2/Fieldset";
 import Breadcrumbs from "../../components/v2/Breadcrumbs";
 import ChipsInput from "../../components/v2/ChipsInput";
-import AddressFieldset from "./components/AddressFieldset";
+import AddressFieldset from "../../lib/shared/AddressFieldset";
 
 const CreateFirmScene = () => {
   const form = useCreateFirmForm();

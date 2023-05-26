@@ -30,7 +30,10 @@ const NewFirm = ({
   preloadedQuery,
   apiKeys,
 }: RelayProps<Props, new_NewFirmQuery>) => {
-  const { currentUser } = usePreloadedQuery(Query, preloadedQuery);
+  const { currentUser } = usePreloadedQuery<new_NewFirmQuery>(
+    Query,
+    preloadedQuery
+  );
   const router = useRouter();
 
   if (currentUser?.account?.firm?.id && typeof window !== "undefined") {
