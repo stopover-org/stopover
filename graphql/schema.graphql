@@ -451,7 +451,7 @@ type Firm implements Node {
   fullAddress: String
   houseNumber: String
   id: ID!
-  image: String!
+  image: String
   latitude: Float
   longitude: Float
   primaryEmail: String!
