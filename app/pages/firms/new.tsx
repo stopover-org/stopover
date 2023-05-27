@@ -1,7 +1,6 @@
 import React from "react";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay";
-import { useRouter } from "next/router";
 import CreateFirmScene from "../../scenes/CreateFirmScene";
 import Layout from "../../components/MainPage/Layout";
 import Loading from "../../components/v2/Loading";
@@ -10,6 +9,7 @@ import { new_NewFirmQuery } from "./__generated__/new_NewFirmQuery.graphql";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
+import AuthGuard from "../../lib/shared/AuthGuard";
 
 const Query = graphql`
   query new_NewFirmQuery {
@@ -36,17 +36,18 @@ const NewFirm = ({
     Query,
     preloadedQuery
   );
-  const router = useRouter();
 
-  if (currentUser?.account?.firm?.id && typeof window !== "undefined") {
-    router.replace("/my-firm");
-  }
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={currentUser!} showRegisterFirm={false}>
-      <CreateFirmScene />
-    </Layout>
+    <AuthGuard
+      accessible={!currentUser?.account?.firm?.id}
+      redirectTo="/my-firm"
+    >
+      <Layout currentUserFragment={currentUser!} showRegisterFirm={false}>
+        <CreateFirmScene />
+      </Layout>
+    </AuthGuard>
   );
 };
 
