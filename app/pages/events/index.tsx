@@ -7,7 +7,8 @@ import Loading from "../../components/v2/Loading";
 import { events_Query } from "./__generated__/events_Query.graphql";
 import EventsScene from "../../scenes/EventsScene";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
-import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
+import { IApiKeys } from "../../components/ApiKeysProvider";
+import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 
 const Query = graphql`
   query events_Query {
@@ -27,13 +28,12 @@ const Events = ({
   apiKeys,
 }: RelayProps<Props, events_Query>) => {
   const data = usePreloadedQuery(Query, preloadedQuery);
+  useUpdateApiKeys(apiKeys);
 
   return (
-    <ApiKeysProvider apiKeys={apiKeys}>
-      <Layout currentUserFragment={data.currentUser!}>
-        <EventsScene eventsFragmentRef={data} />
-      </Layout>
-    </ApiKeysProvider>
+    <Layout currentUserFragment={data.currentUser!}>
+      <EventsScene eventsFragmentRef={data} />
+    </Layout>
   );
 };
 

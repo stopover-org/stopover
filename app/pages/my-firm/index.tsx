@@ -6,8 +6,9 @@ import { myFirm_FirmQuery } from "./__generated__/myFirm_FirmQuery.graphql";
 import Layout from "../../components/MainPage/Layout";
 import FirmScene from "../../scenes/FirmScene";
 import SidebarContent from "../../components/MainPage/SidebarContent";
-import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
+import { IApiKeys } from "../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
+import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 
 const Query = graphql`
   query myFirm_FirmQuery {
@@ -31,15 +32,14 @@ const Index = ({
   apiKeys,
 }: RelayProps<Props, myFirm_FirmQuery>) => {
   const data = usePreloadedQuery<myFirm_FirmQuery>(Query, preloadedQuery);
+  useUpdateApiKeys(apiKeys);
 
   return (
-    <ApiKeysProvider apiKeys={apiKeys}>
-      <Layout currentUserFragment={data.currentUser!}>
-        <SidebarContent>
-          <FirmScene firmFragmentRef={data.currentUser?.account?.firm!} />
-        </SidebarContent>
-      </Layout>
-    </ApiKeysProvider>
+    <Layout currentUserFragment={data.currentUser!}>
+      <SidebarContent>
+        <FirmScene firmFragmentRef={data.currentUser?.account?.firm!} />
+      </SidebarContent>
+    </Layout>
   );
 };
 

@@ -5,8 +5,9 @@ import Layout from "../../components/MainPage/Layout";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import { Id_TripsQuery } from "./__generated__/Id_TripsQuery.graphql";
 import TripScene from "../../scenes/TripScene";
-import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
+import { IApiKeys } from "../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
+import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 
 const Query = graphql`
   query Id_TripsQuery($id: ID!) {
@@ -29,12 +30,11 @@ const Trip = ({
   apiKeys,
 }: RelayProps<Props, Id_TripsQuery>) => {
   const data = usePreloadedQuery<Id_TripsQuery>(Query, preloadedQuery);
+  useUpdateApiKeys(apiKeys);
   return (
-    <ApiKeysProvider apiKeys={apiKeys}>
-      <Layout currentUserFragment={data.currentUser!}>
-        <TripScene tripFragmentRef={data.currentUser?.account?.trip!} />
-      </Layout>
-    </ApiKeysProvider>
+    <Layout currentUserFragment={data.currentUser!}>
+      <TripScene tripFragmentRef={data.currentUser?.account?.trip!} />
+    </Layout>
   );
 };
 

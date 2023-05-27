@@ -6,8 +6,9 @@ import SidebarContent from "../../components/MainPage/SidebarContent";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import EditFirmScene from "../../scenes/EditFirmScene";
 import { editFirm_FirmQuery } from "./__generated__/editFirm_FirmQuery.graphql";
-import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
+import { IApiKeys } from "../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
+import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 
 const Query = graphql`
   query editFirm_FirmQuery {
@@ -31,14 +32,13 @@ const Edit = ({
   apiKeys,
 }: RelayProps<Props, editFirm_FirmQuery>) => {
   const data = usePreloadedQuery<editFirm_FirmQuery>(Query, preloadedQuery);
+  useUpdateApiKeys(apiKeys);
   return (
-    <ApiKeysProvider apiKeys={apiKeys}>
-      <Layout currentUserFragment={data.currentUser!}>
-        <SidebarContent>
-          <EditFirmScene firmFragmentRef={data.currentUser?.account?.firm!} />
-        </SidebarContent>
-      </Layout>
-    </ApiKeysProvider>
+    <Layout currentUserFragment={data.currentUser!}>
+      <SidebarContent>
+        <EditFirmScene firmFragmentRef={data.currentUser?.account?.firm!} />
+      </SidebarContent>
+    </Layout>
   );
 };
 

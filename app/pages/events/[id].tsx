@@ -1,6 +1,5 @@
 import React from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
-// import { useRouter } from "next/router";
 import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import { Id_Query } from "./__generated__/Id_Query.graphql";
@@ -8,7 +7,8 @@ import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/v2/Loading";
 import EventScene from "../../scenes/EventScene";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
-import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
+import { IApiKeys } from "../../components/ApiKeysProvider";
+import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 
 const Query = graphql`
   query Id_Query($id: ID!) {
@@ -28,12 +28,12 @@ interface Props {
 
 const Event = ({ preloadedQuery, apiKeys }: RelayProps<Props, Id_Query>) => {
   const { event, currentUser } = usePreloadedQuery(Query, preloadedQuery);
+  useUpdateApiKeys(apiKeys);
+
   return (
-    <ApiKeysProvider apiKeys={apiKeys}>
-      <Layout currentUserFragment={currentUser!}>
-        <EventScene eventFragmentRef={event!} />
-      </Layout>
-    </ApiKeysProvider>
+    <Layout currentUserFragment={currentUser!}>
+      <EventScene eventFragmentRef={event!} />
+    </Layout>
   );
 };
 

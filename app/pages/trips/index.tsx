@@ -7,7 +7,8 @@ import Loading from "../../components/v2/Loading";
 import { trips_Query } from "./__generated__/trips_Query.graphql";
 import TripsScene from "../../scenes/TripsScene";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
-import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
+import { IApiKeys } from "../../components/ApiKeysProvider";
+import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 
 const Query = graphql`
   query trips_Query {
@@ -25,14 +26,13 @@ interface Props {
 }
 const Trips = ({ preloadedQuery, apiKeys }: RelayProps<Props, trips_Query>) => {
   const data = usePreloadedQuery(Query, preloadedQuery);
+  useUpdateApiKeys(apiKeys);
 
   return (
-    <ApiKeysProvider apiKeys={apiKeys}>
-      <Layout currentUserFragment={data.currentUser!}>
-        {/* <EventsScene eventsFragmentRef={data} /> */}
-        <TripsScene accountFragmentRef={data.currentUser?.account!} />
-      </Layout>
-    </ApiKeysProvider>
+    <Layout currentUserFragment={data.currentUser!}>
+      {/* <EventsScene eventsFragmentRef={data} /> */}
+      <TripsScene accountFragmentRef={data.currentUser?.account!} />
+    </Layout>
   );
 };
 

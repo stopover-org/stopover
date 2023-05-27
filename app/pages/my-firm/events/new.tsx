@@ -6,8 +6,9 @@ import { getClientEnvironment } from "../../../lib/clientEnvironment";
 import Layout from "../../../components/MainPage/Layout";
 import SidebarContent from "../../../components/MainPage/SidebarContent";
 import { new_FirmEventsNewQuery } from "./__generated__/new_FirmEventsNewQuery.graphql";
-import ApiKeysProvider, { IApiKeys } from "../../../components/ApiKeysProvider";
+import { IApiKeys } from "../../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
+import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
 
 const Query = graphql`
   query new_FirmEventsNewQuery {
@@ -26,14 +27,13 @@ const New = ({
   apiKeys,
 }: RelayProps<Props, new_FirmEventsNewQuery>) => {
   const data = usePreloadedQuery<new_FirmEventsNewQuery>(Query, preloadedQuery);
+  useUpdateApiKeys(apiKeys);
   return (
-    <ApiKeysProvider apiKeys={apiKeys}>
-      <Layout currentUserFragment={data.currentUser!}>
-        <SidebarContent>
-          <CreateEventScene />
-        </SidebarContent>
-      </Layout>
-    </ApiKeysProvider>
+    <Layout currentUserFragment={data.currentUser!}>
+      <SidebarContent>
+        <CreateEventScene />
+      </SidebarContent>
+    </Layout>
   );
 };
 
