@@ -5,7 +5,7 @@ import Layout from "../../components/MainPage/Layout";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/v2/Loading";
 import { events_Query } from "./__generated__/events_Query.graphql";
-import EventsScene from "../../scenes/EventsScene";
+import EventsScene from "../../scenes/attendees/events/EventsScene";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";

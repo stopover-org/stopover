@@ -5,7 +5,7 @@ import Typography from "../../../components/v2/Typography/Typography";
 import AddressAutocomplete from "../../../components/v2/AddressAutocomplete/AddressAutocomplete";
 import Input from "../../../components/v2/Input/Input";
 import useFormContext from "../../hooks/useFormContext";
-import { CreateFirmFields } from "../../../scenes/CreateFirmScene/useCreateFirmForm";
+import { CreateFirmFields } from "../../../scenes/firms/CreateFirmScene/useCreateFirmForm";
 import { usePlaceIdFromGMaps } from "../../hooks/usePlaceIdFromGMaps";
 import { IAddress, useDetailedAddress } from "../../hooks/useDetailedAddress";
 
