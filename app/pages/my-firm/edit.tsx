@@ -9,6 +9,7 @@ import { editFirm_FirmQuery } from "./__generated__/editFirm_FirmQuery.graphql";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
+import AuthGuard from "../../lib/shared/AuthGuard";
 
 const Query = graphql`
   query editFirm_FirmQuery {
@@ -17,6 +18,7 @@ const Query = graphql`
       account {
         firm {
           ...EditFirmScene_FirmFragment
+          id
         }
       }
     }
@@ -31,13 +33,22 @@ const Edit = ({
   preloadedQuery,
   apiKeys,
 }: RelayProps<Props, editFirm_FirmQuery>) => {
-  const data = usePreloadedQuery<editFirm_FirmQuery>(Query, preloadedQuery);
+  const { currentUser } = usePreloadedQuery<editFirm_FirmQuery>(
+    Query,
+    preloadedQuery
+  );
+
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={data.currentUser!}>
-      <SidebarContent>
-        <EditFirmScene firmFragmentRef={data.currentUser?.account?.firm!} />
-      </SidebarContent>
+    <Layout currentUserFragment={currentUser!}>
+      <AuthGuard
+        accessible={Boolean(currentUser?.account?.firm?.id)}
+        redirectTo="/firms/new"
+      >
+        <SidebarContent>
+          <EditFirmScene firmFragmentRef={currentUser?.account?.firm!} />
+        </SidebarContent>
+      </AuthGuard>
     </Layout>
   );
 };
