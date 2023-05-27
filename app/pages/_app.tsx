@@ -5,11 +5,13 @@ import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";
 import { CssVarsProvider } from "@mui/joy";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import React from "react";
 import { getClientEnvironment } from "../lib/clientEnvironment";
 import "rc-slider/assets/index.css";
 import "react-phone-input-2/lib/style.css";
 import "@fontsource/public-sans";
 import { theme } from "../lib/theme";
+import ApiKeysProvider from "../components/ApiKeysProvider";
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
@@ -21,13 +23,15 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const env = relayProps.preloadedQuery?.environment ?? clientEnv!;
 
   return (
-    <RelayEnvironmentProvider environment={env}>
-      <CssVarsProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-          <Component {...pageProps} {...relayProps} />
-        </LocalizationProvider>
-      </CssVarsProvider>
-    </RelayEnvironmentProvider>
+    <ApiKeysProvider>
+      <RelayEnvironmentProvider environment={env}>
+        <CssVarsProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterMoment}>
+            <Component {...pageProps} {...relayProps} />
+          </LocalizationProvider>
+        </CssVarsProvider>
+      </RelayEnvironmentProvider>
+    </ApiKeysProvider>
   );
 };
 

@@ -1,12 +1,14 @@
 import React from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
-// import { useRouter } from "next/router";
 import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import { Id_Query } from "./__generated__/Id_Query.graphql";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/v2/Loading";
 import EventScene from "../../scenes/EventScene";
+import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
+import { IApiKeys } from "../../components/ApiKeysProvider";
+import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 
 const Query = graphql`
   query Id_Query($id: ID!) {
@@ -21,11 +23,13 @@ const Query = graphql`
 
 interface Props {
   id: number;
-  googleMapsApiKey: string;
+  apiKeys: IApiKeys;
 }
 
-const Event = ({ preloadedQuery }: RelayProps<Props, Id_Query>) => {
+const Event = ({ preloadedQuery, apiKeys }: RelayProps<Props, Id_Query>) => {
   const { event, currentUser } = usePreloadedQuery(Query, preloadedQuery);
+  useUpdateApiKeys(apiKeys);
+
   return (
     <Layout currentUserFragment={currentUser!}>
       <EventScene eventFragmentRef={event!} />
@@ -43,7 +47,7 @@ export default withRelay(Event, Query, {
   // Gets server side props for the page.
   serverSideProps: async (ctx) => ({
     id: +ctx.query.id!,
-    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+    apiKeys: fetchEnvVariables(),
   }),
   // Server-side props can be accessed as the second argument
   // to this function.

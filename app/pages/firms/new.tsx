@@ -6,8 +6,10 @@ import CreateFirmScene from "../../scenes/CreateFirmScene";
 import Layout from "../../components/MainPage/Layout";
 import Loading from "../../components/v2/Loading";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
-import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
 import { new_NewFirmQuery } from "./__generated__/new_NewFirmQuery.graphql";
+import { IApiKeys } from "../../components/ApiKeysProvider";
+import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
+import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 
 const Query = graphql`
   query new_NewFirmQuery {
@@ -39,13 +41,12 @@ const NewFirm = ({
   if (currentUser?.account?.firm?.id && typeof window !== "undefined") {
     router.replace("/my-firm");
   }
+  useUpdateApiKeys(apiKeys);
 
   return (
-    <ApiKeysProvider apiKeys={apiKeys}>
-      <Layout currentUserFragment={currentUser!} showRegisterFirm={false}>
-        <CreateFirmScene />
-      </Layout>
-    </ApiKeysProvider>
+    <Layout currentUserFragment={currentUser!} showRegisterFirm={false}>
+      <CreateFirmScene />
+    </Layout>
   );
 };
 
@@ -58,7 +59,7 @@ export default withRelay(NewFirm, Query, {
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
   serverSideProps: async () => ({
-    apiKeys: { googleMaps: process.env.GOOGLE_MAPS_API_KEY },
+    apiKeys: fetchEnvVariables(),
   }),
   // Server-side props can be accessed as the second argument
   // to this function.

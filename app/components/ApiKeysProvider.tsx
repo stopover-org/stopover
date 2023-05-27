@@ -5,8 +5,10 @@ export interface IApiKeys {
 }
 export const ApiKeysContext = React.createContext<{
   apiKeys: IApiKeys;
+  setApiKeys: (apiKeys: IApiKeys) => void;
 }>({
   apiKeys: {},
+  setApiKeys: () => {},
 });
 
 interface ApiKeysProviderProps {
@@ -15,15 +17,16 @@ interface ApiKeysProviderProps {
     | React.ReactElement[]
     | React.ReactNode
     | React.ReactNode[];
-  apiKeys: IApiKeys;
 }
 
-const ApiKeysProvider = ({ children, apiKeys }: ApiKeysProviderProps) => {
+const ApiKeysProvider = ({ children }: ApiKeysProviderProps) => {
+  const [apiKeys, setApiKeys] = React.useState<IApiKeys>({});
   const value = React.useMemo(
     () => ({
       apiKeys,
+      setApiKeys,
     }),
-    [apiKeys]
+    [apiKeys, setApiKeys]
   );
   return (
     <ApiKeysContext.Provider value={value}>{children}</ApiKeysContext.Provider>
