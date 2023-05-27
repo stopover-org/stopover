@@ -5,6 +5,8 @@ import Layout from "../../components/MainPage/Layout";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import { Id_TripsQuery } from "./__generated__/Id_TripsQuery.graphql";
 import TripScene from "../../scenes/TripScene";
+import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
+import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 
 const Query = graphql`
   query Id_TripsQuery($id: ID!) {
@@ -19,12 +21,20 @@ const Query = graphql`
   }
 `;
 
-const Trip = ({ preloadedQuery }: RelayProps<{}, Id_TripsQuery>) => {
+interface Props {
+  apiKeys: IApiKeys;
+}
+const Trip = ({
+  preloadedQuery,
+  apiKeys,
+}: RelayProps<Props, Id_TripsQuery>) => {
   const data = usePreloadedQuery<Id_TripsQuery>(Query, preloadedQuery);
   return (
-    <Layout currentUserFragment={data.currentUser!}>
-      <TripScene tripFragmentRef={data.currentUser?.account?.trip!} />
-    </Layout>
+    <ApiKeysProvider apiKeys={apiKeys}>
+      <Layout currentUserFragment={data.currentUser!}>
+        <TripScene tripFragmentRef={data.currentUser?.account?.trip!} />
+      </Layout>
+    </ApiKeysProvider>
   );
 };
 
@@ -38,7 +48,7 @@ export default withRelay(Trip, Query, {
   // Gets server side props for the page.
   serverSideProps: async (ctx) => ({
     id: +ctx.query.id!,
-    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+    apiKeys: fetchEnvVariables(),
   }),
   // Server-side props can be accessed as the second argument
   // to this function.

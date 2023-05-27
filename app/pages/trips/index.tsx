@@ -6,6 +6,8 @@ import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/v2/Loading";
 import { trips_Query } from "./__generated__/trips_Query.graphql";
 import TripsScene from "../../scenes/TripsScene";
+import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
+import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
 
 const Query = graphql`
   query trips_Query {
@@ -18,14 +20,19 @@ const Query = graphql`
   }
 `;
 
-const Trips = ({ preloadedQuery }: RelayProps<{}, trips_Query>) => {
+interface Props {
+  apiKeys: IApiKeys;
+}
+const Trips = ({ preloadedQuery, apiKeys }: RelayProps<Props, trips_Query>) => {
   const data = usePreloadedQuery(Query, preloadedQuery);
 
   return (
-    <Layout currentUserFragment={data.currentUser!}>
-      {/* <EventsScene eventsFragmentRef={data} /> */}
-      <TripsScene accountFragmentRef={data.currentUser?.account!} />
-    </Layout>
+    <ApiKeysProvider apiKeys={apiKeys}>
+      <Layout currentUserFragment={data.currentUser!}>
+        {/* <EventsScene eventsFragmentRef={data} /> */}
+        <TripsScene accountFragmentRef={data.currentUser?.account!} />
+      </Layout>
+    </ApiKeysProvider>
   );
 };
 
@@ -37,7 +44,9 @@ export default withRelay(Trips, Query, {
   // Note: This function must always return the same value.
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
-  serverSideProps: async () => ({}),
+  serverSideProps: async () => ({
+    apiKeys: fetchEnvVariables(),
+  }),
   // Server-side props can be accessed as the second argument
   // to this function.
   createServerEnvironment: async ({ req }) => {

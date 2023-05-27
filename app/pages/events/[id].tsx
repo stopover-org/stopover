@@ -7,6 +7,8 @@ import { Id_Query } from "./__generated__/Id_Query.graphql";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/v2/Loading";
 import EventScene from "../../scenes/EventScene";
+import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
+import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
 
 const Query = graphql`
   query Id_Query($id: ID!) {
@@ -21,15 +23,17 @@ const Query = graphql`
 
 interface Props {
   id: number;
-  googleMapsApiKey: string;
+  apiKeys: IApiKeys;
 }
 
-const Event = ({ preloadedQuery }: RelayProps<Props, Id_Query>) => {
+const Event = ({ preloadedQuery, apiKeys }: RelayProps<Props, Id_Query>) => {
   const { event, currentUser } = usePreloadedQuery(Query, preloadedQuery);
   return (
-    <Layout currentUserFragment={currentUser!}>
-      <EventScene eventFragmentRef={event!} />
-    </Layout>
+    <ApiKeysProvider apiKeys={apiKeys}>
+      <Layout currentUserFragment={currentUser!}>
+        <EventScene eventFragmentRef={event!} />
+      </Layout>
+    </ApiKeysProvider>
   );
 };
 
@@ -43,7 +47,7 @@ export default withRelay(Event, Query, {
   // Gets server side props for the page.
   serverSideProps: async (ctx) => ({
     id: +ctx.query.id!,
-    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+    apiKeys: fetchEnvVariables(),
   }),
   // Server-side props can be accessed as the second argument
   // to this function.

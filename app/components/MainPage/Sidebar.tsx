@@ -23,7 +23,7 @@ const Sidebar = ({ items }: SidebarProps) => {
       <Grid xs={12}>
         <List>
           {items.map((item) => (
-            <ListItem>
+            <ListItem key={item.href}>
               <ListItemButton key={item.href} color="primary" href={item.href}>
                 {item.title}
               </ListItemButton>

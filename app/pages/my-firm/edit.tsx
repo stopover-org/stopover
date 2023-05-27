@@ -7,6 +7,7 @@ import { getClientEnvironment } from "../../lib/clientEnvironment";
 import EditFirmScene from "../../scenes/EditFirmScene";
 import { editFirm_FirmQuery } from "./__generated__/editFirm_FirmQuery.graphql";
 import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
+import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 
 const Query = graphql`
   query editFirm_FirmQuery {
@@ -50,7 +51,7 @@ export default withRelay(Edit, Query, {
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
   serverSideProps: async () => ({
-    apiKeys: { googleMaps: process.env.GOOGLE_MAPS_API_KEY },
+    apiKeys: fetchEnvVariables(),
   }),
   // Server-side props can be accessed as the second argument
   // to this function.
