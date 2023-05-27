@@ -4,7 +4,7 @@ import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import SidebarContent from "../../components/MainPage/SidebarContent";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
-import EditFirmScene from "../../scenes/EditFirmScene";
+import EditFirmScene from "../../scenes/firms/EditFirmScene";
 import { editFirm_FirmQuery } from "./__generated__/editFirm_FirmQuery.graphql";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";

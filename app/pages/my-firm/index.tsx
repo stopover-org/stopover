@@ -4,7 +4,7 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import { myFirm_FirmQuery } from "./__generated__/myFirm_FirmQuery.graphql";
 import Layout from "../../components/MainPage/Layout";
-import FirmScene from "../../scenes/FirmScene";
+import FirmScene from "../../scenes/firms/FirmScene";
 import SidebarContent from "../../components/MainPage/SidebarContent";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";

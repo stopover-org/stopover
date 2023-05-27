@@ -5,7 +5,7 @@ import Layout from "../../components/MainPage/Layout";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/v2/Loading";
 import { trips_Query } from "./__generated__/trips_Query.graphql";
-import TripsScene from "../../scenes/TripsScene";
+import TripsScene from "../../scenes/attendees/trips/TripsScene";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";

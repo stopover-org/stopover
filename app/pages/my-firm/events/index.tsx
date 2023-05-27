@@ -1,19 +1,24 @@
-import { RelayProps, withRelay } from "relay-nextjs";
 import React from "react";
+import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay";
-import CreateEventScene from "../../../scenes/firms/events/CreateEventScene";
-import { getClientEnvironment } from "../../../lib/clientEnvironment";
 import Layout from "../../../components/MainPage/Layout";
+import AuthGuard from "../../../lib/shared/AuthGuard";
 import SidebarContent from "../../../components/MainPage/SidebarContent";
-import { new_FirmEventsNewQuery } from "./__generated__/new_FirmEventsNewQuery.graphql";
+import { getClientEnvironment } from "../../../lib/clientEnvironment";
 import { IApiKeys } from "../../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
+import { events_FirmEventsQuery } from "./__generated__/events_FirmEventsQuery.graphql";
 
 const Query = graphql`
-  query new_FirmEventsNewQuery {
+  query events_FirmEventsQuery {
     currentUser {
       ...Layout_CurrentUserFragment
+      account {
+        firm {
+          id
+        }
+      }
     }
   }
 `;
@@ -22,22 +27,30 @@ interface Props {
   apiKeys: IApiKeys;
 }
 
-const New = ({
+const Index = ({
   preloadedQuery,
   apiKeys,
-}: RelayProps<Props, new_FirmEventsNewQuery>) => {
-  const data = usePreloadedQuery<new_FirmEventsNewQuery>(Query, preloadedQuery);
+}: RelayProps<Props, events_FirmEventsQuery>) => {
+  const { currentUser } = usePreloadedQuery<events_FirmEventsQuery>(
+    Query,
+    preloadedQuery
+  );
+
   useUpdateApiKeys(apiKeys);
+
   return (
-    <Layout currentUserFragment={data.currentUser!}>
-      <SidebarContent>
-        <CreateEventScene />
-      </SidebarContent>
+    <Layout currentUserFragment={currentUser!}>
+      <AuthGuard
+        accessible={Boolean(currentUser?.account?.firm?.id)}
+        redirectTo="/firms/new"
+      >
+        <SidebarContent>events content</SidebarContent>
+      </AuthGuard>
     </Layout>
   );
 };
 
-export default withRelay(New, Query, {
+export default withRelay(Index, Query, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: null,

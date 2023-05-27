@@ -1,7 +1,7 @@
 import React from "react";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay";
-import CreateFirmScene from "../../scenes/CreateFirmScene";
+import CreateFirmScene from "../../scenes/firms/CreateFirmScene";
 import Layout from "../../components/MainPage/Layout";
 import Loading from "../../components/v2/Loading";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
