@@ -4,6 +4,7 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import CreateEventScene from "../../../scenes/CreateEventScene";
 import { getClientEnvironment } from "../../../lib/clientEnvironment";
 import Layout from "../../../components/MainPage/Layout";
+import SidebarContent from "../../../components/MainPage/SidebarContent";
 import { new_FirmEventsNewQuery } from "./__generated__/new_FirmEventsNewQuery.graphql";
 
 const Query = graphql`
@@ -15,10 +16,12 @@ const Query = graphql`
 `;
 
 const New = ({ preloadedQuery }: RelayProps<{}, new_FirmEventsNewQuery>) => {
-  const data = usePreloadedQuery(Query, preloadedQuery);
+  const data = usePreloadedQuery<new_FirmEventsNewQuery>(Query, preloadedQuery);
   return (
     <Layout currentUserFragment={data.currentUser!}>
-      <CreateEventScene />
+      <SidebarContent>
+        <CreateEventScene />
+      </SidebarContent>
     </Layout>
   );
 };

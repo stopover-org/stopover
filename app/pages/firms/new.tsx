@@ -6,8 +6,8 @@ import CreateFirmScene from "../../scenes/CreateFirmScene";
 import Layout from "../../components/MainPage/Layout";
 import Loading from "../../components/v2/Loading";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
-import { new_NewFirmQuery } from "./__generated__/new_NewFirmQuery.graphql";
 import ApiKeysProvider, { IApiKeys } from "../../components/ApiKeysProvider";
+import { new_NewFirmQuery } from "./__generated__/new_NewFirmQuery.graphql";
 
 const Query = graphql`
   query new_NewFirmQuery {

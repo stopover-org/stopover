@@ -23,6 +23,7 @@ interface CreateEventFields {
   requiresContract: boolean;
   requiresPassport: boolean;
   requiresPrepaid: boolean;
+  images: string[];
 }
 
 function useDefaultValues(): CreateEventFields {
@@ -46,6 +47,7 @@ function useDefaultValues(): CreateEventFields {
       requiresContract: false,
       requiresPassport: false,
       requiresPrepaid: false,
+      images: [],
     }),
     []
   );
@@ -85,10 +87,10 @@ export function useCreateEventForm() {
         }
       }
     `,
-    ({ image, ...values }) => ({
+    ({ images, ...values }) => ({
       input: {
         ...values,
-        base64Image: image,
+        base64Images: images,
       },
     }),
     {
