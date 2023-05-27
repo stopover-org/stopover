@@ -17,14 +17,14 @@ const RecurringDateFieldset = () => {
 
       <Grid xs={12} container>
         <Grid xs={2}>
-          <Select defaultValue={0} label="Hours" onChange={handleChange}>
+          <Select defaultValue={0} label="Hours">
             {hours.map((hour, index) => (
               <Option key={index}>{hour}</Option>
             ))}
           </Select>
         </Grid>
         <Grid xs={2}>
-          <Select defaultValue={0} label="Minutes" onChange={handleChange}>
+          <Select defaultValue={0} label="Minutes">
             {minutes.map((minute, index) => (
               <Option key={index}>{minute}</Option>
             ))}

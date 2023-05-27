@@ -29,20 +29,18 @@ const New = ({
   const data = usePreloadedQuery<new_FirmEventsNewQuery>(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
   return (
-    <ApiKeysProvider apiKeys={apiKeys}>
-      <Layout currentUserFragment={data.currentUser!}>
-        <SidebarContent>
-          <CreateEventScene />
-        </SidebarContent>
-      </Layout>
-    </ApiKeysProvider>
+    <Layout currentUserFragment={data.currentUser!}>
+      <SidebarContent>
+        <CreateEventScene />
+      </SidebarContent>
+    </Layout>
   );
 };
 
 export default withRelay(New, Query, {
   // Fallback to render while the page is loading.
   // This property is optional.
-  fallback: <Loading />,
+  fallback: null,
   // Create a Relay environment on the client-side.
   // Note: This function must always return the same value.
   createClientEnvironment: () => getClientEnvironment()!,
