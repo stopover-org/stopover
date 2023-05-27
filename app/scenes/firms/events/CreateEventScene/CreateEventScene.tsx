@@ -13,6 +13,7 @@ import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
 import Fieldset from "../../components/v2/Fieldset";
 import AddressFieldset from "../../lib/shared/AddressFieldset/AddressFieldset";
 import RecurringDateFieldset from "./components/RecurringDateFieldset";
+import Button from "../../components/v2/Button/Button";
 
 const CreateEventScene = () => {
   const form = useCreateEventForm();
@@ -29,7 +30,7 @@ const CreateEventScene = () => {
       />
       <FormProvider {...form}>
         <form onSubmit={form.handleSubmit()}>
-          <Grid container spacing={2} md={8} sm={12}>
+          <Grid container spacing={2} md={10} sm={12}>
             <Fieldset>
               <Grid xs={12}>
                 <Input {...form.useFormField("title")} label="Title" />
@@ -142,11 +143,6 @@ const CreateEventScene = () => {
                       requiresPassport.onChange(!requiresPassport.value)
                     }
                   />
-                  <Checkbox
-                    label="requires_prepaid"
-                    checked={false}
-                    onChange={() => {}}
-                  />
                 </Stack>
               </Grid>
 
@@ -217,6 +213,12 @@ const CreateEventScene = () => {
                   {...form.useFormField("description")}
                   placeholder="Description"
                 />
+              </Grid>
+            </Fieldset>
+
+            <Fieldset>
+              <Grid xs={12}>
+                <Button type="submit">Submit</Button>
               </Grid>
             </Fieldset>
           </Grid>

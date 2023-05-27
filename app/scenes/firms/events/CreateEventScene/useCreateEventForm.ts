@@ -22,13 +22,18 @@ interface CreateEventFields {
   requiresCheckIn: boolean;
   requiresContract: boolean;
   requiresPassport: boolean;
-  requiresPrepaid: boolean;
   images: string[];
+  dates: Array<{
+    day: string | null;
+    hour: number | null;
+    minute: number | null;
+  }>;
 }
 
 function useDefaultValues(): CreateEventFields {
   return React.useMemo(
     () => ({
+      dates: [{ day: null, hour: null, minute: null }],
       title: "",
       description: "",
       houseNumber: "",
@@ -46,7 +51,6 @@ function useDefaultValues(): CreateEventFields {
       requiresCheckIn: false,
       requiresContract: false,
       requiresPassport: false,
-      requiresPrepaid: false,
       images: [],
     }),
     []
@@ -71,7 +75,6 @@ const validationSchema = Yup.object().shape({
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),
   requiresPassport: Yup.boolean(),
-  requiresPrepaid: Yup.boolean(),
 });
 
 export function useCreateEventForm() {
@@ -87,10 +90,11 @@ export function useCreateEventForm() {
         }
       }
     `,
-    ({ images, ...values }) => ({
+    ({ images, dates, ...values }) => ({
       input: {
         ...values,
         base64Images: images,
+        dates: dates.map((dt) => `${dt.day} ${dt.hour}:${dt.minute}`),
       },
     }),
     {
