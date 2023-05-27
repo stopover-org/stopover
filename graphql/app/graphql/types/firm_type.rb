@@ -20,5 +20,11 @@ module Types
     field :title, String, null: false
     field :website, String
     field :accounts, [Types::AccountType]
+    field :image, String
+
+    def image
+      return nil if object.image.blank?
+      Rails.application.routes.url_helpers.rails_blob_url(object.image)
+    end
   end
 end

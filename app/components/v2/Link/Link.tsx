@@ -29,6 +29,7 @@ const Link = React.forwardRef(
       color,
       underline = true,
       sx,
+      level,
       ...props
     }: LinkProps,
     ref: React.ForwardedRef<HTMLParagraphElement>
@@ -38,7 +39,7 @@ const Link = React.forwardRef(
         {...props}
         ref={ref}
         color={primary ? "primary" : color}
-        level="body3"
+        level={level || "body3"}
         sx={{
           textDecoration: underline ? "underline" : "unset",
           ...sx,

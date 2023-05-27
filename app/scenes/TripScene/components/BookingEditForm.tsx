@@ -1,6 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { Box, Grid } from "@mui/joy";
+import moment from "moment";
 import AttendeeEditForm from "./AttendeeEditForm";
 import { BookingEditForm_BookingFragment$key } from "./__generated__/BookingEditForm_BookingFragment.graphql";
 import BookingOptionsEditForm from "./BookingOptionsEditForm";
@@ -17,6 +18,8 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
     graphql`
       fragment BookingEditForm_BookingFragment on Booking {
         id
+        status
+        bookedFor
         attendees {
           id
           ...AttendeeEditForm_AttendeeFragment
@@ -30,6 +33,12 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
     bookingFragmentRef
   );
 
+  const disabled = React.useMemo(
+    () =>
+      booking.status === "paid" ||
+      moment(booking.bookedFor).isBefore(new Date()),
+    [booking.status, booking.bookedFor]
+  );
   return (
     <Grid container spacing={2}>
       <Grid xs={7}>
@@ -39,13 +48,15 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
         <Grid xs={12}>
           <BookingDatesEditForm bookingFragmentRef={booking} />
         </Grid>
-        <Grid xs={12}>
-          <CancelBookingForm bookingFragmentRef={booking} />
-        </Grid>
+        {!disabled && (
+          <Grid xs={12}>
+            <CancelBookingForm bookingFragmentRef={booking} />
+          </Grid>
+        )}
       </Grid>
       <Grid xs={5}>
         <BookingOptionsEditForm bookingFragmentRef={booking} />
-        <CheckoutForm bookingFragmentRef={booking} />
+        {!disabled && <CheckoutForm bookingFragmentRef={booking} />}
       </Grid>
     </Grid>
   );

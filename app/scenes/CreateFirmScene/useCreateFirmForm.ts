@@ -2,9 +2,11 @@ import { graphql } from "react-relay";
 import React from "react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 import useMutationForm from "../../lib/hooks/useMutationForm";
+import { useCreateFirmForm_CreateFirmMutation } from "./__generated__/useCreateFirmForm_CreateFirmMutation.graphql";
 
-interface CreateFirmFields {
+export interface CreateFirmFields {
   title: string;
   contactPerson: string;
   country: string;
@@ -56,11 +58,15 @@ const validationSchema = Yup.object().shape({
   contacts: Yup.string(),
   website: Yup.string(),
   description: Yup.string(),
-  images: Yup.string(),
+  image: Yup.string(),
 });
 
 export function useCreateFirmForm() {
-  return useMutationForm(
+  const router = useRouter();
+  return useMutationForm<
+    CreateFirmFields,
+    useCreateFirmForm_CreateFirmMutation
+  >(
     graphql`
       mutation useCreateFirmForm_CreateFirmMutation($input: CreateFirmInput!) {
         createFirm(input: $input) {
@@ -79,6 +85,11 @@ export function useCreateFirmForm() {
     {
       defaultValues: useDefaultValues(),
       resolver: yupResolver(validationSchema),
+      onCompleted(result) {
+        if (result.createFirm?.firm?.id) {
+          router.replace("/my-firm");
+        }
+      },
     }
   );
 }

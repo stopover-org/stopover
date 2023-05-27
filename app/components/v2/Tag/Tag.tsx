@@ -35,7 +35,9 @@ const Tag = React.forwardRef(
         ref={ref}
         variant="solid"
         {...props}
-        sx={{ margin: "0 4px" }}
+        sx={{
+          margin: "0 4px",
+        }}
         underline={underline}
       >
         {children}

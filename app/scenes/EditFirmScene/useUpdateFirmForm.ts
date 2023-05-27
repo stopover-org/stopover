@@ -2,11 +2,12 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 import useMutationForm from "../../lib/hooks/useMutationForm";
-import { useUpdateFirmForm_FirmFragment$key } from "./__generated__/useUpdateFirmForm_FirmFragment.graphql";
+import { useUpdateFirmForm_FirmFragment$key } from "../FirmScene/__generated__/useUpdateFirmForm_FirmFragment.graphql";
+import { useUpdateFirmForm_UpdateFirmMutation } from "../FirmScene/__generated__/useUpdateFirmForm_UpdateFirmMutation.graphql";
 
 interface UpdateFirmFields {
-  id: string;
   title: string;
   contactPerson: string | null;
   country: string | null;
@@ -20,6 +21,7 @@ interface UpdateFirmFields {
   contacts: string | null;
   website: string | null;
   description: string | null;
+  image: string | null;
 }
 
 function useDefaultValues(
@@ -28,7 +30,6 @@ function useDefaultValues(
   const firm = useFragment(
     graphql`
       fragment useUpdateFirmForm_FirmFragment on Firm {
-        id
         title
         contactPerson
         country
@@ -42,6 +43,7 @@ function useDefaultValues(
         description
         city
         houseNumber
+        image
       }
     `,
     updateFirmFragmentRef
@@ -49,20 +51,20 @@ function useDefaultValues(
 
   return React.useMemo(
     () => ({
-      id: firm.id,
-      title: firm.title,
-      contactPerson: firm.contactPerson,
-      country: firm.country,
-      region: firm.region,
-      street: firm.street,
-      fullAddress: firm.fullAddress,
-      primaryEmail: firm.primaryEmail,
-      primaryPhone: firm.primaryPhone,
-      contacts: firm.contacts,
-      website: firm.website,
-      description: firm.description,
-      city: firm.city,
-      houseNumber: firm.houseNumber,
+      title: firm?.title,
+      contactPerson: firm?.contactPerson,
+      country: firm?.country,
+      region: firm?.region,
+      street: firm?.street,
+      fullAddress: firm?.fullAddress,
+      primaryEmail: firm?.primaryEmail,
+      primaryPhone: firm?.primaryPhone,
+      contacts: firm?.contacts,
+      website: firm?.website,
+      description: firm?.description,
+      city: firm?.city,
+      houseNumber: firm?.houseNumber,
+      image: firm?.image,
     }),
     [firm]
   );
@@ -82,12 +84,17 @@ const validationSchema = Yup.object().shape({
   contacts: Yup.string(),
   website: Yup.string(),
   description: Yup.string(),
+  image: Yup.string(),
 });
 
 export function useUpdateFirmForm(
   formFragmentRef: useUpdateFirmForm_FirmFragment$key
 ) {
-  return useMutationForm(
+  const router = useRouter();
+  return useMutationForm<
+    UpdateFirmFields,
+    useUpdateFirmForm_UpdateFirmMutation
+  >(
     graphql`
       mutation useUpdateFirmForm_UpdateFirmMutation($input: UpdateFirmInput!) {
         updateFirm(input: $input) {
@@ -97,10 +104,20 @@ export function useUpdateFirmForm(
         }
       }
     `,
-    (values) => ({ input: values }),
+    ({ image, ...values }) => ({
+      input: {
+        ...values,
+        base64Image: image,
+      },
+    }),
     {
       defaultValues: useDefaultValues(formFragmentRef),
       resolver: yupResolver(validationSchema),
+      onCompleted(result) {
+        if (result.updateFirm?.firm?.id) {
+          router.push("/my-firm");
+        }
+      },
     }
   );
 }

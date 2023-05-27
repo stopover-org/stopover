@@ -2,28 +2,23 @@
 
 # == Schema Information
 #
-# Table name: firms
+# Table name: account_firms
 #
-#  id                :bigint           not null, primary key
-#  business_type     :string           default("individual"), not null
-#  city              :string
-#  contact_person    :string
-#  contacts          :text
-#  country           :string
-#  description       :text
-#  full_address      :string
-#  house_number      :string
-#  latitude          :float
-#  longitude         :float
-#  postal_code       :string
-#  primary_email     :string
-#  primary_phone     :string
-#  region            :string
-#  status            :string           default("pending")
-#  street            :string
-#  title             :string           not null
-#  website           :string
-#  stripe_account_id :string
+#  id         :bigint           not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  account_id :bigint
+#  firm_id    :bigint
+#
+# Indexes
+#
+#  index_account_firms_on_account_id  (account_id)
+#  index_account_firms_on_firm_id     (firm_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (account_id => accounts.id)
+#  fk_rails_...  (firm_id => firms.id)
 #
 class AccountFirm < ApplicationRecord
   # MODULES ===============================================================

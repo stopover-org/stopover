@@ -37,11 +37,12 @@ function useMutationForm<
     onCompleted,
     autosave,
     autosaveTimeout = 500,
+    defaultValues,
     ...opts
   }: UseMutationFormProps<FieldsType, MutationType>
 ) {
   const [mutation] = useMutation<MutationType>(gql);
-  const form = useForm<FieldsType>(opts);
+  const form = useForm<FieldsType>({ ...opts, defaultValues });
 
   function onSubmit(...rest: any) {
     if (submitHandler instanceof Function) {
@@ -70,7 +71,7 @@ function useMutationForm<
         onChange: (value: PathValue<FieldsType, Path<FieldsType>>) => {
           form.setValue(name, value);
         },
-        error: form.formState.errors[name]?.message,
+        error: form.formState.errors[name]?.message as string,
       }),
       [field]
     );
@@ -78,6 +79,11 @@ function useMutationForm<
 
   const requestRef = React.useRef<null | NodeJS.Timer>(null);
   const handleSubmit = (...rest: any) => form.handleSubmit(onSubmit(...rest));
+
+  React.useEffect(() => {
+    form.reset(defaultValues as FieldsType);
+  }, [defaultValues]);
+
   const currentValues = React.useMemo(
     () => form.getValues(),
     [JSON.stringify(form.getValues())]

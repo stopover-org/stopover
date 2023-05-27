@@ -1,7 +1,6 @@
 import { graphql, useFragment } from "react-relay";
-import { Stack } from "@mui/joy";
 import React from "react";
-import Typography from "../../../components/v2/Typography";
+import BreadcrumbsComponent from "../../../components/v2/Breadcrumbs";
 import { Breadcrumbs_EventFragment$key } from "./__generated__/Breadcrumbs_EventFragment.graphql";
 
 export const Breadcrumbs = ({
@@ -22,13 +21,9 @@ export const Breadcrumbs = ({
   );
 
   return (
-    <Stack flexDirection="row">
-      {event?.interests?.map((interest, index) => (
-        <Typography key={interest.id} fontSize="20px">
-          {index > 0 && <>&nbsp;&gt;&nbsp;</>} {interest.title}
-        </Typography>
-      ))}
-    </Stack>
+    <BreadcrumbsComponent
+      items={event?.interests?.map((interest) => interest.title)}
+    />
   );
 };
 

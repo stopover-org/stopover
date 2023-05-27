@@ -19,7 +19,7 @@
 #  primary_email     :string
 #  primary_phone     :string
 #  region            :string
-#  status            :string           default("pending")\
+#  status            :string           default("pending")
 #  street            :string
 #  title             :string           not null
 #  website           :string

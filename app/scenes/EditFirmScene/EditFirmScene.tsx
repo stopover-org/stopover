@@ -1,33 +1,44 @@
 import React from "react";
 import { AspectRatio, Box, Grid } from "@mui/joy";
+import { graphql, useFragment } from "react-relay";
 import ClearIcon from "@mui/icons-material/Clear";
 import { FormProvider } from "react-hook-form";
 import Input from "../../components/v2/Input";
 import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
-import { useCreateFirmForm } from "./useCreateFirmForm";
-import PhoneInput from "../../components/v2/PhoneInput";
-import FileUploader from "../../components/v2/FileUploader";
-import TextArea from "../../components/v2/TextArea";
-import Fieldset from "../../components/v2/Fieldset";
-import Breadcrumbs from "../../components/v2/Breadcrumbs";
+import { useUpdateFirmForm } from "./useUpdateFirmForm";
+import Fieldset from "../../components/v2/Fieldset/Fieldset";
+import FileUploader from "../../components/v2/FileUploader/FileUploader";
+import PhoneInput from "../../components/v2/PhoneInput/PhoneInput";
+import TextArea from "../../components/v2/TextArea/TextArea";
+import { EditFirmScene_FirmFragment$key } from "./__generated__/EditFirmScene_FirmFragment.graphql";
 import ChipsInput from "../../components/v2/ChipsInput";
+import Breadcrumbs from "../../components/v2/Breadcrumbs";
 import AddressFieldset from "../../lib/shared/AddressFieldset";
 
-const CreateFirmScene = () => {
-  const form = useCreateFirmForm();
-  const imagesField = form.useFormField("image");
+const EditFirmScene = ({
+  firmFragmentRef,
+}: {
+  firmFragmentRef: EditFirmScene_FirmFragment$key;
+}) => {
+  const firm = useFragment(
+    graphql`
+      fragment EditFirmScene_FirmFragment on Firm {
+        ...useUpdateFirmForm_FirmFragment
+      }
+    `,
+    firmFragmentRef
+  );
+  const form = useUpdateFirmForm(firm);
+  const imageField = form.useFormField("image");
 
   return (
     <>
-      <Breadcrumbs items={["Create Your Firm"]} />
+      <Breadcrumbs items={[{ title: "My Firm", href: "/my-firm" }, "Edit"]} />
       <FormProvider {...form}>
         <form onSubmit={form.handleSubmit()}>
           <Grid container spacing={2} md={8} sm={12}>
             <Fieldset>
-              <Grid xs={12}>
-                <Typography level="h3">Create Your Firm</Typography>
-              </Grid>
               <Grid md={6} sm={12}>
                 <Input {...form.useFormField("title")} label="Title" />
               </Grid>
@@ -39,11 +50,11 @@ const CreateFirmScene = () => {
               </Grid>
               <Grid xs={12}>
                 <FileUploader
-                  onChange={(images) => imagesField.onChange(images[0])}
+                  onChange={(images) => imageField.onChange(images[0])}
                   maxFiles={1}
                 />
               </Grid>
-              {imagesField.value && (
+              {imageField.value && (
                 <Grid xs={12}>
                   <AspectRatio
                     variant="outlined"
@@ -55,7 +66,7 @@ const CreateFirmScene = () => {
                       position: "relative",
                     }}
                   >
-                    <img alt="Logo Preview" src={imagesField.value} />
+                    <img alt="Logo Preview" src={imageField.value} />
 
                     <Box
                       sx={{
@@ -70,7 +81,7 @@ const CreateFirmScene = () => {
                         padding: "5px",
                         cursor: "pointer",
                       }}
-                      onClick={() => imagesField.onChange("")}
+                      onClick={() => imageField.onChange("")}
                     >
                       <ClearIcon sx={{ color: "black" }} />
                     </Box>
@@ -133,4 +144,4 @@ const CreateFirmScene = () => {
   );
 };
 
-export default React.memo(CreateFirmScene);
+export default React.memo(EditFirmScene);

@@ -49,6 +49,7 @@
     "react-dates": "^21.8.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-google-autocomplete": "^2.7.3",
     "react-hook-form": "^7.43.8",
     "react-phone-input-2": "^2.15.1",
     "react-relay": "^14.1.0",

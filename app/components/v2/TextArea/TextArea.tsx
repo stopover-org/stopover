@@ -29,8 +29,6 @@ const TextArea = React.forwardRef(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref: React.Ref<HTMLDivElement>
   ) => {
-    console.log("don't collapse me");
-
     const onChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       if (!(onChange instanceof Function)) return;
       onChange(event.target.value, event);
