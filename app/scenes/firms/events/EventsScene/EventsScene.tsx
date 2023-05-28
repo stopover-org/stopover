@@ -1,8 +1,13 @@
 import React from "react";
 import { graphql, usePaginationFragment } from "react-relay";
+import moment from "moment";
 import Table from "../../../../components/v2/Table";
-import useEdges from "../../../../lib/hooks/useEdges";
-import { TableBodyCellValue } from "../../../../components/v2/Table/components/TableBody";
+import Link from "../../../../components/v2/Link";
+import Tag from "../../../../components/v2/Tag";
+import { EventsScene_EventsFirmPaginationFragment$key } from "./__generated__/EventsScene_EventsFirmPaginationFragment.graphql";
+import { EventsSceneFirmPaginationQuery } from "./__generated__/EventsSceneFirmPaginationQuery.graphql";
+import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
+import { dateTimeFormat, removeUtc } from "../../../../lib/utils/dates";
 
 interface EventsSceneProps {
   firmFragmentRef: any;
@@ -10,7 +15,10 @@ interface EventsSceneProps {
 
 const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
   const { data, hasPrevious, hasNext, loadPrevious, loadNext } =
-    usePaginationFragment(
+    usePaginationFragment<
+      EventsSceneFirmPaginationQuery,
+      EventsScene_EventsFirmPaginationFragment$key
+    >(
       graphql`
         fragment EventsScene_EventsFirmPaginationFragment on Firm
         @refetchable(queryName: "EventsSceneFirmPaginationQuery")
@@ -24,6 +32,12 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
               node {
                 id
                 title
+                eventType
+                recurringType
+                recurringDaysWithTime
+                singleDaysWithTime
+                durationTime
+                status
               }
             }
           }
@@ -32,25 +46,78 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
       firmFragmentRef
     );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const events = useEdges<TableBodyCellValue>(data.events).slice(
-    (currentPage - 1) * 30,
-    currentPage * 30
+  const events = usePagedEdges(data.events, currentPage, 30).map((row) => ({
+    ...row,
+    title: (
+      <Link level="body1" href={`/my-firm/events/${row.id}`}>
+        {row.title}
+      </Link>
+    ),
+    recurringDaysWithTime: row.recurringDaysWithTime.map((date) => (
+      <Tag
+        level="body3"
+        link={false}
+        sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+      >
+        {date}
+      </Tag>
+    )),
+    singleDaysWithTime: row.singleDaysWithTime.map((date) => (
+      <>
+        <Tag
+          level="body3"
+          link={false}
+          sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+        >
+          {moment(removeUtc(date)).format(dateTimeFormat)}
+        </Tag>{" "}
+      </>
+    )),
+    status: (
+      <Tag
+        level="body3"
+        link={false}
+        color={row.status === "deleted" ? "danger" : "primary"}
+      >
+        {row.status}
+      </Tag>
+    ),
+  }));
+
+  const headers = React.useMemo(
+    () => [
+      {
+        key: "title",
+        width: 300,
+        label: "Title",
+      },
+      {
+        key: "eventType",
+        width: 100,
+        label: "Event Type",
+      },
+      {
+        key: "recurringType",
+        width: 100,
+        label: "Recurring Type",
+      },
+      { key: "recurringDaysWithTime", width: 300, label: "Recurring Dates" },
+      { key: "singleDaysWithTime", width: 300, label: "Single Dates" },
+      { key: "durationTime", width: 100, label: "Duration" },
+      { key: "status", width: 100, label: "Status" },
+    ],
+    []
   );
 
   return (
     <Table
-      headers={[
-        {
-          key: "title",
-          label: "Title",
-        },
-      ]}
+      headers={headers}
       data={events}
       withPagination
       paginationProps={{
         page: currentPage,
-        canPrev: hasPrevious,
-        canNext: hasNext,
+        hasPrevious,
+        hasNext,
         onNextPage: () => {
           if (hasNext) {
             loadNext(30, {

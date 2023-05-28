@@ -352,7 +352,7 @@ type Event implements Node {
   prepaidAmount: Money!
   prepaidType: String
   ratingsCount: Int
-  recurringDaysWithTime: [String!]
+  recurringDaysWithTime: [String!]!
   recurringType: RecurringTypeEnum
   region: String
   requiresCheckIn: Boolean
@@ -360,7 +360,7 @@ type Event implements Node {
   requiresPassport: Boolean
   requiresPrepaid: Boolean!
   schedules: [Schedule!]!
-  singleDaysWithTime: [String!]
+  singleDaysWithTime: [String!]!
   status: String!
   street: String
   tags: [Tag!]!
@@ -738,14 +738,14 @@ type Query {
 
 enum RecurringTypeEnum {
   """
-  uses for non recurring type of events
-  """
-  general
-
-  """
   uses for recurring events
   """
   recurrent
+
+  """
+  uses for non recurring type of events
+  """
+  regular
 }
 
 """

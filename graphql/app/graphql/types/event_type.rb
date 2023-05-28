@@ -13,8 +13,8 @@ module Types
     field :requires_contract, Boolean
     field :requires_passport, Boolean
     field :requires_check_in, Boolean
-    field :recurring_days_with_time, [String]
-    field :single_days_with_time, [String]
+    field :recurring_days_with_time, [String], null: false
+    field :single_days_with_time, [String], null: false
     field :duration_time, String, null: false
     field :house_number, String
     field :street, String

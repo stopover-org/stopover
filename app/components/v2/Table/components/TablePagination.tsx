@@ -12,8 +12,8 @@ export interface TablePaginationProps {
   onPerPageChange?: () => void;
   onNextPage?: () => void;
   onPrevPage?: () => void;
-  canNext?: boolean;
-  canPrev?: boolean;
+  hasNext?: boolean;
+  hasPrevious?: boolean;
   colSpan?: number;
 }
 
@@ -24,8 +24,8 @@ const TablePagination = ({
   onPerPageChange,
   onNextPage,
   onPrevPage,
-  canNext = true,
-  canPrev = true,
+  hasNext = true,
+  hasPrevious = true,
   colSpan,
 }: TablePaginationProps) => (
   <tfoot>
@@ -42,14 +42,16 @@ const TablePagination = ({
           {rowsPerPageOptions && rowsPerPageOptions.length > 0 && (
             <FormControl orientation="horizontal" size="sm">
               <FormLabel>Rows per page:</FormLabel>
-              <Select onChange={onPerPageChange} value={rowsPerPage}>
-                <Option value={5}>5</Option>
-                <Option value={10}>10</Option>
-                <Option value={25}>25</Option>
+              <Select onChange={onPerPageChange} value={rowsPerPage} size="sm">
+                {rowsPerPageOptions.map((rowsPerPageOption) => (
+                  <Option key={rowsPerPageOption} value={rowsPerPageOption}>
+                    {rowsPerPageOption}
+                  </Option>
+                ))}
               </Select>
             </FormControl>
           )}
-          <Typography textAlign="center" sx={{ minWidth: 80 }}>
+          <Typography textAlign="center" sx={{ minWidth: 80 }} fontSize="sm">
             {page}
           </Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
@@ -57,7 +59,7 @@ const TablePagination = ({
               size="sm"
               color="neutral"
               variant="outlined"
-              disabled={canPrev}
+              disabled={hasPrevious}
               onClick={onPrevPage}
               sx={{ bgcolor: "background.surface" }}
             >
@@ -67,7 +69,7 @@ const TablePagination = ({
               size="sm"
               color="neutral"
               variant="outlined"
-              disabled={canNext}
+              disabled={hasNext}
               onClick={onNextPage}
               sx={{ bgcolor: "background.surface" }}
             >
