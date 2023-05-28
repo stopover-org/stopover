@@ -5,7 +5,7 @@ import { getClientEnvironment } from "../../lib/clientEnvironment";
 import { myFirm_FirmQuery } from "./__generated__/myFirm_FirmQuery.graphql";
 import Layout from "../../components/MainPage/Layout";
 import FirmScene from "../../scenes/firms/FirmScene";
-import SidebarContent from "../../components/MainPage/SidebarContent";
+import SidebarContent from "../../lib/shared/SidebarContent";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";

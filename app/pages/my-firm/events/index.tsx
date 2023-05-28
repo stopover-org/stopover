@@ -3,7 +3,7 @@ import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "../../../components/MainPage/Layout";
 import AuthGuard from "../../../lib/shared/AuthGuard";
-import SidebarContent from "../../../components/MainPage/SidebarContent";
+import SidebarContent from "../../../lib/shared/SidebarContent";
 import { getClientEnvironment } from "../../../lib/clientEnvironment";
 import { IApiKeys } from "../../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
