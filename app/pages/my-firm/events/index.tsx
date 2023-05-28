@@ -18,6 +18,7 @@ const Query = graphql`
       account {
         firm {
           id
+          ...EventsScene_EventsFirmPaginationFragment
         }
       }
     }
@@ -46,7 +47,7 @@ const Index = ({
         redirectTo="/firms/new"
       >
         <SidebarContent>
-          <EventsScene />
+          <EventsScene firmFragmentRef={currentUser?.account?.firm} />
         </SidebarContent>
       </AuthGuard>
     </Layout>

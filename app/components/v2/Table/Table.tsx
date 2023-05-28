@@ -8,7 +8,7 @@ import TableHead, { TableHeadCellValue } from "./components/TableHead";
 import TableBody, { TableBodyCellValue } from "./components/TableBody";
 import TablePagination, {
   TablePaginationProps,
-} from "./components/TablePagination/TablePagination";
+} from "./components/TablePagination";
 
 interface BaseTableProps {
   headers: TableHeadCellValue[];
@@ -36,7 +36,9 @@ const Table = ({
       <JoyTable aria-labelledby="tableTitle" hoverRow>
         <TableHead cells={headers} />
         <TableBody data={data} keys={keys} />
-        {withPagination && <TablePagination {...paginationProps} />}
+        {withPagination && (
+          <TablePagination {...paginationProps} colSpan={keys.length} />
+        )}
       </JoyTable>
     </Sheet>
   );

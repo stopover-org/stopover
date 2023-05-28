@@ -2,8 +2,8 @@ import { Box, FormControl, FormLabel, IconButton, Option } from "@mui/joy";
 import React from "react";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import Select from "../../../Select";
-import Typography from "../../../Typography";
+import Select from "../../Select";
+import Typography from "../../Typography";
 
 export interface TablePaginationProps {
   rowsPerPageOptions?: number[];
@@ -14,7 +14,7 @@ export interface TablePaginationProps {
   onPrevPage?: () => void;
   canNext?: boolean;
   canPrev?: boolean;
-  colSpan: number;
+  colSpan?: number;
 }
 
 const TablePagination = ({

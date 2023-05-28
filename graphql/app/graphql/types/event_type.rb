@@ -39,9 +39,7 @@ module Types
     field :requires_prepaid, Boolean, null: false
     field :schedules, [Types::ScheduleType], null: false
     field :booking_cancellation_options, [Types::BookingCancellationOptionType]
-
     field :images, [String], null: false
-
     field :my_bookings, [BookingType], null: false
 
     def images
