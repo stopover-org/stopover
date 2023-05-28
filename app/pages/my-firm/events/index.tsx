@@ -9,6 +9,7 @@ import { IApiKeys } from "../../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
 import { events_FirmEventsQuery } from "./__generated__/events_FirmEventsQuery.graphql";
+import EventsScene from "../../../scenes/firms/events/EventsScene";
 
 const Query = graphql`
   query events_FirmEventsQuery {
@@ -44,7 +45,9 @@ const Index = ({
         accessible={Boolean(currentUser?.account?.firm?.id)}
         redirectTo="/firms/new"
       >
-        <SidebarContent>events content</SidebarContent>
+        <SidebarContent>
+          <EventsScene />
+        </SidebarContent>
       </AuthGuard>
     </Layout>
   );
