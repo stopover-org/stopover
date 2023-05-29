@@ -9,7 +9,7 @@ module Mutations
              loads: Types::InterestType,
              required: false
     argument :event_type, Types::EventTypeEnum
-    # argument :images
+    # TODO: argument :images
     argument :description, String
 
     argument :house_number, String, required: false
@@ -33,6 +33,8 @@ module Mutations
     argument :requires_contract, Boolean, required: false
     argument :requires_passport, Boolean, required: false
     argument :requires_check_in, Boolean, required: false
+    argument :max_attendees, Integer, required: false
+    argument :min_attendees, Integer, required: false
 
     argument :unit_id, ID, loads: Types::UnitType, required: false
 

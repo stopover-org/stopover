@@ -227,6 +227,8 @@ input CreateEventInput {
   interestIds: [ID!]
   latitude: Float
   longitude: Float
+  maxAttendees: Int
+  minAttendees: Int
   organizerPricePerUomCents: Int
   recurringType: RecurringTypeEnum!
   region: String

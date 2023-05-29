@@ -1,27 +1,29 @@
-import { AspectRatio, Box, Divider, Grid, Option, Stack } from "@mui/joy";
+import { Divider, Grid, Option, Stack } from "@mui/joy";
 import React from "react";
-import ClearIcon from "@mui/icons-material/Clear";
+// import ClearIcon from "@mui/icons-material/Clear";
 import { FormProvider } from "react-hook-form";
 import Typography from "../../../../components/v2/Typography";
 import Input from "../../../../components/v2/Input";
 import { useCreateEventForm } from "./useCreateEventForm";
-import FileUploader from "../../../../components/v2/FileUploader/FileUploader";
+// import FileUploader from "../../../../components/v2/FileUploader/FileUploader";
 import Checkbox from "../../../../components/v2/Checkbox";
 import Select from "../../../../components/v2/Select";
 import TextArea from "../../../../components/v2/TextArea";
 import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
-import Fieldset from "../../components/v2/Fieldset";
-import AddressFieldset from "../../lib/shared/AddressFieldset/AddressFieldset";
-import RecurringDateFieldset from "./components/RecurringDateFieldset";
-import Button from "../../components/v2/Button/Button";
+import Fieldset from "../../../../components/v2/Fieldset";
+import AddressFieldset from "../../../../lib/shared/AddressFieldset";
+import RecurringDateFieldset from "../../../CreateEventScene/components/RecurringDateFieldset";
+import Button from "../../../../components/v2/Button";
 
 const CreateEventScene = () => {
   const form = useCreateEventForm();
-  const imagesField = form.useFormField<string[]>("images");
+  // const imagesField = form.useFormField<string[]>("images");
   const [currency, setCurrency] = React.useState("dollar");
   const requiresCheckInField = form.useFormField("requiresCheckIn");
   const requiresContractField = form.useFormField("requiresContract");
   const requiresPassport = form.useFormField("requiresPassport");
+
+  console.log(form.getValues());
 
   return (
     <>
@@ -36,57 +38,57 @@ const CreateEventScene = () => {
                 <Input {...form.useFormField("title")} label="Title" />
               </Grid>
 
-              <Grid xs={12}>
-                <FileUploader
-                  onChange={(images) =>
-                    imagesField.onChange([...imagesField.value, ...images])
-                  }
-                />
-              </Grid>
-              <Grid xs={12}>
-                <Stack flexDirection="row">
-                  {imagesField.value.map((image, index) => (
-                    <AspectRatio
-                      variant="outlined"
-                      ratio="4/3"
-                      sx={{
-                        width: 300,
-                        bgcolor: "background.level2",
-                        borderRadius: "md",
-                        position: "relative",
-                      }}
-                    >
-                      <img alt="Logo Preview" src={image} />
+              {/* <Grid xs={12}> */}
+              {/*  <FileUploader */}
+              {/*    onChange={(images) => */}
+              {/*      imagesField.onChange([...imagesField.value, ...images]) */}
+              {/*    } */}
+              {/*  /> */}
+              {/* </Grid> */}
+              {/* <Grid xs={12}> */}
+              {/*  <Stack flexDirection="row"> */}
+              {/*    {imagesField.value.map((image, index) => ( */}
+              {/*      <AspectRatio */}
+              {/*        variant="outlined" */}
+              {/*        ratio="4/3" */}
+              {/*        sx={{ */}
+              {/*          width: 300, */}
+              {/*          bgcolor: "background.level2", */}
+              {/*          borderRadius: "md", */}
+              {/*          position: "relative", */}
+              {/*        }} */}
+              {/*      > */}
+              {/*        <img alt="Logo Preview" src={image} /> */}
 
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          zIndex: 2,
-                          right: "1rem",
-                          top: "1rem",
-                          borderRadius: "50%",
-                          backgroundColor: "white",
-                          width: "30px",
-                          height: "30px",
-                          padding: "5px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() =>
-                          imagesField.onChange([
-                            ...imagesField.value.slice(index),
-                            ...imagesField.value.slice(
-                              index + 1,
-                              imagesField.value.length
-                            ),
-                          ])
-                        }
-                      >
-                        <ClearIcon sx={{ color: "black" }} />
-                      </Box>
-                    </AspectRatio>
-                  ))}
-                </Stack>
-              </Grid>
+              {/*        <Box */}
+              {/*          sx={{ */}
+              {/*            position: "absolute", */}
+              {/*            zIndex: 2, */}
+              {/*            right: "1rem", */}
+              {/*            top: "1rem", */}
+              {/*            borderRadius: "50%", */}
+              {/*            backgroundColor: "white", */}
+              {/*            width: "30px", */}
+              {/*            height: "30px", */}
+              {/*            padding: "5px", */}
+              {/*            cursor: "pointer", */}
+              {/*          }} */}
+              {/*          onClick={() => */}
+              {/*            imagesField.onChange([ */}
+              {/*              ...imagesField.value.slice(index), */}
+              {/*              ...imagesField.value.slice( */}
+              {/*                index + 1, */}
+              {/*                imagesField.value.length */}
+              {/*              ), */}
+              {/*            ]) */}
+              {/*          } */}
+              {/*        > */}
+              {/*          <ClearIcon sx={{ color: "black" }} /> */}
+              {/*        </Box> */}
+              {/*      </AspectRatio> */}
+              {/*    ))} */}
+              {/*  </Stack> */}
+              {/* </Grid> */}
               <Grid xs={12}>
                 <Input
                   placeholder="Amount"
@@ -106,14 +108,24 @@ const CreateEventScene = () => {
                   }
                   label="Organizer Price"
                   sx={{ width: 300 }}
+                  {...form.useFormField("organizerPricePerUomCents")}
                 />
               </Grid>
             </Fieldset>
-
             <AddressFieldset />
-
-            <RecurringDateFieldset />
-
+            <RecurringDateFieldset />;
+            <Fieldset>
+              <Grid xs={12}>
+                <Select
+                  defaultValue="regular"
+                  label="Recurring type"
+                  placeholder="Select Type"
+                >
+                  <Option>recurrent</Option>
+                  <Option>regular</Option>
+                </Select>
+              </Grid>
+            </Fieldset>
             <Fieldset>
               <Grid xs={12}>
                 <Typography level="h3">Event Requirements</Typography>
@@ -177,19 +189,6 @@ const CreateEventScene = () => {
                 <Grid xs={6}>
                   <Input
                     type="number"
-                    label="maximum attendees"
-                    defaultValue={1}
-                    slotProps={{
-                      input: {
-                        min: 0,
-                        step: 1,
-                      },
-                    }}
-                  />
-                </Grid>
-                <Grid xs={6}>
-                  <Input
-                    type="number"
                     label="minimum attendees"
                     defaultValue={1}
                     slotProps={{
@@ -198,11 +197,25 @@ const CreateEventScene = () => {
                         step: 1,
                       },
                     }}
+                    {...form.useFormField("minAttendees")}
+                  />
+                </Grid>
+                <Grid xs={6}>
+                  <Input
+                    type="number"
+                    label="maximum attendees"
+                    defaultValue={1}
+                    slotProps={{
+                      input: {
+                        min: 0,
+                        step: 1,
+                      },
+                    }}
+                    {...form.useFormField("maxAttendees")}
                   />
                 </Grid>
               </Grid>
             </Fieldset>
-
             <Fieldset>
               <Grid xs={12}>
                 <Typography level="h3">Description</Typography>
@@ -215,7 +228,6 @@ const CreateEventScene = () => {
                 />
               </Grid>
             </Fieldset>
-
             <Fieldset>
               <Grid xs={12}>
                 <Button type="submit">Submit</Button>
