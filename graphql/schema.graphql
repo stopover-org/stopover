@@ -461,6 +461,7 @@ type Firm implements Node {
   contacts: String
   country: String
   description: String
+  event(id: ID!): Event
   events(
     """
     Returns the elements in the list that come after the specified cursor.
