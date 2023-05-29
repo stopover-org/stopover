@@ -45,6 +45,8 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
       `,
       firmFragmentRef
     );
+
+  console.log(data, hasNext, hasPrevious, loadNext, loadPrevious);
   const [currentPage, setCurrentPage] = React.useState(1);
   const events = usePagedEdges(data.events, currentPage, 30).map((row) => ({
     ...row,
@@ -120,6 +122,8 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
         hasNext,
         onNextPage: () => {
           if (hasNext) {
+            console.log("onNext");
+
             loadNext(30, {
               onComplete: () => setCurrentPage(currentPage + 1),
             });
