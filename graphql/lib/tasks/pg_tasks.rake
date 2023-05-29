@@ -8,6 +8,4 @@ namespace :db do
   end
 end
 
-Rake::Task['db:schema:load'].enhance do
-  Rake::Task['db:exec_sql'].invoke('lib/tasks/event_stored_functions.sql')
-end
+Rake::Task['db:schema:load'].enhance do; end

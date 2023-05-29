@@ -59,7 +59,7 @@ const TablePagination = ({
               size="sm"
               color="neutral"
               variant="outlined"
-              disabled={hasPrevious}
+              disabled={!hasPrevious}
               onClick={onPrevPage}
               sx={{ bgcolor: "background.surface" }}
             >
@@ -69,7 +69,7 @@ const TablePagination = ({
               size="sm"
               color="neutral"
               variant="outlined"
-              disabled={hasNext}
+              disabled={!hasNext}
               onClick={onNextPage}
               sx={{ bgcolor: "background.surface" }}
             >
