@@ -174,7 +174,7 @@ const CreateEventScene = () => {
                   <Option value="excursion">excursion</Option>
                   <Option value="tour">tour</Option>
                   <Option value="in_town">in town</Option>
-                  <Option value="out_oftown">out of town</Option>
+                  <Option value="out_of_town">out of town</Option>
                   <Option value="active_holiday">active holiday</Option>
                   <Option value="music">music</Option>
                   <Option value="workshop">workshop</Option>

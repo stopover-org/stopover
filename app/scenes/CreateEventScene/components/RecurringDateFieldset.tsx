@@ -31,41 +31,65 @@ const RecurringDateFieldset = () => {
     [datesField, hours, minutes]
   );
 
-  const clickHandler = () => {
+  const addHandler = () => {
     datesField.onChange([
       ...datesField.value,
       { day: null, hour: null, minute: null },
     ]);
   };
 
+  const subHandler = (index: number) => {
+    datesField.onChange([
+      ...datesField.value.slice(0, index),
+      ...datesField.value.slice(index + 1, datesField.value.length),
+    ]);
+  };
+
   return (
     <Fieldset>
       <Grid xs={12} container>
-        <Grid xs={10}>
+        <Grid xs={4}>
           <Typography level="h3">Time</Typography>
         </Grid>
-        <Grid xs={2}>
-          <Button onClick={clickHandler}>+</Button>
+        <Grid xs={4}>
+          <Select defaultValue={0} label="Hours">
+            {hours.map((hour) => (
+              <Option key={hour} value={hour}>
+                {hour}
+              </Option>
+            ))}
+          </Select>
         </Grid>
-      </Grid>
-      <Grid>
-        <Input
-          type="number"
-          label="duration time"
-          defaultValue={1}
-          slotProps={{
-            input: {
-              min: 0,
-              step: 1,
-            },
-          }}
-          {...form.useFormField("durationTime")}
-        />
+
+        <Grid xs={4}>
+          <Select defaultValue={0} label="Minutes">
+            {minutes.map((minute) => (
+              <Option key={minute} value={minute}>
+                {minute}
+              </Option>
+            ))}
+          </Select>
+        </Grid>
       </Grid>
 
       {datesField.value.map((date: any, index: number) => (
         <React.Fragment key={index}>
           <Grid xs={12} container>
+            <Grid xs={12}>
+              <Stack justifyContent="flex-end" direction="row">
+                <Button size="sm" onClick={addHandler}>
+                  +
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    subHandler(index);
+                  }}
+                >
+                  -
+                </Button>
+              </Stack>
+            </Grid>
             <Grid xs={2}>
               <Select
                 defaultValue={0}

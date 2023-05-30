@@ -6,19 +6,19 @@ module Stopover
       return nil unless event.is_a? Event
 
       case event.recurring_type
-      when 'recurring'
+      when 'recurrent'
         regexp = /([1-7])\s+([0-2][0-9]):([0-5][0-9])/
 
         dates.map do |date|
           day, hours, minutes = date.match(regexp).captures
-          day = day.to_i
+          day = day
           hours = hours.to_i
           minutes = minutes.to_i
           return nil if day > 7 || day < 1
           return nil if hours > 12 || hours.negative?
           return nil if minutes > 59 || minutes.negative?
 
-          return "#{day.to_s.rjust(1, '0')} #{hours.to_s.rjust(2, '0')}:#{minutes.to_s.rjust(1, '0')}"
+          return "#{day} #{hours.to_s.rjust(2, '0')}:#{minutes.to_s.rjust(1, '0')}"
         end
       when 'non_recurring'
         regexp = /(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))\s+([0-2][0-9]):([0-5][0-9])/
