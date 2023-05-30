@@ -22,8 +22,8 @@ const CreateEventScene = () => {
   const requiresCheckInField = form.useFormField("requiresCheckIn");
   const requiresContractField = form.useFormField("requiresContract");
   const requiresPassport = form.useFormField("requiresPassport");
-
-  console.log(form.getValues());
+  const reccuringType = form.useFormField("recurringType");
+  const eventType = form.useFormField("eventType");
 
   return (
     <>
@@ -117,12 +117,14 @@ const CreateEventScene = () => {
             <Fieldset>
               <Grid xs={12}>
                 <Select
-                  defaultValue="regular"
                   label="Recurring type"
                   placeholder="Select Type"
+                  onChange={(_, value) => {
+                    reccuringType.onChange(value);
+                  }}
                 >
-                  <Option>recurrent</Option>
-                  <Option>regular</Option>
+                  <Option value="recurrent">recurrent</Option>
+                  <Option value="general">general</Option>
                 </Select>
               </Grid>
             </Fieldset>
@@ -163,21 +165,23 @@ const CreateEventScene = () => {
               </Grid>
               <Grid xs={12}>
                 <Select
-                  defaultValue="active_holiday"
                   label="Type of Event"
                   placeholder="Select Type"
+                  onChange={(_, value) => {
+                    eventType.onChange(value);
+                  }}
                 >
-                  <Option>excursion</Option>
-                  <Option>tour</Option>
-                  <Option>in_town</Option>
-                  <Option>out_of_town</Option>
-                  <Option>active_holiday</Option>
-                  <Option>music</Option>
-                  <Option>workshop</Option>
-                  <Option>business_breakfast</Option>
-                  <Option>meetup</Option>
-                  <Option>sport_activity</Option>
-                  <Option>gastronomic</Option>
+                  <Option value="excursion">excursion</Option>
+                  <Option value="tour">tour</Option>
+                  <Option value="in_town">in town</Option>
+                  <Option value="out_oftown">out of town</Option>
+                  <Option value="active_holiday">active holiday</Option>
+                  <Option value="music">music</Option>
+                  <Option value="workshop">workshop</Option>
+                  <Option value="business_breakfast">business breakfast</Option>
+                  <Option value="meetup">meetup</Option>
+                  <Option value="sport_activity">sport activity</Option>
+                  <Option value="gastronomic">gastronomic</Option>
                 </Select>
               </Grid>
             </Fieldset>
