@@ -9,6 +9,7 @@ import { IApiKeys } from "../../../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../../../lib/hooks/useUpdateApiKeys";
 import { Id_FirmEventQuery } from "./__generated__/Id_FirmEventQuery.graphql";
+import EventScene from "../../../../scenes/firms/events/EventScene";
 
 const Query = graphql`
   query Id_FirmEventQuery($id: ID!) {
@@ -18,6 +19,7 @@ const Query = graphql`
         firm {
           event(id: $id) {
             id
+            ...EventScene_FirmEventFragment
           }
         }
       }
@@ -40,15 +42,15 @@ const Index = ({
 
   useUpdateApiKeys(apiKeys);
 
-  console.log(currentUser);
-
   return (
     <Layout currentUserFragment={currentUser!}>
       <AuthGuard
         accessible={Boolean(currentUser?.account?.firm?.event?.id)}
         redirectTo="/my-firm/events"
       >
-        <SidebarContent>Event Scene</SidebarContent>
+        <SidebarContent>
+          <EventScene eventFragmentRef={currentUser?.account?.firm?.event!} />
+        </SidebarContent>
       </AuthGuard>
     </Layout>
   );
