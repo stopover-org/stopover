@@ -24,13 +24,7 @@ const Pagination = ({
 }: PaginationProps) => (
   <Stack flexDirection="row">
     {(currentPage !== 1 || showPrev) && (
-      <PaginationPoint
-        variant="outlined"
-        color="neutral"
-        onClick={() => {
-          onPrev();
-        }}
-      >
+      <PaginationPoint variant="outlined" color="neutral" onClick={onPrev}>
         &lt;
       </PaginationPoint>
     )}
@@ -40,13 +34,7 @@ const Pagination = ({
     </PaginationPoint>
 
     {showNext && (
-      <PaginationPoint
-        variant="outlined"
-        color="neutral"
-        onClick={() => {
-          onNext();
-        }}
-      >
+      <PaginationPoint variant="outlined" color="neutral" onClick={onNext}>
         &gt;
       </PaginationPoint>
     )}

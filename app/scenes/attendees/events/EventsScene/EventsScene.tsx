@@ -9,6 +9,7 @@ import EventCardCompact from "./components/EventCardCompact";
 import useEdges from "../../../../lib/hooks/useEdges";
 import EventCardWide from "./components/EventCardWide";
 import Pagination from "./components/Pagination";
+import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 
 interface Props {
   eventsFragmentRef: EventsScene_EventsPaginationFragment$key;
@@ -52,11 +53,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       `,
       eventsFragmentRef
     );
-
-  const schedules = useEdges(data.schedules).slice(
-    (currentPage - 1) * 10,
-    currentPage * 10
-  );
+  const schedules = usePagedEdges(data.schedules, currentPage, 10);
 
   return (
     <Grid

@@ -4,7 +4,7 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import CreateEventScene from "../../../scenes/firms/events/CreateEventScene";
 import { getClientEnvironment } from "../../../lib/clientEnvironment";
 import Layout from "../../../components/MainPage/Layout";
-import SidebarContent from "../../../components/MainPage/SidebarContent";
+import SidebarContent from "../../../lib/shared/SidebarContent";
 import { new_FirmEventsNewQuery } from "./__generated__/new_FirmEventsNewQuery.graphql";
 import { IApiKeys } from "../../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";

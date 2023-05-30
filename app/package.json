@@ -33,6 +33,7 @@
     "country-code-emoji": "^2.3.0",
     "country-list": "^2.3.0",
     "csstype": "^3.1.2",
+    "@faker-js/faker": "^8.0.2",
     "husky": "^8.0.1",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.42",

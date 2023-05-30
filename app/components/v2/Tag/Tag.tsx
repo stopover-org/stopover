@@ -17,13 +17,14 @@ const Tag = React.forwardRef(
     ref: React.Ref<any>
   ) => {
     if (link) {
+      if (!href) throw new Error("Href is required for Tag when it's link");
       return (
         <Link
           ref={ref}
           variant="solid"
           {...props}
           href={href!}
-          sx={{ margin: "0 4px" }}
+          sx={{ margin: "0 4px", display: "inline-block", ...props.sx }}
           underline={underline}
         >
           {children}
@@ -37,6 +38,8 @@ const Tag = React.forwardRef(
         {...props}
         sx={{
           margin: "0 4px",
+          display: "inline-block",
+          ...props.sx,
         }}
         underline={underline}
       >

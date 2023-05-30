@@ -6,7 +6,7 @@ export function getCountryPhoneCodes() {
 
   return Object.keys(countryCodes)
     .sort()
-    .reduce((acc: { [key: string]: string }, code) => {
+    .reduce((acc: Record<string, string>, code) => {
       // @ts-ignore
       if (countryCodes[code] === "") return acc;
       // @ts-ignore

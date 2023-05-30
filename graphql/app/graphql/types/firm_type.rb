@@ -21,6 +21,7 @@ module Types
     field :website, String
     field :accounts, [Types::AccountType]
     field :image, String
+    field :events, Types::EventType.connection_type, null: false
 
     def image
       return nil if object.image.blank?

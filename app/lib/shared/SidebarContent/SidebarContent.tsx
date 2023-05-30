@@ -1,7 +1,7 @@
 import { Grid, styled, useTheme } from "@mui/joy";
 import React from "react";
 import { useMediaQuery } from "@mui/material";
-import Sidebar from "./Sidebar";
+import Sidebar from "../Sidebar/Sidebar";
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {

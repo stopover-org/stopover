@@ -1,8 +1,7 @@
 import React from "react";
 
-export interface IApiKeys {
-  [key: string]: string;
-}
+export interface IApiKeys extends Record<string, string> {}
+
 export const ApiKeysContext = React.createContext<{
   apiKeys: IApiKeys;
   setApiKeys: (apiKeys: IApiKeys) => void;
