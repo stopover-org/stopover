@@ -2,7 +2,13 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 import useMutationForm from "../../../../lib/hooks/useMutationForm";
+import {
+  EventTypeEnum,
+  RecurringTypeEnum,
+  useCreateEventForm_CreateEventMutation,
+} from "./__generated__/useCreateEventForm_CreateEventMutation.graphql";
 
 interface CreateEventFields {
   title: string;
@@ -13,22 +19,27 @@ interface CreateEventFields {
   country: string;
   region: string;
   fullAddress: string;
-  durationTime: string;
-  eventType: string;
+  durationTime: number;
+  eventType: EventTypeEnum;
   maxAttendees: number;
   minAttendees: number;
   organizerPricePerUomCents: number;
-  recurringType: string;
+  recurringType: RecurringTypeEnum;
   requiresCheckIn: boolean;
   requiresContract: boolean;
   requiresPassport: boolean;
-  requiresPrepaid: boolean;
-  images: string[];
+  // images: string[];
+  dates: Array<{
+    day: string | null;
+    hour: number | null;
+    minute: number | null;
+  }>;
 }
 
 function useDefaultValues(): CreateEventFields {
   return React.useMemo(
     () => ({
+      dates: [{ day: null, hour: null, minute: null }],
       title: "",
       description: "",
       houseNumber: "",
@@ -37,17 +48,16 @@ function useDefaultValues(): CreateEventFields {
       country: "",
       region: "",
       fullAddress: "",
-      durationTime: "",
+      durationTime: 0,
       eventType: "excursion",
       maxAttendees: 0,
       minAttendees: 0,
       organizerPricePerUomCents: 0,
-      recurringType: "regular",
+      recurringType: "general",
       requiresCheckIn: false,
       requiresContract: false,
       requiresPassport: false,
-      requiresPrepaid: false,
-      images: [],
+      // images: [],
     }),
     []
   );
@@ -62,7 +72,7 @@ const validationSchema = Yup.object().shape({
   country: Yup.string(),
   region: Yup.string(),
   fullAddress: Yup.string(),
-  durationTime: Yup.string(),
+  durationTime: Yup.number(),
   eventType: Yup.string(),
   maxAttendees: Yup.number(),
   minAttendees: Yup.number(),
@@ -71,11 +81,14 @@ const validationSchema = Yup.object().shape({
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),
   requiresPassport: Yup.boolean(),
-  requiresPrepaid: Yup.boolean(),
 });
 
 export function useCreateEventForm() {
-  return useMutationForm(
+  const router = useRouter();
+  return useMutationForm<
+    CreateEventFields,
+    useCreateEventForm_CreateEventMutation
+  >(
     graphql`
       mutation useCreateEventForm_CreateEventMutation(
         $input: CreateEventInput!
@@ -87,15 +100,21 @@ export function useCreateEventForm() {
         }
       }
     `,
-    ({ images, ...values }) => ({
+    ({ dates, ...values }) => ({
       input: {
         ...values,
-        base64Images: images,
+        // base64Images: images,
+        dates: dates.map((dt) => `${dt.day} ${dt.hour}:${dt.minute}`),
       },
     }),
     {
       defaultValues: useDefaultValues(),
       resolver: yupResolver(validationSchema),
+      onCompleted(result) {
+        if (result.createEvent?.event?.id) {
+          router.replace(`my-firm/events/${result.createEvent?.event?.id}`);
+        }
+      },
     }
   );
 }
