@@ -36,6 +36,8 @@ module Mutations
     argument :max_attendees, Integer, required: false
     argument :min_attendees, Integer, required: false
 
+    argument :base64_images, [String], required: false
+
     argument :unit_id, ID, loads: Types::UnitType, required: false
 
     def resolve(**args)
@@ -51,6 +53,13 @@ module Mutations
       if event.recurring_type == 'general'
         event.single_days_with_time = Stopover::EventSupport.prepare_dates(event,
                                                                            args[:dates])
+      end
+
+      unless args[:base64_image.empty?]
+        :base64_images.each do |base64_image|
+          tmp_file = Stopover::FilesSupport.base64_to_file(base64_image)
+          event.image.attach(tmp_file)
+        end
       end
 
       event.save!

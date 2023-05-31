@@ -28,7 +28,7 @@ interface CreateEventFields {
   requiresCheckIn: boolean;
   requiresContract: boolean;
   requiresPassport: boolean;
-  // images: string[];
+  images: string[];
   dates: Array<{
     day: string | null;
     hour: number | null;
@@ -56,7 +56,7 @@ function useDefaultValues(): CreateEventFields {
       requiresCheckIn: false,
       requiresContract: false,
       requiresPassport: false,
-      // images: [],
+      images: [],
     }),
     []
   );
@@ -80,6 +80,7 @@ const validationSchema = Yup.object().shape({
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),
   requiresPassport: Yup.boolean(),
+  images: Yup.array(),
 });
 
 export function useCreateEventForm() {
@@ -99,10 +100,10 @@ export function useCreateEventForm() {
         }
       }
     `,
-    ({ dates, ...values }) => ({
+    ({ images, dates, ...values }) => ({
       input: {
         ...values,
-        // base64Images: images,
+        base64Images: images,
         dates: dates.map((dt) => `${dt.day} ${dt.hour}:${dt.minute}`),
       },
     }),
