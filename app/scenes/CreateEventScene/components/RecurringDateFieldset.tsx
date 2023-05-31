@@ -134,7 +134,7 @@ const RecurringDateFieldset = () => {
               </Select>
             </Grid>
 
-            <Grid xs={8}>
+            <Grid xs={7}>
               <Stack
                 direction="row"
                 alignItems="flex-start"
@@ -165,8 +165,13 @@ const RecurringDateFieldset = () => {
               </Stack>
             </Grid>
 
-            <Grid xs={12}>
-              <Stack justifyContent="flex-end" direction="row">
+            <Grid xs={1}>
+              <Stack
+                justifyContent="flex-end"
+                alignItems="center"
+                direction="row"
+                height="100%"
+              >
                 <IconButton
                   size="sm"
                   color="danger"

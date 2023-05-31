@@ -21,8 +21,8 @@ interface CreateEventFields {
   fullAddress: string;
   durationTime: string;
   eventType: EventTypeEnum;
-  maxAttendees: number;
-  minAttendees: number;
+  maxAttendees?: number;
+  minAttendees?: number;
   organizerPricePerUomCents?: number;
   recurringType: RecurringTypeEnum;
   requiresCheckIn: boolean;
@@ -50,8 +50,8 @@ function useDefaultValues(): CreateEventFields {
       fullAddress: "",
       durationTime: "0h 0m",
       eventType: "excursion",
-      maxAttendees: 0,
-      minAttendees: 0,
+      maxAttendees: undefined,
+      minAttendees: undefined,
       recurringType: "general",
       requiresCheckIn: false,
       requiresContract: false,

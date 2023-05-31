@@ -1,4 +1,4 @@
-import { Divider, Grid, Option, Stack, Box, AspectRatio } from "@mui/joy";
+import { Grid, Option, Stack, Box, AspectRatio } from "@mui/joy";
 import React from "react";
 import ClearIcon from "@mui/icons-material/Clear";
 import { FormProvider } from "react-hook-form";
@@ -18,11 +18,10 @@ import Button from "../../../../components/v2/Button";
 const CreateEventScene = () => {
   const form = useCreateEventForm();
   const imagesField = form.useFormField<string[]>("images");
-  const [currency, setCurrency] = React.useState("dollar");
   const requiresCheckInField = form.useFormField("requiresCheckIn");
   const requiresContractField = form.useFormField("requiresContract");
   const requiresPassport = form.useFormField("requiresPassport");
-  const reccuringType = form.useFormField("recurringType");
+  const recurringType = form.useFormField("recurringType");
   const eventType = form.useFormField("eventType");
 
   return (
@@ -92,20 +91,7 @@ const CreateEventScene = () => {
               <Grid xs={12}>
                 <Input
                   placeholder="Amount"
-                  startDecorator={{ dollar: "$" }[currency]}
-                  endDecorator={
-                    <>
-                      <Divider orientation="vertical" />
-                      <Select
-                        variant="plain"
-                        value={currency}
-                        onChange={(_, value) => setCurrency(value as string)}
-                        sx={{ mr: -1.5, "&:hover": { bgcolor: "transparent" } }}
-                      >
-                        <Option value="dollar">US dollar</Option>
-                      </Select>
-                    </>
-                  }
+                  startDecorator="$"
                   label="Organizer Price"
                   sx={{ width: 300 }}
                   {...form.useFormField("organizerPricePerUomCents")}
@@ -120,8 +106,9 @@ const CreateEventScene = () => {
                   label="Recurring type"
                   placeholder="Select Type"
                   onChange={(_, value) => {
-                    reccuringType.onChange(value);
+                    recurringType.onChange(value);
                   }}
+                  value={recurringType.value}
                 >
                   <Option value="recurrent">recurrent</Option>
                   <Option value="general">general</Option>
@@ -170,6 +157,7 @@ const CreateEventScene = () => {
                   onChange={(_, value) => {
                     eventType.onChange(value);
                   }}
+                  value={eventType.value}
                 >
                   <Option value="excursion">excursion</Option>
                   <Option value="tour">tour</Option>
@@ -193,7 +181,8 @@ const CreateEventScene = () => {
                 <Grid xs={6}>
                   <Input
                     type="number"
-                    label="minimum attendees"
+                    label="Minimum Attendees"
+                    placeholder="Min"
                     slotProps={{
                       input: {
                         min: 0,
@@ -206,7 +195,8 @@ const CreateEventScene = () => {
                 <Grid xs={6}>
                   <Input
                     type="number"
-                    label="maximum attendees"
+                    label="Maximum Attendees"
+                    placeholder="Max"
                     slotProps={{
                       input: {
                         min: 0,
