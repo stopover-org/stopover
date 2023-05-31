@@ -219,7 +219,7 @@ input CreateEventInput {
   country: String
   dates: [String!]
   description: String!
-  durationTime: Int
+  durationTime: String
   eventOptions: [CreateEventOptionInput!]
   eventType: EventTypeEnum!
   fullAddress: String!
@@ -423,15 +423,25 @@ type EventOption implements Node {
 }
 
 enum EventTypeEnum {
+  active_holiday
+  business_breakfast
+
   """
   type for incity excursion with guide
   """
   excursion
+  gastronomic
+  in_town
+  meetup
+  music
+  out_of_town
+  sport_activity
 
   """
   type for offroad tour
   """
   tour
+  workshop
 }
 
 input EventsFilter {

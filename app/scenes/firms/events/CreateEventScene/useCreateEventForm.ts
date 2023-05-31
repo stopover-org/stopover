@@ -19,11 +19,11 @@ interface CreateEventFields {
   country: string;
   region: string;
   fullAddress: string;
-  durationTime: number;
+  durationTime: string;
   eventType: EventTypeEnum;
   maxAttendees: number;
   minAttendees: number;
-  organizerPricePerUomCents: number;
+  organizerPricePerUomCents?: number;
   recurringType: RecurringTypeEnum;
   requiresCheckIn: boolean;
   requiresContract: boolean;
@@ -48,11 +48,10 @@ function useDefaultValues(): CreateEventFields {
       country: "",
       region: "",
       fullAddress: "",
-      durationTime: 0,
+      durationTime: "0h 0m",
       eventType: "excursion",
       maxAttendees: 0,
       minAttendees: 0,
-      organizerPricePerUomCents: 0,
       recurringType: "general",
       requiresCheckIn: false,
       requiresContract: false,
@@ -72,7 +71,7 @@ const validationSchema = Yup.object().shape({
   country: Yup.string(),
   region: Yup.string(),
   fullAddress: Yup.string(),
-  durationTime: Yup.number(),
+  durationTime: Yup.string(),
   eventType: Yup.string(),
   maxAttendees: Yup.number(),
   minAttendees: Yup.number(),

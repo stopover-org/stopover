@@ -24,7 +24,7 @@ module Mutations
 
     argument :recurring_type, Types::RecurringTypeEnum
     argument :dates, [String], required: false
-    argument :duration_time, Integer, required: false
+    argument :duration_time, String, required: false
 
     argument :organizer_price_per_uom_cents, Integer, required: false
 
@@ -48,7 +48,7 @@ module Mutations
         event.recurring_days_with_time = Stopover::EventSupport.prepare_dates(event,
                                                                               args[:dates])
       end
-      if event.recurring_type == 'regular'
+      if event.recurring_type == 'general'
         event.single_days_with_time = Stopover::EventSupport.prepare_dates(event,
                                                                            args[:dates])
       end

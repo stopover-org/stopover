@@ -194,7 +194,6 @@ const CreateEventScene = () => {
                   <Input
                     type="number"
                     label="minimum attendees"
-                    defaultValue={1}
                     slotProps={{
                       input: {
                         min: 0,
@@ -208,7 +207,6 @@ const CreateEventScene = () => {
                   <Input
                     type="number"
                     label="maximum attendees"
-                    defaultValue={1}
                     slotProps={{
                       input: {
                         min: 0,
