@@ -1,10 +1,11 @@
-import { Grid, Option, Stack } from "@mui/joy";
+import { Grid, Option, Stack, IconButton } from "@mui/joy";
 import React from "react";
 import Fieldset from "../../../components/v2/Fieldset/Fieldset";
 import Typography from "../../../components/v2/Typography/Typography";
 import Select from "../../../components/v2/Select/Select";
 import useFormContext from "../../../lib/hooks/useFormContext";
 import Button from "../../../components/v2/Button";
+// import bin from "../../../components/icons/Solid/Interface/Trash.svg";
 
 const RecurringDateFieldset = () => {
   const minutes = React.useMemo(() => Array.from(Array(60).keys()), []);
@@ -66,7 +67,6 @@ const RecurringDateFieldset = () => {
         </Grid>
         <Grid xs={4}>
           <Select
-            defaultValue={0}
             label="Hours"
             onChange={(_, value) => {
               onDurationTimeChange(value as string, "h");
@@ -81,7 +81,6 @@ const RecurringDateFieldset = () => {
         </Grid>
         <Grid xs={4}>
           <Select
-            defaultValue={0}
             label="Minutes"
             onChange={(_, value) => {
               onDurationTimeChange(value as string, "m");
@@ -105,21 +104,8 @@ const RecurringDateFieldset = () => {
       {datesField.value.map((date: any, index: number) => (
         <React.Fragment key={index}>
           <Grid xs={12} container>
-            <Grid xs={12}>
-              <Stack justifyContent="flex-end" direction="row">
-                <Button
-                  size="sm"
-                  onClick={() => {
-                    subHandler(index);
-                  }}
-                >
-                  -
-                </Button>
-              </Stack>
-            </Grid>
             <Grid xs={2}>
               <Select
-                defaultValue={0}
                 label="Hours"
                 onChange={(_, value) => {
                   onDateChange<number>(value as number, index, "hour");
@@ -134,7 +120,6 @@ const RecurringDateFieldset = () => {
             </Grid>
             <Grid xs={2}>
               <Select
-                defaultValue={0}
                 label="Minutes"
                 onChange={(_, value) => {
                   onDateChange<number>(value as number, index, "minute");
@@ -176,6 +161,20 @@ const RecurringDateFieldset = () => {
                     {day}
                   </Typography>
                 ))}
+              </Stack>
+            </Grid>
+
+            <Grid xs={12}>
+              <Stack justifyContent="flex-end" direction="row">
+                <IconButton
+                  size="sm"
+                  color="danger"
+                  onClick={() => {
+                    subHandler(index);
+                  }}
+                >
+                  -
+                </IconButton>
               </Stack>
             </Grid>
           </Grid>

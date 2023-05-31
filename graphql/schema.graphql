@@ -750,14 +750,14 @@ type Query {
 
 enum RecurringTypeEnum {
   """
+  uses for non recurring type of events
+  """
+  general
+
+  """
   uses for recurring events
   """
   recurrent
-
-  """
-  uses for non recurring type of events
-  """
-  regular
 }
 
 """
