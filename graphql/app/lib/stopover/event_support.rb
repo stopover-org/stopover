@@ -7,15 +7,15 @@ module Stopover
 
       case event.recurring_type
       when 'recurrent'
-        regexp = /([1-7])\s+([0-2][0-9]):([0-5][0-9])/
+        regexp = /([a-zA-Z])\s+([0-2][0-9]):([0-5][0-9])/
 
         dates.map do |date|
           day, hours, minutes = date.match(regexp).captures
           day = day
           hours = hours.to_i
           minutes = minutes.to_i
-          return nil if day > 7 || day < 1
-          return nil if hours > 12 || hours.negative?
+          return nil unless %w[sunday monday tuesday wednesday thursday friday saturday].include?(day.downcase)
+          return nil if hours > 24 || hours.negative?
           return nil if minutes > 59 || minutes.negative?
 
           return "#{day} #{hours.to_s.rjust(2, '0')}:#{minutes.to_s.rjust(1, '0')}"

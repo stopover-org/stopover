@@ -41,7 +41,9 @@ module Mutations
     argument :unit_id, ID, loads: Types::UnitType, required: false
 
     def resolve(**args)
-      event = Event.new(args.except(:dates, :event_options))
+      event = Event.new(args.except(:dates,
+                                    :event_options,
+                                    :base64_images))
       event.firm = context[:current_user].account.current_firm
       event.event_options = args[:event_options]&.map { |option| EventOption.new(**option) } if args[:event_options].present?
 
@@ -55,10 +57,10 @@ module Mutations
                                                                            args[:dates])
       end
 
-      unless args[:base64_image.empty?]
-        :base64_images.each do |base64_image|
+      unless args[:base64_images].empty?
+        args[:base64_images].each do |base64_image|
           tmp_file = Stopover::FilesSupport.base64_to_file(base64_image)
-          event.image.attach(tmp_file)
+          event.images.attach(tmp_file)
         end
       end
 
