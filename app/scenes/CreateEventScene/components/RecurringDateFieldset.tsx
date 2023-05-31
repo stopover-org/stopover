@@ -1,5 +1,6 @@
 import { Grid, Option, Stack, IconButton } from "@mui/joy";
 import React from "react";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Fieldset from "../../../components/v2/Fieldset/Fieldset";
 import Typography from "../../../components/v2/Typography/Typography";
 import Select from "../../../components/v2/Select/Select";
@@ -173,7 +174,7 @@ const RecurringDateFieldset = () => {
                     subHandler(index);
                   }}
                 >
-                  -
+                  <DeleteForeverIcon />
                 </IconButton>
               </Stack>
             </Grid>
