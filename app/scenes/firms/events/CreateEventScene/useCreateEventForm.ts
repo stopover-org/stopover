@@ -63,6 +63,15 @@ function useDefaultValues(): CreateEventFields {
 }
 
 const validationSchema = Yup.object().shape({
+  dates: Yup.array()
+    .of(
+      Yup.object().shape({
+        day: Yup.string().required(),
+        hour: Yup.string().required(),
+        minute: Yup.string().required(),
+      })
+    )
+    .required(),
   title: Yup.string().required(),
   description: Yup.string(),
   houseNumber: Yup.string(),
@@ -84,6 +93,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useCreateEventForm() {
+  console.log();
   const router = useRouter();
   return useMutationForm<
     CreateEventFields,

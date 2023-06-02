@@ -1,4 +1,4 @@
-import { Grid, Option, Stack, IconButton } from "@mui/joy";
+import { Grid, Option, Stack, IconButton, FormHelperText } from "@mui/joy";
 import React from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Fieldset from "../../../components/v2/Fieldset/Fieldset";
@@ -6,14 +6,16 @@ import Typography from "../../../components/v2/Typography/Typography";
 import Select from "../../../components/v2/Select/Select";
 import useFormContext from "../../../lib/hooks/useFormContext";
 import Button from "../../../components/v2/Button";
-// import bin from "../../../components/icons/Solid/Interface/Trash.svg";
 
 const RecurringDateFieldset = () => {
   const minutes = React.useMemo(() => Array.from(Array(60).keys()), []);
   const hours = React.useMemo(() => Array.from(Array(24).keys()), []);
   // TODO replace any with fields from useCreateEventForm
   const form = useFormContext<any>();
-  const datesField = form.useFormField<any[]>(`dates`);
+  const datesField =
+    form.useFormField<
+      { day: string | null; hour: string | null; minute: string | null }[]
+    >(`dates`);
   const durationTimeField = form.useFormField("durationTime");
   const onDateChange = React.useCallback(
     <ValueType extends string | number>(
@@ -118,6 +120,13 @@ const RecurringDateFieldset = () => {
                   </Option>
                 ))}
               </Select>
+              {!date.hour && (
+                <FormHelperText>
+                  <Typography color="danger" fontSize="sm">
+                    Required
+                  </Typography>
+                </FormHelperText>
+              )}
             </Grid>
             <Grid xs={2}>
               <Select
@@ -167,9 +176,8 @@ const RecurringDateFieldset = () => {
 
             <Grid xs={1}>
               <Stack
-                justifyContent="flex-end"
-                alignItems="center"
-                direction="row"
+                justifyContent="center"
+                alignItems="flex-end"
                 height="100%"
               >
                 <IconButton

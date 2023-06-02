@@ -45,7 +45,7 @@ const CreateEventScene = () => {
                 />
               </Grid>
               <Grid xs={12}>
-                <Stack flexDirection="row">
+                <Stack flexDirection="row" flexWrap="wrap">
                   {imagesField.value.map((image, index) => (
                     <AspectRatio
                       variant="outlined"
