@@ -19,16 +19,16 @@ interface CreateEventFields {
   country: string;
   region: string;
   fullAddress: string;
-  durationTime: number;
+  durationTime: string;
   eventType: EventTypeEnum;
-  maxAttendees: number;
-  minAttendees: number;
-  organizerPricePerUomCents: number;
+  maxAttendees?: number;
+  minAttendees?: number;
+  organizerPricePerUomCents?: number;
   recurringType: RecurringTypeEnum;
   requiresCheckIn: boolean;
   requiresContract: boolean;
   requiresPassport: boolean;
-  // images: string[];
+  images: string[];
   dates: Array<{
     day: string | null;
     hour: number | null;
@@ -48,16 +48,15 @@ function useDefaultValues(): CreateEventFields {
       country: "",
       region: "",
       fullAddress: "",
-      durationTime: 0,
+      durationTime: "0h 0m",
       eventType: "excursion",
-      maxAttendees: 0,
-      minAttendees: 0,
-      organizerPricePerUomCents: 0,
+      maxAttendees: undefined,
+      minAttendees: undefined,
       recurringType: "general",
       requiresCheckIn: false,
       requiresContract: false,
       requiresPassport: false,
-      // images: [],
+      images: [],
     }),
     []
   );
@@ -72,7 +71,7 @@ const validationSchema = Yup.object().shape({
   country: Yup.string(),
   region: Yup.string(),
   fullAddress: Yup.string(),
-  durationTime: Yup.number(),
+  durationTime: Yup.string(),
   eventType: Yup.string(),
   maxAttendees: Yup.number(),
   minAttendees: Yup.number(),
@@ -81,6 +80,7 @@ const validationSchema = Yup.object().shape({
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),
   requiresPassport: Yup.boolean(),
+  images: Yup.array(),
 });
 
 export function useCreateEventForm() {
@@ -100,10 +100,10 @@ export function useCreateEventForm() {
         }
       }
     `,
-    ({ dates, ...values }) => ({
+    ({ images, dates, ...values }) => ({
       input: {
         ...values,
-        // base64Images: images,
+        base64Images: images,
         dates: dates.map((dt) => `${dt.day} ${dt.hour}:${dt.minute}`),
       },
     }),

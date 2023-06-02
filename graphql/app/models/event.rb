@@ -110,12 +110,10 @@ class Event < ApplicationRecord
 
   # ENUMS =======================================================================
   # TODO rename regular general
-  enum recurring_type: { recurrent: 'recurrent', regular: 'regular' }
+  enum recurring_type: { recurrent: 'recurrent', general: 'general' }
   enum event_type: {
-    # old one
     excursion: 'excursion',
     tour: 'tour',
-
     in_town: 'in_town',
     out_of_town: 'out_of_town',
     active_holiday: 'active_holiday',
@@ -212,7 +210,7 @@ class Event < ApplicationRecord
   def get_time(date)
     date = date.to_date
     times = single_days_with_time.keep_if { |d| d.to_date == date }.map { |d| "#{d.hour}:#{d.min}" }.compact.uniq
-    times += recurring_days_with_time.keep_if { |d| d.split(/\s+/).first.downcase.to_sym == Date::DAYNAMES[date.wday].downcase.to_sym }.map { |d| d.split(/\s+/).last }.compact.uniq
+    times += recurring_days_with_time.keep_if { |d| d.split(/\s+/).first.downcase.to_sym == Date::DAYNAMES[date.wday].downcase.to_sym }.map { |d| d.split(/\s+/).last }.compact.uniq if recurring_days_with_time
 
     times
   end

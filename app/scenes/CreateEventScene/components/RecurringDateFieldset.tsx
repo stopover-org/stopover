@@ -1,11 +1,12 @@
-import { Grid, Option, Stack } from "@mui/joy";
+import { Grid, Option, Stack, IconButton } from "@mui/joy";
 import React from "react";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Fieldset from "../../../components/v2/Fieldset/Fieldset";
 import Typography from "../../../components/v2/Typography/Typography";
 import Select from "../../../components/v2/Select/Select";
 import useFormContext from "../../../lib/hooks/useFormContext";
 import Button from "../../../components/v2/Button";
-import Input from "../../../components/v2/Input/Input";
+// import bin from "../../../components/icons/Solid/Interface/Trash.svg";
 
 const RecurringDateFieldset = () => {
   const minutes = React.useMemo(() => Array.from(Array(60).keys()), []);
@@ -13,6 +14,7 @@ const RecurringDateFieldset = () => {
   // TODO replace any with fields from useCreateEventForm
   const form = useFormContext<any>();
   const datesField = form.useFormField<any[]>(`dates`);
+  const durationTimeField = form.useFormField("durationTime");
   const onDateChange = React.useCallback(
     <ValueType extends string | number>(
       value: ValueType,
@@ -31,36 +33,73 @@ const RecurringDateFieldset = () => {
     [datesField, hours, minutes]
   );
 
-  const clickHandler = () => {
+  const onDurationTimeChange = React.useCallback(
+    (value: string, index: string) => {
+      let time = ["0h", "0m"];
+      if (durationTimeField.value) {
+        time = durationTimeField.value.split(" ");
+      }
+      if (index === "h") time[0] = value + index;
+      if (index === "m") time[1] = value + index;
+      durationTimeField.onChange(`${time[0]} ${time[1]}`);
+    },
+    [durationTimeField]
+  );
+
+  const addHandler = () => {
     datesField.onChange([
       ...datesField.value,
       { day: null, hour: null, minute: null },
     ]);
   };
 
+  const subHandler = (index: number) => {
+    datesField.onChange([
+      ...datesField.value.slice(0, index),
+      ...datesField.value.slice(index + 1, datesField.value.length),
+    ]);
+  };
+
   return (
     <Fieldset>
       <Grid xs={12} container>
-        <Grid xs={10}>
+        <Grid xs={4}>
           <Typography level="h3">Time</Typography>
         </Grid>
-        <Grid xs={2}>
-          <Button onClick={clickHandler}>+</Button>
+        <Grid xs={4}>
+          <Select
+            label="Hours"
+            onChange={(_, value) => {
+              onDurationTimeChange(value as string, "h");
+            }}
+          >
+            {hours.map((hour) => (
+              <Option key={hour} value={hour}>
+                {hour}
+              </Option>
+            ))}
+          </Select>
+        </Grid>
+        <Grid xs={4}>
+          <Select
+            label="Minutes"
+            onChange={(_, value) => {
+              onDurationTimeChange(value as string, "m");
+            }}
+          >
+            {minutes.map((minute) => (
+              <Option key={minute} value={minute}>
+                {minute}
+              </Option>
+            ))}
+          </Select>
         </Grid>
       </Grid>
+
       <Grid>
-        <Input
-          type="number"
-          label="duration time"
-          defaultValue={1}
-          slotProps={{
-            input: {
-              min: 0,
-              step: 1,
-            },
-          }}
-          {...form.useFormField("durationTime")}
-        />
+        <Button size="sm" onClick={addHandler}>
+          Add starting time
+        </Button>
       </Grid>
 
       {datesField.value.map((date: any, index: number) => (
@@ -68,7 +107,6 @@ const RecurringDateFieldset = () => {
           <Grid xs={12} container>
             <Grid xs={2}>
               <Select
-                defaultValue={0}
                 label="Hours"
                 onChange={(_, value) => {
                   onDateChange<number>(value as number, index, "hour");
@@ -83,7 +121,6 @@ const RecurringDateFieldset = () => {
             </Grid>
             <Grid xs={2}>
               <Select
-                defaultValue={0}
                 label="Minutes"
                 onChange={(_, value) => {
                   onDateChange<number>(value as number, index, "minute");
@@ -97,7 +134,7 @@ const RecurringDateFieldset = () => {
               </Select>
             </Grid>
 
-            <Grid xs={8}>
+            <Grid xs={7}>
               <Stack
                 direction="row"
                 alignItems="flex-start"
@@ -125,6 +162,25 @@ const RecurringDateFieldset = () => {
                     {day}
                   </Typography>
                 ))}
+              </Stack>
+            </Grid>
+
+            <Grid xs={1}>
+              <Stack
+                justifyContent="flex-end"
+                alignItems="center"
+                direction="row"
+                height="100%"
+              >
+                <IconButton
+                  size="sm"
+                  color="danger"
+                  onClick={() => {
+                    subHandler(index);
+                  }}
+                >
+                  <DeleteForeverIcon />
+                </IconButton>
               </Stack>
             </Grid>
           </Grid>

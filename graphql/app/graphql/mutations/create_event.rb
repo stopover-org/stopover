@@ -24,7 +24,7 @@ module Mutations
 
     argument :recurring_type, Types::RecurringTypeEnum
     argument :dates, [String], required: false
-    argument :duration_time, Integer, required: false
+    argument :duration_time, String, required: false
 
     argument :organizer_price_per_uom_cents, Integer, required: false
 
@@ -36,19 +36,32 @@ module Mutations
     argument :max_attendees, Integer, required: false
     argument :min_attendees, Integer, required: false
 
+    argument :base64_images, [String], required: false
+
     argument :unit_id, ID, loads: Types::UnitType, required: false
 
     def resolve(**args)
-      event = Event.new(args.except(:dates, :event_options))
+      event = Event.new(args.except(:dates,
+                                    :event_options,
+                                    :base64_images))
       event.firm = context[:current_user].account.current_firm
       event.event_options = args[:event_options]&.map { |option| EventOption.new(**option) } if args[:event_options].present?
-      if event.recurring_type == 'recurring'
+
+      if event.recurring_type == 'recurrent'
+
         event.recurring_days_with_time = Stopover::EventSupport.prepare_dates(event,
                                                                               args[:dates])
       end
-      if event.recurring_type == 'regular'
+      if event.recurring_type == 'general'
         event.single_days_with_time = Stopover::EventSupport.prepare_dates(event,
                                                                            args[:dates])
+      end
+
+      unless args[:base64_images].empty?
+        args[:base64_images].each do |base64_image|
+          tmp_file = Stopover::FilesSupport.base64_to_file(base64_image)
+          event.images.attach(tmp_file)
+        end
       end
 
       event.save!
