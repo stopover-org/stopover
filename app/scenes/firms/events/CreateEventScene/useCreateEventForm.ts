@@ -10,7 +10,7 @@ import {
   useCreateEventForm_CreateEventMutation,
 } from "./__generated__/useCreateEventForm_CreateEventMutation.graphql";
 
-interface CreateEventFields {
+export interface CreateEventFields {
   title: string;
   description: string;
   houseNumber: string;
@@ -93,7 +93,6 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useCreateEventForm() {
-  console.log();
   const router = useRouter();
   return useMutationForm<
     CreateEventFields,

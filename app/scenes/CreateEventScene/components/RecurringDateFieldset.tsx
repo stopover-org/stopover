@@ -6,16 +6,13 @@ import Typography from "../../../components/v2/Typography/Typography";
 import Select from "../../../components/v2/Select/Select";
 import useFormContext from "../../../lib/hooks/useFormContext";
 import Button from "../../../components/v2/Button";
+import { CreateEventFields } from "../../firms/events/CreateEventScene/useCreateEventForm";
 
 const RecurringDateFieldset = () => {
   const minutes = React.useMemo(() => Array.from(Array(60).keys()), []);
   const hours = React.useMemo(() => Array.from(Array(24).keys()), []);
-  // TODO replace any with fields from useCreateEventForm
-  const form = useFormContext<any>();
-  const datesField =
-    form.useFormField<
-      { day: string | null; hour: string | null; minute: string | null }[]
-    >(`dates`);
+  const form = useFormContext<CreateEventFields>();
+  const datesField = form.useFormField<CreateEventFields["dates"]>(`dates`);
   const durationTimeField = form.useFormField("durationTime");
   const onDateChange = React.useCallback(
     <ValueType extends string | number>(
@@ -55,7 +52,7 @@ const RecurringDateFieldset = () => {
     ]);
   };
 
-  const subHandler = (index: number) => {
+  const removeRow = (index: number) => {
     datesField.onChange([
       ...datesField.value.slice(0, index),
       ...datesField.value.slice(index + 1, datesField.value.length),
@@ -120,7 +117,7 @@ const RecurringDateFieldset = () => {
                   </Option>
                 ))}
               </Select>
-              {!date.hour && (
+              {!!form.formState.errors?.dates?.[index]?.hour && (
                 <FormHelperText>
                   <Typography color="danger" fontSize="sm">
                     Required
@@ -141,6 +138,13 @@ const RecurringDateFieldset = () => {
                   </Option>
                 ))}
               </Select>
+              {!!form.formState.errors?.dates?.[index]?.minute && (
+                <FormHelperText>
+                  <Typography color="danger" fontSize="sm">
+                    Required
+                  </Typography>
+                </FormHelperText>
+              )}
             </Grid>
 
             <Grid xs={7}>
@@ -172,6 +176,13 @@ const RecurringDateFieldset = () => {
                   </Typography>
                 ))}
               </Stack>
+              {!!form.formState.errors?.dates?.[index]?.day && (
+                <FormHelperText>
+                  <Typography color="danger" fontSize="sm">
+                    Required
+                  </Typography>
+                </FormHelperText>
+              )}
             </Grid>
 
             <Grid xs={1}>
@@ -184,7 +195,7 @@ const RecurringDateFieldset = () => {
                   size="sm"
                   color="danger"
                   onClick={() => {
-                    subHandler(index);
+                    removeRow(index);
                   }}
                 >
                   <DeleteForeverIcon />

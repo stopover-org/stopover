@@ -24,6 +24,8 @@ const CreateEventScene = () => {
   const recurringType = form.useFormField("recurringType");
   const eventType = form.useFormField("eventType");
 
+  console.log(form.formState, form.useFormField("title"));
+
   return (
     <>
       <Breadcrumbs
