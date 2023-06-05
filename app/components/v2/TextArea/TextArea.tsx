@@ -5,7 +5,7 @@ import {
   TextareaProps as JoyTextAreaProps,
   Typography,
 } from "@mui/joy";
-import React from "react";
+import React, { ChangeEvent, EventHandler } from "react";
 
 interface BaseTextAreaProps {
   onChange: (

@@ -4,13 +4,15 @@ import {
   FormLabel,
   InputProps as JoyInputProps,
   Typography,
+  FormControl,
 } from "@mui/joy";
 import React from "react";
+import { FieldError } from "react-hook-form";
 
 interface BaseInputProps {
   label?: React.ReactNode;
   hint?: React.ReactNode;
-  error?: React.ReactNode;
+  error?: FieldError | string;
   onChange?: (value: string, event?: React.SyntheticEvent<any>) => void;
   value?: string;
   placeholder?: string;
@@ -31,8 +33,13 @@ const Input = React.forwardRef(
       onChange(event.target.value, event);
     };
 
+    const errorMessage = React.useMemo(
+      () => (typeof error === "string" ? error : error?.message),
+      [error]
+    );
+
     return (
-      <>
+      <FormControl ref={ref}>
         {label && <FormLabel>{label}</FormLabel>}
         <JoyInput
           onChange={onChangeHandler}
@@ -45,11 +52,11 @@ const Input = React.forwardRef(
         {error && (
           <FormHelperText>
             <Typography fontSize="sm" color="danger">
-              {error}
+              {errorMessage}
             </Typography>
           </FormHelperText>
         )}
-      </>
+      </FormControl>
     );
   }
 );

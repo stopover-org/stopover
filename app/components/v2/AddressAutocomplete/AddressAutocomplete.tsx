@@ -8,10 +8,16 @@ import {
 } from "@mui/joy";
 import React from "react";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
+import { FieldError } from "react-hook-form";
 import Typography from "../Typography";
 import { useApiKey } from "../../../lib/hooks/useApiKey";
 
 interface BaseAddressAutocompleteProps {
+  countries?: string[];
+  error?: FieldError;
+  hint?: string | null;
+  label?: string | null;
+  onChange?: (value: string, placeId: string) => void;
   types?: Array<
     | "geocode"
     | "address"
@@ -24,12 +30,7 @@ interface BaseAddressAutocompleteProps {
     | "administrative_area_level_2"
     | "administrative_area_level_3"
   >;
-  onChange?: (value: string, placeId: string) => void;
   value?: string;
-  countries?: string[];
-  label?: string | null;
-  hint?: string | null;
-  error?: string;
 }
 
 // @ts-ignore
@@ -114,7 +115,7 @@ const AddressAutocomplete = React.forwardRef(
         {error && (
           <FormHelperText>
             <Typography fontSize="sm" color="danger">
-              {error}
+              {error.message}
             </Typography>
           </FormHelperText>
         )}
