@@ -464,6 +464,7 @@ input EventsFilter {
 type Firm implements Node {
   accounts: [Account!]
   balance: Balance
+  booking: Booking
   city: String
   contactPerson: String
   contacts: String
@@ -497,9 +498,11 @@ type Firm implements Node {
   image: String
   latitude: Float
   longitude: Float
+  payment: Payment
   primaryEmail: String!
   primaryPhone: String
   region: String
+  schedule: Schedule
   status: String
   street: String
   title: String!
