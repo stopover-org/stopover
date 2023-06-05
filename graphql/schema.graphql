@@ -461,6 +461,7 @@ type Firm implements Node {
   contacts: String
   country: String
   description: String
+  event(id: ID!): Event
   events(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -751,14 +752,14 @@ type Query {
 
 enum RecurringTypeEnum {
   """
-  uses for non recurring type of events
-  """
-  general
-
-  """
   uses for recurring events
   """
   recurrent
+
+  """
+  uses for non recurring type of events
+  """
+  regular
 }
 
 """
