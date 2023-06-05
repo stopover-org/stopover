@@ -31,6 +31,13 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
         },
       },
     },
+    JoyAutocomplete: {
+      styleOverrides: {
+        root: {
+          borderRadius: "2px",
+        },
+      },
+    },
     JoyTextarea: {
       styleOverrides: {
         root: {

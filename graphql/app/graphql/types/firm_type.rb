@@ -19,13 +19,22 @@ module Types
     field :street, String
     field :title, String, null: false
     field :website, String
-    field :accounts, [Types::AccountType]
     field :image, String
+
+    field :accounts, [Types::AccountType]
+
     field :events, Types::EventType.connection_type, null: false
+    field :event, Types::EventType do
+      argument :id, ID, required: true, loads: Types::EventType
+    end
 
     def image
       return nil if object.image.blank?
       Rails.application.routes.url_helpers.rails_blob_url(object.image)
+    end
+
+    def event(**args)
+      args[:id]
     end
   end
 end

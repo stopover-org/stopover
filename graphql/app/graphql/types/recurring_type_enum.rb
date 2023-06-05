@@ -3,6 +3,6 @@
 module Types
   class RecurringTypeEnum < Types::BaseEnum
     value 'recurrent', 'uses for recurring events'
-    value 'general', 'uses for non recurring type of events'
+    value 'regular', 'uses for non recurring type of events'
   end
 end

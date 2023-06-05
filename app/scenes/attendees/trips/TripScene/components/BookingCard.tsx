@@ -18,10 +18,10 @@ import BookingSummary from "./BookingSummary";
 import BookingDescription from "./BookingDescription";
 import BookingEditForm from "./BookingEditForm";
 import Tag from "../../../../../components/v2/Tag/Tag";
-import { getDate, getHumanDateTime } from "../../../../../lib/utils/dates";
+import { BookingCard_BookingFragment$key } from "./__generated__/BookingCard_BookingFragment.graphql";
 
 interface BookingCardProps {
-  bookingFragmentRef: any;
+  bookingFragmentRef: BookingCard_BookingFragment$key;
 }
 
 const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {

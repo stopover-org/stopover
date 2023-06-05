@@ -10,7 +10,7 @@ import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { dateTimeFormat, removeUtc } from "../../../../lib/utils/dates";
 
 interface EventsSceneProps {
-  firmFragmentRef: any;
+  firmFragmentRef: EventsScene_EventsFirmPaginationFragment$key;
 }
 
 const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
