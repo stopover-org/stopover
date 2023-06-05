@@ -21,8 +21,12 @@ module Types
     field :website, String
     field :image, String
 
-    field :accounts, [Types::AccountType]
+    field :balance, Types::BalanceType
+    field :payment, Types::PaymentType
+    field :booking, Types::BookingType
+    field :schedule, Types::ScheduleType
 
+    field :accounts, [Types::AccountType]
     field :events, Types::EventType.connection_type, null: false
     field :event, Types::EventType do
       argument :id, ID, required: true, loads: Types::EventType
