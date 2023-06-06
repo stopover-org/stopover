@@ -1,4 +1,5 @@
 import { Grid, Stack } from "@mui/joy";
+import React from "react";
 import Section from "../../../components/v2/Section";
 import Typography from "../../../components/v2/Typography";
 
@@ -17,4 +18,4 @@ const FirmSection = () => (
   </Section>
 );
 
-export default FirmSection;
+export default React.memo(FirmSection);

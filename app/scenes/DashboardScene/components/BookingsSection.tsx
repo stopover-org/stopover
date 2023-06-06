@@ -1,29 +1,13 @@
+import React from "react";
 import Table from "../../../components/v2/Table";
 
+// <tr>
+//   <th>date</th>
+//   <th>event</th>
+//   <th>300$</th>
+// </tr>
+
 const BookingsSection = () => (
-  <Table aria-label="basic table">
-    <thead>
-      <tr>
-        <th>date</th>
-        <th>event</th>
-        <th>300$</th>
-      </tr>
-      <tr>
-        <th>date</th>
-        <th>event</th>
-        <th>343250$</th>
-      </tr>
-      <tr>
-        <th>date</th>
-        <th>event</th>
-        <th>400$</th>
-      </tr>
-      <tr>
-        <th>date</th>
-        <th>event</th>
-        <th>35$</th>
-      </tr>
-    </thead>
-  </Table>
+  <Table data={[]} headers={[]} aria-label="basic table" />
 );
-export default BookingsSection;
+export default React.memo(BookingsSection);

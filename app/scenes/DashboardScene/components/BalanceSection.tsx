@@ -1,4 +1,5 @@
 import { Grid } from "@mui/joy";
+import React from "react";
 import Section from "../../../components/v2/Section";
 
 const BalanceSection = () => (
@@ -6,4 +7,4 @@ const BalanceSection = () => (
     <Grid>Balance</Grid>
   </Section>
 );
-export default BalanceSection;
+export default React.memo(BalanceSection);

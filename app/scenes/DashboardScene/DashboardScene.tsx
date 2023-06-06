@@ -5,7 +5,7 @@ import BalanceSection from "./components/BalanceSection";
 import PaymentsSection from "./components/PaymentsSection";
 import SchedulesSection from "./components/SchedulesSection";
 
-const Index = () => (
+const DashboardScene = () => (
   <Grid container spacing={2} md={10} sm={12}>
     <Grid xs={12}>
       <FirmSection />
@@ -29,4 +29,4 @@ const Index = () => (
   </Grid>
 );
 
-export default Index;
+export default DashboardScene;

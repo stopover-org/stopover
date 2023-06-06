@@ -1,4 +1,5 @@
 import { Grid, Stack } from "@mui/joy";
+import React from "react";
 import Section from "../../../components/v2/Section";
 import Typography from "../../../components/v2/Typography/Typography";
 
@@ -15,4 +16,4 @@ const PaymentsSection = () => (
   </Section>
 );
 
-export default PaymentsSection;
+export default React.memo(PaymentsSection);

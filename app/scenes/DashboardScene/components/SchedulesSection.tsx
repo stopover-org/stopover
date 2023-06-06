@@ -1,4 +1,5 @@
 import { Grid } from "@mui/joy";
+import React from "react";
 import Section from "../../../components/v2/Section";
 
 const SchedulesSection = () => (
@@ -6,4 +7,4 @@ const SchedulesSection = () => (
     <Grid>schedules</Grid>
   </Section>
 );
-export default SchedulesSection;
+export default React.memo(SchedulesSection);
