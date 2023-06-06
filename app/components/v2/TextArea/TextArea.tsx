@@ -5,7 +5,8 @@ import {
   TextareaProps as JoyTextAreaProps,
   Typography,
 } from "@mui/joy";
-import React, { ChangeEvent, EventHandler } from "react";
+import React from "react";
+import { FieldError } from "react-hook-form";
 
 interface BaseTextAreaProps {
   onChange: (
@@ -14,7 +15,7 @@ interface BaseTextAreaProps {
   ) => void;
   label?: React.ReactNode;
   hint?: React.ReactNode;
-  error?: React.ReactNode;
+  error?: FieldError | string;
   value?: string;
   placeholder?: string;
 }
@@ -34,6 +35,11 @@ const TextArea = React.forwardRef(
       onChange(event.target.value, event);
     };
 
+    const errorMessage = React.useMemo(
+      () => (typeof error === "string" ? error : error?.message),
+      [error]
+    );
+
     return (
       <>
         {label && <FormLabel>{label}</FormLabel>}
@@ -47,7 +53,7 @@ const TextArea = React.forwardRef(
         {error && (
           <FormHelperText>
             <Typography fontSize="sm" color="danger">
-              {error}
+              {errorMessage}
             </Typography>
           </FormHelperText>
         )}

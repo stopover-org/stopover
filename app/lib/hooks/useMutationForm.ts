@@ -1,5 +1,5 @@
 import React from "react";
-import { Path, PathValue, useForm } from "react-hook-form";
+import { FieldError, Path, PathValue, useForm } from "react-hook-form";
 import { UseFormProps, UseFormReturn } from "react-hook-form/dist/types";
 import {
   Disposable,
@@ -71,7 +71,7 @@ function useMutationForm<
         onChange: (value: PathValue<FieldsType, Path<FieldsType>>) => {
           form.setValue(name, value);
         },
-        error: form.formState.errors[name]?.message as string,
+        error: form.formState.errors[name] as FieldError,
       }),
       [field]
     );

@@ -13,7 +13,7 @@ interface BaseInputProps {
   label?: React.ReactNode;
   hint?: React.ReactNode;
   error?: FieldError | string;
-  onChange?: (value: string, event?: React.SyntheticEvent<any>) => void;
+  onChange?: (value: string, event?: React.ChangeEvent<any>) => void;
   value?: string;
   placeholder?: string;
 }

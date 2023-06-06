@@ -24,8 +24,6 @@ const CreateEventScene = () => {
   const recurringType = form.useFormField("recurringType");
   const eventType = form.useFormField("eventType");
 
-  console.log(form.formState, form.useFormField("title"));
-
   return (
     <>
       <Breadcrumbs
@@ -107,7 +105,7 @@ const CreateEventScene = () => {
                 <Select
                   label="Recurring type"
                   placeholder="Select Type"
-                  onChange={(_, value) => {
+                  onChange={(value) => {
                     recurringType.onChange(value);
                   }}
                   value={recurringType.value}
@@ -156,7 +154,7 @@ const CreateEventScene = () => {
                 <Select
                   label="Type of Event"
                   placeholder="Select Type"
-                  onChange={(_, value) => {
+                  onChange={(value) => {
                     eventType.onChange(value);
                   }}
                   value={eventType.value}

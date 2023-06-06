@@ -68,7 +68,7 @@ const RecurringDateFieldset = () => {
         <Grid xs={4}>
           <Select
             label="Hours"
-            onChange={(_, value) => {
+            onChange={(value) => {
               onDurationTimeChange(value as string, "h");
             }}
           >
@@ -82,7 +82,7 @@ const RecurringDateFieldset = () => {
         <Grid xs={4}>
           <Select
             label="Minutes"
-            onChange={(_, value) => {
+            onChange={(value) => {
               onDurationTimeChange(value as string, "m");
             }}
           >
@@ -107,7 +107,7 @@ const RecurringDateFieldset = () => {
             <Grid xs={2}>
               <Select
                 label="Hours"
-                onChange={(_, value) => {
+                onChange={(value) => {
                   onDateChange<number>(value as number, index, "hour");
                 }}
               >
@@ -128,7 +128,7 @@ const RecurringDateFieldset = () => {
             <Grid xs={2}>
               <Select
                 label="Minutes"
-                onChange={(_, value) => {
+                onChange={(value) => {
                   onDateChange<number>(value as number, index, "minute");
                 }}
               >

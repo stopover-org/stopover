@@ -1,4 +1,5 @@
 import {
+  FieldError,
   Path,
   PathValue,
   useFormContext as useFormContextOrigin,
@@ -24,7 +25,7 @@ function useFormContext<FieldsType extends FieldValues>() {
         onChange: (value: PathValue<FieldsType, Path<FieldsType>>) => {
           form.setValue(name, value);
         },
-        error: form.formState.errors[name],
+        error: form.formState.errors[name] as FieldError,
       }),
       [field]
     );
