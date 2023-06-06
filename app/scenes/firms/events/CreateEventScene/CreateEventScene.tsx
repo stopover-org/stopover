@@ -55,6 +55,8 @@ const CreateEventScene = () => {
                         bgcolor: "background.level2",
                         borderRadius: "md",
                         position: "relative",
+                        marginRight: "5px",
+                        marginTop: "5px",
                       }}
                     >
                       <img alt="Logo Preview" src={image} />
@@ -74,11 +76,8 @@ const CreateEventScene = () => {
                         }}
                         onClick={() =>
                           imagesField.onChange([
-                            ...imagesField.value.slice(index),
-                            ...imagesField.value.slice(
-                              index + 1,
-                              imagesField.value.length
-                            ),
+                            ...imagesField.value.slice(0, index),
+                            ...imagesField.value.slice(index + 1),
                           ])
                         }
                       >
@@ -110,8 +109,8 @@ const CreateEventScene = () => {
                   }}
                   value={recurringType.value}
                 >
-                  <Option value="recurrent">recurrent</Option>
-                  <Option value="general">general</Option>
+                  <Option value="recurrent">Recurrent</Option>
+                  <Option value="regular">Regular</Option>
                 </Select>
               </Grid>
             </Fieldset>
@@ -122,27 +121,29 @@ const CreateEventScene = () => {
               <Grid xs={12}>
                 <Stack>
                   <Checkbox
-                    label="requires_check_in"
+                    label="Requires Check In"
                     checked={Boolean(requiresCheckInField.value)}
                     onChange={() =>
                       requiresCheckInField.onChange(!requiresCheckInField.value)
                     }
                   />
                   <Checkbox
-                    label="requires_contract"
+                    label="Requires Contract Signing"
                     checked={Boolean(requiresContractField.value)}
                     onChange={() =>
                       requiresContractField.onChange(
                         !requiresContractField.value
                       )
                     }
+                    sx={{ paddingTop: "5px" }}
                   />
                   <Checkbox
-                    label="requires_passport"
+                    label="Requries ID"
                     checked={Boolean(requiresPassport.value)}
                     onChange={() =>
                       requiresPassport.onChange(!requiresPassport.value)
                     }
+                    sx={{ paddingTop: "5px" }}
                   />
                 </Stack>
               </Grid>
@@ -159,17 +160,17 @@ const CreateEventScene = () => {
                   }}
                   value={eventType.value}
                 >
-                  <Option value="excursion">excursion</Option>
-                  <Option value="tour">tour</Option>
-                  <Option value="in_town">in town</Option>
-                  <Option value="out_of_town">out of town</Option>
-                  <Option value="active_holiday">active holiday</Option>
-                  <Option value="music">music</Option>
-                  <Option value="workshop">workshop</Option>
-                  <Option value="business_breakfast">business breakfast</Option>
-                  <Option value="meetup">meetup</Option>
-                  <Option value="sport_activity">sport activity</Option>
-                  <Option value="gastronomic">gastronomic</Option>
+                  <Option value="excursion">Excursion</Option>
+                  <Option value="tour">Tour</Option>
+                  <Option value="in_town">In Town</Option>
+                  <Option value="out_of_town">Out Of Town</Option>
+                  <Option value="active_holiday">Active Holiday</Option>
+                  <Option value="music">Music</Option>
+                  <Option value="workshop">Workshop</Option>
+                  <Option value="business_breakfast">Business Breakfast</Option>
+                  <Option value="meetup">Meetup</Option>
+                  <Option value="sport_activity">Sport Activity</Option>
+                  <Option value="gastronomic">Gastronomic</Option>
                 </Select>
               </Grid>
             </Fieldset>

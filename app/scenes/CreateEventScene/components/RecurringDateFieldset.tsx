@@ -1,4 +1,12 @@
-import { Grid, Option, Stack, IconButton, FormHelperText } from "@mui/joy";
+import {
+  Grid,
+  Option,
+  Stack,
+  IconButton,
+  FormHelperText,
+  FormLabel,
+  FormControl,
+} from "@mui/joy";
 import React from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Fieldset from "../../../components/v2/Fieldset/Fieldset";
@@ -45,19 +53,22 @@ const RecurringDateFieldset = () => {
     [durationTimeField]
   );
 
-  const addHandler = () => {
+  const addHandler = React.useCallback(() => {
     datesField.onChange([
       ...datesField.value,
       { day: null, hour: null, minute: null },
     ]);
-  };
+  }, [datesField.value, datesField.onChange]);
 
-  const removeRow = (index: number) => {
-    datesField.onChange([
-      ...datesField.value.slice(0, index),
-      ...datesField.value.slice(index + 1, datesField.value.length),
-    ]);
-  };
+  const removeRow = React.useCallback(
+    (index: number) => {
+      datesField.onChange([
+        ...datesField.value.slice(0, index),
+        ...datesField.value.slice(index + 1),
+      ]);
+    },
+    [datesField.value, datesField.onChange]
+  );
 
   return (
     <Fieldset>
@@ -74,7 +85,7 @@ const RecurringDateFieldset = () => {
           >
             {hours.map((hour) => (
               <Option key={hour} value={hour}>
-                {hour}
+                {hour.toString().padStart(2, "0")}
               </Option>
             ))}
           </Select>
@@ -88,7 +99,7 @@ const RecurringDateFieldset = () => {
           >
             {minutes.map((minute) => (
               <Option key={minute} value={minute}>
-                {minute}
+                {minute.toString().padStart(2, "0")}
               </Option>
             ))}
           </Select>
@@ -102,52 +113,53 @@ const RecurringDateFieldset = () => {
       </Grid>
 
       {datesField.value.map((date: any, index: number) => (
-        <React.Fragment key={index}>
-          <Grid xs={12} container>
-            <Grid xs={2}>
-              <Select
-                label="Hours"
-                onChange={(value) => {
-                  onDateChange<number>(value as number, index, "hour");
-                }}
-              >
-                {hours.map((hour) => (
-                  <Option key={hour} value={hour}>
-                    {hour}
-                  </Option>
-                ))}
-              </Select>
-              {!!form.formState.errors?.dates?.[index]?.hour && (
-                <FormHelperText>
-                  <Typography color="danger" fontSize="sm">
-                    Required
-                  </Typography>
-                </FormHelperText>
-              )}
-            </Grid>
-            <Grid xs={2}>
-              <Select
-                label="Minutes"
-                onChange={(value) => {
-                  onDateChange<number>(value as number, index, "minute");
-                }}
-              >
-                {minutes.map((minute) => (
-                  <Option key={minute} value={minute}>
-                    {minute}
-                  </Option>
-                ))}
-              </Select>
-              {!!form.formState.errors?.dates?.[index]?.minute && (
-                <FormHelperText>
-                  <Typography color="danger" fontSize="sm">
-                    Required
-                  </Typography>
-                </FormHelperText>
-              )}
-            </Grid>
+        <Grid xs={12} container key={index}>
+          <Grid xs={2}>
+            <Select
+              label="Hours"
+              onChange={(value) => {
+                onDateChange<number>(value as number, index, "hour");
+              }}
+            >
+              {hours.map((hour) => (
+                <Option key={hour} value={hour}>
+                  {hour.toString().padStart(2, "0")}
+                </Option>
+              ))}
+            </Select>
+            {!!form.formState.errors?.dates?.[index]?.hour && (
+              <FormHelperText>
+                <Typography color="danger" fontSize="sm">
+                  Required
+                </Typography>
+              </FormHelperText>
+            )}
+          </Grid>
+          <Grid xs={2}>
+            <Select
+              label="Minutes"
+              onChange={(value) => {
+                onDateChange<number>(value as number, index, "minute");
+              }}
+            >
+              {minutes.map((minute) => (
+                <Option key={minute} value={minute}>
+                  {minute.toString().padStart(2, "0")}
+                </Option>
+              ))}
+            </Select>
+            {!!form.formState.errors?.dates?.[index]?.minute && (
+              <FormHelperText>
+                <Typography color="danger" fontSize="sm">
+                  Required
+                </Typography>
+              </FormHelperText>
+            )}
+          </Grid>
 
-            <Grid xs={7}>
+          <Grid xs={7}>
+            <FormControl>
+              <FormLabel>Weekday</FormLabel>
               <Stack
                 direction="row"
                 alignItems="flex-start"
@@ -176,34 +188,30 @@ const RecurringDateFieldset = () => {
                   </Typography>
                 ))}
               </Stack>
-              {!!form.formState.errors?.dates?.[index]?.day && (
-                <FormHelperText>
-                  <Typography color="danger" fontSize="sm">
-                    Required
-                  </Typography>
-                </FormHelperText>
-              )}
-            </Grid>
-
-            <Grid xs={1}>
-              <Stack
-                justifyContent="center"
-                alignItems="flex-end"
-                height="100%"
-              >
-                <IconButton
-                  size="sm"
-                  color="danger"
-                  onClick={() => {
-                    removeRow(index);
-                  }}
-                >
-                  <DeleteForeverIcon />
-                </IconButton>
-              </Stack>
-            </Grid>
+            </FormControl>
+            {!!form.formState.errors?.dates?.[index]?.day && (
+              <FormHelperText>
+                <Typography color="danger" fontSize="sm">
+                  Required
+                </Typography>
+              </FormHelperText>
+            )}
           </Grid>
-        </React.Fragment>
+
+          <Grid xs={1}>
+            <Stack justifyContent="center" alignItems="flex-end" height="100%">
+              <IconButton
+                size="sm"
+                color="danger"
+                onClick={() => {
+                  removeRow(index);
+                }}
+              >
+                <DeleteForeverIcon />
+              </IconButton>
+            </Stack>
+          </Grid>
+        </Grid>
       ))}
     </Fieldset>
   );
