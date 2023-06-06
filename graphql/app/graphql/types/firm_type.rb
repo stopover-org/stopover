@@ -22,12 +22,12 @@ module Types
     field :image, String
 
     field :balance, Types::BalanceType
-    field :payment, Types::PaymentType
-    field :booking, Types::BookingType
-    field :schedule, Types::ScheduleType
+    field :payments, [Types::PaymentType.connection_type]
+    field :bookings, [Types::BookingType.connection_type]
+    field :schedules, [Types::ScheduleType.connection_type]
+    field :events, Types::EventType.connection_type, null: false
 
     field :accounts, [Types::AccountType]
-    field :events, Types::EventType.connection_type, null: false
     field :event, Types::EventType do
       argument :id, ID, required: true, loads: Types::EventType
     end
