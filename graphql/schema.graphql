@@ -57,7 +57,7 @@ input AttendeesFilter {
 }
 
 type Balance implements Node {
-  firm: Firm
+  firm: Firm!
   id: ID!
   totalAmountCents: Money!
 }
@@ -519,7 +519,7 @@ type Firm implements Node {
     Returns the last _n_ elements from the list.
     """
     last: Int
-  ): [BookingConnection!]!
+  ): BookingConnection!
   city: String
   contactPerson: String
   contacts: String
@@ -573,7 +573,7 @@ type Firm implements Node {
     Returns the last _n_ elements from the list.
     """
     last: Int
-  ): [PaymentConnection!]!
+  ): PaymentConnection!
   primaryEmail: String!
   primaryPhone: String
   region: String
@@ -597,7 +597,7 @@ type Firm implements Node {
     Returns the last _n_ elements from the list.
     """
     last: Int
-  ): [ScheduleConnection!]!
+  ): ScheduleConnection!
   status: String
   street: String
   title: String!

@@ -1,5 +1,5 @@
-import New from "./new";
+import Dashboard from "../../../scenes/DashboardScene";
 
-const Index = () => <New />;
+const Index = () => <Dashboard />;
 
 export default Index;

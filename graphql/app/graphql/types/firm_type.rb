@@ -22,9 +22,9 @@ module Types
     field :image, String
 
     field :balance, Types::BalanceType
-    field :payments, [Types::PaymentType.connection_type], null: false
-    field :bookings, [Types::BookingType.connection_type], null: false
-    field :schedules, [Types::ScheduleType.connection_type], null: false
+    field :payments, Types::PaymentType.connection_type, null: false
+    field :bookings, Types::BookingType.connection_type, null: false
+    field :schedules, Types::ScheduleType.connection_type, null: false
     field :events, Types::EventType.connection_type, null: false
 
     field :accounts, [Types::AccountType]

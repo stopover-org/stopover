@@ -1,8 +1,8 @@
 import { Grid, Stack } from "@mui/joy";
-import Typography from "../../../../components/v2/Typography/Typography";
-import Fieldset from "../../../../components/v2/Fieldset/Fieldset";
+import Typography from "../../../components/v2/Typography/Typography";
+import Fieldset from "../../../components/v2/Fieldset/Fieldset";
 
-const PaymentsBlock = () => (
+const PaymentsSection = () => (
   <Fieldset>
     <Stack>
       <Grid>payments</Grid>
@@ -15,4 +15,4 @@ const PaymentsBlock = () => (
   </Fieldset>
 );
 
-export default PaymentsBlock;
+export default PaymentsSection;

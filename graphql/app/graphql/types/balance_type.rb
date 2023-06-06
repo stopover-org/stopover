@@ -4,6 +4,6 @@ module Types
   class BalanceType < Types::ModelObject
     field :id, ID, null: false
     field :total_amount_cents, Types::MoneyType, null: false
-    field :firm, Types::FirmType
+    field :firm, Types::FirmType, null: false
   end
 end
