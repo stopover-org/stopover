@@ -1,9 +1,9 @@
 import { Grid } from "@mui/joy";
-import Fieldset from "../../../components/v2/Fieldset";
+import Section from "../../../components/v2/Section";
 
 const BalanceSection = () => (
-  <Fieldset>
+  <Section>
     <Grid>Balance</Grid>
-  </Fieldset>
+  </Section>
 );
 export default BalanceSection;

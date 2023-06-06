@@ -1,5 +1,5 @@
-import Dashboard from "../../../scenes/DashboardScene";
+import DashboardScene from "../../../scenes/DashboardScene";
 
-const Index = () => <Dashboard />;
+const Index = () => <DashboardScene />;
 
 export default Index;

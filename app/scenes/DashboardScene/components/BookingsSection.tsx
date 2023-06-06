@@ -1,4 +1,4 @@
-import { Table } from "@mui/joy";
+import Table from "../../../components/v2/Table";
 
 const BookingsSection = () => (
   <Table aria-label="basic table">

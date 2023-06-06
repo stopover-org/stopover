@@ -1,9 +1,9 @@
 import { Grid } from "@mui/joy";
-import Fieldset from "../../../components/v2/Fieldset/Fieldset";
+import Section from "../../../components/v2/Section";
 
 const SchedulesSection = () => (
-  <Fieldset>
+  <Section>
     <Grid>schedules</Grid>
-  </Fieldset>
+  </Section>
 );
 export default SchedulesSection;

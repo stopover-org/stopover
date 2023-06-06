@@ -1,9 +1,9 @@
 import { Grid, Stack } from "@mui/joy";
+import Section from "../../../components/v2/Section";
 import Typography from "../../../components/v2/Typography/Typography";
-import Fieldset from "../../../components/v2/Fieldset/Fieldset";
 
 const PaymentsSection = () => (
-  <Fieldset>
+  <Section>
     <Stack>
       <Grid>payments</Grid>
       <Typography>100$</Typography>
@@ -12,7 +12,7 @@ const PaymentsSection = () => (
       <Typography>100$</Typography>
       <Typography>100$</Typography>
     </Stack>
-  </Fieldset>
+  </Section>
 );
 
 export default PaymentsSection;
