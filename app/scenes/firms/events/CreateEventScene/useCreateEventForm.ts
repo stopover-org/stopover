@@ -10,7 +10,7 @@ import {
   useCreateEventForm_CreateEventMutation,
 } from "./__generated__/useCreateEventForm_CreateEventMutation.graphql";
 
-interface CreateEventFields {
+export interface CreateEventFields {
   title: string;
   description: string;
   houseNumber: string;
@@ -63,6 +63,15 @@ function useDefaultValues(): CreateEventFields {
 }
 
 const validationSchema = Yup.object().shape({
+  dates: Yup.array()
+    .of(
+      Yup.object().shape({
+        day: Yup.string().required(),
+        hour: Yup.string().required(),
+        minute: Yup.string().required(),
+      })
+    )
+    .required(),
   title: Yup.string().required(),
   description: Yup.string(),
   houseNumber: Yup.string(),

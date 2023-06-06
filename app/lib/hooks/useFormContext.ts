@@ -1,4 +1,5 @@
 import {
+  FieldError,
   Path,
   PathValue,
   useFormContext as useFormContextOrigin,
@@ -13,7 +14,7 @@ function useFormContext<FieldsType extends FieldValues>() {
   // because it uses form reference inside
   // if you modify this function don't forget
   // to change useFormField in useMutationForm too
-  function useFormField<ValueType = string>(name: Path<FieldsType>) {
+  function useFormField<ValueType = any>(name: Path<FieldsType>) {
     const field = form.register(name);
 
     return React.useMemo(
@@ -24,7 +25,7 @@ function useFormContext<FieldsType extends FieldValues>() {
         onChange: (value: PathValue<FieldsType, Path<FieldsType>>) => {
           form.setValue(name, value);
         },
-        error: form.formState.errors[name]?.message as string,
+        error: form.formState.errors[name] as FieldError,
       }),
       [field]
     );
@@ -35,7 +36,7 @@ function useFormContext<FieldsType extends FieldValues>() {
       ...form,
       useFormField,
     }),
-    []
+    [form.formState]
   );
 }
 

@@ -10,7 +10,10 @@ interface BaseDatePickerInputFieldProps {
     startAdornment?: React.ReactNode;
   };
   formControlSx?: JoyInputProps["sx"];
-  onChange: (value: string, event?: any) => void;
+  onChange: (
+    value: string,
+    event?: React.ChangeEvent<HTMLInputElement>
+  ) => void;
 }
 export interface DatePickerInputFieldProps
   extends BaseDatePickerInputFieldProps,

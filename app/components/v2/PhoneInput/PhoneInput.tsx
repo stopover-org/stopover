@@ -2,6 +2,7 @@ import React from "react";
 import { Select, Option } from "@mui/joy";
 import countryCodeEmoji from "country-code-emoji";
 import { InputProps as JoyInputProps } from "@mui/joy/Input/InputProps";
+import { FieldError } from "react-hook-form";
 import Input from "../Input";
 import { getCountryFromOffset } from "../../../lib/utils/timezones";
 import { getCountryPhoneCodes } from "../../../lib/utils/phones";
@@ -9,7 +10,7 @@ import { getCountryPhoneCodes } from "../../../lib/utils/phones";
 export interface PhoneInputProps {
   onChange: (value: string) => void;
   value: string;
-  error?: string;
+  error?: FieldError;
   label: string;
 }
 

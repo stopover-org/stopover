@@ -47,7 +47,7 @@ const Index = ({
         redirectTo="/firms/new"
       >
         <SidebarContent>
-          <EventsScene firmFragmentRef={currentUser?.account?.firm} />
+          <EventsScene firmFragmentRef={currentUser?.account?.firm!} />
         </SidebarContent>
       </AuthGuard>
     </Layout>

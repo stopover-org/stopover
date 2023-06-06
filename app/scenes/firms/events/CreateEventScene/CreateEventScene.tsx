@@ -45,7 +45,7 @@ const CreateEventScene = () => {
                 />
               </Grid>
               <Grid xs={12}>
-                <Stack flexDirection="row">
+                <Stack flexDirection="row" flexWrap="wrap">
                   {imagesField.value.map((image, index) => (
                     <AspectRatio
                       variant="outlined"
@@ -105,7 +105,7 @@ const CreateEventScene = () => {
                 <Select
                   label="Recurring type"
                   placeholder="Select Type"
-                  onChange={(_, value) => {
+                  onChange={(value) => {
                     recurringType.onChange(value);
                   }}
                   value={recurringType.value}
@@ -154,7 +154,7 @@ const CreateEventScene = () => {
                 <Select
                   label="Type of Event"
                   placeholder="Select Type"
-                  onChange={(_, value) => {
+                  onChange={(value) => {
                     eventType.onChange(value);
                   }}
                   value={eventType.value}

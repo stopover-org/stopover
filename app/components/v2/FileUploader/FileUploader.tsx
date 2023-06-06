@@ -43,24 +43,27 @@ function getBase64(file: File): Promise<string> {
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
-    reader.onload = function () {
+    reader.onload = function onLoad() {
       resolve(reader.result as string);
     };
 
-    reader.onerror = function (error) {
+    reader.onerror = function onError(error) {
       reject(error);
     };
   });
 }
 
 const FileUploader = ({ onChange, onDrop, ...props }: FileUploaderProps) => {
-  const customOnDrop = React.useCallback(async (acceptedFiles: any) => {
-    const base64Strings: string[] = await Promise.all(
-      [...acceptedFiles].map(getBase64)
-    );
+  const customOnDrop = React.useCallback(
+    async (acceptedFiles: any) => {
+      const base64Strings: string[] = await Promise.all(
+        [...acceptedFiles].map(getBase64)
+      );
 
-    onChange(base64Strings);
-  }, []);
+      onChange(base64Strings);
+    },
+    [onChange]
+  );
 
   const {
     getRootProps,
