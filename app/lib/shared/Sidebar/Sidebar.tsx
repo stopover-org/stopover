@@ -2,6 +2,7 @@ import { Grid, ListItem, ListItemButton, useTheme } from "@mui/joy";
 import List from "@mui/joy/List";
 import React from "react";
 import { useMediaQuery } from "@mui/material";
+import Link from "../../../components/v2/Link";
 
 interface SidebarItem {
   title: string;
@@ -24,8 +25,10 @@ const Sidebar = ({ items }: SidebarProps) => {
         <List>
           {items.map((item) => (
             <ListItem key={item.href}>
-              <ListItemButton key={item.href} color="primary" href={item.href}>
-                {item.title}
+              <ListItemButton color="primary" href={item.href}>
+                <Link level="h6" href={item.href}>
+                  {item.title}
+                </Link>
               </ListItemButton>
             </ListItem>
           ))}

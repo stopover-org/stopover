@@ -26,7 +26,12 @@ const SidebarContent = ({ children }: SidebarContentProps) => {
       spacing={2}
       sx={{ paddingLeft: "20px", paddingRight: "20px" }}
     >
-      <Sidebar items={[{ title: "My Firm", href: "/my-firm" }]} />
+      <Sidebar
+        items={[
+          { title: "My Firm", href: "/my-firm" },
+          { title: "Add New Event", href: "/my-firm/events/new" },
+        ]}
+      />
       <ContentWrapper
         md={10}
         sm={12}
