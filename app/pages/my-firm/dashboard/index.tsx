@@ -33,10 +33,7 @@ const Index = ({
   const { currentUser } = usePreloadedQuery(Query, preloadedQuery);
   return (
     <Layout currentUserFragment={currentUser!}>
-      <AuthGuard
-        accessible={Boolean(currentUser?.account?.firm?.id)}
-        redirectTo="#"
-      >
+      <AuthGuard accessible={Boolean(currentUser?.account?.firm?.id)}>
         <SidebarContent>
           <DashboardScene firmFragmentRef={currentUser?.account?.firm!} />
         </SidebarContent>
