@@ -223,7 +223,6 @@ input CreateEventInput {
   eventOptions: [CreateEventOptionInput!]
   eventType: EventTypeEnum!
   fullAddress: String!
-  generalDates: [String!]!
   houseNumber: String
   interestIds: [ID!]
   latitude: Float
@@ -237,6 +236,7 @@ input CreateEventInput {
   requiresCheckIn: Boolean
   requiresContract: Boolean
   requiresPassport: Boolean
+  singleDates: [String!]!
   street: String
   title: String!
   unitId: ID

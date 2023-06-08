@@ -17,13 +17,13 @@ module Mutations
     argument :country, String, required: false
     argument :region, String, required: false
 
-    argument :full_address, String, required: true
+    argument :full_address, String
     argument :longitude, Float, required: false
     argument :latitude, Float, required: false
 
     argument :recurring_type, Types::RecurringTypeEnum
     argument :recurring_dates, [String]
-    argument :general_dates, [String]
+    argument :single_dates, [String]
     argument :duration_time, String
 
     argument :organizer_price_per_uom_cents, Integer
@@ -50,7 +50,7 @@ module Mutations
       event.recurring_days_with_time = Stopover::EventSupport.prepare_dates('recurrent',
                                                                             args[:recurring_dates])
       event.single_days_with_time = Stopover::EventSupport.prepare_dates('non_recurrent',
-                                                                         args[:general_dates])
+                                                                         args[:single_dates])
 
       unless args[:base64_images].empty?
         args[:base64_images].each do |base64_image|
