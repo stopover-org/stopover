@@ -20,18 +20,21 @@ const FirmSection = ({ firmFragmentRef }: FirmSectionProps) => {
     `,
     firmFragmentRef
   );
+  const date = new Date();
 
   return (
     <Section>
       <Grid container spacing={2} md={10} sm={12}>
         <Grid xs={12}>
           <Stack direction="row" justifyContent="space-between">
-            <Typography>Firm title</Typography>
-            <Typography>Date</Typography>
+            <Typography level="h3">{firm.title.toUpperCase()}</Typography>
+            <Typography>
+              {date.getDate()} {date.getDay()} {date.getMonth()}
+            </Typography>
           </Stack>
         </Grid>
-        <Grid xs={12}>contact person</Grid>
-        <Grid xs={12}>address</Grid>
+        <Grid xs={12}>{firm.contactPerson}</Grid>
+        <Grid xs={12}>{firm.fullAddress}</Grid>
       </Grid>
     </Section>
   );
