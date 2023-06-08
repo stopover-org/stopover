@@ -36,8 +36,6 @@ const Index = ({
 
   useUpdateApiKeys(apiKeys);
 
-  console.log(Query);
-
   return (
     <Layout currentUserFragment={currentUser!}>
       <AuthGuard accessible={Boolean(currentUser?.account?.firm?.id)}>

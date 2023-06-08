@@ -27,8 +27,7 @@ class Booking < ApplicationRecord
   include AASM
 
   # MONETIZE =====================================================================
-  monetize :organizer_total_price_cents
-
+  #
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
