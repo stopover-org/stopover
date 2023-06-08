@@ -30,6 +30,7 @@ const SidebarContent = ({ children }: SidebarContentProps) => {
         items={[
           { title: "My Firm", href: "/my-firm" },
           { title: "Add New Event", href: "/my-firm/events/new" },
+          { title: "Dashboard", href: "/my-firm/dashboard" },
         ]}
       />
       <ContentWrapper

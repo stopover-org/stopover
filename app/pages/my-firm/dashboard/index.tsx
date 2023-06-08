@@ -8,6 +8,7 @@ import { getClientEnvironment } from "../../../lib/clientEnvironment";
 import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
 import { dashboard_DashboardQuery } from "./__generated__/dashboard_DashboardQuery.graphql";
 import AuthGuard from "../../../lib/shared/AuthGuard";
+import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
 
 const Query = graphql`
   query dashboard_DashboardQuery {
@@ -29,8 +30,14 @@ interface Props {
 
 const Index = ({
   preloadedQuery,
+  apiKeys,
 }: RelayProps<Props, dashboard_DashboardQuery>) => {
   const { currentUser } = usePreloadedQuery(Query, preloadedQuery);
+
+  useUpdateApiKeys(apiKeys);
+
+  console.log(currentUser);
+
   return (
     <Layout currentUserFragment={currentUser!}>
       <AuthGuard accessible={Boolean(currentUser?.account?.firm?.id)}>
