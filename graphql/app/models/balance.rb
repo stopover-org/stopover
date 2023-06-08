@@ -41,9 +41,14 @@ class Balance < ApplicationRecord
   # VALIDATIONS ================================================================
   #
   # CALLBACKS ================================================================
-  #
+  before_validation :calculate_total_amount, on: :create
   # SCOPES =====================================================================
   #
   # DELEGATIONS ==============================================================
-  #
+
+  private
+
+  def calculate_total_amount
+    self.total_amount_cents = Money.new(0)
+  end
 end

@@ -36,7 +36,7 @@ const Index = ({
 
   useUpdateApiKeys(apiKeys);
 
-  console.log(currentUser);
+  console.log(Query);
 
   return (
     <Layout currentUserFragment={currentUser!}>

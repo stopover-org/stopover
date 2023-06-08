@@ -12,7 +12,7 @@ const BalanceSection = ({ firmFragmentRef }: BalanceSectionProps) => {
     graphql`
       fragment BalanceSection_FirmFragment on Firm {
         balance {
-          totalAmountCents {
+          totalAmount {
             cents
             currency {
               name

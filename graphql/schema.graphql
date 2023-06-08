@@ -59,7 +59,7 @@ input AttendeesFilter {
 type Balance implements Node {
   firm: Firm!
   id: ID!
-  totalAmountCents: Money!
+  totalAmount: Money!
 }
 
 """

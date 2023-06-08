@@ -1,6 +1,7 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import Table from "../../../components/v2/Table";
+
 import { BookingsSection_FirmFragment$key } from "./__generated__/BookingsSection_FirmFragment.graphql";
 
 interface BookingSectionProps {
