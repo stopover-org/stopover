@@ -109,8 +109,7 @@ class Event < ApplicationRecord
   end
 
   # ENUMS =======================================================================
-  # TODO rename regular general
-  enum recurring_type: { recurrent: 'recurrent', regular: 'regular' }
+  enum recurring_type: { recurrent: 'recurrent', general: 'general' }
   enum event_type: {
     excursion: 'excursion',
     tour: 'tour',

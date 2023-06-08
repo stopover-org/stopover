@@ -9,18 +9,19 @@ import {
 } from "@mui/joy";
 import React from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import Fieldset from "../../../components/v2/Fieldset/Fieldset";
-import Typography from "../../../components/v2/Typography/Typography";
-import Select from "../../../components/v2/Select/Select";
-import useFormContext from "../../../lib/hooks/useFormContext";
-import Button from "../../../components/v2/Button";
-import { CreateEventFields } from "../../firms/events/CreateEventScene/useCreateEventForm";
+import Fieldset from "../../../../../components/v2/Fieldset/Fieldset";
+import Typography from "../../../../../components/v2/Typography/Typography";
+import Select from "../../../../../components/v2/Select/Select";
+import useFormContext from "../../../../../lib/hooks/useFormContext";
+import Button from "../../../../../components/v2/Button";
+import { CreateEventFields } from "../useCreateEventForm";
 
 const RecurringDateFieldset = () => {
   const minutes = React.useMemo(() => Array.from(Array(60).keys()), []);
   const hours = React.useMemo(() => Array.from(Array(24).keys()), []);
   const form = useFormContext<CreateEventFields>();
-  const datesField = form.useFormField<CreateEventFields["dates"]>(`dates`);
+  const recurringDatesField =
+    form.useFormField<CreateEventFields["recurringDates"]>(`recurringDates`);
   const durationTimeField = form.useFormField("durationTime");
   const onDateChange = React.useCallback(
     <ValueType extends string | number>(
@@ -28,16 +29,19 @@ const RecurringDateFieldset = () => {
       index: number,
       field: string
     ) => {
-      datesField.onChange([
-        ...datesField.value.slice(0, index),
+      recurringDatesField.onChange([
+        ...recurringDatesField.value.slice(0, index),
         {
-          ...datesField.value[index],
+          ...recurringDatesField.value[index],
           [field]: value,
         },
-        ...datesField.value.slice(index + 1, datesField.value.length),
+        ...recurringDatesField.value.slice(
+          index + 1,
+          recurringDatesField.value.length
+        ),
       ]);
     },
-    [datesField, hours, minutes]
+    [recurringDatesField, hours, minutes]
   );
 
   const onDurationTimeChange = React.useCallback(
@@ -54,20 +58,20 @@ const RecurringDateFieldset = () => {
   );
 
   const addHandler = React.useCallback(() => {
-    datesField.onChange([
-      ...datesField.value,
+    recurringDatesField.onChange([
+      ...recurringDatesField.value,
       { day: null, hour: null, minute: null },
     ]);
-  }, [datesField.value, datesField.onChange]);
+  }, [recurringDatesField.value, recurringDatesField.onChange]);
 
   const removeRow = React.useCallback(
     (index: number) => {
-      datesField.onChange([
-        ...datesField.value.slice(0, index),
-        ...datesField.value.slice(index + 1),
+      recurringDatesField.onChange([
+        ...recurringDatesField.value.slice(0, index),
+        ...recurringDatesField.value.slice(index + 1),
       ]);
     },
-    [datesField.value, datesField.onChange]
+    [recurringDatesField.value, recurringDatesField.onChange]
   );
 
   return (
@@ -108,11 +112,11 @@ const RecurringDateFieldset = () => {
 
       <Grid>
         <Button size="sm" onClick={addHandler}>
-          Add starting time
+          Add new recurring date
         </Button>
       </Grid>
 
-      {datesField.value.map((date: any, index: number) => (
+      {recurringDatesField.value.map((date: any, index: number) => (
         <Grid xs={12} container key={index}>
           <Grid xs={2}>
             <Select
@@ -127,7 +131,7 @@ const RecurringDateFieldset = () => {
                 </Option>
               ))}
             </Select>
-            {!!form.formState.errors?.dates?.[index]?.hour && (
+            {!!form.formState.errors?.recurringDates?.[index]?.hour && (
               <FormHelperText>
                 <Typography color="danger" fontSize="sm">
                   Required
@@ -148,7 +152,7 @@ const RecurringDateFieldset = () => {
                 </Option>
               ))}
             </Select>
-            {!!form.formState.errors?.dates?.[index]?.minute && (
+            {!!form.formState.errors?.recurringDates?.[index]?.minute && (
               <FormHelperText>
                 <Typography color="danger" fontSize="sm">
                   Required
@@ -189,7 +193,7 @@ const RecurringDateFieldset = () => {
                 ))}
               </Stack>
             </FormControl>
-            {!!form.formState.errors?.dates?.[index]?.day && (
+            {!!form.formState.errors?.recurringDates?.[index]?.day && (
               <FormHelperText>
                 <Typography color="danger" fontSize="sm">
                   Required

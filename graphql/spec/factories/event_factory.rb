@@ -55,7 +55,7 @@ FactoryBot.define do
     title { Faker::App.name }
     description { Faker::Hipster.paragraphs }
     event_type { :excursion }
-    recurring_type { :regular }
+    recurring_type { :general }
     unit { create(:unit) }
     firm { create(:firm) }
     organizer_price_per_uom_cents { 500 }

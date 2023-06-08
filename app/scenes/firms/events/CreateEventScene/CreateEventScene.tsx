@@ -12,8 +12,9 @@ import TextArea from "../../../../components/v2/TextArea";
 import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
 import Fieldset from "../../../../components/v2/Fieldset";
 import AddressFieldset from "../../../../lib/shared/AddressFieldset";
-import RecurringDateFieldset from "../../../CreateEventScene/components/RecurringDateFieldset";
+import RecurringDateFieldset from "./components/RecurringDateFieldset";
 import Button from "../../../../components/v2/Button";
+import SingleDatesFieldset from "./components/SingleDatesFieldset";
 
 const CreateEventScene = () => {
   const form = useCreateEventForm();
@@ -98,22 +99,8 @@ const CreateEventScene = () => {
               </Grid>
             </Fieldset>
             <AddressFieldset />
-            <RecurringDateFieldset />;
-            <Fieldset>
-              <Grid xs={12}>
-                <Select
-                  label="Recurring type"
-                  placeholder="Select Type"
-                  onChange={(value) => {
-                    recurringType.onChange(value);
-                  }}
-                  value={recurringType.value}
-                >
-                  <Option value="recurrent">Recurrent</Option>
-                  <Option value="regular">Regular</Option>
-                </Select>
-              </Grid>
-            </Fieldset>
+            <RecurringDateFieldset />
+            <SingleDatesFieldset />
             <Fieldset>
               <Grid xs={12}>
                 <Typography level="h3">Event Requirements</Typography>
@@ -150,6 +137,19 @@ const CreateEventScene = () => {
 
               <Grid xs={12}>
                 <Typography level="h3">Event Type</Typography>
+              </Grid>
+              <Grid xs={12}>
+                <Select
+                  label="Recurring type"
+                  placeholder="Select Type"
+                  onChange={(value) => {
+                    recurringType.onChange(value);
+                  }}
+                  value={recurringType.value}
+                >
+                  <Option value="recurrent">Recurrent</Option>
+                  <Option value="general">General</Option>
+                </Select>
               </Grid>
               <Grid xs={12}>
                 <Select
