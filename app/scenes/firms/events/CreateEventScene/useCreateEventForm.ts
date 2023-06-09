@@ -10,7 +10,7 @@ import {
   RecurringTypeEnum,
   useCreateEventForm_CreateEventMutation,
 } from "./__generated__/useCreateEventForm_CreateEventMutation.graphql";
-import { dateTimeFormat } from "../../../../lib/utils/dates";
+import { dateTimeFormat, setTime } from "../../../../lib/utils/dates";
 import { numberTransform } from "../../../../lib/utils/validations";
 
 export interface CreateEventFields {
@@ -40,7 +40,11 @@ export interface CreateEventFields {
     hour: number | null;
     minute: number | null;
   }>;
-  singleDates: Moment[];
+  singleDates: Array<{
+    date: Moment;
+    hour: number | null;
+    minute: number | null;
+  }>;
   street?: string;
   title: string;
 }
@@ -103,11 +107,15 @@ const validationSchema = Yup.object().shape({
   requiresPassport: Yup.boolean(),
   singleDates: Yup.array()
     .of(
-      Yup.date()
-        .transform((value) =>
-          moment(value).isValid() ? moment(value).toDate() : undefined
-        )
-        .required("Required")
+      Yup.object().shape({
+        date: Yup.date()
+          .transform((value) =>
+            moment(value).isValid() ? moment(value).toDate() : undefined
+          )
+          .required("Required"),
+        hour: Yup.string().required("Required"),
+        minute: Yup.string().required("Required"),
+      })
     )
     .required("Required"),
   street: Yup.string(),
@@ -144,7 +152,9 @@ export function useCreateEventForm() {
         recurringDates: recurringDates.map(
           (dt) => `${dt.day} ${dt.hour}:${dt.minute}`
         ),
-        singleDates: singleDates.map((date) => date.format(dateTimeFormat)),
+        singleDates: singleDates.map(({ date, hour, minute }) =>
+          setTime(moment(date), `${hour}:${minute}`).format(dateTimeFormat)
+        ),
         organizerPricePerUomCents: organizerPricePerUomCents!,
       },
     }),

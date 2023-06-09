@@ -1,5 +1,5 @@
 import React from "react";
-import { FormHelperText, Grid, IconButton, Stack } from "@mui/joy";
+import { FormHelperText, Grid, IconButton, Option, Stack } from "@mui/joy";
 import moment, { Moment } from "moment";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Fieldset from "../../../../../components/v2/Fieldset";
@@ -8,16 +8,19 @@ import { CreateEventFields } from "../useCreateEventForm";
 import DatePicker from "../../../../../components/v2/DatePicker/DatePicker";
 import Button from "../../../../../components/v2/Button/Button";
 import Typography from "../../../../../components/v2/Typography/Typography";
+import Select from "../../../../../components/v2/Select/Select";
 
 interface SingleDatesFieldsProps {}
 
 const SingleDatesFieldset = (props: SingleDatesFieldsProps) => {
+  const minutes = React.useMemo(() => Array.from(Array(60).keys()), []);
+  const hours = React.useMemo(() => Array.from(Array(24).keys()), []);
   const form = useFormContext<CreateEventFields>();
   const singleDates =
     form.useFormField<CreateEventFields["singleDates"]>("singleDates");
 
   const addSingleDate = () =>
-    singleDates.onChange([...singleDates.value, moment()]);
+    singleDates.onChange([...singleDates.value, { date: moment() }]);
 
   const removeSingleDate = (index: number) =>
     singleDates.onChange([
@@ -25,10 +28,17 @@ const SingleDatesFieldset = (props: SingleDatesFieldsProps) => {
       ...singleDates.value.slice(index + 1),
     ]);
 
-  const changeSingleDate = (date: Moment | null, index: number) =>
+  const changeSingleDate = (
+    value: Moment | string | number | null,
+    index: number,
+    field: string
+  ) =>
     singleDates.onChange([
       ...singleDates.value.slice(0, index),
-      date,
+      {
+        ...singleDates.value[index],
+        [field]: value,
+      },
       ...singleDates.value.slice(index + 1),
     ]);
 
@@ -40,22 +50,56 @@ const SingleDatesFieldset = (props: SingleDatesFieldsProps) => {
             Add new date
           </Button>
         </Grid>
-        {singleDates.value.map((date, index) => (
+        {singleDates.value.map(({ date, hour, minute }, index) => (
           <>
             <Grid xs={4}>
               <DatePicker
                 label="Single date for event"
                 value={date}
-                onChange={(newDate) => changeSingleDate(newDate, index)}
+                onChange={(newDate) =>
+                  changeSingleDate(newDate as Moment, index, "date")
+                }
               />
 
-              {!!form.formState.errors?.singleDates?.[index] && (
+              {!!form.formState.errors?.singleDates?.[index]?.date && (
                 <FormHelperText>
                   <Typography color="danger" fontSize="sm">
-                    {form.formState.errors?.singleDates?.[index].message}
+                    {form.formState.errors?.singleDates?.[index]?.date?.message}
                   </Typography>
                 </FormHelperText>
               )}
+            </Grid>
+            <Grid xs={2}>
+              <Select
+                label="Hours"
+                onChange={(value) => {
+                  changeSingleDate(value as number, index, "hour");
+                }}
+                value={hour}
+                error={form.formState.errors?.singleDates?.[index]?.hour}
+              >
+                {hours.map((h) => (
+                  <Option key={h} value={h}>
+                    {h.toString().padStart(2, "0")}
+                  </Option>
+                ))}
+              </Select>
+            </Grid>
+            <Grid xs={2}>
+              <Select
+                label="Minutes"
+                onChange={(value) => {
+                  changeSingleDate(value as number, index, "minute");
+                }}
+                value={minute}
+                error={form.formState.errors?.singleDates?.[index]?.minute}
+              >
+                {minutes.map((m) => (
+                  <Option key={m} value={m}>
+                    {m.toString().padStart(2, "0")}
+                  </Option>
+                ))}
+              </Select>
             </Grid>
             <Grid xs={1}>
               <Stack
@@ -75,7 +119,7 @@ const SingleDatesFieldset = (props: SingleDatesFieldsProps) => {
                 </IconButton>
               </Stack>
             </Grid>
-            <Grid xs={7} />
+            <Grid xs={3} />
           </>
         ))}
       </Grid>

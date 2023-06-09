@@ -41,7 +41,8 @@ module Mutations
     argument :unit_id, ID, loads: Types::UnitType, required: false
 
     def resolve(**args)
-      event = Event.new(args.except(:dates,
+      event = Event.new(args.except(:recurring_dates,
+                                    :single_dates,
                                     :event_options,
                                     :base64_images))
       event.firm = context[:current_user].account.current_firm

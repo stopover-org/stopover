@@ -118,7 +118,7 @@ const RecurringDateFieldset = () => {
         </Button>
       </Grid>
 
-      {recurringDatesField.value.map((date: any, index: number) => (
+      {recurringDatesField.value.map(({ day, hour, minute }, index: number) => (
         <Grid xs={12} container key={index}>
           <Grid xs={2}>
             <Select
@@ -127,10 +127,11 @@ const RecurringDateFieldset = () => {
                 onDateChange<number>(value as number, index, "hour");
               }}
               error={form.formState.errors?.recurringDates?.[index]?.hour}
+              value={hour}
             >
-              {hours.map((hour) => (
-                <Option key={hour} value={hour}>
-                  {hour.toString().padStart(2, "0")}
+              {hours.map((h) => (
+                <Option key={h} value={h}>
+                  {h.toString().padStart(2, "0")}
                 </Option>
               ))}
             </Select>
@@ -142,10 +143,11 @@ const RecurringDateFieldset = () => {
                 onDateChange<number>(value as number, index, "minute");
               }}
               error={form.formState.errors?.recurringDates?.[index]?.minute}
+              value={minute}
             >
-              {minutes.map((minute) => (
-                <Option key={minute} value={minute}>
-                  {minute.toString().padStart(2, "0")}
+              {minutes.map((m) => (
+                <Option key={m} value={m}>
+                  {m.toString().padStart(2, "0")}
                 </Option>
               ))}
             </Select>
@@ -169,16 +171,16 @@ const RecurringDateFieldset = () => {
                   "Friday",
                   "Saturday ",
                   "Sunday",
-                ].map((day) => (
+                ].map((d) => (
                   <Typography
-                    key={day}
+                    key={d}
                     color="primary"
-                    variant={date.day === day ? `solid` : `soft`}
+                    variant={day === d ? `solid` : `soft`}
                     onClick={() => {
-                      onDateChange<string>(day as string, index, "day");
+                      onDateChange<string>(d as string, index, "day");
                     }}
                   >
-                    {day}
+                    {d}
                   </Typography>
                 ))}
               </Stack>

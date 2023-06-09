@@ -1,6 +1,5 @@
 import React from "react";
 import { Grid, IconButton, Stack } from "@mui/joy";
-import moment, { Moment } from "moment/moment";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import useFormContext from "../../../../../lib/hooks/useFormContext";
 import { CreateEventFields } from "../useCreateEventForm";
@@ -38,7 +37,11 @@ const EventOptionsFieldset = (props: EventOptionsFieldsetProps) => {
   );
 
   const addEventOption = React.useCallback(
-    () => eventOptionsField.onChange([...eventOptionsField.value, {}]),
+    () =>
+      eventOptionsField.onChange([
+        ...eventOptionsField.value,
+        { builtIn: false },
+      ]),
     [eventOptionsField]
   );
 
