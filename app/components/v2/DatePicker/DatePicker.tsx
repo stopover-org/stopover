@@ -7,6 +7,7 @@ import { PickersDayProps as JoyPickersDayProps } from "@mui/x-date-pickers/Picke
 import { Moment } from "moment";
 import { FormControl } from "@mui/joy";
 import { DatePickerSlotsComponentsProps } from "@mui/x-date-pickers/DatePicker/DatePicker.types";
+import { FieldError } from "react-hook-form";
 import DatePickerField from "./DatePickerField";
 import { DatePickerInputFieldProps } from "./DatePickerInputField";
 import PickersDay from "./PickersDay";
@@ -24,7 +25,7 @@ interface DatePickerSlotProps
 
 interface BaseDatePickerProps {
   hint?: string;
-  error?: string;
+  error?: FieldError;
   slotProps?: DatePickerSlotProps;
   availableDates?: Moment[];
   highlightedDates?: Moment[];

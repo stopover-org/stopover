@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, IconButton, Stack } from "@mui/joy";
+import { FormHelperText, Grid, IconButton, Stack } from "@mui/joy";
 import moment, { Moment } from "moment";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Fieldset from "../../../../../components/v2/Fieldset";
@@ -7,6 +7,7 @@ import useFormContext from "../../../../../lib/hooks/useFormContext";
 import { CreateEventFields } from "../useCreateEventForm";
 import DatePicker from "../../../../../components/v2/DatePicker/DatePicker";
 import Button from "../../../../../components/v2/Button/Button";
+import Typography from "../../../../../components/v2/Typography/Typography";
 
 interface SingleDatesFieldsProps {}
 
@@ -47,12 +48,21 @@ const SingleDatesFieldset = (props: SingleDatesFieldsProps) => {
                 value={date}
                 onChange={(newDate) => changeSingleDate(newDate, index)}
               />
+
+              {!!form.formState.errors?.singleDates?.[index] && (
+                <FormHelperText>
+                  <Typography color="danger" fontSize="sm">
+                    {form.formState.errors?.singleDates?.[index].message}
+                  </Typography>
+                </FormHelperText>
+              )}
             </Grid>
             <Grid xs={1}>
               <Stack
-                justifyContent="center"
+                justifyContent="flex-start"
                 alignItems="flex-end"
                 height="100%"
+                sx={{ paddingTop: "2em" }}
               >
                 <IconButton
                   size="sm"

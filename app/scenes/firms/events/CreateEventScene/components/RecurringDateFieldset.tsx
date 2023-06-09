@@ -41,7 +41,7 @@ const RecurringDateFieldset = () => {
         ),
       ]);
     },
-    [recurringDatesField, hours, minutes]
+    [recurringDatesField]
   );
 
   const onDurationTimeChange = React.useCallback(
@@ -86,6 +86,7 @@ const RecurringDateFieldset = () => {
             onChange={(value) => {
               onDurationTimeChange(value as string, "h");
             }}
+            error={form.useFormField("durationTime").error}
           >
             {hours.map((hour) => (
               <Option key={hour} value={hour}>
@@ -100,6 +101,7 @@ const RecurringDateFieldset = () => {
             onChange={(value) => {
               onDurationTimeChange(value as string, "m");
             }}
+            error={form.useFormField("durationTime").error}
           >
             {minutes.map((minute) => (
               <Option key={minute} value={minute}>
@@ -124,6 +126,7 @@ const RecurringDateFieldset = () => {
               onChange={(value) => {
                 onDateChange<number>(value as number, index, "hour");
               }}
+              error={form.formState.errors?.recurringDates?.[index]?.hour}
             >
               {hours.map((hour) => (
                 <Option key={hour} value={hour}>
@@ -131,13 +134,6 @@ const RecurringDateFieldset = () => {
                 </Option>
               ))}
             </Select>
-            {!!form.formState.errors?.recurringDates?.[index]?.hour && (
-              <FormHelperText>
-                <Typography color="danger" fontSize="sm">
-                  Required
-                </Typography>
-              </FormHelperText>
-            )}
           </Grid>
           <Grid xs={2}>
             <Select
@@ -145,6 +141,7 @@ const RecurringDateFieldset = () => {
               onChange={(value) => {
                 onDateChange<number>(value as number, index, "minute");
               }}
+              error={form.formState.errors?.recurringDates?.[index]?.minute}
             >
               {minutes.map((minute) => (
                 <Option key={minute} value={minute}>
@@ -152,13 +149,6 @@ const RecurringDateFieldset = () => {
                 </Option>
               ))}
             </Select>
-            {!!form.formState.errors?.recurringDates?.[index]?.minute && (
-              <FormHelperText>
-                <Typography color="danger" fontSize="sm">
-                  Required
-                </Typography>
-              </FormHelperText>
-            )}
           </Grid>
 
           <Grid xs={7}>
@@ -203,7 +193,12 @@ const RecurringDateFieldset = () => {
           </Grid>
 
           <Grid xs={1}>
-            <Stack justifyContent="center" alignItems="flex-end" height="100%">
+            <Stack
+              justifyContent="flex-start"
+              alignItems="flex-end"
+              height="100%"
+              sx={{ paddingTop: "2em" }}
+            >
               <IconButton
                 size="sm"
                 color="danger"

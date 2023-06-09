@@ -15,6 +15,7 @@ import AddressFieldset from "../../../../lib/shared/AddressFieldset";
 import RecurringDateFieldset from "./components/RecurringDateFieldset";
 import Button from "../../../../components/v2/Button";
 import SingleDatesFieldset from "./components/SingleDatesFieldset";
+import EventOptionsFieldset from "./components/EventOptionsFieldset";
 
 const CreateEventScene = () => {
   const form = useCreateEventForm();
@@ -101,6 +102,7 @@ const CreateEventScene = () => {
             <AddressFieldset />
             <RecurringDateFieldset />
             <SingleDatesFieldset />
+            <EventOptionsFieldset />
             <Fieldset>
               <Grid xs={12}>
                 <Typography level="h3">Event Requirements</Typography>

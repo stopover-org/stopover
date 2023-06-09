@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { graphql } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 import useMutationForm from "../../../../lib/hooks/useMutationForm";
 import {
   EventTypeEnum,
@@ -101,7 +101,15 @@ const validationSchema = Yup.object().shape({
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),
   requiresPassport: Yup.boolean(),
-  singleDates: Yup.array().required("Required"),
+  singleDates: Yup.array()
+    .of(
+      Yup.date()
+        .transform((value) =>
+          moment(value).isValid() ? moment(value).toDate() : undefined
+        )
+        .required("Required")
+    )
+    .required("Required"),
   street: Yup.string(),
   title: Yup.string().required("Required"),
 });
