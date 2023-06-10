@@ -150,10 +150,18 @@ export function useCreateEventForm() {
         ...values,
         base64Images: images,
         recurringDates: recurringDates.map(
-          (dt) => `${dt.day} ${dt.hour}:${dt.minute}`
+          (dt) =>
+            `${dt.day} ${dt.hour?.toString().padStart(2, "0")}:${dt.minute
+              ?.toString()
+              .padStart(2, "0")}`
         ),
         singleDates: singleDates.map(({ date, hour, minute }) =>
-          setTime(moment(date), `${hour}:${minute}`).format(dateTimeFormat)
+          setTime(
+            moment(date),
+            `${hour?.toString().padStart(2, "0")}:${minute
+              ?.toString()
+              .padStart(2, "0")}`
+          ).format(dateTimeFormat)
         ),
         organizerPricePerUomCents: organizerPricePerUomCents!,
       },

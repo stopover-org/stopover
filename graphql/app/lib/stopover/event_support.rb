@@ -3,8 +3,6 @@
 module Stopover
   class EventSupport
     def self.prepare_dates(event_type, dates = [])
-      return nil unless event.is_a? Event
-
       case event_type
       when 'recurrent'
         # Monday 23:34
