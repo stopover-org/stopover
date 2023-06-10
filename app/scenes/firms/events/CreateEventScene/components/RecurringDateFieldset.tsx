@@ -75,146 +75,154 @@ const RecurringDateFieldset = () => {
   );
 
   return (
-    <Fieldset>
-      <Grid xs={12} container>
-        <Grid xs={4}>
-          <Typography level="h3">Time</Typography>
+    <>
+      <Fieldset>
+        <Grid xs={12} container>
+          <Grid xs={4}>
+            <Typography level="h3">Time</Typography>
+          </Grid>
         </Grid>
-        <Grid xs={4}>
-          <Select
-            label="Hours"
-            onChange={(value) => {
-              onDurationTimeChange(value as string, "h");
-            }}
-            error={form.useFormField("durationTime").error}
-          >
-            {hours.map((hour) => (
-              <Option key={hour} value={hour}>
-                {hour.toString().padStart(2, "0")}
-              </Option>
-            ))}
-          </Select>
-        </Grid>
-        <Grid xs={4}>
-          <Select
-            label="Minutes"
-            onChange={(value) => {
-              onDurationTimeChange(value as string, "m");
-            }}
-            error={form.useFormField("durationTime").error}
-          >
-            {minutes.map((minute) => (
-              <Option key={minute} value={minute}>
-                {minute.toString().padStart(2, "0")}
-              </Option>
-            ))}
-          </Select>
-        </Grid>
-      </Grid>
-
-      <Grid>
-        <Button size="sm" onClick={addHandler}>
-          Add new recurring date
-        </Button>
-      </Grid>
-
-      {recurringDatesField.value.map(({ day, hour, minute }, index: number) => (
-        <Grid xs={12} container key={index}>
-          <Grid xs={2}>
+        <Grid xs={12} container>
+          <Grid xs={3}>
             <Select
               label="Hours"
               onChange={(value) => {
-                onDateChange<number>(value as number, index, "hour");
+                onDurationTimeChange(value as string, "h");
               }}
-              error={form.formState.errors?.recurringDates?.[index]?.hour}
-              value={hour}
+              error={form.useFormField("durationTime").error}
             >
-              {hours.map((h) => (
-                <Option key={h} value={h}>
-                  {h.toString().padStart(2, "0")}
+              {hours.map((hour) => (
+                <Option key={hour} value={hour}>
+                  {hour.toString().padStart(2, "0")}
                 </Option>
               ))}
             </Select>
           </Grid>
-          <Grid xs={2}>
+          <Grid xs={3}>
             <Select
               label="Minutes"
               onChange={(value) => {
-                onDateChange<number>(value as number, index, "minute");
+                onDurationTimeChange(value as string, "m");
               }}
-              error={form.formState.errors?.recurringDates?.[index]?.minute}
-              value={minute}
+              error={form.useFormField("durationTime").error}
             >
-              {minutes.map((m) => (
-                <Option key={m} value={m}>
-                  {m.toString().padStart(2, "0")}
+              {minutes.map((minute) => (
+                <Option key={minute} value={minute}>
+                  {minute.toString().padStart(2, "0")}
                 </Option>
               ))}
             </Select>
           </Grid>
+        </Grid>
+      </Fieldset>
 
-          <Grid xs={7}>
-            <FormControl>
-              <FormLabel>Weekday</FormLabel>
-              <Stack
-                direction="row"
-                alignItems="flex-start"
-                spacing={2}
-                useFlexGap
-                flexWrap="wrap"
-              >
-                {[
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                  "Saturday ",
-                  "Sunday",
-                ].map((d) => (
-                  <Typography
-                    key={d}
-                    color="primary"
-                    variant={day === d ? `solid` : `soft`}
+      <Fieldset>
+        <Grid xs={12} container>
+          <Button size="sm" onClick={addHandler}>
+            Add new recurring date
+          </Button>
+        </Grid>
+
+        {recurringDatesField.value.map(
+          ({ day, hour, minute }, index: number) => (
+            <Grid xs={12} container key={index}>
+              <Grid xs={2}>
+                <Select
+                  label="Hours"
+                  onChange={(value) => {
+                    onDateChange<number>(value as number, index, "hour");
+                  }}
+                  error={form.formState.errors?.recurringDates?.[index]?.hour}
+                  value={hour}
+                >
+                  {hours.map((h) => (
+                    <Option key={h} value={h}>
+                      {h.toString().padStart(2, "0")}
+                    </Option>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid xs={2}>
+                <Select
+                  label="Minutes"
+                  onChange={(value) => {
+                    onDateChange<number>(value as number, index, "minute");
+                  }}
+                  error={form.formState.errors?.recurringDates?.[index]?.minute}
+                  value={minute}
+                >
+                  {minutes.map((m) => (
+                    <Option key={m} value={m}>
+                      {m.toString().padStart(2, "0")}
+                    </Option>
+                  ))}
+                </Select>
+              </Grid>
+
+              <Grid xs={7}>
+                <FormControl>
+                  <FormLabel>Weekday</FormLabel>
+                  <Stack
+                    direction="row"
+                    alignItems="flex-start"
+                    spacing={2}
+                    useFlexGap
+                    flexWrap="wrap"
+                  >
+                    {[
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                      "Friday",
+                      "Saturday ",
+                      "Sunday",
+                    ].map((d) => (
+                      <Typography
+                        key={d}
+                        color="primary"
+                        variant={day === d ? `solid` : `soft`}
+                        onClick={() => {
+                          onDateChange<string>(d as string, index, "day");
+                        }}
+                      >
+                        {d}
+                      </Typography>
+                    ))}
+                  </Stack>
+                </FormControl>
+                {!!form.formState.errors?.recurringDates?.[index]?.day && (
+                  <FormHelperText>
+                    <Typography color="danger" fontSize="sm">
+                      Required
+                    </Typography>
+                  </FormHelperText>
+                )}
+              </Grid>
+
+              <Grid xs={1}>
+                <Stack
+                  justifyContent="flex-start"
+                  alignItems="flex-end"
+                  height="100%"
+                  sx={{ paddingTop: "2em" }}
+                >
+                  <IconButton
+                    size="sm"
+                    color="danger"
                     onClick={() => {
-                      onDateChange<string>(d as string, index, "day");
+                      removeRow(index);
                     }}
                   >
-                    {d}
-                  </Typography>
-                ))}
-              </Stack>
-            </FormControl>
-            {!!form.formState.errors?.recurringDates?.[index]?.day && (
-              <FormHelperText>
-                <Typography color="danger" fontSize="sm">
-                  Required
-                </Typography>
-              </FormHelperText>
-            )}
-          </Grid>
-
-          <Grid xs={1}>
-            <Stack
-              justifyContent="flex-start"
-              alignItems="flex-end"
-              height="100%"
-              sx={{ paddingTop: "2em" }}
-            >
-              <IconButton
-                size="sm"
-                color="danger"
-                onClick={() => {
-                  removeRow(index);
-                }}
-              >
-                <DeleteForeverIcon />
-              </IconButton>
-            </Stack>
-          </Grid>
-        </Grid>
-      ))}
-    </Fieldset>
+                    <DeleteForeverIcon />
+                  </IconButton>
+                </Stack>
+              </Grid>
+            </Grid>
+          )
+        )}
+      </Fieldset>
+    </>
   );
 };
 

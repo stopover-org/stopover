@@ -81,12 +81,12 @@ const AddressAutocomplete = React.forwardRef(
           {...props}
           value={value}
           options={options}
-          onChange={(_, val, __, opt) => {
+          onChange={(event, val, __, opt) => {
             if (onChange instanceof Function) {
               onChange(val ? val.label : null, opt?.option?.placeId);
             }
           }}
-          onInputChange={(event, val) =>
+          onInputChange={(event, val) => {
             getPlacePredictions({
               input: val,
               types,
@@ -94,8 +94,8 @@ const AddressAutocomplete = React.forwardRef(
               componentRestrictions: countries
                 ? { country: countries }
                 : undefined,
-            })
-          }
+            });
+          }}
           renderOption={(optionProps, option, { selected }) => (
             <AutocompleteOption
               {...optionProps}
