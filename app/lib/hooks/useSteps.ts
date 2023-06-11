@@ -1,7 +1,7 @@
 import React from "react";
 
-export function useSteps(steps: string[]) {
-  const [currentStep, setCurrentStep] = React.useState<number>(0);
+export function useSteps(steps: string[], initialStep: number = 0) {
+  const [currentStep, setCurrentStep] = React.useState<number>(initialStep);
   const maxStep = React.useMemo(() => steps.length, []);
   const setNextStep = React.useCallback(() => {
     if (currentStep >= maxStep) return;

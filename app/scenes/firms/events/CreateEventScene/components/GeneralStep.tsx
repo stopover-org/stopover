@@ -20,6 +20,7 @@ const GeneralStep = () => {
   const requiresPassport = form.useFormField("requiresPassport");
   const recurringType = form.useFormField("recurringType");
   const eventType = form.useFormField("eventType");
+  const organizerPriceField = form.useFormField("organizerPricePerUomCents");
 
   return (
     <>
@@ -84,7 +85,8 @@ const GeneralStep = () => {
             startDecorator="$"
             label="Organizer Price"
             sx={{ width: 300 }}
-            {...form.useFormField("organizerPricePerUomCents")}
+            type="number"
+            {...organizerPriceField}
           />
         </Grid>
       </Fieldset>

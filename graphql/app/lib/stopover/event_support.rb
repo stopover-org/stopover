@@ -6,7 +6,7 @@ module Stopover
       case event_type
       when 'recurrent'
         # Monday 23:34
-        regexp = /([a-zA-Z])\s+([0-2][0-9]):([0-5][0-9])/
+        regexp = /([a-zA-Z]+)\s+([0-2][0-9]):([0-5][0-9])/
 
         dates.map do |date|
           day, hours, minutes = date.match(regexp).captures
@@ -19,12 +19,12 @@ module Stopover
 
           "#{day} #{hours.to_s.rjust(2, '0')}:#{minutes.to_s.rjust(1, '0')}"
         end
-      when 'non_recurring'
-        # 2023-11-23 23:34
-        regexp = %r{(\d{4})/(\d{2})/(\d{2})\s+(\d{2}):(\d{2})}
+      when 'non_recurrent'
+        # 30/06/2023 09:10
+        regexp = %r{(\d{2})/(\d{2})/(\d{4})\s+(\d{2}):(\d{2})}
 
         dates.map do |date|
-          year, month, day, hours, minutes = date.match(regexp).captures
+          day, month, year, hours, minutes = date.match(regexp).captures
           year    = year.to_i
           month   = month.to_i
           day     = day.to_i

@@ -33,6 +33,7 @@ const CreateEventScene = () => {
         "minAttendees",
         "organizerPricePerUomCents",
         "title",
+        "fullAddress",
       ],
       ["recurringDates", "singleDates", "durationTime"],
       ["eventOptions"],
@@ -71,7 +72,11 @@ const CreateEventScene = () => {
               <Grid xs={12}>
                 {currentStep === steps.length - 1 ? (
                   <Stack direction="row" justifyContent="space-between">
-                    <Button onClick={setPreviousStep} variant="outlined">
+                    <Button
+                      onClick={setPreviousStep}
+                      variant="outlined"
+                      type="button"
+                    >
                       Previous
                     </Button>
                     <Button type="submit">Submit</Button>
@@ -79,12 +84,18 @@ const CreateEventScene = () => {
                 ) : (
                   <Stack direction="row" justifyContent="space-between">
                     {currentStep !== 0 && (
-                      <Button onClick={setPreviousStep} variant="outlined">
+                      <Button
+                        onClick={setPreviousStep}
+                        variant="outlined"
+                        type="button"
+                      >
                         Previous
                       </Button>
                     )}
                     <Button
-                      onClick={() => {
+                      onClick={(event) => {
+                        event.preventDefault();
+
                         form
                           .trigger(
                             stepFields[currentStep] as Array<
@@ -97,6 +108,7 @@ const CreateEventScene = () => {
                             }
                           });
                       }}
+                      type="button"
                     >
                       Next
                     </Button>

@@ -22,29 +22,31 @@ const AddressFieldset = () => {
   const houseNumberField = form.useFormField("houseNumber");
   const fullAddressField = form.useFormField("fullAddress");
   const gMapCountryCode = usePlaceIdFromGMaps(countryCode);
-  const clearAddress = React.useCallback(() => {
-    regionField.onChange("");
-
-    cityField.onChange("");
-
-    streetField.onChange("");
-
-    houseNumberField.onChange("");
-  }, [countryField, regionField, cityField, streetField, houseNumberField]);
   const fullAddress: IAddress = useDetailedAddress(fullAddressCode);
 
   React.useEffect(() => {
-    Object.entries(fullAddress).forEach(([key, value]: [string, string]) => {
+    const keys = ["country", "region", "city", "street", "houseNumber"];
+    keys.forEach((key: string) => {
+      const value = (fullAddress as Record<string, string | null>)[key];
+      let field = null;
       if (key === "country") {
-        countryField.onChange(value);
+        field = countryField;
       } else if (key === "region") {
-        regionField.onChange(value);
+        field = regionField;
       } else if (key === "city") {
-        cityField.onChange(value);
+        field = cityField;
       } else if (key === "street") {
-        streetField.onChange(value);
+        field = streetField;
       } else if (key === "houseNumber") {
-        houseNumberField.onChange(value);
+        field = houseNumberField;
+      }
+
+      if (!field) return;
+
+      if (value) {
+        field.onChange(value);
+      } else {
+        field.onChange("");
       }
     });
   }, [fullAddress]);
@@ -59,13 +61,12 @@ const AddressFieldset = () => {
           countries={gMapCountryCode ? [gMapCountryCode] : undefined}
           value={fullAddressField.value}
           onChange={(value, placeId) => {
-            clearAddress();
-
             fullAddressField.onChange(value);
 
             setFullAddressCode(placeId);
           }}
           label="Full Address"
+          error={fullAddressField.error}
         />
       </Grid>
       <Grid md={6} sm={12}>
@@ -73,15 +74,12 @@ const AddressFieldset = () => {
           types={["country"]}
           value={countryField.value}
           onChange={(value, placeId) => {
-            clearAddress();
-
-            fullAddressField.onChange("");
-
             countryField.onChange(value);
 
             setCountryCode(placeId);
           }}
           label="Country"
+          error={countryField.error}
         />
       </Grid>
       <Grid md={6} sm={12}>

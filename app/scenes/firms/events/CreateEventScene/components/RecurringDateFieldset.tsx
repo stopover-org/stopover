@@ -78,12 +78,12 @@ const RecurringDateFieldset = () => {
     <>
       <Fieldset>
         <Grid xs={12} container>
-          <Grid xs={4}>
-            <Typography level="h3">Time</Typography>
+          <Grid xs={6}>
+            <Typography level="h3">Event will take (duration time)</Typography>
           </Grid>
         </Grid>
         <Grid xs={12} container>
-          <Grid xs={3}>
+          <Grid xs={2}>
             <Select
               label="Hours"
               onChange={(value) => {
@@ -93,12 +93,12 @@ const RecurringDateFieldset = () => {
             >
               {hours.map((hour) => (
                 <Option key={hour} value={hour}>
-                  {hour.toString().padStart(2, "0")}
+                  {hour.toString()} hours
                 </Option>
               ))}
             </Select>
           </Grid>
-          <Grid xs={3}>
+          <Grid xs={2}>
             <Select
               label="Minutes"
               onChange={(value) => {
@@ -108,7 +108,7 @@ const RecurringDateFieldset = () => {
             >
               {minutes.map((minute) => (
                 <Option key={minute} value={minute}>
-                  {minute.toString().padStart(2, "0")}
+                  {minute.toString()} minutes
                 </Option>
               ))}
             </Select>
@@ -126,42 +126,9 @@ const RecurringDateFieldset = () => {
         {recurringDatesField.value.map(
           ({ day, hour, minute }, index: number) => (
             <Grid xs={12} container key={index}>
-              <Grid xs={2}>
-                <Select
-                  label="Hours"
-                  onChange={(value) => {
-                    onDateChange<number>(value as number, index, "hour");
-                  }}
-                  error={form.formState.errors?.recurringDates?.[index]?.hour}
-                  value={hour}
-                >
-                  {hours.map((h) => (
-                    <Option key={h} value={h}>
-                      {h.toString().padStart(2, "0")}
-                    </Option>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid xs={2}>
-                <Select
-                  label="Minutes"
-                  onChange={(value) => {
-                    onDateChange<number>(value as number, index, "minute");
-                  }}
-                  error={form.formState.errors?.recurringDates?.[index]?.minute}
-                  value={minute}
-                >
-                  {minutes.map((m) => (
-                    <Option key={m} value={m}>
-                      {m.toString().padStart(2, "0")}
-                    </Option>
-                  ))}
-                </Select>
-              </Grid>
-
-              <Grid xs={7}>
+              <Grid xs={4}>
                 <FormControl>
-                  <FormLabel>Weekday</FormLabel>
+                  <FormLabel>Recurring event starts at</FormLabel>
                   <Stack
                     direction="row"
                     alignItems="flex-start"
@@ -198,6 +165,48 @@ const RecurringDateFieldset = () => {
                     </Typography>
                   </FormHelperText>
                 )}
+              </Grid>
+              <Grid xs={2}>
+                <Select
+                  label="Time (hour)"
+                  onChange={(value) => {
+                    onDateChange<number>(value as number, index, "hour");
+                  }}
+                  error={form.formState.errors?.recurringDates?.[index]?.hour}
+                  value={hour}
+                >
+                  {hours.map((h) => (
+                    <Option key={h} value={h}>
+                      {h.toString().padStart(2, "0")} h
+                    </Option>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid>
+                <Stack
+                  direction="row"
+                  alignItems="flex-start"
+                  height="100%"
+                  sx={{ paddingTop: "25px" }}
+                >
+                  <Typography level="h4">&nbsp;:&nbsp;</Typography>
+                </Stack>
+              </Grid>
+              <Grid xs={2}>
+                <Select
+                  label="Time (minute)"
+                  onChange={(value) => {
+                    onDateChange<number>(value as number, index, "minute");
+                  }}
+                  error={form.formState.errors?.recurringDates?.[index]?.minute}
+                  value={minute}
+                >
+                  {minutes.map((m) => (
+                    <Option key={m} value={m}>
+                      {m.toString().padStart(2, "0")} m
+                    </Option>
+                  ))}
+                </Select>
               </Grid>
 
               <Grid xs={1}>

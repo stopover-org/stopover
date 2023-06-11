@@ -83,7 +83,7 @@ const validationSchema = Yup.object().shape({
     )
     .required("Required"),
   eventType: Yup.string(),
-  fullAddress: Yup.string(),
+  fullAddress: Yup.string().required("Required"),
   houseNumber: Yup.string(),
   images: Yup.array(),
   maxAttendees: Yup.number().transform((value) => numberTransform(value)),

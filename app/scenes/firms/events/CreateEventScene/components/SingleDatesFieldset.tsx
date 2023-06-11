@@ -54,7 +54,7 @@ const SingleDatesFieldset = (props: SingleDatesFieldsProps) => {
           <>
             <Grid xs={4}>
               <DatePicker
-                label="Single date for event"
+                label="One time event starts at"
                 value={date}
                 onChange={(newDate) =>
                   changeSingleDate(newDate as Moment, index, "date")
@@ -71,7 +71,7 @@ const SingleDatesFieldset = (props: SingleDatesFieldsProps) => {
             </Grid>
             <Grid xs={2}>
               <Select
-                label="Hours"
+                label="Time (hour)"
                 onChange={(value) => {
                   changeSingleDate(value as number, index, "hour");
                 }}
@@ -80,14 +80,24 @@ const SingleDatesFieldset = (props: SingleDatesFieldsProps) => {
               >
                 {hours.map((h) => (
                   <Option key={h} value={h}>
-                    {h.toString().padStart(2, "0")}
+                    {h.toString().padStart(2, "0")} h
                   </Option>
                 ))}
               </Select>
             </Grid>
+            <Grid>
+              <Stack
+                direction="row"
+                alignItems="flex-start"
+                height="100%"
+                sx={{ paddingTop: "25px" }}
+              >
+                <Typography level="h4">&nbsp;:&nbsp;</Typography>
+              </Stack>
+            </Grid>
             <Grid xs={2}>
               <Select
-                label="Minutes"
+                label="Time (minute)"
                 onChange={(value) => {
                   changeSingleDate(value as number, index, "minute");
                 }}
@@ -96,7 +106,7 @@ const SingleDatesFieldset = (props: SingleDatesFieldsProps) => {
               >
                 {minutes.map((m) => (
                   <Option key={m} value={m}>
-                    {m.toString().padStart(2, "0")}
+                    {m.toString().padStart(2, "0")} m
                   </Option>
                 ))}
               </Select>
@@ -119,7 +129,7 @@ const SingleDatesFieldset = (props: SingleDatesFieldsProps) => {
                 </IconButton>
               </Stack>
             </Grid>
-            <Grid xs={3} />
+            <Grid xs={2} />
           </>
         ))}
       </Grid>
