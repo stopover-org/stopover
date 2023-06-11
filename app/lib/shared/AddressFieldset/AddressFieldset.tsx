@@ -30,34 +30,21 @@ const AddressFieldset = () => {
     streetField.onChange("");
 
     houseNumberField.onChange("");
-
-    fullAddressField.onChange("");
-
-    fullAddressField.onChange("");
-  }, [
-    countryField,
-    regionField,
-    cityField,
-    streetField,
-    houseNumberField,
-    fullAddressField,
-  ]);
+  }, [countryField, regionField, cityField, streetField, houseNumberField]);
   const fullAddress: IAddress = useDetailedAddress(fullAddressCode);
 
   React.useEffect(() => {
-    Object.entries(fullAddress).forEach(([key, value]) => {
-      if (value) {
-        if (key === "country") {
-          countryField.onChange(value);
-        } else if (key === "region") {
-          regionField.onChange(value);
-        } else if (key === "city") {
-          cityField.onChange(value);
-        } else if (key === "street") {
-          streetField.onChange(value);
-        } else if (key === "houseNumber") {
-          houseNumberField.onChange(value);
-        }
+    Object.entries(fullAddress).forEach(([key, value]: [string, string]) => {
+      if (key === "country") {
+        countryField.onChange(value);
+      } else if (key === "region") {
+        regionField.onChange(value);
+      } else if (key === "city") {
+        cityField.onChange(value);
+      } else if (key === "street") {
+        streetField.onChange(value);
+      } else if (key === "houseNumber") {
+        houseNumberField.onChange(value);
       }
     });
   }, [fullAddress]);
@@ -72,6 +59,8 @@ const AddressFieldset = () => {
           countries={gMapCountryCode ? [gMapCountryCode] : undefined}
           value={fullAddressField.value}
           onChange={(value, placeId) => {
+            clearAddress();
+
             fullAddressField.onChange(value);
 
             setFullAddressCode(placeId);
@@ -84,11 +73,13 @@ const AddressFieldset = () => {
           types={["country"]}
           value={countryField.value}
           onChange={(value, placeId) => {
+            clearAddress();
+
+            fullAddressField.onChange("");
+
             countryField.onChange(value);
 
             setCountryCode(placeId);
-
-            clearAddress();
           }}
           label="Country"
         />

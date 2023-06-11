@@ -37,7 +37,7 @@ interface BaseAddressAutocompleteProps {
 interface AddressAutocompleteProps
   extends Omit<
       Omit<
-        AutocompleteProps<any, false, false, any>,
+        AutocompleteProps<any, false, true, any>,
         keyof BaseAddressAutocompleteProps
       >,
       "options"
@@ -79,22 +79,27 @@ const AddressAutocomplete = React.forwardRef(
         {label && <FormLabel>{label}</FormLabel>}
         <Autocomplete
           {...props}
-          value={value}
+          freeSolo
+          value={value || ""}
           options={options}
-          onChange={(event, val, __, opt) => {
+          onChange={(event, val, _, opt) => {
             if (onChange instanceof Function) {
               onChange(val ? val.label : null, opt?.option?.placeId);
             }
           }}
           onInputChange={(event, val) => {
-            getPlacePredictions({
-              input: val,
-              types,
-              offset: val.length,
-              componentRestrictions: countries
-                ? { country: countries }
-                : undefined,
-            });
+            if (val) {
+              getPlacePredictions({
+                input: val,
+                types,
+                offset: val.length,
+                componentRestrictions: countries
+                  ? { country: countries }
+                  : undefined,
+              });
+            } else if (onChange instanceof Function) {
+              onChange("", "");
+            }
           }}
           renderOption={(optionProps, option, { selected }) => (
             <AutocompleteOption
@@ -110,6 +115,7 @@ const AddressAutocomplete = React.forwardRef(
             </AutocompleteOption>
           )}
           filterOptions={(opts) => opts}
+          disableClearable
         />
         {hint && <FormHelperText>{hint}</FormHelperText>}
         {error && (

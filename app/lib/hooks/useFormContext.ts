@@ -27,7 +27,7 @@ function useFormContext<FieldsType extends FieldValues>() {
         },
         error: form.formState.errors[name] as FieldError,
       }),
-      [field]
+      [field, form.watch, form.setValue, form.formState.errors]
     );
   }
 
@@ -36,7 +36,7 @@ function useFormContext<FieldsType extends FieldValues>() {
       ...form,
       useFormField,
     }),
-    [form.formState]
+    [form, useFormField]
   );
 }
 

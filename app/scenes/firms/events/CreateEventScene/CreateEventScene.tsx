@@ -62,7 +62,7 @@ const CreateEventScene = () => {
         </Grid>
       </Grid>
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit()}>
+        <form onSubmit={form.handleSubmit()} style={{ width: "100%" }}>
           <Grid container spacing={2} md={10} sm={12}>
             {currentStep === 0 && <GeneralStep />}
             {currentStep === 1 && <DatesStep />}
