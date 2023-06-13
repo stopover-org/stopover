@@ -16,6 +16,7 @@ const Query = graphql`
     currentUser {
       ...Layout_CurrentUserFragment
       account {
+        id
         firm {
           id
         }
@@ -36,13 +37,14 @@ const NewFirm = ({
     Query,
     preloadedQuery
   );
+  const currentFirmId = currentUser?.account?.firm?.id;
 
   useUpdateApiKeys(apiKeys);
 
   return (
     <AuthGuard
-      accessible={!currentUser?.account?.firm?.id}
-      redirectTo="/my-firm"
+      accessible={Boolean(currentUser?.account?.id) && !currentFirmId}
+      redirectTo={currentUser?.account?.id ? "/my-firm" : "/auth/sign_in"}
     >
       <Layout currentUserFragment={currentUser!} showRegisterFirm={false}>
         <CreateFirmScene />

@@ -9,10 +9,16 @@ import { new_FirmEventsNewQuery } from "./__generated__/new_FirmEventsNewQuery.g
 import { IApiKeys } from "../../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
+import AuthGuard from "../../../lib/shared/AuthGuard";
 
 const Query = graphql`
   query new_FirmEventsNewQuery {
     currentUser {
+      account {
+        firm {
+          id
+        }
+      }
       ...Layout_CurrentUserFragment
     }
   }
@@ -26,13 +32,22 @@ const New = ({
   preloadedQuery,
   apiKeys,
 }: RelayProps<Props, new_FirmEventsNewQuery>) => {
-  const data = usePreloadedQuery<new_FirmEventsNewQuery>(Query, preloadedQuery);
+  const { currentUser } = usePreloadedQuery<new_FirmEventsNewQuery>(
+    Query,
+    preloadedQuery
+  );
+
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={data.currentUser!}>
-      <SidebarContent>
-        <CreateEventScene />
-      </SidebarContent>
+    <Layout currentUserFragment={currentUser!}>
+      <AuthGuard
+        accessible={Boolean(currentUser?.account?.firm?.id)}
+        redirectTo="/firms/new"
+      >
+        <SidebarContent>
+          <CreateEventScene />
+        </SidebarContent>
+      </AuthGuard>
     </Layout>
   );
 };

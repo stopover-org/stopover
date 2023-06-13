@@ -9,7 +9,6 @@ module Mutations
              loads: Types::InterestType,
              required: false
     argument :event_type, Types::EventTypeEnum
-    # TODO: argument :images
     argument :description, String
 
     argument :house_number, String, required: false
@@ -18,15 +17,16 @@ module Mutations
     argument :country, String, required: false
     argument :region, String, required: false
 
-    argument :full_address, String, required: true
+    argument :full_address, String
     argument :longitude, Float, required: false
     argument :latitude, Float, required: false
 
     argument :recurring_type, Types::RecurringTypeEnum
-    argument :dates, [String], required: false
-    argument :duration_time, String, required: false
+    argument :recurring_dates, [String]
+    argument :single_dates, [String]
+    argument :duration_time, String
 
-    argument :organizer_price_per_uom_cents, Integer, required: false
+    argument :organizer_price_per_uom_cents, Integer
 
     argument :event_options, [Types::CreateEventOptionInput], required: false
 
@@ -41,21 +41,17 @@ module Mutations
     argument :unit_id, ID, loads: Types::UnitType, required: false
 
     def resolve(**args)
-      event = Event.new(args.except(:dates,
+      event = Event.new(args.except(:recurring_dates,
+                                    :single_dates,
                                     :event_options,
                                     :base64_images))
       event.firm = context[:current_user].account.current_firm
       event.event_options = args[:event_options]&.map { |option| EventOption.new(**option) } if args[:event_options].present?
 
-      if event.recurring_type == 'recurrent'
-
-        event.recurring_days_with_time = Stopover::EventSupport.prepare_dates(event,
-                                                                              args[:dates])
-      end
-      if event.recurring_type == 'general'
-        event.single_days_with_time = Stopover::EventSupport.prepare_dates(event,
-                                                                           args[:dates])
-      end
+      event.recurring_days_with_time = Stopover::EventSupport.prepare_dates('recurrent',
+                                                                            args[:recurring_dates])
+      event.single_days_with_time = Stopover::EventSupport.prepare_dates('non_recurrent',
+                                                                         args[:single_dates])
 
       unless args[:base64_images].empty?
         args[:base64_images].each do |base64_image|

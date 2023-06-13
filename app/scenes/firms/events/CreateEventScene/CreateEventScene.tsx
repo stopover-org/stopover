@@ -1,229 +1,119 @@
-import { Grid, Option, Stack, Box, AspectRatio } from "@mui/joy";
+import { Grid, Stack } from "@mui/joy";
 import React from "react";
-import ClearIcon from "@mui/icons-material/Clear";
 import { FormProvider } from "react-hook-form";
-import Typography from "../../../../components/v2/Typography";
-import Input from "../../../../components/v2/Input";
-import { useCreateEventForm } from "./useCreateEventForm";
-import FileUploader from "../../../../components/v2/FileUploader/FileUploader";
-import Checkbox from "../../../../components/v2/Checkbox";
-import Select from "../../../../components/v2/Select";
-import TextArea from "../../../../components/v2/TextArea";
+import { Step, StepLabel, Stepper } from "@mui/material";
+import { CreateEventFields, useCreateEventForm } from "./useCreateEventForm";
 import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
 import Fieldset from "../../../../components/v2/Fieldset";
-import AddressFieldset from "../../../../lib/shared/AddressFieldset";
-import RecurringDateFieldset from "../../../CreateEventScene/components/RecurringDateFieldset";
 import Button from "../../../../components/v2/Button";
+import { useSteps } from "../../../../lib/hooks/useSteps";
+import GeneralStep from "./components/GeneralStep";
+import DatesStep from "./components/DatesStep";
+import EventOptionsStep from "./components/EventOptionsStep";
 
 const CreateEventScene = () => {
   const form = useCreateEventForm();
-  const imagesField = form.useFormField<string[]>("images");
-  const requiresCheckInField = form.useFormField("requiresCheckIn");
-  const requiresContractField = form.useFormField("requiresContract");
-  const requiresPassport = form.useFormField("requiresPassport");
-  const recurringType = form.useFormField("recurringType");
-  const eventType = form.useFormField("eventType");
+  const { steps, currentStep, setNextStep, setPreviousStep } = useSteps([
+    "Event Data",
+    "Dates",
+    "Event Options",
+  ]);
+
+  const stepFields = React.useMemo(
+    () => [
+      [
+        "images",
+        "requiresCheckIn",
+        "requiresContract",
+        "requiresPassport",
+        "recurringType",
+        "eventType",
+        "description",
+        "maxAttendees",
+        "minAttendees",
+        "organizerPricePerUomCents",
+        "title",
+        "fullAddress",
+      ],
+      ["recurringDates", "singleDates", "durationTime"],
+      ["eventOptions"],
+    ],
+    []
+  );
 
   return (
     <>
       <Breadcrumbs
         items={[{ title: "My Firm", href: "/my-firm" }, "New Event"]}
       />
+      <Grid xs={12} container>
+        <Grid xs={4}>
+          <Stepper activeStep={currentStep}>
+            {steps.map((step, index) => {
+              const stepProps: { completed?: boolean } = {
+                completed: index < currentStep,
+              };
+              return (
+                <Step key={step} {...stepProps}>
+                  <StepLabel>{step}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
+        </Grid>
+      </Grid>
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit()}>
+        <form onSubmit={form.handleSubmit()} style={{ width: "100%" }}>
           <Grid container spacing={2} md={10} sm={12}>
+            {currentStep === 0 && <GeneralStep />}
+            {currentStep === 1 && <DatesStep />}
+            {currentStep === 2 && <EventOptionsStep />}
             <Fieldset>
               <Grid xs={12}>
-                <Input {...form.useFormField("title")} label="Title" />
-              </Grid>
-
-              <Grid xs={12}>
-                <FileUploader
-                  onChange={(images) =>
-                    imagesField.onChange([...imagesField.value, ...images])
-                  }
-                />
-              </Grid>
-              <Grid xs={12}>
-                <Stack flexDirection="row" flexWrap="wrap">
-                  {imagesField.value.map((image, index) => (
-                    <AspectRatio
+                {currentStep === steps.length - 1 ? (
+                  <Stack direction="row" justifyContent="space-between">
+                    <Button
+                      onClick={setPreviousStep}
                       variant="outlined"
-                      ratio="4/3"
-                      sx={{
-                        width: 300,
-                        bgcolor: "background.level2",
-                        borderRadius: "md",
-                        position: "relative",
-                        marginRight: "5px",
-                        marginTop: "5px",
-                      }}
+                      type="button"
                     >
-                      <img alt="Logo Preview" src={image} />
-
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          zIndex: 2,
-                          right: "1rem",
-                          top: "1rem",
-                          borderRadius: "50%",
-                          backgroundColor: "white",
-                          width: "30px",
-                          height: "30px",
-                          padding: "5px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() =>
-                          imagesField.onChange([
-                            ...imagesField.value.slice(0, index),
-                            ...imagesField.value.slice(index + 1),
-                          ])
-                        }
+                      Previous
+                    </Button>
+                    <Button type="submit">Submit</Button>
+                  </Stack>
+                ) : (
+                  <Stack direction="row" justifyContent="space-between">
+                    {currentStep !== 0 && (
+                      <Button
+                        onClick={setPreviousStep}
+                        variant="outlined"
+                        type="button"
                       >
-                        <ClearIcon sx={{ color: "black" }} />
-                      </Box>
-                    </AspectRatio>
-                  ))}
-                </Stack>
-              </Grid>
-              <Grid xs={12}>
-                <Input
-                  placeholder="Amount"
-                  startDecorator="$"
-                  label="Organizer Price"
-                  sx={{ width: 300 }}
-                  {...form.useFormField("organizerPricePerUomCents")}
-                />
-              </Grid>
-            </Fieldset>
-            <AddressFieldset />
-            <RecurringDateFieldset />;
-            <Fieldset>
-              <Grid xs={12}>
-                <Select
-                  label="Recurring type"
-                  placeholder="Select Type"
-                  onChange={(value) => {
-                    recurringType.onChange(value);
-                  }}
-                  value={recurringType.value}
-                >
-                  <Option value="recurrent">Recurrent</Option>
-                  <Option value="regular">Regular</Option>
-                </Select>
-              </Grid>
-            </Fieldset>
-            <Fieldset>
-              <Grid xs={12}>
-                <Typography level="h3">Event Requirements</Typography>
-              </Grid>
-              <Grid xs={12}>
-                <Stack>
-                  <Checkbox
-                    label="Requires Check In"
-                    checked={Boolean(requiresCheckInField.value)}
-                    onChange={() =>
-                      requiresCheckInField.onChange(!requiresCheckInField.value)
-                    }
-                  />
-                  <Checkbox
-                    label="Requires Contract Signing"
-                    checked={Boolean(requiresContractField.value)}
-                    onChange={() =>
-                      requiresContractField.onChange(
-                        !requiresContractField.value
-                      )
-                    }
-                    sx={{ paddingTop: "5px" }}
-                  />
-                  <Checkbox
-                    label="Requries ID"
-                    checked={Boolean(requiresPassport.value)}
-                    onChange={() =>
-                      requiresPassport.onChange(!requiresPassport.value)
-                    }
-                    sx={{ paddingTop: "5px" }}
-                  />
-                </Stack>
-              </Grid>
+                        Previous
+                      </Button>
+                    )}
+                    <Button
+                      onClick={(event) => {
+                        event.preventDefault();
 
-              <Grid xs={12}>
-                <Typography level="h3">Event Type</Typography>
-              </Grid>
-              <Grid xs={12}>
-                <Select
-                  label="Type of Event"
-                  placeholder="Select Type"
-                  onChange={(value) => {
-                    eventType.onChange(value);
-                  }}
-                  value={eventType.value}
-                >
-                  <Option value="excursion">Excursion</Option>
-                  <Option value="tour">Tour</Option>
-                  <Option value="in_town">In Town</Option>
-                  <Option value="out_of_town">Out Of Town</Option>
-                  <Option value="active_holiday">Active Holiday</Option>
-                  <Option value="music">Music</Option>
-                  <Option value="workshop">Workshop</Option>
-                  <Option value="business_breakfast">Business Breakfast</Option>
-                  <Option value="meetup">Meetup</Option>
-                  <Option value="sport_activity">Sport Activity</Option>
-                  <Option value="gastronomic">Gastronomic</Option>
-                </Select>
-              </Grid>
-            </Fieldset>
-            <Fieldset>
-              <Grid container>
-                <Grid xs={12}>
-                  <Typography level="h3">Attendees</Typography>
-                </Grid>
-                <Grid xs={6}>
-                  <Input
-                    type="number"
-                    label="Minimum Attendees"
-                    placeholder="Min"
-                    slotProps={{
-                      input: {
-                        min: 0,
-                        step: 1,
-                      },
-                    }}
-                    {...form.useFormField("minAttendees")}
-                  />
-                </Grid>
-                <Grid xs={6}>
-                  <Input
-                    type="number"
-                    label="Maximum Attendees"
-                    placeholder="Max"
-                    slotProps={{
-                      input: {
-                        min: 0,
-                        step: 1,
-                      },
-                    }}
-                    {...form.useFormField("maxAttendees")}
-                  />
-                </Grid>
-              </Grid>
-            </Fieldset>
-            <Fieldset>
-              <Grid xs={12}>
-                <Typography level="h3">Description</Typography>
-              </Grid>
-              <Grid xs={12}>
-                <TextArea
-                  minRows={6}
-                  {...form.useFormField("description")}
-                  placeholder="Description"
-                />
-              </Grid>
-            </Fieldset>
-            <Fieldset>
-              <Grid xs={12}>
-                <Button type="submit">Submit</Button>
+                        form
+                          .trigger(
+                            stepFields[currentStep] as Array<
+                              keyof CreateEventFields
+                            >
+                          )
+                          .then((res) => {
+                            if (res) {
+                              setNextStep();
+                            }
+                          });
+                      }}
+                      type="button"
+                    >
+                      Next
+                    </Button>
+                  </Stack>
+                )}
               </Grid>
             </Fieldset>
           </Grid>

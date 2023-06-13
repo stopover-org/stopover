@@ -3,93 +3,123 @@ import * as Yup from "yup";
 import { graphql } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
+import moment, { Moment } from "moment";
 import useMutationForm from "../../../../lib/hooks/useMutationForm";
 import {
   EventTypeEnum,
   RecurringTypeEnum,
   useCreateEventForm_CreateEventMutation,
 } from "./__generated__/useCreateEventForm_CreateEventMutation.graphql";
+import { dateTimeFormat, setTime } from "../../../../lib/utils/dates";
+import { numberTransform } from "../../../../lib/utils/validations";
 
 export interface CreateEventFields {
-  title: string;
+  city?: string;
+  country?: string;
   description: string;
-  houseNumber: string;
-  street: string;
-  city: string;
-  country: string;
-  region: string;
-  fullAddress: string;
   durationTime: string;
+  eventOptions: Array<{
+    title: string;
+    organizerPriceCents: number;
+    builtIn: boolean;
+  }>;
   eventType: EventTypeEnum;
+  fullAddress: string;
+  houseNumber?: string;
+  images?: string[];
   maxAttendees?: number;
   minAttendees?: number;
   organizerPricePerUomCents?: number;
   recurringType: RecurringTypeEnum;
+  region?: string;
   requiresCheckIn: boolean;
   requiresContract: boolean;
   requiresPassport: boolean;
-  images: string[];
-  dates: Array<{
+  recurringDates: Array<{
     day: string | null;
     hour: number | null;
     minute: number | null;
   }>;
+  singleDates: Array<{
+    date: Moment;
+    hour: number | null;
+    minute: number | null;
+  }>;
+  street?: string;
+  title: string;
 }
 
-function useDefaultValues(): CreateEventFields {
+function useDefaultValues(): Partial<CreateEventFields> {
   return React.useMemo(
     () => ({
-      dates: [{ day: null, hour: null, minute: null }],
-      title: "",
-      description: "",
-      houseNumber: "",
-      street: "",
-      city: "",
-      country: "",
-      region: "",
-      fullAddress: "",
-      durationTime: "0h 0m",
+      eventOptions: [],
       eventType: "excursion",
-      maxAttendees: undefined,
-      minAttendees: undefined,
+      images: [],
+      recurringDates: [{ day: null, hour: null, minute: null }],
       recurringType: "general",
       requiresCheckIn: false,
       requiresContract: false,
       requiresPassport: false,
-      images: [],
+      singleDates: [],
     }),
     []
   );
 }
 
 const validationSchema = Yup.object().shape({
-  dates: Yup.array()
-    .of(
-      Yup.object().shape({
-        day: Yup.string().required(),
-        hour: Yup.string().required(),
-        minute: Yup.string().required(),
-      })
-    )
-    .required(),
-  title: Yup.string().required(),
-  description: Yup.string(),
-  houseNumber: Yup.string(),
-  street: Yup.string(),
   city: Yup.string(),
   country: Yup.string(),
-  region: Yup.string(),
-  fullAddress: Yup.string(),
-  durationTime: Yup.string(),
+  description: Yup.string().required("Required"),
+  durationTime: Yup.string().required("Required"),
+  eventOptions: Yup.array()
+    .of(
+      Yup.object().shape({
+        title: Yup.string().required("Required"),
+        organizerPriceCents: Yup.number()
+          .transform((value) => numberTransform(value))
+          .required("Required"),
+        builtIn: Yup.boolean().required("Required"),
+      })
+    )
+    .required("Required"),
   eventType: Yup.string(),
-  maxAttendees: Yup.number(),
-  minAttendees: Yup.number(),
-  organizerPricePerUomCents: Yup.number(),
-  recurringType: Yup.string(),
+  fullAddress: Yup.string().required("Required"),
+  houseNumber: Yup.string(),
+  images: Yup.array(),
+  maxAttendees: Yup.number().transform((value) => numberTransform(value)),
+  minAttendees: Yup.number().transform((value) => numberTransform(value)),
+  organizerPricePerUomCents: Yup.number()
+    .transform((value) => numberTransform(value))
+    .required("Required"),
+  recurringDates: Yup.array()
+    .of(
+      Yup.object().shape({
+        day: Yup.string().required("Required"),
+        hour: Yup.string().required("Required"),
+        minute: Yup.string().required("Required"),
+      })
+    )
+    .required("Required"),
+  recurringType: Yup.string().required("Required"),
+  region: Yup.string(),
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),
   requiresPassport: Yup.boolean(),
-  images: Yup.array(),
+  singleDates: Yup.array()
+    .of(
+      Yup.object().shape({
+        date: Yup.date()
+          .transform((value) =>
+            moment(value).isValid() ? moment(value).toDate() : undefined
+          )
+          .required("Required"),
+        hour: Yup.string().required("Required"),
+        minute: Yup.string().required("Required"),
+      })
+    )
+    .required("Required"),
+  street: Yup.string(),
+  title: Yup.string().required("Required"),
 });
 
 export function useCreateEventForm() {
@@ -109,11 +139,31 @@ export function useCreateEventForm() {
         }
       }
     `,
-    ({ images, dates, ...values }) => ({
+    ({
+      images,
+      organizerPricePerUomCents,
+      singleDates,
+      recurringDates,
+      ...values
+    }) => ({
       input: {
         ...values,
         base64Images: images,
-        dates: dates.map((dt) => `${dt.day} ${dt.hour}:${dt.minute}`),
+        recurringDates: recurringDates.map(
+          (dt) =>
+            `${dt.day} ${dt.hour?.toString().padStart(2, "0")}:${dt.minute
+              ?.toString()
+              .padStart(2, "0")}`
+        ),
+        singleDates: singleDates.map(({ date, hour, minute }) =>
+          setTime(
+            moment(date),
+            `${hour?.toString().padStart(2, "0")}:${minute
+              ?.toString()
+              .padStart(2, "0")}`
+          ).format(dateTimeFormat)
+        ),
+        organizerPricePerUomCents: organizerPricePerUomCents!,
       },
     }),
     {

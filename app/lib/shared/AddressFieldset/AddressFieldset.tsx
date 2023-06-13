@@ -22,42 +22,31 @@ const AddressFieldset = () => {
   const houseNumberField = form.useFormField("houseNumber");
   const fullAddressField = form.useFormField("fullAddress");
   const gMapCountryCode = usePlaceIdFromGMaps(countryCode);
-  const clearAddress = React.useCallback(() => {
-    regionField.onChange("");
-
-    cityField.onChange("");
-
-    streetField.onChange("");
-
-    houseNumberField.onChange("");
-
-    fullAddressField.onChange("");
-
-    fullAddressField.onChange("");
-  }, [
-    countryField,
-    regionField,
-    cityField,
-    streetField,
-    houseNumberField,
-    fullAddressField,
-  ]);
   const fullAddress: IAddress = useDetailedAddress(fullAddressCode);
 
   React.useEffect(() => {
-    Object.entries(fullAddress).forEach(([key, value]) => {
+    const keys = ["country", "region", "city", "street", "houseNumber"];
+    keys.forEach((key: string) => {
+      const value = (fullAddress as Record<string, string | null>)[key];
+      let field = null;
+      if (key === "country") {
+        field = countryField;
+      } else if (key === "region") {
+        field = regionField;
+      } else if (key === "city") {
+        field = cityField;
+      } else if (key === "street") {
+        field = streetField;
+      } else if (key === "houseNumber") {
+        field = houseNumberField;
+      }
+
+      if (!field) return;
+
       if (value) {
-        if (key === "country") {
-          countryField.onChange(value);
-        } else if (key === "region") {
-          regionField.onChange(value);
-        } else if (key === "city") {
-          cityField.onChange(value);
-        } else if (key === "street") {
-          streetField.onChange(value);
-        } else if (key === "houseNumber") {
-          houseNumberField.onChange(value);
-        }
+        field.onChange(value);
+      } else {
+        field.onChange("");
       }
     });
   }, [fullAddress]);
@@ -77,6 +66,7 @@ const AddressFieldset = () => {
             setFullAddressCode(placeId);
           }}
           label="Full Address"
+          error={fullAddressField.error}
         />
       </Grid>
       <Grid md={6} sm={12}>
@@ -87,10 +77,9 @@ const AddressFieldset = () => {
             countryField.onChange(value);
 
             setCountryCode(placeId);
-
-            clearAddress();
           }}
           label="Country"
+          error={countryField.error}
         />
       </Grid>
       <Grid md={6} sm={12}>

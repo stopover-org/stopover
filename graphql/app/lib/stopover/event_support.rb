@@ -2,12 +2,11 @@
 
 module Stopover
   class EventSupport
-    def self.prepare_dates(event, dates = [])
-      return nil unless event.is_a? Event
-
-      case event.recurring_type
+    def self.prepare_dates(event_type, dates = [])
+      case event_type
       when 'recurrent'
-        regexp = /([a-zA-Z])\s+([0-2][0-9]):([0-5][0-9])/
+        # Monday 23:34
+        regexp = /([a-zA-Z]+)\s+([0-2][0-9]):([0-5][0-9])/
 
         dates.map do |date|
           day, hours, minutes = date.match(regexp).captures
@@ -18,21 +17,21 @@ module Stopover
           return nil if hours > 24 || hours.negative?
           return nil if minutes > 59 || minutes.negative?
 
-          return "#{day} #{hours.to_s.rjust(2, '0')}:#{minutes.to_s.rjust(1, '0')}"
+          "#{day} #{hours.to_s.rjust(2, '0')}:#{minutes.to_s.rjust(1, '0')}"
         end
-      when 'non_recurring'
-        regexp = /(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))\s+([0-2][0-9]):([0-5][0-9])/
+      when 'non_recurrent'
+        # 30/06/2023 09:10
+        regexp = %r{(\d{2})/(\d{2})/(\d{4})\s+(\d{2}):(\d{2})}
 
         dates.map do |date|
-          date, hours, minutes = date.match(regexp).captures
-          date = Date.parse date
-          hours = hours.to_i
+          day, month, year, hours, minutes = date.match(regexp).captures
+          year    = year.to_i
+          month   = month.to_i
+          day     = day.to_i
+          hours   = hours.to_i
           minutes = minutes.to_i
-          return nil if date <= Time.zone.today
-          return nil if hours > 12 || hours.negative?
-          return nil if minutes > 59 || minutes.negative?
 
-          return "#{date} #{hours.to_s.rjust(2, '0')}:#{minutes.to_s.rjust(1, '0')}"
+          DateTime.new(year, month, day, hours, minutes)
         end
       end
     end

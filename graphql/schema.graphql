@@ -218,9 +218,8 @@ input CreateEventInput {
   """
   clientMutationId: String
   country: String
-  dates: [String!]
   description: String!
-  durationTime: String
+  durationTime: String!
   eventOptions: [CreateEventOptionInput!]
   eventType: EventTypeEnum!
   fullAddress: String!
@@ -230,12 +229,14 @@ input CreateEventInput {
   longitude: Float
   maxAttendees: Int
   minAttendees: Int
-  organizerPricePerUomCents: Int
+  organizerPricePerUomCents: Int!
+  recurringDates: [String!]!
   recurringType: RecurringTypeEnum!
   region: String
   requiresCheckIn: Boolean
   requiresContract: Boolean
   requiresPassport: Boolean
+  singleDates: [String!]!
   street: String
   title: String!
   unitId: ID
@@ -752,14 +753,14 @@ type Query {
 
 enum RecurringTypeEnum {
   """
+  uses for non recurring type of events
+  """
+  general
+
+  """
   uses for recurring events
   """
   recurrent
-
-  """
-  uses for non recurring type of events
-  """
-  regular
 }
 
 """

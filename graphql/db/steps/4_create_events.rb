@@ -32,7 +32,7 @@ random_day = -> { %w[Monday Tuesday Wednesday Thursday Friday Saturday Sunday].s
         title: Faker::App.name,
         description: Faker::Hipster.paragraphs.last,
         event_type: :excursion,
-        recurring_type: :regular,
+        recurring_type: :general,
         country: Faker::Address.country,
         city: Faker::Address.city,
         full_address: Faker::Address.full_address,
