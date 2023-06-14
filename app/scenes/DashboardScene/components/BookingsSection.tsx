@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { graphql, usePaginationFragment } from "react-relay";
 import moment from "moment";
 import { Grid } from "@mui/joy";
@@ -8,6 +8,8 @@ import { BookingsSection_FirmFragment$key } from "./__generated__/BookingsSectio
 import Typography from "../../../components/v2/Typography/Typography";
 import Section from "../../../components/v2/Section";
 import { getHumanDateTime } from "../../../lib/utils/dates";
+import useEdges from "../../../lib/hooks/useEdges";
+import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 
 interface BookingSectionProps {
   firmFragmentRef: BookingsSection_FirmFragment$key;
@@ -47,54 +49,49 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
     `,
     firmFragmentRef
   );
-
-  const getBookings = () =>
-    data.bookings.edges.map((booking) => ({
-      event: <Typography>{booking?.node.event.title}</Typography>,
-      attendee: <Typography>{booking?.node.attendees.length}</Typography>,
-      price: (
-        <Typography>
-          {booking?.node?.organizerTotalPrice.cents}{" "}
-          {booking?.node?.organizerTotalPrice.currency.name}
-        </Typography>
-      ),
-      date: (
-        <Typography>
-          {getHumanDateTime(moment(booking?.node?.bookedFor))}
-        </Typography>
-      ),
-    }));
+  const bookings = useEdges(data.bookings);
+  const actualBookings = useMemo(
+    () =>
+      bookings.map((booking) => ({
+        event: booking.event.title,
+        attendee: booking.attendees.length,
+        price: getCurrencyFormat(
+          booking.organizerTotalPrice.cents,
+          booking.organizerTotalPrice.currency.name
+        ),
+        date: getHumanDateTime(moment(booking.bookedFor)),
+      })),
+    [bookings]
+  );
 
   return (
     <Section>
-      <Grid container spacing={2} padding={2}>
-        <Grid xs={12}>
-          <Typography level="h3">Bookings</Typography>
-        </Grid>
-        <Grid xs={12}>
-          <Table
-            data={getBookings()}
-            headers={[
-              {
-                label: <Typography>Event</Typography>,
-                key: "event",
-              },
-              {
-                label: <Typography>Attendee</Typography>,
-                key: "attendee",
-              },
-              {
-                label: <Typography>Price</Typography>,
-                key: "price",
-              },
-              {
-                label: <Typography>Date</Typography>,
-                key: "date",
-              },
-            ]}
-            aria-label="basic table"
-          />
-        </Grid>
+      <Grid xs={12}>
+        <Typography level="h3">Bookings</Typography>
+      </Grid>
+      <Grid xs={12}>
+        <Table
+          data={actualBookings}
+          headers={[
+            {
+              label: "Event",
+              key: "event",
+            },
+            {
+              label: "Attendees",
+              key: "attendee",
+            },
+            {
+              label: "Price",
+              key: "price",
+            },
+            {
+              label: "Date",
+              key: "date",
+            },
+          ]}
+          aria-label="basic table"
+        />
       </Grid>
     </Section>
   );

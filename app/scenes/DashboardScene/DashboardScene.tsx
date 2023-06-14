@@ -25,7 +25,7 @@ const DashboardScene = ({ firmFragmentRef }: DashboardSceneProps) => {
   );
 
   return (
-    <Grid container spacing={2} md={10} sm={12}>
+    <Grid container>
       <Grid xs={12}>
         <FirmSection firmFragmentRef={firm} />
       </Grid>

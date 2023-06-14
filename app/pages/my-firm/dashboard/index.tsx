@@ -39,7 +39,7 @@ const Index = ({
   return (
     <Layout currentUserFragment={currentUser!}>
       <AuthGuard accessible={Boolean(currentUser?.account?.firm?.id)}>
-        <SidebarContent>
+        <SidebarContent sx={{ paddingLeft: "10px" }}>
           <DashboardScene firmFragmentRef={currentUser?.account?.firm!} />
         </SidebarContent>
       </AuthGuard>

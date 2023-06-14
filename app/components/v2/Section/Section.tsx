@@ -15,7 +15,7 @@ interface ISectionProps
 
 const Section = ({ children, ...props }: ISectionProps) => (
   <Grid xs={12} {...props}>
-    <Card sx={{ margin: "0px" }} variant="outlined">
+    <Card variant="outlined">
       <CardContent>
         <Grid container>{children}</Grid>
       </CardContent>
