@@ -14,12 +14,12 @@ import AuthGuard from "../../../lib/shared/AuthGuard";
 const Query = graphql`
   query new_FirmEventsNewQuery {
     currentUser {
+      ...Layout_CurrentUserFragment
       account {
         firm {
           id
         }
       }
-      ...Layout_CurrentUserFragment
     }
   }
 `;
