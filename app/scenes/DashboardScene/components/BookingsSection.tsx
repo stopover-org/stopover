@@ -10,6 +10,7 @@ import Section from "../../../components/v2/Section";
 import { getHumanDateTime } from "../../../lib/utils/dates";
 import useEdges from "../../../lib/hooks/useEdges";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
+import Link from "../../../components/v2/Link";
 
 interface BookingSectionProps {
   firmFragmentRef: BookingsSection_FirmFragment$key;
@@ -29,6 +30,7 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
             node {
               id
               event {
+                id
                 title
               }
               attendees {
@@ -53,7 +55,11 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
   const actualBookings = useMemo(
     () =>
       bookings.map((booking) => ({
-        event: booking.event.title,
+        event: (
+          <Link primary href={`/events/${booking.event.id}`}>
+            {booking.event.title}
+          </Link>
+        ),
         attendee: booking.attendees.length,
         price: getCurrencyFormat(
           booking.organizerTotalPrice.cents,
