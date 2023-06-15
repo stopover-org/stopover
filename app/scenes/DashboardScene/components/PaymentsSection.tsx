@@ -1,17 +1,19 @@
 import { Grid, Stack } from "@mui/joy";
-import React from "react";
-import { graphql, useFragment } from "react-relay";
+import React, { useMemo } from "react";
+import { graphql, usePaginationFragment } from "react-relay";
 import Section from "../../../components/v2/Section";
 import Typography from "../../../components/v2/Typography/Typography";
 import { PaymentsSection_FirmFragment$key } from "./__generated__/PaymentsSection_FirmFragment.graphql";
 import Table from "../../../components/v2/Table/Table";
+import useEdges from "../../../lib/hooks/useEdges";
+import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 
 interface PaymentSectionProps {
   firmFragmentRef: PaymentsSection_FirmFragment$key;
 }
 
 const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
-  const payment = useFragment(
+  const { data } = usePaginationFragment(
     graphql`
       fragment PaymentsSection_FirmFragment on Firm
       @refetchable(queryName: "PaymentSectionFirmFragment")
@@ -39,6 +41,18 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
     `,
     firmFragmentRef
   );
+  const payments = useEdges(data.payments);
+  const actualPayments = useMemo(
+    () =>
+      payments.map((payment) => ({
+        price: getCurrencyFormat(
+          payment?.totalPrice?.cents,
+          payment?.totalPrice?.currency.name
+        ),
+        date: "date",
+      })),
+    [payments]
+  );
 
   return (
     <Section>
@@ -48,20 +62,7 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
         </Grid>
 
         <Table
-          data={[
-            {
-              price: <Typography>100$</Typography>,
-              date: <Typography>02.03.23</Typography>,
-            },
-            {
-              price: <Typography>200$</Typography>,
-              date: <Typography>02.03.23</Typography>,
-            },
-            {
-              price: <Typography>300$</Typography>,
-              date: <Typography>04.03.23</Typography>,
-            },
-          ]}
+          data={actualPayments}
           headers={[
             {
               label: <Typography>price</Typography>,

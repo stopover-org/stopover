@@ -63,6 +63,7 @@ class Payment < ApplicationRecord
       transitions from: :processing, to: :successful
     end
   end
+
   # ENUMS =======================================================================
   enum provider: {
     stripe: 'stripe'
