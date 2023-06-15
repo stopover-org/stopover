@@ -781,6 +781,7 @@ type Payment implements Node {
   id: ID!
   status: String
   totalPrice: Money
+  updatedAt: DateTime
 }
 
 """

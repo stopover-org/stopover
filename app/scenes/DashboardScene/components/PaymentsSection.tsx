@@ -1,12 +1,14 @@
 import { Grid, Stack } from "@mui/joy";
 import React, { useMemo } from "react";
 import { graphql, usePaginationFragment } from "react-relay";
+import moment from "moment/moment";
 import Section from "../../../components/v2/Section";
 import Typography from "../../../components/v2/Typography/Typography";
 import { PaymentsSection_FirmFragment$key } from "./__generated__/PaymentsSection_FirmFragment.graphql";
 import Table from "../../../components/v2/Table/Table";
 import useEdges from "../../../lib/hooks/useEdges";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
+import { getHumanDateTime } from "../../../lib/utils/dates";
 
 interface PaymentSectionProps {
   firmFragmentRef: PaymentsSection_FirmFragment$key;
@@ -27,6 +29,7 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
             node {
               id
               status
+              updatedAt
               totalPrice {
                 cents
                 currency {
@@ -49,7 +52,7 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
           payment?.totalPrice?.cents,
           payment?.totalPrice?.currency.name
         ),
-        date: "date",
+        date: getHumanDateTime(moment(payment.updatedAt)),
       })),
     [payments]
   );
