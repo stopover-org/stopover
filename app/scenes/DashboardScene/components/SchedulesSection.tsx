@@ -62,11 +62,11 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
           data={actualSchdules}
           headers={[
             {
-              label: "",
+              label: "Event",
               key: "event",
             },
             {
-              label: "",
+              label: "Date",
               key: "date",
             },
           ]}
