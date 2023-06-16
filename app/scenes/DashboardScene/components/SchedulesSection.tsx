@@ -44,7 +44,7 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
     () =>
       schedules.map((schedule) => ({
         event: (
-          <Link primary href={`/events/${schedule.event.id}`}>
+          <Link primary href={`/my-firm/events/${schedule.event.id}`}>
             {schedule.event.title}
           </Link>
         ),

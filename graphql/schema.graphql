@@ -499,6 +499,7 @@ input EventsFilter {
 type Firm implements Node {
   accounts: [Account!]
   balance: Balance
+  booking(id: ID!): Booking
   bookings(
     """
     Returns the elements in the list that come after the specified cursor.

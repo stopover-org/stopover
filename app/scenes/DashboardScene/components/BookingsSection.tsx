@@ -56,7 +56,7 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
     () =>
       bookings.map((booking) => ({
         event: (
-          <Link primary href={`/events/${booking.event.id}`}>
+          <Link primary href={`/my-firm/events/${booking.event.id}`}>
             {booking.event.title}
           </Link>
         ),
@@ -65,7 +65,11 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
           booking.organizerTotalPrice.cents,
           booking.organizerTotalPrice.currency.name
         ),
-        date: getHumanDateTime(moment(booking.bookedFor)),
+        date: (
+          <Link primary href={`/my-firm/bookings/${booking.id}`}>
+            {getHumanDateTime(moment(booking.bookedFor))}
+          </Link>
+        ),
       })),
     [bookings]
   );

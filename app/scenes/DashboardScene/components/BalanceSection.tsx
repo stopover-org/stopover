@@ -4,6 +4,7 @@ import { graphql, useFragment } from "react-relay";
 import Section from "../../../components/v2/Section";
 import { BalanceSection_FirmFragment$key } from "./__generated__/BalanceSection_FirmFragment.graphql";
 import Typography from "../../../components/v2/Typography";
+import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 
 interface BalanceSectionProps {
   firmFragmentRef: BalanceSection_FirmFragment$key;
@@ -38,8 +39,10 @@ const BalanceSection = ({ firmFragmentRef }: BalanceSectionProps) => {
         </Grid>
         <Grid xs={9}>
           <Typography>
-            {balance.balance?.totalAmount?.cents}{" "}
-            {balance.balance?.totalAmount?.currency?.symbol}
+            {getCurrencyFormat(
+              balance.balance?.totalAmount?.cents,
+              balance.balance?.totalAmount?.currency?.name
+            )}
           </Typography>
         </Grid>
       </Grid>

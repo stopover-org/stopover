@@ -31,10 +31,17 @@ module Types
     field :event, Types::EventType do
       argument :id, ID, required: true, loads: Types::EventType
     end
+    field :booking, Types::BookingType do
+      argument :id, ID, required: true, loads: Types::BookingType
+    end
 
     def image
       return nil if object.image.blank?
       Rails.application.routes.url_helpers.rails_blob_url(object.image)
+    end
+
+    def booking(**args)
+      args[:id]
     end
 
     def event(**args)
