@@ -49,6 +49,7 @@ module Types
     end
 
     def my_bookings
+      return [] unless context[:current_user]
       context[:current_user].account
                             .bookings
                             .joins(:schedule)

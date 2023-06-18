@@ -69,7 +69,7 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
           link={false}
           sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
         >
-          {moment(removeUtc(date)).format(dateTimeFormat)}
+          {moment(date).format(dateTimeFormat)}
         </Tag>{" "}
       </>
     )),
