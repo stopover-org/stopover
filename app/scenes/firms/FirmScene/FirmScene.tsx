@@ -178,7 +178,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
           <Grid xs={12}>
             <Stack flexDirection="row" justifyContent="flex-start">
               {firm.status !== "deleted" && (
-                <Link href="/my-firm/edit">
+                <Link href="/my-firm/edit" underline={false}>
                   <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
                     Edit
                   </Button>

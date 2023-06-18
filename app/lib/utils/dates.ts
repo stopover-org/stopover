@@ -70,5 +70,6 @@ export const getHumanDateTime = (arg: Moment | null) =>
   arg ? arg.format(dayMonthTimeFormat) : undefined;
 
 export function removeUtc(date: string) {
-  return date.replace(" UTC", "");
+  if (!date?.replace) return null;
+  return date?.replace(" UTC", "");
 }

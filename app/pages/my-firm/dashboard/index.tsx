@@ -1,22 +1,22 @@
-import { RelayProps, withRelay } from "relay-nextjs";
-import React from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
-import CreateEventScene from "../../../scenes/firms/events/CreateEventScene";
-import { getClientEnvironment } from "../../../lib/clientEnvironment";
+import { RelayProps, withRelay } from "relay-nextjs";
+import DashboardScene from "../../../scenes/firms/DashboardScene";
 import Layout from "../../../components/MainPage/Layout";
 import SidebarContent from "../../../lib/shared/SidebarContent";
-import { new_FirmEventsNewQuery } from "./__generated__/new_FirmEventsNewQuery.graphql";
 import { IApiKeys } from "../../../components/ApiKeysProvider";
+import { getClientEnvironment } from "../../../lib/clientEnvironment";
 import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
-import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
+import { dashboard_DashboardQuery } from "./__generated__/dashboard_DashboardQuery.graphql";
 import AuthGuard from "../../../lib/shared/AuthGuard";
+import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
 
 const Query = graphql`
-  query new_FirmEventsNewQuery {
+  query dashboard_DashboardQuery {
     currentUser {
       ...Layout_CurrentUserFragment
       account {
         firm {
+          ...DashboardScene_FirmFragment
           id
         }
       }
@@ -28,31 +28,25 @@ interface Props {
   apiKeys: IApiKeys;
 }
 
-const New = ({
+const Index = ({
   preloadedQuery,
   apiKeys,
-}: RelayProps<Props, new_FirmEventsNewQuery>) => {
-  const { currentUser } = usePreloadedQuery<new_FirmEventsNewQuery>(
-    Query,
-    preloadedQuery
-  );
+}: RelayProps<Props, dashboard_DashboardQuery>) => {
+  const { currentUser } = usePreloadedQuery(Query, preloadedQuery);
 
   useUpdateApiKeys(apiKeys);
   return (
     <Layout currentUserFragment={currentUser!}>
-      <AuthGuard
-        accessible={Boolean(currentUser?.account?.firm?.id)}
-        redirectTo="/firms/new"
-      >
-        <SidebarContent>
-          <CreateEventScene />
+      <AuthGuard accessible={Boolean(currentUser?.account?.firm?.id)}>
+        <SidebarContent sx={{ paddingLeft: "10px" }}>
+          <DashboardScene firmFragmentRef={currentUser?.account?.firm!} />
         </SidebarContent>
       </AuthGuard>
     </Layout>
   );
 };
 
-export default withRelay(New, Query, {
+export default withRelay(Index, Query, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: null,

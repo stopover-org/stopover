@@ -6,5 +6,6 @@ module Types
     field :status, String
     field :total_price, Types::MoneyType
     field :cancel_url, String
+    field :updated_at, DateTimeType
   end
 end

@@ -10,11 +10,11 @@ import LeftColumn from "./components/LeftColumn";
 import RightColumn from "./components/RightColumn";
 import EventActions from "./components/EventActions";
 
-interface EventScheneProps {
+interface EventSceneProps {
   eventFragmentRef: EventScene_EventFragment$key;
 }
 
-const EventScene = ({ eventFragmentRef }: EventScheneProps) => {
+const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
   const event = useFragment(
     graphql`
       fragment EventScene_EventFragment on Event {

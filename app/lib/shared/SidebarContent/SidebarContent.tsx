@@ -15,9 +15,10 @@ interface SidebarContentProps {
     | React.ReactElement[]
     | React.ReactNode
     | React.ReactNode[];
+  sx?: any;
 }
 
-const SidebarContent = ({ children }: SidebarContentProps) => {
+const SidebarContent = ({ children, sx }: SidebarContentProps) => {
   const theme = useTheme();
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   return (
@@ -28,7 +29,7 @@ const SidebarContent = ({ children }: SidebarContentProps) => {
     >
       <Sidebar
         items={[
-          { title: "My Firm", href: "/my-firm" },
+          { title: "My Firm", href: "/my-firm/dashboard" },
           { title: "Add New Event", href: "/my-firm/events/new" },
         ]}
       />
@@ -40,6 +41,7 @@ const SidebarContent = ({ children }: SidebarContentProps) => {
           paddingTop: showSidebar ? "7px" : "20px",
           paddingLeft: showSidebar ? "60px" : "0",
           minWidth: "calc(100wv - 250px)",
+          ...sx,
         }}
       >
         {children}

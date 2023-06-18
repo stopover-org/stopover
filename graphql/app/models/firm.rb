@@ -38,12 +38,15 @@ class Firm < ApplicationRecord
   # HAS_MANY ASSOCIATIONS =========================================================
   # has_many :accounts
   has_many :account_firms
+  has_many :events, dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :accounts, through: :account_firms
+  has_many :bookings, through: :events
+  has_many :schedules, through: :events
+  has_many :payments, through: :balance
 
   # BELONGS_TO ASSOCIATIONS =======================================================
-  has_many :events, dependent: :destroy
 
   # AASM STATES ================================================================
   aasm column: :status do

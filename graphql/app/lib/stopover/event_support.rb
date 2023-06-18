@@ -40,7 +40,7 @@ module Stopover
       ::Configuration.get_value('SCHEDULE_DAYS_IN_ADVANCE').value.to_i.times do |i|
         date = Time.zone.now + i.days
 
-        times = event.reload.get_time(date)
+        times = event.reload.get_time(date) || []
         dates_with_time = times.map do |time|
           time = time.split(':')
 

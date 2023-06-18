@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent, Grid, GridProps } from "@mui/joy";
-// component allows to divide content in forms
-interface IBaseFieldsetProps {
+// component allows to divide content (fo forms use <Fieldset/>)
+interface IBaseSectionProps {
   children:
     | React.ReactElement
     | React.ReactElement[]
@@ -9,13 +9,13 @@ interface IBaseFieldsetProps {
     | React.ReactNode[];
 }
 
-interface IFieldsetProps
-  extends Omit<GridProps, keyof IBaseFieldsetProps>,
-    IBaseFieldsetProps {}
+interface ISectionProps
+  extends Omit<GridProps, keyof IBaseSectionProps>,
+    IBaseSectionProps {}
 
-const Fieldset = ({ children, ...props }: IFieldsetProps) => (
+const Section = ({ children, ...props }: ISectionProps) => (
   <Grid xs={12} {...props}>
-    <Card sx={{ margin: "20px" }} variant="outlined">
+    <Card variant="outlined">
       <CardContent>
         <Grid container>{children}</Grid>
       </CardContent>
@@ -23,4 +23,4 @@ const Fieldset = ({ children, ...props }: IFieldsetProps) => (
   </Grid>
 );
 
-export default React.memo(Fieldset);
+export default React.memo(Section);

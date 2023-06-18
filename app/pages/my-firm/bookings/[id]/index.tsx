@@ -1,24 +1,25 @@
-import React from "react";
-import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay";
-import Layout from "../../../components/MainPage/Layout";
-import AuthGuard from "../../../lib/shared/AuthGuard";
-import SidebarContent from "../../../lib/shared/SidebarContent";
-import { getClientEnvironment } from "../../../lib/clientEnvironment";
-import { IApiKeys } from "../../../components/ApiKeysProvider";
-import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
-import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
-import { events_FirmEventsQuery } from "./__generated__/events_FirmEventsQuery.graphql";
-import EventsScene from "../../../scenes/firms/events/EventsScene";
+import { RelayProps, withRelay } from "relay-nextjs";
+import Layout from "../../../../components/MainPage/Layout";
+import BookingScene from "../../../../scenes/attendees/bookings/BookingScene";
+import { getClientEnvironment } from "../../../../lib/clientEnvironment";
+import { fetchEnvVariables } from "../../../../lib/fetchEnvVariables";
+import { IApiKeys } from "../../../../components/ApiKeysProvider";
+import { Id_FirmBookingQuery } from "./__generated__/Id_FirmBookingQuery.graphql";
+import { useUpdateApiKeys } from "../../../../lib/hooks/useUpdateApiKeys";
+import SidebarContent from "../../../../lib/shared/SidebarContent";
+import AuthGuard from "../../../../lib/shared/AuthGuard";
 
 const Query = graphql`
-  query events_FirmEventsQuery {
+  query Id_FirmBookingQuery($id: ID!) {
     currentUser {
       ...Layout_CurrentUserFragment
       account {
         firm {
-          id
-          ...EventsScene_EventsFirmPaginationFragment
+          booking(id: $id) {
+            id
+            ...BookingScene_FirmBookingFragment
+          }
         }
       }
     }
@@ -32,27 +33,29 @@ interface Props {
 const Index = ({
   preloadedQuery,
   apiKeys,
-}: RelayProps<Props, events_FirmEventsQuery>) => {
-  const { currentUser } = usePreloadedQuery<events_FirmEventsQuery>(
+}: RelayProps<Props, Id_FirmBookingQuery>) => {
+  const { currentUser } = usePreloadedQuery<Id_FirmBookingQuery>(
     Query,
     preloadedQuery
   );
 
   useUpdateApiKeys(apiKeys);
+
   return (
     <Layout currentUserFragment={currentUser!}>
       <AuthGuard
-        accessible={Boolean(currentUser?.account?.firm?.id)}
-        redirectTo="/firms/new"
+        accessible={Boolean(currentUser?.account?.firm?.booking?.id)}
+        redirectTo="/my-firm/events"
       >
         <SidebarContent>
-          <EventsScene firmFragmentRef={currentUser?.account?.firm!} />
+          <BookingScene
+            bookingFragmentRef={currentUser?.account?.firm?.booking!}
+          />
         </SidebarContent>
       </AuthGuard>
     </Layout>
   );
 };
-
 export default withRelay(Index, Query, {
   // Fallback to render while the page is loading.
   // This property is optional.
@@ -68,7 +71,7 @@ export default withRelay(Index, Query, {
   // to this function.
   createServerEnvironment: async ({ req }) => {
     const { createServerEnvironment } = await import(
-      "../../../lib/serverEnvironment"
+      "../../../../lib/serverEnvironment"
     );
 
     return createServerEnvironment(req!.headers.cookie!);
