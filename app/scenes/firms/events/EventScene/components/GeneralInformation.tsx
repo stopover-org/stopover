@@ -89,7 +89,7 @@ const GeneralInformation = ({
             <Grid xs={10}>
               {event.recurringDaysWithTime.map((date) => (
                 <Tag
-                  level="body2"
+                  level="body3"
                   link={false}
                   sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
                 >
