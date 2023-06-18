@@ -9,6 +9,7 @@ import Table from "../../../../components/v2/Table/Table";
 import useEdges from "../../../../lib/hooks/useEdges";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import { getHumanDateTime } from "../../../../lib/utils/dates";
+import Link from "../../../../components/v2/Link";
 
 interface PaymentSectionProps {
   firmFragmentRef: PaymentsSection_FirmFragment$key;
@@ -47,37 +48,52 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
   const actualPayments = useMemo(
     () =>
       payments.map((payment) => ({
-        price: getCurrencyFormat(
-          payment?.totalPrice?.cents,
-          payment?.totalPrice?.currency.name
+        price: (
+          <Link href={`/my-firm/payments/${payment.id}`}>
+            {getCurrencyFormat(
+              payment?.totalPrice?.cents,
+              payment?.totalPrice?.currency.name
+            )}
+          </Link>
         ),
         date: getHumanDateTime(moment(payment.updatedAt)),
       })),
     [payments]
   );
 
+  const headers = useMemo(
+    () => [
+      {
+        label: "You get",
+        key: "price",
+      },
+      {
+        label: "Date",
+        key: "date",
+      },
+    ],
+    []
+  );
+
   return (
     <Section>
-      <Stack>
-        <Grid>
-          <Typography level="h3">Payments</Typography>
-        </Grid>
+      <Grid xs={12}>
+        <Typography level="h3">Payments</Typography>
+      </Grid>
 
+      <Grid xs={12}>
         <Table
           data={actualPayments}
-          headers={[
-            {
-              label: "You get",
-              key: "price",
-            },
-            {
-              label: "Date",
-              key: "date",
-            },
-          ]}
-          aria-label="basic table"
+          headers={headers}
+          aria-label="payments table"
         />
-      </Stack>
+      </Grid>
+
+      <Grid xs={12}>
+        <Link href="/my-firm/payments" fontSize="sm">
+          All Payments
+        </Link>
+      </Grid>
     </Section>
   );
 };

@@ -115,7 +115,15 @@ const EventsSection = ({ firmFragmentRef }: EventsSectionProps) => {
         <Typography level="h3">Events</Typography>
       </Grid>
       <Grid xs={12}>
-        <Table data={actualEvents} headers={headers} aria-label="basic table" />
+        <Table
+          data={actualEvents}
+          headers={headers}
+          aria-label="events table"
+        />
+      </Grid>
+
+      <Grid xs={12}>
+        <Link href="/my-firm/events">All Events</Link>
       </Grid>
     </Section>
   );

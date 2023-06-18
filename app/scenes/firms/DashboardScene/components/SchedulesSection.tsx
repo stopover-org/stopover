@@ -40,7 +40,7 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
     firmFragmentRef
   );
   const schedules = useEdges(data.schedules);
-  const actualSchdules = useMemo(
+  const actualSchedules = useMemo(
     () =>
       schedules.map((schedule) => ({
         event: (
@@ -52,25 +52,37 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
       })),
     [schedules]
   );
+
+  const headers = useMemo(
+    () => [
+      {
+        label: "Event",
+        key: "event",
+      },
+      {
+        label: "Date",
+        key: "date",
+      },
+    ],
+    []
+  );
+
   return (
     <Section>
       <Grid xs={12}>
         <Typography level="h3">Schedules</Typography>
       </Grid>
+
       <Grid xs={12}>
         <Table
-          data={actualSchdules}
-          headers={[
-            {
-              label: "Event",
-              key: "event",
-            },
-            {
-              label: "Date",
-              key: "date",
-            },
-          ]}
+          data={actualSchedules}
+          headers={headers}
+          aria-label="schedules table"
         />
+      </Grid>
+
+      <Grid xs={12}>
+        <Link href="/my-firm/schedules">All Schedules</Link>
       </Grid>
     </Section>
   );

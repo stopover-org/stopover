@@ -39,7 +39,6 @@ const Index = ({
   );
 
   useUpdateApiKeys(apiKeys);
-
   return (
     <Layout currentUserFragment={currentUser!}>
       <AuthGuard

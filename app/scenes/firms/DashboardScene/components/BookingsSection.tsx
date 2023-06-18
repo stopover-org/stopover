@@ -84,6 +84,32 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
     [bookings]
   );
 
+  const headers = useMemo(
+    () => [
+      {
+        label: "Event",
+        key: "event",
+      },
+      {
+        label: "Attendees",
+        key: "attendee",
+      },
+      {
+        label: "You get",
+        key: "organizerPrice",
+      },
+      {
+        label: "Attendee pay",
+        key: "attendeePrice",
+      },
+      {
+        label: "Date",
+        key: "date",
+      },
+    ],
+    []
+  );
+
   return (
     <Section>
       <Grid xs={12}>
@@ -92,30 +118,15 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
       <Grid xs={12}>
         <Table
           data={actualBookings}
-          headers={[
-            {
-              label: "Event",
-              key: "event",
-            },
-            {
-              label: "Attendees",
-              key: "attendee",
-            },
-            {
-              label: "You get",
-              key: "organizerPrice",
-            },
-            {
-              label: "Attendee pay",
-              key: "attendeePrice",
-            },
-            {
-              label: "Date",
-              key: "date",
-            },
-          ]}
-          aria-label="basic table"
+          headers={headers}
+          aria-label="bookings table"
         />
+      </Grid>
+
+      <Grid xs={12}>
+        <Link href="/my-firm/bookings" fontSize="sm">
+          All Bookings
+        </Link>
       </Grid>
     </Section>
   );

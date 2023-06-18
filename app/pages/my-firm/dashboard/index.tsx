@@ -35,7 +35,6 @@ const Index = ({
   const { currentUser } = usePreloadedQuery(Query, preloadedQuery);
 
   useUpdateApiKeys(apiKeys);
-
   return (
     <Layout currentUserFragment={currentUser!}>
       <AuthGuard accessible={Boolean(currentUser?.account?.firm?.id)}>

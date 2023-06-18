@@ -24,13 +24,13 @@ const Sidebar = ({ items }: SidebarProps) => {
       <Grid xs={12}>
         <List>
           {items.map((item) => (
-            <ListItem key={item.href}>
-              <ListItemButton color="primary" href={item.href}>
-                <Link level="h6" href={item.href}>
+            <Link level="h6" href={item.href} underline={false}>
+              <ListItem key={item.href}>
+                <ListItemButton color="primary" href={item.href}>
                   {item.title}
-                </Link>
-              </ListItemButton>
-            </ListItem>
+                </ListItemButton>
+              </ListItem>
+            </Link>
           ))}
         </List>
       </Grid>

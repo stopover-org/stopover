@@ -29,9 +29,8 @@ const SidebarContent = ({ children, sx }: SidebarContentProps) => {
     >
       <Sidebar
         items={[
-          { title: "My Firm", href: "/my-firm" },
+          { title: "My Firm", href: "/my-firm/dashboard" },
           { title: "Add New Event", href: "/my-firm/events/new" },
-          { title: "Dashboard", href: "/my-firm/dashboard" },
         ]}
       />
       <ContentWrapper
