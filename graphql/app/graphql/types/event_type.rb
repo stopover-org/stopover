@@ -14,7 +14,7 @@ module Types
     field :requires_passport, Boolean
     field :requires_check_in, Boolean
     field :recurring_days_with_time, [String], null: false
-    field :single_days_with_time, [String], null: false
+    field :single_days_with_time, [Types::DateTimeType], null: false
     field :duration_time, String, null: false
     field :house_number, String
     field :street, String
@@ -24,7 +24,7 @@ module Types
     field :full_address, String
     field :longitude, Float
     field :latitude, Float
-    field :unit, Types::UnitType, null: false
+    field :unit, Types::UnitType
     field :event_options, [Types::EventOptionType], null: false
     field :interests, [Types::InterestType], null: false
     field :achievements, [Types::AchievementType], null: false
@@ -49,7 +49,6 @@ module Types
     end
 
     def my_bookings
-      return [] unless context[:current_user]
       context[:current_user].account
                             .bookings
                             .joins(:schedule)

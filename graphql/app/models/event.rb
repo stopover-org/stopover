@@ -136,9 +136,8 @@ class Event < ApplicationRecord
 
   # CALLBACKS ================================================================
   before_validation :set_prices
-  before_validation :update_tags,     unless: :deleted?
   before_validation :adjust_prices,   unless: :deleted?
-  after_save        :check_schedules, unless: :deleted?
+  after_commit      :check_schedules, unless: :deleted?
   after_commit      :sync_stripe,     unless: :deleted?
 
   # SCOPES =====================================================================
@@ -164,59 +163,40 @@ class Event < ApplicationRecord
   end
 
   def available_dates
-    schedules.where('scheduled_for > ?', Time.zone.now).map(&:scheduled_for)
+    schedules.where('scheduled_for > ?', Time.zone.now).pluck(:scheduled_for)
   end
 
   def recurring_dates
-    recurring_days_with_time.map { |day| day.split(/\s/)[0].downcase.to_sym }.uniq.compact
+    recurring_days_with_time.map { |day| day.split(/\s/)[0].downcase.to_sym }.uniq.compact if recurring_days_with_time
   end
 
   def average_rating
     (ratings.sum(&:rating_value) / ratings.count.to_f).round(2) || 0
   end
 
-  def upload_images(images)
-    images_to_attach = []
-
-    images.each do |img|
-      next unless img[:src].is_a? String
-
-      next if img[:id]
-
-      tmp_file = Stopover::FilesSupport.base64_to_file(img[:src], img[:title])
-      next unless tmp_file
-
-      images_to_attach.push tmp_file
-    end.compact!
-
-    images.each do |img|
-      img.purge unless images.pluck(:id).include?(img.id)
-    end
-
-    images_to_attach.each do |img|
-      images.attach(img)
-    end
-  end
-
   def check_date(date)
     date = date.to_date
     return false if date.past?
-    return true if recurring_dates.include?(Date::DAYNAMES[date.wday].downcase.to_sym)
-    return true if single_days_with_time.map(&:to_date).include?(date)
+    return true if recurring_dates&.include?(Date::DAYNAMES[date.wday].downcase.to_sym)
+    return true if single_days_with_time&.map(&:to_date)&.include?(date)
     false
   end
 
   def get_time(date)
     date = date.to_date
-    times = single_days_with_time.keep_if { |d| d.to_date == date }.map { |d| "#{d.hour}:#{d.min}" }.compact.uniq
-    times += recurring_days_with_time.keep_if { |d| d.split(/\s+/).first.downcase.to_sym == Date::DAYNAMES[date.wday].downcase.to_sym }.map { |d| d.split(/\s+/).last }.compact.uniq if recurring_days_with_time
+
+    times = []
+
+    times += single_days_with_time.keep_if { |d| d.to_date == date }.map { |d| "#{d.hour}:#{d.min}" }.compact.uniq if single_days_with_time
+
+    if recurring_days_with_time
+      times += recurring_days_with_time.keep_if { |d| d.split(/\s+/).first.downcase.to_sym == Date::DAYNAMES[date.wday].downcase.to_sym }
+                                       .map { |d| d.split(/\s+/).last }
+                                       .compact
+                                       .uniq
+    end
 
     times
-  end
-
-  def generate_tags
-    update_tags
-    tags.each(&:save!)
   end
 
   private
@@ -227,40 +207,5 @@ class Event < ApplicationRecord
 
   def check_schedules
     ScheduleEventJob.perform_later(event_id: id)
-  end
-
-  def update_tags
-    interests.each do |interest|
-      tag = Tag.find_or_initialize_by(title: interest.title.downcase)
-      tag.save! unless tag.id
-      tags.push(tag) unless tags.include?(tag)
-
-      tag = nil
-    end
-
-    # achievements.each do |achievement|
-    #   tag = Tag.find_or_initialize_by(title: achievement.title.titleize)
-    #   tag.save unless tag.id
-    #   tags.push(tag) unless tags.include?(tag)
-    #
-    #   tag = nil
-    # end
-    #
-    # if unit
-    #   tag = Tag.find_or_initialize_by(title: unit.name.titleize)
-    #   tag.save unless tag.id
-    #   tags.push(tag) unless tags.include?(tag)
-    #
-    #   tag = nil
-    # end
-    #
-    # # [TODO] to add translations for every event_type
-    # if event_type
-    #   tag = Tag.find_or_initialize_by(title: event_type.titleize)
-    #   tag.save unless tag.id
-    #   tags.push(tag) unless tags.include?(tag)
-    #
-    #   tag = nil
-    # end
   end
 end

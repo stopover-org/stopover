@@ -34,7 +34,6 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
                 cents
                 currency {
                   name
-                  symbol
                 }
               }
             }

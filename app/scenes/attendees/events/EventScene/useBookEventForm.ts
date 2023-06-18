@@ -33,8 +33,11 @@ function useDefaultValues(
     `,
     eventFragmentRef
   );
-  const closestDate = useClosestDate(event.availableDates as Date[]);
-  const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
+  const closestDate = useClosestDate((event?.availableDates || []) as Date[]);
+  const availableDates = useUniqueMomentDates(
+    (event?.availableDates || []) as Date[]
+  );
+
   const bookedDates = useMomentDates(
     event?.myBookings?.map((b) => b.bookedFor)
   );

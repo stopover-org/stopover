@@ -18,8 +18,6 @@ const BalanceSection = ({ firmFragmentRef }: BalanceSectionProps) => {
             cents
             currency {
               name
-              symbol
-              fullName
             }
           }
         }
@@ -33,12 +31,11 @@ const BalanceSection = ({ firmFragmentRef }: BalanceSectionProps) => {
         <Grid xs={12}>
           <Typography level="h3">Balance</Typography>
         </Grid>
-        <Grid xs={12}>Grapdafdsfdsfdfasdsddddhdddddddddf</Grid>
         <Grid xs={3}>
-          <Typography>Total:</Typography>
+          <Typography level="h4">Total:</Typography>
         </Grid>
         <Grid xs={9}>
-          <Typography>
+          <Typography level="h4">
             {getCurrencyFormat(
               balance.balance?.totalAmount?.cents,
               balance.balance?.totalAmount?.currency?.name
