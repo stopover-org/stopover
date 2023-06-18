@@ -22,6 +22,7 @@ export interface CreateEventFields {
     title: string;
     organizerPriceCents: number;
     builtIn: boolean;
+    forAttendee: boolean;
   }>;
   eventType: EventTypeEnum;
   fullAddress: string;
