@@ -1,6 +1,6 @@
 import { graphql, usePreloadedQuery } from "react-relay";
 import { RelayProps, withRelay } from "relay-nextjs";
-import DashboardScene from "../../../scenes/DashboardScene";
+import DashboardScene from "../../../scenes/firms/DashboardScene";
 import Layout from "../../../components/MainPage/Layout";
 import SidebarContent from "../../../lib/shared/SidebarContent";
 import { IApiKeys } from "../../../components/ApiKeysProvider";

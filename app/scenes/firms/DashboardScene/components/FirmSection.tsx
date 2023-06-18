@@ -1,8 +1,8 @@
 import { Grid, Stack } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import Section from "../../../components/v2/Section";
-import Typography from "../../../components/v2/Typography";
+import Section from "../../../../components/v2/Section";
+import Typography from "../../../../components/v2/Typography";
 import { FirmSection_FirmFragment$key } from "./__generated__/FirmSection_FirmFragment.graphql";
 
 interface FirmSectionProps {

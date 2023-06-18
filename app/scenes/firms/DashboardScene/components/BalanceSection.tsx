@@ -1,10 +1,10 @@
 import { Grid, Stack } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import Section from "../../../components/v2/Section";
+import Section from "../../../../components/v2/Section";
 import { BalanceSection_FirmFragment$key } from "./__generated__/BalanceSection_FirmFragment.graphql";
-import Typography from "../../../components/v2/Typography";
-import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
+import Typography from "../../../../components/v2/Typography";
+import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 
 interface BalanceSectionProps {
   firmFragmentRef: BalanceSection_FirmFragment$key;

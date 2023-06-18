@@ -2,15 +2,15 @@ import React, { useMemo } from "react";
 import { graphql, usePaginationFragment } from "react-relay";
 import moment from "moment";
 import { Grid } from "@mui/joy";
-import Table from "../../../components/v2/Table";
+import Table from "../../../../components/v2/Table";
 
 import { BookingsSection_FirmFragment$key } from "./__generated__/BookingsSection_FirmFragment.graphql";
-import Typography from "../../../components/v2/Typography/Typography";
-import Section from "../../../components/v2/Section";
-import { getHumanDateTime } from "../../../lib/utils/dates";
-import useEdges from "../../../lib/hooks/useEdges";
-import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
-import Link from "../../../components/v2/Link";
+import Typography from "../../../../components/v2/Typography/Typography";
+import Section from "../../../../components/v2/Section";
+import { getHumanDateTime } from "../../../../lib/utils/dates";
+import useEdges from "../../../../lib/hooks/useEdges";
+import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
+import Link from "../../../../components/v2/Link";
 
 interface BookingSectionProps {
   firmFragmentRef: BookingsSection_FirmFragment$key;
