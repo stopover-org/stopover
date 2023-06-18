@@ -10,8 +10,6 @@ class GraphqlController < ApplicationController
   # but you'll have to authenticate your user separately
   before_action :authorize!
 
-  JWT_ALGORITHM = 'HS256'
-
   def execute
     variables = prepare_variables(params[:variables])
     query = params[:query]

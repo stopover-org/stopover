@@ -67,11 +67,11 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
           data={actualPayments}
           headers={[
             {
-              label: <Typography>price</Typography>,
+              label: "You get",
               key: "price",
             },
             {
-              label: <Typography>date</Typography>,
+              label: "Date",
               key: "date",
             },
           ]}

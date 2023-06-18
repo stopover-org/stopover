@@ -43,6 +43,12 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
                   symbol
                 }
               }
+              attendeeTotalPrice {
+                cents
+                currency {
+                  name
+                }
+              }
               bookedFor
             }
           }
@@ -61,9 +67,13 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
           </Link>
         ),
         attendee: booking.attendees.length,
-        price: getCurrencyFormat(
+        organizerPrice: getCurrencyFormat(
           booking.organizerTotalPrice.cents,
           booking.organizerTotalPrice.currency.name
+        ),
+        attendeePrice: getCurrencyFormat(
+          booking.attendeeTotalPrice.cents,
+          booking.attendeeTotalPrice.currency.name
         ),
         date: (
           <Link primary href={`/my-firm/bookings/${booking.id}`}>
@@ -92,8 +102,12 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
               key: "attendee",
             },
             {
-              label: "Price",
-              key: "price",
+              label: "You get",
+              key: "organizerPrice",
+            },
+            {
+              label: "Attendee pay",
+              key: "attendeePrice",
             },
             {
               label: "Date",
