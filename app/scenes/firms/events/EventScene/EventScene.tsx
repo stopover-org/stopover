@@ -4,6 +4,7 @@ import { graphql, useFragment } from "react-relay";
 import { EventScene_FirmEventFragment$key } from "./__generated__/EventScene_FirmEventFragment.graphql";
 import GeneralInformation from "./components/GeneralInformation";
 import Typography from "../../../../components/v2/Typography";
+import EventOptionsInformation from "./components/EventOptionsInformation";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -13,15 +14,16 @@ const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
   const event = useFragment(
     graphql`
       fragment EventScene_FirmEventFragment on Event {
-        id
-        title
-        ...GeneralInformation_EventFragment
         eventOptions {
           id
         }
         schedules {
           id
         }
+        ...GeneralInformation_EventFragment
+        ...EventOptionsInformation_EventFragment
+        id
+        title
       }
     `,
     eventFragmentRef
@@ -50,7 +52,8 @@ const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
           </Tab>
           <Tab variant={tab === 3 ? "outlined" : "plain"}>Bookings</Tab>
         </TabList>
-        <GeneralInformation index={tab} eventFragmentRef={event} />
+        <GeneralInformation index={0} eventFragmentRef={event} />
+        <EventOptionsInformation index={1} eventFragmentRef={event} />
       </Tabs>
     </>
   );

@@ -392,6 +392,8 @@ type Event implements Node {
   landmarks: String
   latitude: Float
   longitude: Float
+  maxAttendees: Int
+  minAttendees: Int
   myBookings: [Booking!]!
   organizerPricePerUom: Money
   prepaidAmount: Money!
@@ -405,12 +407,12 @@ type Event implements Node {
   requiresPassport: Boolean
   requiresPrepaid: Boolean!
   schedules: [Schedule!]!
-  singleDaysWithTime: [String!]!
+  singleDaysWithTime: [DateTime!]!
   status: String!
   street: String
   tags: [Tag!]!
   title: String!
-  unit: Unit!
+  unit: Unit
 }
 
 """
@@ -459,6 +461,7 @@ type EventFilters {
 type EventOption implements Node {
   attendeePrice: Money!
   builtIn: Boolean!
+  description: String!
   forAttendee: Boolean!
   id: ID!
   organizerPrice: Money

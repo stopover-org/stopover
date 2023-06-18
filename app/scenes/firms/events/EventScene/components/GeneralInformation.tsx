@@ -1,11 +1,12 @@
 import React from "react";
-import { Card, Grid, Sheet, TabPanel } from "@mui/joy";
+import { Card, Grid, Sheet, Switch, TabPanel } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import moment from "moment/moment";
 import { GeneralInformation_EventFragment$key } from "./__generated__/GeneralInformation_EventFragment.graphql";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Tag from "../../../../../components/v2/Tag/Tag";
 import { dateTimeFormat } from "../../../../../lib/utils/dates";
+import Checkbox from "../../../../../components/v2/Checkbox";
 
 interface GeneralInformationProps {
   eventFragmentRef: GeneralInformation_EventFragment$key;
@@ -18,6 +19,25 @@ const GeneralInformation = ({
   const event = useFragment(
     graphql`
       fragment GeneralInformation_EventFragment on Event {
+        city
+        country
+        description
+        eventType
+        fullAddress
+        houseNumber
+        id
+        latitude
+        longitude
+        maxAttendees
+        minAttendees
+        recurringDaysWithTime
+        recurringType
+        region
+        requiresCheckIn
+        requiresContract
+        requiresPassport
+        singleDaysWithTime
+        street
         title
         organizerPricePerUom {
           cents
@@ -31,23 +51,6 @@ const GeneralInformation = ({
             name
           }
         }
-        recurringDaysWithTime
-        singleDaysWithTime
-        description
-        fullAddress
-        country
-        region
-        city
-        street
-        houseNumber
-        latitude
-        longitude
-        requiresCheckIn
-        requiresContract
-        requiresPassport
-        eventType
-        recurringType
-        id
       }
     `,
     eventFragmentRef
@@ -72,16 +75,16 @@ const GeneralInformation = ({
             <Grid xs={2}>You get</Grid>
             <Grid xs={10}>
               {getCurrencyFormat(
-                event.organizerPricePerUom.cents,
-                event.organizerPricePerUom.currency.name
+                event.organizerPricePerUom?.cents,
+                event.organizerPricePerUom?.currency.name
               )}
             </Grid>
 
             <Grid xs={2}>Attendee pay</Grid>
             <Grid xs={10}>
               {getCurrencyFormat(
-                event.attendeePricePerUom.cents,
-                event.attendeePricePerUom.currency.name
+                event.attendeePricePerUom?.cents,
+                event.attendeePricePerUom?.currency.name
               )}
             </Grid>
 
@@ -129,13 +132,37 @@ const GeneralInformation = ({
             </Grid>
 
             <Grid xs={2}>Require Check In</Grid>
-            <Grid xs={10}>{event.requiresCheckIn}</Grid>
+            <Grid xs={10}>
+              <Checkbox
+                checked={Boolean(event.requiresCheckIn)}
+                color="primary"
+                disabled
+                size="sm"
+                label=""
+              />
+            </Grid>
 
             <Grid xs={2}>Require Passport</Grid>
-            <Grid xs={10}>{event.reqiuresPassport}</Grid>
+            <Grid xs={10}>
+              <Checkbox
+                checked={Boolean(event.requiresPassport)}
+                color="primary"
+                disabled
+                size="sm"
+                label=""
+              />
+            </Grid>
 
             <Grid xs={2}>Require Contract signing</Grid>
-            <Grid xs={10}>{event.requiresContract}</Grid>
+            <Grid xs={10}>
+              <Checkbox
+                checked={Boolean(event.requiresContract)}
+                color="primary"
+                disabled
+                size="sm"
+                label=""
+              />
+            </Grid>
 
             <Grid xs={2}>Max / Min Attendees</Grid>
             <Grid xs={10}>
