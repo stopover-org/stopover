@@ -7,25 +7,27 @@ import Typography from "../../Typography";
 
 export interface TablePaginationProps {
   rowsPerPageOptions?: number[];
-  rowsPerPage?: number;
-  page?: number;
-  onPerPageChange?: () => void;
-  onNextPage?: () => void;
-  onPrevPage?: () => void;
-  hasNext?: boolean;
-  hasPrevious?: boolean;
-  colSpan?: number;
+  rowsPerPage: number;
+  page: number;
+  // eslint-disable-next-line react/no-unused-prop-types
+  setPage?: (page: number) => void;
+  onPerPageChange?: (page: number) => void;
+  onNextPage: () => void;
+  onPrevPage: () => void;
+  hasNext: boolean;
+  hasPrevious: boolean;
+  colSpan: number;
 }
 
 const TablePagination = ({
   rowsPerPageOptions = [],
-  rowsPerPage = 10,
-  page = 1,
+  rowsPerPage,
+  page,
   onPerPageChange,
   onNextPage,
   onPrevPage,
-  hasNext = true,
-  hasPrevious = true,
+  hasNext,
+  hasPrevious,
   colSpan,
 }: TablePaginationProps) => (
   <tfoot>
@@ -42,7 +44,15 @@ const TablePagination = ({
           {rowsPerPageOptions && rowsPerPageOptions.length > 0 && (
             <FormControl orientation="horizontal" size="sm">
               <FormLabel>Rows per page:</FormLabel>
-              <Select onChange={onPerPageChange} value={rowsPerPage} size="sm">
+              <Select
+                onChange={(perPage: number) => {
+                  if (onPerPageChange instanceof Function) {
+                    onPerPageChange(perPage);
+                  }
+                }}
+                value={rowsPerPage}
+                size="sm"
+              >
                 {rowsPerPageOptions.map((rowsPerPageOption) => (
                   <Option key={rowsPerPageOption} value={rowsPerPageOption}>
                     {rowsPerPageOption}

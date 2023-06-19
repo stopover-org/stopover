@@ -8,6 +8,7 @@ import { EventsScene_EventsFirmPaginationFragment$key } from "./__generated__/Ev
 import { EventsSceneFirmPaginationQuery } from "./__generated__/EventsSceneFirmPaginationQuery.graphql";
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { dateTimeFormat, removeUtc } from "../../../../lib/utils/dates";
+import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 
 interface EventsSceneProps {
   firmFragmentRef: EventsScene_EventsFirmPaginationFragment$key;
@@ -38,6 +39,18 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
                 singleDaysWithTime
                 durationTime
                 status
+                organizerPricePerUom {
+                  cents
+                  currency {
+                    name
+                  }
+                }
+                attendeePricePerUom {
+                  cents
+                  currency {
+                    name
+                  }
+                }
               }
             }
           }
@@ -46,65 +59,86 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
       firmFragmentRef
     );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const events = usePagedEdges(data.events, currentPage, 30).map((row) => ({
-    ...row,
-    title: (
-      <Link level="body1" href={`/my-firm/events/${row.id}`}>
-        {row.title}
-      </Link>
-    ),
-    recurringDaysWithTime: row.recurringDaysWithTime.map((date) => (
-      <Tag
-        level="body3"
-        link={false}
-        sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
-      >
-        {date}
-      </Tag>
-    )),
-    singleDaysWithTime: row.singleDaysWithTime.map((date) => (
-      <>
-        <Tag
-          level="body3"
-          link={false}
-          sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
-        >
-          {moment(date).format(dateTimeFormat)}
-        </Tag>{" "}
-      </>
-    )),
-    status: (
-      <Tag
-        level="body3"
-        link={false}
-        color={row.status === "deleted" ? "danger" : "primary"}
-      >
-        {row.status}
-      </Tag>
-    ),
-  }));
+  const pagedData = usePagedEdges(data.events, currentPage, 30);
+  const events = React.useMemo(
+    () =>
+      pagedData.map((row) => ({
+        ...row,
+        organizerPricePerUom: getCurrencyFormat(
+          row?.organizerPricePerUom?.cents,
+          row?.organizerPricePerUom?.currency.name
+        ),
+        attendeePricePerUom: getCurrencyFormat(
+          row?.attendeePricePerUom?.cents,
+          row?.attendeePricePerUom?.currency.name
+        ),
+        title: (
+          <Link level="body1" href={`/my-firm/events/${row.id}`}>
+            {row.title}
+          </Link>
+        ),
+        recurringDaysWithTime: row.recurringDaysWithTime.map((date) => (
+          <Tag
+            level="body3"
+            link={false}
+            sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+          >
+            {date}
+          </Tag>
+        )),
+        singleDaysWithTime: row.singleDaysWithTime.map((date) => (
+          <>
+            <Tag
+              level="body3"
+              link={false}
+              sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+            >
+              {moment(date).format(dateTimeFormat)}
+            </Tag>{" "}
+          </>
+        )),
+        status: (
+          <Tag
+            level="body3"
+            link={false}
+            color={row.status === "deleted" ? "danger" : "primary"}
+          >
+            {row.status}
+          </Tag>
+        ),
+      })),
+    [pagedData]
+  );
 
   const headers = React.useMemo(
     () => [
       {
         key: "title",
-        width: 300,
         label: "Title",
       },
       {
         key: "eventType",
-        width: 100,
         label: "Event Type",
       },
       {
         key: "recurringType",
-        width: 100,
         label: "Recurring Type",
       },
-      { key: "recurringDaysWithTime", width: 300, label: "Recurring Dates" },
-      { key: "singleDaysWithTime", width: 300, label: "Single Dates" },
-      { key: "durationTime", width: 100, label: "Duration" },
-      { key: "status", width: 100, label: "Status" },
+      {
+        key: "organizerPricePerUom",
+        label: "You get",
+      },
+      {
+        key: "attendeePricePerUom",
+        label: "Attendee pay",
+      },
+      {
+        key: "recurringDaysWithTime",
+        label: "Recurring Dates",
+      },
+      { key: "singleDaysWithTime", label: "Single Dates" },
+      { key: "durationTime", label: "Duration" },
+      { key: "status", label: "Status" },
     ],
     []
   );
@@ -115,6 +149,9 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
       data={events}
       withPagination
       paginationProps={{
+        rowsPerPage: 30,
+        colSpan: headers.length,
+        setPage: setCurrentPage,
         page: currentPage,
         hasPrevious,
         hasNext,

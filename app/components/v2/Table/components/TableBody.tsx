@@ -11,16 +11,17 @@ export interface TableBodyCellValue
 interface BaseTableBodyProps {
   data: TableBodyCellValue[];
   keys: string[];
+  onRowClick: (index: number) => void;
 }
 
 interface TableBodyProps extends BaseTableBodyProps {}
 
-const TableBody = ({ data, keys }: TableBodyProps) => {
+const TableBody = ({ data, keys, onRowClick }: TableBodyProps) => {
   const ids = useIds(data);
   return (
     <tbody>
       {data.map((row, index) => (
-        <tr key={`${ids[index]}-${index}`}>
+        <tr key={`${ids[index]}-${index}`} onClick={() => onRowClick(index)}>
           {keys.map((key) => (
             <td key={`${ids[index]}-${key}-${index}`}>{row[key]}</td>
           ))}
@@ -29,7 +30,7 @@ const TableBody = ({ data, keys }: TableBodyProps) => {
       {data.length === 0 && (
         <tr>
           <td style={{ textAlign: "center" }} colSpan={keys.length}>
-            <Typography fontSize="lg">There is no data</Typography>
+            <Typography fontSize="sm">There is no data</Typography>
           </td>{" "}
         </tr>
       )}

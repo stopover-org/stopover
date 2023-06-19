@@ -49,6 +49,7 @@ class EventOption < ApplicationRecord
   # VALIDATIONS ================================================================
   validates :organizer_price_cents, presence: true
   validates :attendee_price_cents, presence: true
+  validates :title, presence: true
 
   # CALLBACKS ================================================================
   before_validation :adjust_prices
