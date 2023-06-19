@@ -7,5 +7,6 @@ module Types
     field :phone, String, null: true
     field :status, Types::UserStatusEnum, null: false
     field :account, Types::AccountType, null: false
+    field :service_user, Boolean, null: false
   end
 end
