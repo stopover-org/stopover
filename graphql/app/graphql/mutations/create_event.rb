@@ -14,7 +14,6 @@ module Mutations
     argument :title,        String, required: true
     argument :event_type,   Types::EventTypeEnum
     argument :description,  String
-    argument :recurring_type,   Types::RecurringTypeEnum
     argument :recurring_dates,  [String]
     argument :single_dates,     [String]
     argument :duration_time,    String

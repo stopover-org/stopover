@@ -10,7 +10,6 @@ import Typography from "../../../../../components/v2/Typography/Typography";
 import Checkbox from "../../../../../components/v2/Checkbox/Checkbox";
 import Select from "../../../../../components/v2/Select/Select";
 import TextArea from "../../../../../components/v2/TextArea/TextArea";
-import Button from "../../../../../components/v2/Button/Button";
 
 const GeneralStep = () => {
   const form = useFormContext();
@@ -18,13 +17,15 @@ const GeneralStep = () => {
   const requiresCheckInField = form.useFormField("requiresCheckIn");
   const requiresContractField = form.useFormField("requiresContract");
   const requiresPassport = form.useFormField("requiresPassport");
-  const recurringType = form.useFormField("recurringType");
   const eventType = form.useFormField("eventType");
   const organizerPriceField = form.useFormField("organizerPricePerUomCents");
 
   return (
     <>
       <Fieldset>
+        <Grid xs={12}>
+          <Typography level="h3">General Information</Typography>
+        </Grid>
         <Grid xs={12}>
           <Input {...form.useFormField("title")} label="Title" />
         </Grid>
@@ -125,19 +126,6 @@ const GeneralStep = () => {
 
         <Grid xs={12}>
           <Typography level="h3">Event Type</Typography>
-        </Grid>
-        <Grid xs={12}>
-          <Select
-            label="Recurring type"
-            placeholder="Select Type"
-            onChange={(value) => {
-              recurringType.onChange(value);
-            }}
-            value={recurringType.value}
-          >
-            <Option value="recurrent">Recurrent</Option>
-            <Option value="general">General</Option>
-          </Select>
         </Grid>
         <Grid xs={12}>
           <Select
