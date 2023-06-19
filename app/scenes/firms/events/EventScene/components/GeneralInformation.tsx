@@ -31,7 +31,6 @@ const GeneralInformation = ({
         maxAttendees
         minAttendees
         recurringDaysWithTime
-        recurringType
         region
         requiresCheckIn
         requiresContract
@@ -68,9 +67,6 @@ const GeneralInformation = ({
 
             <Grid xs={2}>Event Type</Grid>
             <Grid xs={10}>{event.eventType}</Grid>
-
-            <Grid xs={2}>Recurring Type</Grid>
-            <Grid xs={10}>{event.recurringType}</Grid>
 
             <Grid xs={2}>You get</Grid>
             <Grid xs={10}>

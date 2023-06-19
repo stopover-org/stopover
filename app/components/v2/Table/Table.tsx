@@ -52,7 +52,7 @@ const Table = ({
 
     const currentPage = paginationProps!.page;
     const perPage = paginationProps!.rowsPerPage;
-    const internalHasNext = perPage * currentPage <= data.length;
+    const internalHasNext = perPage * currentPage < data.length;
     const internalHasPrevious = currentPage !== 1;
     const hasNext = internalHasNext || paginationProps?.hasNext;
     const hasPrevious = internalHasPrevious || paginationProps?.hasPrevious;
