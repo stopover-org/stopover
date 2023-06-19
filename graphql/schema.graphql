@@ -406,7 +406,27 @@ type Event implements Node {
   requiresContract: Boolean
   requiresPassport: Boolean
   requiresPrepaid: Boolean!
-  schedules: [Schedule!]!
+  schedules(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): ScheduleConnection!
   singleDaysWithTime: [DateTime!]!
   status: String!
   street: String
@@ -461,7 +481,7 @@ type EventFilters {
 type EventOption implements Node {
   attendeePrice: Money!
   builtIn: Boolean!
-  description: String!
+  description: String
   forAttendee: Boolean!
   id: ID!
   organizerPrice: Money
@@ -1001,6 +1021,7 @@ type RemoveFirmPayload {
 }
 
 type Schedule implements Node {
+  bookings: [Booking!]!
   event: Event!
   id: ID!
   scheduledFor: DateTime!

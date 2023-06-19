@@ -5,6 +5,7 @@ import { EventScene_FirmEventFragment$key } from "./__generated__/EventScene_Fir
 import GeneralInformation from "./components/GeneralInformation";
 import Typography from "../../../../components/v2/Typography";
 import EventOptionsInformation from "./components/EventOptionsInformation";
+import SchedulesInformation from "./components/SchedulesInformation";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -18,10 +19,13 @@ const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
           id
         }
         schedules {
-          id
+          nodes {
+            id
+          }
         }
         ...GeneralInformation_EventFragment
         ...EventOptionsInformation_EventFragment
+        ...SchedulesInformation_EventFragment
         id
         title
       }
@@ -48,12 +52,13 @@ const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
             Event Options ( {event.eventOptions.length} )
           </Tab>
           <Tab variant={tab === 2 ? "outlined" : "plain"}>
-            Schedules ( {event.schedules.length} )
+            Schedules ( {event.schedules.nodes.length} )
           </Tab>
           <Tab variant={tab === 3 ? "outlined" : "plain"}>Bookings</Tab>
         </TabList>
         <GeneralInformation index={0} eventFragmentRef={event} />
         <EventOptionsInformation index={1} eventFragmentRef={event} />
+        <SchedulesInformation index={2} eventFragmentRef={event} />
       </Tabs>
     </>
   );

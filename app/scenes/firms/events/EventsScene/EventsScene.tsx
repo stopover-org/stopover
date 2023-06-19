@@ -149,6 +149,9 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
       data={events}
       withPagination
       paginationProps={{
+        rowsPerPage: 30,
+        colSpan: headers.length,
+        setPage: setCurrentPage,
         page: currentPage,
         hasPrevious,
         hasNext,

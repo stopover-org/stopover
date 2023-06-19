@@ -114,9 +114,14 @@ const Preview = () => {
             withPagination
             paginationProps={{
               page: 3,
+              setPage: () => {},
               rowsPerPageOptions: [5, 10, 15, 35],
               rowsPerPage: 10,
               colSpan: headers.length,
+              onNextPage: () => {},
+              onPrevPage: () => {},
+              hasNext: false,
+              hasPrevious: false,
             }}
           />
         </Grid>

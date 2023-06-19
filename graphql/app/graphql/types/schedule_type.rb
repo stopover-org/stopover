@@ -6,5 +6,6 @@ module Types
     field :scheduled_for, Types::DateTimeType, null: false
     field :status, String, null: false
     field :event, Types::EventType, null: false
+    field :bookings, [Types::BookingType], null: false
   end
 end

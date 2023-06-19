@@ -36,7 +36,7 @@ module Types
     field :requires_contract, Boolean
     field :requires_passport, Boolean
     field :requires_prepaid, Boolean, null: false
-    field :schedules, [Types::ScheduleType], null: false
+    field :schedules, Types::ScheduleType.connection_type, null: false
     field :single_days_with_time, [Types::DateTimeType], null: false
     field :status, String, null: false
     field :street, String
