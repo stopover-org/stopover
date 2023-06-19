@@ -57,7 +57,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
             <Typography level="h3" sx={{ display: "inline" }}>
               {firm.title}
             </Typography>
-            <Tag href="#" color={tagColor} sx={{ display: "inline" }}>
+            <Tag href="#" color={tagColor}>
               {firm.status}
             </Tag>
           </Grid>
