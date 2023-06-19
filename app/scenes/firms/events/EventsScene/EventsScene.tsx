@@ -34,7 +34,6 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
                 id
                 title
                 eventType
-                recurringType
                 recurringDaysWithTime
                 singleDaysWithTime
                 durationTime

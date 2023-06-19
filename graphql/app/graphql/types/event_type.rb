@@ -30,7 +30,6 @@ module Types
     field :prepaid_type, String
     field :ratings_count, Integer
     field :recurring_days_with_time, [String], null: false
-    field :recurring_type, Types::RecurringTypeEnum
     field :region, String
     field :requires_check_in, Boolean
     field :requires_contract, Boolean

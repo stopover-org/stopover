@@ -21,7 +21,6 @@ module Mutations
     argument :longitude, Float, required: false
     argument :latitude, Float, required: false
 
-    argument :recurring_type, Types::RecurringTypeEnum, required: false
     argument :dates, [String], required: false
     argument :duration_time, Integer, required: false
 

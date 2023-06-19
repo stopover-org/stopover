@@ -7,7 +7,6 @@ import moment, { Moment } from "moment";
 import useMutationForm from "../../../../lib/hooks/useMutationForm";
 import {
   EventTypeEnum,
-  RecurringTypeEnum,
   useCreateEventForm_CreateEventMutation,
 } from "./__generated__/useCreateEventForm_CreateEventMutation.graphql";
 import { dateTimeFormat, setTime } from "../../../../lib/utils/dates";
@@ -31,7 +30,6 @@ export interface CreateEventFields {
   maxAttendees?: number;
   minAttendees?: number;
   organizerPricePerUomCents?: number;
-  recurringType: RecurringTypeEnum;
   region?: string;
   requiresCheckIn: boolean;
   requiresContract: boolean;
@@ -57,7 +55,6 @@ function useDefaultValues(): Partial<CreateEventFields> {
       eventType: "excursion",
       images: [],
       recurringDates: [{ day: null, hour: null, minute: null }],
-      recurringType: "general",
       requiresCheckIn: false,
       requiresContract: false,
       requiresPassport: false,
@@ -101,7 +98,6 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  recurringType: Yup.string().required("Required"),
   region: Yup.string(),
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),

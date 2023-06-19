@@ -26,7 +26,6 @@ const CreateEventScene = () => {
         "requiresCheckIn",
         "requiresContract",
         "requiresPassport",
-        "recurringType",
         "eventType",
         "description",
         "maxAttendees",
