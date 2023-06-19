@@ -10,7 +10,6 @@ import Typography from "../../../../../components/v2/Typography/Typography";
 import Checkbox from "../../../../../components/v2/Checkbox/Checkbox";
 import Select from "../../../../../components/v2/Select/Select";
 import TextArea from "../../../../../components/v2/TextArea/TextArea";
-import Button from "../../../../../components/v2/Button/Button";
 
 const GeneralStep = () => {
   const form = useFormContext();
@@ -24,6 +23,9 @@ const GeneralStep = () => {
   return (
     <>
       <Fieldset>
+        <Grid xs={12}>
+          <Typography level="h3">General Information</Typography>
+        </Grid>
         <Grid xs={12}>
           <Input {...form.useFormField("title")} label="Title" />
         </Grid>
@@ -122,6 +124,9 @@ const GeneralStep = () => {
           </Stack>
         </Grid>
 
+        <Grid xs={12}>
+          <Typography level="h3">Event Type</Typography>
+        </Grid>
         <Grid xs={12}>
           <Select
             label="Type of Event"
