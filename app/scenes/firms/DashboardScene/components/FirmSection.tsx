@@ -8,12 +8,17 @@ import Button from "../../../../components/v2/Button";
 import Link from "../../../../components/v2/Link";
 import Tag from "../../../../components/v2/Tag/Tag";
 import VerifyFirm from "../../../../lib/shared/VerifyFirm";
+import { FirmSection_CurrentUserFragment$key } from "./__generated__/FirmSection_CurrentUserFragment.graphql";
 
 interface FirmSectionProps {
   firmFragmentRef: FirmSection_FirmFragment$key;
+  currentUserFragmentRef: FirmSection_CurrentUserFragment$key;
 }
 
-const FirmSection = ({ firmFragmentRef }: FirmSectionProps) => {
+const FirmSection = ({
+  firmFragmentRef,
+  currentUserFragmentRef,
+}: FirmSectionProps) => {
   const firm = useFragment(
     graphql`
       fragment FirmSection_FirmFragment on Firm {
@@ -29,6 +34,15 @@ const FirmSection = ({ firmFragmentRef }: FirmSectionProps) => {
       }
     `,
     firmFragmentRef
+  );
+
+  const currentUser = useFragment(
+    graphql`
+      fragment FirmSection_CurrentUserFragment on User {
+        serviceUser
+      }
+    `,
+    currentUserFragmentRef
   );
 
   const tagColor = React.useMemo(() => {
@@ -62,7 +76,7 @@ const FirmSection = ({ firmFragmentRef }: FirmSectionProps) => {
           >
             <Button size="sm">Edit</Button>
           </Link>
-          <VerifyFirm />
+          {currentUser.serviceUser && <VerifyFirm />}
         </Stack>
       </Grid>
       <Grid xs={12}>{firm.contactPerson}</Grid>

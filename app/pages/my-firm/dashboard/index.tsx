@@ -14,6 +14,7 @@ const Query = graphql`
   query dashboard_DashboardQuery {
     currentUser {
       ...Layout_CurrentUserFragment
+      ...DashboardScene_CurrentUserFragment
       account {
         firm {
           ...DashboardScene_FirmFragment
@@ -39,7 +40,10 @@ const Index = ({
     <Layout currentUserFragment={currentUser!}>
       <AuthGuard accessible={Boolean(currentUser?.account?.firm?.id)}>
         <SidebarContent sx={{ paddingLeft: "10px" }}>
-          <DashboardScene firmFragmentRef={currentUser?.account?.firm!} />
+          <DashboardScene
+            firmFragmentRef={currentUser?.account?.firm!}
+            currentUserFragmentRef={currentUser!}
+          />
         </SidebarContent>
       </AuthGuard>
     </Layout>

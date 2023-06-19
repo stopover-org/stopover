@@ -19,6 +19,7 @@ export function useVerifyFirm() {
         verifyFirm(input: $input) {
           firm {
             status
+            ...FirmSection_FirmFragment
           }
         }
       }
