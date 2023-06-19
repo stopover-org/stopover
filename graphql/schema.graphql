@@ -1341,6 +1341,7 @@ type User implements Node {
   email: String
   id: ID!
   phone: String
+  serviceUser: Boolean!
   status: UserStatusEnum!
 }
 

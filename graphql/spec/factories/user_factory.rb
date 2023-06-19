@@ -11,6 +11,7 @@
 #  email             :string
 #  last_try          :datetime
 #  phone             :string
+#  service_user      :boolean          default(FALSE)
 #  session_password  :string
 #  status            :string           not null
 #  created_at        :datetime         not null
