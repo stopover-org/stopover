@@ -7,7 +7,7 @@ const VerifyFirm = () => {
 
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Button size="sm" variant="outlined" type="submit">
+      <Button size="sm" type="submit" color="neutral">
         Verify
       </Button>
     </form>
