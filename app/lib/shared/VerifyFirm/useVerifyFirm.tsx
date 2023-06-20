@@ -18,7 +18,6 @@ export function useVerifyFirm() {
       mutation useVerifyFirm_VerifyFirmMutation($input: VerifyFirmInput!) {
         verifyFirm(input: $input) {
           firm {
-            status
             ...FirmSection_FirmFragment
           }
         }

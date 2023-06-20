@@ -76,7 +76,9 @@ const FirmSection = ({
           >
             <Button size="sm">Edit</Button>
           </Link>
-          {currentUser.serviceUser && <VerifyFirm />}
+          {currentUser.serviceUser && firm.status === "pending" && (
+            <VerifyFirm />
+          )}
         </Stack>
       </Grid>
       <Grid xs={12}>{firm.contactPerson}</Grid>
