@@ -8,6 +8,7 @@ import EventOptionsInformation from "./components/EventOptionsInformation";
 import SchedulesInformation from "./components/SchedulesInformation";
 import Tag from "../../../../components/v2/Tag/Tag";
 import { EventScene_CurrentUserFragment$key } from "./__generated__/EventScene_CurrentUserFragment.graphql";
+import VerifyEvent from "../../../../lib/shared/VerifyEvent";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -32,6 +33,7 @@ const EventScene = ({
         ...GeneralInformation_EventFragment
         ...EventOptionsInformation_EventFragment
         ...SchedulesInformation_EventFragment
+        #          ...VerifyEventInformation_EventFragment
         id
         title
         status
@@ -68,7 +70,10 @@ const EventScene = ({
             {event.status}
           </Tag>
         </Grid>
-
+        <Grid xs={2}>
+          {/* {currentUser.serviceUser && event.status === "draft"} */}
+          <VerifyEvent />
+        </Grid>
         <Grid xs={12}>
           <Tabs
             size="sm"

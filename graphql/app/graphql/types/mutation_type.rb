@@ -29,5 +29,6 @@ module Types
     field :create_canceled_payment,   mutation: Mutations::CanceledPayment
 
     field :verify_firm,               mutation: Mutations::VerifyFirm
+    field :verify_event,              mutation: Mutations::VerifyEvent
   end
 end
