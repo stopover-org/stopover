@@ -7,7 +7,7 @@ import Tag from "../../../../components/v2/Tag";
 import { EventsScene_EventsFirmPaginationFragment$key } from "./__generated__/EventsScene_EventsFirmPaginationFragment.graphql";
 import { EventsSceneFirmPaginationQuery } from "./__generated__/EventsSceneFirmPaginationQuery.graphql";
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
-import { dateTimeFormat, removeUtc } from "../../../../lib/utils/dates";
+import { dateTimeFormat } from "../../../../lib/utils/dates";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 
 interface EventsSceneProps {

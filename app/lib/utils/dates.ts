@@ -7,9 +7,6 @@ export const shortDayMonthFormat = "DD/MM";
 export const dayMonthFormat = "D MMMM";
 export const dayMonthTimeFormat = "D MMMM HH:mm";
 
-export const isDifferentDayMonth = (firstDate: Moment, secondDate: Moment) =>
-  !firstDate.startOf("day").isSame(secondDate.startOf("day"));
-
 export const calculateDate = (
   initialDate: Moment,
   delta: string,

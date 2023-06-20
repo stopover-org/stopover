@@ -15,6 +15,7 @@ const Query = graphql`
   query Id_FirmEventQuery($id: ID!) {
     currentUser {
       ...Layout_CurrentUserFragment
+      ...EventScene_CurrentUserFragment
       account {
         firm {
           event(id: $id) {
@@ -49,7 +50,10 @@ const Index = ({
         redirectTo="/my-firm/events"
       >
         <SidebarContent>
-          <EventScene eventFragmentRef={currentUser?.account?.firm?.event!} />
+          <EventScene
+            eventFragmentRef={currentUser?.account?.firm?.event!}
+            currentUserFragmentRef={currentUser!}
+          />
         </SidebarContent>
       </AuthGuard>
     </Layout>

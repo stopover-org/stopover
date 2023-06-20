@@ -1,4 +1,4 @@
-import { Grid, Tab, TabList, Tabs } from "@mui/joy";
+import { Grid, Tab, TabList, Tabs, Box } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { EventScene_FirmEventFragment$key } from "./__generated__/EventScene_FirmEventFragment.graphql";
@@ -6,12 +6,18 @@ import GeneralInformation from "./components/GeneralInformation";
 import Typography from "../../../../components/v2/Typography";
 import EventOptionsInformation from "./components/EventOptionsInformation";
 import SchedulesInformation from "./components/SchedulesInformation";
+import Tag from "../../../../components/v2/Tag/Tag";
+import { EventScene_CurrentUserFragment$key } from "./__generated__/EventScene_CurrentUserFragment.graphql";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
+  currentUserFragmentRef: EventScene_CurrentUserFragment$key;
 }
 
-const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
+const EventScene = ({
+  eventFragmentRef,
+  currentUserFragmentRef,
+}: EventSceneProps) => {
   const event = useFragment(
     graphql`
       fragment EventScene_FirmEventFragment on Event {
@@ -28,39 +34,68 @@ const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
         ...SchedulesInformation_EventFragment
         id
         title
+        status
       }
     `,
     eventFragmentRef
   );
+
+  const currentUser = useFragment(
+    graphql`
+      fragment EventScene_CurrentUserFragment on User {
+        serviceUser
+      }
+    `,
+    currentUserFragmentRef
+  );
   const [tab, setTab] = React.useState(0);
+  const tagColor = React.useMemo(() => {
+    if (event.status === "published") return "primary";
+    if (event.status === "unpublished") return "info";
+    if (event.status === "deleted") return "danger";
+    if (event.status === "draft") return "info";
+    return "primary";
+  }, [event]);
 
   return (
-    <>
-      <Typography level="h3">{event.title}</Typography>
-      <Tabs
-        size="sm"
-        aria-label="Event Tabs"
-        defaultValue={0}
-        sx={{ width: "100%", paddingTop: "10px" }}
-        onChange={(_, value) => setTab(value as number)}
-      >
-        <TabList variant="plain" sx={{ width: "30%" }}>
-          <Tab variant={tab === 0 ? "outlined" : "plain"}>
-            General Information
-          </Tab>
-          <Tab variant={tab === 1 ? "outlined" : "plain"}>
-            Event Options ( {event.eventOptions.length} )
-          </Tab>
-          <Tab variant={tab === 2 ? "outlined" : "plain"}>
-            Schedules ( {event.schedules.nodes.length} )
-          </Tab>
-          <Tab variant={tab === 3 ? "outlined" : "plain"}>Bookings</Tab>
-        </TabList>
-        <GeneralInformation index={0} eventFragmentRef={event} />
-        <EventOptionsInformation index={1} eventFragmentRef={event} />
-        <SchedulesInformation index={2} eventFragmentRef={event} />
-      </Tabs>
-    </>
+    <Box>
+      <Grid container spacing={2} sm={12} md={8}>
+        <Grid xs={10}>
+          <Typography level="h3" sx={{ display: "inline" }}>
+            {event.title}
+          </Typography>
+          <Tag href="#" color={tagColor}>
+            {event.status}
+          </Tag>
+        </Grid>
+
+        <Grid xs={12}>
+          <Tabs
+            size="sm"
+            aria-label="Event Tabs"
+            defaultValue={0}
+            sx={{ width: "100%", paddingTop: "10px" }}
+            onChange={(_, value) => setTab(value as number)}
+          >
+            <TabList variant="plain" sx={{ width: "30%" }}>
+              <Tab variant={tab === 0 ? "outlined" : "plain"}>
+                General Information
+              </Tab>
+              <Tab variant={tab === 1 ? "outlined" : "plain"}>
+                Event Options ( {event.eventOptions.length} )
+              </Tab>
+              <Tab variant={tab === 2 ? "outlined" : "plain"}>
+                Schedules ( {event.schedules.nodes.length} )
+              </Tab>
+              <Tab variant={tab === 3 ? "outlined" : "plain"}>Bookings</Tab>
+            </TabList>
+            <GeneralInformation index={0} eventFragmentRef={event} />
+            <EventOptionsInformation index={1} eventFragmentRef={event} />
+            <SchedulesInformation index={2} eventFragmentRef={event} />
+          </Tabs>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
