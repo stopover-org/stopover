@@ -7,11 +7,16 @@ import PaymentsSection from "./components/PaymentsSection";
 import SchedulesSection from "./components/SchedulesSection";
 import { DashboardScene_FirmFragment$key } from "./__generated__/DashboardScene_FirmFragment.graphql";
 import EventsSection from "./components/EventsSection";
+import { DashboardScene_CurrentUserFragment$key } from "./__generated__/DashboardScene_CurrentUserFragment.graphql";
 
 interface DashboardSceneProps {
   firmFragmentRef: DashboardScene_FirmFragment$key;
+  currentUserFragmentRef: DashboardScene_CurrentUserFragment$key;
 }
-const DashboardScene = ({ firmFragmentRef }: DashboardSceneProps) => {
+const DashboardScene = ({
+  firmFragmentRef,
+  currentUserFragmentRef,
+}: DashboardSceneProps) => {
   const firm = useFragment(
     graphql`
       fragment DashboardScene_FirmFragment on Firm {
@@ -26,10 +31,22 @@ const DashboardScene = ({ firmFragmentRef }: DashboardSceneProps) => {
     firmFragmentRef
   );
 
+  const currentUser = useFragment(
+    graphql`
+      fragment DashboardScene_CurrentUserFragment on User {
+        ...FirmSection_CurrentUserFragment
+      }
+    `,
+    currentUserFragmentRef
+  );
+
   return (
     <Grid container>
       <Grid xs={12}>
-        <FirmSection firmFragmentRef={firm} />
+        <FirmSection
+          firmFragmentRef={firm}
+          currentUserFragmentRef={currentUser}
+        />
       </Grid>
 
       <Grid xs={8}>

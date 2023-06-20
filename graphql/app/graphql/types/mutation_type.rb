@@ -27,5 +27,7 @@ module Types
     field :create_stripe_account,     mutation: Mutations::CreateStripeAccount
     field :create_successful_payment, mutation: Mutations::SuccessfulPayment
     field :create_canceled_payment,   mutation: Mutations::CanceledPayment
+
+    field :verify_firm,               mutation: Mutations::VerifyFirm
   end
 end

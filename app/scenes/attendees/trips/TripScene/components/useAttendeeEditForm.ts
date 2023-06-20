@@ -1,4 +1,3 @@
-import moment, { Moment } from "moment";
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import * as Yup from "yup";

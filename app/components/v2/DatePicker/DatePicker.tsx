@@ -25,7 +25,7 @@ interface DatePickerSlotProps
 
 interface BaseDatePickerProps {
   hint?: string;
-  error?: FieldError;
+  error?: FieldError | string;
   slotProps?: DatePickerSlotProps;
   availableDates?: Moment[];
   highlightedDates?: Moment[];
