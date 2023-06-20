@@ -7,6 +7,7 @@ import { getHumanDateTime } from "../../../../../lib/utils/dates";
 import Table from "../../../../../components/v2/Table";
 import useEdges from "../../../../../lib/hooks/useEdges";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
+import Typography from "../../../../../components/v2/Typography";
 
 interface SchedulesInformationProps {
   eventFragmentRef: SchedulesInformation_EventFragment$key;
@@ -78,12 +79,12 @@ const SchedulesInformation = ({
     return schedules[selectedSchedule];
   }, [schedules, selectedSchedule]);
 
-  const schedulesData = useMemo(
+  const schedulesData = useMemo<Record<string, any>[]>(
     () =>
-      schedules.map((schdle) => ({
-        date: getHumanDateTime(moment(schdle.scheduledFor)),
-        bookings: schdle.bookings?.length,
-        bookingsData: schdle.bookings,
+      schedules.map((scheduleRow) => ({
+        date: getHumanDateTime(moment(scheduleRow.scheduledFor)),
+        bookings: scheduleRow.bookings?.length,
+        bookingsData: scheduleRow.bookings,
       })),
     [schedules]
   );
@@ -105,10 +106,9 @@ const SchedulesInformation = ({
   );
 
   const bookingsData = React.useMemo(() => {
-    if (!schedule) return [];
+    if (!schedule) return [] as Record<string, any>[];
     return schedule.bookings.map((booking) => ({
-      ...booking,
-      attendees: booking.attendees.length,
+      attendeesCount: booking.attendees.length,
       organizerPrice: getCurrencyFormat(
         booking?.organizerTotalPrice?.cents,
         booking?.organizerTotalPrice?.currency?.name
@@ -136,7 +136,7 @@ const SchedulesInformation = ({
       },
       {
         key: "attendeePrice",
-        label: "Attendee pay(total)",
+        label: "Attendee to pay(total)",
       },
       {
         key: "alreadyPaid",
@@ -150,6 +150,7 @@ const SchedulesInformation = ({
     <TabPanel value={index} size="sm" sx={{ paddingTop: "20px" }}>
       <Grid xs={12} container>
         <Grid xs={4}>
+          <Typography level="h4">All Schedules</Typography>
           <Table
             data={schedulesData}
             headers={schedulesHeaders}
@@ -181,7 +182,14 @@ const SchedulesInformation = ({
           />
         </Grid>
         <Grid xs={8}>
-          <Table data={bookingsData} headers={bookingsHeaders} />
+          {schedule && (
+            <>
+              <Typography level="h4">
+                Bookings for {getHumanDateTime(moment(schedule.scheduledFor))}
+              </Typography>
+              <Table data={bookingsData} headers={bookingsHeaders} />
+            </>
+          )}
         </Grid>
       </Grid>
     </TabPanel>

@@ -91,7 +91,7 @@ const Table = ({
 
       if (withPagination) {
         onRowClick(
-          paginationProps!.page * (paginationProps!.rowsPerPage + index)
+          (paginationProps!.page - 1) * paginationProps!.rowsPerPage + index
         );
       } else {
         onRowClick(index);
@@ -105,7 +105,11 @@ const Table = ({
       <JoyTable aria-labelledby="tableTitle" hoverRow>
         <TableHead cells={headers} />
         <TableBody data={rows} keys={keys} onRowClick={onRowClickHandler} />
-        {withPagination && <TablePagination {...computedPaginationProps} />}
+        {withPagination && (
+          <TablePagination
+            {...(computedPaginationProps as TablePaginationProps)}
+          />
+        )}
       </JoyTable>
     </Sheet>
   );
