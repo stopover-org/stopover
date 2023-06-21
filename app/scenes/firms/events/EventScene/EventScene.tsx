@@ -33,10 +33,10 @@ const EventScene = ({
         ...GeneralInformation_EventFragment
         ...EventOptionsInformation_EventFragment
         ...SchedulesInformation_EventFragment
-        #          ...VerifyEventInformation_EventFragment
+        ...VerifyEventInformation_EventFragment
         id
-        title
         status
+        title
       }
     `,
     eventFragmentRef
@@ -66,13 +66,14 @@ const EventScene = ({
           <Typography level="h3" sx={{ display: "inline" }}>
             {event.title}
           </Typography>
-          <Tag href="#" color={tagColor}>
+          <Tag color={tagColor} link={false}>
             {event.status}
           </Tag>
         </Grid>
         <Grid xs={2}>
-          {/* {currentUser.serviceUser && event.status === "draft"} */}
-          <VerifyEvent />
+          {currentUser.serviceUser && event.status === "draft" && (
+            <VerifyEvent currentEventFragmentRef={event} />
+          )}
         </Grid>
         <Grid xs={12}>
           <Tabs

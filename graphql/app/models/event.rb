@@ -130,9 +130,8 @@ class Event < ApplicationRecord
   validates :title, :description,
             :event_type, :recurring_type,
             :organizer_price_per_uom, :attendee_price_per_uom,
-            :unit, :city,
-            :country, :full_address,
-            :duration_time, presence: true, unless: :draft?
+            :city, :country,
+            :full_address, :duration_time, presence: true, unless: :draft?
 
   # CALLBACKS ================================================================
   before_validation :set_prices

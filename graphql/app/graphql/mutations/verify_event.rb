@@ -7,8 +7,7 @@ module Mutations
     argument :event_id, ID, loads: Types::EventType
 
     def resolve(event:, **_args)
-      # raise GraphQL::ExecutionError, "You don't have rights to do it" unless context[:current_user].service_user
-
+      raise GraphQL::ExecutionError, "You don't have rights to do it" unless context[:current_user].service_user
       event.publish!
 
       {
