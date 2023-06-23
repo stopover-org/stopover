@@ -9,6 +9,7 @@ import SchedulesInformation from "./components/SchedulesInformation";
 import Tag from "../../../../components/v2/Tag/Tag";
 import { EventScene_CurrentUserFragment$key } from "./__generated__/EventScene_CurrentUserFragment.graphql";
 import VerifyEvent from "../../../../lib/shared/VerifyEvent";
+import useStatusColor from "../../../../lib/hooks/useStatusColor";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -51,13 +52,13 @@ const EventScene = ({
     currentUserFragmentRef
   );
   const [tab, setTab] = React.useState(0);
-  const tagColor = React.useMemo(() => {
-    if (event.status === "published") return "primary";
-    if (event.status === "unpublished") return "info";
-    if (event.status === "deleted") return "danger";
-    if (event.status === "draft") return "info";
-    return "primary";
-  }, [event]);
+  const tagColor = useStatusColor({
+    primary: "published",
+    danger: "deleted",
+    info: "unpublished",
+    neutral: "draft",
+    status: event.status,
+  });
 
   return (
     <Box>

@@ -9,6 +9,7 @@ import Link from "../../../../components/v2/Link";
 import Tag from "../../../../components/v2/Tag/Tag";
 import VerifyFirm from "../../../../lib/shared/VerifyFirm";
 import { FirmSection_CurrentUserFragment$key } from "./__generated__/FirmSection_CurrentUserFragment.graphql";
+import useStatusColor from "../../../../lib/hooks/useStatusColor";
 
 interface FirmSectionProps {
   firmFragmentRef: FirmSection_FirmFragment$key;
@@ -45,12 +46,12 @@ const FirmSection = ({
     currentUserFragmentRef
   );
 
-  const tagColor = React.useMemo(() => {
-    if (firm.status === "active") return "primary";
-    if (firm.status === "deleted") return "danger";
-    if (firm.status === "pending") return "info";
-    return "primary";
-  }, [firm]);
+  const tagColor = useStatusColor({
+    primary: "active",
+    danger: "deleted",
+    info: "pending",
+    status: firm.status,
+  });
 
   return (
     <Section>

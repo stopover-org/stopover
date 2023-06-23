@@ -9,6 +9,7 @@ import Tag from "../../../components/v2/Tag";
 import Link from "../../../components/v2/Link";
 import { FirmScene_FirmFragment$key } from "./__generated__/FirmScene_FirmFragment.graphql";
 import Fieldset from "../../../components/v2/Fieldset";
+import useStatusColor from "../../../lib/hooks/useStatusColor";
 
 interface FirmSceneProps {
   firmFragmentRef: FirmScene_FirmFragment$key;
@@ -42,12 +43,13 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
     [firm.contacts]
   );
 
-  const tagColor = React.useMemo(() => {
-    if (firm.status === "active") return "primary";
-    if (firm.status === "deleted") return "danger";
-    if (firm.status === "pending") return "info";
-    return "primary";
-  }, [firm]);
+  const tagColor = useStatusColor({
+    primary: "active",
+    danger: "deleted",
+    info: "pending",
+    status: firm.status,
+  });
+
   return (
     <Box>
       <Breadcrumbs items={["My Firm"]} />
