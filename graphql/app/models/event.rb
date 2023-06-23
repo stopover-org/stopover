@@ -10,6 +10,7 @@
 #  country                       :string
 #  description                   :text             not null
 #  duration_time                 :string
+#  end_date                      :datetime
 #  event_type                    :string           not null
 #  full_address                  :string
 #  house_number                  :string
