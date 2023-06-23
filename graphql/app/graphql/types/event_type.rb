@@ -6,6 +6,7 @@ module Types
     field :attendee_price_per_uom, Types::MoneyType
     field :available_dates, [Types::DateTimeType], null: false
     field :average_rating, Float, null: false
+    field :bookings, Types::BookingType.connection_type, null: false
     field :booking_cancellation_options, [Types::BookingCancellationOptionType]
     field :city, String
     field :country, String

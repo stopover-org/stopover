@@ -35,6 +35,7 @@ const EventScene = ({
         ...EventOptionsInformation_EventFragment
         ...SchedulesInformation_EventFragment
         ...VerifyEventInformation_EventFragment
+        ...BookingsInformation_EventFragment
         id
         status
         title
@@ -99,6 +100,7 @@ const EventScene = ({
             <GeneralInformation index={0} eventFragmentRef={event} />
             <EventOptionsInformation index={1} eventFragmentRef={event} />
             <SchedulesInformation index={2} eventFragmentRef={event} />
+            <BookingsInformation index={3} eventFragmentRef={event} />
           </Tabs>
         </Grid>
       </Grid>
