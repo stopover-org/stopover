@@ -44,6 +44,11 @@ export interface CreateEventFields {
     hour: number | null;
     minute: number | null;
   }>;
+  endDate: {
+    date: Moment;
+    hour: number | null;
+    minute: number | null;
+  };
   street?: string;
   title: string;
 }
@@ -59,6 +64,11 @@ function useDefaultValues(): Partial<CreateEventFields> {
       requiresContract: false,
       requiresPassport: false,
       singleDates: [],
+      endDate: {
+        date: moment(),
+        hour: null,
+        minute: null,
+      },
     }),
     []
   );
@@ -115,6 +125,15 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
+  endDate: Yup.object().shape({
+    date: Yup.date()
+      .transform((value) =>
+        moment(value).isValid() ? moment(value).toDate() : undefined
+      )
+      .required("Required"),
+    hour: Yup.string().required("Required"),
+    minute: Yup.string().required("Required"),
+  }),
   street: Yup.string(),
   title: Yup.string().required("Required"),
 });
@@ -141,6 +160,7 @@ export function useCreateEventForm() {
       organizerPricePerUomCents,
       singleDates,
       recurringDates,
+      endDate,
       ...values
     }) => ({
       input: {
@@ -160,6 +180,12 @@ export function useCreateEventForm() {
               .padStart(2, "0")}`
           ).format(dateTimeFormat)
         ),
+        endDate: setTime(
+          moment(endDate.date),
+          `${endDate.hour?.toString().padStart(2, "0")}:${endDate.minute
+            ?.toString()
+            .padStart(2, "0")}`
+        ).format(dateTimeFormat),
         organizerPricePerUomCents: organizerPricePerUomCents!,
       },
     }),

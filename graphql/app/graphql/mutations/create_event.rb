@@ -17,6 +17,7 @@ module Mutations
     argument :recurring_dates,  [String]
     argument :single_dates,     [String]
     argument :duration_time,    String
+    argument :end_date, String
 
     # Address Fields
     argument :house_number, String, required: false

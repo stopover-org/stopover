@@ -37,7 +37,9 @@ module Stopover
     end
 
     def self.schedule(event)
-      ::Configuration.get_value('SCHEDULE_DAYS_IN_ADVANCE').value.to_i.times do |i|
+      days = ::Configuration.get_value('SCHEDULE_DAYS_IN_ADVANCE').value.to_i
+
+      days.times do |i|
         date = Time.zone.now + i.days
 
         times = event.reload.get_time(date) || []

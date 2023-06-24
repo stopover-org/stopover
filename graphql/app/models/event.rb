@@ -199,6 +199,10 @@ class Event < ApplicationRecord
     times
   end
 
+  # def get_days_till_end()
+  #   Date.today -
+  # end
+
   private
 
   def sync_stripe
