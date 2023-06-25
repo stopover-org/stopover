@@ -43,6 +43,7 @@ module Types
     field :tags, [Types::TagType], null: false
     field :title, String, null: false
     field :unit, Types::UnitType
+    field :end_date, Types::DateTimeType
 
     def images
       object.images.map do |img|

@@ -9,7 +9,7 @@ import { new_NewFirmQuery } from "./__generated__/new_NewFirmQuery.graphql";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
-import AuthGuard from "../../lib/shared/AuthGuard";
+import AuthGuard from "../../components/shared/AuthGuard";
 
 const Query = graphql`
   query new_NewFirmQuery {

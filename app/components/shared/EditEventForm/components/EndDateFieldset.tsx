@@ -1,9 +1,9 @@
 import React from "react";
 import { Grid } from "@mui/joy";
-import Fieldset from "../../../../../components/v2/Fieldset";
-import useFormContext from "../../../../../lib/hooks/useFormContext";
-import { CreateEventFields } from "../useCreateEventForm";
-import DatePicker from "../../../../../components/v2/DatePicker/DatePicker";
+import Fieldset from "../../../v2/Fieldset";
+import useFormContext from "../../../../lib/hooks/useFormContext";
+import { CreateEventFields } from "../../../../scenes/firms/events/CreateEventScene/useCreateEventForm";
+import DatePicker from "../../../v2/DatePicker/DatePicker";
 
 const EndDateFieldset = () => {
   const form = useFormContext<CreateEventFields>();

@@ -9,12 +9,12 @@ import {
 } from "@mui/joy";
 import React from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import Fieldset from "../../../../../components/v2/Fieldset/Fieldset";
-import Typography from "../../../../../components/v2/Typography/Typography";
-import Select from "../../../../../components/v2/Select/Select";
-import useFormContext from "../../../../../lib/hooks/useFormContext";
-import Button from "../../../../../components/v2/Button";
-import { CreateEventFields } from "../useCreateEventForm";
+import Fieldset from "../../../v2/Fieldset/Fieldset";
+import Typography from "../../../v2/Typography/Typography";
+import Select from "../../../v2/Select/Select";
+import useFormContext from "../../../../lib/hooks/useFormContext";
+import Button from "../../../v2/Button";
+import { CreateEventFields } from "../../../../scenes/firms/events/CreateEventScene/useCreateEventForm";
 
 const RecurringDateFieldset = () => {
   const minutes = React.useMemo(() => Array.from(Array(60).keys()), []);

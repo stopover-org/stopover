@@ -5,40 +5,62 @@ module Mutations
     field :event, Types::EventType
 
     argument :event_id, ID, loads: Types::EventType
-    argument :title, String, required: false
-    argument :interest_ids, [ID], loads: Types::InterestType, required: false
-    argument :event_type, Types::EventTypeEnum, required: false
-    # argument :images
-    argument :description, String, required: false
 
+    argument :interest_ids, [ID],
+             loads: Types::InterestType,
+             required: false
+    argument :unit_id,      ID,
+             loads: Types::UnitType,
+             required: false
+
+    argument :title,            String, required: true
+    argument :event_type,       Types::EventTypeEnum
+    argument :description,      String
+    argument :recurring_dates,  [String]
+    argument :single_dates,     [String]
+    argument :duration_time,    String
+    argument :end_date,         Types::DateTimeType
+
+    # Address Fields
     argument :house_number, String, required: false
-    argument :street, String, required: false
-    argument :city, String, required: false
-    argument :country, String, required: false
-    argument :region, String, required: false
+    argument :street,       String, required: false
+    argument :city,         String, required: false
+    argument :country,      String, required: false
+    argument :region,       String, required: false
+    argument :full_address, String
+    argument :longitude,    Float, required: false
+    argument :latitude,     Float, required: false
 
-    argument :full_address, String, required: false
-    argument :longitude, Float, required: false
-    argument :latitude, Float, required: false
+    # Event Options Fields
+    argument :event_options,
+             [Types::UpdateEventOptionInput],
+             required: false
 
-    argument :dates, [String], required: false
-    argument :duration_time, Integer, required: false
+    # Check In Options
+    argument :requires_contract,  Boolean, required: false
+    argument :requires_passport,  Boolean, required: false
+    argument :requires_check_in,  Boolean, required: false
+    argument :max_attendees,      Integer, required: false
+    argument :min_attendees,      Integer, required: false
 
-    argument :organizer_price_per_uom_cents, Integer, required: false
+    argument :organizer_price_per_uom_cents, Integer
 
-    argument :event_options, [Types::CreateEventOptionInput], required: false
-
-    argument :requires_contract, Boolean, required: false
-    argument :requires_passport, Boolean, required: false
-    argument :requires_check_in, Boolean, required: false
-
-    argument :unit_id, ID, loads: Types::UnitType, required: false
+    argument :base64_images, [String], required: false
 
     def resolve(event:, **args)
       raise GraphQL::ExecutionError, 'account has no firm' unless context[:current_user].account.current_firm
       raise GraphQL::ExecutionError, 'firm does not have current event' unless context[:current_user].account.current_firm.events.include?(event)
 
-      event.update(**args)
+      event = Stopover::EventManagement::EventUpdater.new(event, context).execute(**args.except(:base64_images))
+
+      # unless args[:base64_images].empty?
+      #   event.images.delete_all
+      #   args[:base64_images].each do |base64_image|
+      #     tmp_file = Stopover::FilesSupport.base64_to_file(base64_image)
+      #     event.images.attach(tmp_file)
+      #   end
+      # end
+
       {
         event: event
       }

@@ -1,4 +1,4 @@
-import { Grid, Tab, TabList, Tabs, Box } from "@mui/joy";
+import { Grid, Tab, TabList, Tabs, Box, Stack } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { EventScene_FirmEventFragment$key } from "./__generated__/EventScene_FirmEventFragment.graphql";
@@ -8,8 +8,11 @@ import EventOptionsInformation from "./components/EventOptionsInformation";
 import SchedulesInformation from "./components/SchedulesInformation";
 import Tag from "../../../../components/v2/Tag/Tag";
 import { EventScene_CurrentUserFragment$key } from "./__generated__/EventScene_CurrentUserFragment.graphql";
-import VerifyEvent from "../../../../lib/shared/VerifyEvent";
+import VerifyEvent from "../../../../components/shared/VerifyEvent";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
+import Link from "../../../../components/v2/Link";
+import BookingsInformation from "./components/BookingsInformation";
+import Button from "../../../../components/v2/Button";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -73,9 +76,14 @@ const EventScene = ({
           </Tag>
         </Grid>
         <Grid xs={2}>
-          {currentUser.serviceUser && event.status === "draft" && (
-            <VerifyEvent currentEventFragmentRef={event} />
-          )}
+          <Stack direction="row" justifyContent="flex-end">
+            <Link href={`my-firm/events/${event.id}/edit`} underline={false}>
+              <Button size="sm">Edit</Button>
+            </Link>
+            {currentUser.serviceUser && event.status === "draft" && (
+              <VerifyEvent currentEventFragmentRef={event} />
+            )}
+          </Stack>
         </Grid>
         <Grid xs={12}>
           <Tabs

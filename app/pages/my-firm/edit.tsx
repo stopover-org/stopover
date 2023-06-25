@@ -2,14 +2,14 @@ import React from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
 import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
-import SidebarContent from "../../lib/shared/SidebarContent";
+import SidebarContent from "../../components/shared/SidebarContent";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import EditFirmScene from "../../scenes/firms/EditFirmScene";
 import { editFirm_FirmQuery } from "./__generated__/editFirm_FirmQuery.graphql";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
-import AuthGuard from "../../lib/shared/AuthGuard";
+import AuthGuard from "../../components/shared/AuthGuard";
 
 const Query = graphql`
   query editFirm_FirmQuery {

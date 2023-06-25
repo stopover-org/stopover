@@ -2,7 +2,7 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useMutationForm from "../../hooks/useMutationForm";
+import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useVerifyEvent_EventFragment$key } from "./__generated__/useVerifyEvent_EventFragment.graphql";
 
 interface VerifyEventFields {

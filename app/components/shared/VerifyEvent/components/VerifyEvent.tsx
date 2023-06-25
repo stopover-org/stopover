@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import Button from "../../../../components/v2/Button/Button";
+import Button from "../../../v2/Button/Button";
 import { useVerifyEvent } from "../useVerifyEvent";
 import { VerifyEventInformation_EventFragment$key } from "./__generated__/VerifyEventInformation_EventFragment.graphql";
 

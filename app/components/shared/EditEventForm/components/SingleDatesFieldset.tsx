@@ -2,13 +2,13 @@ import React from "react";
 import { FormHelperText, Grid, IconButton, Option, Stack } from "@mui/joy";
 import moment, { Moment } from "moment";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import Fieldset from "../../../../../components/v2/Fieldset";
-import useFormContext from "../../../../../lib/hooks/useFormContext";
-import { CreateEventFields } from "../useCreateEventForm";
-import DatePicker from "../../../../../components/v2/DatePicker/DatePicker";
-import Button from "../../../../../components/v2/Button/Button";
-import Typography from "../../../../../components/v2/Typography/Typography";
-import Select from "../../../../../components/v2/Select/Select";
+import Fieldset from "../../../v2/Fieldset";
+import useFormContext from "../../../../lib/hooks/useFormContext";
+import { CreateEventFields } from "../../../../scenes/firms/events/CreateEventScene/useCreateEventForm";
+import DatePicker from "../../../v2/DatePicker/DatePicker";
+import Button from "../../../v2/Button/Button";
+import Typography from "../../../v2/Typography/Typography";
+import Select from "../../../v2/Select/Select";
 
 const SingleDatesFieldset = () => {
   const minutes = React.useMemo(() => Array.from(Array(60).keys()), []);

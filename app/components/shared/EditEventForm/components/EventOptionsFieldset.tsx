@@ -1,16 +1,14 @@
 import React from "react";
 import { Grid, IconButton, Stack } from "@mui/joy";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import useFormContext from "../../../../../lib/hooks/useFormContext";
-import { CreateEventFields } from "../useCreateEventForm";
-import Button from "../../../../../components/v2/Button/Button";
-import Fieldset from "../../../../../components/v2/Fieldset";
-import Checkbox from "../../../../../components/v2/Checkbox";
-import Input from "../../../../../components/v2/Input";
+import useFormContext from "../../../../lib/hooks/useFormContext";
+import { CreateEventFields } from "../../../../scenes/firms/events/CreateEventScene/useCreateEventForm";
+import Button from "../../../v2/Button/Button";
+import Fieldset from "../../../v2/Fieldset";
+import Checkbox from "../../../v2/Checkbox";
+import Input from "../../../v2/Input";
 
-interface EventOptionsFieldsetProps {}
-
-const EventOptionsFieldset = (props: EventOptionsFieldsetProps) => {
+const EventOptionsFieldset = () => {
   const form = useFormContext<CreateEventFields>();
   const eventOptionsField =
     form.useFormField<CreateEventFields["eventOptions"]>("eventOptions");

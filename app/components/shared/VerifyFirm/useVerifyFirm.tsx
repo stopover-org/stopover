@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import React from "react";
 import { graphql } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useMutationForm from "../../hooks/useMutationForm";
+import useMutationForm from "../../../lib/hooks/useMutationForm";
 
 interface VerifyFirmFields {}
 

@@ -1,15 +1,15 @@
 import React from "react";
 import { AspectRatio, Box, Grid, Option, Stack } from "@mui/joy";
 import ClearIcon from "@mui/icons-material/Clear";
-import Fieldset from "../../../../../components/v2/Fieldset/Fieldset";
-import Input from "../../../../../components/v2/Input/Input";
-import FileUploader from "../../../../../components/v2/FileUploader/FileUploader";
-import AddressFieldset from "../../../../../lib/shared/AddressFieldset/AddressFieldset";
-import useFormContext from "../../../../../lib/hooks/useFormContext";
-import Typography from "../../../../../components/v2/Typography/Typography";
-import Checkbox from "../../../../../components/v2/Checkbox/Checkbox";
-import Select from "../../../../../components/v2/Select/Select";
-import TextArea from "../../../../../components/v2/TextArea/TextArea";
+import Fieldset from "../../../v2/Fieldset/Fieldset";
+import Input from "../../../v2/Input/Input";
+import FileUploader from "../../../v2/FileUploader/FileUploader";
+import AddressFieldset from "../../AddressFieldset/AddressFieldset";
+import useFormContext from "../../../../lib/hooks/useFormContext";
+import Typography from "../../../v2/Typography/Typography";
+import Checkbox from "../../../v2/Checkbox/Checkbox";
+import Select from "../../../v2/Select/Select";
+import TextArea from "../../../v2/TextArea/TextArea";
 
 const GeneralStep = () => {
   const form = useFormContext();

@@ -1,24 +1,25 @@
-import { graphql, usePreloadedQuery } from "react-relay";
+import React from "react";
 import { RelayProps, withRelay } from "relay-nextjs";
+import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "../../../../components/MainPage/Layout";
-import BookingScene from "../../../../scenes/attendees/bookings/BookingScene";
-import { getClientEnvironment } from "../../../../lib/clientEnvironment";
-import { fetchEnvVariables } from "../../../../lib/fetchEnvVariables";
-import { IApiKeys } from "../../../../components/ApiKeysProvider";
-import { Id_FirmBookingQuery } from "./__generated__/Id_FirmBookingQuery.graphql";
-import { useUpdateApiKeys } from "../../../../lib/hooks/useUpdateApiKeys";
-import SidebarContent from "../../../../components/shared/SidebarContent";
 import AuthGuard from "../../../../components/shared/AuthGuard";
+import SidebarContent from "../../../../components/shared/SidebarContent";
+import { getClientEnvironment } from "../../../../lib/clientEnvironment";
+import { IApiKeys } from "../../../../components/ApiKeysProvider";
+import { fetchEnvVariables } from "../../../../lib/fetchEnvVariables";
+import { useUpdateApiKeys } from "../../../../lib/hooks/useUpdateApiKeys";
+import EditEventScene from "../../../../scenes/firms/events/EditEventScene";
+import { edit_FirmEventQuery } from "./__generated__/edit_FirmEventQuery.graphql";
 
 const Query = graphql`
-  query Id_FirmBookingQuery($id: ID!) {
+  query edit_FirmEventQuery($id: ID!) {
     currentUser {
       ...Layout_CurrentUserFragment
       account {
         firm {
-          booking(id: $id) {
+          event(id: $id) {
             id
-            ...BookingScene_FirmBookingFragment
+            ...EditEventScene_EventFragment
           }
         }
       }
@@ -30,11 +31,11 @@ interface Props {
   apiKeys: IApiKeys;
 }
 
-const Index = ({
+const Edit = ({
   preloadedQuery,
   apiKeys,
-}: RelayProps<Props, Id_FirmBookingQuery>) => {
-  const { currentUser } = usePreloadedQuery<Id_FirmBookingQuery>(
+}: RelayProps<Props, edit_FirmEventQuery>) => {
+  const { currentUser } = usePreloadedQuery<edit_FirmEventQuery>(
     Query,
     preloadedQuery
   );
@@ -43,20 +44,18 @@ const Index = ({
 
   return (
     <Layout currentUserFragment={currentUser!}>
-      <AuthGuard
-        accessible={Boolean(currentUser?.account?.firm?.booking?.id)}
-        redirectTo="/my-firm/events"
-      >
+      <AuthGuard accessible={Boolean(currentUser?.account?.firm?.event?.id)}>
         <SidebarContent>
-          <BookingScene
-            bookingFragmentRef={currentUser?.account?.firm?.booking!}
+          <EditEventScene
+            eventFragmentRef={currentUser!.account?.firm?.event!}
           />
         </SidebarContent>
       </AuthGuard>
     </Layout>
   );
 };
-export default withRelay(Index, Query, {
+
+export default withRelay(Edit, Query, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: null,
@@ -64,7 +63,8 @@ export default withRelay(Index, Query, {
   // Note: This function must always return the same value.
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
-  serverSideProps: async () => ({
+  serverSideProps: async (ctx) => ({
+    id: +ctx.query.id!,
     apiKeys: fetchEnvVariables(),
   }),
   // Server-side props can be accessed as the second argument

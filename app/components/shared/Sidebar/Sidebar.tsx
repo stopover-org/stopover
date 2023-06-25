@@ -2,7 +2,7 @@ import { Grid, ListItem, ListItemButton, useTheme } from "@mui/joy";
 import List from "@mui/joy/List";
 import React from "react";
 import { useMediaQuery } from "@mui/material";
-import Link from "../../../components/v2/Link";
+import Link from "../../v2/Link";
 
 interface SidebarItem {
   title: string;

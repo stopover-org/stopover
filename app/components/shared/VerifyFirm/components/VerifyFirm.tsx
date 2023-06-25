@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../../../../components/v2/Button";
+import Button from "../../../v2/Button";
 import { useVerifyFirm } from "../useVerifyFirm";
 
 const VerifyFirm = () => {

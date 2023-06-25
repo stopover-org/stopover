@@ -1,16 +1,16 @@
 import React from "react";
 import { AspectRatio, Box, Grid } from "@mui/joy";
 import ClearIcon from "@mui/icons-material/Clear";
-import Fieldset from "../../../components/v2/Fieldset/Fieldset";
-import Input from "../../../components/v2/Input/Input";
-import FileUploader from "../../../components/v2/FileUploader/FileUploader";
+import Fieldset from "../../v2/Fieldset/Fieldset";
+import Input from "../../v2/Input/Input";
+import FileUploader from "../../v2/FileUploader/FileUploader";
 import AddressFieldset from "../AddressFieldset/AddressFieldset";
-import Typography from "../../../components/v2/Typography/Typography";
-import PhoneInput from "../../../components/v2/PhoneInput/PhoneInput";
-import ChipsInput from "../../../components/v2/ChipsInput/ChipsInput";
-import TextArea from "../../../components/v2/TextArea/TextArea";
-import Button from "../../../components/v2/Button/Button";
-import useFormContext from "../../hooks/useFormContext";
+import Typography from "../../v2/Typography/Typography";
+import PhoneInput from "../../v2/PhoneInput/PhoneInput";
+import ChipsInput from "../../v2/ChipsInput/ChipsInput";
+import TextArea from "../../v2/TextArea/TextArea";
+import Button from "../../v2/Button/Button";
+import useFormContext from "../../../lib/hooks/useFormContext";
 
 const EditFirmForm = () => {
   const form = useFormContext();

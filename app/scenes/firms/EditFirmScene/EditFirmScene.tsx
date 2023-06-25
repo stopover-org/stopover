@@ -4,7 +4,7 @@ import { FormProvider } from "react-hook-form";
 import { useUpdateFirmForm } from "./useUpdateFirmForm";
 import { EditFirmScene_FirmFragment$key } from "./__generated__/EditFirmScene_FirmFragment.graphql";
 import Breadcrumbs from "../../../components/v2/Breadcrumbs";
-import EditFirmForm from "../../../lib/shared/EditFirmForm";
+import EditFirmForm from "../../../components/shared/EditFirmForm";
 
 const EditFirmScene = ({
   firmFragmentRef,

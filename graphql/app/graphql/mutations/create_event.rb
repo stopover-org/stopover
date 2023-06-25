@@ -30,7 +30,9 @@ module Mutations
     argument :latitude,     Float, required: false
 
     # Event Options Fields
-    argument :event_options,      [Types::CreateEventOptionInput], required: false
+    argument :event_options,
+             [Types::CreateEventOptionInput],
+             required: false
 
     # Check In Options
     argument :requires_contract,  Boolean, required: false
@@ -44,7 +46,7 @@ module Mutations
     argument :base64_images, [String], required: false
 
     def resolve(**args)
-      event = Stopover::EventManagement::EventCreator.new.execute(context, **args.except(:base64_images))
+      event = Stopover::EventManagement::EventCreator.new(context).execute(**args.except(:base64_images))
 
       unless args[:base64_images].empty?
         args[:base64_images].each do |base64_image|
