@@ -10,9 +10,7 @@ import Button from "../../../../../components/v2/Button/Button";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import Select from "../../../../../components/v2/Select/Select";
 
-interface SingleDatesFieldsProps {}
-
-const SingleDatesFieldset = (props: SingleDatesFieldsProps) => {
+const SingleDatesFieldset = () => {
   const minutes = React.useMemo(() => Array.from(Array(60).keys()), []);
   const hours = React.useMemo(() => Array.from(Array(24).keys()), []);
   const form = useFormContext<CreateEventFields>();

@@ -3,7 +3,7 @@
 module Stopover
   module EventManagement
     class EventCreator
-      def execute(**args)
+      def execute(context, **args)
         event = Event.new
         event.assign_attributes(args.except(:recurring_dates,
                                             :single_dates,

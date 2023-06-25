@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_19_082259) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_25_205048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -210,7 +210,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_19_082259) do
     t.string "title", null: false
     t.text "description", null: false
     t.string "event_type", null: false
-    t.string "recurring_type", null: false
     t.decimal "organizer_price_per_uom_cents", default: "0.0"
     t.decimal "attendee_price_per_uom_cents", default: "0.0"
     t.boolean "requires_contract", default: false, null: false
@@ -239,6 +238,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_19_082259) do
     t.integer "max_attendees"
     t.integer "min_attendees", default: 0
     t.bigint "firm_id"
+    t.datetime "end_date"
     t.index ["event_type"], name: "index_events_on_event_type"
     t.index ["external_id"], name: "index_events_on_external_id"
     t.index ["firm_id"], name: "index_events_on_firm_id"

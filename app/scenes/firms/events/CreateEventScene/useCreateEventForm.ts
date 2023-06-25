@@ -44,6 +44,7 @@ export interface CreateEventFields {
     hour: number | null;
     minute: number | null;
   }>;
+  endDate: Moment | null;
   street?: string;
   title: string;
 }
@@ -59,6 +60,7 @@ function useDefaultValues(): Partial<CreateEventFields> {
       requiresContract: false,
       requiresPassport: false,
       singleDates: [],
+      endDate: null,
     }),
     []
   );
@@ -115,6 +117,7 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
+  endDate: Yup.date(),
   street: Yup.string(),
   title: Yup.string().required("Required"),
 });

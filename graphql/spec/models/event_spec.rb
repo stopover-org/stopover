@@ -10,6 +10,7 @@
 #  country                       :string
 #  description                   :text             not null
 #  duration_time                 :string
+#  end_date                      :datetime
 #  event_type                    :string           not null
 #  full_address                  :string
 #  house_number                  :string
@@ -22,7 +23,6 @@
 #  prepaid_amount_cents          :decimal(, )      default(0.0), not null
 #  prepaid_type                  :string
 #  recurring_days_with_time      :string           default([]), is an Array
-#  recurring_type                :string           not null
 #  region                        :string
 #  requires_check_in             :boolean          default(FALSE), not null
 #  requires_contract             :boolean          default(FALSE), not null

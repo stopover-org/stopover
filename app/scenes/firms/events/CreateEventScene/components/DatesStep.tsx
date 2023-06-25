@@ -1,12 +1,13 @@
 import React from "react";
 import RecurringDateFieldset from "./RecurringDateFieldset";
 import SingleDatesFieldset from "./SingleDatesFieldset";
-import EventOptionsFieldset from "./EventOptionsFieldset";
+import EndDateFieldset from "./EndDateFieldset";
 
 const DatesStep = () => (
   <>
     <RecurringDateFieldset />
     <SingleDatesFieldset />
+    <EndDateFieldset />
   </>
 );
 
