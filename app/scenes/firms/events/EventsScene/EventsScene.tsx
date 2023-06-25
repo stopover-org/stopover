@@ -9,6 +9,7 @@ import { EventsSceneFirmPaginationQuery } from "./__generated__/EventsSceneFirmP
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { dateTimeFormat } from "../../../../lib/utils/dates";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
+import useStatusColor from "../../../../lib/hooks/useStatusColor";
 
 interface EventsSceneProps {
   firmFragmentRef: EventsScene_EventsFirmPaginationFragment$key;
@@ -59,6 +60,19 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
     );
   const [currentPage, setCurrentPage] = React.useState(1);
   const pagedData = usePagedEdges(data.events, currentPage, 30);
+  const tagColor = (status: string) => {
+    const color = useStatusColor({
+      danger: "deleted",
+      status,
+    });
+
+    return (
+      <Tag level="body3" link={false} color={color}>
+        {status}
+      </Tag>
+    );
+  };
+
   const events = React.useMemo(
     () =>
       pagedData.map((row) => ({
@@ -96,15 +110,7 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
             </Tag>{" "}
           </>
         )),
-        status: (
-          <Tag
-            level="body3"
-            link={false}
-            color={row.status === "deleted" ? "danger" : "primary"}
-          >
-            {row.status}
-          </Tag>
-        ),
+        status: tagColor(row.status),
       })),
     [pagedData]
   );
