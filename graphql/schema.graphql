@@ -261,7 +261,7 @@ input CreateEventInput {
   country: String
   description: String!
   durationTime: String!
-  endDate: String!
+  endDate: DateTime!
   eventOptions: [CreateEventOptionInput!]
   eventType: EventTypeEnum!
   fullAddress: String!

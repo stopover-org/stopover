@@ -34,7 +34,7 @@ const CreateEventScene = () => {
         "title",
         "fullAddress",
       ],
-      ["recurringDates", "singleDates", "durationTime"],
+      ["recurringDates", "singleDates", "durationTime", "endDate"],
       ["eventOptions"],
     ],
     []

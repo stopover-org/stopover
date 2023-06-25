@@ -11,13 +11,13 @@ module Mutations
              loads: Types::UnitType,
              required: false
 
-    argument :title,        String, required: true
-    argument :event_type,   Types::EventTypeEnum
-    argument :description,  String
+    argument :title,            String, required: true
+    argument :event_type,       Types::EventTypeEnum
+    argument :description,      String
     argument :recurring_dates,  [String]
     argument :single_dates,     [String]
     argument :duration_time,    String
-    argument :end_date, String
+    argument :end_date,         Types::DateTimeType
 
     # Address Fields
     argument :house_number, String, required: false
@@ -36,15 +36,15 @@ module Mutations
     argument :requires_contract,  Boolean, required: false
     argument :requires_passport,  Boolean, required: false
     argument :requires_check_in,  Boolean, required: false
-    argument :max_attendees, Integer, required: false
-    argument :min_attendees, Integer, required: false
+    argument :max_attendees,      Integer, required: false
+    argument :min_attendees,      Integer, required: false
 
     argument :organizer_price_per_uom_cents, Integer
 
     argument :base64_images, [String], required: false
 
     def resolve(**args)
-      event = Stopover::EventManagement::EventCreator.new.execute
+      event = Stopover::EventManagement::EventCreator.new.execute(context, **args.except(:base64_images))
 
       unless args[:base64_images].empty?
         args[:base64_images].each do |base64_image|
