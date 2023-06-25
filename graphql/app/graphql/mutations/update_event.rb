@@ -14,12 +14,12 @@ module Mutations
              required: false
 
     argument :title,            String, required: true
-    argument :event_type,       Types::EventTypeEnum
-    argument :description,      String
-    argument :recurring_dates,  [String]
-    argument :single_dates,     [String]
-    argument :duration_time,    String
-    argument :end_date,         Types::DateTimeType
+    argument :event_type,       Types::EventTypeEnum, required: false
+    argument :description,      String, required: false
+    argument :recurring_dates,  [String], required: false
+    argument :single_dates,     [String], required: false
+    argument :duration_time,    String, required: false
+    argument :end_date,         Types::DateTimeType, required: false
 
     # Address Fields
     argument :house_number, String, required: false
@@ -27,7 +27,7 @@ module Mutations
     argument :city,         String, required: false
     argument :country,      String, required: false
     argument :region,       String, required: false
-    argument :full_address, String
+    argument :full_address, String, required: false
     argument :longitude,    Float, required: false
     argument :latitude,     Float, required: false
 
@@ -43,7 +43,7 @@ module Mutations
     argument :max_attendees,      Integer, required: false
     argument :min_attendees,      Integer, required: false
 
-    argument :organizer_price_per_uom_cents, Integer
+    argument :organizer_price_per_uom_cents, Integer, required: false
 
     argument :base64_images, [String], required: false
 
@@ -51,7 +51,7 @@ module Mutations
       raise GraphQL::ExecutionError, 'account has no firm' unless context[:current_user].account.current_firm
       raise GraphQL::ExecutionError, 'firm does not have current event' unless context[:current_user].account.current_firm.events.include?(event)
 
-      event = Stopover::EventManagement::EventUpdater.new(event, context).execute(**args.except(:base64_images))
+      event = Stopover::EventManagement::EventUpdater.new(event).execute(**args)
 
       # unless args[:base64_images].empty?
       #   event.images.delete_all

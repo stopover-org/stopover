@@ -1301,26 +1301,26 @@ input UpdateEventInput {
   """
   clientMutationId: String
   country: String
-  description: String!
-  durationTime: String!
-  endDate: DateTime!
+  description: String
+  durationTime: String
+  endDate: DateTime
   eventId: ID!
   eventOptions: [UpdateEventOptionInput!]
-  eventType: EventTypeEnum!
-  fullAddress: String!
+  eventType: EventTypeEnum
+  fullAddress: String
   houseNumber: String
   interestIds: [ID!]
   latitude: Float
   longitude: Float
   maxAttendees: Int
   minAttendees: Int
-  organizerPricePerUomCents: Int!
-  recurringDates: [String!]!
+  organizerPricePerUomCents: Int
+  recurringDates: [String!]
   region: String
   requiresCheckIn: Boolean
   requiresContract: Boolean
   requiresPassport: Boolean
-  singleDates: [String!]!
+  singleDates: [String!]
   street: String
   title: String!
   unitId: ID

@@ -18,6 +18,7 @@ const CreateEventScene = ({ eventFragmentRef }: EditEventSceneProps) => {
     graphql`
       fragment EditEventScene_EventFragment on Event {
         title
+        id
         ...useUpdateEventForm_EventFragment
       }
     `,

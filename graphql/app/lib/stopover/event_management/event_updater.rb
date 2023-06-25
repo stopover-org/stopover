@@ -3,9 +3,8 @@
 module Stopover
   module EventManagement
     class EventUpdater
-      def initialize(event, context)
+      def initialize(event)
         @event = event
-        @context = context
       end
 
       def execute(**args)
@@ -13,7 +12,6 @@ module Stopover
                                              :single_dates,
                                              :event_options,
                                              :base64_images))
-        @event.firm = @context[:current_user].account.current_firm
         if args[:event_options].present?
           @event.event_options = args[:event_options].map do |option|
             event_option = if option[:id]
@@ -25,10 +23,16 @@ module Stopover
           end
         end
 
-        @event.recurring_days_with_time = Stopover::EventSupport.prepare_dates('recurrent',
-                                                                               args[:recurring_dates])
-        @event.single_days_with_time = Stopover::EventSupport.prepare_dates('non_recurrent',
-                                                                            args[:single_dates])
+        if args[:recurring_dates]
+          @event.recurring_days_with_time = Stopover::EventSupport.prepare_dates('recurrent',
+                                                                                 args[:recurring_dates])
+        end
+
+        if args[:single_dates]
+          @event.single_days_with_time = Stopover::EventSupport.prepare_dates('non_recurrent',
+                                                                              args[:single_dates])
+        end
+
         @event.save!
 
         @event
