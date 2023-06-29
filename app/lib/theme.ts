@@ -28,6 +28,7 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
       styleOverrides: {
         root: {
           borderRadius: "2px",
+          zIndex: "unset",
         },
       },
     },
@@ -35,6 +36,7 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
       styleOverrides: {
         root: {
           borderRadius: "2px",
+          zIndex: "unset",
         },
       },
     },
@@ -67,6 +69,7 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
       styleOverrides: {
         root: {
           borderRadius: "2px",
+          zIndex: "unset",
         },
       },
     },

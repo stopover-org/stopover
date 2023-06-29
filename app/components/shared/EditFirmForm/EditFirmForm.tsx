@@ -31,7 +31,7 @@ const EditFirmForm = () => {
         <Grid xs={12}>
           <FileUploader
             onChange={(images) => imageField.onChange(images[0])}
-            maxFiles={1}
+            pickerOptions={{ maxFiles: 1 }}
           />
         </Grid>
         {imageField.value && (

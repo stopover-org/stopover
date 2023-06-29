@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, Stack, TabPanel } from "@mui/joy";
 import { graphql, usePaginationFragment } from "react-relay";
 import moment from "moment";
+import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import Table from "../../../../../components/v2/Table";
 import useEdges from "../../../../../lib/hooks/useEdges";
@@ -176,9 +177,9 @@ const BookingsInformation = ({
             data={booking.bookingOptions.map(
               (
                 { eventOption: { title }, organizerPrice, attendeePrice },
-                index
+                i
               ) => ({
-                id: index + 1,
+                id: i + 1,
                 title: title || "N/A",
                 organizerPrice:
                   getCurrencyFormat(

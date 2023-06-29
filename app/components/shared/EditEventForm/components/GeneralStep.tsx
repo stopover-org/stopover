@@ -32,6 +32,7 @@ const GeneralStep = () => {
 
         <Grid xs={12}>
           <FileUploader
+            pickerOptions={{ maxFiles: 10 }}
             onChange={(images) =>
               imagesField.onChange([...imagesField.value, ...images])
             }
