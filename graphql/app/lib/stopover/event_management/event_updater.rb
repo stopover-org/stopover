@@ -11,16 +11,14 @@ module Stopover
         @event.assign_attributes(args.except(:recurring_dates,
                                              :single_dates,
                                              :event_options,
-                                             :base64_images))
-        if args[:event_options].present?
-          @event.event_options = args[:event_options].map do |option|
-            event_option = if option[:id]
-                             EventOption.find(option[:id])
-                           else
-                             EventOption.new
-                           end
-            event_option.assign_attributes(**option.except(:id))
-          end
+                                             :images))
+
+        @event.event_options = args[:event_options].map do |option|
+          event_option = option[:id]
+          event_option.assign_attributes(**option.to_h.except(:id))
+          event_option.save!
+
+          event_option
         end
 
         if args[:recurring_dates]

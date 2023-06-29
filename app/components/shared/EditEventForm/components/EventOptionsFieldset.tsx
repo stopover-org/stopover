@@ -111,7 +111,20 @@ const EventOptionsFieldset = () => {
                 }
               />
             </Grid>
-            <Grid xs={8} />
+            <Grid xs={4}>
+              <Checkbox
+                checked={eventOption.forAttendee}
+                label="Will be applied for every attendee"
+                onChange={() =>
+                  onEventOptionChange(
+                    !eventOption.forAttendee,
+                    index,
+                    "forAttendee"
+                  )
+                }
+              />
+            </Grid>
+            <Grid xs={4} />
           </>
         ))}
       </Grid>

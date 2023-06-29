@@ -45,7 +45,7 @@ module Mutations
 
     argument :organizer_price_per_uom_cents, Integer, required: false
 
-    argument :base64_images, [String], required: false
+    argument :images, [String], required: false
 
     def resolve(event:, **args)
       raise GraphQL::ExecutionError, 'account has no firm' unless context[:current_user].account.current_firm
@@ -53,13 +53,13 @@ module Mutations
 
       event = Stopover::EventManagement::EventUpdater.new(event).execute(**args)
 
-      # unless args[:base64_images].empty?
-      #   event.images.delete_all
-      #   args[:base64_images].each do |base64_image|
-      #     tmp_file = Stopover::FilesSupport.base64_to_file(base64_image)
-      #     event.images.attach(tmp_file)
-      #   end
-      # end
+      unless args[:images].empty?
+        event.images.delete_all
+        args[:images].each do |url|
+          io_object = Stopover::FilesSupport.url_to_io(url)
+          event.images.attach(io_object)
+        end
+      end
 
       {
         event: event

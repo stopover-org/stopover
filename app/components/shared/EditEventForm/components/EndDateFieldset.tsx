@@ -18,6 +18,7 @@ const EndDateFieldset = () => {
             value={endDate.value}
             onChange={endDate.onChange}
             error={endDate.error}
+            disablePast
           />
         </Grid>
       </Grid>

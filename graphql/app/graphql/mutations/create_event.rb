@@ -43,15 +43,15 @@ module Mutations
 
     argument :organizer_price_per_uom_cents, Integer
 
-    argument :base64_images, [String], required: false
+    argument :images, [String], required: false
 
     def resolve(**args)
-      event = Stopover::EventManagement::EventCreator.new(context).execute(**args.except(:base64_images))
+      event = Stopover::EventManagement::EventCreator.new(context).execute(**args)
 
-      unless args[:base64_images].empty?
-        args[:base64_images].each do |base64_image|
-          tmp_file = Stopover::FilesSupport.base64_to_file(base64_image)
-          event.images.attach(tmp_file)
+      unless args[:images].empty?
+        args[:images].each do |base64_image|
+          io_object = Stopover::FilesSupport.url_to_io(base64_image)
+          event.images.attach(io_object)
         end
       end
 

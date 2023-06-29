@@ -1,6 +1,5 @@
 import React from "react";
-import { AspectRatio, Box, Grid, Option, Stack } from "@mui/joy";
-import ClearIcon from "@mui/icons-material/Clear";
+import { Grid, Option, Stack } from "@mui/joy";
 import Fieldset from "../../../v2/Fieldset/Fieldset";
 import Input from "../../../v2/Input/Input";
 import FileUploader from "../../../v2/FileUploader/FileUploader";
@@ -10,6 +9,7 @@ import Typography from "../../../v2/Typography/Typography";
 import Checkbox from "../../../v2/Checkbox/Checkbox";
 import Select from "../../../v2/Select/Select";
 import TextArea from "../../../v2/TextArea/TextArea";
+import ImagesPreviewFields from "../../ImagesPreviewFields";
 
 const GeneralStep = () => {
   const form = useFormContext();
@@ -38,49 +38,7 @@ const GeneralStep = () => {
             }
           />
         </Grid>
-        <Grid xs={12}>
-          <Stack flexDirection="row" flexWrap="wrap">
-            {imagesField.value.map((image, index) => (
-              <AspectRatio
-                variant="outlined"
-                ratio="4/3"
-                sx={{
-                  width: 300,
-                  bgcolor: "background.level2",
-                  borderRadius: "md",
-                  position: "relative",
-                  marginRight: "5px",
-                  marginTop: "5px",
-                }}
-              >
-                <img alt="Logo Preview" src={image} />
-
-                <Box
-                  sx={{
-                    position: "absolute",
-                    zIndex: 2,
-                    right: "1rem",
-                    top: "1rem",
-                    borderRadius: "50%",
-                    backgroundColor: "white",
-                    width: "30px",
-                    height: "30px",
-                    padding: "5px",
-                    cursor: "pointer",
-                  }}
-                  onClick={() =>
-                    imagesField.onChange([
-                      ...imagesField.value.slice(0, index),
-                      ...imagesField.value.slice(index + 1),
-                    ])
-                  }
-                >
-                  <ClearIcon sx={{ color: "black" }} />
-                </Box>
-              </AspectRatio>
-            ))}
-          </Stack>
-        </Grid>
+        <ImagesPreviewFields />
         <Grid xs={12}>
           <Input
             placeholder="Amount"

@@ -157,6 +157,7 @@ const validationSchema = Yup.object().shape({
           .transform((value) => numberTransform(value))
           .required("Required"),
         builtIn: Yup.boolean().required("Required"),
+        forAttendee: Yup.boolean().required("Required"),
       })
     )
     .required("Required"),
@@ -195,7 +196,9 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  endDate: Yup.date(),
+  endDate: Yup.date().transform((value) =>
+    moment(value).isValid() ? moment(value).toDate() : undefined
+  ),
   street: Yup.string(),
   title: Yup.string().required("Required"),
 });
@@ -229,6 +232,7 @@ export function useUpdateEventForm(
     }) => ({
       input: {
         ...values,
+        images,
         eventId: id,
         recurringDates: recurringDates.map(
           (dt) =>
@@ -252,7 +256,7 @@ export function useUpdateEventForm(
       resolver: yupResolver(validationSchema),
       onCompleted(result) {
         if (result.updateEvent?.event?.id) {
-          router.replace(`my-firm/events/${result.updateEvent?.event?.id}`);
+          router.replace(`/my-firm/events/${result.updateEvent?.event?.id}`);
         }
       },
     }

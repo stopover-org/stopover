@@ -107,7 +107,7 @@ export function useUpdateFirmForm(
     ({ image, ...values }) => ({
       input: {
         ...values,
-        base64Image: image,
+        image,
       },
     }),
     {

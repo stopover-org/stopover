@@ -1,6 +1,5 @@
 import React from "react";
-import { AspectRatio, Box, Grid } from "@mui/joy";
-import ClearIcon from "@mui/icons-material/Clear";
+import { Grid } from "@mui/joy";
 import Fieldset from "../../v2/Fieldset/Fieldset";
 import Input from "../../v2/Input/Input";
 import FileUploader from "../../v2/FileUploader/FileUploader";
@@ -11,6 +10,7 @@ import ChipsInput from "../../v2/ChipsInput/ChipsInput";
 import TextArea from "../../v2/TextArea/TextArea";
 import Button from "../../v2/Button/Button";
 import useFormContext from "../../../lib/hooks/useFormContext";
+import ImagesPreviewFields from "../ImagesPreviewFields";
 
 const EditFirmForm = () => {
   const form = useFormContext();
@@ -34,40 +34,7 @@ const EditFirmForm = () => {
             pickerOptions={{ maxFiles: 1 }}
           />
         </Grid>
-        {imageField.value && (
-          <Grid xs={12}>
-            <AspectRatio
-              variant="outlined"
-              ratio="4/3"
-              sx={{
-                width: 300,
-                bgcolor: "background.level2",
-                borderRadius: "md",
-                position: "relative",
-              }}
-            >
-              <img alt="Logo Preview" src={imageField.value} />
-
-              <Box
-                sx={{
-                  position: "absolute",
-                  zIndex: 2,
-                  right: "1rem",
-                  top: "1rem",
-                  borderRadius: "50%",
-                  backgroundColor: "white",
-                  width: "30px",
-                  height: "30px",
-                  padding: "5px",
-                  cursor: "pointer",
-                }}
-                onClick={() => imageField.onChange("")}
-              >
-                <ClearIcon sx={{ color: "black" }} />
-              </Box>
-            </AspectRatio>
-          </Grid>
-        )}
+        <ImagesPreviewFields />
       </Fieldset>
 
       <AddressFieldset />

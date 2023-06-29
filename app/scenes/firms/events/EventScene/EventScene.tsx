@@ -77,7 +77,7 @@ const EventScene = ({
         </Grid>
         <Grid xs={2}>
           <Stack direction="row" justifyContent="flex-end">
-            <Link href={`my-firm/events/${event.id}/edit`} underline={false}>
+            <Link href={`/my-firm/events/${event.id}/edit`} underline={false}>
               <Button size="sm">Edit</Button>
             </Link>
             {currentUser.serviceUser && event.status === "draft" && (

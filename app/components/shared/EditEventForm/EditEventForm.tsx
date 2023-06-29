@@ -41,6 +41,7 @@ const EditEventForm = ({
     ],
     []
   );
+
   return (
     <Grid container spacing={2} md={10} sm={12}>
       {currentStep === 0 && <GeneralStep />}
