@@ -9,6 +9,7 @@ import useEdges from "../../../../lib/hooks/useEdges";
 import Link from "../../../../components/v2/Link/Link";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import { SchedulesScene_FirmFragment$key } from "./__generated__/SchedulesScene_FirmFragment.graphql";
+import AttendeesCell from "../../../../components/shared/cells/AttendeesCell";
 
 interface SchedulesSceneProps {
   firmFragmentRef: SchedulesScene_FirmFragment$key;
@@ -56,6 +57,10 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
                   }
                   attendees {
                     id
+                    firstName
+                    lastName
+                    phone
+                    email
                   }
                 }
               }
@@ -81,7 +86,10 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
       schedules.map((scheduleRow) => ({
         date: getHumanDateTime(moment(scheduleRow.scheduledFor)),
         bookings: scheduleRow.bookings?.length,
-        bookingsData: scheduleRow.bookings,
+        attendees: scheduleRow.bookings.reduce((acc, booking) => {
+          acc += booking.attendees.length;
+          return acc;
+        }, 0),
       })),
     [schedules]
   );
@@ -95,6 +103,11 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
       },
       {
         label: "Attendees",
+        width: 50,
+        key: "attendees",
+      },
+      {
+        label: "Bookings",
         width: 50,
         key: "bookings",
       },
@@ -110,7 +123,6 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
           {booking.id}
         </Link>
       ),
-      attendeesCount: booking.attendees.length,
       organizerPrice: getCurrencyFormat(
         booking?.organizerTotalPrice?.cents,
         booking?.organizerTotalPrice?.currency?.name
@@ -123,6 +135,19 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
         booking?.alreadyPaidPrice?.cents,
         booking?.alreadyPaidPrice?.currency?.name
       ),
+      attendees: (
+        <AttendeesCell
+          data={booking.attendees.map(
+            ({ firstName, lastName, phone, email }, index) => ({
+              id: index + 1,
+              firstName: firstName || "N/A",
+              lastName: lastName || "N/A",
+              phone: phone || "N/A",
+              email: email || "N/A",
+            })
+          )}
+        />
+      ),
     }));
   }, [schedule]);
 
@@ -130,23 +155,28 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
     () => [
       {
         key: "id",
+        width: 150,
         label: "ID",
       },
       {
-        key: "attendeesCount",
-        label: "Attendees",
-      },
-      {
         key: "organizerPrice",
+        width: 150,
         label: "You get(total)",
       },
       {
         key: "attendeePrice",
+        width: 150,
         label: "Attendee to pay(total)",
       },
       {
         key: "alreadyPaid",
+        width: 150,
         label: "Attendee paid (already)",
+      },
+      {
+        key: "attendees",
+        width: 300,
+        label: "Attendees",
       },
     ],
     [schedule]
@@ -192,7 +222,11 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
             <Typography level="h4">
               Bookings for {getHumanDateTime(moment(schedule.scheduledFor))}
             </Typography>
-            <Table data={bookingsData} headers={bookingsHeaders} />
+            <Table
+              data={bookingsData}
+              headers={bookingsHeaders}
+              hoverRow={false}
+            />
           </>
         ) : (
           <Typography level="h4">

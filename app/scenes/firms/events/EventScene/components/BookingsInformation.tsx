@@ -134,7 +134,6 @@ const BookingsInformation = ({
         ),
         attendees: (
           <AttendeesCell
-            attendeesCount={booking.attendees.length}
             data={booking.attendees.map(
               ({ firstName, lastName, phone, email }, index) => ({
                 id: index + 1,
@@ -148,7 +147,6 @@ const BookingsInformation = ({
         ),
         bookingOptions: (
           <BookingOptionsCell
-            bookingOptionsCount={booking.bookingOptions.length}
             data={booking.bookingOptions.map(
               (
                 { eventOption: { title }, organizerPrice, attendeePrice },

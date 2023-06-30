@@ -6,18 +6,17 @@ import UnfoldMoreDoubleIcon from "@mui/icons-material/UnfoldMoreDouble";
 import Table from "../../v2/Table";
 
 interface AttendeesCellProps {
-  attendeesCount: number;
   data: Array<Record<string, any>>;
 }
 
-const AttendeesCell = ({ attendeesCount, data }: AttendeesCellProps) => {
+const AttendeesCell = ({ data }: AttendeesCellProps) => {
   const [opened, setOpened] = React.useState(false);
   const headers = React.useMemo(
     () => [
       { label: "ID", width: 50, key: "id" },
       { label: "First Name", width: 100, key: "firstName" },
       { label: "Last Name", width: 100, key: "lastName" },
-      { label: "email", width: 100, key: "email" },
+      { label: "Email", width: 100, key: "email" },
       { label: "Phone", width: 100, key: "phone" },
     ],
     []
@@ -25,8 +24,8 @@ const AttendeesCell = ({ attendeesCount, data }: AttendeesCellProps) => {
   return (
     <>
       <Stack direction="row" alignItems="center">
-        Booking has {attendeesCount} Attendees
-        {attendeesCount > 0 && (
+        Booking has {data.length} Attendees
+        {data.length > 0 && (
           <IconButton
             size="sm"
             onClick={() => setOpened(!opened)}

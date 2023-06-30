@@ -70,12 +70,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
               </Tag>
             </Typography>
             <Typography>
-              <Link
-                level="body1"
-                href={`/my-firm/schedules/${booking.schedule.id}`}
-              >
-                {getHumanDateTime(moment(booking.bookedFor!))}
-              </Link>
+              {getHumanDateTime(moment(booking.bookedFor!))}
             </Typography>
           </Box>
           <Box>

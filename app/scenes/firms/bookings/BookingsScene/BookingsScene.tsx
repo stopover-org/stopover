@@ -124,7 +124,6 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
         ),
         attendees: (
           <AttendeesCell
-            attendeesCount={booking.attendees.length}
             data={booking.attendees.map(
               ({ firstName, lastName, phone, email }, index) => ({
                 id: index + 1,
@@ -138,7 +137,6 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
         ),
         bookingOptions: (
           <BookingOptionsCell
-            bookingOptionsCount={booking.bookingOptions.length}
             data={booking.bookingOptions.map(
               (
                 { eventOption: { title }, organizerPrice, attendeePrice },
