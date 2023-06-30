@@ -2,7 +2,6 @@ import React from "react";
 import { Grid, Stack, TabPanel } from "@mui/joy";
 import { graphql, usePaginationFragment } from "react-relay";
 import moment from "moment";
-import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import Table from "../../../../../components/v2/Table";
 import useEdges from "../../../../../lib/hooks/useEdges";
@@ -11,39 +10,12 @@ import { BookingsSectionEventFragment } from "./__generated__/BookingsSectionEve
 import { BookingsInformation_EventFragment$key } from "./__generated__/BookingsInformation_EventFragment.graphql";
 import { getHumanDateTime } from "../../../../../lib/utils/dates";
 import AttendeesCell from "./AttendeesCell";
+import BookingOptionsCell from "./BookingOptionsCell";
 
 interface BookingsInformationProps {
   eventFragmentRef: any;
   index: number;
 }
-
-const BookingOptionsCell = React.memo(
-  ({
-    id,
-    opened,
-    bookingOptionsCount,
-    data,
-  }: {
-    id: string;
-    opened: string[];
-    bookingOptionsCount: number;
-    data: Array<Record<string, any>>;
-  }) => {
-    const headers = React.useMemo(
-      () => [
-        { label: "ID", width: 50, key: "id" },
-        { label: "Title", key: "title" },
-        { label: "You get", key: "organizerPrice" },
-        { label: "Attendee pay", key: "attendeePrice" },
-      ],
-      []
-    );
-    if (opened.includes(id)) {
-      return <Table headers={headers} data={data} />;
-    }
-    return <Stack>Booking has {bookingOptionsCount} Options</Stack>;
-  }
-);
 
 const BookingsInformation = ({
   eventFragmentRef,
@@ -135,7 +107,6 @@ const BookingsInformation = ({
     );
   const [currentPage, setCurrentPage] = React.useState(1);
   const bookings = useEdges(data.pagedBookings);
-  const [opened, setOpened] = React.useState<string[]>([]);
   const actualBookings = React.useMemo(
     () =>
       bookings.map((booking) => ({
@@ -155,9 +126,7 @@ const BookingsInformation = ({
         ),
         attendees: (
           <AttendeesCell
-            id={booking.id}
             attendeesCount={booking.attendees.length}
-            opened={opened}
             data={booking.attendees.map(
               ({ firstName, lastName, phone, email }, index) => ({
                 id: index + 1,
@@ -171,9 +140,7 @@ const BookingsInformation = ({
         ),
         bookingOptions: (
           <BookingOptionsCell
-            id={booking.id}
             bookingOptionsCount={booking.bookingOptions.length}
-            opened={opened}
             data={booking.bookingOptions.map(
               (
                 { eventOption: { title }, organizerPrice, attendeePrice },
@@ -196,7 +163,7 @@ const BookingsInformation = ({
           />
         ),
       })),
-    [bookings, opened]
+    [bookings]
   );
 
   const headers = React.useMemo(
@@ -246,18 +213,10 @@ const BookingsInformation = ({
         <Grid xs={12}>
           <Typography level="h4">All Bookings</Typography>
           <Table
+            hoverRow={false}
             headers={headers}
             data={actualBookings}
             withPagination
-            onRowClick={(i: number) => {
-              const booking = bookings[i];
-
-              if (opened.includes(booking.id)) {
-                setOpened(opened.filter((id: string) => id !== booking.id));
-              } else {
-                setOpened([...opened, booking.id]);
-              }
-            }}
             paginationProps={{
               setPage: setCurrentPage,
               page: currentPage,

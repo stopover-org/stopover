@@ -34,6 +34,11 @@ const EventScene = ({
             id
           }
         }
+        bookings {
+          nodes {
+            id
+          }
+        }
         ...GeneralInformation_EventFragment
         ...EventOptionsInformation_EventFragment
         ...SchedulesInformation_EventFragment
@@ -65,54 +70,54 @@ const EventScene = ({
   });
 
   return (
-    <Box>
-      <Grid container spacing={2} sm={12} md={8}>
-        <Grid xs={10}>
-          <Typography level="h3" sx={{ display: "inline" }}>
-            {event.title}
-          </Typography>
-          <Tag color={tagColor} link={false}>
-            {event.status}
-          </Tag>
-        </Grid>
-        <Grid xs={2}>
-          <Stack direction="row" justifyContent="flex-end">
-            <Link href={`/my-firm/events/${event.id}/edit`} underline={false}>
-              <Button size="sm">Edit</Button>
-            </Link>
-            {currentUser.serviceUser && event.status === "draft" && (
-              <VerifyEvent currentEventFragmentRef={event} />
-            )}
-          </Stack>
-        </Grid>
-        <Grid xs={12}>
-          <Tabs
-            size="sm"
-            aria-label="Event Tabs"
-            defaultValue={0}
-            sx={{ width: "100%", paddingTop: "10px" }}
-            onChange={(_, value) => setTab(value as number)}
-          >
-            <TabList variant="plain" sx={{ width: "30%" }}>
-              <Tab variant={tab === 0 ? "outlined" : "plain"}>
-                General Information
-              </Tab>
-              <Tab variant={tab === 1 ? "outlined" : "plain"}>
-                Event Options ( {event.eventOptions.length} )
-              </Tab>
-              <Tab variant={tab === 2 ? "outlined" : "plain"}>
-                Schedules ( {event.schedules.nodes.length} )
-              </Tab>
-              <Tab variant={tab === 3 ? "outlined" : "plain"}>Bookings</Tab>
-            </TabList>
-            <GeneralInformation index={0} eventFragmentRef={event} />
-            <EventOptionsInformation index={1} eventFragmentRef={event} />
-            <SchedulesInformation index={2} eventFragmentRef={event} />
-            <BookingsInformation index={3} eventFragmentRef={event} />
-          </Tabs>
-        </Grid>
+    <Grid container spacing={2} sm={12} md={12}>
+      <Grid xs={10}>
+        <Typography level="h3" sx={{ display: "inline" }}>
+          {event.title}
+        </Typography>
+        <Tag color={tagColor} link={false}>
+          {event.status}
+        </Tag>
       </Grid>
-    </Box>
+      <Grid xs={2}>
+        <Stack direction="row" justifyContent="flex-end">
+          <Link href={`/my-firm/events/${event.id}/edit`} underline={false}>
+            <Button size="sm">Edit</Button>
+          </Link>
+          {currentUser.serviceUser && event.status === "draft" && (
+            <VerifyEvent currentEventFragmentRef={event} />
+          )}
+        </Stack>
+      </Grid>
+      <Grid xs={12}>
+        <Tabs
+          size="sm"
+          aria-label="Event Tabs"
+          defaultValue={0}
+          sx={{ width: "100%", paddingTop: "10px" }}
+          onChange={(_, value) => setTab(value as number)}
+        >
+          <TabList variant="plain" sx={{ width: "30%" }}>
+            <Tab variant={tab === 0 ? "outlined" : "plain"}>
+              General Information
+            </Tab>
+            <Tab variant={tab === 1 ? "outlined" : "plain"}>
+              Event Options ( {event.eventOptions.length} )
+            </Tab>
+            <Tab variant={tab === 2 ? "outlined" : "plain"}>
+              Schedules ( {event.schedules.nodes.length} )
+            </Tab>
+            <Tab variant={tab === 3 ? "outlined" : "plain"}>
+              Bookings ( {event.bookings.nodes.length} )
+            </Tab>
+          </TabList>
+          <GeneralInformation index={0} eventFragmentRef={event} />
+          <EventOptionsInformation index={1} eventFragmentRef={event} />
+          <SchedulesInformation index={2} eventFragmentRef={event} />
+          <BookingsInformation index={3} eventFragmentRef={event} />
+        </Tabs>
+      </Grid>
+    </Grid>
   );
 };
 

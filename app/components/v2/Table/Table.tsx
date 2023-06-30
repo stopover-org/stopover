@@ -16,6 +16,7 @@ interface BaseTableProps {
   withPagination?: boolean;
   paginationProps?: TablePaginationProps;
   onRowClick?: (index: number) => void;
+  hoverRow?: boolean;
 }
 
 interface TableProps
@@ -28,6 +29,7 @@ const Table = ({
   withPagination,
   paginationProps,
   onRowClick,
+  hoverRow = true,
 }: TableProps) => {
   const keys = React.useMemo(
     () => headers.map((header) => header.key),
@@ -102,7 +104,7 @@ const Table = ({
 
   return (
     <Sheet sx={{ overflow: "auto" }}>
-      <JoyTable aria-labelledby="tableTitle" hoverRow>
+      <JoyTable aria-labelledby="tableTitle" hoverRow={hoverRow}>
         <TableHead cells={headers} />
         <TableBody data={rows} keys={keys} onRowClick={onRowClickHandler} />
         {withPagination && (
