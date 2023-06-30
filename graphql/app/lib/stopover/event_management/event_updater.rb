@@ -13,12 +13,14 @@ module Stopover
                                              :event_options,
                                              :images))
 
-        @event.event_options = args[:event_options].map do |option|
-          event_option = option[:id]
-          event_option.assign_attributes(**option.to_h.except(:id))
-          event_option.save!
+        if args[:event_options].present?
+          @event.event_options = args[:event_options].map do |option|
+            event_option = option[:id]
+            event_option.assign_attributes(**option.to_h.except(:id))
+            event_option.save!
 
-          event_option
+            event_option
+          end
         end
 
         if args[:recurring_dates]
