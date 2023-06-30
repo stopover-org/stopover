@@ -6,6 +6,9 @@ module Types
     field :attendee_price_per_uom, Types::MoneyType
     field :available_dates, [Types::DateTimeType], null: false
     field :average_rating, Float, null: false
+    field :booking, Types::BookingType do
+      argument :id, ID, required: true, loads: Types::BookingType
+    end
     field :bookings, Types::BookingType.connection_type, null: false
     field :booking_cancellation_options, [Types::BookingCancellationOptionType]
     field :city, String
@@ -57,6 +60,11 @@ module Types
                             .bookings
                             .joins(:schedule)
                             .where('schedules.scheduled_for > ? AND bookings.event_id = ?', Time.zone.now, object.id)
+    end
+
+    def booking(**args)
+      return nil if context[:current_user].account.current_firm.events.id != args[:id].event_id
+      args[:id]
     end
   end
 end

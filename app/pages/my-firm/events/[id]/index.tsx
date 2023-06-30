@@ -68,7 +68,8 @@ export default withRelay(Index, Query, {
   // Note: This function must always return the same value.
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
-  serverSideProps: async () => ({
+  serverSideProps: async (ctx) => ({
+    id: +ctx.query.id!,
     apiKeys: fetchEnvVariables(),
   }),
   // Server-side props can be accessed as the second argument

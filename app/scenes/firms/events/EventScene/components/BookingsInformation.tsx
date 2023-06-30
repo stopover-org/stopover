@@ -11,6 +11,7 @@ import { BookingsInformation_EventFragment$key } from "./__generated__/BookingsI
 import { getHumanDateTime } from "../../../../../lib/utils/dates";
 import AttendeesCell from "./AttendeesCell";
 import BookingOptionsCell from "./BookingOptionsCell";
+import Link from "../../../../../components/v2/Link";
 
 interface BookingsInformationProps {
   eventFragmentRef: any;
@@ -39,6 +40,9 @@ const BookingsInformation = ({
               node {
                 id
                 bookedFor
+                event {
+                  id
+                }
                 attendeeTotalPrice {
                   cents
                   currency {
@@ -110,7 +114,11 @@ const BookingsInformation = ({
   const actualBookings = React.useMemo(
     () =>
       bookings.map((booking) => ({
-        id: booking.id,
+        id: (
+          <Link primary href={`/my-firm/bookings/${booking.id}`}>
+            {booking.id}
+          </Link>
+        ),
         bookedFor: getHumanDateTime(moment(booking.bookedFor)),
         organizerPrice: getCurrencyFormat(
           booking?.organizerTotalPrice?.cents,

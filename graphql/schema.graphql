@@ -376,6 +376,7 @@ type Event implements Node {
   attendeePricePerUom: Money
   availableDates: [DateTime!]!
   averageRating: Float!
+  booking(id: ID!): Booking
   bookingCancellationOptions: [BookingCancellationOption!]
   bookings(
     """

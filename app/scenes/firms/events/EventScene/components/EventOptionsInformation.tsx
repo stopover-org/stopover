@@ -73,10 +73,8 @@ const EventOptionsInformation = ({
           />
         ),
       })),
-    [event, event.eventOptions]
+    [event.eventOptions]
   );
-
-  console.log(eventOptions, event.eventOptions);
 
   const headers = React.useMemo(
     () => [
