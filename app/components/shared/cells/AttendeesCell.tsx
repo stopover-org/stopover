@@ -3,7 +3,7 @@ import { Stack } from "@mui/joy";
 import IconButton from "@mui/joy/IconButton";
 import UnfoldLessDoubleIcon from "@mui/icons-material/UnfoldLessDouble";
 import UnfoldMoreDoubleIcon from "@mui/icons-material/UnfoldMoreDouble";
-import Table from "../../../../../components/v2/Table";
+import Table from "../../v2/Table";
 
 interface AttendeesCellProps {
   attendeesCount: number;
@@ -15,10 +15,10 @@ const AttendeesCell = ({ attendeesCount, data }: AttendeesCellProps) => {
   const headers = React.useMemo(
     () => [
       { label: "ID", width: 50, key: "id" },
-      { label: "First Name", key: "firstName" },
-      { label: "Last Name", key: "lastName" },
-      { label: "email", key: "email" },
-      { label: "Phone", key: "phone" },
+      { label: "First Name", width: 100, key: "firstName" },
+      { label: "Last Name", width: 100, key: "lastName" },
+      { label: "email", width: 100, key: "email" },
+      { label: "Phone", width: 100, key: "phone" },
     ],
     []
   );

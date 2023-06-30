@@ -80,7 +80,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           </Box>
           <Box>
             <Button size="sm" color="danger">
-              Remove Booking
+              Refund
             </Button>
           </Box>
         </Stack>

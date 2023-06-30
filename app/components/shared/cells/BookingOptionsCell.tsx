@@ -3,7 +3,7 @@ import { Stack } from "@mui/joy";
 import IconButton from "@mui/joy/IconButton";
 import UnfoldLessDoubleIcon from "@mui/icons-material/UnfoldLessDouble";
 import UnfoldMoreDoubleIcon from "@mui/icons-material/UnfoldMoreDouble";
-import Table from "../../../../../components/v2/Table/Table";
+import Table from "../../v2/Table/Table";
 
 interface BookingOptionsCellProps {
   bookingOptionsCount: number;
@@ -16,9 +16,9 @@ const BookingOptionsCell = React.memo(
     const headers = React.useMemo(
       () => [
         { label: "ID", width: 50, key: "id" },
-        { label: "Title", key: "title" },
-        { label: "You get", key: "organizerPrice" },
-        { label: "Attendee pay", key: "attendeePrice" },
+        { label: "Title", width: 100, key: "title" },
+        { label: "You get", width: 100, key: "organizerPrice" },
+        { label: "Attendee pay", width: 100, key: "attendeePrice" },
       ],
       []
     );

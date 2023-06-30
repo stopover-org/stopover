@@ -1,6 +1,6 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { IconButton } from "@mui/joy";
+import { IconButton, Stack, Tooltip } from "@mui/joy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Table from "../../../../../components/v2/Table";
 import { AttendeesTable_BookingFragment$key } from "./__generated__/AttendeesTable_BookingFragment.graphql";
@@ -33,19 +33,27 @@ const AttendeesTable = ({ bookingFragmentRef }: AttendeesTableProps) => {
         phone: att.phone || "N/A",
         email: att.email || "N/A",
         isRegistered: (
-          <Checkbox
-            label=""
-            defaultChecked={att.isRegisterd}
-            readOnly
-            color="primary"
-            size="sm"
-          />
+          <Tooltip title="This use was registered for this event already">
+            <Checkbox
+              label=""
+              checked={!!att.isRegistered}
+              readOnly
+              color="primary"
+              size="sm"
+            />
+          </Tooltip>
         ),
-        checkIn: <Button size="sm">Register User</Button>,
-        remove: (
-          <IconButton color="danger" size="sm">
-            <DeleteIcon />
-          </IconButton>
+        actions: (
+          <Stack direction="row">
+            <Button sx={{ marginRight: "10px" }} size="sm">
+              Register User
+            </Button>
+            <Tooltip title="Remove this attendee and refund it">
+              <IconButton color="danger" size="sm">
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </Stack>
         ),
       })),
     [booking]
@@ -57,8 +65,7 @@ const AttendeesTable = ({ bookingFragmentRef }: AttendeesTableProps) => {
       { label: "Phone", key: "phone" },
       { label: "Email", key: "email" },
       { label: "Was registered already", key: "isRegistered" },
-      { label: "", key: "checkIn" },
-      { label: "", key: "remove" },
+      { label: "", key: "actions" },
     ],
     []
   );

@@ -8,6 +8,7 @@ import Table from "../../../../../components/v2/Table";
 import useEdges from "../../../../../lib/hooks/useEdges";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Typography from "../../../../../components/v2/Typography";
+import Link from "../../../../../components/v2/Link";
 
 interface SchedulesInformationProps {
   eventFragmentRef: SchedulesInformation_EventFragment$key;
@@ -108,6 +109,11 @@ const SchedulesInformation = ({
   const bookingsData = React.useMemo(() => {
     if (!schedule) return [] as Record<string, any>[];
     return schedule.bookings.map((booking) => ({
+      id: (
+        <Link primary href={`/my-firm/bookings/${booking.id}`}>
+          {booking.id}
+        </Link>
+      ),
       attendeesCount: booking.attendees.length,
       organizerPrice: getCurrencyFormat(
         booking?.organizerTotalPrice?.cents,
@@ -126,6 +132,10 @@ const SchedulesInformation = ({
 
   const bookingsHeaders = React.useMemo(
     () => [
+      {
+        key: "id",
+        label: "ID",
+      },
       {
         key: "attendeesCount",
         label: "Attendees",
@@ -182,13 +192,17 @@ const SchedulesInformation = ({
           />
         </Grid>
         <Grid xs={8}>
-          {schedule && (
+          {schedule ? (
             <>
               <Typography level="h4">
                 Bookings for {getHumanDateTime(moment(schedule.scheduledFor))}
               </Typography>
               <Table data={bookingsData} headers={bookingsHeaders} />
             </>
+          ) : (
+            <Typography level="h4">
+              Choose schedule to view Bookings for this schedule
+            </Typography>
           )}
         </Grid>
       </Grid>

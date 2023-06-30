@@ -9,8 +9,8 @@ import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import { BookingsSectionEventFragment } from "./__generated__/BookingsSectionEventFragment.graphql";
 import { BookingsInformation_EventFragment$key } from "./__generated__/BookingsInformation_EventFragment.graphql";
 import { getHumanDateTime } from "../../../../../lib/utils/dates";
-import AttendeesCell from "./AttendeesCell";
-import BookingOptionsCell from "./BookingOptionsCell";
+import AttendeesCell from "../../../../../components/shared/cells/AttendeesCell";
+import BookingOptionsCell from "../../../../../components/shared/cells/BookingOptionsCell";
 import Link from "../../../../../components/v2/Link";
 
 interface BookingsInformationProps {
@@ -203,12 +203,12 @@ const BookingsInformation = ({
       },
       {
         label: "Booking Options",
-        width: 750,
+        width: 300,
         key: "bookingOptions",
       },
       {
         label: "Attendees",
-        width: 750,
+        width: 300,
         key: "attendees",
       },
     ],
