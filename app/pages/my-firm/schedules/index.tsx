@@ -46,7 +46,7 @@ const Schedules = ({
         redirectTo="/firms/new"
       >
         <SidebarContent>
-          <SchedulesScene firmFragmentRef={currentUser?.account?.firm} />
+          <SchedulesScene firmFragmentRef={currentUser?.account?.firm!} />
         </SidebarContent>
       </AuthGuard>
     </Layout>
