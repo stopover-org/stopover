@@ -3,7 +3,7 @@ import { Stack } from "@mui/joy";
 import IconButton from "@mui/joy/IconButton";
 import UnfoldLessDoubleIcon from "@mui/icons-material/UnfoldLessDouble";
 import UnfoldMoreDoubleIcon from "@mui/icons-material/UnfoldMoreDouble";
-import Table from "../../v2/Table/Table";
+import Table from "../../../v2/Table/Table";
 
 interface BookingOptionsCellProps {
   data: Array<Record<string, any>>;
