@@ -33,6 +33,7 @@ const SidebarContent = ({ children, sx }: SidebarContentProps) => {
           { title: "Add New Event", href: "/my-firm/events/new" },
           { title: "Events", href: "/my-firm/events" },
           { title: "Bookings", href: "/my-firm/bookings" },
+          { title: "Schedules", href: "/my-firm/schedules" },
         ]}
       />
       <ContentWrapper

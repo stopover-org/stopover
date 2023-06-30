@@ -81,9 +81,19 @@ const EventScene = ({
       </Grid>
       <Grid xs={2}>
         <Stack direction="row" justifyContent="flex-end">
-          <Link href={`/my-firm/events/${event.id}/edit`} underline={false}>
+          <Link
+            href={`/my-firm/events/${event.id}/edit`}
+            underline={false}
+            sx={{ marginRight: "10px" }}
+          >
             <Button size="sm">Edit</Button>
           </Link>
+          <Button size="sm" sx={{ marginRight: "10px" }}>
+            Reschedule Event
+          </Button>
+          <Button size="sm" color="danger" sx={{ marginRight: "10px" }}>
+            Remove Event
+          </Button>
           {currentUser.serviceUser && event.status === "draft" && (
             <VerifyEvent currentEventFragmentRef={event} />
           )}

@@ -50,6 +50,7 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
               node {
                 id
                 status
+                bookedFor
                 organizerTotalPrice {
                   cents
                   currency {

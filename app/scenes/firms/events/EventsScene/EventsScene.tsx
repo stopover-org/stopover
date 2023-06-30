@@ -86,7 +86,7 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
           row?.attendeePricePerUom?.currency.name
         ),
         title: (
-          <Link level="body1" href={`/my-firm/events/${row.id}`}>
+          <Link primary href={`/my-firm/events/${row.id}`}>
             {row.title}
           </Link>
         ),

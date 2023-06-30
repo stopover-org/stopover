@@ -10,7 +10,7 @@ import ChipsInput from "../../v2/ChipsInput/ChipsInput";
 import TextArea from "../../v2/TextArea/TextArea";
 import Button from "../../v2/Button/Button";
 import useFormContext from "../../../lib/hooks/useFormContext";
-import ImagesPreviewFields from "../ImagesPreviewFields";
+import ImagePreviewFields from "../ImagePreviewFields";
 
 const EditFirmForm = () => {
   const form = useFormContext();
@@ -34,7 +34,7 @@ const EditFirmForm = () => {
             pickerOptions={{ maxFiles: 1 }}
           />
         </Grid>
-        <ImagesPreviewFields />
+        <ImagePreviewFields />
       </Fieldset>
 
       <AddressFieldset />
