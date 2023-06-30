@@ -16,17 +16,18 @@ const EventOptionsTable = ({ bookingFragmentRef }: EventOptionsTableProps) => {
       fragment EventOptionsTable_BookingFragment on Booking {
         bookingOptions {
           eventOption {
-            organizerPrice {
-              cents
-              currency {
-                name
-              }
+            title
+          }
+          organizerPrice {
+            cents
+            currency {
+              name
             }
-            attendeePrice {
-              cents
-              currency {
-                name
-              }
+          }
+          attendeePrice {
+            cents
+            currency {
+              name
             }
           }
         }
@@ -60,15 +61,15 @@ const EventOptionsTable = ({ bookingFragmentRef }: EventOptionsTableProps) => {
   const data = React.useMemo(
     () =>
       booking.bookingOptions.map((opt) => ({
-        title: opt.eventOptions.title,
+        title: opt.eventOption.title,
 
         organizerPrice: getCurrencyFormat(
-          booking.eventOption.organizerPrice.cents,
-          booking.eventOption.organizerPrice.currency.name
+          opt.organizerPrice.cents,
+          opt.organizerPrice.currency.name
         ),
         attendeePrice: getCurrencyFormat(
-          booking.eventOption.attendeePrice.cents,
-          booking.eventOption.attendeePrice.currency.name
+          opt.attendeePrice.cents,
+          opt.attendeePrice.currency.name
         ),
         remove: (
           <IconButton color="danger" size="sm">
