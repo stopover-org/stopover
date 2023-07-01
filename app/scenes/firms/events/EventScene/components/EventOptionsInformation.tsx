@@ -42,35 +42,39 @@ const EventOptionsInformation = ({
     eventFragmentRef
   );
 
-  const eventOptions = event.eventOptions.map((option) => ({
-    ...option,
-    organizerPrice: getCurrencyFormat(
-      option?.organizerPrice?.cents,
-      option?.organizerPrice?.currency.name
-    ),
-    attendeePrice: getCurrencyFormat(
-      option?.attendeePrice?.cents,
-      option?.attendeePrice?.currency.name
-    ),
-    builtIn: (
-      <Checkbox
-        checked={Boolean(option.builtIn)}
-        color="primary"
-        disabled
-        size="sm"
-        label=""
-      />
-    ),
-    forAttendee: (
-      <Checkbox
-        checked={Boolean(option.forAttendee)}
-        color="primary"
-        disabled
-        size="sm"
-        label=""
-      />
-    ),
-  }));
+  const eventOptions = React.useMemo(
+    () =>
+      event.eventOptions.map((option) => ({
+        ...option,
+        organizerPrice: getCurrencyFormat(
+          option?.organizerPrice?.cents,
+          option?.organizerPrice?.currency.name
+        ),
+        attendeePrice: getCurrencyFormat(
+          option?.attendeePrice?.cents,
+          option?.attendeePrice?.currency.name
+        ),
+        builtIn: (
+          <Checkbox
+            checked={option.builtIn}
+            color="primary"
+            readOnly
+            size="sm"
+            label=""
+          />
+        ),
+        forAttendee: (
+          <Checkbox
+            checked={option.forAttendee}
+            color="primary"
+            readOnly
+            size="sm"
+            label=""
+          />
+        ),
+      })),
+    [event.eventOptions]
+  );
 
   const headers = React.useMemo(
     () => [
@@ -79,7 +83,7 @@ const EventOptionsInformation = ({
       { key: "attendeePrice", label: "Attendee pay" },
       { key: "description", label: "Description" },
       { key: "builtIn", label: "Option is included into Price" },
-      { key: "builtIn", label: "For Attendees only" },
+      { key: "forAttendee", label: "For Attendees only" },
     ],
     []
   );

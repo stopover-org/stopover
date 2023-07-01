@@ -11,6 +11,7 @@ module Mutations
     argument :description,    String, required: false
     argument :full_address,   String, required: false
     argument :house_number,   String, required: false
+    argument :image,          String, required: false
     argument :latitude,       Float,  required: false
     argument :longitude,      Float,  required: false
     argument :primary_email,  String, required: false
@@ -20,7 +21,6 @@ module Mutations
     argument :street,         String, required: false
     argument :title,          String, required: false
     argument :website,        String, required: false
-    argument :base64_image,   String, required: false
 
     def resolve(**args)
       raise GraphQL::ExecutionError, 'unauthorized'         unless context[:current_user]
@@ -29,14 +29,12 @@ module Mutations
                                                                                          .current_firm
 
       firm = context[:current_user].account.current_firm
-      firm.update!(args.except(:base64_image))
+      firm.update!(args.except(:image))
 
-      if args[:base64_image]
-        if Stopover::FilesSupport.base64?(args[:base64_image])
-          firm.image.purge if firm.image.present?
-          tmp_file = Stopover::FilesSupport.base64_to_file(args[:base64_image])
-          firm.image.attach(tmp_file)
-        end
+      if args[:image].present?
+        firm.image.purge if firm.image.present?
+        io_object = Stopover::FilesSupport.url_to_io(args[:image])
+        firm.image.attach(io_object)
       elsif firm.image.present?
         firm.image.purge
       end

@@ -2,12 +2,12 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import { RelayProps, withRelay } from "relay-nextjs";
 import DashboardScene from "../../../scenes/firms/DashboardScene";
 import Layout from "../../../components/MainPage/Layout";
-import SidebarContent from "../../../lib/shared/SidebarContent";
+import SidebarContent from "../../../components/shared/SidebarContent";
 import { IApiKeys } from "../../../components/ApiKeysProvider";
 import { getClientEnvironment } from "../../../lib/clientEnvironment";
 import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
 import { dashboard_DashboardQuery } from "./__generated__/dashboard_DashboardQuery.graphql";
-import AuthGuard from "../../../lib/shared/AuthGuard";
+import AuthGuard from "../../../components/shared/AuthGuard";
 import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
 
 const Query = graphql`

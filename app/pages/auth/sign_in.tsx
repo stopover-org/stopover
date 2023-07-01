@@ -5,7 +5,7 @@ import SignInScene from "../../scenes/Auth/SignInScene";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 import Layout from "../../components/MainPage/Layout";
-import AuthGuard from "../../lib/shared/AuthGuard/AuthGuard";
+import AuthGuard from "../../components/shared/AuthGuard/AuthGuard";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { signIn_Query } from "./__generated__/signIn_Query.graphql";

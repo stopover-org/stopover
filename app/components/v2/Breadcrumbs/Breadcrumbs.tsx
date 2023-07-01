@@ -10,9 +10,10 @@ interface IBreadcrumb {
 
 interface BreadcrumbsProps {
   items: Array<string | IBreadcrumb>;
+  padding?: number;
 }
-const Breadcrumbs = ({ items }: BreadcrumbsProps) => (
-  <Box padding={2}>
+const Breadcrumbs = ({ items, padding = 2 }: BreadcrumbsProps) => (
+  <Box padding={padding}>
     <Stack flexDirection="row">
       {items.map((item) =>
         typeof item === "string" ? (

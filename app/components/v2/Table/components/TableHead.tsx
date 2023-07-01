@@ -1,4 +1,5 @@
 import React from "react";
+import { Tooltip } from "@mui/joy";
 
 interface BaseHeadProps {
   cells: TableHeadCellValue[];
@@ -22,8 +23,11 @@ const TableHead = (props: HeadProps) => {
           <th
             key={`${headCell.key}-${index}`}
             style={{ width: headCell.width }}
+            title={headCell.label?.toString()}
           >
-            {headCell.label}
+            <Tooltip title={headCell.label?.toString()} placement="top-start">
+              <span>{headCell.label}</span>
+            </Tooltip>
           </th>
         ))}
       </tr>

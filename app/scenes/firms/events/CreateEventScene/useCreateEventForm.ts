@@ -79,6 +79,7 @@ const validationSchema = Yup.object().shape({
           .transform((value) => numberTransform(value))
           .required("Required"),
         builtIn: Yup.boolean().required("Required"),
+        forAttendee: Yup.boolean().required("Required"),
       })
     )
     .required("Required"),
@@ -117,7 +118,9 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  endDate: Yup.date(),
+  endDate: Yup.date().transform((value) =>
+    moment(value).isValid() ? moment(value).toDate() : undefined
+  ),
   street: Yup.string(),
   title: Yup.string().required("Required"),
 });
@@ -148,7 +151,7 @@ export function useCreateEventForm() {
     }) => ({
       input: {
         ...values,
-        base64Images: images,
+        images,
         recurringDates: recurringDates.map(
           (dt) =>
             `${dt.day} ${dt.hour?.toString().padStart(2, "0")}:${dt.minute

@@ -109,7 +109,6 @@ class Event < ApplicationRecord
   end
 
   # ENUMS =======================================================================
-  enum recurring_type: { recurrent: 'recurrent', general: 'general' }
   enum event_type: {
     excursion: 'excursion',
     tour: 'tour',
@@ -128,7 +127,7 @@ class Event < ApplicationRecord
   validates :title, length: { maximum: 100 }, unless: :draft?
 
   validates :title, :description,
-            :event_type, :recurring_type,
+            :event_type,
             :organizer_price_per_uom, :attendee_price_per_uom,
             :city, :country,
             :full_address, :duration_time, presence: true, unless: :draft?
@@ -197,10 +196,6 @@ class Event < ApplicationRecord
 
     times
   end
-
-  # def get_days_till_end()
-  #   Date.today -
-  # end
 
   private
 

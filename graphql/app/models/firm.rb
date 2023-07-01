@@ -18,6 +18,7 @@
 #  postal_code       :string
 #  primary_email     :string
 #  primary_phone     :string
+#  ref_number        :string
 #  region            :string
 #  status            :string           default("pending")
 #  street            :string

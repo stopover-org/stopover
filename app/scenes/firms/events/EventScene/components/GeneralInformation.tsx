@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Grid, Sheet, Switch, TabPanel } from "@mui/joy";
+import { Card, Grid, Sheet, Stack, Switch, TabPanel } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import moment from "moment/moment";
 import { GeneralInformation_EventFragment$key } from "./__generated__/GeneralInformation_EventFragment.graphql";
@@ -7,6 +7,8 @@ import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Tag from "../../../../../components/v2/Tag/Tag";
 import { dateTimeFormat } from "../../../../../lib/utils/dates";
 import Checkbox from "../../../../../components/v2/Checkbox";
+import ImagesPreviewFields from "../../../../../components/shared/ImagesPreviewFields";
+import ImagesPreview from "../../../../../components/shared/ImagesPreview";
 
 interface GeneralInformationProps {
   eventFragmentRef: GeneralInformation_EventFragment$key;
@@ -26,6 +28,7 @@ const GeneralInformation = ({
         fullAddress
         houseNumber
         id
+        images
         latitude
         longitude
         maxAttendees
@@ -54,6 +57,7 @@ const GeneralInformation = ({
     `,
     eventFragmentRef
   );
+
   return (
     <TabPanel value={index} size="sm" sx={{ paddingTop: "20px" }}>
       <Sheet>
@@ -61,6 +65,12 @@ const GeneralInformation = ({
           <Grid container xs={12}>
             <Grid xs={2}>Title</Grid>
             <Grid xs={10}>{event.title}</Grid>
+
+            <Grid xs={12}>
+              <Stack direction="row">
+                <ImagesPreview images={event.images as string[]} readonly />
+              </Stack>
+            </Grid>
 
             <Grid xs={2}>Description</Grid>
             <Grid xs={10}>{event.description}</Grid>

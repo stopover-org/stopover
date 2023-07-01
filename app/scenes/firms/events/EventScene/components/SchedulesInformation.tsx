@@ -8,6 +8,8 @@ import Table from "../../../../../components/v2/Table";
 import useEdges from "../../../../../lib/hooks/useEdges";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Typography from "../../../../../components/v2/Typography";
+import Link from "../../../../../components/v2/Link";
+import AttendeesCell from "../../../../../components/shared/cells/AttendeesCell";
 
 interface SchedulesInformationProps {
   eventFragmentRef: SchedulesInformation_EventFragment$key;
@@ -59,6 +61,10 @@ const SchedulesInformation = ({
                   }
                   attendees {
                     id
+                    firstName
+                    lastName
+                    phone
+                    email
                   }
                 }
               }
@@ -84,7 +90,10 @@ const SchedulesInformation = ({
       schedules.map((scheduleRow) => ({
         date: getHumanDateTime(moment(scheduleRow.scheduledFor)),
         bookings: scheduleRow.bookings?.length,
-        bookingsData: scheduleRow.bookings,
+        attendees: scheduleRow.bookings.reduce((acc, booking) => {
+          acc += booking.attendees.length;
+          return acc;
+        }, 0),
       })),
     [schedules]
   );
@@ -97,9 +106,14 @@ const SchedulesInformation = ({
         key: "date",
       },
       {
-        label: "Attendees",
+        label: "Bookings",
         width: 50,
         key: "bookings",
+      },
+      {
+        label: "Attendees",
+        width: 50,
+        key: "attendees",
       },
     ],
     []
@@ -108,6 +122,11 @@ const SchedulesInformation = ({
   const bookingsData = React.useMemo(() => {
     if (!schedule) return [] as Record<string, any>[];
     return schedule.bookings.map((booking) => ({
+      id: (
+        <Link primary href={`/my-firm/bookings/${booking.id}`}>
+          {booking.id}
+        </Link>
+      ),
       attendeesCount: booking.attendees.length,
       organizerPrice: getCurrencyFormat(
         booking?.organizerTotalPrice?.cents,
@@ -121,26 +140,53 @@ const SchedulesInformation = ({
         booking?.alreadyPaidPrice?.cents,
         booking?.alreadyPaidPrice?.currency?.name
       ),
+      attendees: (
+        <AttendeesCell
+          data={booking.attendees.map(
+            ({ firstName, lastName, phone, email }, index) => ({
+              id: index + 1,
+              firstName: firstName || "N/A",
+              lastName: lastName || "N/A",
+              phone: phone || "N/A",
+              email: email || "N/A",
+            })
+          )}
+        />
+      ),
     }));
   }, [schedule]);
 
   const bookingsHeaders = React.useMemo(
     () => [
       {
+        key: "id",
+        width: 150,
+        label: "ID",
+      },
+      {
         key: "attendeesCount",
+        width: 100,
         label: "Attendees",
       },
       {
         key: "organizerPrice",
+        width: 100,
         label: "You get(total)",
       },
       {
         key: "attendeePrice",
+        width: 100,
         label: "Attendee to pay(total)",
       },
       {
         key: "alreadyPaid",
+        width: 100,
         label: "Attendee paid (already)",
+      },
+      {
+        key: "attendees",
+        width: 300,
+        label: "Attendees",
       },
     ],
     [schedule]
@@ -182,13 +228,21 @@ const SchedulesInformation = ({
           />
         </Grid>
         <Grid xs={8}>
-          {schedule && (
+          {schedule ? (
             <>
               <Typography level="h4">
                 Bookings for {getHumanDateTime(moment(schedule.scheduledFor))}
               </Typography>
-              <Table data={bookingsData} headers={bookingsHeaders} />
+              <Table
+                data={bookingsData}
+                headers={bookingsHeaders}
+                hoverRow={false}
+              />
             </>
+          ) : (
+            <Typography level="h4">
+              Choose schedule to view Bookings for this schedule
+            </Typography>
           )}
         </Grid>
       </Grid>

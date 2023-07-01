@@ -61,8 +61,13 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
   const actualBookings = useMemo(
     () =>
       bookings.map((booking) => ({
+        id: (
+          <Link primary href={`/my-firm/bookings/${booking.id}`}>
+            {booking.id}
+          </Link>
+        ),
         event: (
-          <Link primary href={`/my-firm/events/${booking.event.id}`}>
+          <Link href={`/my-firm/events/${booking.event.id}`}>
             {booking.event.title}
           </Link>
         ),
@@ -75,17 +80,17 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
           booking.attendeeTotalPrice.cents,
           booking.attendeeTotalPrice.currency.name
         ),
-        date: (
-          <Link primary href={`/my-firm/bookings/${booking.id}`}>
-            {getHumanDateTime(moment(booking.bookedFor))}
-          </Link>
-        ),
+        date: getHumanDateTime(moment(booking.bookedFor)),
       })),
     [bookings]
   );
 
   const headers = useMemo(
     () => [
+      {
+        label: "ID",
+        key: "id",
+      },
       {
         label: "Event",
         key: "event",

@@ -79,7 +79,7 @@ export function useCreateFirmForm() {
     ({ image, ...values }) => ({
       input: {
         ...values,
-        base64Image: image,
+        image,
       },
     }),
     {

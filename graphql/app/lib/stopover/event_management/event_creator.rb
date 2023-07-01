@@ -3,13 +3,17 @@
 module Stopover
   module EventManagement
     class EventCreator
-      def execute(context, **args)
+      def initialize(context)
+        @context = context
+      end
+
+      def execute(**args)
         event = Event.new
         event.assign_attributes(args.except(:recurring_dates,
                                             :single_dates,
                                             :event_options,
-                                            :base64_images))
-        event.firm = context[:current_user].account.current_firm
+                                            :images))
+        event.firm = @context[:current_user].account.current_firm
         if args[:event_options].present?
           event.event_options = args[:event_options].map do |option|
             event_option = EventOption.new

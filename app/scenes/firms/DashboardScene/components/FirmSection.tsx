@@ -7,7 +7,7 @@ import { FirmSection_FirmFragment$key } from "./__generated__/FirmSection_FirmFr
 import Button from "../../../../components/v2/Button";
 import Link from "../../../../components/v2/Link";
 import Tag from "../../../../components/v2/Tag/Tag";
-import VerifyFirm from "../../../../lib/shared/VerifyFirm";
+import VerifyFirm from "../../../../components/shared/VerifyFirm";
 import { FirmSection_CurrentUserFragment$key } from "./__generated__/FirmSection_CurrentUserFragment.graphql";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 

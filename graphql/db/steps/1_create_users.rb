@@ -1,13 +1,13 @@
-user = User.create!(phone: '+79829320283')
-user.send_confirmation_code!(primary: 'phone')
-user.activate!(code: user.confirmation_code)
+require 'roo'
 
-user = User.create!(email: 'mikhail@dorokhovich.ru')
-user.send_confirmation_code!(primary: 'email')
-user.activate!(code: user.confirmation_code)
+users_data = SeedsHelper.get_data('./db/users.xlsx')
 
-user = User.create!(email: 'maxhooga@gmail.com')
-user.send_confirmation_code!(primary: 'email')
-user.activate!(code: user.confirmation_code)
+users_data.each do |user_data|
+    user = User.new
+    user.assign_attributes(**user_data.except(:firm_ref))
+    user.save!
+    user.send_confirmation_code!(primary: 'email')
+    user.activate!(code: user.confirmation_code)
+end
 
 ActiveRecord::Base.connection_pool.flush!

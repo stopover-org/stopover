@@ -1,14 +1,14 @@
 import { graphql, usePreloadedQuery } from "react-relay";
 import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../../../components/MainPage/Layout";
-import BookingScene from "../../../../scenes/attendees/bookings/BookingScene";
+import BookingScene from "../../../../scenes/firms/bookings/BookingScene";
 import { getClientEnvironment } from "../../../../lib/clientEnvironment";
 import { fetchEnvVariables } from "../../../../lib/fetchEnvVariables";
 import { IApiKeys } from "../../../../components/ApiKeysProvider";
 import { Id_FirmBookingQuery } from "./__generated__/Id_FirmBookingQuery.graphql";
 import { useUpdateApiKeys } from "../../../../lib/hooks/useUpdateApiKeys";
-import SidebarContent from "../../../../lib/shared/SidebarContent";
-import AuthGuard from "../../../../lib/shared/AuthGuard";
+import SidebarContent from "../../../../components/shared/SidebarContent";
+import AuthGuard from "../../../../components/shared/AuthGuard";
 
 const Query = graphql`
   query Id_FirmBookingQuery($id: ID!) {

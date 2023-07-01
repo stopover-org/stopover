@@ -1,12 +1,21 @@
 # frozen_string_literal: true
 
 require 'digest'
+require 'open-uri'
 
 module Stopover
   class FilesSupport
     def self.base64?(string)
       start_regex = %r{data:image/[a-z]{3,4};base64,}
       start_regex.match(string)
+    end
+
+    def self.url_to_io(url, filename = SecureRandom.hex)
+      image = URI.parse(url).open
+      {
+        io: image,
+          filename: filename
+      }
     end
 
     def self.base64_to_file(base64, filename = SecureRandom.hex)

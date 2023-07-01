@@ -14,9 +14,9 @@ interface IFieldsetProps
     IBaseFieldsetProps {}
 
 const Fieldset = ({ children, ...props }: IFieldsetProps) => (
-  <Grid xs={12} {...props}>
+  <Grid xs={12} sx={{ zIndex: "unset" }} {...props}>
     <Card sx={{ margin: "20px" }} variant="outlined">
-      <CardContent>
+      <CardContent sx={{ zIndex: "unset" }}>
         <Grid container>{children}</Grid>
       </CardContent>
     </Card>

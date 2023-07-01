@@ -2,8 +2,8 @@ import React from "react";
 import { RelayProps, withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "../../../../components/MainPage/Layout";
-import AuthGuard from "../../../../lib/shared/AuthGuard";
-import SidebarContent from "../../../../lib/shared/SidebarContent";
+import AuthGuard from "../../../../components/shared/AuthGuard";
+import SidebarContent from "../../../../components/shared/SidebarContent";
 import { getClientEnvironment } from "../../../../lib/clientEnvironment";
 import { IApiKeys } from "../../../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../../../lib/fetchEnvVariables";
@@ -68,7 +68,8 @@ export default withRelay(Index, Query, {
   // Note: This function must always return the same value.
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
-  serverSideProps: async () => ({
+  serverSideProps: async (ctx) => ({
+    id: +ctx.query.id!,
     apiKeys: fetchEnvVariables(),
   }),
   // Server-side props can be accessed as the second argument

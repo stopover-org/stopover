@@ -15,6 +15,19 @@ interface EventsSceneProps {
   firmFragmentRef: EventsScene_EventsFirmPaginationFragment$key;
 }
 
+const TagColor = ({ status }: { status: string }) => {
+  const color = useStatusColor({
+    danger: "deleted",
+    status,
+  });
+
+  return (
+    <Tag level="body3" link={false} color={color}>
+      {status}
+    </Tag>
+  );
+};
+
 const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
   const { data, hasPrevious, hasNext, loadPrevious, loadNext } =
     usePaginationFragment<
@@ -60,19 +73,6 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
     );
   const [currentPage, setCurrentPage] = React.useState(1);
   const pagedData = usePagedEdges(data.events, currentPage, 30);
-  const tagColor = (status: string) => {
-    const color = useStatusColor({
-      danger: "deleted",
-      status,
-    });
-
-    return (
-      <Tag level="body3" link={false} color={color}>
-        {status}
-      </Tag>
-    );
-  };
-
   const events = React.useMemo(
     () =>
       pagedData.map((row) => ({
@@ -86,7 +86,7 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
           row?.attendeePricePerUom?.currency.name
         ),
         title: (
-          <Link level="body1" href={`/my-firm/events/${row.id}`}>
+          <Link primary href={`/my-firm/events/${row.id}`}>
             {row.title}
           </Link>
         ),
@@ -110,7 +110,7 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
             </Tag>{" "}
           </>
         )),
-        status: tagColor(row.status),
+        status: <TagColor status={row.status} />,
       })),
     [pagedData]
   );

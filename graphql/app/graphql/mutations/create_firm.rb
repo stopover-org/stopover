@@ -11,6 +11,7 @@ module Mutations
     argument :description,    String, required: false
     argument :full_address,   String, required: false
     argument :house_number,   String, required: false
+    argument :image,          String, required: false
     argument :latitude,       Float,  required: false
     argument :longitude,      Float,  required: false
     argument :primary_email,  String, required: false
@@ -20,7 +21,6 @@ module Mutations
     argument :street,         String, required: false
     argument :title,          String, required: false
     argument :website,        String, required: false
-    argument :base64_image,   String, required: false
 
     def resolve(**args)
       raise GraphQL::ExecutionError, 'unauthorized'               unless context[:current_user]
@@ -28,7 +28,7 @@ module Mutations
       raise GraphQL::ExecutionError, 'account already has a firm' if context[:current_user].account
                                                                                            .current_firm
 
-      firm = Firm.new(args.except(:base64_image))
+      firm = Firm.new(args.except(:image))
 
       firm.primary_email = context[:current_user].email if args[:primary_email].blank?
       firm.primary_phone = context[:current_user].phone if args[:primary_phone].blank?
@@ -36,9 +36,9 @@ module Mutations
       firm.account_firms.build(firm: firm, account: context[:current_user].account)
       firm.save!
 
-      if args[:base64_image]
-        tmp_file = Stopover::FilesSupport.base64_to_file(args[:base64_image])
-        firm.image.attach(tmp_file)
+      if args[:image]
+        io_object = Stopover::FilesSupport.base64_to_file(args[:image])
+        firm.image.attach(io_object)
       end
 
       { firm: firm }

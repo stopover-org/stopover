@@ -110,3 +110,4 @@ gem 'sidekiq', '~> 6.5'
 gem "stripe", "~> 8.3"
 
 gem "rspec-sidekiq", "~> 3.1"
+gem "roo", "~> 2.10.0"
