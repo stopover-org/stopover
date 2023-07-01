@@ -22,6 +22,7 @@ export interface UpdateEventFields {
   country?: string | null;
   description: string;
   durationTime: string;
+  endDate: Moment | null;
   eventOptions: Array<{
     id: string;
     title: string;
@@ -50,7 +51,6 @@ export interface UpdateEventFields {
     hour: number | null;
     minute: number | null;
   }>;
-  endDate: Moment | null;
   street?: string | null;
   title: string;
 }
@@ -127,7 +127,7 @@ function useDefaultValues(
       country: event.country,
       description: event.description,
       durationTime: event.durationTime,
-      endDate: moment(event.endDate),
+      endDate: event.endDate ? moment(event.endDate) : null,
       eventType: event.eventType,
       fullAddress: event.fullAddress!,
       houseNumber: event.houseNumber,
@@ -152,6 +152,7 @@ const validationSchema = Yup.object().shape({
   country: Yup.string().nullable(),
   description: Yup.string().required("Required"),
   durationTime: Yup.string().required("Required"),
+  endDate: Yup.date().transform(momentTransform).nullable(),
   eventOptions: Yup.array()
     .of(
       Yup.object().shape({
@@ -195,7 +196,6 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  endDate: Yup.date().transform(momentTransform),
   street: Yup.string().nullable(),
   title: Yup.string().required("Required"),
 });

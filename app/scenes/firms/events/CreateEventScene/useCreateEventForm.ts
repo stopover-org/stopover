@@ -118,7 +118,7 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  endDate: Yup.date().transform(momentTransform),
+  endDate: Yup.date().transform(momentTransform).nullable(),
   street: Yup.string().nullable(),
   title: Yup.string().required("Required"),
 });

@@ -3,18 +3,18 @@ import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useUnpublishEventForm_EventFragment$key } from "./__generated__/useUnpublishEventForm_EventFragment.graphql";
+import { useRescheduleEventForm_EventFragment$key } from "./__generated__/useRescheduleEventForm_EventFragment.graphql";
 
-interface UnpublishEventFields {
+interface RescheduleEventFields {
   eventId: string;
 }
 
 function useDefaultValues(
-  eventFragmentRef: useUnpublishEventForm_EventFragment$key
-): UnpublishEventFields {
+  eventFragmentRef: useRescheduleEventForm_EventFragment$key
+): RescheduleEventFields {
   const event = useFragment(
     graphql`
-      fragment useUnpublishEventForm_EventFragment on Event {
+      fragment useRescheduleEventForm_EventFragment on Event {
         id
       }
     `,
@@ -28,15 +28,15 @@ const validationSchema = Yup.object().shape({
   eventId: Yup.string().required(),
 });
 
-export function useUnpublishEventForm(
-  eventFragmentRef: useUnpublishEventForm_EventFragment$key
+export function useRescheduleEventForm(
+  eventFragmentRef: useRescheduleEventForm_EventFragment$key
 ) {
   return useMutationForm(
     graphql`
-      mutation useUnpublishEventForm_UnpublishEventMutation(
-        $input: UnpublishEventInput!
+      mutation useRescheduleEventForm_RescheduleEventMutation(
+        $input: RescheduleEventInput!
       ) {
-        unpublishEvent(input: $input) {
+        rescheduleEvent(input: $input) {
           event {
             ...EventScene_FirmEventFragment
             ...SchedulesInformation_EventFragment

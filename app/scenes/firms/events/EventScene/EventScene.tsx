@@ -16,6 +16,7 @@ import Button from "../../../../components/v2/Button";
 import PublishEvent from "../../../../components/shared/PublishEvent";
 import UnpublishEvent from "../../../../components/shared/UnpublishEvent";
 import RemoveEvent from "../../../../components/shared/RemoveEvent";
+import RescheduleEvent from "../../../../components/shared/RescheduleEvent";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -53,6 +54,7 @@ const EventScene = ({
         ...PublishEvent_EventFragment
         ...UnpublishEvent_EventFragment
         ...RemoveEvent_EventFragment
+        ...RescheduleEvent_EventFragment
         id
         status
         title
@@ -103,9 +105,7 @@ const EventScene = ({
           {currentUser.serviceUser &&
             event.status === "published" &&
             event.firm.status === "active" && (
-              <Button size="sm" sx={{ marginRight: "10px" }}>
-                Reschedule
-              </Button>
+              <RescheduleEvent eventFragmentRef={event} />
             )}
           {event.status === "unpublished" && event.firm.status === "active" && (
             <PublishEvent eventFragmentRef={event} />

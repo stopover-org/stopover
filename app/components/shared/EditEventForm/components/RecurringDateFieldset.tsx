@@ -89,7 +89,8 @@ const RecurringDateFieldset = () => {
               onChange={(value) => {
                 onDurationTimeChange(value as string, "h");
               }}
-              error={form.useFormField("durationTime").error}
+              value={parseInt(durationTimeField.value.split(" ")[0], 10)}
+              error={durationTimeField.error}
             >
               {hours.map((hour) => (
                 <Option key={hour} value={hour}>
@@ -104,7 +105,8 @@ const RecurringDateFieldset = () => {
               onChange={(value) => {
                 onDurationTimeChange(value as string, "m");
               }}
-              error={form.useFormField("durationTime").error}
+              value={parseInt(durationTimeField.value.split(" ")[1], 10)}
+              error={durationTimeField.error}
             >
               {minutes.map((minute) => (
                 <Option key={minute} value={minute}>

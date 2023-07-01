@@ -14,7 +14,7 @@ const EndDateFieldset = () => {
       <Grid xs={12} container>
         <Grid xs={4}>
           <DatePicker
-            label="One time event starts at"
+            label="Event will be ended at"
             value={endDate.value}
             onChange={endDate.onChange}
             error={endDate.error}

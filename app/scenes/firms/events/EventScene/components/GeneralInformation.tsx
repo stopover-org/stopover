@@ -5,7 +5,7 @@ import moment from "moment/moment";
 import { GeneralInformation_EventFragment$key } from "./__generated__/GeneralInformation_EventFragment.graphql";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Tag from "../../../../../components/v2/Tag/Tag";
-import { dateTimeFormat } from "../../../../../lib/utils/dates";
+import { dateFormat, dateTimeFormat } from "../../../../../lib/utils/dates";
 import Checkbox from "../../../../../components/v2/Checkbox";
 import ImagesPreviewFields from "../../../../../components/shared/ImagesPreviewFields";
 import ImagesPreview from "../../../../../components/shared/ImagesPreview";
@@ -24,6 +24,8 @@ const GeneralInformation = ({
         city
         country
         description
+        durationTime
+        endDate
         eventType
         fullAddress
         houseNumber
@@ -120,6 +122,9 @@ const GeneralInformation = ({
               ))}
             </Grid>
 
+            <Grid xs={2}>Duration Time</Grid>
+            <Grid xs={10}>{event.durationTime}</Grid>
+
             <Grid xs={2}>Address</Grid>
             <Grid xs={10}>
               {event.fullAddress}
@@ -142,8 +147,7 @@ const GeneralInformation = ({
               <Checkbox
                 checked={Boolean(event.requiresCheckIn)}
                 color="primary"
-                disabled
-                size="sm"
+                readOnly
                 label=""
               />
             </Grid>
@@ -153,8 +157,7 @@ const GeneralInformation = ({
               <Checkbox
                 checked={Boolean(event.requiresPassport)}
                 color="primary"
-                disabled
-                size="sm"
+                readOnly
                 label=""
               />
             </Grid>
@@ -164,8 +167,7 @@ const GeneralInformation = ({
               <Checkbox
                 checked={Boolean(event.requiresContract)}
                 color="primary"
-                disabled
-                size="sm"
+                readOnly
                 label=""
               />
             </Grid>
@@ -173,6 +175,11 @@ const GeneralInformation = ({
             <Grid xs={2}>Max / Min Attendees</Grid>
             <Grid xs={10}>
               {event.maxAttendees || "N/A"} / {event.minAttendees || "N/A"}
+            </Grid>
+
+            <Grid xs={2}>End Date</Grid>
+            <Grid xs={10}>
+              {event.endDate ? moment(event.endDate).format(dateFormat) : "N/A"}
             </Grid>
           </Grid>
         </Card>

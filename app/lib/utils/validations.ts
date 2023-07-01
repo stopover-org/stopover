@@ -5,5 +5,5 @@ export function numberTransform(value: any) {
 }
 
 export function momentTransform(value: any) {
-  return value && moment(value).isValid() ? moment(value).toDate() : undefined;
+  return moment(value).isValid() ? moment(value).toDate() : null;
 }
