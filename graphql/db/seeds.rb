@@ -9,10 +9,12 @@
 #   Character.create(name: "Luke", movie: movies.first)
 require 'uri'
 
+Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'false')
+
+load './db/seeds_helper.rb'
 load './db/steps/1_create_users.rb'
 load './db/steps/2_create_firm.rb'
 load './db/steps/3_create_interests.rb'
 load './db/steps/4_create_events.rb'
 
-Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'false')
 
