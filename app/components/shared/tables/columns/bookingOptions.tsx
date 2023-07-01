@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton } from "@mui/joy";
+import { IconButton, Stack } from "@mui/joy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 
@@ -20,7 +20,7 @@ export function useBookingOptionsHeaders() {
       },
       {
         label: "",
-        key: "remove",
+        key: "actions",
       },
     ],
     []
@@ -43,10 +43,12 @@ export function useBookingOptionsColumns(
           opt.attendeePrice.cents,
           opt.attendeePrice.currency.name
         ),
-        remove: (
-          <IconButton color="danger" size="sm">
-            <DeleteIcon />
-          </IconButton>
+        actions: (
+          <Stack direction="row" justifyContent="flex-end">
+            <IconButton color="danger" size="sm">
+              <DeleteIcon />
+            </IconButton>
+          </Stack>
         ),
       })),
     [bookingOptions]

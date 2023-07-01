@@ -425,9 +425,9 @@ type Event implements Node {
   ratingsCount: Int
   recurringDaysWithTime: [String!]!
   region: String
-  requiresCheckIn: Boolean
-  requiresContract: Boolean
-  requiresPassport: Boolean
+  requiresCheckIn: Boolean!
+  requiresContract: Boolean!
+  requiresPassport: Boolean!
   requiresPrepaid: Boolean!
   schedules(
     """
@@ -1001,7 +1001,6 @@ input RegisterAttendeeInput {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
-  isRegistered: Boolean!
 }
 
 """

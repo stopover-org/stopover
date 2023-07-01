@@ -15,20 +15,15 @@ const AttendeesTable = ({ bookingFragmentRef }: AttendeesTableProps) => {
   const booking = useFragment<AttendeesTable_BookingFragment$key>(
     graphql`
       fragment AttendeesTable_BookingFragment on Booking {
-        attendees {
-          fullName
-          email
-          phone
-          isRegistered
-        }
+        ...attendees_BookingFragment
       }
     `,
     bookingFragmentRef
   );
-  const data = useAttendeesColumns(booking.attendees);
+  const data = useAttendeesColumns(booking);
   const headers = useAttendeesHeaders();
 
-  return <Table headers={headers} data={data} />;
+  return <Table headers={headers} data={data} hoverRow={false} />;
 };
 
 export default React.memo(AttendeesTable);

@@ -36,9 +36,9 @@ module Types
     field :ratings_count, Integer
     field :recurring_days_with_time, [String], null: false
     field :region, String
-    field :requires_check_in, Boolean
-    field :requires_contract, Boolean
-    field :requires_passport, Boolean
+    field :requires_check_in, Boolean, null: false
+    field :requires_contract, Boolean, null: false
+    field :requires_passport, Boolean, null: false
     field :requires_prepaid, Boolean, null: false
     field :schedules, Types::ScheduleType.connection_type, null: false
     field :single_days_with_time, [Types::DateTimeType], null: false
