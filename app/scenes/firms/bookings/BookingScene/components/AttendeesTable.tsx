@@ -34,13 +34,7 @@ const AttendeesTable = ({ bookingFragmentRef }: AttendeesTableProps) => {
         email: att.email || "N/A",
         isRegistered: (
           <Tooltip title="This use was registered for this event already">
-            <Checkbox
-              label=""
-              checked={!!att.isRegistered}
-              readOnly
-              color="primary"
-              size="sm"
-            />
+            <Checkbox label="" checked={!!att.isRegistered} readOnly />
           </Tooltip>
         ),
         actions: (

@@ -38,7 +38,7 @@ const EventOptionsFieldset = () => {
     () =>
       eventOptionsField.onChange([
         ...eventOptionsField.value,
-        { builtIn: false },
+        { builtIn: false, forAttendee: false, organizerPriceCents: 0 },
       ]),
     [eventOptionsField]
   );
@@ -71,7 +71,9 @@ const EventOptionsFieldset = () => {
             </Grid>
             <Grid xs={4}>
               <Input
-                value={eventOption.organizerPriceCents?.toString() || ""}
+                placeholder="Amount"
+                startDecorator="$"
+                value={eventOption.organizerPriceCents.toString()}
                 onChange={(value) =>
                   onEventOptionChange(value, index, "organizerPriceCents")
                 }

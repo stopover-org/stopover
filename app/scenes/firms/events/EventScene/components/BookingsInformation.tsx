@@ -14,7 +14,7 @@ import BookingOptionsCell from "../../../../../components/shared/cells/BookingOp
 import Link from "../../../../../components/v2/Link";
 
 interface BookingsInformationProps {
-  eventFragmentRef: any;
+  eventFragmentRef: BookingsInformation_EventFragment$key;
   index: number;
 }
 

@@ -54,23 +54,9 @@ const EventOptionsInformation = ({
           option?.attendeePrice?.cents,
           option?.attendeePrice?.currency.name
         ),
-        builtIn: (
-          <Checkbox
-            checked={option.builtIn}
-            color="primary"
-            readOnly
-            size="sm"
-            label=""
-          />
-        ),
+        builtIn: <Checkbox checked={option.builtIn} readOnly label="" />,
         forAttendee: (
-          <Checkbox
-            checked={option.forAttendee}
-            color="primary"
-            readOnly
-            size="sm"
-            label=""
-          />
+          <Checkbox checked={option.forAttendee} readOnly label="" />
         ),
       })),
     [event.eventOptions]

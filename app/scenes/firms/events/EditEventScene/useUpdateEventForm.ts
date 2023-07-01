@@ -6,7 +6,10 @@ import { useRouter } from "next/router";
 import moment, { Moment } from "moment";
 import useMutationForm from "../../../../lib/hooks/useMutationForm";
 import { dateTimeFormat, setTime } from "../../../../lib/utils/dates";
-import { numberTransform } from "../../../../lib/utils/validations";
+import {
+  momentTransform,
+  numberTransform,
+} from "../../../../lib/utils/validations";
 import {
   EventTypeEnum,
   useUpdateEventForm_UpdateEventMutation,
@@ -101,7 +104,7 @@ function useDefaultValues(
         builtIn: opt.builtIn,
         forAttendee: opt.forAttendee,
         id: opt.id,
-        organizerPriceCents: opt.organizerPrice?.cents!,
+        organizerPriceCents: opt.organizerPrice!.cents! / 100,
         title: opt.title,
       })),
       recurringDates: event.recurringDaysWithTime.map((dt) => {
@@ -124,7 +127,7 @@ function useDefaultValues(
       country: event.country,
       description: event.description,
       durationTime: event.durationTime,
-      endDate: event.endDate,
+      endDate: moment(event.endDate),
       eventType: event.eventType,
       fullAddress: event.fullAddress!,
       houseNumber: event.houseNumber,
@@ -132,7 +135,7 @@ function useDefaultValues(
       images: event.images as string[],
       maxAttendees: event.maxAttendees,
       minAttendees: event.minAttendees,
-      organizerPricePerUomCents: event.organizerPricePerUom?.cents!,
+      organizerPricePerUomCents: event.organizerPricePerUom!.cents! / 100,
       region: event.region,
       requiresCheckIn: Boolean(event.requiresCheckIn),
       requiresContract: Boolean(event.requiresContract),
@@ -145,8 +148,8 @@ function useDefaultValues(
 }
 
 const validationSchema = Yup.object().shape({
-  city: Yup.string(),
-  country: Yup.string(),
+  city: Yup.string().nullable(),
+  country: Yup.string().nullable(),
   description: Yup.string().required("Required"),
   durationTime: Yup.string().required("Required"),
   eventOptions: Yup.array()
@@ -154,7 +157,7 @@ const validationSchema = Yup.object().shape({
       Yup.object().shape({
         title: Yup.string().required("Required"),
         organizerPriceCents: Yup.number()
-          .transform((value) => numberTransform(value))
+          .transform(numberTransform)
           .required("Required"),
         builtIn: Yup.boolean().required("Required"),
         forAttendee: Yup.boolean().required("Required"),
@@ -163,12 +166,12 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
   eventType: Yup.string(),
   fullAddress: Yup.string().required("Required"),
-  houseNumber: Yup.string(),
+  houseNumber: Yup.string().nullable(),
   images: Yup.array(),
-  maxAttendees: Yup.number().transform((value) => numberTransform(value)),
-  minAttendees: Yup.number().transform((value) => numberTransform(value)),
+  maxAttendees: Yup.number().transform(numberTransform),
+  minAttendees: Yup.number().transform(numberTransform),
   organizerPricePerUomCents: Yup.number()
-    .transform((value) => numberTransform(value))
+    .transform(numberTransform)
     .required("Required"),
   recurringDates: Yup.array()
     .of(
@@ -179,27 +182,21 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  region: Yup.string(),
+  region: Yup.string().nullable(),
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),
   requiresPassport: Yup.boolean(),
   singleDates: Yup.array()
     .of(
       Yup.object().shape({
-        date: Yup.date()
-          .transform((value) =>
-            moment(value).isValid() ? moment(value).toDate() : undefined
-          )
-          .required("Required"),
+        date: Yup.date().transform(momentTransform).required("Required"),
         hour: Yup.string().required("Required"),
         minute: Yup.string().required("Required"),
       })
     )
     .required("Required"),
-  endDate: Yup.date().transform((value) =>
-    moment(value).isValid() ? moment(value).toDate() : undefined
-  ),
-  street: Yup.string(),
+  endDate: Yup.date().transform(momentTransform),
+  street: Yup.string().nullable(),
   title: Yup.string().required("Required"),
 });
 
@@ -228,6 +225,7 @@ export function useUpdateEventForm(
       singleDates,
       recurringDates,
       id,
+      eventOptions,
       ...values
     }) => ({
       input: {
@@ -248,7 +246,11 @@ export function useUpdateEventForm(
               .padStart(2, "0")}`
           ).format(dateTimeFormat)
         ),
-        organizerPricePerUomCents: organizerPricePerUomCents!,
+        eventOptions: eventOptions.map(({ organizerPriceCents, ...opt }) => ({
+          organizerPriceCents: organizerPriceCents * 100,
+          ...opt,
+        })),
+        organizerPricePerUomCents: organizerPricePerUomCents! * 100,
       },
     }),
     {
