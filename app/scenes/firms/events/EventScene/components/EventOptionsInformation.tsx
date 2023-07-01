@@ -5,6 +5,10 @@ import { EventOptionsInformation_EventFragment$key } from "./__generated__/Event
 import Table from "../../../../../components/v2/Table";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Checkbox from "../../../../../components/v2/Checkbox/Checkbox";
+import {
+  useEventOptionsColumns,
+  useEventOptionsHeaders,
+} from "../../../../../components/shared/tables/columns/eventOptions";
 
 interface EventOptionsInformationProps {
   eventFragmentRef: EventOptionsInformation_EventFragment$key;
@@ -41,38 +45,8 @@ const EventOptionsInformation = ({
     `,
     eventFragmentRef
   );
-
-  const eventOptions = React.useMemo(
-    () =>
-      event.eventOptions.map((option) => ({
-        ...option,
-        organizerPrice: getCurrencyFormat(
-          option?.organizerPrice?.cents,
-          option?.organizerPrice?.currency.name
-        ),
-        attendeePrice: getCurrencyFormat(
-          option?.attendeePrice?.cents,
-          option?.attendeePrice?.currency.name
-        ),
-        builtIn: <Checkbox checked={option.builtIn} readOnly label="" />,
-        forAttendee: (
-          <Checkbox checked={option.forAttendee} readOnly label="" />
-        ),
-      })),
-    [event.eventOptions]
-  );
-
-  const headers = React.useMemo(
-    () => [
-      { key: "title", label: "Title" },
-      { key: "organizerPrice", label: "You get" },
-      { key: "attendeePrice", label: "Attendee pay" },
-      { key: "description", label: "Description" },
-      { key: "builtIn", label: "Option is included into Price" },
-      { key: "forAttendee", label: "For Attendees only" },
-    ],
-    []
-  );
+  const eventOptions = useEventOptionsColumns(event.eventOptions);
+  const headers = useEventOptionsHeaders();
   return (
     <TabPanel value={index} size="sm" sx={{ paddingTop: "20px" }}>
       <Table data={eventOptions} headers={headers} />

@@ -1,10 +1,11 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { IconButton } from "@mui/joy";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Table from "../../../../../components/v2/Table";
 import { EventOptionsTable_BookingFragment$key } from "./__generated__/EventOptionsTable_BookingFragment.graphql";
+import {
+  useBookingOptionsColumns,
+  useBookingOptionsHeaders,
+} from "../../../../../components/shared/tables/columns/bookingOptions";
 
 interface EventOptionsTableProps {
   bookingFragmentRef: any;
@@ -35,50 +36,8 @@ const EventOptionsTable = ({ bookingFragmentRef }: EventOptionsTableProps) => {
     `,
     bookingFragmentRef
   );
-
-  const headers = React.useMemo(
-    () => [
-      {
-        label: "Option Name",
-        key: "title",
-      },
-      {
-        label: "You Get",
-        key: "organizerPrice",
-      },
-      {
-        label: "Attendee Pay",
-        key: "attendeePrice",
-      },
-      {
-        label: "",
-        key: "remove",
-      },
-    ],
-    []
-  );
-
-  const data = React.useMemo(
-    () =>
-      booking.bookingOptions.map((opt) => ({
-        title: opt.eventOption.title,
-
-        organizerPrice: getCurrencyFormat(
-          opt.organizerPrice.cents,
-          opt.organizerPrice.currency.name
-        ),
-        attendeePrice: getCurrencyFormat(
-          opt.attendeePrice.cents,
-          opt.attendeePrice.currency.name
-        ),
-        remove: (
-          <IconButton color="danger" size="sm">
-            <DeleteIcon />
-          </IconButton>
-        ),
-      })),
-    [booking]
-  );
+  const headers = useBookingOptionsHeaders();
+  const data = useBookingOptionsColumns(booking.bookingOptions);
   return <Table headers={headers} data={data} />;
 };
 

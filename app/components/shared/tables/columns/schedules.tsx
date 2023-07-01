@@ -25,7 +25,9 @@ export function useSchedulesHeaders() {
   );
 }
 
-export function useSchedulesColumns(schedules: Record<string, any>[]) {
+export function useSchedulesColumns(
+  schedules: ReadonlyArray<Record<string, any>>
+) {
   return React.useMemo(
     () =>
       schedules.map((scheduleRow) => ({
