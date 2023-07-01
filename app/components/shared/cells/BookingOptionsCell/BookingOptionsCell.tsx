@@ -23,8 +23,8 @@ const BookingOptionsCell = React.memo(({ data }: BookingOptionsCellProps) => {
   return (
     <>
       <Stack direction="row" alignItems="center">
-        Booking has {data.length} Options&nbsp;
-        {data.length > 0 && (
+        Booking has {data?.length || 0} Options&nbsp;
+        {data?.length > 0 && (
           <IconButton size="sm" onClick={() => setOpened(!opened)}>
             {opened ? <UnfoldLessDoubleIcon /> : <UnfoldMoreDoubleIcon />}
           </IconButton>

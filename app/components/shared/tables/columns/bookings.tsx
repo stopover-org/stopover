@@ -90,7 +90,7 @@ export function useBookingsColumns(
         ),
         bookingOptions: (
           <BookingOptionsCell
-            data={booking.bookingOptions.map(
+            data={booking.bookingOptions?.map(
               (
                 {
                   eventOption: { title },

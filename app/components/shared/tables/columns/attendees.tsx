@@ -97,10 +97,9 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
         ),
         actions: (
           <Stack direction="row" justifyContent="flex-end">
-            {booking.event.requiresCheckIn ||
-              (!att.isRegistered && (
-                <RegisterAttendee attendeeFragmentRef={att} />
-              ))}
+            {booking.event.requiresCheckIn && !att.isRegistered && (
+              <RegisterAttendee attendeeFragmentRef={att} />
+            )}
             <Tooltip title="Remove this attendee and refund it">
               <IconButton color="danger" size="sm">
                 <DeleteIcon />
