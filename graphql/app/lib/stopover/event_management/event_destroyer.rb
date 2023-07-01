@@ -1,0 +1,20 @@
+# frozen_string_literal: true
+
+module Stopover
+  module EventManagement
+    class EventDestroyer
+      def initialize(event, current_user)
+        @event = event
+        @current_user = current_user
+      end
+
+      def perform
+        @event.soft_delete!
+
+        RemoveEventJob.perform_later(@event.id)
+
+        @event
+      end
+    end
+  end
+end

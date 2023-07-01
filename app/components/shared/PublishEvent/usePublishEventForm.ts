@@ -39,6 +39,7 @@ export function usePublishEventForm(
         publishEvent(input: $input) {
           event {
             ...EventScene_FirmEventFragment
+            ...SchedulesInformation_EventFragment
           }
         }
       }

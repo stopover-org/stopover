@@ -7,10 +7,8 @@ module Mutations
     argument :event_id, ID, loads: Types::EventType
 
     def resolve(event:)
-      RemoveEventJob.perform_later(event.id)
-
       {
-        event: event
+        event: Stopover::EventManagement::EventDestroyer.new(event, context[:current_user]).perform
       }
     end
   end

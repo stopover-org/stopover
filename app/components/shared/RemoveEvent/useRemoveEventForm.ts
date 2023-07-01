@@ -3,19 +3,18 @@ import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useUnpublishEventForm_EventFragment$key } from "./__generated__/useUnpublishEventForm_EventFragment.graphql";
-import { useUnpublishEventForm_UnpublishEventMutation } from "./__generated__/useUnpublishEventForm_UnpublishEventMutation.graphql";
+import { useRemoveEventForm_EventFragment$key } from "./__generated__/useRemoveEventForm_EventFragment.graphql";
 
-interface UnpublishEventFields {
+interface RemoveEventFields {
   eventId: string;
 }
 
 function useDefaultValues(
-  eventFragmentRef: useUnpublishEventForm_EventFragment$key
-): UnpublishEventFields {
+  eventFragmentRef: useRemoveEventForm_EventFragment$key
+): RemoveEventFields {
   const event = useFragment(
     graphql`
-      fragment useUnpublishEventForm_EventFragment on Event {
+      fragment useRemoveEventForm_EventFragment on Event {
         id
       }
     `,
@@ -29,15 +28,15 @@ const validationSchema = Yup.object().shape({
   eventId: Yup.string().required(),
 });
 
-export function useUnpublishEventForm(
-  eventFragmentRef: useUnpublishEventForm_UnpublishEventMutation
+export function useRemoveEventForm(
+  eventFragmentRef: useRemoveEventForm_EventFragment$key
 ) {
   return useMutationForm(
     graphql`
-      mutation useUnpublishEventForm_UnpublishEventMutation(
-        $input: UnpublishEventInput!
+      mutation useRemoveEventForm_RemoveEventMutation(
+        $input: RemoveEventInput!
       ) {
-        unpublishEvent(input: $input) {
+        removeEvent(input: $input) {
           event {
             ...EventScene_FirmEventFragment
             ...SchedulesInformation_EventFragment

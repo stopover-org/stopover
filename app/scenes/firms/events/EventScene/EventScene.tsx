@@ -15,6 +15,7 @@ import BookingsInformation from "./components/BookingsInformation";
 import Button from "../../../../components/v2/Button";
 import PublishEvent from "../../../../components/shared/PublishEvent";
 import UnpublishEvent from "../../../../components/shared/UnpublishEvent";
+import RemoveEvent from "../../../../components/shared/RemoveEvent";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -51,6 +52,7 @@ const EventScene = ({
         ...BookingsInformation_EventFragment
         ...PublishEvent_EventFragment
         ...UnpublishEvent_EventFragment
+        ...RemoveEvent_EventFragment
         id
         status
         title
@@ -112,9 +114,7 @@ const EventScene = ({
             <UnpublishEvent eventFragmentRef={event} />
           )}
           {event.status !== "deleted" && (
-            <Button size="sm" color="danger" sx={{ marginRight: "10px" }}>
-              Remove
-            </Button>
+            <RemoveEvent eventFragmentRef={event} />
           )}
           {currentUser.serviceUser &&
             event.status === "draft" &&
