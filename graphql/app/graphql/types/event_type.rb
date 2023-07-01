@@ -18,6 +18,7 @@ module Types
     field :event_options, [Types::EventOptionType], null: false
     field :event_type, Types::EventTypeEnum, null: false
     field :external_id, String
+    field :firm, Types::FirmType, null: false
     field :full_address, String
     field :house_number, String
     field :id, ID, null: false

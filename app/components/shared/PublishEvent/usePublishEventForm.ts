@@ -3,18 +3,18 @@ import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useVerifyEvent_EventFragment$key } from "./__generated__/useVerifyEvent_EventFragment.graphql";
+import { usePublishEventForm_EventFragment$key } from "./__generated__/usePublishEventForm_EventFragment.graphql";
 
-interface VerifyEventFields {
+interface PublishEventFields {
   eventId: string;
 }
 
 function useDefaultValues(
-  eventFragmentRef: useVerifyEvent_EventFragment$key
-): VerifyEventFields {
+  eventFragmentRef: usePublishEventForm_EventFragment$key
+): PublishEventFields {
   const event = useFragment(
     graphql`
-      fragment useVerifyEvent_EventFragment on Event {
+      fragment usePublishEventForm_EventFragment on Event {
         id
       }
     `,
@@ -28,13 +28,15 @@ const validationSchema = Yup.object().shape({
   eventId: Yup.string().required(),
 });
 
-export function useVerifyEvent(
-  eventFragmentRef: useVerifyEvent_EventFragment$key
+export function usePublishEventForm(
+  eventFragmentRef: usePublishEventForm_EventFragment$key
 ) {
   return useMutationForm(
     graphql`
-      mutation useVerifyEvent_VerifyEventMutation($input: VerifyEventInput!) {
-        verifyEvent(input: $input) {
+      mutation usePublishEventForm_PublishEventMutation(
+        $input: PublishEventInput!
+      ) {
+        publishEvent(input: $input) {
           event {
             ...EventScene_FirmEventFragment
           }

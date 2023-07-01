@@ -95,10 +95,10 @@ class Event < ApplicationRecord
     state :deleted
 
     event :publish do
-      transitions from: %i[draft unpublished], to: :published
+      transitions from: :unpublished, to: :published, guard: :can_publish
     end
     event :unpublish do
-      transitions from: :published, to: :unpublished
+      transitions from: %i[draft published], to: :unpublished
     end
     event :soft_delete do
       transitions from: %i[published unpublished draft], to: :deleted
@@ -134,9 +134,7 @@ class Event < ApplicationRecord
 
   # CALLBACKS ================================================================
   before_validation :set_prices
-  before_validation :adjust_prices,   unless: :deleted?
-  after_commit      :check_schedules, unless: :deleted?
-  after_commit      :sync_stripe,     unless: :deleted?
+  before_validation :adjust_prices, unless: :deleted?
 
   # SCOPES =====================================================================
   scope :by_city, ->(city) { where(city: city) }
@@ -188,10 +186,11 @@ class Event < ApplicationRecord
     times += single_days_with_time.keep_if { |d| d.to_date == date }.map { |d| "#{d.hour}:#{d.min}" }.compact.uniq if single_days_with_time
 
     if recurring_days_with_time
-      times += recurring_days_with_time.keep_if { |d| d.split(/\s+/).first.downcase.to_sym == Date::DAYNAMES[date.wday].downcase.to_sym }
+      times += recurring_days_with_time.select { |d| d.split(/\s+/).first.downcase.to_sym == Date::DAYNAMES[date.wday].downcase.to_sym }
                                        .map { |d| d.split(/\s+/).last }
                                        .compact
                                        .uniq
+      Rails.logger.debug times
     end
 
     times
@@ -199,11 +198,7 @@ class Event < ApplicationRecord
 
   private
 
-  def sync_stripe
-    StripeIntegratorSyncJob.perform_later(self)
-  end
-
-  def check_schedules
-    ScheduleEventJob.perform_later(event_id: id)
+  def can_publish
+    firm.active?
   end
 end

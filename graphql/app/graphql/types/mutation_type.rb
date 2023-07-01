@@ -30,5 +30,7 @@ module Types
 
     field :verify_firm,               mutation: Mutations::VerifyFirm
     field :verify_event,              mutation: Mutations::VerifyEvent
+    field :publish_event,             mutation: Mutations::PublishEvent
+    field :unpublish_event,           mutation: Mutations::UnpublishEvent
   end
 end

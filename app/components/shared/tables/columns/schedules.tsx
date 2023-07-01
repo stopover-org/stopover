@@ -33,7 +33,7 @@ export function useSchedulesColumns(
       schedules.map((scheduleRow) => ({
         date: getHumanDateTime(moment(scheduleRow.scheduledFor)),
         bookings: scheduleRow.bookings?.length,
-        attendees: scheduleRow.bookings.reduce(
+        attendees: scheduleRow.bookings?.reduce(
           (acc: number, booking: Record<string, any>) => {
             acc += booking.attendees.length;
             return acc;
