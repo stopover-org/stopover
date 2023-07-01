@@ -10,6 +10,15 @@ import Link from "../../../../components/v2/Link/Link";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import { SchedulesScene_FirmFragment$key } from "./__generated__/SchedulesScene_FirmFragment.graphql";
 import AttendeesCell from "../../../../components/shared/cells/AttendeesCell";
+import {
+  useBookingsColumns,
+  useBookingsHeaders,
+} from "../../../../components/shared/tables/columns/bookings";
+import {
+  useSchedulesColumns,
+  useSchedulesHeaders,
+} from "../../../../components/shared/tables/columns/schedules";
+import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 
 interface SchedulesSceneProps {
   firmFragmentRef: SchedulesScene_FirmFragment$key;
@@ -75,112 +84,17 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
     null
   );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const schedules = useEdges(data.pagedSchedules);
+  const schedules = usePagedEdges(data.pagedSchedules, currentPage, 30);
   const schedule = React.useMemo(() => {
     if (!selectedSchedule) return null;
     return schedules[selectedSchedule];
   }, [schedules, selectedSchedule]);
-
-  const schedulesData = useMemo<Record<string, any>[]>(
-    () =>
-      schedules.map((scheduleRow) => ({
-        date: getHumanDateTime(moment(scheduleRow.scheduledFor)),
-        bookings: scheduleRow.bookings?.length,
-        attendees: scheduleRow.bookings.reduce((acc, booking) => {
-          acc += booking.attendees.length;
-          return acc;
-        }, 0),
-      })),
-    [schedules]
+  const schedulesData = useSchedulesColumns(schedules as Record<string, any>[]);
+  const schedulesHeaders = useSchedulesHeaders();
+  const bookingsData = useBookingsColumns(
+    (schedule ? schedule.bookings : []) as any[]
   );
-
-  const schedulesHeaders = useMemo(
-    () => [
-      {
-        label: "Date",
-        width: 150,
-        key: "date",
-      },
-      {
-        label: "Attendees",
-        width: 50,
-        key: "attendees",
-      },
-      {
-        label: "Bookings",
-        width: 50,
-        key: "bookings",
-      },
-    ],
-    []
-  );
-
-  const bookingsData = React.useMemo(() => {
-    if (!schedule) return [] as Record<string, any>[];
-    return schedule.bookings.map((booking) => ({
-      id: (
-        <Link primary href={`/my-firm/bookings/${booking.id}`}>
-          {booking.id}
-        </Link>
-      ),
-      organizerPrice: getCurrencyFormat(
-        booking?.organizerTotalPrice?.cents,
-        booking?.organizerTotalPrice?.currency?.name
-      ),
-      attendeePrice: getCurrencyFormat(
-        booking?.attendeeTotalPrice?.cents,
-        booking?.attendeeTotalPrice?.currency?.name
-      ),
-      alreadyPaid: getCurrencyFormat(
-        booking?.alreadyPaidPrice?.cents,
-        booking?.alreadyPaidPrice?.currency?.name
-      ),
-      attendees: (
-        <AttendeesCell
-          data={booking.attendees.map(
-            ({ firstName, lastName, phone, email }, index) => ({
-              id: index + 1,
-              firstName: firstName || "N/A",
-              lastName: lastName || "N/A",
-              phone: phone || "N/A",
-              email: email || "N/A",
-            })
-          )}
-        />
-      ),
-    }));
-  }, [schedule]);
-
-  const bookingsHeaders = React.useMemo(
-    () => [
-      {
-        key: "id",
-        width: 150,
-        label: "ID",
-      },
-      {
-        key: "organizerPrice",
-        width: 150,
-        label: "You get(total)",
-      },
-      {
-        key: "attendeePrice",
-        width: 150,
-        label: "Attendee to pay(total)",
-      },
-      {
-        key: "alreadyPaid",
-        width: 150,
-        label: "Attendee paid (already)",
-      },
-      {
-        key: "attendees",
-        width: 300,
-        label: "Attendees",
-      },
-    ],
-    [schedule]
-  );
+  const bookingsHeaders = useBookingsHeaders();
 
   return (
     <Grid xs={12} container>

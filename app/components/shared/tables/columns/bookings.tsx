@@ -48,7 +48,7 @@ export function useBookingsHeaders() {
     []
   );
 }
-export function useBookingsColumns(bookings: any[]) {
+export function useBookingsColumns(bookings: Record<string, any>[]) {
   return React.useMemo(
     () =>
       bookings.map((booking) => ({
@@ -72,7 +72,7 @@ export function useBookingsColumns(bookings: any[]) {
         ),
         attendees: (
           <AttendeesCell
-            data={(booking.attendees as any[]).map(
+            data={(booking.attendees as Record<string, any>[]).map(
               ({ firstName, lastName, phone, email }, index) => ({
                 id: index + 1,
                 firstName: firstName || "N/A",
@@ -85,7 +85,7 @@ export function useBookingsColumns(bookings: any[]) {
         ),
         bookingOptions: (
           <BookingOptionsCell
-            data={(booking.bookingOptions as any[]).map(
+            data={(booking.bookingOptions as Record<string, any>[]).map(
               (
                 { eventOption: { title }, organizerPrice, attendeePrice },
                 i
