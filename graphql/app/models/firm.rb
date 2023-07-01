@@ -26,6 +26,10 @@
 #  website           :string
 #  stripe_account_id :string
 #
+# Indexes
+#
+#  index_firms_on_ref_number  (ref_number) UNIQUE
+#
 class Firm < ApplicationRecord
   # MODULES ===============================================================
   include AASM
@@ -73,10 +77,19 @@ class Firm < ApplicationRecord
   }
 
   # VALIDATIONS ================================================================
-  validates :primary_email, presence: true, unless: :primary_phone
-  validates :primary_phone, presence: true, unless: :primary_email
-  validates :title, presence: true
-  validates :account_firms, length: { minimum: 1 }
+  validates :primary_email,
+            presence: true,
+            unless: :primary_phone
+  validates :primary_phone,
+            presence: true,
+            unless: :primary_email
+  validates :title,
+            presence: true
+  validates :account_firms,
+            length: { minimum: 1 }
+  validates :ref_number,
+            uniqueness: true,
+            allow_blank: true
 
   # CALLBACKS ================================================================
   after_create :create_balance

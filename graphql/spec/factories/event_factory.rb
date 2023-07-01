@@ -23,6 +23,7 @@
 #  prepaid_amount_cents          :decimal(, )      default(0.0), not null
 #  prepaid_type                  :string
 #  recurring_days_with_time      :string           default([]), is an Array
+#  ref_number                    :string
 #  region                        :string
 #  requires_check_in             :boolean          default(FALSE), not null
 #  requires_contract             :boolean          default(FALSE), not null
@@ -34,16 +35,15 @@
 #  title                         :string           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
-#  external_id                   :string
 #  firm_id                       :bigint
 #  unit_id                       :bigint
 #
 # Indexes
 #
-#  index_events_on_event_type   (event_type)
-#  index_events_on_external_id  (external_id)
-#  index_events_on_firm_id      (firm_id)
-#  index_events_on_unit_id      (unit_id)
+#  index_events_on_event_type              (event_type)
+#  index_events_on_firm_id                 (firm_id)
+#  index_events_on_ref_number_and_firm_id  (ref_number,firm_id) UNIQUE
+#  index_events_on_unit_id                 (unit_id)
 #
 # Foreign Keys
 #

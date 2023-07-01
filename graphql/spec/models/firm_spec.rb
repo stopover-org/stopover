@@ -26,6 +26,10 @@
 #  website           :string
 #  stripe_account_id :string
 #
+# Indexes
+#
+#  index_firms_on_ref_number  (ref_number) UNIQUE
+#
 require 'rails_helper'
 
 RSpec.describe Firm, type: :model do

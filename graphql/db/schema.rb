@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_30_230308) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_01_221149) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -230,7 +230,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_30_230308) do
     t.bigint "unit_id"
     t.string "status"
     t.datetime "single_days_with_time", precision: nil, default: [], array: true
-    t.string "external_id"
+    t.string "ref_number"
     t.string "landmark"
     t.string "prepaid_type"
     t.decimal "prepaid_amount_cents", default: "0.0", null: false
@@ -240,8 +240,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_30_230308) do
     t.bigint "firm_id"
     t.datetime "end_date"
     t.index ["event_type"], name: "index_events_on_event_type"
-    t.index ["external_id"], name: "index_events_on_external_id"
     t.index ["firm_id"], name: "index_events_on_firm_id"
+    t.index ["ref_number", "firm_id"], name: "index_events_on_ref_number_and_firm_id", unique: true
     t.index ["unit_id"], name: "index_events_on_unit_id"
   end
 
@@ -266,6 +266,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_30_230308) do
     t.string "business_type", default: "individual", null: false
     t.string "postal_code"
     t.string "ref_number"
+    t.index ["ref_number"], name: "index_firms_on_ref_number", unique: true
   end
 
   create_table "interests", force: :cascade do |t|
