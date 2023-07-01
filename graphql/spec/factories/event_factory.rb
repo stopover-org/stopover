@@ -118,6 +118,11 @@ FactoryBot.define do
       end
     end
 
+    trait :published do
+      status { :published }
+    end
+
+    factory :published_event, traits: [:published]
     factory :stripe_integration_factory, traits: %i[stripe_integration_trait recurring]
     factory :limited_event, traits: %i[limited_attendee recurring]
     factory :recurring_event, traits: [:recurring]
