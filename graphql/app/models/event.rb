@@ -23,6 +23,7 @@
 #  prepaid_amount_cents          :decimal(, )      default(0.0), not null
 #  prepaid_type                  :string
 #  recurring_days_with_time      :string           default([]), is an Array
+#  ref_number                    :string
 #  region                        :string
 #  requires_check_in             :boolean          default(FALSE), not null
 #  requires_contract             :boolean          default(FALSE), not null
@@ -34,16 +35,15 @@
 #  title                         :string           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
-#  external_id                   :string
 #  firm_id                       :bigint
 #  unit_id                       :bigint
 #
 # Indexes
 #
-#  index_events_on_event_type   (event_type)
-#  index_events_on_external_id  (external_id)
-#  index_events_on_firm_id      (firm_id)
-#  index_events_on_unit_id      (unit_id)
+#  index_events_on_event_type              (event_type)
+#  index_events_on_firm_id                 (firm_id)
+#  index_events_on_ref_number_and_firm_id  (ref_number,firm_id) UNIQUE
+#  index_events_on_unit_id                 (unit_id)
 #
 # Foreign Keys
 #
@@ -95,10 +95,10 @@ class Event < ApplicationRecord
     state :deleted
 
     event :publish do
-      transitions from: %i[draft unpublished], to: :published
+      transitions from: :unpublished, to: :published, guard: :can_publish
     end
     event :unpublish do
-      transitions from: :published, to: :unpublished
+      transitions from: %i[draft published], to: :unpublished
     end
     event :soft_delete do
       transitions from: %i[published unpublished draft], to: :deleted
@@ -124,19 +124,26 @@ class Event < ApplicationRecord
   }
 
   # VALIDATIONS ================================================================
-  validates :title, length: { maximum: 100 }, unless: :draft?
+  validates :title,
+            length: { maximum: 100 }, unless: :draft?
 
-  validates :title, :description,
+  validates :title,
+            :description,
             :event_type,
-            :organizer_price_per_uom, :attendee_price_per_uom,
-            :city, :country,
-            :full_address, :duration_time, presence: true, unless: :draft?
+            :organizer_price_per_uom,
+            :attendee_price_per_uom,
+            :city,
+            :country,
+            :full_address,
+            :duration_time,
+            presence: true, unless: :draft?
+  validates :ref_number,
+            uniqueness: { scope: :firm_id },
+            allow_blank: true
 
   # CALLBACKS ================================================================
   before_validation :set_prices
-  before_validation :adjust_prices,   unless: :deleted?
-  after_commit      :check_schedules, unless: :deleted?
-  after_commit      :sync_stripe,     unless: :deleted?
+  before_validation :adjust_prices, unless: :deleted?
 
   # SCOPES =====================================================================
   scope :by_city, ->(city) { where(city: city) }
@@ -188,10 +195,11 @@ class Event < ApplicationRecord
     times += single_days_with_time.keep_if { |d| d.to_date == date }.map { |d| "#{d.hour}:#{d.min}" }.compact.uniq if single_days_with_time
 
     if recurring_days_with_time
-      times += recurring_days_with_time.keep_if { |d| d.split(/\s+/).first.downcase.to_sym == Date::DAYNAMES[date.wday].downcase.to_sym }
+      times += recurring_days_with_time.select { |d| d.split(/\s+/).first.downcase.to_sym == Date::DAYNAMES[date.wday].downcase.to_sym }
                                        .map { |d| d.split(/\s+/).last }
                                        .compact
                                        .uniq
+      Rails.logger.debug times
     end
 
     times
@@ -199,11 +207,7 @@ class Event < ApplicationRecord
 
   private
 
-  def sync_stripe
-    StripeIntegratorSyncJob.perform_later(self)
-  end
-
-  def check_schedules
-    ScheduleEventJob.perform_later(event_id: id)
+  def can_publish
+    firm.active?
   end
 end

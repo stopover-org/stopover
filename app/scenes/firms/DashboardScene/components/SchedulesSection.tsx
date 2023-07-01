@@ -1,14 +1,16 @@
 import { Grid } from "@mui/joy";
-import React, { useMemo } from "react";
-import { graphql, useFragment, usePaginationFragment } from "react-relay";
-import moment from "moment/moment";
+import React from "react";
+import { graphql, usePaginationFragment } from "react-relay";
 import Section from "../../../../components/v2/Section";
 import { SchedulesSection_FirmFragment$key } from "./__generated__/SchedulesSection_FirmFragment.graphql";
 import Typography from "../../../../components/v2/Typography/Typography";
 import Table from "../../../../components/v2/Table";
-import useEdges from "../../../../lib/hooks/useEdges";
-import { getHumanDateTime } from "../../../../lib/utils/dates";
 import Link from "../../../../components/v2/Link";
+import {
+  useSchedulesColumns,
+  useSchedulesHeaders,
+} from "../../../../components/shared/tables/columns/schedules";
+import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 
 interface ScheduleSectionProps {
   firmFragmentRef: SchedulesSection_FirmFragment$key;
@@ -39,33 +41,9 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
     `,
     firmFragmentRef
   );
-  const schedules = useEdges(data.schedules);
-  const actualSchedules = useMemo(
-    () =>
-      schedules.map((schedule) => ({
-        event: (
-          <Link primary href={`/my-firm/events/${schedule.event.id}`}>
-            {schedule.event.title}
-          </Link>
-        ),
-        date: getHumanDateTime(moment(schedule.scheduledFor)),
-      })),
-    [schedules]
-  );
-
-  const headers = useMemo(
-    () => [
-      {
-        label: "Event",
-        key: "event",
-      },
-      {
-        label: "Date",
-        key: "date",
-      },
-    ],
-    []
-  );
+  const schedules = usePagedEdges(data.schedules, 1, 10);
+  const schedulesData = useSchedulesColumns(schedules as Record<string, any>[]);
+  const schedulesHeaders = useSchedulesHeaders();
 
   return (
     <Section>
@@ -75,8 +53,8 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
 
       <Grid xs={12}>
         <Table
-          data={actualSchedules}
-          headers={headers}
+          data={schedulesData}
+          headers={schedulesHeaders}
           aria-label="schedules table"
         />
       </Grid>

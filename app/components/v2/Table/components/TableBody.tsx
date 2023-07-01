@@ -21,7 +21,11 @@ const TableBody = ({ data, keys, onRowClick }: TableBodyProps) => {
   return (
     <tbody>
       {data.map((row, index) => (
-        <tr key={`${ids[index]}-${index}`} onClick={() => onRowClick(index)}>
+        <tr
+          key={`${ids[index]}-${index}`}
+          onClick={() => onRowClick(index)}
+          style={{ verticalAlign: "top" }}
+        >
           {keys.map((key) => (
             <td key={`${ids[index]}-${key}-${index}`}>{row[key]}</td>
           ))}

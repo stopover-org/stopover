@@ -24,7 +24,9 @@ function useDefaultValues(
   return React.useMemo(() => ({ eventId: event.id }), [event]);
 }
 
-const validationSchema = Yup.object().shape({});
+const validationSchema = Yup.object().shape({
+  eventId: Yup.string().required(),
+});
 
 export function useVerifyEvent(
   eventFragmentRef: useVerifyEvent_EventFragment$key

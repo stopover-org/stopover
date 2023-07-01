@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack } from "@mui/joy";
+import { Box, Stack } from "@mui/joy";
 import IconButton from "@mui/joy/IconButton";
 import UnfoldLessDoubleIcon from "@mui/icons-material/UnfoldLessDouble";
 import UnfoldMoreDoubleIcon from "@mui/icons-material/UnfoldMoreDouble";
@@ -36,7 +36,11 @@ const AttendeesCell = ({ data }: AttendeesCellProps) => {
           </IconButton>
         )}
       </Stack>
-      {opened && <Table hoverRow={false} headers={headers} data={data} />}
+      {opened && (
+        <Box sx={{ marginBottom: "15px" }}>
+          <Table hoverRow={false} headers={headers} data={data} />
+        </Box>
+      )}
     </>
   );
 };

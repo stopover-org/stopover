@@ -22,8 +22,7 @@ RSpec.describe Mutations::RegisterAttendee do
     subject do
       GraphqlSchema.execute(mutation, variables: {
                               input: {
-                                attendeeId: GraphqlSchema.id_from_object(attendee),
-                                isRegistered: true
+                                attendeeId: GraphqlSchema.id_from_object(attendee)
                               }
                             })
     end

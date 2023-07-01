@@ -49,7 +49,7 @@ const SingleDatesFieldset = () => {
           </Button>
         </Grid>
         {singleDates.value.map(({ date, hour, minute }, index) => (
-          <>
+          <React.Fragment key={index}>
             <Grid xs={4}>
               <DatePicker
                 label="One time event starts at"
@@ -128,7 +128,7 @@ const SingleDatesFieldset = () => {
               </Stack>
             </Grid>
             <Grid xs={2} />
-          </>
+          </React.Fragment>
         ))}
       </Grid>
     </Fieldset>

@@ -5,9 +5,8 @@ module Mutations
     field :attendee, Types::AttendeeType
 
     argument :attendee_id, ID, loads: Types::AttendeeType
-    argument :is_registered, Boolean
-    def resolve(attendee:, **args)
-      attendee.update!(is_registered: args[:is_registered])
+    def resolve(attendee:, **_args)
+      attendee.update!(is_registered: true)
       {
         attendee: attendee
       }

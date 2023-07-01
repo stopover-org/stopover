@@ -63,7 +63,7 @@ class EventOption < ApplicationRecord
   private
 
   def sync_stripe
-    StripeIntegratorSyncJob.perform_later(self)
+    StripeIntegratorSyncJob.perform_later('event_option', id)
   end
 
   def adjust_prices

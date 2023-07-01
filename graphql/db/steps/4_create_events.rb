@@ -22,7 +22,7 @@ events_data.each do |event_data|
     )
     event.save!
 
-    options = event_options_data.select { |option_data| option_data[:event_ref] == event.external_id }
+    options = event_options_data.select { |option_data| option_data[:event_ref] == event.ref_number }
     options.each do |option_data|
         event_option = EventOption.new
         event_option.assign_attributes(**option_data.except(:event_ref),

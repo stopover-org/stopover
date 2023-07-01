@@ -3,7 +3,8 @@
 class StripeIntegratorSyncJob < ApplicationJob
   queue_as :default
 
-  def perform(model)
+  def perform(model_name, model_id)
+    model = model_name.capitalize.constantize.send(:find, model_id)
     Stopover::StripeIntegrator.sync(model)
   end
 end

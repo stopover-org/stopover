@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack } from "@mui/joy";
+import { Box, Stack } from "@mui/joy";
 import IconButton from "@mui/joy/IconButton";
 import UnfoldLessDoubleIcon from "@mui/icons-material/UnfoldLessDouble";
 import UnfoldMoreDoubleIcon from "@mui/icons-material/UnfoldMoreDouble";
@@ -23,14 +23,18 @@ const BookingOptionsCell = React.memo(({ data }: BookingOptionsCellProps) => {
   return (
     <>
       <Stack direction="row" alignItems="center">
-        Booking has {data.length} Options&nbsp;
-        {data.length > 0 && (
+        Booking has {data?.length || 0} Options&nbsp;
+        {data?.length > 0 && (
           <IconButton size="sm" onClick={() => setOpened(!opened)}>
             {opened ? <UnfoldLessDoubleIcon /> : <UnfoldMoreDoubleIcon />}
           </IconButton>
         )}
       </Stack>
-      {opened && <Table hoverRow={false} headers={headers} data={data} />}
+      {opened && (
+        <Box sx={{ marginBottom: "15px" }}>
+          <Table hoverRow={false} headers={headers} data={data} />
+        </Box>
+      )}
     </>
   );
 });

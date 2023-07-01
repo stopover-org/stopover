@@ -12,6 +12,7 @@ const ImagesPreview = ({ images, readonly, onChange }: ImagesPreviewProps) => (
   <>
     {images.map((image, index) => (
       <AspectRatio
+        key={`${image}-${index}`}
         variant="outlined"
         ratio="4/3"
         sx={{

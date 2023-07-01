@@ -24,66 +24,17 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
         },
       },
     },
-    JoyInput: {
-      styleOverrides: {
-        root: {
-          borderRadius: "2px",
-          zIndex: "unset",
-        },
-      },
-    },
-    JoyAutocomplete: {
-      styleOverrides: {
-        root: {
-          borderRadius: "2px",
-          zIndex: "unset",
-        },
-      },
-    },
-    JoyTextarea: {
-      styleOverrides: {
-        root: {
-          borderRadius: "2px",
-        },
-      },
-    },
     JoyButton: {
       styleOverrides: {
         root: {
-          borderRadius: "2px",
           fontWeight: 500,
-        },
-      },
-    },
-    JoySelect: {
-      styleOverrides: {
-        root: {
-          borderRadius: "2px",
-        },
-        listbox: {
-          borderRadius: "2px",
         },
       },
     },
     JoyCard: {
       styleOverrides: {
         root: {
-          borderRadius: "2px",
           zIndex: "unset",
-        },
-      },
-    },
-    JoyCardOverflow: {
-      styleOverrides: {
-        root: {
-          borderRadius: "2px",
-        },
-      },
-    },
-    JoyAspectRatio: {
-      styleOverrides: {
-        root: {
-          borderRadius: "2px",
         },
       },
     },

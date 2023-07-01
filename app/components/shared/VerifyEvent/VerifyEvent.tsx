@@ -1,21 +1,21 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import Button from "../../../v2/Button/Button";
-import { useVerifyEvent } from "../useVerifyEvent";
+import Button from "../../v2/Button/Button";
+import { useVerifyEvent } from "./useVerifyEvent";
 import { VerifyEventInformation_EventFragment$key } from "./__generated__/VerifyEventInformation_EventFragment.graphql";
 
 interface VerifyEventProps {
-  currentEventFragmentRef: VerifyEventInformation_EventFragment$key;
+  eventFragmentRef: VerifyEventInformation_EventFragment$key;
 }
 
-const VerifyEvent = ({ currentEventFragmentRef }: VerifyEventProps) => {
+const VerifyEvent = ({ eventFragmentRef }: VerifyEventProps) => {
   const event = useFragment(
     graphql`
       fragment VerifyEventInformation_EventFragment on Event {
         ...useVerifyEvent_EventFragment
       }
     `,
-    currentEventFragmentRef
+    eventFragmentRef
   );
   const form = useVerifyEvent(event);
 

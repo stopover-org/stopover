@@ -13,6 +13,10 @@ import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Link from "../../../../components/v2/Link";
 import BookingsInformation from "./components/BookingsInformation";
 import Button from "../../../../components/v2/Button";
+import PublishEvent from "../../../../components/shared/PublishEvent";
+import UnpublishEvent from "../../../../components/shared/UnpublishEvent";
+import RemoveEvent from "../../../../components/shared/RemoveEvent";
+import RescheduleEvent from "../../../../components/shared/RescheduleEvent";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -39,11 +43,18 @@ const EventScene = ({
             id
           }
         }
+        firm {
+          status
+        }
         ...GeneralInformation_EventFragment
         ...EventOptionsInformation_EventFragment
         ...SchedulesInformation_EventFragment
         ...VerifyEventInformation_EventFragment
         ...BookingsInformation_EventFragment
+        ...PublishEvent_EventFragment
+        ...UnpublishEvent_EventFragment
+        ...RemoveEvent_EventFragment
+        ...RescheduleEvent_EventFragment
         id
         status
         title
@@ -71,7 +82,7 @@ const EventScene = ({
 
   return (
     <Grid container spacing={2} sm={12} md={12}>
-      <Grid xs={10}>
+      <Grid lg={10} sm={12}>
         <Typography level="h3" sx={{ display: "inline" }}>
           {event.title}
         </Typography>
@@ -79,8 +90,11 @@ const EventScene = ({
           {event.status}
         </Tag>
       </Grid>
-      <Grid xs={2}>
-        <Stack direction="row" justifyContent="flex-end">
+      <Grid lg={2} sm={12}>
+        <Stack
+          direction="row"
+          justifyContent={{ lg: "flex-end", sm: "flex-start" }}
+        >
           <Link
             href={`/my-firm/events/${event.id}/edit`}
             underline={false}
@@ -88,15 +102,25 @@ const EventScene = ({
           >
             <Button size="sm">Edit</Button>
           </Link>
-          <Button size="sm" sx={{ marginRight: "10px" }}>
-            Reschedule Event
-          </Button>
-          <Button size="sm" color="danger" sx={{ marginRight: "10px" }}>
-            Remove Event
-          </Button>
-          {currentUser.serviceUser && event.status === "draft" && (
-            <VerifyEvent currentEventFragmentRef={event} />
+          {currentUser.serviceUser &&
+            event.status === "published" &&
+            event.firm.status === "active" && (
+              <RescheduleEvent eventFragmentRef={event} />
+            )}
+          {event.status === "unpublished" && event.firm.status === "active" && (
+            <PublishEvent eventFragmentRef={event} />
           )}
+          {event.status === "published" && event.firm.status === "active" && (
+            <UnpublishEvent eventFragmentRef={event} />
+          )}
+          {event.status !== "deleted" && (
+            <RemoveEvent eventFragmentRef={event} />
+          )}
+          {currentUser.serviceUser &&
+            event.status === "draft" &&
+            event.firm.status === "active" && (
+              <VerifyEvent eventFragmentRef={event} />
+            )}
         </Stack>
       </Grid>
       <Grid xs={12}>

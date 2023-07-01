@@ -4,9 +4,11 @@ module Mutations
   class RemoveEvent < BaseMutation
     field :event, Types::EventType
 
-    def resolve(event_id)
+    argument :event_id, ID, loads: Types::EventType
+
+    def resolve(event:)
       {
-        event: RemoveEventJob.perform_later(event_id)
+        event: Stopover::EventManagement::EventDestroyer.new(event, context[:current_user]).perform
       }
     end
   end

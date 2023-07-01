@@ -23,6 +23,7 @@
 #  prepaid_amount_cents          :decimal(, )      default(0.0), not null
 #  prepaid_type                  :string
 #  recurring_days_with_time      :string           default([]), is an Array
+#  ref_number                    :string
 #  region                        :string
 #  requires_check_in             :boolean          default(FALSE), not null
 #  requires_contract             :boolean          default(FALSE), not null
@@ -34,16 +35,15 @@
 #  title                         :string           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
-#  external_id                   :string
 #  firm_id                       :bigint
 #  unit_id                       :bigint
 #
 # Indexes
 #
-#  index_events_on_event_type   (event_type)
-#  index_events_on_external_id  (external_id)
-#  index_events_on_firm_id      (firm_id)
-#  index_events_on_unit_id      (unit_id)
+#  index_events_on_event_type              (event_type)
+#  index_events_on_firm_id                 (firm_id)
+#  index_events_on_ref_number_and_firm_id  (ref_number,firm_id) UNIQUE
+#  index_events_on_unit_id                 (unit_id)
 #
 # Foreign Keys
 #
@@ -200,11 +200,6 @@ RSpec.describe Event, type: :model do
         expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 25, 11, 30, 0, 0)).count).to eq(1)
       end
 
-      it 'schedules will be generated automatically when event was updated' do
-        expect(ScheduleEventJob).to receive(:perform_later).once.with(event_id: event.id)
-        event.update!(recurring_days_with_time: ['Monday 11:30'])
-      end
-
       context 'with existing schedules' do
         context 'in the future' do
           let!(:schedule) { create(:schedule, event: event, scheduled_for: 1.day.from_now) }
@@ -228,15 +223,6 @@ RSpec.describe Event, type: :model do
 
             subject { Stopover::EventSupport.schedule(event.reload) }
             expect(event.schedules.count).to eq(4)
-          end
-        end
-
-        context 'integration with stripe' do
-          let(:event) { create(:event) }
-
-          it 'stripe integrator fired up' do
-            expect(StripeIntegratorSyncJob).to receive(:perform_later).with(event)
-            event.save!
           end
         end
       end
