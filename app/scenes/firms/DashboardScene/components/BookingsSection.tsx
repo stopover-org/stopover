@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { graphql, usePaginationFragment } from "react-relay";
+import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import moment from "moment";
 import { Grid } from "@mui/joy";
 import Table from "../../../../components/v2/Table";
@@ -11,108 +11,19 @@ import { getHumanDateTime } from "../../../../lib/utils/dates";
 import useEdges from "../../../../lib/hooks/useEdges";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import Link from "../../../../components/v2/Link";
+import BookingsFirmTable from "../../../../components/shared/tables/BookingsFirmTable/BookingsFirmTable";
 
 interface BookingSectionProps {
   firmFragmentRef: BookingsSection_FirmFragment$key;
 }
 const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
-  const { data } = usePaginationFragment(
+  const firm = useFragment(
     graphql`
-      fragment BookingsSection_FirmFragment on Firm
-      @refetchable(queryName: "BookingSectionFirmFragment")
-      @argumentDefinitions(
-        count: { type: "Int", defaultValue: 10 }
-        cursor: { type: "String", defaultValue: "" }
-      ) {
-        bookings(first: $count, after: $cursor)
-          @connection(key: "DashboardScene_query_bookings") {
-          edges {
-            node {
-              id
-              event {
-                id
-                title
-              }
-              attendees {
-                id
-              }
-              organizerTotalPrice {
-                cents
-                currency {
-                  name
-                  symbol
-                }
-              }
-              attendeeTotalPrice {
-                cents
-                currency {
-                  name
-                }
-              }
-              bookedFor
-            }
-          }
-        }
+      fragment BookingsSection_FirmFragment on Firm {
+        ...BookingsFirmTable_BookingsFirmPaginationFragment
       }
     `,
     firmFragmentRef
-  );
-  const bookings = useEdges(data.bookings);
-  const actualBookings = useMemo(
-    () =>
-      bookings.map((booking) => ({
-        id: (
-          <Link primary href={`/my-firm/bookings/${booking.id}`}>
-            {booking.id}
-          </Link>
-        ),
-        event: (
-          <Link href={`/my-firm/events/${booking.event.id}`}>
-            {booking.event.title}
-          </Link>
-        ),
-        attendee: booking.attendees.length,
-        organizerPrice: getCurrencyFormat(
-          booking.organizerTotalPrice.cents,
-          booking.organizerTotalPrice.currency.name
-        ),
-        attendeePrice: getCurrencyFormat(
-          booking.attendeeTotalPrice.cents,
-          booking.attendeeTotalPrice.currency.name
-        ),
-        date: getHumanDateTime(moment(booking.bookedFor)),
-      })),
-    [bookings]
-  );
-
-  const headers = useMemo(
-    () => [
-      {
-        label: "ID",
-        key: "id",
-      },
-      {
-        label: "Event",
-        key: "event",
-      },
-      {
-        label: "Attendees",
-        key: "attendee",
-      },
-      {
-        label: "You get",
-        key: "organizerPrice",
-      },
-      {
-        label: "Attendee pay",
-        key: "attendeePrice",
-      },
-      {
-        label: "Date",
-        key: "date",
-      },
-    ],
-    []
   );
 
   return (
@@ -121,11 +32,7 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
         <Typography level="h3">Bookings</Typography>
       </Grid>
       <Grid xs={12}>
-        <Table
-          data={actualBookings}
-          headers={headers}
-          aria-label="bookings table"
-        />
+        <BookingsFirmTable firmFragmentRef={firm} />;
       </Grid>
 
       <Grid xs={12}>

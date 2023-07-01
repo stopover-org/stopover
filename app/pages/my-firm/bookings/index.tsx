@@ -18,7 +18,7 @@ const Query = graphql`
       account {
         firm {
           id
-          ...BookingsScene_BookingsFirmPaginationFragment
+          ...BookingsScene_FirmFragment
         }
       }
     }
