@@ -3,9 +3,8 @@ import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useMutationForm from "../../../../../lib/hooks/useMutationForm";
-import { useCheckoutForm_CreateCheckoutMutation } from "./__generated__/useCheckoutForm_CreateCheckoutMutation.graphql";
 import { useCancelBookingForm_BookingFragment$key } from "./__generated__/useCancelBookingForm_BookingFragment.graphql";
-import { useCancelBookingForm_RemoveBookingMutation } from "./__generated__/useCancelBookingForm_RemoveBookingMutation.graphql";
+import { useCancelBookingForm_CancelBookingMutation } from "./__generated__/useCancelBookingForm_CancelBookingMutation.graphql";
 
 interface CancelBookingFormFields {
   bookingId: string;
@@ -40,13 +39,13 @@ export function useCancelBookingForm(
 ) {
   return useMutationForm<
     CancelBookingFormFields,
-    useCancelBookingForm_RemoveBookingMutation
+    useCancelBookingForm_CancelBookingMutation
   >(
     graphql`
-      mutation useCancelBookingForm_RemoveBookingMutation(
-        $input: RemoveBookingInput!
+      mutation useCancelBookingForm_CancelBookingMutation(
+        $input: CancelBookingInput!
       ) {
-        removeBooking(input: $input) {
+        cancelBooking(input: $input) {
           trip {
             ...DateBookingsSection_TripFragment
             ...TripScene_TripFragment

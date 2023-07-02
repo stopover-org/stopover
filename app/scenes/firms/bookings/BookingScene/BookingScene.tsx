@@ -39,10 +39,8 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
   );
 
   const tagColor = useStatusColor({
-    primary: "published",
-    danger: "deleted",
-    info: "unpublished",
-    neutral: "draft",
+    primary: "active",
+    danger: "cancelled",
     status: booking.status,
   });
   return (
@@ -73,11 +71,13 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
               {getHumanDateTime(moment(booking.bookedFor!))}
             </Typography>
           </Box>
-          <Box>
-            <Button size="sm" color="danger">
-              Refund
-            </Button>
-          </Box>
+          {booking.status !== "cancelled" && (
+            <Box>
+              <Button size="sm" color="danger">
+                Refund
+              </Button>
+            </Box>
+          )}
         </Stack>
       </Grid>
       <Grid xs={8}>

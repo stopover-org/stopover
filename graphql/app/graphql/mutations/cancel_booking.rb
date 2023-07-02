@@ -8,9 +8,8 @@ module Mutations
     argument :booking_id, ID, loads: Types::BookingType
 
     def resolve(booking:)
-      booking.destroy!
       {
-        booking: booking,
+        booking: Stopover::BookingManagement::BookingCancellation.new(booking, context[:current_user]).perform,
         trip: booking.trip
       }
     rescue StandardError => e
