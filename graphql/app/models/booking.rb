@@ -85,7 +85,12 @@ class Booking < ApplicationRecord
 
   def check_max_attendees
     return true if event.max_attendees.nil?
-    errors.add(:attendees, 'all places reserved') if Attendee.where(booking_id: Booking.where(schedule_id: schedule.reload.id)).count + attendees.count > event.max_attendees
+    reached_max_attendees = if schedule
+                              Attendee.where(booking_id: Booking.where(schedule_id: schedule.reload.id)).count + attendees.count > event.max_attendees
+                            else
+                              attendees.count > event.max_attendees
+                            end
+    errors.add(:attendees, 'all places reserved') if reached_max_attendees
   end
 
   def attendee_total_price

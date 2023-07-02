@@ -124,7 +124,7 @@ type Booking implements Node {
   id: ID!
   leftToPayPrice: Money!
   organizerTotalPrice: Money!
-  paymentsType: Payment
+  payments: [Payment!]!
   schedule: Schedule!
   status: String!
   trip: Trip!
@@ -881,11 +881,12 @@ type PageInfo {
 }
 
 type Payment implements Node {
-  cancelUrl: String
+  booking: Booking!
+  createdAt: DateTime!
   id: ID!
-  status: String
-  totalPrice: Money
-  updatedAt: DateTime
+  status: String!
+  totalPrice: Money!
+  updatedAt: DateTime!
 }
 
 """

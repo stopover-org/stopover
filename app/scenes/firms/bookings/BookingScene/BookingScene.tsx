@@ -13,6 +13,11 @@ import Link from "../../../../components/v2/Link";
 import Tag from "../../../../components/v2/Tag/Tag";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import AddAttendee from "../../../../components/shared/AddAttendee";
+import {
+  usePaymentsColumns,
+  usePaymentsHeaders,
+} from "../../../../components/shared/tables/columns/payments";
+import Table from "../../../../components/v2/Table";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
@@ -32,6 +37,17 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
         schedule {
           id
         }
+        payments {
+          id
+          status
+          totalPrice {
+            cents
+            currency {
+              name
+            }
+          }
+          createdAt
+        }
         ...EventOptionsTable_BookingFragment
         ...AttendeesTable_BookingFragment
         ...AddAttendee_BookingFragment
@@ -45,6 +61,22 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
     danger: "cancelled",
     status: booking.status,
   });
+  const paymentsHeaders = usePaymentsHeaders();
+  const paymentsData = usePaymentsColumns(
+    booking.payments.map((payment) => ({
+      event: {
+        id: booking.event.id,
+        title: booking.event.title,
+      },
+      booking: {
+        id: booking.id,
+      },
+      createdAt: payment.createdAt,
+      totalPrice: payment.totalPrice,
+      status: payment.status,
+    }))
+  );
+
   return (
     <Grid container>
       <Grid xs={12}>
@@ -92,6 +124,10 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
       <Grid xs={4}>
         <Typography level="h4">Booking Options</Typography>
         <EventOptionsTable bookingFragmentRef={booking} />
+      </Grid>
+      <Grid xs={12}>
+        <Typography level="h4">Payments</Typography>
+        <Table headers={paymentsHeaders} data={paymentsData} />
       </Grid>
     </Grid>
   );

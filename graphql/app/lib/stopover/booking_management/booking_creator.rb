@@ -12,7 +12,7 @@ module Stopover
       def perform(event, booked_for, attendees_count = 1)
         @current_trip = @current_trip_service.get_current_trip(booked_for)
         bookings = event.bookings.includes(:schedule)
-                        .where(schedule: { scheduled_for: booked_for })
+                        .where(schedule: { scheduled_for: booked_for, status: :active })
                         .joins(:trip)
                         .where(trip: { account: @account })
 

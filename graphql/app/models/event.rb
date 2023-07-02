@@ -168,7 +168,7 @@ class Event < ApplicationRecord
   end
 
   def available_dates
-    schedules.where('scheduled_for > ?', Time.zone.now).pluck(:scheduled_for)
+    schedules.where('scheduled_for > ?', Time.zone.now).active.pluck(:scheduled_for)
   end
 
   def recurring_dates

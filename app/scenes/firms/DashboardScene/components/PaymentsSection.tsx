@@ -10,13 +10,21 @@ import useEdges from "../../../../lib/hooks/useEdges";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import { getHumanDateTime } from "../../../../lib/utils/dates";
 import Link from "../../../../components/v2/Link";
+import { PaymentSectionFirmFragment } from "./__generated__/PaymentSectionFirmFragment.graphql";
+import {
+  usePaymentsColumns,
+  usePaymentsHeaders,
+} from "../../../../components/shared/tables/columns/payments";
 
 interface PaymentSectionProps {
   firmFragmentRef: PaymentsSection_FirmFragment$key;
 }
 
 const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
-  const { data } = usePaginationFragment(
+  const { data } = usePaginationFragment<
+    PaymentSectionFirmFragment,
+    PaymentsSection_FirmFragment$key
+  >(
     graphql`
       fragment PaymentsSection_FirmFragment on Firm
       @refetchable(queryName: "PaymentSectionFirmFragment")
@@ -30,7 +38,14 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
             node {
               id
               status
-              updatedAt
+              createdAt
+              booking {
+                event {
+                  id
+                  title
+                }
+                id
+              }
               totalPrice {
                 cents
                 currency {
@@ -45,35 +60,21 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
     firmFragmentRef
   );
   const payments = useEdges(data.payments);
-  const actualPayments = useMemo(
-    () =>
-      payments.map((payment) => ({
-        price: (
-          <Link href={`/my-firm/payments/${payment.id}`}>
-            {getCurrencyFormat(
-              payment?.totalPrice?.cents,
-              payment?.totalPrice?.currency.name
-            )}
-          </Link>
-        ),
-        date: getHumanDateTime(moment(payment.updatedAt)),
-      })),
-    [payments]
-  );
-
-  const headers = useMemo(
-    () => [
-      {
-        label: "You get",
-        key: "price",
+  const actualPayments = usePaymentsColumns(
+    payments.map((payment) => ({
+      event: {
+        id: payment.booking.event.id,
+        title: payment.booking.event.title,
       },
-      {
-        label: "Date",
-        key: "date",
+      booking: {
+        id: payment.booking.id,
       },
-    ],
-    []
+      createdAt: payment.createdAt,
+      totalPrice: payment.totalPrice,
+      status: payment.status,
+    }))
   );
+  const headers = usePaymentsHeaders();
 
   return (
     <Section>

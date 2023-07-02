@@ -85,7 +85,7 @@ function useMutationForm<
     requestRef.current = null;
 
     form.reset(defaultValues as FieldsType);
-  }, [JSON.stringify(defaultValues)]);
+  }, [defaultValues]);
 
   React.useEffect(() => {
     if (autosave) {

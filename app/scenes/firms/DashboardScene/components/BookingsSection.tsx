@@ -1,15 +1,10 @@
-import React, { useMemo } from "react";
-import { graphql, useFragment, usePaginationFragment } from "react-relay";
-import moment from "moment";
+import React from "react";
+import { graphql, useFragment } from "react-relay";
 import { Grid } from "@mui/joy";
-import Table from "../../../../components/v2/Table";
 
 import { BookingsSection_FirmFragment$key } from "./__generated__/BookingsSection_FirmFragment.graphql";
 import Typography from "../../../../components/v2/Typography/Typography";
 import Section from "../../../../components/v2/Section";
-import { getHumanDateTime } from "../../../../lib/utils/dates";
-import useEdges from "../../../../lib/hooks/useEdges";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import Link from "../../../../components/v2/Link";
 import BookingsFirmTable from "../../../../components/shared/tables/BookingsFirmTable/BookingsFirmTable";
 
