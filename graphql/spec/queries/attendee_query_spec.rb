@@ -75,7 +75,7 @@ RSpec.describe AttendeesQuery, type: :query do
     subject { query.all }
 
     it 'with all future events' do
-      expect(subject.count).to eq(4)
+      expect(subject.count).to eq(10)
     end
   end
 

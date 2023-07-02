@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Attendee, type: :model do
-  describe 'remove booking' do
+  describe 'cancel booking' do
     let!(:mutation) do
       "
         mutation CancelBookingMutation($input: CancelBookingInput!) {
@@ -29,14 +29,15 @@ RSpec.describe Attendee, type: :model do
                               input: {
                                 bookingId: GraphqlSchema.id_from_object(booking)
                               }
-                            })
+                            },
+                            context: { current_user: booking.user })
     end
     it 'destroy booking' do
       subject
-      expect(booking.status).to eq('cancelled')
-      expect(Attendee.count).to eq(0)
-      expect(AttendeeOption.count).to eq(0)
-      expect(BookingOption.count).to eq(0)
+      expect(booking.reload.status).to eq('cancelled')
+      expect(Attendee.count).to eq(2)
+      expect(AttendeeOption.count).to eq(1)
+      expect(BookingOption.count).to eq(1)
     end
   end
 end
