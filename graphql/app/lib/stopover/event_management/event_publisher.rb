@@ -26,7 +26,7 @@ module Stopover
                 .where.not(id: Schedule.joins(:bookings))
                 .destroy_all
 
-        Booking.where(status: :cancelled).each do |booking|
+        Booking.active.each do |booking|
           booking.schedule.disable!
         end
 

@@ -12,13 +12,14 @@ import Button from "../../../../components/v2/Button";
 import Link from "../../../../components/v2/Link";
 import Tag from "../../../../components/v2/Tag/Tag";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
+import AddAttendee from "../../../../components/shared/AddAttendee";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
 }
 
 const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
-  const booking = useFragment(
+  const booking = useFragment<BookingScene_FirmBookingFragment$key>(
     graphql`
       fragment BookingScene_FirmBookingFragment on Booking {
         bookedFor
@@ -33,6 +34,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
         }
         ...EventOptionsTable_BookingFragment
         ...AttendeesTable_BookingFragment
+        ...AddAttendee_BookingFragment
       }
     `,
     bookingFragmentRef
@@ -81,9 +83,14 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
         </Stack>
       </Grid>
       <Grid xs={8}>
+        <Typography level="h4">Attendees</Typography>
         <AttendeesTable bookingFragmentRef={booking} />
+        {booking.status !== "cancelled" && (
+          <AddAttendee bookingFragmentRef={booking} />
+        )}
       </Grid>
       <Grid xs={4}>
+        <Typography level="h4">Booking Options</Typography>
         <EventOptionsTable bookingFragmentRef={booking} />
       </Grid>
     </Grid>

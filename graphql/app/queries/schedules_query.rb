@@ -3,7 +3,7 @@
 class SchedulesQuery
   def initialize(
     params = {},
-    relations = Schedule.where('scheduled_for > ?', Time.zone.now)
+    relations = Schedule.where('scheduled_for > ?', Time.zone.now).active
   )
     @relations = relations
     @params = params
@@ -14,6 +14,7 @@ class SchedulesQuery
       @relations = @relations.where('scheduled_for BETWEEN ? AND ?',
                                     @params[:start_date],
                                     @params[:end_date])
+                             .active
     end
     if @params[:min_price].present? && @params[:max_price].present?
       @relations = @relations.joins(:event).where('events.attendee_price_per_uom_cents BETWEEN ? AND ?',

@@ -3,6 +3,7 @@ import moment from "moment";
 import { getHumanDateTime } from "../../../../lib/utils/dates";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Tag from "../../../v2/Tag/Tag";
+import Link from "../../../v2/Link";
 
 const TagColor = ({ status }: { status: string }) => {
   const color = useStatusColor({
@@ -19,6 +20,11 @@ const TagColor = ({ status }: { status: string }) => {
 export function useSchedulesHeaders() {
   return React.useMemo(
     () => [
+      {
+        label: "Event",
+        width: 100,
+        key: "eventId",
+      },
       {
         label: "Date",
         width: 150,
@@ -60,6 +66,11 @@ export function useSchedulesColumns(
           0
         ),
         status: <TagColor status={scheduleRow.status} />,
+        eventId: (
+          <Link href={`/my-firm/events/${scheduleRow.event?.id}`} primary>
+            {scheduleRow.event?.id}
+          </Link>
+        ),
       })),
     [schedules]
   );
