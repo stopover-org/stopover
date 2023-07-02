@@ -1,7 +1,7 @@
 import React from "react";
-import { IconButton, Stack } from "@mui/joy";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { graphql, useFragment } from "react-relay";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
+import { bookingOptions_BookingFragmentRef$key } from "./__generated__/bookingOptions_BookingFragmentRef.graphql";
 
 export function useBookingOptionsHeaders() {
   return React.useMemo(
@@ -18,21 +18,42 @@ export function useBookingOptionsHeaders() {
         label: "Attendee Pay",
         key: "attendeePrice",
       },
-      {
-        label: "",
-        key: "actions",
-      },
     ],
     []
   );
 }
 
 export function useBookingOptionsColumns(
-  bookingOptions: ReadonlyArray<Record<string, any>>
+  bookingFragmentRef: bookingOptions_BookingFragmentRef$key
 ) {
+  const booking = useFragment<bookingOptions_BookingFragmentRef$key>(
+    graphql`
+      fragment bookingOptions_BookingFragmentRef on Booking {
+        status
+        bookingOptions {
+          eventOption {
+            title
+          }
+          organizerPrice {
+            cents
+            currency {
+              name
+            }
+          }
+          attendeePrice {
+            cents
+            currency {
+              name
+            }
+          }
+        }
+      }
+    `,
+    bookingFragmentRef
+  );
   return React.useMemo(
     () =>
-      bookingOptions.map((opt) => ({
+      booking.bookingOptions.map((opt) => ({
         title: opt.eventOption.title,
 
         organizerPrice: getCurrencyFormat(
@@ -43,14 +64,7 @@ export function useBookingOptionsColumns(
           opt.attendeePrice.cents,
           opt.attendeePrice.currency.name
         ),
-        actions: (
-          <Stack direction="row" justifyContent="flex-end">
-            <IconButton color="danger" size="sm">
-              <DeleteIcon />
-            </IconButton>
-          </Stack>
-        ),
       })),
-    [bookingOptions]
+    [booking.bookingOptions]
   );
 }

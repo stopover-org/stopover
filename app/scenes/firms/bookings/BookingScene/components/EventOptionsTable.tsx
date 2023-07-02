@@ -15,29 +15,13 @@ const EventOptionsTable = ({ bookingFragmentRef }: EventOptionsTableProps) => {
   const booking = useFragment<EventOptionsTable_BookingFragment$key>(
     graphql`
       fragment EventOptionsTable_BookingFragment on Booking {
-        bookingOptions {
-          eventOption {
-            title
-          }
-          organizerPrice {
-            cents
-            currency {
-              name
-            }
-          }
-          attendeePrice {
-            cents
-            currency {
-              name
-            }
-          }
-        }
+        ...bookingOptions_BookingFragmentRef
       }
     `,
     bookingFragmentRef
   );
   const headers = useBookingOptionsHeaders();
-  const data = useBookingOptionsColumns(booking.bookingOptions);
+  const data = useBookingOptionsColumns(booking);
   return <Table headers={headers} data={data} />;
 };
 

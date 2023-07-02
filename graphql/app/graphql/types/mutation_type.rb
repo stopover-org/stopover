@@ -25,13 +25,12 @@ module Types
 
     field :create_checkout,           mutation: Mutations::CreateCheckout
     field :create_stripe_account,     mutation: Mutations::CreateStripeAccount
-    field :create_successful_payment, mutation: Mutations::SuccessfulPayment
-    field :create_canceled_payment,   mutation: Mutations::CanceledPayment
 
     field :verify_firm,               mutation: Mutations::VerifyFirm
     field :verify_event,              mutation: Mutations::VerifyEvent
     field :publish_event,             mutation: Mutations::PublishEvent
     field :unpublish_event,           mutation: Mutations::UnpublishEvent
     field :reschedule_event,          mutation: Mutations::RescheduleEvent
+    field :sync_stripe,               mutation: Mutations::SyncStripe
   end
 end

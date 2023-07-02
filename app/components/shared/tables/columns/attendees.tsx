@@ -16,7 +16,7 @@ export function useAttendeesHeaders() {
       { label: "Email", width: 150, key: "email" },
       { label: "Selected Options", width: 500, key: "attendeeOptions" },
       { label: "Was registered already", width: 50, key: "isRegistered" },
-      { label: "", width: 150, key: "actions" },
+      { label: "Actions", width: 150, key: "actions" },
     ],
     []
   );
@@ -26,6 +26,7 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
   const booking = useFragment<attendees_BookingFragment$key>(
     graphql`
       fragment attendees_BookingFragment on Booking {
+        status
         event {
           requiresCheckIn
         }
@@ -97,14 +98,18 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
         ),
         actions: (
           <Stack direction="row" justifyContent="flex-end">
-            {booking.event.requiresCheckIn && !att.isRegistered && (
-              <RegisterAttendee attendeeFragmentRef={att} />
+            {booking.event.requiresCheckIn &&
+              !att.isRegistered &&
+              booking.status === "active" && (
+                <RegisterAttendee attendeeFragmentRef={att} />
+              )}
+            {booking.status === "active" && (
+              <Tooltip title="Remove this attendee and refund it">
+                <IconButton color="danger" size="sm">
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
             )}
-            <Tooltip title="Remove this attendee and refund it">
-              <IconButton color="danger" size="sm">
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
           </Stack>
         ),
       })),
