@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mutations
-  class RemoveBooking < BaseMutation
+  class CancelBooking < BaseMutation
     field :booking, Types::BookingType
     field :trip, Types::TripType
 

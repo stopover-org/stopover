@@ -65,7 +65,7 @@ class Booking < ApplicationRecord
     end
 
     event :cancel do
-      transitions from: %i[active paid], to: :cancelled, guard: :can_cancel
+      transitions from: :active, to: :cancelled, guard: :can_cancel
     end
   end
 
@@ -148,7 +148,7 @@ class Booking < ApplicationRecord
   end
 
   def create_attendee
-    attendees.build(first_name: 'guest') if attendees.empty?
+    attendees.build if attendees.empty?
   end
 
   def should_create_trip
@@ -156,8 +156,6 @@ class Booking < ApplicationRecord
   end
 
   def create_trip
-    # TODO: make bang create
-    # to raise an error
     Trip.create(bookings: [self])
   end
 end

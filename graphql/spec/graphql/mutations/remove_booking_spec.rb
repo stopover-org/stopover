@@ -6,8 +6,8 @@ RSpec.describe Attendee, type: :model do
   describe 'remove booking' do
     let!(:mutation) do
       "
-        mutation RemoveBookingMutation($input: RemoveBookingInput!) {
-          removeBooking(input: $input) {
+        mutation CancelBookingMutation($input: CancelBookingInput!) {
+          cancelBooking(input: $input) {
             booking {
               id
             }
@@ -32,7 +32,8 @@ RSpec.describe Attendee, type: :model do
                             })
     end
     it 'destroy booking' do
-      expect { subject }.to change { Booking.count }.by(-1)
+      subject
+      expect(booking.status).to eq('cancelled')
       expect(Attendee.count).to eq(0)
       expect(AttendeeOption.count).to eq(0)
       expect(BookingOption.count).to eq(0)
