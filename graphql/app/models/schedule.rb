@@ -21,7 +21,8 @@
 #
 class Schedule < ApplicationRecord
   # MODULES ===============================================================
-  #
+  include AASM
+
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
@@ -35,7 +36,13 @@ class Schedule < ApplicationRecord
   belongs_to :event
 
   # AASM STATES ================================================================
-  #
+  aasm column: :status do
+    state :active, initial: true
+    state :disabled
+    event :disable do
+      transitions from: :active, to: :disabled, guard: :can_disable
+    end
+  end
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
@@ -45,4 +52,10 @@ class Schedule < ApplicationRecord
   # SCOPES =====================================================================
   #
   # DELEGATIONS ==============================================================
+
+  private
+
+  def can_disable
+    bookings.where(status: :active).count.zero?
+  end
 end

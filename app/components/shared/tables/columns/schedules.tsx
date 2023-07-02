@@ -1,7 +1,21 @@
 import React from "react";
 import moment from "moment";
 import { getHumanDateTime } from "../../../../lib/utils/dates";
+import useStatusColor from "../../../../lib/hooks/useStatusColor";
+import Tag from "../../../v2/Tag/Tag";
 
+const TagColor = ({ status }: { status: string }) => {
+  const color = useStatusColor({
+    danger: "disabled",
+    status,
+  });
+
+  return (
+    <Tag level="body3" link={false} color={color}>
+      {status}
+    </Tag>
+  );
+};
 export function useSchedulesHeaders() {
   return React.useMemo(
     () => [
@@ -19,6 +33,11 @@ export function useSchedulesHeaders() {
         label: "Bookings",
         width: 50,
         key: "bookings",
+      },
+      {
+        label: "Status",
+        width: 100,
+        key: "status",
       },
     ],
     []
@@ -40,6 +59,7 @@ export function useSchedulesColumns(
           },
           0
         ),
+        status: <TagColor status={scheduleRow.status} />,
       })),
     [schedules]
   );

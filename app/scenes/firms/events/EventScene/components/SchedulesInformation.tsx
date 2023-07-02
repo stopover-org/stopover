@@ -40,6 +40,7 @@ const SchedulesInformation = ({
               node {
                 id
                 scheduledFor
+                status
                 bookings {
                   id
                   event {

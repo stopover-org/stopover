@@ -74,8 +74,15 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
     [booking.bookedFor]
   );
 
+  // uses for tagging
   const isPaid = React.useMemo(
     () => booking.status === "paid",
+    [booking.status]
+  );
+
+  // uses for tagging
+  const isCancelled = React.useMemo(
+    () => booking.status === "cancelled",
     [booking.status]
   );
 
@@ -129,6 +136,11 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
             {isPaid && (
               <Tag link={false} underline={false} color="primary">
                 Paid
+              </Tag>
+            )}
+            {isCancelled && (
+              <Tag link={false} underline={false} color="danger">
+                Cancelled
               </Tag>
             )}
           </Box>

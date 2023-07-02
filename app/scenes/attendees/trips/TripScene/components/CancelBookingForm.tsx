@@ -21,14 +21,14 @@ const CancelBookingForm = ({ bookingFragmentRef }: CancelBookingFormProps) => {
     bookingFragmentRef
   );
   const form = useCancelBookingForm(booking);
-  const isPaid = React.useMemo(
-    () => booking.status === "paid",
+  const disabled = React.useMemo(
+    () => booking.status !== "active",
     [booking.status]
   );
   return (
     <form onSubmit={form.handleSubmit()}>
       <Button
-        disabled={isPaid}
+        disabled={disabled}
         variant="plain"
         type="submit"
         color="danger"
