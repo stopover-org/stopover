@@ -23,7 +23,7 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
   const form = useCheckoutForm(booking);
   const disabled = React.useMemo(
     () =>
-      booking.status === "paid" ||
+      booking.status !== "active" ||
       moment(booking.bookedFor).isBefore(new Date()),
     [booking.status, booking.bookedFor]
   );

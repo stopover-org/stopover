@@ -5,6 +5,8 @@ import { getHumanDateTime } from "../../../../lib/utils/dates";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import AttendeesCell from "../../cells/AttendeesCell/AttendeesCell";
 import BookingOptionsCell from "../../cells/BookingOptionsCell/BookingOptionsCell";
+import useStatusColor from "../../../../lib/hooks/useStatusColor";
+import Tag from "../../../v2/Tag/Tag";
 
 export function useBookingsHeaders() {
   return React.useMemo(
@@ -14,6 +16,7 @@ export function useBookingsHeaders() {
         width: 150,
         key: "id",
       },
+      { label: "Status", width: 100, key: "status" },
       {
         label: "Booked For",
         width: 150,
@@ -48,6 +51,20 @@ export function useBookingsHeaders() {
     []
   );
 }
+
+const TagColor = ({ status }: { status: string }) => {
+  const color = useStatusColor({
+    danger: "cancelled",
+    status,
+  });
+
+  return (
+    <Tag level="body3" link={false} color={color}>
+      {status}
+    </Tag>
+  );
+};
+
 export function useBookingsColumns(
   bookings: ReadonlyArray<Record<string, any>>
 ) {
@@ -59,6 +76,7 @@ export function useBookingsColumns(
             {booking.id}
           </Link>
         ),
+        status: <TagColor status={booking.status} />,
         bookedFor: getHumanDateTime(moment(booking.bookedFor)),
         organizerPrice: getCurrencyFormat(
           booking?.organizerTotalPrice?.cents,

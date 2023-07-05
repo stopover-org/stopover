@@ -40,8 +40,10 @@ const SchedulesInformation = ({
               node {
                 id
                 scheduledFor
+                status
                 bookings {
                   id
+                  status
                   event {
                     id
                     title
@@ -85,10 +87,10 @@ const SchedulesInformation = ({
   );
   const [currentPage, setCurrentPage] = React.useState(1);
   const schedules = usePagedEdges(data.pagedSchedules, currentPage, 30);
-  const schedule = React.useMemo(() => {
-    if (!selectedSchedule) return null;
-    return schedules[selectedSchedule];
-  }, [schedules, selectedSchedule]);
+  const schedule = React.useMemo(
+    () => schedules[selectedSchedule!],
+    [schedules, selectedSchedule]
+  );
   const schedulesData = useSchedulesColumns(schedules as Record<string, any>[]);
   const schedulesHeaders = useSchedulesHeaders();
   const bookingsData = useBookingsColumns(
@@ -105,7 +107,7 @@ const SchedulesInformation = ({
             data={schedulesData}
             headers={schedulesHeaders}
             withPagination
-            onRowClick={(i: number) => setSelectedSchedule(i)}
+            onRowClick={setSelectedSchedule}
             paginationProps={{
               setPage: setCurrentPage,
               page: currentPage,

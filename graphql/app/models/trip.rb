@@ -32,7 +32,10 @@ class Trip < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==========================================================
   #
   # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :bookings, -> { includes(:schedule).order('schedules.scheduled_for ASC') }, dependent: :destroy, inverse_of: :trip
+  has_many :bookings,
+           -> { includes(:schedule).order('schedules.scheduled_for ASC') },
+           dependent: :destroy,
+           inverse_of: :trip
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   #
@@ -89,7 +92,7 @@ class Trip < ApplicationRecord
   end
 
   def cancel_trip
-    bookings.each do |booking|
+    bookings.where.not(status: :cancelled).find_each do |booking|
       booking.cancel!
     end
   end

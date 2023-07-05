@@ -40,7 +40,7 @@ const BookingOptionsEditForm = ({
     () => booking.eventOptions.filter((option) => option.builtIn),
     [booking]
   );
-  const form = useBookingEditForm(booking, booking.status === "paid");
+  const form = useBookingEditForm(booking, booking.status !== "active");
 
   return (
     <FormProvider {...form}>

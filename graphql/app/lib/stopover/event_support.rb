@@ -48,7 +48,7 @@ module Stopover
           date.change({ hour: time[0].to_i, min: time[1].to_i })
         end
 
-        event.schedules.where('scheduled_for::DATE = ?', date.to_date).where.not(scheduled_for: dates_with_time).each do |schedule|
+        event.schedules.active.where('scheduled_for::DATE = ?', date.to_date).where.not(scheduled_for: dates_with_time).each do |schedule|
           schedule.destroy if schedule.bookings.empty?
         end
 
@@ -56,7 +56,7 @@ module Stopover
         next unless should_create_schedules
 
         dates_with_time.each do |date_with_time|
-          next if event.schedules.where(scheduled_for: date_with_time).any?
+          next if event.schedules.active.where(scheduled_for: date_with_time).any?
           event.schedules.create!(scheduled_for: date_with_time)
         end
       end

@@ -46,16 +46,6 @@ const EventOptionEditForm = ({
   );
   const form = useFormContext();
   const eventOptions = form.useFormField<string[]>("eventOptionIds");
-  const onChange = React.useCallback(() => {
-    if (eventOptions.value.find((id) => id === eventOption.id)) {
-      eventOptions.onChange(
-        eventOptions.value.filter((id) => id !== eventOption.id)
-      );
-    } else {
-      eventOptions.onChange([...eventOptions.value, eventOption.id]);
-    }
-  }, [eventOptions.value]);
-
   const checked = React.useMemo(
     () => !!eventOptions.value.find((id) => id === eventOption.id),
     [eventOption, eventOptions]
@@ -63,10 +53,21 @@ const EventOptionEditForm = ({
 
   const disabled = React.useMemo(
     () =>
-      booking.status === "paid" ||
+      booking.status !== "active" ||
       moment(booking.bookedFor).isBefore(new Date()),
     [booking.status, booking.bookedFor]
   );
+
+  const onChange = React.useCallback(() => {
+    if (disabled) return;
+    if (eventOptions.value.find((id) => id === eventOption.id)) {
+      eventOptions.onChange(
+        eventOptions.value.filter((id) => id !== eventOption.id)
+      );
+    } else {
+      eventOptions.onChange([...eventOptions.value, eventOption.id]);
+    }
+  }, [eventOptions.value, disabled]);
 
   return (
     <Grid container xs={12}>
@@ -75,7 +76,7 @@ const EventOptionEditForm = ({
           onChange={onChange}
           label={eventOption.title}
           checked={checked}
-          disabled={disabled}
+          readOnly={disabled}
         />
       </Grid>
       <Grid xs={3}>

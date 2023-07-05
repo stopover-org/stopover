@@ -81,13 +81,11 @@ function useMutationForm<
   const handleSubmit = (...rest: any) => form.handleSubmit(onSubmit(...rest));
 
   React.useEffect(() => {
+    if (autosave) return;
+    requestRef.current = null;
+
     form.reset(defaultValues as FieldsType);
   }, [defaultValues]);
-
-  const currentValues = React.useMemo(
-    () => form.getValues(),
-    [JSON.stringify(form.getValues())]
-  );
 
   React.useEffect(() => {
     if (autosave) {
@@ -100,7 +98,7 @@ function useMutationForm<
         handleSubmit()();
       }, autosaveTimeout);
     }
-  }, [JSON.stringify(currentValues)]);
+  }, [JSON.stringify(form.getValues())]);
 
   return React.useMemo(
     () => ({

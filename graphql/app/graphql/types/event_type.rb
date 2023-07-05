@@ -61,6 +61,7 @@ module Types
                             .bookings
                             .joins(:schedule)
                             .where('schedules.scheduled_for > ? AND bookings.event_id = ?', Time.zone.now, object.id)
+                            .where(schedules: { status: :active })
     end
 
     def booking(**args)

@@ -40,6 +40,10 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
               node {
                 id
                 scheduledFor
+                status
+                event {
+                  id
+                }
                 bookings {
                   id
                   event {
@@ -85,10 +89,10 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
   );
   const [currentPage, setCurrentPage] = React.useState(1);
   const schedules = usePagedEdges(data.pagedSchedules, currentPage, 30);
-  const schedule = React.useMemo(() => {
-    if (!selectedSchedule) return null;
-    return schedules[selectedSchedule];
-  }, [schedules, selectedSchedule]);
+  const schedule = React.useMemo(
+    () => schedules[selectedSchedule!],
+    [schedules, selectedSchedule]
+  );
   const schedulesData = useSchedulesColumns(schedules as Record<string, any>[]);
   const schedulesHeaders = useSchedulesHeaders();
   const bookingsData = useBookingsColumns(

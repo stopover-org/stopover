@@ -17,6 +17,7 @@ import PublishEvent from "../../../../components/shared/PublishEvent";
 import UnpublishEvent from "../../../../components/shared/UnpublishEvent";
 import RemoveEvent from "../../../../components/shared/RemoveEvent";
 import RescheduleEvent from "../../../../components/shared/RescheduleEvent";
+import SyncStripe from "../../../../components/shared/SyncStripe";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -27,7 +28,7 @@ const EventScene = ({
   eventFragmentRef,
   currentUserFragmentRef,
 }: EventSceneProps) => {
-  const event = useFragment(
+  const event = useFragment<EventScene_FirmEventFragment$key>(
     graphql`
       fragment EventScene_FirmEventFragment on Event {
         eventOptions {
@@ -55,6 +56,7 @@ const EventScene = ({
         ...UnpublishEvent_EventFragment
         ...RemoveEvent_EventFragment
         ...RescheduleEvent_EventFragment
+        ...SyncStripe_EventFragment
         id
         status
         title
@@ -120,6 +122,11 @@ const EventScene = ({
             event.status === "draft" &&
             event.firm.status === "active" && (
               <VerifyEvent eventFragmentRef={event} />
+            )}
+          {currentUser.serviceUser &&
+            ["published", "unpublished"].includes(event.status) &&
+            event.firm.status === "active" && (
+              <SyncStripe eventFragmentRef={event} />
             )}
         </Stack>
       </Grid>

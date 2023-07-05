@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
 module Mutations
-  class RemoveBooking < BaseMutation
+  class CancelBooking < BaseMutation
     field :booking, Types::BookingType
     field :trip, Types::TripType
 
     argument :booking_id, ID, loads: Types::BookingType
 
     def resolve(booking:)
-      booking.destroy!
       {
-        booking: booking,
+        booking: Stopover::BookingManagement::BookingCancellation.new(booking, context[:current_user]).perform,
         trip: booking.trip
       }
     rescue StandardError => e

@@ -12,13 +12,19 @@ import Button from "../../../../components/v2/Button";
 import Link from "../../../../components/v2/Link";
 import Tag from "../../../../components/v2/Tag/Tag";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
+import AddAttendee from "../../../../components/shared/AddAttendee";
+import {
+  usePaymentsColumns,
+  usePaymentsHeaders,
+} from "../../../../components/shared/tables/columns/payments";
+import Table from "../../../../components/v2/Table";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
 }
 
 const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
-  const booking = useFragment(
+  const booking = useFragment<BookingScene_FirmBookingFragment$key>(
     graphql`
       fragment BookingScene_FirmBookingFragment on Booking {
         bookedFor
@@ -31,20 +37,46 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
         schedule {
           id
         }
+        payments {
+          id
+          status
+          totalPrice {
+            cents
+            currency {
+              name
+            }
+          }
+          createdAt
+        }
         ...EventOptionsTable_BookingFragment
         ...AttendeesTable_BookingFragment
+        ...AddAttendee_BookingFragment
       }
     `,
     bookingFragmentRef
   );
 
   const tagColor = useStatusColor({
-    primary: "published",
-    danger: "deleted",
-    info: "unpublished",
-    neutral: "draft",
+    primary: "active",
+    danger: "cancelled",
     status: booking.status,
   });
+  const paymentsHeaders = usePaymentsHeaders();
+  const paymentsData = usePaymentsColumns(
+    booking.payments.map((payment) => ({
+      event: {
+        id: booking.event.id,
+        title: booking.event.title,
+      },
+      booking: {
+        id: booking.id,
+      },
+      createdAt: payment.createdAt,
+      totalPrice: payment.totalPrice,
+      status: payment.status,
+    }))
+  );
+
   return (
     <Grid container>
       <Grid xs={12}>
@@ -73,18 +105,29 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
               {getHumanDateTime(moment(booking.bookedFor!))}
             </Typography>
           </Box>
-          <Box>
-            <Button size="sm" color="danger">
-              Refund
-            </Button>
-          </Box>
+          {booking.status !== "cancelled" && (
+            <Box>
+              <Button size="sm" color="danger">
+                Refund
+              </Button>
+            </Box>
+          )}
         </Stack>
       </Grid>
       <Grid xs={8}>
+        <Typography level="h4">Attendees</Typography>
         <AttendeesTable bookingFragmentRef={booking} />
+        {booking.status !== "cancelled" && (
+          <AddAttendee bookingFragmentRef={booking} />
+        )}
       </Grid>
       <Grid xs={4}>
+        <Typography level="h4">Booking Options</Typography>
         <EventOptionsTable bookingFragmentRef={booking} />
+      </Grid>
+      <Grid xs={12}>
+        <Typography level="h4">Payments</Typography>
+        <Table headers={paymentsHeaders} data={paymentsData} />
       </Grid>
     </Grid>
   );

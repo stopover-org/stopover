@@ -35,7 +35,7 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
   const form = useAttendeeEditForm(attendee);
   const disabled = React.useMemo(
     () =>
-      attendee.booking.status === "paid" ||
+      attendee.booking.status !== "active" ||
       moment(attendee.booking.bookedFor).isBefore(new Date()),
     [attendee.booking.status, attendee.booking.bookedFor]
   );
@@ -48,7 +48,7 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
             <Input
               label="First Name"
               placeholder="First Name"
-              disabled={disabled}
+              readOnly={disabled}
               {...form.useFormField("firstName")}
             />
           </Grid>
@@ -56,7 +56,7 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
             <Input
               label="Last Name"
               placeholder="Last Name"
-              disabled={disabled}
+              readOnly={disabled}
               {...form.useFormField("lastName")}
             />
           </Grid>
@@ -64,7 +64,7 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
             <Input
               label="Email"
               placeholder="Email"
-              disabled={disabled}
+              readOnly={disabled}
               {...form.useFormField("email")}
             />
           </Grid>
@@ -72,7 +72,7 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
             <Input
               label="Phone"
               placeholder="Phone"
-              disabled={disabled}
+              readOnly={disabled}
               {...form.useFormField("phone")}
             />
           </Grid>

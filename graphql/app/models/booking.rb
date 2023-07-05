@@ -65,7 +65,7 @@ class Booking < ApplicationRecord
     end
 
     event :cancel do
-      transitions from: %i[active paid], to: :cancelled, guard: :can_cancel
+      transitions from: :active, to: :cancelled, guard: :can_cancel
     end
   end
 
@@ -85,7 +85,12 @@ class Booking < ApplicationRecord
 
   def check_max_attendees
     return true if event.max_attendees.nil?
-    errors.add(:attendees, 'all places reserved') if Attendee.where(booking_id: Booking.where(schedule_id: schedule.reload.id)).count + attendees.count > event.max_attendees
+    reached_max_attendees = if schedule
+                              Attendee.where(booking_id: Booking.where(schedule_id: schedule.reload.id)).count + attendees.count > event.max_attendees
+                            else
+                              attendees.count > event.max_attendees
+                            end
+    errors.add(:attendees, 'all places reserved') if reached_max_attendees
   end
 
   def attendee_total_price
@@ -148,7 +153,7 @@ class Booking < ApplicationRecord
   end
 
   def create_attendee
-    attendees.build(first_name: 'guest') if attendees.empty?
+    attendees.build if attendees.empty?
   end
 
   def should_create_trip
@@ -156,8 +161,6 @@ class Booking < ApplicationRecord
   end
 
   def create_trip
-    # TODO: make bang create
-    # to raise an error
     Trip.create(bookings: [self])
   end
 end

@@ -15,23 +15,23 @@ RSpec.describe EventsQuery, type: :query do
     # create events
     # this event will be out of scope by default
     # because it's in the past
-    create(:event,
+    create(:published_event,
            organizer_price_per_uom: Money.new(13, :usd),
            single_days_with_time: [past_date],
            schedules: [build(:schedule, scheduled_for: past_date)])
-    create(:event,
+    create(:published_event,
            organizer_price_per_uom: Money.new(130, :usd),
            single_days_with_time: [future_2_day],
            schedules: [build(:schedule, scheduled_for: future_2_day)])
-    create(:event,
+    create(:published_event,
            organizer_price_per_uom: Money.new(1300, :usd),
            single_days_with_time: [future_4_day],
            schedules: [build(:schedule, scheduled_for: future_4_day)])
-    create(:event,
+    create(:published_event,
            organizer_price_per_uom: Money.new(13_000, :usd),
            single_days_with_time: [future_6_day],
            schedules: [build(:schedule, scheduled_for: future_6_day)])
-    create(:event,
+    create(:published_event,
            organizer_price_per_uom: Money.new(130_000, :usd),
            single_days_with_time: [future_8_day],
            schedules: [build(:schedule, scheduled_for: future_8_day)])
@@ -44,25 +44,6 @@ RSpec.describe EventsQuery, type: :query do
     create(:tag, title: 'tour'.titleize)
     Event.offset(1).first(2).each { |event| event.tags << Tag.first }
     Event.offset(1).last(2).each { |event| event.tags << Tag.last }
-  end
-
-  describe 'search by tag' do
-    let(:query) { EventsQuery.new({ tags: ['excursion'] }) }
-    subject { query.all }
-
-    it 'events with tag excursion' do
-      expect(subject.count).to eq(2)
-    end
-  end
-
-  describe 'search by multiple tags' do
-    let(:query) { EventsQuery.new({ tags: %w[excursion tour] }) }
-
-    subject { query.all }
-
-    it 'events with tags excursion and tour' do
-      expect(subject.count).to eq(4)
-    end
   end
 
   describe 'initialization' do

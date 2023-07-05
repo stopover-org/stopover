@@ -4,7 +4,7 @@ module Stopover
   class CurrentTripService
     def initialize(user:)
       @user = user
-      @trips = user.account.trips
+      @trips = user.account.trips.where(status: %i[active draft])
     end
 
     def get_current_trip(booked_for)
@@ -14,7 +14,9 @@ module Stopover
                              .where(bookings: Booking.joins(:schedule)
                                                      .where('schedules.scheduled_for BETWEEN ? AND ?',
                                                             booked_for - config_value.days,
-                                                            booked_for + config_value.days)).distinct
+                                                            booked_for + config_value.days)
+                                                     .where(schedules: { status: :active }))
+                             .distinct
                              .order(updated_at: :asc)
 
       return existing_trips.last if existing_trips.count.positive?

@@ -41,7 +41,7 @@ const BookingDatesEditForm = ({
   const availableTimes = useTimeFromDate(availableDates, dateField.value);
   const disabled = React.useMemo(
     () =>
-      booking.status === "paid" ||
+      booking.status !== "active" ||
       moment(booking.bookedFor).isBefore(new Date()),
     [booking.status, booking.bookedFor]
   );
