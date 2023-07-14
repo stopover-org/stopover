@@ -89,12 +89,12 @@ test:
 #
 staging:
   <<: *default
-  database: <%= ENV.fetch("DATABASE_NAME") %>
+  database: graphql_staging
   username: <%= ENV.fetch("DATABASE_USERNAME") %>
   password: <%= ENV.fetch("DATABASE_PASSWORD") %>
 
 production:
   <<: *default
-  database: <%= ENV.fetch("DATABASE_NAME") %>
+  database: graphql_production
   username: <%= ENV.fetch("DATABASE_USERNAME") %>
   password: <%= ENV.fetch("DATABASE_PASSWORD") %>
