@@ -3,6 +3,7 @@ lock "~> 3.17.3"
 
 set :application, "stopover"
 set :repo_url, "git@github.com:stopover-org/stopover.git"
+set :repo_tree, "graphql"
 set :rails_env, :production
 
 # Default branch is :master
