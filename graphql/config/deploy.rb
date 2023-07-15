@@ -43,8 +43,12 @@ set :linked_dirs, %w[log tmp/pids tmp/cache tmp/sockets vendor/bundle .bundle pu
 # set :ssh_options, verify_host_key: :secure
 
 # # Skip migration if files in db/migrate were not modified
-# # Defaults to fals
+# # Defaults to false
 set :conditionally_migrate, true
+
+# RBENV SETUP
+set :rbenv_type, :user # or :system, or :fullstaq (for Fullstaq Ruby), depends on your rbenv setup
+set :rbenv_ruby, File.read('.ruby-version').strip
 
 # ================================================
 # ============ From Custom Rake Tasks ============
