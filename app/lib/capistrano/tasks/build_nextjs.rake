@@ -2,7 +2,7 @@ namespace :npm do
     desc 'build nextjs'
     task :build do
         on roles fetch(:npm_roles) do
-            within fetch(:npm_target_path, release_path) do
+            within release_path do
                 on roles(:app) do
                     execute "npm run build"
                 end
