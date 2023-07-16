@@ -44,4 +44,4 @@ set :linked_dirs, %w[log node_modules]
 # set :ssh_options, verify_host_key: :secure
 
 before 'deploy:starting', 'config_files:upload'
-before 'npm:install', 'npm:build'
+after 'npm:install', 'npm:build'
