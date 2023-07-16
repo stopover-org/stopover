@@ -51,6 +51,9 @@ set :conditionally_migrate, true
 set :rbenv_type, :user # or :system, or :fullstaq (for Fullstaq Ruby), depends on your rbenv setup
 set :rbenv_ruby, File.read('.ruby-version').strip
 
+# PUMA SETUP
+set :puma_enable_socket_service, true
+
 # ================================================
 # ============ From Custom Rake Tasks ============
 # ================================================
