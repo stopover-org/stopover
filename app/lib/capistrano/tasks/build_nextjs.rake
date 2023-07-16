@@ -4,7 +4,7 @@ namespace :npm do
         on roles fetch(:npm_roles) do
             within release_path do
                 on roles(:app) do
-                    execute "/usr/bin/npm --prefix #{release_path} run build"
+                    execute "NODE_ENV=production /usr/bin/npm --prefix #{release_path} run build"
                 end
             end
         end
