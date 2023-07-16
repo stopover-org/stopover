@@ -4,6 +4,7 @@ namespace :npm do
         on roles fetch(:npm_roles) do
             within release_path do
                 on roles(:app) do
+                    execute "echo #{release_path}"
                     execute :npm, 'run build'
                 end
             end
