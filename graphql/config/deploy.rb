@@ -49,7 +49,11 @@ set :conditionally_migrate, true
 
 # RBENV SETUP
 set :rbenv_type, :user # or :system, or :fullstaq (for Fullstaq Ruby), depends on your rbenv setup
-set :rbenv_ruby, File.read('.ruby-version').strip
+set :rbenv_ruby, "3.1.0"
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_map_bins, %w{rake gem bundle ruby rails puma pumactl}
+set :rbenv_roles, :all # default value
+
 
 # PUMA SETUP
 set :puma_enable_socket_service, true
@@ -62,10 +66,6 @@ set :puma_enable_socket_service, true
 
 # upload configuration files
 before 'deploy:starting', 'config_files:upload'
-set :initial, true
-
-# run only if app is being deployed for the very first time, should update "set :initial, true" above to run this
-before 'deploy:migrate', 'database:create' if fetch(:initial)
 
 # reload application after successful deploy
 after 'deploy:publishing', 'application:reload'
