@@ -8,7 +8,7 @@ import Layout from "../../components/MainPage/Layout";
 import AuthGuard from "../../components/shared/AuthGuard/AuthGuard";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
-import { signIn_Query } from "./__generated__/signIn_Query.graphql";
+import { signIn_Query } from "../../artifacts/signIn_Query.graphql";
 
 const Query = graphql`
   query signIn_Query {

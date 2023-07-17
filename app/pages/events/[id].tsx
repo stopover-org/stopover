@@ -2,13 +2,13 @@ import React from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
 import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
-import { Id_Query } from "./__generated__/Id_Query.graphql";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import Loading from "../../components/v2/Loading";
 import EventScene from "../../scenes/attendees/events/EventScene";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
+import { Id_Query } from "../../artifacts/Id_Query.graphql";
 
 const Query = graphql`
   query Id_Query($id: ID!) {

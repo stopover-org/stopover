@@ -6,7 +6,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import IconButton from "@mui/joy/IconButton";
 import Link from "../../../../../components/v2/Link/Link";
 import Typography from "../../../../../components/v2/Typography/Typography";
-import { TripCard_TripFragment$key } from "./__generated__/TripCard_TripFragment.graphql";
+import { TripCard_TripFragment$key } from "../../../../../artifacts/TripCard_TripFragment.graphql";
 
 interface TripCardProps {
   tripFragmentRef: TripCard_TripFragment$key;

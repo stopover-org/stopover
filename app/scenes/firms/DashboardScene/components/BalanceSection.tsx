@@ -2,7 +2,7 @@ import { Grid, Stack } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import Section from "../../../../components/v2/Section";
-import { BalanceSection_FirmFragment$key } from "./__generated__/BalanceSection_FirmFragment.graphql";
+import { BalanceSection_FirmFragment$key } from "../../../../artifacts/BalanceSection_FirmFragment.graphql";
 import Typography from "../../../../components/v2/Typography";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 

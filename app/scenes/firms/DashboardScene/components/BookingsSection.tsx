@@ -2,7 +2,7 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { Grid } from "@mui/joy";
 
-import { BookingsSection_FirmFragment$key } from "./__generated__/BookingsSection_FirmFragment.graphql";
+import { BookingsSection_FirmFragment$key } from "../../../../artifacts/BookingsSection_FirmFragment.graphql";
 import Typography from "../../../../components/v2/Typography/Typography";
 import Section from "../../../../components/v2/Section";
 import Link from "../../../../components/v2/Link";

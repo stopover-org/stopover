@@ -1,8 +1,8 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import Button from "../../v2/Button/Button";
-import { PublishEvent_EventFragment$key } from "./__generated__/PublishEvent_EventFragment.graphql";
 import { usePublishEventForm } from "./usePublishEventForm";
+import { PublishEvent_EventFragment$key } from "../../../artifacts/PublishEvent_EventFragment.graphql";
 
 interface PublishEventProps {
   eventFragmentRef: PublishEvent_EventFragment$key;

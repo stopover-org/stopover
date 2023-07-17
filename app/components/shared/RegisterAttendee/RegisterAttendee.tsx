@@ -2,7 +2,7 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import Button from "../../v2/Button/Button";
 import { useRegisterAttendeeForm } from "./useRegisterAttendeeForm";
-import { RegisterAttendee_AttendeeFragment$key } from "./__generated__/RegisterAttendee_AttendeeFragment.graphql";
+import { RegisterAttendee_AttendeeFragment$key } from "../../../artifacts/RegisterAttendee_AttendeeFragment.graphql";
 
 interface RegisterAttendeeProps {
   attendeeFragmentRef: RegisterAttendee_AttendeeFragment$key;

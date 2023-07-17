@@ -1,16 +1,13 @@
-import { Grid, Stack } from "@mui/joy";
-import React, { useMemo } from "react";
+import { Grid } from "@mui/joy";
+import React from "react";
 import { graphql, usePaginationFragment } from "react-relay";
-import moment from "moment/moment";
 import Section from "../../../../components/v2/Section";
 import Typography from "../../../../components/v2/Typography/Typography";
-import { PaymentsSection_FirmFragment$key } from "./__generated__/PaymentsSection_FirmFragment.graphql";
+import { PaymentsSection_FirmFragment$key } from "../../../../artifacts/PaymentsSection_FirmFragment.graphql";
 import Table from "../../../../components/v2/Table/Table";
 import useEdges from "../../../../lib/hooks/useEdges";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
-import { getHumanDateTime } from "../../../../lib/utils/dates";
 import Link from "../../../../components/v2/Link";
-import { PaymentSectionFirmFragment } from "./__generated__/PaymentSectionFirmFragment.graphql";
+import { PaymentSectionFirmFragment } from "../../../../artifacts/PaymentSectionFirmFragment.graphql";
 import {
   usePaymentsColumns,
   usePaymentsHeaders,

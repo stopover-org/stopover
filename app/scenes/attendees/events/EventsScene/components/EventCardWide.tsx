@@ -9,9 +9,9 @@ import Link from "../../../../../components/v2/Link";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Button from "../../../../../components/v2/Button";
 import Tag from "../../../../../components/v2/Tag";
-import { EventCardCompacts_ScheduleFragment$key } from "./__generated__/EventCardCompacts_ScheduleFragment.graphql";
+import { EventCardCompacts_ScheduleFragment$key } from "../../../../../artifacts/EventCardCompacts_ScheduleFragment.graphql";
 import { getDate, getHumanDateTime } from "../../../../../lib/utils/dates";
-import { EventCardCompact_BookEventMutation } from "./__generated__/EventCardCompact_BookEventMutation.graphql";
+import { EventCardCompact_BookEventMutation } from "../../../../../artifacts/EventCardCompact_BookEventMutation.graphql";
 
 interface Props {
   scheduleReference: EventCardCompacts_ScheduleFragment$key;

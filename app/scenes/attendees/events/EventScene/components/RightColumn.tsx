@@ -3,7 +3,7 @@ import { Box, Stack } from "@mui/joy";
 import React from "react";
 import Scrollbars from "react-custom-scrollbars-2";
 import Typography from "../../../../../components/v2/Typography";
-import { RightColumn_EventFragment$key } from "./__generated__/RightColumn_EventFragment.graphql";
+import { RightColumn_EventFragment$key } from "../../../../../artifacts/RightColumn_EventFragment.graphql";
 import BookEvent from "./BookEvent";
 
 interface RightColumnProps {

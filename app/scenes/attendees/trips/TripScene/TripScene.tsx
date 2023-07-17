@@ -4,7 +4,7 @@ import { Grid } from "@mui/joy";
 import moment, { Moment } from "moment";
 import Typography from "../../../../components/v2/Typography";
 import Tag from "../../../../components/v2/Tag";
-import { TripScene_TripFragment$key } from "./__generated__/TripScene_TripFragment.graphql";
+import { TripScene_TripFragment$key } from "../../../../artifacts/TripScene_TripFragment.graphql";
 import DateBookingsSection from "./components/DateBookingsSection";
 
 interface TripSceneProps {

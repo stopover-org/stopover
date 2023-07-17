@@ -8,7 +8,7 @@ import DateRangePicker from "../../../../../components/v2/DateRangePicker/DateRa
 import SliderRange from "../../../../../components/v2/SliderRange/SliderRange";
 import Checkbox from "../../../../../components/v2/Checkbox/Checkbox";
 import RatingSelector from "../../../../../components/v2/RatingSelector";
-import { Sidebar_EventFiltersFragment$key } from "./__generated__/Sidebar_EventFiltersFragment.graphql";
+import { Sidebar_EventFiltersFragment$key } from "../../../../../artifacts/Sidebar_EventFiltersFragment.graphql";
 
 interface Props {
   eventFiltersFragment: Sidebar_EventFiltersFragment$key;

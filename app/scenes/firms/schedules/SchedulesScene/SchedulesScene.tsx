@@ -1,15 +1,11 @@
 import { Grid } from "@mui/joy";
 import moment from "moment/moment";
-import React, { useMemo } from "react";
+import React from "react";
 import { graphql, usePaginationFragment } from "react-relay";
 import Typography from "../../../../components/v2/Typography/Typography";
 import Table from "../../../../components/v2/Table/Table";
 import { getHumanDateTime } from "../../../../lib/utils/dates";
-import useEdges from "../../../../lib/hooks/useEdges";
-import Link from "../../../../components/v2/Link/Link";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
-import { SchedulesScene_FirmFragment$key } from "./__generated__/SchedulesScene_FirmFragment.graphql";
-import AttendeesCell from "../../../../components/shared/cells/AttendeesCell";
+import { SchedulesScene_FirmFragment$key } from "../../../../artifacts/SchedulesScene_FirmFragment.graphql";
 import {
   useBookingsColumns,
   useBookingsHeaders,

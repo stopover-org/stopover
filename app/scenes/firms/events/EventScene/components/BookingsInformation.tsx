@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Stack, TabPanel } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import Typography from "../../../../../components/v2/Typography/Typography";
-import { BookingsInformation_EventFragment$key } from "./__generated__/BookingsInformation_EventFragment.graphql";
+import { BookingsInformation_EventFragment$key } from "../../../../../artifacts/BookingsInformation_EventFragment.graphql";
 import BookingsEventTable from "../../../../../components/shared/tables/BookingsEventTable";
 
 interface BookingsInformationProps {

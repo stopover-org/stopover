@@ -2,7 +2,7 @@ import { Grid } from "@mui/joy";
 import React from "react";
 import { graphql, usePaginationFragment } from "react-relay";
 import Section from "../../../../components/v2/Section";
-import { SchedulesSection_FirmFragment$key } from "./__generated__/SchedulesSection_FirmFragment.graphql";
+import { SchedulesSection_FirmFragment$key } from "../../../../artifacts/SchedulesSection_FirmFragment.graphql";
 import Typography from "../../../../components/v2/Typography/Typography";
 import Table from "../../../../components/v2/Table";
 import Link from "../../../../components/v2/Link";

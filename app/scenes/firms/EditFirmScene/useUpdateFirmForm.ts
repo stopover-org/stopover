@@ -4,8 +4,8 @@ import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useUpdateFirmForm_FirmFragment$key } from "./__generated__/useUpdateFirmForm_FirmFragment.graphql";
-import { useUpdateFirmForm_UpdateFirmMutation } from "./__generated__/useUpdateFirmForm_UpdateFirmMutation.graphql";
+import { useUpdateFirmForm_FirmFragment$key } from "../../../artifacts/useUpdateFirmForm_FirmFragment.graphql";
+import { useUpdateFirmForm_UpdateFirmMutation } from "../../../artifacts/useUpdateFirmForm_UpdateFirmMutation.graphql";
 
 interface UpdateFirmFields {
   title: string;

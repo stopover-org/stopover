@@ -3,8 +3,8 @@ import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useMutationForm from "../../../../../lib/hooks/useMutationForm";
-import { useCancelBookingForm_BookingFragment$key } from "./__generated__/useCancelBookingForm_BookingFragment.graphql";
-import { useCancelBookingForm_CancelBookingMutation } from "./__generated__/useCancelBookingForm_CancelBookingMutation.graphql";
+import { useCancelBookingForm_BookingFragment$key } from "../../../../../artifacts/useCancelBookingForm_BookingFragment.graphql";
+import { useCancelBookingForm_CancelBookingMutation } from "../../../../../artifacts/useCancelBookingForm_CancelBookingMutation.graphql";
 
 interface CancelBookingFormFields {
   bookingId: string;

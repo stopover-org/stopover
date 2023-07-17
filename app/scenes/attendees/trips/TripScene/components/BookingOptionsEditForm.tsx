@@ -2,7 +2,7 @@ import { graphql, useFragment } from "react-relay";
 import { Grid } from "@mui/joy";
 import React from "react";
 import { FormProvider } from "react-hook-form";
-import { BookingOptionsEditForm_BookingFragment$key } from "./__generated__/BookingOptionsEditForm_BookingFragment.graphql";
+import { BookingOptionsEditForm_BookingFragment$key } from "../../../../../artifacts/BookingOptionsEditForm_BookingFragment.graphql";
 import Typography from "../../../../../components/v2/Typography";
 import EventOptionEditForm from "./EventOptionEditForm";
 import { useBookingEditForm } from "./useBookingEditForm";

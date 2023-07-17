@@ -8,8 +8,8 @@ import { getClientEnvironment } from "../../../lib/clientEnvironment";
 import { IApiKeys } from "../../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
-import { schedules_FirmSchedulesQuery } from "./__generated__/schedules_FirmSchedulesQuery.graphql";
 import SchedulesScene from "../../../scenes/firms/schedules/SchedulesScene";
+import { schedules_FirmSchedulesQuery } from "../../../artifacts/schedules_FirmSchedulesQuery.graphql";
 
 const Query = graphql`
   query schedules_FirmSchedulesQuery {

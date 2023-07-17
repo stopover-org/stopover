@@ -5,7 +5,7 @@ import { Grid, Stack } from "@mui/joy";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import { dayMonthFormat } from "../../../../../lib/utils/dates";
 import BookingCard from "./BookingCard";
-import { DateBookingsSection_TripFragment$key } from "./__generated__/DateBookingsSection_TripFragment.graphql";
+import { DateBookingsSection_TripFragment$key } from "../../../../../artifacts/DateBookingsSection_TripFragment.graphql";
 
 interface DateBookingsSectionProps {
   tripFragmentRef: DateBookingsSection_TripFragment$key;

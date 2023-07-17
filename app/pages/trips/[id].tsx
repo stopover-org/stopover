@@ -3,11 +3,11 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
-import { Id_TripsQuery } from "./__generated__/Id_TripsQuery.graphql";
 import TripScene from "../../scenes/attendees/trips/TripScene";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
+import { Id_TripsQuery } from "../../artifacts/Id_TripsQuery.graphql";
 
 const Query = graphql`
   query Id_TripsQuery($id: ID!) {

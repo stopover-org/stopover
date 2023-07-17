@@ -8,8 +8,8 @@ import { getClientEnvironment } from "../../../../lib/clientEnvironment";
 import { IApiKeys } from "../../../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../../../lib/hooks/useUpdateApiKeys";
-import { Id_FirmEventQuery } from "./__generated__/Id_FirmEventQuery.graphql";
 import EventScene from "../../../../scenes/firms/events/EventScene";
+import { Id_FirmEventQuery } from "../../../../artifacts/Id_FirmEventQuery.graphql";
 
 const Query = graphql`
   query Id_FirmEventQuery($id: ID!) {

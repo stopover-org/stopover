@@ -3,7 +3,7 @@ import { Sheet } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import Footer from "./Footer";
 import Header from "./Header";
-import { Layout_CurrentUserFragment$key } from "./__generated__/Layout_CurrentUserFragment.graphql";
+import { Layout_CurrentUserFragment$key } from "../../artifacts/Layout_CurrentUserFragment.graphql";
 
 type LayoutProps = {
   children:

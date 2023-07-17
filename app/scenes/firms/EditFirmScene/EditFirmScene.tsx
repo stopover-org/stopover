@@ -2,7 +2,7 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { FormProvider } from "react-hook-form";
 import { useUpdateFirmForm } from "./useUpdateFirmForm";
-import { EditFirmScene_FirmFragment$key } from "./__generated__/EditFirmScene_FirmFragment.graphql";
+import { EditFirmScene_FirmFragment$key } from "../../../artifacts/EditFirmScene_FirmFragment.graphql";
 import Breadcrumbs from "../../../components/v2/Breadcrumbs";
 import EditFirmForm from "../../../components/shared/EditFirmForm";
 

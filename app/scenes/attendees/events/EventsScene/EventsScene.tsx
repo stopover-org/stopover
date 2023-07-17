@@ -4,7 +4,7 @@ import { useMediaQuery } from "@mui/material";
 import { graphql, usePaginationFragment } from "react-relay";
 import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
-import { EventsScene_EventsPaginationFragment$key } from "./__generated__/EventsScene_EventsPaginationFragment.graphql";
+import { EventsScene_EventsPaginationFragment$key } from "../../../../artifacts/EventsScene_EventsPaginationFragment.graphql";
 import EventCardCompact from "./components/EventCardCompact";
 import EventCardWide from "./components/EventCardWide";
 import Pagination from "./components/Pagination";

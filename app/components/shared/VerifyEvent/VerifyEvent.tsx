@@ -2,7 +2,7 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import Button from "../../v2/Button/Button";
 import { useVerifyEvent } from "./useVerifyEvent";
-import { VerifyEventInformation_EventFragment$key } from "./__generated__/VerifyEventInformation_EventFragment.graphql";
+import { VerifyEventInformation_EventFragment$key } from "../../../artifacts/VerifyEventInformation_EventFragment.graphql";
 
 interface VerifyEventProps {
   eventFragmentRef: VerifyEventInformation_EventFragment$key;

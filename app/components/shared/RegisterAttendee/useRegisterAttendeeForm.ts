@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useRegisterAttendeeForm_AttendeeFragment$key } from "./__generated__/useRegisterAttendeeForm_AttendeeFragment.graphql";
+import { useRegisterAttendeeForm_AttendeeFragment$key } from "../../../artifacts/useRegisterAttendeeForm_AttendeeFragment.graphql";
 
 interface RegisterAttendeeFields {
   attendeeId: string;

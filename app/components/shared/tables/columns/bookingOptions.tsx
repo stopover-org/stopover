@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
-import { bookingOptions_BookingFragmentRef$key } from "./__generated__/bookingOptions_BookingFragmentRef.graphql";
+import { bookingOptions_BookingFragmentRef$key } from "../../../../artifacts/bookingOptions_BookingFragmentRef.graphql";
 
 export function useBookingOptionsHeaders() {
   return React.useMemo(

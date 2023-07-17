@@ -7,7 +7,7 @@ import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
 import { useSteps } from "../../../../lib/hooks/useSteps";
 import EditEventForm from "../../../../components/shared/EditEventForm";
 import { useUpdateEventForm } from "./useUpdateEventForm";
-import { EditEventScene_EventFragment$key } from "./__generated__/EditEventScene_EventFragment.graphql";
+import { EditEventScene_EventFragment$key } from "../../../../artifacts/EditEventScene_EventFragment.graphql";
 
 interface EditEventSceneProps {
   eventFragmentRef: EditEventScene_EventFragment$key;

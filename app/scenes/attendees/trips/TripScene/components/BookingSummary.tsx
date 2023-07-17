@@ -3,7 +3,7 @@ import { CardOverflow, Grid } from "@mui/joy";
 import React from "react";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
-import { BookingSummary_BookingFragment$key } from "./__generated__/BookingSummary_BookingFragment.graphql";
+import { BookingSummary_BookingFragment$key } from "../../../../../artifacts/BookingSummary_BookingFragment.graphql";
 
 interface BookingSummaryProps {
   bookingFragmentRef: BookingSummary_BookingFragment$key;

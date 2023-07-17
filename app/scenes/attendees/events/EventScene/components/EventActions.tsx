@@ -2,7 +2,6 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { Box, Option, Stack } from "@mui/joy";
 import { Moment } from "moment";
-import { EventActions_EventFragment$key } from "./__generated__/EventActions_EventFragment.graphql";
 import Button from "../../../../../components/v2/Button";
 import { getDate, setTime, timeFormat } from "../../../../../lib/utils/dates";
 import ButtonDatePicker from "../../../../../components/v2/ButtonDatePicker";
@@ -13,6 +12,7 @@ import Select from "../../../../../components/v2/Select";
 import useFormContext from "../../../../../lib/hooks/useFormContext";
 import useUniqueMomentDates from "../../../../../lib/hooks/useUniqueMomentDates";
 import Link from "../../../../../components/v2/Link";
+import { EventActions_EventFragment$key } from "../../../../../artifacts/EventActions_EventFragment.graphql";
 
 interface EventActionsProps {
   eventFragmentRef: EventActions_EventFragment$key;

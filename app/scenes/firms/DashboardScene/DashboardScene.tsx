@@ -5,9 +5,9 @@ import BookingsSection from "./components/BookingsSection";
 import BalanceSection from "./components/BalanceSection";
 import PaymentsSection from "./components/PaymentsSection";
 import SchedulesSection from "./components/SchedulesSection";
-import { DashboardScene_FirmFragment$key } from "./__generated__/DashboardScene_FirmFragment.graphql";
+import { DashboardScene_FirmFragment$key } from "../../../artifacts/DashboardScene_FirmFragment.graphql";
 import EventsSection from "./components/EventsSection";
-import { DashboardScene_CurrentUserFragment$key } from "./__generated__/DashboardScene_CurrentUserFragment.graphql";
+import { DashboardScene_CurrentUserFragment$key } from "../../../artifacts/DashboardScene_CurrentUserFragment.graphql";
 
 interface DashboardSceneProps {
   firmFragmentRef: DashboardScene_FirmFragment$key;

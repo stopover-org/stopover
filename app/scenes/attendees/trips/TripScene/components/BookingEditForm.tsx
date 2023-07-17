@@ -3,7 +3,7 @@ import React from "react";
 import moment from "moment";
 import { Grid } from "@mui/joy";
 import AttendeeEditForm from "./AttendeeEditForm";
-import { BookingEditForm_BookingFragment$key } from "./__generated__/BookingEditForm_BookingFragment.graphql";
+import { BookingEditForm_BookingFragment$key } from "../../../../../artifacts/BookingEditForm_BookingFragment.graphql";
 import BookingOptionsEditForm from "./BookingOptionsEditForm";
 import BookingDatesEditForm from "./BookingDatesEditForm";
 import CheckoutForm from "./CheckoutForm";

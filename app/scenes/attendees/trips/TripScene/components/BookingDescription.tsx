@@ -6,7 +6,7 @@ import Scrollbars from "react-custom-scrollbars-2";
 import { useMediaQuery } from "@mui/material";
 import Typography from "../../../../../components/v2/Typography";
 import { calculateDate } from "../../../../../lib/utils/dates";
-import { BookingDescription_BookingFragment$key } from "./__generated__/BookingDescription_BookingFragment.graphql";
+import { BookingDescription_BookingFragment$key } from "../../../../../artifacts/BookingDescription_BookingFragment.graphql";
 
 interface BookingDescriptionProps {
   bookingFragmentRef: BookingDescription_BookingFragment$key;

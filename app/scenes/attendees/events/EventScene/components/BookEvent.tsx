@@ -2,7 +2,6 @@ import React from "react";
 import { Box, Grid, Option } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import { Moment } from "moment";
-import { BookEvent_EventFragment$key } from "./__generated__/BookEvent_EventFragment.graphql";
 import DateCalendar from "../../../../../components/v2/DateCalendar/DateCalendar";
 import {
   dateFormat,
@@ -18,6 +17,7 @@ import useFormContext from "../../../../../lib/hooks/useFormContext";
 import useUniqueMomentDates from "../../../../../lib/hooks/useUniqueMomentDates";
 import useTimeFromDate from "../../../../../lib/hooks/useTimeFromDate";
 import Link from "../../../../../components/v2/Link";
+import { BookEvent_EventFragment$key } from "../../../../../artifacts/BookEvent_EventFragment.graphql";
 
 interface BookEventProps {
   eventFragmentRef: BookEvent_EventFragment$key;

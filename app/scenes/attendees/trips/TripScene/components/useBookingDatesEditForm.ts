@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { setTime, timeFormat } from "../../../../../lib/utils/dates";
 import useMutationForm from "../../../../../lib/hooks/useMutationForm";
-import { useBookingDatesEditForm_BookingFragment$key } from "./__generated__/useBookingDatesEditForm_BookingFragment.graphql";
+import { useBookingDatesEditForm_BookingFragment$key } from "../../../../../artifacts/useBookingDatesEditForm_BookingFragment.graphql";
 
 interface BookingDatesEditFormFields {
   bookingId: string;

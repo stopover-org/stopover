@@ -1,7 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import Table from "../../../../../components/v2/Table";
-import { EventOptionsTable_BookingFragment$key } from "./__generated__/EventOptionsTable_BookingFragment.graphql";
+import { EventOptionsTable_BookingFragment$key } from "../../../../../artifacts/EventOptionsTable_BookingFragment.graphql";
 import {
   useBookingOptionsColumns,
   useBookingOptionsHeaders,

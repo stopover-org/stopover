@@ -2,7 +2,7 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import Button from "../../v2/Button/Button";
 import { useRescheduleEventForm } from "./useRescheduleEventForm";
-import { RescheduleEvent_EventFragment$key } from "./__generated__/RescheduleEvent_EventFragment.graphql";
+import { RescheduleEvent_EventFragment$key } from "../../../artifacts/RescheduleEvent_EventFragment.graphql";
 
 interface PublishEventProps {
   eventFragmentRef: RescheduleEvent_EventFragment$key;

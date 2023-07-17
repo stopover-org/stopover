@@ -8,7 +8,7 @@ import useMutationForm from "../../../../lib/hooks/useMutationForm";
 import {
   EventTypeEnum,
   useCreateEventForm_CreateEventMutation,
-} from "./__generated__/useCreateEventForm_CreateEventMutation.graphql";
+} from "../../../../artifacts/useCreateEventForm_CreateEventMutation.graphql";
 import { dateTimeFormat, setTime } from "../../../../lib/utils/dates";
 import {
   momentTransform,
