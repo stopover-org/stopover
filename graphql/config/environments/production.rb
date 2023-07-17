@@ -83,6 +83,8 @@ Rails.application.configure do
   # Use a different logger for distributed setups.
   # require "syslog/logger"
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
+  # 
+  Rails.application.routes.default_url_options[:host] = 'stopover.api.dorokhovich.ru'
 
   if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger = ActiveSupport::Logger.new($stdout)
