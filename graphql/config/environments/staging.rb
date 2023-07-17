@@ -73,6 +73,6 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   config.autoloader = :classic
-  Rails.application.routes.default_url_options[:host] = 'localhost:8080'
+  Rails.application.routes.default_url_options[:host] = 'stopover.api.dorokhovich.ru'
   Rails.application.routes.default_url_options[:protocol] = 'http'
 end
