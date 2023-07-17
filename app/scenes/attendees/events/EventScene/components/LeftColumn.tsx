@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import Gallery from "../../../../../components/v2/Gallery";
-import { LeftColumn_EventFragment$key } from "./__generated__/LeftColumn_EventFragment.graphql";
+import { LeftColumn_EventFragment$key } from "../../../../../artifacts/LeftColumn_EventFragment.graphql";
 
 interface LeftColumnProps {
   eventFragmentRef: LeftColumn_EventFragment$key;

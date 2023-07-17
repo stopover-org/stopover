@@ -37,3 +37,6 @@ yarn-error.log*
 .env
 
 /**/__generated__/**
+/artifacts/*
+!/artifacts/.keep
+/log

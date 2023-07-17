@@ -3,12 +3,12 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import Section from "../../../../components/v2/Section";
 import Typography from "../../../../components/v2/Typography";
-import { FirmSection_FirmFragment$key } from "./__generated__/FirmSection_FirmFragment.graphql";
+import { FirmSection_FirmFragment$key } from "../../../../artifacts/FirmSection_FirmFragment.graphql";
 import Button from "../../../../components/v2/Button";
 import Link from "../../../../components/v2/Link";
 import Tag from "../../../../components/v2/Tag/Tag";
 import VerifyFirm from "../../../../components/shared/VerifyFirm";
-import { FirmSection_CurrentUserFragment$key } from "./__generated__/FirmSection_CurrentUserFragment.graphql";
+import { FirmSection_CurrentUserFragment$key } from "../../../../artifacts/FirmSection_CurrentUserFragment.graphql";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 
 interface FirmSectionProps {

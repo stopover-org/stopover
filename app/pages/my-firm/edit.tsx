@@ -5,11 +5,11 @@ import Layout from "../../components/MainPage/Layout";
 import SidebarContent from "../../components/shared/SidebarContent";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
 import EditFirmScene from "../../scenes/firms/EditFirmScene";
-import { editFirm_FirmQuery } from "./__generated__/editFirm_FirmQuery.graphql";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 import AuthGuard from "../../components/shared/AuthGuard";
+import { editFirm_FirmQuery } from "../../artifacts/editFirm_FirmQuery.graphql";
 
 const Query = graphql`
   query editFirm_FirmQuery {

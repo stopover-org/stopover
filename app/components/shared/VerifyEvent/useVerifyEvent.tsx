@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useVerifyEvent_EventFragment$key } from "./__generated__/useVerifyEvent_EventFragment.graphql";
+import { useVerifyEvent_EventFragment$key } from "../../../artifacts/useVerifyEvent_EventFragment.graphql";
 
 interface VerifyEventFields {
   eventId: string;

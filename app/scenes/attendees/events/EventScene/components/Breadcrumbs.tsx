@@ -1,7 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import BreadcrumbsComponent from "../../../../../components/v2/Breadcrumbs";
-import { Breadcrumbs_EventFragment$key } from "./__generated__/Breadcrumbs_EventFragment.graphql";
+import { Breadcrumbs_EventFragment$key } from "../../../../../artifacts/Breadcrumbs_EventFragment.graphql";
 
 export const Breadcrumbs = ({
   eventFragmentRef,

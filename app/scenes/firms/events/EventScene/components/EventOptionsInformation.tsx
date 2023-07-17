@@ -1,10 +1,8 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { TabPanel } from "@mui/joy";
-import { EventOptionsInformation_EventFragment$key } from "./__generated__/EventOptionsInformation_EventFragment.graphql";
+import { EventOptionsInformation_EventFragment$key } from "../../../../../artifacts/EventOptionsInformation_EventFragment.graphql";
 import Table from "../../../../../components/v2/Table";
-import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
-import Checkbox from "../../../../../components/v2/Checkbox/Checkbox";
 import {
   useEventOptionsColumns,
   useEventOptionsHeaders,

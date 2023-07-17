@@ -4,12 +4,12 @@ import * as Yup from "yup";
 import moment, { Moment } from "moment";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
-import { useBookEventForm_EventFragment$key } from "./__generated__/useBookEventForm_EventFragment.graphql";
 import useMutationForm from "../../../../lib/hooks/useMutationForm";
 import useClosestDate from "../../../../lib/hooks/useClosestDate";
 import useUniqueMomentDates from "../../../../lib/hooks/useUniqueMomentDates";
 import { dateFormat } from "../../../../lib/utils/dates";
 import useMomentDates from "../../../../lib/hooks/useMomentDates";
+import { useBookEventForm_EventFragment$key } from "../../../../artifacts/useBookEventForm_EventFragment.graphql";
 
 interface BookEventFields {
   eventId: string;

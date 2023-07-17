@@ -1,13 +1,12 @@
 import React from "react";
-import { Card, Grid, Sheet, Stack, Switch, TabPanel } from "@mui/joy";
+import { Card, Grid, Sheet, Stack, TabPanel } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import moment from "moment/moment";
-import { GeneralInformation_EventFragment$key } from "./__generated__/GeneralInformation_EventFragment.graphql";
+import { GeneralInformation_EventFragment$key } from "../../../../../artifacts/GeneralInformation_EventFragment.graphql";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Tag from "../../../../../components/v2/Tag/Tag";
 import { dateFormat, dateTimeFormat } from "../../../../../lib/utils/dates";
 import Checkbox from "../../../../../components/v2/Checkbox";
-import ImagesPreviewFields from "../../../../../components/shared/ImagesPreviewFields";
 import ImagesPreview from "../../../../../components/shared/ImagesPreview";
 
 interface GeneralInformationProps {

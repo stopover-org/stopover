@@ -3,8 +3,8 @@ import React from "react";
 import Table from "../../../v2/Table/Table";
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
-import { BookingsEventTableBookingsPaginationQuery } from "./__generated__/BookingsEventTableBookingsPaginationQuery.graphql";
-import { BookingsEventTable_BookingsPaginationFragment$key } from "./__generated__/BookingsEventTable_BookingsPaginationFragment.graphql";
+import { BookingsEventTableBookingsPaginationQuery } from "../../../../artifacts/BookingsEventTableBookingsPaginationQuery.graphql";
+import { BookingsEventTable_BookingsPaginationFragment$key } from "../../../../artifacts/BookingsEventTable_BookingsPaginationFragment.graphql";
 
 interface BookingsEventTableProps {
   eventFragmentRef: BookingsEventTable_BookingsPaginationFragment$key;

@@ -5,10 +5,10 @@ import BookingScene from "../../../../scenes/firms/bookings/BookingScene";
 import { getClientEnvironment } from "../../../../lib/clientEnvironment";
 import { fetchEnvVariables } from "../../../../lib/fetchEnvVariables";
 import { IApiKeys } from "../../../../components/ApiKeysProvider";
-import { Id_FirmBookingQuery } from "./__generated__/Id_FirmBookingQuery.graphql";
 import { useUpdateApiKeys } from "../../../../lib/hooks/useUpdateApiKeys";
 import SidebarContent from "../../../../components/shared/SidebarContent";
 import AuthGuard from "../../../../components/shared/AuthGuard";
+import { Id_FirmBookingQuery } from "../../../../artifacts/Id_FirmBookingQuery.graphql";
 
 const Query = graphql`
   query Id_FirmBookingQuery($id: ID!) {

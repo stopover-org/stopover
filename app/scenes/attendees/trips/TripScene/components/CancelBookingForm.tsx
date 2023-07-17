@@ -1,7 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import Typography from "../../../../../components/v2/Typography";
-import { CancelBookingForm_BookingFragment$key } from "./__generated__/CancelBookingForm_BookingFragment.graphql";
+import { CancelBookingForm_BookingFragment$key } from "../../../../../artifacts/CancelBookingForm_BookingFragment.graphql";
 import { useCancelBookingForm } from "./useCancelBookingForm";
 import Button from "../../../../../components/v2/Button";
 

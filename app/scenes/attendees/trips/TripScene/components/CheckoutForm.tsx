@@ -1,7 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import moment from "moment/moment";
-import { CheckoutForm_BookingFragmentRef$key } from "./__generated__/CheckoutForm_BookingFragmentRef.graphql";
+import { CheckoutForm_BookingFragmentRef$key } from "../../../../../artifacts/CheckoutForm_BookingFragmentRef.graphql";
 import Button from "../../../../../components/v2/Button";
 import { useCheckoutForm } from "./useCheckoutForm";
 

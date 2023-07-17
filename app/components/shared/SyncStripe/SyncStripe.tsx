@@ -2,7 +2,7 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import Button from "../../v2/Button/Button";
 import { useSyncStripeForm } from "./useSyncStripeForm";
-import { SyncStripe_EventFragment$key } from "./__generated__/SyncStripe_EventFragment.graphql";
+import { SyncStripe_EventFragment$key } from "../../../artifacts/SyncStripe_EventFragment.graphql";
 
 interface SyncStripeProps {
   eventFragmentRef: SyncStripe_EventFragment$key;

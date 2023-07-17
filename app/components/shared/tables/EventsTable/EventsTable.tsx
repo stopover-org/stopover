@@ -8,9 +8,9 @@ import Tag from "../../../v2/Tag/Tag";
 import { dateTimeFormat } from "../../../../lib/utils/dates";
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
-import { EventsTableFirmFragment } from "./__generated__/EventsTableFirmFragment.graphql";
-import { EventsTable_FirmFragment$key } from "./__generated__/EventsTable_FirmFragment.graphql";
 import Checkbox from "../../../v2/Checkbox";
+import { EventsTableFirmFragment } from "../../../../artifacts/EventsTableFirmFragment.graphql";
+import { EventsTable_FirmFragment$key } from "../../../../artifacts/EventsTable_FirmFragment.graphql";
 
 interface EventsTableProps {
   firmFragmentRef: any;

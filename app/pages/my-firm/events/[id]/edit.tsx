@@ -9,7 +9,7 @@ import { IApiKeys } from "../../../../components/ApiKeysProvider";
 import { fetchEnvVariables } from "../../../../lib/fetchEnvVariables";
 import { useUpdateApiKeys } from "../../../../lib/hooks/useUpdateApiKeys";
 import EditEventScene from "../../../../scenes/firms/events/EditEventScene";
-import { edit_FirmEventQuery } from "./__generated__/edit_FirmEventQuery.graphql";
+import { edit_FirmEventQuery } from "../../../../artifacts/edit_FirmEventQuery.graphql";
 
 const Query = graphql`
   query edit_FirmEventQuery($id: ID!) {

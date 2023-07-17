@@ -7,7 +7,7 @@ import Breadcrumbs from "../../../components/v2/Breadcrumbs";
 import RemoveFirm from "./components/RemoveFirm";
 import Tag from "../../../components/v2/Tag";
 import Link from "../../../components/v2/Link";
-import { FirmScene_FirmFragment$key } from "./__generated__/FirmScene_FirmFragment.graphql";
+import { FirmScene_FirmFragment$key } from "../../../artifacts/FirmScene_FirmFragment.graphql";
 import Fieldset from "../../../components/v2/Fieldset";
 import useStatusColor from "../../../lib/hooks/useStatusColor";
 

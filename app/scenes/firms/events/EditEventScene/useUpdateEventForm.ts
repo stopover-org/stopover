@@ -13,8 +13,8 @@ import {
 import {
   EventTypeEnum,
   useUpdateEventForm_UpdateEventMutation,
-} from "./__generated__/useUpdateEventForm_UpdateEventMutation.graphql";
-import { useUpdateEventForm_EventFragment$key } from "./__generated__/useUpdateEventForm_EventFragment.graphql";
+} from "../../../../artifacts/useUpdateEventForm_UpdateEventMutation.graphql";
+import { useUpdateEventForm_EventFragment$key } from "../../../../artifacts/useUpdateEventForm_EventFragment.graphql";
 
 export interface UpdateEventFields {
   id: string;

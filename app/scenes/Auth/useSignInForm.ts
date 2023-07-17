@@ -9,7 +9,7 @@ import { Disposable } from "relay-runtime";
 import {
   SignInInput,
   useSignInForm_AuthLoginMutation,
-} from "./__generated__/useSignInForm_AuthLoginMutation.graphql";
+} from "../../artifacts/useSignInForm_AuthLoginMutation.graphql";
 import useMutationForm from "../../lib/hooks/useMutationForm";
 
 interface SignInFields {

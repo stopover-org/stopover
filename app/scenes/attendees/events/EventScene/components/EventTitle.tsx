@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { Box, Stack } from "@mui/joy";
-import { EventTitle_EventFragment$key } from "./__generated__/EventTitle_EventFragment.graphql";
+import { EventTitle_EventFragment$key } from "../../../../../artifacts/EventTitle_EventFragment.graphql";
 import Rating from "../../../../../components/v2/Rating/Rating";
 import Tag from "../../../../../components/v2/Tag/Tag";
 import Typography from "../../../../../components/v2/Typography";

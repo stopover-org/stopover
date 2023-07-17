@@ -3,7 +3,7 @@ import React from "react";
 import moment from "moment/moment";
 import { Box, Grid, Stack } from "@mui/joy";
 import Typography from "../../../../components/v2/Typography";
-import { BookingScene_FirmBookingFragment$key } from "./__generated__/BookingScene_FirmBookingFragment.graphql";
+import { BookingScene_FirmBookingFragment$key } from "../../../../artifacts/BookingScene_FirmBookingFragment.graphql";
 import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
 import { getHumanDateTime } from "../../../../lib/utils/dates";
 import EventOptionsTable from "./components/EventOptionsTable";

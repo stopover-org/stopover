@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
 import { graphql, useFragment, useMutation } from "react-relay";
 import { useRouter } from "next/router";
-import { Header_CurrentUserFragment$key } from "./__generated__/Header_CurrentUserFragment.graphql";
-import { Header_SignOutMutation } from "./__generated__/Header_SignOutMutation.graphql";
 import Link from "../v2/Link";
+import { Header_CurrentUserFragment$key } from "../../artifacts/Header_CurrentUserFragment.graphql";
+import { Header_SignOutMutation } from "../../artifacts/Header_SignOutMutation.graphql";
 
 interface HeaderProps {
   currentUserFragment: Header_CurrentUserFragment$key;

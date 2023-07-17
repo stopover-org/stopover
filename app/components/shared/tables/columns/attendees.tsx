@@ -4,9 +4,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { graphql, useFragment } from "react-relay";
 import Checkbox from "../../../v2/Checkbox/Checkbox";
 import RegisterAttendee from "../../RegisterAttendee";
-import { attendees_BookingFragment$key } from "./__generated__/attendees_BookingFragment.graphql";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import AttendeeOptionsCell from "../../cells/AttendeeOptionsCell";
+import { attendees_BookingFragment$key } from "../../../../artifacts/attendees_BookingFragment.graphql";
 
 export function useAttendeesHeaders() {
   return React.useMemo(

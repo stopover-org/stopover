@@ -3,7 +3,7 @@ import React from "react";
 import { Box, Option, Stack } from "@mui/joy";
 import { Moment } from "moment";
 import moment from "moment/moment";
-import { BookingDatesEditForm_BookingFragment$key } from "./__generated__/BookingDatesEditForm_BookingFragment.graphql";
+import { BookingDatesEditForm_BookingFragment$key } from "../../../../../artifacts/BookingDatesEditForm_BookingFragment.graphql";
 import { useBookingDatesEditForm } from "./useBookingDatesEditForm";
 import ButtonDatePicker from "../../../../../components/v2/ButtonDatePicker/ButtonDatePicker";
 import { getDate, timeFormat } from "../../../../../lib/utils/dates";

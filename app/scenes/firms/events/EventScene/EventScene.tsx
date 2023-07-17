@@ -1,13 +1,13 @@
 import { Grid, Tab, TabList, Tabs, Box, Stack } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import { EventScene_FirmEventFragment$key } from "./__generated__/EventScene_FirmEventFragment.graphql";
+import { EventScene_FirmEventFragment$key } from "../../../../artifacts/EventScene_FirmEventFragment.graphql";
 import GeneralInformation from "./components/GeneralInformation";
 import Typography from "../../../../components/v2/Typography";
 import EventOptionsInformation from "./components/EventOptionsInformation";
 import SchedulesInformation from "./components/SchedulesInformation";
 import Tag from "../../../../components/v2/Tag/Tag";
-import { EventScene_CurrentUserFragment$key } from "./__generated__/EventScene_CurrentUserFragment.graphql";
+import { EventScene_CurrentUserFragment$key } from "../../../../artifacts/EventScene_CurrentUserFragment.graphql";
 import VerifyEvent from "../../../../components/shared/VerifyEvent";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Link from "../../../../components/v2/Link";

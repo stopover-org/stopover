@@ -9,7 +9,7 @@ import {
   timeFormat,
 } from "../../../../../lib/utils/dates";
 import Typography from "../../../../../components/v2/Typography";
-import { BookingTime_BookingFragment$key } from "./__generated__/BookingTime_BookingFragment.graphql";
+import { BookingTime_BookingFragment$key } from "../../../../../artifacts/BookingTime_BookingFragment.graphql";
 
 interface BookingTimeProps {
   bookingFragmentRef: BookingTime_BookingFragment$key;

@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useRemoveFirm_RemoveFirmMutation } from "./__generated__/useRemoveFirm_RemoveFirmMutation.graphql";
+import { useRemoveFirm_RemoveFirmMutation } from "../../../artifacts/useRemoveFirm_RemoveFirmMutation.graphql";
 
 interface RemoveFirmFields {}
 

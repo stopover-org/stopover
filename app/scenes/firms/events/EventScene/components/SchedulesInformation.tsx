@@ -2,7 +2,7 @@ import { graphql, usePaginationFragment } from "react-relay";
 import React from "react";
 import moment from "moment";
 import { Grid, TabPanel } from "@mui/joy";
-import { SchedulesInformation_EventFragment$key } from "./__generated__/SchedulesInformation_EventFragment.graphql";
+import { SchedulesInformation_EventFragment$key } from "../../../../../artifacts/SchedulesInformation_EventFragment.graphql";
 import { getHumanDateTime } from "../../../../../lib/utils/dates";
 import Table from "../../../../../components/v2/Table";
 import Typography from "../../../../../components/v2/Typography";

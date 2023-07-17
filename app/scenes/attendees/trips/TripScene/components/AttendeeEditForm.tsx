@@ -4,7 +4,7 @@ import { graphql, useFragment } from "react-relay";
 import { FormProvider } from "react-hook-form";
 import moment from "moment/moment";
 import Input from "../../../../../components/v2/Input";
-import { AttendeeEditForm_AttendeeFragment$key } from "./__generated__/AttendeeEditForm_AttendeeFragment.graphql";
+import { AttendeeEditForm_AttendeeFragment$key } from "../../../../../artifacts/AttendeeEditForm_AttendeeFragment.graphql";
 import EventOptionEditForm from "./EventOptionEditForm";
 import { useAttendeeEditForm } from "./useAttendeeEditForm";
 

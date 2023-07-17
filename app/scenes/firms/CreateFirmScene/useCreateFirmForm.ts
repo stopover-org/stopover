@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useCreateFirmForm_CreateFirmMutation } from "./__generated__/useCreateFirmForm_CreateFirmMutation.graphql";
+import { useCreateFirmForm_CreateFirmMutation } from "../../../artifacts/useCreateFirmForm_CreateFirmMutation.graphql";
 
 export interface CreateFirmFields {
   title: string;

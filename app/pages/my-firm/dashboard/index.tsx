@@ -6,9 +6,9 @@ import SidebarContent from "../../../components/shared/SidebarContent";
 import { IApiKeys } from "../../../components/ApiKeysProvider";
 import { getClientEnvironment } from "../../../lib/clientEnvironment";
 import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
-import { dashboard_DashboardQuery } from "./__generated__/dashboard_DashboardQuery.graphql";
 import AuthGuard from "../../../components/shared/AuthGuard";
 import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
+import { dashboard_DashboardQuery } from "../../../artifacts/dashboard_DashboardQuery.graphql";
 
 const Query = graphql`
   query dashboard_DashboardQuery {

@@ -2,9 +2,9 @@ import { graphql, usePaginationFragment } from "react-relay";
 import React from "react";
 import Table from "../../../v2/Table/Table";
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
-import { BookingsFirmTableFirmPaginationQuery } from "./__generated__/BookingsFirmTableFirmPaginationQuery.graphql";
-import { BookingsFirmTable_BookingsFirmPaginationFragment$key } from "./__generated__/BookingsFirmTable_BookingsFirmPaginationFragment.graphql";
 import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
+import { BookingsFirmTable_BookingsFirmPaginationFragment$key } from "../../../../artifacts/BookingsFirmTable_BookingsFirmPaginationFragment.graphql";
+import { BookingsFirmTableFirmPaginationQuery } from "../../../../artifacts/BookingsFirmTableFirmPaginationQuery.graphql";
 
 interface BookingFirmTableProps {
   firmFragmentRef: BookingsFirmTable_BookingsFirmPaginationFragment$key;
