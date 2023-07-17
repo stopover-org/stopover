@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_01_221149) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_17_225340) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -283,6 +283,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_01_221149) do
     t.string "event_type", default: "common", null: false
     t.string "level", default: "info", null: false
     t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "action"
+    t.string "notification_type"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.string "delivery_method", null: false
+    t.string "from"
+    t.string "to", null: false
+    t.string "subject"
+    t.string "content", null: false
+    t.datetime "sent_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -5,11 +5,13 @@ include SendGrid
 
 module Stopover
   class MailProvider
-    def self.prepare_content(file:, locals:)
+    DEFAULT_SENDER = 'mikhail@dorokhovich.ru'
+
+    def self.prepare_content(file:, locals: {})
       ApplicationController.render(file, locals: locals)
     end
 
-    def self.send_mail(from:, to:, subject:, content:, type: 'text/html')
+    def self.deliver(from:, to:, subject:, content:, type: 'text/html')
       return if Rails.env.test?
 
       from = SendGrid::Email.new(email: from)
@@ -20,6 +22,8 @@ module Stopover
 
       sg = SendGrid::API.new(api_key: Rails.application.credentials.sendgrid_api_key)
       sg.client.mail._('send').post(request_body: mail.to_json)
+
+      Time.zone.now
     end
   end
 end
