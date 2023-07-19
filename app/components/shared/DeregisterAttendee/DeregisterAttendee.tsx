@@ -22,7 +22,7 @@ const DeregisterAttendee = ({ attendeeFragmentRef }: RegisterAttendeeProps) => {
   return (
     <form onSubmit={form.handleSubmit()}>
       <IconButton size="sm" sx={{ marginRight: "10px" }} type="submit">
-        <Tooltip title="Deegister attendee">
+        <Tooltip title="Deregister attendee">
           <PersonAddDisabledIcon />
         </Tooltip>
       </IconButton>

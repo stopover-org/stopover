@@ -1,6 +1,5 @@
 import React from "react";
-import { IconButton, Stack, Tooltip } from "@mui/joy";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Stack } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import RegisterAttendee from "../../RegisterAttendee";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
@@ -9,6 +8,7 @@ import { attendees_BookingFragment$key } from "../../../../artifacts/attendees_B
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Tag from "../../../v2/Tag/Tag";
 import DeregisterAttendee from "../../DeregisterAttendee";
+import RemoveAttendee from "../../RemoveAttendee";
 
 export function useAttendeesHeaders() {
   return React.useMemo(
@@ -71,6 +71,7 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
           }
           ...RegisterAttendee_AttendeeFragment
           ...DeregisterAttendee_AttendeeFragment
+          ...RemoveAttendee_AttendeeFragment
         }
       }
     `,
@@ -122,12 +123,8 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
               booking.status === "active" && (
                 <DeregisterAttendee attendeeFragmentRef={att} />
               )}
-            {booking.status === "active" && (
-              <Tooltip title="Remove this attendee and refund it">
-                <IconButton color="danger" size="sm">
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
+            {att.status !== "removed" && booking.status === "active" && (
+              <RemoveAttendee attendeeFragmentRef={att} />
             )}
           </Stack>
         ),
