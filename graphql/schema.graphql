@@ -346,6 +346,7 @@ input CreateFirmInput {
   image: String
   latitude: Float
   longitude: Float
+  paymentTypes: [String!]
   primaryEmail: String
   primaryPhone: String
   region: String
@@ -626,6 +627,7 @@ type Firm implements Node {
   image: String
   latitude: Float
   longitude: Float
+  paymentTypes: [String!]!
   payments(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -1452,6 +1454,7 @@ input UpdateFirmInput {
   image: String
   latitude: Float
   longitude: Float
+  paymentTypes: [String!]
   primaryEmail: String
   primaryPhone: String
   region: String

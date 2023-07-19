@@ -49,10 +49,12 @@ function useMutationForm<
       return submitHandler(mutation, form, ...rest);
     }
     return function submit(values: FieldsType) {
-      mutation({
-        variables: variables(values),
-        onCompleted,
-      });
+      if (!form.formState.isSubmitting) {
+        mutation({
+          variables: variables(values),
+          onCompleted,
+        });
+      }
     };
   }
 

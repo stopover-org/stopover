@@ -20,6 +20,7 @@ module Types
     field :title, String, null: false
     field :website, String
     field :image, String
+    field :payment_types, [String], null: false
 
     field :balance, Types::BalanceType
     field :payments, Types::PaymentType.connection_type, null: false

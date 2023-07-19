@@ -21,6 +21,7 @@ module Mutations
     argument :street,         String, required: false
     argument :title,          String, required: false
     argument :website,        String, required: false
+    argument :payment_types,  [String], required: false
 
     def resolve(**args)
       raise GraphQL::ExecutionError, 'unauthorized'               unless context[:current_user]
@@ -28,7 +29,8 @@ module Mutations
       raise GraphQL::ExecutionError, 'account already has a firm' if context[:current_user].account
                                                                                            .current_firm
 
-      firm = Firm.new(args.except(:image))
+      firm = Firm.new
+      firm.assign_attributes(args.except(:image))
 
       firm.primary_email = context[:current_user].email if args[:primary_email].blank?
       firm.primary_phone = context[:current_user].phone if args[:primary_phone].blank?

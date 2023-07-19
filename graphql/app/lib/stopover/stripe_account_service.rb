@@ -5,14 +5,15 @@ module Stopover
     def self.create_stripe_account(user)
       raise StandardError('Account has\'t firm') unless user.account.current_firm
       account = Stripe::Account.create({
-                                         type: 'custom',
-                                         country: user.account.country,
+                                         type: 'express',
+                                         country: ISO3166::Country.find_country_by_iso_short_name(user.account.current_firm.country)&.alpha2 || 'DE',
                                          email: user.email,
                                          capabilities: {
                                            card_payments: { requested: true },
                                            transfers: { requested: true }
                                          }
                                        })
+
       # Prefil company details before sending url to the customer
       if user.account.current_firm.individual?
         Stripe::Account.update(
@@ -54,8 +55,8 @@ module Stopover
 
       account_link = Stripe::AccountLink.create({
                                                   account: account[:id],
-                                                  refresh_url: 'https://example.com/reauth',
-                                                  return_url: 'https://example.com/return',
+                                                  refresh_url: 'https://localhost:3000/stripe-connect/check',
+                                                  return_url: 'https://localhost:3000/stripe-connect/check',
                                                   type: 'account_onboarding'
                                                 })
       {

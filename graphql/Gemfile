@@ -115,3 +115,5 @@ gem 'sidekiq', '~> 6.5'
 gem "stripe", "~> 8.3"
 
 gem "roo", "~> 2.10.0"
+
+gem "countries", "~> 5.5"

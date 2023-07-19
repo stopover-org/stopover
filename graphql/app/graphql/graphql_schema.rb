@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class GraphqlSchema < GraphQL::Schema
+  use GraphQL::Schema::AlwaysVisible
+
   mutation(Types::MutationType)
   query(Types::QueryType)
 
@@ -46,6 +48,4 @@ class GraphqlSchema < GraphQL::Schema
       raise InternalServerError, "Unknown type: #{type_name}"
     end
   end
-
-  use GraphQL::Schema::AlwaysVisible
 end

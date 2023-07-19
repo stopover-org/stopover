@@ -21,6 +21,7 @@ module Mutations
     argument :street,         String, required: false
     argument :title,          String, required: false
     argument :website,        String, required: false
+    argument :payment_types,  [String], required: false
 
     def resolve(**args)
       raise GraphQL::ExecutionError, 'unauthorized'         unless context[:current_user]

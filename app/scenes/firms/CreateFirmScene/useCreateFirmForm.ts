@@ -21,6 +21,7 @@ export interface CreateFirmFields {
   website: string;
   description: string;
   image: string;
+  paymentTypes: string[];
 }
 
 function useDefaultValues(): CreateFirmFields {
@@ -40,6 +41,7 @@ function useDefaultValues(): CreateFirmFields {
       website: "",
       description: "",
       image: "",
+      paymentTypes: ["stripe", "cash"],
     }),
     []
   );
@@ -59,6 +61,7 @@ const validationSchema = Yup.object().shape({
   website: Yup.string(),
   description: Yup.string(),
   image: Yup.string(),
+  paymentTypes: Yup.array().required("Required"),
 });
 
 export function useCreateFirmForm() {
