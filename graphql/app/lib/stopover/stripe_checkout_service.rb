@@ -58,7 +58,6 @@ module Stopover
           }
         end
       end
-      # TODO: dont know how to covered by test
 
       checkout = Stripe::Checkout::Session.create({
                                                     line_items: [
