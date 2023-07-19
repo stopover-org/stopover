@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_17_225340) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_18_201309) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -266,6 +266,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_225340) do
     t.string "business_type", default: "individual", null: false
     t.string "postal_code"
     t.string "ref_number"
+    t.string "payment_types", default: [], null: false, array: true
     t.index ["ref_number"], name: "index_firms_on_ref_number", unique: true
   end
 

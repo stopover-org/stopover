@@ -16,16 +16,18 @@
 #
 class Notification < ApplicationRecord
   before_validation :set_from
-  after_commit :trigger
+  after_commit :trigger, unless: :sent_at
 
   enum delivery_method: {
     email: 'email',
-      sms: 'sms'
-  }, prefix: true
+    sms: 'sms'
+  }, _prefix: true
 
   def trigger
-    sent_at = service.deliver(from: from, to: to, content: content, subject: subject, type: 'text/html')
-    update(sent_at: sent_at)
+    service.deliver(from: from, to: to, content: content, subject: subject, type: 'text/html')
+    sent_at = Time.zone.now
+
+    update!(sent_at: sent_at)
   end
 
   private
@@ -39,6 +41,6 @@ class Notification < ApplicationRecord
   end
 
   def set_from
-    from = service::DEFAULT_SENDER
+    self.from = service::DEFAULT_SENDER if service && !from
   end
 end

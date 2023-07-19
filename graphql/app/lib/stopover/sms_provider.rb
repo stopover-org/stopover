@@ -3,7 +3,10 @@
 module Stopover
   class SmsProvider
     DEFAULT_SENDER = '+79829320283'
-    def self.deliver(from:, to:, content:)
+    # rubocop:disable Lint/UnusedMethodArgument
+    def self.deliver(from:, to:, content:, subject: nil, type: nil)
+      # rubocop:enable Lint/UnusedMethodArgument
+
       return if Rails.env.test?
 
       client = Twilio::REST::Client.new
@@ -13,8 +16,6 @@ module Stopover
         to: to,
         body: content
       )
-
-      Time.zone.now
     end
   end
 end

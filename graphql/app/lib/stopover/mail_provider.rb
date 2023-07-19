@@ -22,8 +22,6 @@ module Stopover
 
       sg = SendGrid::API.new(api_key: Rails.application.credentials.sendgrid_api_key)
       sg.client.mail._('send').post(request_body: mail.to_json)
-
-      Time.zone.now
     end
   end
 end

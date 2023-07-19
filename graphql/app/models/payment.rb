@@ -69,9 +69,7 @@ class Payment < ApplicationRecord
     stripe: 'stripe'
   }
   enum payment_type: {
-    full_amount: 'full_amount',
-    prepaid_amount: 'prepaid_amount',
-    remaining_amount: 'remaining_amount'
+    full_amount: 'full_amount'
   }
 
   # VALIDATIONS ================================================================
@@ -87,7 +85,6 @@ class Payment < ApplicationRecord
   private
 
   def calculate_fee
-    self.fee = Money.new(0) if remaining_amount?
     self.fee = booking.attendee_total_price - booking.organizer_total_price
   end
 

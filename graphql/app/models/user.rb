@@ -48,7 +48,7 @@ class User < ApplicationRecord
   end
 
   # ENUMS =======================================================================
-  enum primary: { email: 'email', phone: 'phone' }, prefix: true
+  enum primary: { email: 'email', phone: 'phone' }, _prefix: true
 
   # VALIDATIONS ================================================================
   validates :email, presence:   true, if: :should_have_email?
@@ -75,15 +75,14 @@ class User < ApplicationRecord
     save!
 
     if primary == 'email' && email
-      Notification.create!(
-        to: email,
-        subject: 'Your confirmation code',
-        content: Stopover::MailProvider.prepare_content(file: 'mailer/auth/confirmation_code_sent',
-                                                        locals: { confirmation_code: confirmation_code }),
-        delivery_method: 'email'
-      )
+      Notification.create!(delivery_method: 'email',
+                           to: email,
+                           subject: 'Your confirmation code',
+                           content: Stopover::MailProvider.prepare_content(file: 'mailer/auth/confirmation_code_sent',
+                                                                           locals: { confirmation_code: confirmation_code }))
     elsif primary == 'phone' && phone
-      Notification.create!(to: phone,
+      Notification.create!(delivery_method: 'sms',
+                           to: phone,
                            content: "Your confirmation code: ##{confirmation_code}")
     end
   end
@@ -99,10 +98,12 @@ class User < ApplicationRecord
     self.status = :active
 
     unless account
-      self.account = Account.new(name: phone.presence || email,
-                                 primary_phone: phone,
-                                 phones: phone.present? ? [phone] : [],
-                                 user: self)
+      account = Account.new
+      account.assign_attributes(name: phone || email,
+                                primary_phone: phone,
+                                phones: phone.present? ? [phone] : [],
+                                user: self)
+      account.save!
     end
 
     self.session_password = SecureRandom.hex(50)

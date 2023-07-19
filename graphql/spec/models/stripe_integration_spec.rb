@@ -33,7 +33,7 @@ RSpec.describe StripeIntegration, type: :model do
     it 'created' do
       Stopover::StripeIntegrator.sync(event)
 
-      expect(StripeIntegration.count).to eq(3)
+      expect(StripeIntegration.count).to eq(1)
     end
 
     context 'methods' do

@@ -60,7 +60,7 @@ class Booking < ApplicationRecord
     state :cancelled
     state :paid
 
-    event :paid do
+    event :pay do
       transitions from: :active, to: :paid
     end
 

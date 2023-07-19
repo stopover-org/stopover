@@ -21,6 +21,8 @@ require 'rails_helper'
 RSpec.describe Stopover::StripeIntegrator, type: :model do
   describe 'stripe integrator' do
     let!(:event) { create(:event, organizer_price_per_uom: Money.new(20), prepaid_amount: Money.new(5)) }
+    let!(:integrated_event) { create(:stripe_integration_factory, organizer_price_per_uom: Money.new(20), prepaid_amount: Money.new(5)) }
+
     it 'is created and product_id and price_id eq Stripe ids' do
       ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
 
@@ -42,27 +44,7 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
                                                          stopover_model_name: event.class.name
                                                        } })
                                                .and_return({ id: 'price_id1' })
-      expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id' }).exactly(2).times
-      expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 5,
-                                                       product: 'product_id',
-                                                       currency: :usd,
-                                                       billing_scheme: 'per_unit',
-                                                       nickname: 'prepaid_amount',
-                                                       metadata: {
-                                                         stopover_id: event.id,
-                                                         stopover_model_name: event.class.name
-                                                       } })
-                                               .and_return({ id: 'price_id2' })
-      expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 17,
-                                                       product: 'product_id',
-                                                       currency: :usd,
-                                                       billing_scheme: 'per_unit',
-                                                       nickname: 'remaining_amount',
-                                                       metadata: {
-                                                         stopover_id: event.id,
-                                                         stopover_model_name: event.class.name
-                                                       } })
-                                               .and_return({ id: 'price_id3' })
+      expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id' }).exactly(0).times
 
       Stopover::StripeIntegrator.sync(event)
 
@@ -70,10 +52,39 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
         expect(stripe_integration.product_id).to eq('product_id')
       end
 
-      expect(event.stripe_integrations.count).to eq(3)
+      expect(event.stripe_integrations.count).to eq(1)
       expect(event.stripe_integrations.first.price_id).to eq('price_id1')
-      expect(event.stripe_integrations.second.price_id).to eq('price_id2')
-      expect(event.stripe_integrations.third.price_id).to eq('price_id3')
+    end
+    it 'is updated and product_id and price_id eq Stripe ids' do
+      ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
+
+      expect(Stripe::Product).to receive(:update).with({ name: integrated_event.title,
+                                                         id: 'product_id',
+                                                         description: integrated_event.description,
+                                                         metadata: {
+                                                           stopover_id: integrated_event.id,
+                                                             stopover_model_name: integrated_event.class.name
+                                                         } })
+                                                 .and_return({ id: 'product_id' })
+      expect(Stripe::Price).to receive(:update).with({ unit_amount_decimal: 22,
+                                                       id: 'price_id_full_amount',
+                                                       nickname: 'full_amount',
+                                                       metadata: {
+                                                         stopover_id: integrated_event.id,
+                                                           stopover_model_name: integrated_event.class.name
+                                                       } })
+                                               .and_return({ id: 'price_id1' })
+      expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id' }).exactly(1).times
+      expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_full_amount').and_return({ id: 'price_id_full_amount' }).exactly(1).times
+
+      Stopover::StripeIntegrator.sync(integrated_event)
+
+      integrated_event.stripe_integrations.each do |stripe_integration|
+        expect(stripe_integration.product_id).to eq('product_id')
+        expect(stripe_integration.price_id).to eq('price_id_full_amount')
+      end
+
+      expect(integrated_event.stripe_integrations.count).to eq(1)
     end
 
     context 'delete' do
@@ -109,9 +120,7 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
         end
         expect(Stripe::Product).to receive(:retrieve).with(id: event.stripe_integrations.first.product_id).and_return('product').exactly(1).time
         expect(Stopover::StripeIntegrator.retrieve(event)).to eq({ product: 'product', prices: {
-                                                                   full_amount: 'price',
-                                                         prepaid_amount: 'price',
-                                                         remaining_amount: 'price'
+                                                                   full_amount: 'price'
                                                                  } })
       end
     end
@@ -121,10 +130,8 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
       it 'price and product' do
         ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
         event.update(title: 'new_title', organizer_price_per_uom: Money.new(10), prepaid_amount: Money.new(5))
-        expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id', name: 'product_name' }).exactly(3).time
-        expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_full_amount').and_return({ unit_amount: 22 }).exactly(3).time
-        expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_prepaid_amount').and_return({ unit_amount: 10 }).exactly(3).time
-        expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_remaining_amount').and_return({ unit_amount: 12 }).exactly(3).time
+        expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id', name: 'product_name' }).exactly(1).time
+        expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_full_amount').and_return({ unit_amount: 22 }).exactly(1).time
 
         expect(Stripe::Product).to receive(:update).with({ id: 'product_id',
                                                            name: 'new_title',
@@ -132,35 +139,16 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
                                                            metadata: {
                                                              stopover_id: event.id,
                                                              stopover_model_name: event.class.name
-                                                           } }).and_return(product: { id: 'product_id' }).exactly(3).time
+                                                           } }).and_return(product: { id: 'product_id' }).exactly(1).time
         expect(Stripe::Price).to receive(:update).with({
                                                          id: 'price_id_full_amount',
-                                                         unit_amount: 11,
+                                                         unit_amount_decimal: 11,
                                                          nickname: 'full_amount',
                                                          metadata: {
                                                            stopover_id: event.id,
                                                            stopover_model_name: event.class.name
                                                          }
                                                        }).and_return(price: { id: 'price_id' }).exactly(1).time
-        expect(Stripe::Price).to receive(:update).with({
-                                                         id: 'price_id_prepaid_amount',
-                                                         unit_amount: 5,
-                                                         nickname: 'prepaid_amount',
-                                                         metadata: {
-                                                           stopover_id: event.id,
-                                                           stopover_model_name: event.class.name
-                                                         }
-                                                       }).and_return(price: { id: 'price_id' }).exactly(1).time
-        expect(Stripe::Price).to receive(:update).with({
-                                                         id: 'price_id_remaining_amount',
-                                                         unit_amount: 6,
-                                                         nickname: 'remaining_amount',
-                                                         metadata: {
-                                                           stopover_id: event.id,
-                                                           stopover_model_name: event.class.name
-                                                         }
-                                                       }).and_return(price: { id: 'price_id' }).exactly(1).time
-
         Stopover::StripeIntegrator.sync(event)
       end
     end
