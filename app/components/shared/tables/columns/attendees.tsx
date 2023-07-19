@@ -8,7 +8,7 @@ import AttendeeOptionsCell from "../../cells/AttendeeOptionsCell";
 import { attendees_BookingFragment$key } from "../../../../artifacts/attendees_BookingFragment.graphql";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Tag from "../../../v2/Tag/Tag";
-import DeregisterAttendee from "../../DeegisterAttendee";
+import DeregisterAttendee from "../../DeregisterAttendee";
 
 export function useAttendeesHeaders() {
   return React.useMemo(
