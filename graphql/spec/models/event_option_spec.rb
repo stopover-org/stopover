@@ -10,6 +10,7 @@
 #  description           :text
 #  for_attendee          :boolean          default(FALSE)
 #  organizer_price_cents :decimal(, )      default(0.0)
+#  status                :string           default("available")
 #  title                 :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null

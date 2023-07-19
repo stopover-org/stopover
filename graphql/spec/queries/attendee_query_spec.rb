@@ -47,7 +47,7 @@ RSpec.describe AttendeesQuery, type: :query do
                    first_name: 'Martin',
                    last_name: 'Pridurok',
                    email: 'dumpshitfuck@gmail.com',
-                   is_registered: true),
+                   status: 'registered'),
              build(:attendee,
                    first_name: 'Marisha',
                    last_name: 'Shkura',
@@ -80,7 +80,7 @@ RSpec.describe AttendeesQuery, type: :query do
   end
 
   describe 'with is registered' do
-    let(:query) { AttendeesQuery.new(is_registered: true) }
+    let(:query) { AttendeesQuery.new(status: 'registered') }
     subject { query.all }
 
     it 'attendee is registered' do

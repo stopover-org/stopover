@@ -56,9 +56,9 @@ type Attendee implements Node {
   firstName: String
   fullName: String
   id: ID!
-  isRegistered: Boolean
   lastName: String
   phone: String
+  status: AttendeeStatusEnum!
 }
 
 type AttendeeOption implements Node {
@@ -68,6 +68,24 @@ type AttendeeOption implements Node {
   eventOption: EventOption!
   id: ID!
   organizerPrice: Money!
+  status: EventOptionStatusEnum!
+}
+
+enum AttendeeStatusEnum {
+  """
+  default value
+  """
+  not_registered
+
+  """
+  user had come to the event
+  """
+  registered
+
+  """
+  user was removed by manager
+  """
+  removed
 }
 
 input AttendeesFilter {
@@ -75,9 +93,9 @@ input AttendeesFilter {
   email: String
   eventId: ID
   firstName: String
-  isRegistered: Boolean
   lastName: String
   phone: String
+  status: AttendeeStatusEnum
 }
 
 type Balance implements Node {
@@ -191,6 +209,7 @@ type BookingOption implements Node {
   eventOption: EventOption!
   id: ID!
   organizerPrice: Money!
+  status: EventOptionStatusEnum!
 }
 
 input BookingsFilter {
@@ -535,7 +554,20 @@ type EventOption implements Node {
   forAttendee: Boolean!
   id: ID!
   organizerPrice: Money
+  status: EventOptionStatusEnum!
   title: String!
+}
+
+enum EventOptionStatusEnum {
+  """
+  default value. this option available for booking
+  """
+  available
+
+  """
+  this option is not available for booking
+  """
+  not_available
 }
 
 enum EventTypeEnum {

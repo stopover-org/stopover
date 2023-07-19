@@ -10,6 +10,6 @@ module Types
     field :phone, String
     field :email, String
     field :full_name, String
-    field :is_registered, Boolean
+    field :status, Types::AttendeeStatusEnum, null: false
   end
 end

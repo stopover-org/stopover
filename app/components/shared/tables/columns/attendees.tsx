@@ -2,11 +2,12 @@ import React from "react";
 import { IconButton, Stack, Tooltip } from "@mui/joy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { graphql, useFragment } from "react-relay";
-import Checkbox from "../../../v2/Checkbox/Checkbox";
 import RegisterAttendee from "../../RegisterAttendee";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import AttendeeOptionsCell from "../../cells/AttendeeOptionsCell";
 import { attendees_BookingFragment$key } from "../../../../artifacts/attendees_BookingFragment.graphql";
+import useStatusColor from "../../../../lib/hooks/useStatusColor";
+import Tag from "../../../v2/Tag/Tag";
 
 export function useAttendeesHeaders() {
   return React.useMemo(
@@ -15,12 +16,27 @@ export function useAttendeesHeaders() {
       { label: "Phone", width: 150, key: "phone" },
       { label: "Email", width: 150, key: "email" },
       { label: "Selected Options", width: 500, key: "attendeeOptions" },
-      { label: "Was registered already", width: 50, key: "isRegistered" },
+      { label: "Status", width: 50, key: "status" },
       { label: "Actions", width: 150, key: "actions" },
     ],
     []
   );
 }
+
+const TagColor = ({ status }: { status: string }) => {
+  const color = useStatusColor({
+    danger: "removed",
+    neutral: "not_registered",
+    primary: "registered",
+    status,
+  });
+
+  return (
+    <Tag level="body3" link={false} color={color}>
+      {status}
+    </Tag>
+  );
+};
 
 export function useAttendeesColumns(bookingFragmentRef: any) {
   const booking = useFragment<attendees_BookingFragment$key>(
@@ -34,7 +50,7 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
           fullName
           phone
           email
-          isRegistered
+          status
           attendeeOptions {
             eventOption {
               title
@@ -64,11 +80,7 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
         fullName: att.fullName || "N/A",
         phone: att.phone || "N/A",
         email: att.email || "N/A",
-        isRegistered: (
-          <Tooltip title="This use was registered for this event already">
-            <Checkbox label="" checked={!!att.isRegistered} readOnly />
-          </Tooltip>
-        ),
+        status: <TagColor status={att.status} />,
         attendeeOptions: (
           <AttendeeOptionsCell
             data={att.attendeeOptions.map(
@@ -99,7 +111,7 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
         actions: (
           <Stack direction="row" justifyContent="flex-end">
             {booking.event.requiresCheckIn &&
-              !att.isRegistered &&
+              att.status === "not_registered" &&
               booking.status === "active" && (
                 <RegisterAttendee attendeeFragmentRef={att} />
               )}

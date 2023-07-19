@@ -7,6 +7,7 @@
 #  id                    :bigint           not null, primary key
 #  attendee_price_cents  :decimal(, )      default(0.0)
 #  organizer_price_cents :decimal(, )      default(0.0)
+#  status                :string           default("available")
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  booking_id            :bigint
@@ -24,7 +25,8 @@
 #
 class BookingOption < ApplicationRecord
   # MODULES ===============================================================
-  #
+  include AASM
+
   # MONETIZE =====================================================================
   monetize :attendee_price_cents
   monetize :organizer_price_cents
@@ -43,7 +45,19 @@ class BookingOption < ApplicationRecord
   belongs_to :event_option
 
   # AASM STATES ================================================================
-  #
+  aasm column: :status do
+    state :available, initial: true
+    state :not_available
+
+    event :disable do
+      transitions from: :available, to: :not_available
+    end
+
+    event :restore do
+      transitions from: :not_available, to: :available
+    end
+  end
+
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================

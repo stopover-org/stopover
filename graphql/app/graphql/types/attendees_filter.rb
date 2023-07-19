@@ -8,6 +8,6 @@ module Types
     argument :last_name, String, required: false
     argument :booking_id, ID, loads: Types::BookingType, required: false
     argument :event_id, ID, loads: Types::EventType, required: false
-    argument :is_registered, Boolean, required: false
+    argument :status, AttendeeStatusEnum, required: false
   end
 end

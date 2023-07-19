@@ -147,7 +147,7 @@ class Booking < ApplicationRecord
   end
 
   def create_booking_options
-    event.event_options.where(built_in: true, for_attendee: false).find_each do |event_option|
+    event.event_options.available.where(built_in: true, for_attendee: false).find_each do |event_option|
       booking_options.build(event_option: event_option)
     end
   end

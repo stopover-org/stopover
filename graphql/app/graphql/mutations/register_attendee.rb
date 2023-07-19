@@ -6,9 +6,9 @@ module Mutations
 
     argument :attendee_id, ID, loads: Types::AttendeeType
     def resolve(attendee:, **_args)
-      attendee.update!(is_registered: true)
+      attendee.register!
       {
-        attendee: attendee
+        attendee: attendee.reload
       }
     end
   end
