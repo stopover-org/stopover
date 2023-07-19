@@ -94,7 +94,7 @@ gem 'graphiql-rails', git: 'https://github.com/rmosolgo/graphiql-rails.git', bra
 gem 'aasm'
 gem 'after_commit_everywhere', '~> 1.0'
 gem 'geocoder'
-gem 'graphql', '~> 1.9'
+gem 'graphql'
 gem 'jwt'
 gem 'phonelib'
 gem 'rack-cors', require: 'rack/cors'

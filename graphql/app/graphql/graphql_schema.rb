@@ -46,4 +46,6 @@ class GraphqlSchema < GraphQL::Schema
       raise InternalServerError, "Unknown type: #{type_name}"
     end
   end
+
+  use GraphQL::Schema::AlwaysVisible
 end
