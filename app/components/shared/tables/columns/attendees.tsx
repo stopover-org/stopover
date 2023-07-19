@@ -8,6 +8,7 @@ import AttendeeOptionsCell from "../../cells/AttendeeOptionsCell";
 import { attendees_BookingFragment$key } from "../../../../artifacts/attendees_BookingFragment.graphql";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Tag from "../../../v2/Tag/Tag";
+import DeregisterAttendee from "../../DeegisterAttendee";
 
 export function useAttendeesHeaders() {
   return React.useMemo(
@@ -16,8 +17,8 @@ export function useAttendeesHeaders() {
       { label: "Phone", width: 150, key: "phone" },
       { label: "Email", width: 150, key: "email" },
       { label: "Selected Options", width: 500, key: "attendeeOptions" },
-      { label: "Status", width: 50, key: "status" },
-      { label: "Actions", width: 150, key: "actions" },
+      { label: "Status", width: 150, key: "status" },
+      { label: "Actions", width: 50, key: "actions" },
     ],
     []
   );
@@ -69,6 +70,7 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
             }
           }
           ...RegisterAttendee_AttendeeFragment
+          ...DeregisterAttendee_AttendeeFragment
         }
       }
     `,
@@ -114,6 +116,11 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
               att.status === "not_registered" &&
               booking.status === "active" && (
                 <RegisterAttendee attendeeFragmentRef={att} />
+              )}
+            {booking.event.requiresCheckIn &&
+              att.status === "registered" &&
+              booking.status === "active" && (
+                <DeregisterAttendee attendeeFragmentRef={att} />
               )}
             {booking.status === "active" && (
               <Tooltip title="Remove this attendee and refund it">

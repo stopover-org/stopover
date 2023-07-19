@@ -1,6 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import Button from "../../v2/Button/Button";
+import { IconButton, Tooltip } from "@mui/joy";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useRegisterAttendeeForm } from "./useRegisterAttendeeForm";
 import { RegisterAttendee_AttendeeFragment$key } from "../../../artifacts/RegisterAttendee_AttendeeFragment.graphql";
 
@@ -20,9 +21,11 @@ const RegisterAttendee = ({ attendeeFragmentRef }: RegisterAttendeeProps) => {
   const form = useRegisterAttendeeForm(attendee);
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Button size="sm" sx={{ marginRight: "10px" }} type="submit">
-        Register Attendee
-      </Button>
+      <IconButton size="sm" sx={{ marginRight: "10px" }} type="submit">
+        <Tooltip title="Register attendee">
+          <PersonAddIcon />
+        </Tooltip>
+      </IconButton>
     </form>
   );
 };

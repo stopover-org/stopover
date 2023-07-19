@@ -3,18 +3,18 @@ import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useRegisterAttendeeForm_AttendeeFragment$key } from "../../../artifacts/useRegisterAttendeeForm_AttendeeFragment.graphql";
+import { useDeregisterAttendeeForm_AttendeeFragment$key } from "../../../artifacts/useDeregisterAttendeeForm_AttendeeFragment.graphql";
 
-interface RegisterAttendeeFields {
+interface DeregisterAttendeeFields {
   attendeeId: string;
 }
 
 function useDefaultValues(
-  attendeeFragmentRef: useRegisterAttendeeForm_AttendeeFragment$key
-): RegisterAttendeeFields {
+  attendeeFragmentRef: useDeregisterAttendeeForm_AttendeeFragment$key
+): DeregisterAttendeeFields {
   const attendee = useFragment(
     graphql`
-      fragment useRegisterAttendeeForm_AttendeeFragment on Attendee {
+      fragment useDeregisterAttendeeForm_AttendeeFragment on Attendee {
         id
       }
     `,
@@ -28,15 +28,15 @@ const validationSchema = Yup.object().shape({
   attendeeId: Yup.string().required(),
 });
 
-export function useRegisterAttendeeForm(
-  attendeeFragmentRef: useRegisterAttendeeForm_AttendeeFragment$key
+export function useDeregisterAttendeeForm(
+  attendeeFragmentRef: useDeregisterAttendeeForm_AttendeeFragment$key
 ) {
   return useMutationForm(
     graphql`
-      mutation useRegisterAttendeeForm_RegisterAttendeeMutation(
-        $input: RegisterAttendeeInput!
+      mutation useDeregisterAttendeeForm_RegisterAttendeeMutation(
+        $input: DeregisterAttendeeInput!
       ) {
-        registerAttendee(input: $input) {
+        deregisterAttendee(input: $input) {
           attendee {
             booking {
               ...attendees_BookingFragment
