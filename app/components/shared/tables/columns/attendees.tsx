@@ -9,6 +9,8 @@ import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Tag from "../../../v2/Tag/Tag";
 import DeregisterAttendee from "../../DeregisterAttendee";
 import RemoveAttendee from "../../RemoveAttendee";
+import ChangeAttendeeOptionAvailability from "../../ChangeAttendeeOptionAvailability";
+import { ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key } from "../../../../artifacts/ChangeAttendeeOptionAvailability_AttendeeOptionFragment.graphql";
 
 export function useAttendeesHeaders() {
   return React.useMemo(
@@ -39,6 +41,20 @@ const TagColor = ({ status }: { status: string }) => {
   );
 };
 
+const OptionTagColor = ({ status }: { status: string }) => {
+  const color = useStatusColor({
+    danger: "not_available",
+    primary: "available",
+    status,
+  });
+
+  return (
+    <Tag level="body3" link={false} color={color}>
+      {status}
+    </Tag>
+  );
+};
+
 export function useAttendeesColumns(bookingFragmentRef: any) {
   const booking = useFragment<attendees_BookingFragment$key>(
     graphql`
@@ -53,6 +69,7 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
           email
           status
           attendeeOptions {
+            status
             eventOption {
               title
             }
@@ -68,6 +85,7 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
                 name
               }
             }
+            ...ChangeAttendeeOptionAvailability_AttendeeOptionFragment
           }
           ...RegisterAttendee_AttendeeFragment
           ...DeregisterAttendee_AttendeeFragment
@@ -87,27 +105,36 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
         attendeeOptions: (
           <AttendeeOptionsCell
             data={att.attendeeOptions.map(
-              (
-                {
+              (opt: Record<string, any>, index: number) => {
+                const {
                   eventOption: { title },
                   organizerPrice,
                   attendeePrice,
-                }: Record<string, any>,
-                index: number
-              ) => ({
-                id: index + 1,
-                title: title || "N/A",
-                organizerPrice:
-                  getCurrencyFormat(
-                    organizerPrice?.cents,
-                    organizerPrice?.currency?.name
-                  ) || "N/A",
-                attendeePrice:
-                  getCurrencyFormat(
-                    attendeePrice?.cents,
-                    attendeePrice?.currency?.name
-                  ) || "N/A",
-              })
+                  status,
+                } = opt;
+                return {
+                  id: index + 1,
+                  title: title || "N/A",
+                  organizerPrice:
+                    getCurrencyFormat(
+                      organizerPrice?.cents,
+                      organizerPrice?.currency?.name
+                    ) || "N/A",
+                  attendeePrice:
+                    getCurrencyFormat(
+                      attendeePrice?.cents,
+                      attendeePrice?.currency?.name
+                    ) || "N/A",
+                  status: <OptionTagColor status={status} />,
+                  actions: (
+                    <ChangeAttendeeOptionAvailability
+                      optionFragmentRef={
+                        opt as ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key
+                      }
+                    />
+                  ),
+                };
+              }
             )}
           />
         ),

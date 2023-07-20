@@ -17,6 +17,8 @@ const AttendeeOptionsCell = React.memo(({ data }: BookingOptionsCellProps) => {
       { label: "Title", width: 100, key: "title" },
       { label: "You get", width: 100, key: "organizerPrice" },
       { label: "Attendee pay", width: 100, key: "attendeePrice" },
+      { label: "Status", width: 100, key: "status" },
+      { label: "", width: 50, key: "actions" },
     ],
     []
   );

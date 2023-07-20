@@ -37,7 +37,9 @@ const EventOptionsInformation = ({
           description
           forAttendee
           id
+          status
           title
+          ...ChangeEventOptionAvailability_EventOptionFragment
         }
       }
     `,

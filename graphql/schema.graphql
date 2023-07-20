@@ -645,6 +645,7 @@ type EventOption implements Node {
   attendeePrice: Money!
   builtIn: Boolean!
   description: String
+  event: Event!
   forAttendee: Boolean!
   id: ID!
   organizerPrice: Money

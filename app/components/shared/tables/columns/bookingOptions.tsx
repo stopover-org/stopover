@@ -2,26 +2,49 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import { bookingOptions_BookingFragmentRef$key } from "../../../../artifacts/bookingOptions_BookingFragmentRef.graphql";
+import useStatusColor from "../../../../lib/hooks/useStatusColor";
+import Tag from "../../../v2/Tag/Tag";
+import ChangeBookingOptionAvailability from "../../ChangeBookingOptionAvailability";
+import { ChangeBookingOptionAvailability_BookingOptionFragment$key } from "../../../../artifacts/ChangeBookingOptionAvailability_BookingOptionFragment.graphql";
 
 export function useBookingOptionsHeaders() {
   return React.useMemo(
     () => [
       {
         label: "Option Name",
+        width: 100,
         key: "title",
       },
       {
         label: "You Get",
+        width: 100,
         key: "organizerPrice",
       },
       {
         label: "Attendee Pay",
+        width: 100,
         key: "attendeePrice",
       },
+      { label: "Status", width: 100, key: "status" },
+      { label: "", width: 100, key: "actions" },
     ],
     []
   );
 }
+
+const OptionTagColor = ({ status }: { status: string }) => {
+  const color = useStatusColor({
+    danger: "not_available",
+    primary: "available",
+    status,
+  });
+
+  return (
+    <Tag level="body3" link={false} color={color}>
+      {status}
+    </Tag>
+  );
+};
 
 export function useBookingOptionsColumns(
   bookingFragmentRef: bookingOptions_BookingFragmentRef$key
@@ -31,6 +54,7 @@ export function useBookingOptionsColumns(
       fragment bookingOptions_BookingFragmentRef on Booking {
         status
         bookingOptions {
+          status
           eventOption {
             title
           }
@@ -46,6 +70,7 @@ export function useBookingOptionsColumns(
               name
             }
           }
+          ...ChangeBookingOptionAvailability_BookingOptionFragment
         }
       }
     `,
@@ -64,6 +89,15 @@ export function useBookingOptionsColumns(
           opt.attendeePrice.cents,
           opt.attendeePrice.currency.name
         ),
+        status: <OptionTagColor status={opt.status} />,
+        actions:
+          booking.status === "active" ? (
+            <ChangeBookingOptionAvailability
+              optionFragmentRef={
+                opt as ChangeBookingOptionAvailability_BookingOptionFragment$key
+              }
+            />
+          ) : null,
       })),
     [booking.bookingOptions]
   );
