@@ -3,14 +3,14 @@ import React from "react";
 import { IconButton, Tooltip } from "@mui/joy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRemoveAttendeeForm } from "./useRemoveAttendeeForm";
-import { DeregisterAttendee_AttendeeFragment$key } from "../../../artifacts/DeregisterAttendee_AttendeeFragment.graphql";
+import { RemoveAttendee_AttendeeFragment$key } from "../../../artifacts/RemoveAttendee_AttendeeFragment.graphql";
 
 interface RegisterAttendeeProps {
-  attendeeFragmentRef: DeregisterAttendee_AttendeeFragment$key;
+  attendeeFragmentRef: RemoveAttendee_AttendeeFragment$key;
 }
 
 const RemoveAttendee = ({ attendeeFragmentRef }: RegisterAttendeeProps) => {
-  const attendee = useFragment<DeregisterAttendee_AttendeeFragment$key>(
+  const attendee = useFragment<RemoveAttendee_AttendeeFragment$key>(
     graphql`
       fragment RemoveAttendee_AttendeeFragment on Attendee {
         ...useRemoveAttendeeForm_AttendeeFragment
