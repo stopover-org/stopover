@@ -23,6 +23,7 @@ module Stopover
         prices: prices
       }
     rescue StandardError => e
+      Sentry.capture_exception(e) if Rails.env.production?
       {
         product: product,
         prices: prices
@@ -57,6 +58,7 @@ module Stopover
         price_ids: price_ids
       }
     rescue StandardError => e
+      Sentry.capture_exception(e) if Rails.env.production?
       {
         product_id: nil,
         price_ids: nil
@@ -81,6 +83,7 @@ module Stopover
       end
       model.stripe_integrations
     rescue StandardError => e
+      Sentry.capture_exception(e) if Rails.env.production?
       model.stripe_integrations
     end
 

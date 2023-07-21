@@ -12,6 +12,7 @@ class WebhooksController < ApplicationController
         payload, sig_header, @endpoint_secret
       )
     rescue Stripe::SignatureVerificationError, JSON::ParserError => e
+      Sentry.capture_exception(e) if Rails.env.production?
       # Invalid payload
       # Invalid signature
       status 400

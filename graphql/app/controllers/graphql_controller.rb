@@ -24,6 +24,7 @@ class GraphqlController < ApplicationController
 
     render json: result, status_code: status_code
   rescue StandardError => e
+    Sentry.capture_exception(e) if Rails.env.production?
     return handle_error_in_development(e) if Rails.env.development?
 
     render json: { errors: [{ message: 'Something went wrong' }], data: {} }, status: :internal_server_error
@@ -68,6 +69,7 @@ class GraphqlController < ApplicationController
     user = Stopover::AuthorizationSupport.decode_user(headers: request.headers, cookies: cookies)
     @current_user = user
   rescue StandardError => e
+    Sentry.capture_exception(e) if Rails.env.production?
     cookies.delete Stopover::AuthorizationSupport::COOKIE_KEY if e.is_a?(JWT::VerificationError) || e.is_a?(ActiveRecord::RecordNotFound)
     raise e unless Rails.env.development?
 

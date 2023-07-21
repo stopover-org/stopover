@@ -11,7 +11,7 @@ module Mutations
     end
 
   rescue StandardError => e
-    Rails.logger.debug 'create stripe account in Stripe Support did not return account link'
+    Sentry.capture_exception(e) if Rails.env.production?
     {
       setup_account_url: nil
     }

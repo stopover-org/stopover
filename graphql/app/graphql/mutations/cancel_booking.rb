@@ -13,6 +13,7 @@ module Mutations
         trip: booking.trip
       }
     rescue StandardError => e
+      Sentry.capture_exception(e) if Rails.env.production?
       {
         booking: nil,
         trip: booking.trip,

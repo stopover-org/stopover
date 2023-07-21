@@ -33,6 +33,7 @@ include ActiveSupport::Testing::TimeHelpers
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
+  Sentry.capture_exception(e) if Rails.env.production?
   puts e.to_s.strip
   exit 1
 end

@@ -40,6 +40,7 @@ module Mutations
 
       { user: nil, delay: user.delay }
     rescue StandardError => e
+      Sentry.capture_exception(e) if Rails.env.production?
       { user: nil, delay: user&.delay, reason: e.message }
     end
   end
