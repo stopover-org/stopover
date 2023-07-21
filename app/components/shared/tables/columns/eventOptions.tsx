@@ -1,10 +1,9 @@
 import React from "react";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import Checkbox from "../../../v2/Checkbox/Checkbox";
-import useStatusColor from "../../../../lib/hooks/useStatusColor";
-import Tag from "../../../v2/Tag/Tag";
 import ChangeEventOptionAvailability from "../../ChangeEventOptionAvailability";
 import { ChangeEventOptionAvailability_EventOptionFragment$key } from "../../../../artifacts/ChangeEventOptionAvailability_EventOptionFragment.graphql";
+import OptionTagColor from "../../OptionTagColor/OptionTagColor";
 
 export function useEventOptionsHeaders() {
   return React.useMemo(
@@ -21,20 +20,6 @@ export function useEventOptionsHeaders() {
     []
   );
 }
-
-const OptionTagColor = ({ status }: { status: string }) => {
-  const color = useStatusColor({
-    danger: "not_available",
-    primary: "available",
-    status,
-  });
-
-  return (
-    <Tag level="body3" link={false} color={color}>
-      {status}
-    </Tag>
-  );
-};
 
 export function useEventOptionsColumns(
   eventOptions: ReadonlyArray<Record<string, any>>

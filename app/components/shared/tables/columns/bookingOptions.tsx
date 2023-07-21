@@ -2,10 +2,9 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import { bookingOptions_BookingFragmentRef$key } from "../../../../artifacts/bookingOptions_BookingFragmentRef.graphql";
-import useStatusColor from "../../../../lib/hooks/useStatusColor";
-import Tag from "../../../v2/Tag/Tag";
 import ChangeBookingOptionAvailability from "../../ChangeBookingOptionAvailability";
 import { ChangeBookingOptionAvailability_BookingOptionFragment$key } from "../../../../artifacts/ChangeBookingOptionAvailability_BookingOptionFragment.graphql";
+import OptionTagColor from "../../OptionTagColor/OptionTagColor";
 
 export function useBookingOptionsHeaders() {
   return React.useMemo(
@@ -31,20 +30,6 @@ export function useBookingOptionsHeaders() {
     []
   );
 }
-
-const OptionTagColor = ({ status }: { status: string }) => {
-  const color = useStatusColor({
-    danger: "not_available",
-    primary: "available",
-    status,
-  });
-
-  return (
-    <Tag level="body3" link={false} color={color}>
-      {status}
-    </Tag>
-  );
-};
 
 export function useBookingOptionsColumns(
   bookingFragmentRef: bookingOptions_BookingFragmentRef$key

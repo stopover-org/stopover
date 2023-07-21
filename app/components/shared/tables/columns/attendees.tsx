@@ -11,6 +11,7 @@ import DeregisterAttendee from "../../DeregisterAttendee";
 import RemoveAttendee from "../../RemoveAttendee";
 import ChangeAttendeeOptionAvailability from "../../ChangeAttendeeOptionAvailability";
 import { ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key } from "../../../../artifacts/ChangeAttendeeOptionAvailability_AttendeeOptionFragment.graphql";
+import OptionTagColor from "../../OptionTagColor/OptionTagColor";
 
 export function useAttendeesHeaders() {
   return React.useMemo(
@@ -31,20 +32,6 @@ const TagColor = ({ status }: { status: string }) => {
     danger: "removed",
     neutral: "not_registered",
     primary: "registered",
-    status,
-  });
-
-  return (
-    <Tag level="body3" link={false} color={color}>
-      {status}
-    </Tag>
-  );
-};
-
-const OptionTagColor = ({ status }: { status: string }) => {
-  const color = useStatusColor({
-    danger: "not_available",
-    primary: "available",
     status,
   });
 
