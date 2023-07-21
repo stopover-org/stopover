@@ -29,7 +29,7 @@ set :linked_files, %w[config/application.yml config/database.yml config/master.k
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", "vendor", "storage"
-set :linked_dirs, %w[log tmp/pids tmp/cache tmp/sockets vendor/bundle .bundle public/system public/uploads node_modules]
+set :linked_dirs, %w[config/credentials log tmp/pids tmp/cache tmp/sockets vendor/bundle .bundle public/system public/uploads node_modules]
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -65,7 +65,7 @@ set :puma_enable_socket_service, true
 # ================================================
 
 # upload configuration files
-before 'deploy:starting', 'config_files:upload'
+# before 'deploy:starting', 'config_files:upload'
 
 # reload application after successful deploy
 after 'deploy:publishing', 'application:reload'
