@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_01_221149) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_19_213612) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -99,6 +99,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_01_221149) do
     t.datetime "updated_at", null: false
     t.decimal "attendee_price_cents", default: "0.0"
     t.decimal "organizer_price_cents", default: "0.0"
+    t.string "status", default: "available"
     t.index ["attendee_id"], name: "index_attendee_options_on_attendee_id"
     t.index ["event_option_id"], name: "index_attendee_options_on_event_option_id"
   end
@@ -111,7 +112,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_01_221149) do
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "is_registered", default: false
+    t.string "status", default: "not_registered"
     t.index ["booking_id"], name: "index_attendees_on_booking_id"
   end
 
@@ -141,6 +142,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_01_221149) do
     t.datetime "updated_at", null: false
     t.decimal "attendee_price_cents", default: "0.0"
     t.decimal "organizer_price_cents", default: "0.0"
+    t.string "status", default: "available"
     t.index ["booking_id"], name: "index_booking_options_on_booking_id"
     t.index ["event_option_id"], name: "index_booking_options_on_event_option_id"
   end
@@ -194,6 +196,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_01_221149) do
     t.datetime "updated_at", null: false
     t.text "description"
     t.boolean "for_attendee", default: false
+    t.string "status", default: "available"
     t.index ["event_id"], name: "index_event_options_on_event_id"
   end
 
@@ -266,6 +269,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_01_221149) do
     t.string "business_type", default: "individual", null: false
     t.string "postal_code"
     t.string "ref_number"
+    t.string "payment_types", default: [], null: false, array: true
     t.index ["ref_number"], name: "index_firms_on_ref_number", unique: true
   end
 
@@ -283,6 +287,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_01_221149) do
     t.string "event_type", default: "common", null: false
     t.string "level", default: "info", null: false
     t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "action"
+    t.string "notification_type"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.string "delivery_method", null: false
+    t.string "from"
+    t.string "to", null: false
+    t.string "subject"
+    t.string "content", null: false
+    t.datetime "sent_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

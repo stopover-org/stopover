@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useRegisterAttendeeForm(
-  eventFragmentRef: useRegisterAttendeeForm_AttendeeFragment$key
+  attendeeFragmentRef: useRegisterAttendeeForm_AttendeeFragment$key
 ) {
   return useMutationForm(
     graphql`
@@ -48,7 +48,7 @@ export function useRegisterAttendeeForm(
     `,
     ({ attendeeId }) => ({ input: { attendeeId } }),
     {
-      defaultValues: useDefaultValues(eventFragmentRef),
+      defaultValues: useDefaultValues(attendeeFragmentRef),
       resolver: yupResolver(validationSchema),
     }
   );

@@ -37,9 +37,8 @@ class StripeIntegration < ApplicationRecord
 
   # AASM STATES ================================================================
   enum price_type: {
-    full_amount: 'full_amount',
-    prepaid_amount: 'prepaid_amount',
-    remaining_amount: 'remaining_amount'
+    full_amount: 'full_amount'
+
   }
 
   aasm column: :status do
@@ -76,27 +75,5 @@ class StripeIntegration < ApplicationRecord
     end
 
     0
-  end
-
-  def prepaid_amount
-    case stripeable&.class&.name
-    when 'Event'
-      return stripeable&.prepaid_amount
-    when 'EventOption'
-      return nil
-    end
-
-    nil
-  end
-
-  def remaining_amount
-    case stripeable&.class&.name
-    when 'Event'
-      return unit_amount - prepaid_amount
-    when 'EventOption'
-      return nil
-    end
-
-    nil
   end
 end

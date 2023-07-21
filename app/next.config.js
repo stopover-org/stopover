@@ -1,12 +1,13 @@
 /** @type {import('next').NextConfig} */
-const withTM = require('next-transpile-modules')(['ra-core', 'react-admin']); // pass the modules you would like to see transpiled
 
 const nextConfig = {
     reactStrictMode: true,
     images: {
         domains: ['placehold.co'],
     },
-    ...withTM({})
+    env: {
+        GRAPHQL_API_URL: process.env.GRAPHQL_API_URL
+    }
 }
 
 module.exports = nextConfig

@@ -6,10 +6,7 @@ module Types
     field :attendee_price_per_uom, Types::MoneyType
     field :available_dates, [Types::DateTimeType], null: false
     field :average_rating, Float, null: false
-    field :booking, Types::BookingType do
-      argument :id, ID, required: true, loads: Types::BookingType
-    end
-    field :bookings, Types::BookingType.connection_type, null: false
+    field :bookings, Types::BookingType.connection_type, null: false, require_manager: true
     field :booking_cancellation_options, [Types::BookingCancellationOptionType]
     field :city, String
     field :country, String
@@ -17,7 +14,7 @@ module Types
     field :duration_time, String, null: false
     field :event_options, [Types::EventOptionType], null: false
     field :event_type, Types::EventTypeEnum, null: false
-    field :external_id, String
+    field :external_id, String, require_manager: true
     field :firm, Types::FirmType, null: false
     field :full_address, String
     field :house_number, String

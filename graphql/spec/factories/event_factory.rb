@@ -105,16 +105,6 @@ FactoryBot.define do
                product_id: 'product_id',
                price_id: 'price_id_full_amount',
                price_type: :full_amount)
-        create(:stripe_integration,
-               stripeable: event,
-               product_id: 'product_id',
-               price_id: 'price_id_prepaid_amount',
-               price_type: :prepaid_amount)
-        create(:stripe_integration,
-               stripeable: event,
-               product_id: 'product_id',
-               price_id: 'price_id_remaining_amount',
-               price_type: :remaining_amount)
       end
     end
 

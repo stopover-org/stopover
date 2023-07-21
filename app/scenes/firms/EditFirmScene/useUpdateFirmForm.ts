@@ -22,6 +22,7 @@ interface UpdateFirmFields {
   website: string | null;
   description: string | null;
   image: string | null;
+  paymentTypes: string[];
 }
 
 function useDefaultValues(
@@ -30,20 +31,21 @@ function useDefaultValues(
   const firm = useFragment(
     graphql`
       fragment useUpdateFirmForm_FirmFragment on Firm {
-        title
-        contactPerson
-        country
-        region
-        street
-        fullAddress
-        primaryEmail
-        primaryPhone
-        contacts
-        website
-        description
         city
+        contactPerson
+        contacts
+        country
+        description
+        fullAddress
         houseNumber
         image
+        paymentTypes
+        primaryEmail
+        primaryPhone
+        region
+        street
+        title
+        website
       }
     `,
     updateFirmFragmentRef
@@ -65,6 +67,7 @@ function useDefaultValues(
       city: firm?.city,
       houseNumber: firm?.houseNumber,
       image: firm?.image,
+      paymentTypes: firm?.paymentTypes.map(String),
     }),
     [firm]
   );
@@ -84,7 +87,8 @@ const validationSchema = Yup.object().shape({
   contacts: Yup.string(),
   website: Yup.string(),
   description: Yup.string(),
-  image: Yup.string(),
+  image: Yup.string().nullable(),
+  paymentTypes: Yup.array().required("Required"),
 });
 
 export function useUpdateFirmForm(

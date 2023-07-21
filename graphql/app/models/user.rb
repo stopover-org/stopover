@@ -48,7 +48,8 @@ class User < ApplicationRecord
   end
 
   # ENUMS =======================================================================
-  #
+  enum primary: { email: 'email', phone: 'phone' }, _prefix: true
+
   # VALIDATIONS ================================================================
   validates :email, presence:   true, if: :should_have_email?
   validates :email, uniqueness: true, if: :should_have_email?
@@ -74,15 +75,15 @@ class User < ApplicationRecord
     save!
 
     if primary == 'email' && email
-      Stopover::MailProvider.send_mail(from: ::Configuration.get_value(:NOTIFICATION_EMAIL).value,
-                                       to: email,
-                                       subject: 'Confirmation code',
-                                       content: Stopover::MailProvider.prepare_content(file: 'mailer/confirmation_code',
-                                                                                       locals: { confirmation_code: confirmation_code }))
+      Notification.create!(delivery_method: 'email',
+                           to: email,
+                           subject: 'Your confirmation code',
+                           content: Stopover::MailProvider.prepare_content(file: 'mailer/auth/confirmation_code_sent',
+                                                                           locals: { confirmation_code: confirmation_code }))
     elsif primary == 'phone' && phone
-      # Stopover::SmsProvider.send_sms(from: ::Configuration.get_value(:NOTIFICATION_PHONE).value,
-      #                      to: phone,
-      #                      message: "Your confirmation code: ##{confirmation_code}")
+      Notification.create!(delivery_method: 'sms',
+                           to: phone,
+                           content: "Your confirmation code: ##{confirmation_code}")
     end
   end
 
@@ -97,14 +98,32 @@ class User < ApplicationRecord
     self.status = :active
 
     unless account
-      self.account = Account.new(name: phone.presence || email,
-                                 primary_phone: phone,
-                                 phones: phone.present? ? [phone] : [],
-                                 user: self)
+      account = Account.new
+      account.assign_attributes(name: phone || email,
+                                primary_phone: phone,
+                                phones: phone.present? ? [phone] : [],
+                                user: self)
+      account.save!
     end
 
     self.session_password = SecureRandom.hex(50)
+
     save!
+
+    if primary_email?
+      Notification.create!(
+        to: email,
+        subject: 'Your confirmation code',
+        content: Stopover::MailProvider.prepare_content(file: 'mailer/auth/successfully_signed_in'),
+        delivery_method: 'email'
+      )
+    elsif primary_phone?
+      Notification.create!(
+        to: phone,
+        content: 'You successfully signed in',
+        delivery_method: 'sms'
+      )
+    end
   end
 
   def delay

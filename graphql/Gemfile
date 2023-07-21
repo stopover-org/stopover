@@ -87,13 +87,14 @@ group :test do
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'webdrivers'
+  gem "rspec-sidekiq", "~> 3.1"
 end
 
 gem 'graphiql-rails', git: 'https://github.com/rmosolgo/graphiql-rails.git', branch: 'master'
 gem 'aasm'
 gem 'after_commit_everywhere', '~> 1.0'
 gem 'geocoder'
-gem 'graphql', '~> 1.9'
+gem 'graphql'
 gem 'jwt'
 gem 'phonelib'
 gem 'rack-cors', require: 'rack/cors'
@@ -113,5 +114,6 @@ gem 'sidekiq', '~> 6.5'
 
 gem "stripe", "~> 8.3"
 
-gem "rspec-sidekiq", "~> 3.1"
 gem "roo", "~> 2.10.0"
+
+gem "countries", "~> 5.5"

@@ -7,5 +7,6 @@ module Types
     field :attendee, Types::AttendeeType, null: false
     field :builtIn, Boolean, null: false
     field :event_option, Types::EventOptionType, null: false
+    field :status, Types::EventOptionStatusEnum, null: false
   end
 end

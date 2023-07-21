@@ -10,29 +10,31 @@ import Link from "../../../components/v2/Link";
 import { FirmScene_FirmFragment$key } from "../../../artifacts/FirmScene_FirmFragment.graphql";
 import Fieldset from "../../../components/v2/Fieldset";
 import useStatusColor from "../../../lib/hooks/useStatusColor";
+import { capitalize } from "../../../lib/utils/capitalize";
 
 interface FirmSceneProps {
   firmFragmentRef: FirmScene_FirmFragment$key;
 }
 const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
-  const firm = useFragment(
+  const firm = useFragment<FirmScene_FirmFragment$key>(
     graphql`
       fragment FirmScene_FirmFragment on Firm {
-        title
+        city
         contactPerson
+        contacts
         country
-        region
-        street
+        description
         fullAddress
+        houseNumber
+        image
+        paymentTypes
         primaryEmail
         primaryPhone
-        contacts
-        website
-        description
-        city
-        houseNumber
+        region
         status
-        image
+        street
+        title
+        website
       }
     `,
     firmFragmentRef
@@ -127,6 +129,18 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
             <Typography>{firm.fullAddress}</Typography>
           </Grid>
         </Fieldset>
+
+        <Fieldset>
+          <Grid xs={12}>
+            <Typography level="h4">Payment Information</Typography>
+          </Grid>
+          <Grid xs={6}>
+            {firm.paymentTypes.map((type) => (
+              <Chip sx={{ marginRight: "5px" }}>{capitalize(type)}</Chip>
+            ))}
+          </Grid>
+        </Fieldset>
+
         <Fieldset>
           <Grid xs={12}>
             <Typography level="h3">Contact Information</Typography>

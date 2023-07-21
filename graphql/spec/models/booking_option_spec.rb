@@ -7,6 +7,7 @@
 #  id                    :bigint           not null, primary key
 #  attendee_price_cents  :decimal(, )      default(0.0)
 #  organizer_price_cents :decimal(, )      default(0.0)
+#  status                :string           default("available")
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  booking_id            :bigint

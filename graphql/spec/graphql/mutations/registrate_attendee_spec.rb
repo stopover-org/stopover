@@ -10,7 +10,7 @@ RSpec.describe Mutations::RegisterAttendee do
           registerAttendee(input: $input) {
             attendee {
               id
-              isRegistered
+              status
             }
           }
         }
@@ -28,9 +28,9 @@ RSpec.describe Mutations::RegisterAttendee do
     end
 
     it 'is registered' do
-      expect(attendee.is_registered).to eq(false)
+      expect(attendee.status).to eq('not_registered')
       subject
-      expect(attendee.reload.is_registered).to eq(true)
+      expect(attendee.reload.status).to eq('registered')
     end
   end
 end

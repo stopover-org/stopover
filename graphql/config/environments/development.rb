@@ -75,4 +75,5 @@ Rails.application.configure do
   config.autoloader = :classic
   Rails.application.routes.default_url_options[:host] = 'localhost:8080'
   Rails.application.routes.default_url_options[:protocol] = 'http'
+  Rails.application.config.active_job.queue_adapter = :sidekiq
 end

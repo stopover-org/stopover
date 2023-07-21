@@ -48,16 +48,6 @@ class Configuration < ApplicationRecord
       value: 60,
       description: 'delay between sending confirmation code for sign in'
     },
-    NOTIFICATION_EMAIL: {
-      key: 'NOTIFICATION_EMAIL',
-      value: 'admin@dorokhovich.ru',
-      description: 'email that should be used for sending email notifications, like sending confirmation code'
-    },
-    NOTIFICATION_PHONE: {
-      key: 'NOTIFICATION_PHONE',
-      value: '+17755264317',
-      description: 'phone that should be used for sending sms notifications, like sending confirmation code'
-    },
     GEOCODE_PROVIDER: {
       key: 'GEOCODE_PROVIDER',
       value: 'osm',

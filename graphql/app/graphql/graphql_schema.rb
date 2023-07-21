@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class GraphqlSchema < GraphQL::Schema
+  use GraphQL::Schema::AlwaysVisible
+
   mutation(Types::MutationType)
   query(Types::QueryType)
 

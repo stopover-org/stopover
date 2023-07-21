@@ -4,7 +4,7 @@ module Stopover
   class StripeCheckoutService
     def self.complete(payment)
       payment.success!
-      payment.booking.paid! if payment.full_amount? || payment.remaining_amount?
+      payment.booking.pay! if payment.full_amount?
       payment.booking.trip.activate!
 
       payment
@@ -58,7 +58,6 @@ module Stopover
           }
         end
       end
-      # TODO: dont know how to covered by test
 
       checkout = Stripe::Checkout::Session.create({
                                                     line_items: [

@@ -4,15 +4,15 @@
 #
 # Table name: attendees
 #
-#  id            :bigint           not null, primary key
-#  email         :string
-#  first_name    :string
-#  is_registered :boolean          default(FALSE)
-#  last_name     :string
-#  phone         :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  booking_id    :bigint
+#  id         :bigint           not null, primary key
+#  email      :string
+#  first_name :string
+#  last_name  :string
+#  phone      :string
+#  status     :string           default("not_registered")
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  booking_id :bigint
 #
 # Indexes
 #
@@ -20,7 +20,8 @@
 #
 class Attendee < ApplicationRecord
   # MODULES ===============================================================
-  #
+  include AASM
+
   # ATTACHMENTS ===========================================================
   #
   # HAS_ONE ASSOCIATIONS ==========================================================
@@ -41,7 +42,23 @@ class Attendee < ApplicationRecord
   has_many :event_options, -> { where(for_attendee: true) }, through: :event, inverse_of: :event
 
   # AASM STATES ================================================================
-  #
+  aasm column: :status do
+    state :not_registered, initial: true
+    state :registered
+    state :removed
+
+    event :register do
+      transitions from: :not_registered, to: :registered
+    end
+
+    event :deregister do
+      transitions from: :registered, to: :not_registered
+    end
+
+    event :soft_delete do
+      transitions from: %i[registered not_registered], to: :removed
+    end
+  end
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
@@ -60,7 +77,7 @@ class Attendee < ApplicationRecord
   private
 
   def create_attendee_options
-    booking.event.event_options.where(built_in: true, for_attendee: true).find_each do |event_option|
+    booking.event.event_options.available.where(built_in: true, for_attendee: true).find_each do |event_option|
       attendee_options.build(event_option: event_option)
     end
   end
