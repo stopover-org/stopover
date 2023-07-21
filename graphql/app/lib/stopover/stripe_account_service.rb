@@ -63,7 +63,7 @@ module Stopover
         account_link: account_link.url
       }
     rescue StandardError => e
-      Rails.logger.debug 'something went wrong when creating account and account link in stripe'
+      Sentry.capture_exception(e) if Rails.env.production?
       {
         account_link: nil
       }

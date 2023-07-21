@@ -117,3 +117,5 @@ gem "stripe", "~> 8.3"
 gem "roo", "~> 2.10.0"
 
 gem "countries", "~> 5.5"
+gem "sentry-ruby"
+gem "sentry-rails"

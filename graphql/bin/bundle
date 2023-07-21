@@ -103,6 +103,7 @@ m = Module.new do
     yield
     nil
   rescue StandardError, LoadError => e
+    Sentry.capture_exception(e) if Rails.env.production?
     e
   end
 end
