@@ -5,7 +5,7 @@ import Sidebar from "../Sidebar/Sidebar";
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
-    maxWidth: "calc(100vw - 260px)",
+    maxWidth: "calc(100vw - 310px)",
   },
 }));
 
@@ -37,8 +37,6 @@ const SidebarContent = ({ children, sx }: SidebarContentProps) => {
         ]}
       />
       <ContentWrapper
-        md={10}
-        sm={12}
         container
         sx={{
           paddingTop: showSidebar ? "7px" : "20px",
