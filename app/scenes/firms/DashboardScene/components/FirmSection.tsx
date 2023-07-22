@@ -47,9 +47,9 @@ const FirmSection = ({
   );
 
   const tagColor = useStatusColor({
-    primary: "active",
-    danger: "deleted",
-    info: "pending",
+    primary: ["active"],
+    danger: ["deleted"],
+    info: ["pending"],
     status: firm.status,
   });
 

@@ -8,8 +8,8 @@ import Tag from "../../../v2/Tag/Tag";
 
 const TagColor = ({ status }: { status: string }) => {
   const color = useStatusColor({
-    neutral: "processing",
-    danger: "canceled",
+    neutral: ["processing"],
+    danger: ["canceled"],
     status,
   });
 

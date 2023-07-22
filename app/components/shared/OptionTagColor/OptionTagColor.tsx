@@ -4,8 +4,8 @@ import Tag from "../../v2/Tag/Tag";
 
 export default React.memo(({ status }: { status: string }) => {
   const color = useStatusColor({
-    danger: "not_available",
-    primary: "available",
+    danger: ["not_available"],
+    primary: ["available"],
     status,
   });
 

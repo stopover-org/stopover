@@ -54,7 +54,7 @@ export function useBookingsHeaders() {
 
 const TagColor = ({ status }: { status: string }) => {
   const color = useStatusColor({
-    danger: "cancelled",
+    danger: ["cancelled"],
     status,
   });
 

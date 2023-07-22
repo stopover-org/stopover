@@ -29,9 +29,9 @@ export function useAttendeesHeaders() {
 
 const TagColor = ({ status }: { status: string }) => {
   const color = useStatusColor({
-    danger: "removed",
-    neutral: "not_registered",
-    primary: "registered",
+    danger: ["removed"],
+    neutral: ["not_registered"],
+    primary: ["registered"],
     status,
   });
 

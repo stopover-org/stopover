@@ -2,6 +2,26 @@
 
 module Stopover
   class StripeAccountService
+    def self.retrieve_stripe_connect(stripe_connect_id)
+      stripe_connect = StripeConnect.find_by(stripe_connect_id: stripe_connect_id)
+      Stripe::Account.retrieve(stripe_connect.stripe_connect_id)
+    end
+
+    def self.activate(stripe_connect_id)
+      stripe_connect = StripeConnect.find_by(stripe_connect_id: stripe_connect_id)
+
+      stripe_connect.activate!
+
+      stripe_connect
+    end
+
+    def self.dactivate(stripe_connect_id)
+      stripe_connect = StripeConnect.find_by(stripe_connect_id: stripe_connect_id)
+      stripe_connect.deactivate!
+
+      stripe_connect
+    end
+
     def self.create_stripe_account(user)
       raise StandardError('Account has\'t firm') unless user.account.current_firm
       account = Stripe::Account.create({
@@ -55,8 +75,8 @@ module Stopover
 
       account_link = Stripe::AccountLink.create({
                                                   account: account[:id],
-                                                  refresh_url: 'https://localhost:3000/stripe-connect/check',
-                                                  return_url: 'https://localhost:3000/stripe-connect/check',
+                                                  refresh_url: "#{Rails.application.credentials.frontend_url}/my-firm/dashboard?stripe_connect=verify",
+                                                  return_url: "#{Rails.application.credentials.frontend_url}/my-firm/dashboard?stripe_connect=verify",
                                                   type: 'account_onboarding'
                                                 })
       {

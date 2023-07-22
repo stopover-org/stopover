@@ -57,8 +57,8 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
   );
 
   const tagColor = useStatusColor({
-    primary: "active",
-    danger: "cancelled",
+    primary: ["active"],
+    danger: ["cancelled"],
     status: booking.status,
   });
   const paymentsHeaders = usePaymentsHeaders();

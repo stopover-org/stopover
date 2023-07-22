@@ -75,10 +75,10 @@ const EventScene = ({
   );
   const [tab, setTab] = React.useState(0);
   const tagColor = useStatusColor({
-    primary: "published",
-    danger: "deleted",
-    info: "unpublished",
-    neutral: "draft",
+    primary: ["published"],
+    danger: ["deleted"],
+    info: ["unpublished"],
+    neutral: ["draft"],
     status: event.status,
   });
 
