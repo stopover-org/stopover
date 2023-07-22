@@ -17,12 +17,9 @@ const Sidebar = ({ items }: SidebarProps) => {
   const theme = useTheme();
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   return showSidebar ? (
-    <Grid
-      flexDirection="column"
-      sx={{ maxWidth: 250, width: "100%", minWidth: 0 }}
-    >
+    <Grid flexDirection="column">
       <Grid xs={12}>
-        <List>
+        <List sx={{ maxWidth: "250px", minWidth: "250px" }}>
           {items.map((item) => (
             <Link level="h6" href={item.href} underline={false}>
               <ListItem key={item.href}>
