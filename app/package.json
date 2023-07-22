@@ -28,6 +28,7 @@
     "@mui/utils": "^5.11.13",
     "@mui/x-date-pickers": "^6.0.4",
     "@react-google-maps/api": "^2.12.2",
+    "@sentry/nextjs": "^7.60.0",
     "@storybook/react": "^6.5.16",
     "@types/styled-components": "^5.1.26",
     "@types/yup": "^0.32.0",

@@ -59,6 +59,7 @@ function useDefaultValues(): Partial<CreateEventFields> {
       eventType: "excursion",
       images: [],
       organizerPricePerUomCents: 0,
+      durationTime: "0h 0m",
       recurringDates: [{ day: null, hour: null, minute: null }],
       requiresCheckIn: false,
       requiresContract: false,
