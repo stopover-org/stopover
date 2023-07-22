@@ -80,7 +80,7 @@ const BalanceSection = ({
         <Grid xs={12}>
           <Typography level="h4">Payout Settings</Typography>
         </Grid>
-        {!activeStripeConnect && (
+        {firm.paymentTypes.includes("stripe") && !activeStripeConnect && (
           <Grid xs={12}>
             <ConnectStripeForm />
           </Grid>

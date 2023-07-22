@@ -1478,19 +1478,19 @@ enum StripeConnectStatusEnum {
   active
 
   """
+  stripe connect was removed
+  """
+  deleted
+
+  """
   stripe connect was out of sync
   """
-  invalid
+  inactive
 
   """
   default value. stripe connect was just initialized
   """
   pending
-
-  """
-  stripe connect was removed
-  """
-  removed
 }
 
 """

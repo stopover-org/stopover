@@ -46,7 +46,7 @@ class StripeConnect < ApplicationRecord
     end
 
     event :deactivate do
-      transitions from: %i[pending active], to: :inactive
+      transitions from: %i[pending actived], to: :inactive
     end
 
     event :soft_delete do
