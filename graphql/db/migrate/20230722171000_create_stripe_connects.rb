@@ -9,7 +9,7 @@ class CreateStripeConnects < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    remove_column :firms, :stripe_connect_id, :bigint
+    # remove_column :firms, :stripe_connect_id, :bigint
 
     remove_column :log_events, :content, :text
     add_column :log_events, :content, :jsonb
