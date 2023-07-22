@@ -1,19 +1,22 @@
-import { Chip, Grid, Stack } from "@mui/joy";
+import { Chip, Grid } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import Section from "../../../../components/v2/Section";
 import { BalanceSection_FirmFragment$key } from "../../../../artifacts/BalanceSection_FirmFragment.graphql";
 import Typography from "../../../../components/v2/Typography";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
-import Fieldset from "../../../../components/v2/Fieldset/Fieldset";
 import { capitalize } from "../../../../lib/utils/capitalize";
-import Button from "../../../../components/v2/Button";
 import ConnectStripeForm from "./ConnectStripeForm";
+import StripeConnectsTable from "../../../../components/shared/tables/StripeConnectsTable";
 
 interface BalanceSectionProps {
   firmFragmentRef: BalanceSection_FirmFragment$key;
+  currentUserFragmentRef: any;
 }
-const BalanceSection = ({ firmFragmentRef }: BalanceSectionProps) => {
+const BalanceSection = ({
+  firmFragmentRef,
+  currentUserFragmentRef,
+}: BalanceSectionProps) => {
   const firm = useFragment<BalanceSection_FirmFragment$key>(
     graphql`
       fragment BalanceSection_FirmFragment on Firm {
@@ -26,9 +29,26 @@ const BalanceSection = ({ firmFragmentRef }: BalanceSectionProps) => {
             }
           }
         }
+        stripeConnects {
+          status
+        }
+        ...StripeConnectsTable_FirmFragment
       }
     `,
     firmFragmentRef
+  );
+
+  const currentUser = useFragment(
+    graphql`
+      fragment BalanceSection_CurrentUserFragment on User {
+        ...StripeConnectsTable_CurrentUserFragment
+      }
+    `,
+    currentUserFragmentRef
+  );
+
+  const activeStripeConnect = firm.stripeConnects.find(
+    ({ status }) => status === "active"
   );
   return (
     <Section>
@@ -60,8 +80,20 @@ const BalanceSection = ({ firmFragmentRef }: BalanceSectionProps) => {
         <Grid xs={12}>
           <Typography level="h4">Payout Settings</Typography>
         </Grid>
+        {firm.paymentTypes.includes("stripe") && !activeStripeConnect && (
+          <Grid xs={12}>
+            <ConnectStripeForm />
+          </Grid>
+        )}
+
         <Grid xs={12}>
-          <ConnectStripeForm />
+          <Typography level="h4">Connected Stripe Accounts</Typography>
+        </Grid>
+        <Grid xs={12}>
+          <StripeConnectsTable
+            firmFragmentRef={firm}
+            currentUserFragmentRef={currentUser}
+          />
         </Grid>
       </Grid>
     </Section>

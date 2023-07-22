@@ -45,6 +45,7 @@ class Firm < ApplicationRecord
   # has_many :accounts
   has_many :account_firms
   has_many :events, dependent: :destroy
+  has_many :stripe_connects
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :accounts, through: :account_firms

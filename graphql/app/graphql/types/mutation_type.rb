@@ -2,6 +2,8 @@
 
 module Types
   class MutationType < Types::BaseObject
+    field :decline_stripe_connect, mutation: Mutations::DeclineStripeConnect
+    field :verify_stripe_connect, mutation: Mutations::VerifyStripeConnect
     field :change_attendee_option_availability, mutation: Mutations::ChangeAttendeeOptionAvailability,  require_manager: true
     field :change_booking_option_availability,  mutation: Mutations::ChangeBookingOptionAvailability,   require_manager: true
     field :change_event_option_availability,    mutation: Mutations::ChangeEventOptionAvailability,     require_manager: true

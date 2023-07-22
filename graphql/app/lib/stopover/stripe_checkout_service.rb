@@ -69,8 +69,8 @@ module Stopover
                                                       *attendee_options.values
                                                     ],
                                                     mode: 'payment',
-                                                    success_url: "http://localhost:3000/checkouts/success/#{GraphqlSchema.id_from_object(payment)}",
-                                                    cancel_url: "http://localhost:3000/checkouts/cancel/#{GraphqlSchema.id_from_object(payment)}",
+                                                    success_url: "#{Rails.application.credentials.frontend_url}/checkouts/verify/#{GraphqlSchema.id_from_object(payment)}",
+                                                    cancel_url: "#{Rails.application.credentials.frontend_url}/checkouts/verify/#{GraphqlSchema.id_from_object(payment)}",
                                                     expires_at: (Time.zone.now + (30 * 60)).to_i
                                                   })
       payment.stripe_checkout_session_id = checkout[:id]

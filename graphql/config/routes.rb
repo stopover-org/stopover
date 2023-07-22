@@ -61,4 +61,5 @@ Rails.application.routes.draw do
   post '/graphql', to: 'graphql#execute'
 
   post '/webhooks', to: 'webhooks#create'
+  post '/connect_webhooks', to: 'connect_webhooks#create'
 end

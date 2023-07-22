@@ -19,7 +19,7 @@ interface EventsTableProps {
 
 const TagColor = ({ status }: { status: string }) => {
   const color = useStatusColor({
-    danger: "deleted",
+    danger: ["deleted"],
     status,
   });
 

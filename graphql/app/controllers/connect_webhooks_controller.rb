@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class WebhooksController < ApplicationController
+class ConnectWebhooksController < ApplicationController
   def create
     endpoint_secret = if Rails.env.development?
                         Rails.application.credentials.stripe_local_webhook_secret
                       else
-                        Rails.application.credentials.stripe_webhook_secret
+                        Rails.application.credentials.stripe_connect_webhook_secret
                       end
 
     payload = request.body.read
@@ -24,11 +24,12 @@ class WebhooksController < ApplicationController
     end
 
     case event.type
-    when 'checkout.session.completed'
-      payment = Payment.find_by(stripe_checkout_session_id: event.data.object.id)
-      Stopover::StripeCheckoutService.complete(payment)
+    when 'account.application.deauthorized'
+      stripe_connect_id = event.data.object.account
+
+      Stopover::StripeAccountService.dactiate(stripe_connect_id)
     end
 
-    LogEvent.create(event_type: event.type, content: event)
+    LogEvent.create!(event_type: event.type, content: event)
   end
 end

@@ -35,6 +35,7 @@ const DashboardScene = ({
     graphql`
       fragment DashboardScene_CurrentUserFragment on User {
         ...FirmSection_CurrentUserFragment
+        ...BalanceSection_CurrentUserFragment
       }
     `,
     currentUserFragmentRef
@@ -50,7 +51,10 @@ const DashboardScene = ({
       </Grid>
 
       <Grid xs={8}>
-        <BalanceSection firmFragmentRef={firm} />
+        <BalanceSection
+          firmFragmentRef={firm}
+          currentUserFragmentRef={currentUser}
+        />
       </Grid>
 
       <Grid xs={4}>

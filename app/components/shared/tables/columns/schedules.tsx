@@ -7,7 +7,7 @@ import Link from "../../../v2/Link";
 
 const TagColor = ({ status }: { status: string }) => {
   const color = useStatusColor({
-    danger: "disabled",
+    danger: ["disabled"],
     status,
   });
 

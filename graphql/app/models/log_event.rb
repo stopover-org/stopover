@@ -6,7 +6,7 @@
 #
 #  id                :bigint           not null, primary key
 #  action            :string
-#  content           :text
+#  content           :jsonb
 #  event_type        :string           default("common"), not null
 #  level             :string           default("info"), not null
 #  notification_type :string

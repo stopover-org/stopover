@@ -28,6 +28,8 @@ module Types
     field :schedules, Types::ScheduleType.connection_type, null: false
     field :events, Types::EventType.connection_type, null: false
 
+    field :stripe_connects, [Types::StripeConnectType], null: false, require_manager: true
+
     field :accounts, [Types::AccountType]
     field :event, Types::EventType do
       argument :id, ID, required: true, loads: Types::EventType
