@@ -68,7 +68,7 @@ module Types
     end
 
     def stripe_integrations
-      integrations = object.stripe_integrations
+      integrations = object.stripe_integrations.to_a
       object.event_options.each do |opt|
         integrations.concat opt.stripe_integrations
       end
