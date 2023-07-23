@@ -33,28 +33,33 @@ module Stopover
     def self.delete(model)
       return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
 
-      product_id = model.stripe_integrations.first.product_id
-      Stripe::Product.update(
-        product_id,
-        {
-          active: false
-        }
-      )
-
       price_ids = {}
-      model.stripe_integrations.each do |stripe_integration|
+      product_ids = []
+
+      model.stripe_integrations.active.each do |stripe_integration|
+        product_id = stripe_integration.product_id
+        Stripe::Product.update(
+          product_id,
+          {
+            active: false
+          }
+        )
+
         Stripe::Price.update(
           stripe_integration.price_id,
           {
             active: false
           }
         )
+
         price_ids.store(stripe_integration.price_type.to_sym, stripe_integration.price_id)
-        stripe_integration.delete!
+        product_ids << product_id
+
+        stripe_integration.soft_delete!
       end
 
       {
-        product_id: product_id,
+        product_ids: product_ids.uniq.compact,
         price_ids: price_ids
       }
     rescue StandardError => e
@@ -68,6 +73,7 @@ module Stopover
     def self.sync(model)
       return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
 
+      # expire sessions for removed stripe integrations too
       model.stripe_integrations.each do |stripe_integration|
         stripe_integration.payments.processing.each do |payment|
           Stripe::Checkout::Session.expire(payment.stripe_checkout_session_id)
@@ -75,12 +81,13 @@ module Stopover
         end
       end
 
-      if model.stripe_integrations.empty?
+      if model.stripe_integrations.active.full_amount.empty?
         create_full_amount(model)
         return model.stripe_integrations
       else
         update_full_amount(model)
       end
+
       model.stripe_integrations
     rescue StandardError => e
       Sentry.capture_exception(e) if Rails.env.production?
@@ -88,35 +95,37 @@ module Stopover
     end
 
     def self.create_full_amount(model)
-      stripe_integration = StripeIntegration.new(price_type: :full_amount)
-      return unless model.stripe_integrations.where(price_type: :full_amount).empty?
+      return if model.stripe_integrations.active.full_amount.any?
 
-      model.stripe_integrations << stripe_integration
+      stripe_integration = model.stripe_integrations.build
+      stripe_integration.assign_attributes(price_type: :full_amount, stripeable_type: model.class.name, stripeable_id: model.id)
 
       product = Stripe::Product.create(
         name: stripe_integration.name,
         description: model.description,
         metadata: {
-          stopover_id: model.id,
-          stopover_model_name: model.class.name
+          stopover_id: stripe_integration.stripeable_id,
+          stopover_model_name: stripe_integration.stripeable_type
         }
       )
+
       price = Stripe::Price.create(unit_amount_decimal: stripe_integration.unit_amount.cents,
                                    product: product[:id],
                                    currency: stripe_integration.unit_amount.currency.id,
                                    billing_scheme: 'per_unit',
                                    nickname: stripe_integration.price_type,
                                    metadata: {
-                                     stopover_id: model.id,
-                                     stopover_model_name: model.class.name
+                                     stopover_id: stripe_integration.stripeable_id,
+                                     stopover_model_name: stripe_integration.stripeable_type
                                    })
+
       stripe_integration.price_id = price[:id]
       stripe_integration.product_id = product[:id]
       stripe_integration.save!
     end
 
     def self.update_full_amount(model)
-      stripe_integration = model.stripe_integrations.where(price_type: :full_amount).first
+      stripe_integration = model.stripe_integrations.active.full_amount.first
       stripe = retrieve(model)
 
       if stripe[:product][:name] != stripe_integration.name
@@ -125,19 +134,20 @@ module Stopover
           name: stripe_integration.name,
           description: model.description,
           metadata: {
-            stopover_id: model.id,
-            stopover_model_name: model.class.name
+            stopover_id: stripe_integration.stripeable_id,
+            stopover_model_name: stripe_integration.stripeable_type
           }
         )
       end
+
       if stripe[:prices][:full_amount][:unit_amount] != stripe_integration.unit_amount.cents
         Stripe::Price.update(
           id: stripe_integration.price_id,
           unit_amount_decimal: stripe_integration.unit_amount.cents,
           nickname: stripe_integration.price_type,
           metadata: {
-            stopover_id: model.id,
-            stopover_model_name: model.class.name
+            stopover_id: stripe_integration.stripeable_id,
+            stopover_model_name: stripe_integration.stripeable_type
           }
         )
       end

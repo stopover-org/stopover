@@ -38,6 +38,7 @@ export function useSyncStripeForm(
           event {
             ...EventScene_FirmEventFragment
             ...SchedulesInformation_EventFragment
+            ...StripeIntegrationsInformation_EventFragment
           }
         }
       }

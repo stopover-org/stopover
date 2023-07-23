@@ -119,3 +119,4 @@ gem "roo", "~> 2.10.0"
 gem "countries", "~> 5.5"
 gem "sentry-ruby"
 gem "sentry-rails"
+gem 'flipper'
