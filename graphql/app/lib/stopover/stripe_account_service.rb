@@ -86,7 +86,6 @@ module Stopover
     rescue StandardError => e
       Sentry.capture_exception(e) if Rails.env.production?
 
-      return handle_error_in_development(e) if Rails.env.development?
       {
         account_link: nil
       }
