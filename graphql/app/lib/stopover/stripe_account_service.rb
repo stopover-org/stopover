@@ -24,10 +24,11 @@ module Stopover
 
     def self.create_stripe_account(user)
       raise StandardError('Account has\'t firm') unless user.account.current_firm
+      firm = user.account.current_firm
       account = Stripe::Account.create({
                                          type: 'express',
-                                         country: ISO3166::Country.find_country_by_iso_short_name(user.account.current_firm.country)&.alpha2 || 'DE',
-                                         email: user.email,
+                                         country: ISO3166::Country.find_country_by_iso_short_name(firm.country)&.alpha2 || 'DE',
+                                         email: firm.primary_email,
                                          capabilities: {
                                            card_payments: { requested: true },
                                            transfers: { requested: true }
@@ -38,18 +39,18 @@ module Stopover
       if user.account.current_firm.individual?
         Stripe::Account.update(
           account.id,
-          business_type: user.account.current_firm.business_type,
+          business_type: firm.business_type,
           individual: {
             address: {
-              city: user.account.city,
-              country: user.account.country,
-              line1: user.account.street,
-              postal_code: user.account.postal_code
+              city: firm.city,
+              country: firm.country,
+              line1: firm.street,
+              postal_code: firm.postal_code
             },
-            email: user.email,
+            email: firm.primary_email,
             first_name: user.account.name,
             last_name: user.account.last_name,
-            phone: user.account.phones.first
+            phone: firm.primary_phone
           }
         )
       end
@@ -60,12 +61,12 @@ module Stopover
           business_type: user.account.current_firm.business_type,
           company: {
             address: {
-              city: user.account.current_firm.city,
-              country: user.account.current_firm.country,
-              line1: user.account.current_firm.street,
+              city: firm.city,
+              country: firm.country,
+              line1: firm.street,
               line2: nil,
-              postal_code: user.account.current_firm.postal_code,
-              state: user.account.current_firm.region
+              postal_code: firm.postal_code,
+              state: firm.region
             }
           }
         )
