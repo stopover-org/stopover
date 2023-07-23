@@ -45,6 +45,7 @@ module Types
     field :title, String, null: false
     field :unit, Types::UnitType
     field :end_date, Types::DateTimeType
+    field :stripe_integrations, Types::StripeIntegrationType.connection_type, null: false, require_service_user: true
 
     def images
       object.images.map do |img|
@@ -64,6 +65,15 @@ module Types
     def booking(**args)
       return nil if context[:current_user].account.current_firm.events.id != args[:id].event_id
       args[:id]
+    end
+
+    def stripe_integrations
+      integrations = object.stripe_integrations.to_a
+      object.event_options.each do |opt|
+        integrations.concat opt.stripe_integrations
+      end
+
+      integrations
     end
   end
 end

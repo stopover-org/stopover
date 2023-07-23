@@ -180,6 +180,8 @@ GEM
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
     ffi (1.15.5)
+    flipper (0.28.3)
+      concurrent-ruby (< 2)
     foreman (0.87.2)
     geocoder (1.7.5)
     globalid (1.0.0)
@@ -451,6 +453,7 @@ DEPENDENCIES
   ed25519
   factory_bot_rails
   faker!
+  flipper
   foreman
   geocoder
   graphiql-rails!

@@ -199,7 +199,6 @@ class Event < ApplicationRecord
                                        .map { |d| d.split(/\s+/).last }
                                        .compact
                                        .uniq
-      Rails.logger.debug times
     end
 
     times

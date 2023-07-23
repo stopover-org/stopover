@@ -8,9 +8,11 @@ module Mutations
 
     def resolve(event:)
       Stopover::StripeIntegrator.sync(event)
+
       event.event_options.each do |event_option|
         Stopover::StripeIntegrator.sync(event_option)
       end
+
       {
         event: event
       }

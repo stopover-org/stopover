@@ -104,10 +104,8 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
       it 'model has no stripe integration, method rescued' do
         ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
         expect(event_no_stripe.stripe_integrations).to match_array([])
-        expect(Stopover::StripeIntegrator.delete(event_no_stripe)).to eq({
-                                                                           product_id: nil,
-                                                                 price_ids: nil
-                                                                         })
+        expect(Stopover::StripeIntegrator.delete(event_no_stripe)).to eq({ product_ids: [],
+                                                                           price_ids: {} })
       end
     end
 
@@ -119,9 +117,8 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
           expect(Stripe::Price).to receive(:retrieve).with(id: stripe_integration.price_id).and_return('price').exactly(1).time
         end
         expect(Stripe::Product).to receive(:retrieve).with(id: event.stripe_integrations.first.product_id).and_return('product').exactly(1).time
-        expect(Stopover::StripeIntegrator.retrieve(event)).to eq({ product: 'product', prices: {
-                                                                   full_amount: 'price'
-                                                                 } })
+        expect(Stopover::StripeIntegrator.retrieve(event)).to eq({ product: 'product',
+                                                                   prices: { full_amount: 'price' } })
       end
     end
 

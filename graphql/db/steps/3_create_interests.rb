@@ -30,7 +30,7 @@ end
       end
 
       ActiveRecord::Base.connection_pool.release_connection
-    rescue StandardError => e
+    rescue => e
       Rails.logger.info("ERROR: #{e.message}")
       ActiveRecord::Base.connection_pool.release_connection
     end

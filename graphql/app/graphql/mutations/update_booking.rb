@@ -26,6 +26,7 @@ module Mutations
       }
     rescue StandardError => e
       Sentry.capture_exception(e) if Rails.env.production?
+
       {
         booking: nil,
         error: e.message

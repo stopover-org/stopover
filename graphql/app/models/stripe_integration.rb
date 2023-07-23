@@ -38,14 +38,13 @@ class StripeIntegration < ApplicationRecord
   # AASM STATES ================================================================
   enum price_type: {
     full_amount: 'full_amount'
-
   }
 
   aasm column: :status do
     state :active, initial: true
     state :deleted
 
-    event :delete do
+    event :soft_delete do
       transitions from: :active, to: :deleted
     end
     event :activate do
