@@ -19,7 +19,7 @@ const EditFirmForm = () => {
   const imageField = form.useFormField("image");
 
   return (
-    <Grid container spacing={2} md={8} sm={12}>
+    <Grid container spacing={2} lg={8} md={12} sm={12}>
       <Fieldset>
         <Grid md={6} sm={12}>
           <Input {...form.useFormField("title")} label="Title" />

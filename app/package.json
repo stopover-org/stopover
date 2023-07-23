@@ -39,6 +39,7 @@
     "filestack-js": "^3.26.1",
     "filestack-react": "^4.0.1",
     "husky": "^8.0.1",
+    "libphonenumber-js": "^1.10.37",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.42",
     "next": "12.2.5",

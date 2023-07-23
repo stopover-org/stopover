@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useCreateFirmForm_CreateFirmMutation } from "../../../artifacts/useCreateFirmForm_CreateFirmMutation.graphql";
+import { validatePhone } from "../../../lib/utils/validations";
 
 export interface CreateFirmFields {
   title: string;
@@ -56,7 +57,9 @@ const validationSchema = Yup.object().shape({
   houseNumber: Yup.string(),
   fullAddress: Yup.string(),
   primaryEmail: Yup.string().email().required(),
-  primaryPhone: Yup.string().required(),
+  primaryPhone: Yup.string()
+    .test("validate-phone", "invalid", validatePhone)
+    .required(),
   contacts: Yup.string(),
   website: Yup.string(),
   description: Yup.string(),
