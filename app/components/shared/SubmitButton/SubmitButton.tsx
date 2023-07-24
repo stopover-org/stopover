@@ -27,7 +27,11 @@ const SubmitButton = React.forwardRef(
           sx={{ marginRight: "5px", marginLeft: "5px" }}
           {...props}
         >
-          {submitting ? <CircularProgress size="sm" /> : children}
+          {submitting ? (
+            <CircularProgress color={props.color} size="sm" />
+          ) : (
+            children
+          )}
         </IconButton>
       );
     }
