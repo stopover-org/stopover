@@ -24,8 +24,6 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
     let!(:integrated_event) { create(:stripe_integration_factory, organizer_price_per_uom: Money.new(20), prepaid_amount: Money.new(5)) }
 
     it 'is created and product_id and price_id eq Stripe ids' do
-      ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
-
       expect(Stripe::Product).to receive(:create).with({
                                                          name: event.title,
                                                          description: event.description,
@@ -56,8 +54,6 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
       expect(event.stripe_integrations.first.price_id).to eq('price_id1')
     end
     it 'is updated and product_id and price_id eq Stripe ids' do
-      ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
-
       expect(Stripe::Product).to receive(:update).with({ name: integrated_event.title,
                                                          id: 'product_id',
                                                          description: integrated_event.description,
@@ -90,7 +86,6 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
     context 'delete' do
       let!(:event) { create(:stripe_integration_factory) }
       it 'product and price. Active changing and ids returned' do
-        ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
         event.stripe_integrations.each do |stripe_integration|
           expect(Stripe::Price).to receive(:update).with(stripe_integration.price_id, { active: false }).and_return(price: { id: stripe_integration.price_id }).exactly(1).time
         end
@@ -102,7 +97,6 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
       end
       let!(:event_no_stripe) { create(:event) }
       it 'model has no stripe integration, method rescued' do
-        ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
         expect(event_no_stripe.stripe_integrations).to match_array([])
         expect(Stopover::StripeIntegrator.delete(event_no_stripe)).to eq({ product_ids: [],
                                                                            price_ids: {} })
@@ -112,7 +106,6 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
     context 'retrieve' do
       let!(:event) { create(:stripe_integration_factory) }
       it 'price and product and stripe integrator returns two models' do
-        ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
         event.stripe_integrations.each do |stripe_integration|
           expect(Stripe::Price).to receive(:retrieve).with(id: stripe_integration.price_id).and_return('price').exactly(1).time
         end
@@ -125,7 +118,6 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
     context 'update' do
       let!(:event) { create(:stripe_integration_factory, organizer_price_per_uom: Money.new(10)) }
       it 'price and product' do
-        ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
         event.update(title: 'new_title', organizer_price_per_uom: Money.new(10), prepaid_amount: Money.new(5))
         expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id', name: 'product_name' }).exactly(1).time
         expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_full_amount').and_return({ unit_amount: 22 }).exactly(1).time

@@ -8,6 +8,7 @@
 #  price_type      :string
 #  status          :string
 #  stripeable_type :string
+#  version         :integer          default(1)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  price_id        :string
@@ -54,11 +55,14 @@ class StripeIntegration < ApplicationRecord
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  #
+  validates :version, :status,
+            :price_type, :price_id,
+            :product_id, presence: true
   # CALLBACKS ================================================================
   #
   # SCOPES =====================================================================
-  #
+  default_scope { order(version: :desc) }
+
   # DELEGATIONS ==============================================================
 
   def name

@@ -26,6 +26,7 @@ export function useStripeIntegrationsHeaders() {
       { key: "priceType", label: "Price Type" },
       { key: "priceId", label: "Price Id in Stripe" },
       { key: "productId", label: "Product Id in Stripe" },
+      { key: "version", label: "Integration Version" },
     ],
     []
   );
@@ -45,6 +46,7 @@ export function useStripeIntegrationsColumns(
             priceType
             priceId
             productId
+            version
           }
         }
       }
@@ -60,6 +62,7 @@ export function useStripeIntegrationsColumns(
         priceType: stripeIntegration.priceType,
         priceId: stripeIntegration.priceId,
         productId: stripeIntegration.productId,
+        version: stripeIntegration.version,
       })),
     [event]
   );

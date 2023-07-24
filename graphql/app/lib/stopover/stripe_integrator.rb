@@ -8,15 +8,12 @@ module Stopover
     end
 
     def self.retrieve(model)
-      return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
-
       product = nil
       prices = {}
       if model.try(:stripe_integrations)
-        model.stripe_integrations.each do |stripe_integration|
-          product = Stripe::Product.retrieve(id: stripe_integration.product_id) if !product && stripe_integration.try(:product_id)
-          prices.store(stripe_integration.price_type.to_sym, Stripe::Price.retrieve(id: stripe_integration.price_id)) if stripe_integration.try(:price_id)
-        end
+        stripe_integration = model.stripe_integrations.active.full_amount.first
+        product = Stripe::Product.retrieve(id: stripe_integration.product_id) if !product && stripe_integration.try(:product_id)
+        prices.store(stripe_integration.price_type.to_sym, Stripe::Price.retrieve(id: stripe_integration.price_id)) if stripe_integration.try(:price_id)
       end
       {
         product: product,
@@ -31,8 +28,6 @@ module Stopover
     end
 
     def self.delete(model)
-      return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
-
       price_ids = {}
       product_ids = []
 
@@ -71,8 +66,6 @@ module Stopover
     end
 
     def self.sync(model)
-      return if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
-
       # expire sessions for removed stripe integrations too
       model.stripe_integrations.each do |stripe_integration|
         stripe_integration.payments.processing.each do |payment|
@@ -141,15 +134,20 @@ module Stopover
       end
 
       if stripe[:prices][:full_amount][:unit_amount] != stripe_integration.unit_amount.cents
-        Stripe::Price.update(
-          id: stripe_integration.price_id,
-          unit_amount_decimal: stripe_integration.unit_amount.cents,
-          nickname: stripe_integration.price_type,
-          metadata: {
-            stopover_id: stripe_integration.stripeable_id,
-            stopover_model_name: stripe_integration.stripeable_type
-          }
-        )
+        dup_stripe_integration = stripe_integration.dup
+        dup_stripe_integration.version += 1
+        price = Stripe::Price.create(unit_amount_decimal: stripe_integration.unit_amount.cents,
+                                     product: dup_stripe_integration.product_id,
+                                     currency: stripe_integration.unit_amount.currency.id,
+                                     billing_scheme: 'per_unit',
+                                     nickname: stripe_integration.price_type,
+                                     metadata: {
+                                       stopover_id: stripe_integration.stripeable_id,
+                                         stopover_model_name: stripe_integration.stripeable_type
+                                     })
+        dup_stripe_integration.price_id = price[:id]
+
+        dup_stripe_integration.save!
       end
     end
   end

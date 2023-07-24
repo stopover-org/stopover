@@ -10,8 +10,6 @@ module Mutations
     argument :booking_id, ID, loads: Types::BookingType
 
     def resolve(booking:, **args)
-      return { url: nil } if ::Configuration.get_value('ENABLE_STRIPE_INTEGRATION').value != 'true'
-
       raise GraphQL::ExecutionError, 'multiple payments in process' if booking.payments.processing.count > 1
       if booking.payments.processing.any?
         payment = booking.payments.processing.last

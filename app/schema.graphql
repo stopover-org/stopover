@@ -1522,6 +1522,7 @@ type StripeIntegration implements Node {
   status: StripeIntegrationStatusEnum!
   stripeableId: String!
   stripeableType: String!
+  version: Int!
 }
 
 """
