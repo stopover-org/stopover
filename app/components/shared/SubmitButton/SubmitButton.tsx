@@ -43,7 +43,9 @@ const SubmitButton = React.forwardRef(
         loadingPosition="end"
         disabled={submitting}
         {...props}
-      />
+      >
+        {children}
+      </Button>
     );
   }
 );

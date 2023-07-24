@@ -117,8 +117,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
       <Grid xs={8}>
         <Typography level="h4">Attendees</Typography>
         <AttendeesTable bookingFragmentRef={booking} />
-      </Grid>
-      <Grid xs={8}>
+        <br />
         {booking.status !== "cancelled" && (
           <AddAttendee bookingFragmentRef={booking} />
         )}
