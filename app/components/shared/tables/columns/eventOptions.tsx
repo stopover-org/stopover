@@ -8,14 +8,14 @@ import OptionTagColor from "../../OptionTagColor/OptionTagColor";
 export function useEventOptionsHeaders() {
   return React.useMemo(
     () => [
-      { key: "title", label: "Title" },
-      { key: "organizerPrice", label: "You get" },
-      { key: "attendeePrice", label: "Attendee pay" },
-      { key: "description", label: "Description" },
-      { key: "builtIn", label: "Option is included into Price" },
-      { key: "forAttendee", label: "For Attendees only" },
-      { key: "status", label: "Status" },
-      { key: "actions", label: "" },
+      { key: "title", width: 150, label: "Title" },
+      { key: "organizerPrice", width: 100, label: "You get" },
+      { key: "attendeePrice", width: 100, label: "Attendee pay" },
+      { key: "description", width: 400, label: "Description" },
+      { key: "builtIn", width: 100, label: "Option is included into Price" },
+      { key: "forAttendee", width: 100, label: "For Attendees only" },
+      { key: "status", width: 100, label: "Status" },
+      { key: "actions", width: 100, label: "" },
     ],
     []
   );
