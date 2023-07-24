@@ -144,6 +144,7 @@ class Event < ApplicationRecord
   # CALLBACKS ================================================================
   before_validation :set_prices
   before_validation :adjust_prices, unless: :deleted?
+  after_commit :sync_stripe
 
   # SCOPES =====================================================================
   scope :by_city, ->(city) { where(city: city) }
@@ -205,6 +206,10 @@ class Event < ApplicationRecord
   end
 
   private
+
+  def sync_stripe
+    StripeIntegratorSyncJob.perform_later('event', id)
+  end
 
   def can_publish
     firm.active?

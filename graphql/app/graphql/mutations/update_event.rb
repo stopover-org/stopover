@@ -53,14 +53,6 @@ module Mutations
 
       event = Stopover::EventManagement::EventUpdater.new(event).execute(**args)
 
-      if args[:images].present?
-        event.images.delete_all
-        args[:images].each do |url|
-          io_object = Stopover::FilesSupport.url_to_io(url)
-          event.images.attach(io_object)
-        end
-      end
-
       {
         event: event
       }

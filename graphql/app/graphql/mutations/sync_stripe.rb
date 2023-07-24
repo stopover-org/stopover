@@ -7,6 +7,7 @@ module Mutations
     argument :event_id, ID, loads: Types::EventType
 
     def resolve(event:)
+      raise GraphQL::ExecutionError, 'Stripe is not available payment method' unless event.firm.payment_types.include?('stripe')
       Stopover::StripeIntegrator.sync(event)
 
       event.event_options.each do |event_option|

@@ -65,15 +65,9 @@ module Stopover
       }
     end
 
+    # checkout sessions will not be expired
+    # all existing bookings will be connected to existing stripe integrations
     def self.sync(model)
-      # expire sessions for removed stripe integrations too
-      model.stripe_integrations.each do |stripe_integration|
-        stripe_integration.payments.processing.each do |payment|
-          Stripe::Checkout::Session.expire(payment.stripe_checkout_session_id)
-          payment.cancel!
-        end
-      end
-
       if model.stripe_integrations.active.full_amount.empty?
         create_full_amount(model)
         return model.stripe_integrations
@@ -136,14 +130,14 @@ module Stopover
       if stripe[:prices][:full_amount][:unit_amount] != stripe_integration.unit_amount.cents
         dup_stripe_integration = stripe_integration.dup
         dup_stripe_integration.version += 1
-        price = Stripe::Price.create(unit_amount_decimal: stripe_integration.unit_amount.cents,
+        price = Stripe::Price.create(unit_amount_decimal: dup_stripe_integration.unit_amount.cents,
                                      product: dup_stripe_integration.product_id,
-                                     currency: stripe_integration.unit_amount.currency.id,
+                                     currency: dup_stripe_integration.unit_amount.currency.id,
                                      billing_scheme: 'per_unit',
-                                     nickname: stripe_integration.price_type,
+                                     nickname: dup_stripe_integration.price_type,
                                      metadata: {
-                                       stopover_id: stripe_integration.stripeable_id,
-                                         stopover_model_name: stripe_integration.stripeable_type
+                                       stopover_id: dup_stripe_integration.stripeable_id,
+                                       stopover_model_name: dup_stripe_integration.stripeable_type
                                      })
         dup_stripe_integration.price_id = price[:id]
 

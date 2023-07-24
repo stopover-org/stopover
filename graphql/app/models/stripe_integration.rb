@@ -57,7 +57,7 @@ class StripeIntegration < ApplicationRecord
   # VALIDATIONS ================================================================
   validates :version, :status,
             :price_type, :price_id,
-            :product_id, presence: true
+            :product_id, presence: true, uniqueness: { scope: [:id] }
   # CALLBACKS ================================================================
   #
   # SCOPES =====================================================================

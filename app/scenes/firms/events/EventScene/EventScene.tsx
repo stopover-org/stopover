@@ -47,6 +47,7 @@ const EventScene = ({
         }
         firm {
           status
+          paymentTypes
         }
         stripeIntegrations {
           nodes {
@@ -132,7 +133,8 @@ const EventScene = ({
             )}
           {currentUser.serviceUser &&
             ["published", "unpublished"].includes(event.status) &&
-            event.firm.status === "active" && (
+            event.firm.status === "active" &&
+            event.firm.paymentTypes.includes("stripe") && (
               <SyncStripe eventFragmentRef={event} />
             )}
         </Stack>

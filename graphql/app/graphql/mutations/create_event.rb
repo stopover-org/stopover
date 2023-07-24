@@ -48,13 +48,6 @@ module Mutations
     def resolve(**args)
       event = Stopover::EventManagement::EventCreator.new(context).execute(**args)
 
-      unless args[:images].empty?
-        args[:images].each do |base64_image|
-          io_object = Stopover::FilesSupport.url_to_io(base64_image)
-          event.images.attach(io_object)
-        end
-      end
-
       event.save!
 
       { event: event }
