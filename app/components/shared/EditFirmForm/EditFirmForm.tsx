@@ -8,10 +8,10 @@ import Typography from "../../v2/Typography/Typography";
 import PhoneInput from "../../v2/PhoneInput/PhoneInput";
 import ChipsInput from "../../v2/ChipsInput/ChipsInput";
 import TextArea from "../../v2/TextArea/TextArea";
-import Button from "../../v2/Button/Button";
 import useFormContext from "../../../lib/hooks/useFormContext";
 import ImagePreviewFields from "../ImagePreviewFields";
 import { capitalize } from "../../../lib/utils/capitalize";
+import SubmitButton from "../SubmitButton";
 
 const EditFirmForm = () => {
   const form = useFormContext();
@@ -112,7 +112,9 @@ const EditFirmForm = () => {
 
       <Fieldset>
         <Grid xs={12}>
-          <Button type="submit">Submit</Button>
+          <SubmitButton submitting={form.formState.isSubmitting}>
+            Submit
+          </SubmitButton>
         </Grid>
       </Fieldset>
     </Grid>

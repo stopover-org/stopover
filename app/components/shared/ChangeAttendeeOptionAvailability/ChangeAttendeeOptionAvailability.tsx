@@ -1,9 +1,10 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { IconButton, Tooltip } from "@mui/joy";
+import { Tooltip } from "@mui/joy";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
 import { useChangeAttendeeOptionAvailabilityForm } from "./useChangeAttendeeOptionAvailabilityForm";
 import { ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key } from "../../../artifacts/ChangeAttendeeOptionAvailability_AttendeeOptionFragment.graphql";
+import SubmitButton from "../SubmitButton";
 
 interface RegisterAttendeeProps {
   optionFragmentRef: ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key;
@@ -24,16 +25,16 @@ const ChangeAttendeeOptionAvailability = ({
   const form = useChangeAttendeeOptionAvailabilityForm(attendeeOption);
   return (
     <form onSubmit={form.handleSubmit()}>
-      <IconButton
-        color="danger"
+      <SubmitButton
+        submitting={form.formState.isSubmitting}
+        icon
         size="sm"
-        sx={{ marginRight: "10px" }}
-        type="submit"
+        color="danger"
       >
         <Tooltip title="Change Availability">
           <DoNotDisturbIcon />
         </Tooltip>
-      </IconButton>
+      </SubmitButton>
     </form>
   );
 };

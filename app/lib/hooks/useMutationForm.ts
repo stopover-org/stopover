@@ -43,15 +43,33 @@ function useMutationForm<
 ) {
   const [mutation] = useMutation<MutationType>(gql);
   const form = useForm<FieldsType>({ ...opts, defaultValues });
+  const [isSubmitting, setIsSubmitting] = React.useState<boolean>(
+    form.formState.isSubmitting
+  );
 
   function onSubmit(...rest: any) {
     if (submitHandler instanceof Function) {
       return submitHandler(mutation, form, ...rest);
     }
     return function submit(values: FieldsType) {
+      setIsSubmitting(true);
+
       mutation({
         variables: variables(values),
-        onCompleted,
+        onError: (...errorRest) => {
+          setIsSubmitting(false);
+
+          if (opts.onError instanceof Function) {
+            opts.onError(...errorRest);
+          }
+        },
+        onCompleted: (...completedRest) => {
+          setIsSubmitting(false);
+
+          if (onCompleted instanceof Function) {
+            onCompleted(...completedRest);
+          }
+        },
       });
     };
   }
@@ -71,7 +89,7 @@ function useMutationForm<
         onChange: (value: PathValue<FieldsType, Path<FieldsType>>) => {
           form.setValue(name, value);
         },
-        error: form.formState.errors[name] as FieldError,
+        error: form.formState.errors?.[name] as FieldError,
       }),
       [field]
     );
@@ -103,6 +121,10 @@ function useMutationForm<
   return React.useMemo(
     () => ({
       ...form,
+      formState: {
+        ...form.formState,
+        isSubmitting,
+      },
       handleSubmit,
       useFormField,
     }),

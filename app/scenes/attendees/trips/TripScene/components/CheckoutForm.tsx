@@ -4,6 +4,7 @@ import moment from "moment/moment";
 import { CheckoutForm_BookingFragmentRef$key } from "../../../../../artifacts/CheckoutForm_BookingFragmentRef.graphql";
 import Button from "../../../../../components/v2/Button";
 import { useCheckoutForm } from "./useCheckoutForm";
+import SubmitButton from "../../../../../components/shared/SubmitButton";
 
 interface CheckoutFormProps {
   bookingFragmentRef: CheckoutForm_BookingFragmentRef$key;
@@ -30,9 +31,12 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
 
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Button type="submit" disabled={disabled}>
+      <SubmitButton
+        submitting={form.formState.isSubmitting}
+        disabled={disabled}
+      >
         Pay Now
-      </Button>
+      </SubmitButton>
     </form>
   );
 };

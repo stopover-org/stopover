@@ -8,6 +8,7 @@ import Input from "../../components/v2/Input";
 import PhoneInput from "../../components/v2/PhoneInput";
 import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
+import SubmitButton from "../../components/shared/SubmitButton";
 
 // @ts-ignore
 if (typeof window !== "undefined") window.momentTimezones = momentTimezones;
@@ -28,8 +29,8 @@ export const SignIn = () => {
     timeoutRef.current = setTimeout(() => decreaseDelay(value - 1), 1000);
   };
 
-  const { useFormField, resetField, handleSubmit, reset } = useSignInForm(
-    (leftSeconds: number) => {
+  const { useFormField, resetField, handleSubmit, reset, ...form } =
+    useSignInForm((leftSeconds: number) => {
       setShowCode(true);
 
       if (timeoutRef.current) {
@@ -37,8 +38,7 @@ export const SignIn = () => {
       }
 
       decreaseDelay(leftSeconds);
-    }
-  );
+    });
   const typeField = useFormField("type");
   const usernameField = useFormField("username");
   const codeField = useFormField("code");
@@ -145,7 +145,9 @@ export const SignIn = () => {
               )}
 
               <Grid container justifyContent="flex-end">
-                <Button type="submit">Sign in</Button>
+                <SubmitButton submitting={form.formState.isSubmitting}>
+                  Sign in
+                </SubmitButton>
               </Grid>
             </form>
           </Grid>

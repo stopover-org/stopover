@@ -4,6 +4,7 @@ import Typography from "../../../../../components/v2/Typography";
 import { CancelBookingForm_BookingFragment$key } from "../../../../../artifacts/CancelBookingForm_BookingFragment.graphql";
 import { useCancelBookingForm } from "./useCancelBookingForm";
 import Button from "../../../../../components/v2/Button";
+import SubmitButton from "../../../../../components/shared/SubmitButton";
 
 interface CancelBookingFormProps {
   bookingFragmentRef: CancelBookingForm_BookingFragment$key;
@@ -27,15 +28,15 @@ const CancelBookingForm = ({ bookingFragmentRef }: CancelBookingFormProps) => {
   );
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Button
+      <SubmitButton
         disabled={disabled}
         variant="plain"
-        type="submit"
         color="danger"
         size="sm"
+        submitting={form.formState.isSubmitting}
       >
         Cancel This Booking
-      </Button>
+      </SubmitButton>
     </form>
   );
 };

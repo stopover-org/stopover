@@ -1,9 +1,10 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { IconButton, Tooltip } from "@mui/joy";
+import { Tooltip } from "@mui/joy";
 import CheckIcon from "@mui/icons-material/Check";
 import { useVerifyStripeConnectForm } from "./useVerifyStripeConnectForm";
 import { VerifyStripeConnect_StripeConnect$key } from "../../../artifacts/VerifyStripeConnect_StripeConnect.graphql";
+import SubmitButton from "../SubmitButton";
 
 interface VerifyStripeConnectProps {
   stripeConnectRef: VerifyStripeConnect_StripeConnect$key;
@@ -23,16 +24,11 @@ const VerifyStripeConnect = ({
   const form = useVerifyStripeConnectForm(stripeConnect);
   return (
     <form onSubmit={form.handleSubmit()}>
-      <IconButton
-        color="primary"
-        size="sm"
-        sx={{ marginRight: "10px" }}
-        type="submit"
-      >
+      <SubmitButton submitting={form.formState.isSubmitting} icon size="sm">
         <Tooltip title="Verify Stripe Connect">
           <CheckIcon />
         </Tooltip>
-      </IconButton>
+      </SubmitButton>
     </form>
   );
 };

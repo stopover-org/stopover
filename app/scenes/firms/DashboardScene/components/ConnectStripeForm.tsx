@@ -1,15 +1,16 @@
 import React from "react";
 import Button from "../../../../components/v2/Button";
 import { useConnectStripeForm } from "../useConnectStripeForm";
+import SubmitButton from "../../../../components/shared/SubmitButton";
 
 const ConnectStripeForm = () => {
   const form = useConnectStripeForm();
 
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Button size="sm" type="submit">
+      <SubmitButton size="sm" submitting={form.formState.isSubmitting}>
         Connect Stripe
-      </Button>
+      </SubmitButton>
     </form>
   );
 };

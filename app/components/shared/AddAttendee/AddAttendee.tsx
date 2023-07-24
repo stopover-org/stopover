@@ -1,8 +1,8 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import Button from "../../v2/Button/Button";
 import { useAddAttendeeForm } from "./useAddAttendeeForm";
 import { AddAttendee_BookingFragment$key } from "../../../artifacts/AddAttendee_BookingFragment.graphql";
+import SubmitButton from "../SubmitButton";
 
 interface AddAttendeeProps {
   bookingFragmentRef: AddAttendee_BookingFragment$key;
@@ -20,14 +20,14 @@ const AddAttendee = ({ bookingFragmentRef }: AddAttendeeProps) => {
   const form = useAddAttendeeForm(booking);
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Button
+      <SubmitButton
         size="sm"
         sx={{ marginRight: "10px" }}
-        type="submit"
         color="neutral"
+        submitting={form.formState.isSubmitting}
       >
         Add Attendee
-      </Button>
+      </SubmitButton>
     </form>
   );
 };

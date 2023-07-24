@@ -1,8 +1,8 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import Button from "../../v2/Button/Button";
 import { useRescheduleEventForm } from "./useRescheduleEventForm";
 import { RescheduleEvent_EventFragment$key } from "../../../artifacts/RescheduleEvent_EventFragment.graphql";
+import SubmitButton from "../SubmitButton";
 
 interface PublishEventProps {
   eventFragmentRef: RescheduleEvent_EventFragment$key;
@@ -20,9 +20,13 @@ const RescheduleEvent = ({ eventFragmentRef }: PublishEventProps) => {
   const form = useRescheduleEventForm(event);
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Button size="sm" sx={{ marginRight: "10px" }} type="submit">
+      <SubmitButton
+        size="sm"
+        sx={{ marginRight: "10px" }}
+        submitting={form.formState.isSubmitting}
+      >
         Reschedule
-      </Button>
+      </SubmitButton>
     </form>
   );
 };

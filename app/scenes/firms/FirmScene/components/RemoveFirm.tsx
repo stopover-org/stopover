@@ -1,15 +1,21 @@
 import React from "react";
 import Button from "../../../../components/v2/Button";
 import { useRemoveFirm } from "../useRemoveFirm";
+import SubmitButton from "../../../../components/shared/SubmitButton";
 
 const RemoveFirm = () => {
   const form = useRemoveFirm();
 
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Button color="danger" size="sm" variant="outlined" type="submit">
+      <SubmitButton
+        color="danger"
+        size="sm"
+        variant="outlined"
+        submitting={form.formState.isSubmitting}
+      >
         Delete
-      </Button>
+      </SubmitButton>
     </form>
   );
 };

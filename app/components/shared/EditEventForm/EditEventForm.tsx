@@ -6,6 +6,7 @@ import useFormContext from "../../../lib/hooks/useFormContext";
 import GeneralStep from "./components/GeneralStep";
 import DatesStep from "./components/DatesStep";
 import EventOptionsStep from "./components/EventOptionsStep";
+import SubmitButton from "../SubmitButton";
 
 interface EditEventFormProps {
   steps: string[];
@@ -54,7 +55,9 @@ const EditEventForm = ({
               <Button onClick={onPrevStep} variant="outlined" type="button">
                 Previous
               </Button>
-              <Button type="submit">Submit</Button>
+              <SubmitButton submitting={form.formState.isSubmitting}>
+                Submit
+              </SubmitButton>
             </Stack>
           ) : (
             <Stack direction="row" justifyContent="space-between">
@@ -63,7 +66,7 @@ const EditEventForm = ({
                   Previous
                 </Button>
               )}
-              <Button
+              <SubmitButton
                 onClick={(event) => {
                   event.preventDefault();
 
@@ -75,10 +78,10 @@ const EditEventForm = ({
                       }
                     });
                 }}
-                type="button"
+                submitting={false}
               >
                 Next
-              </Button>
+              </SubmitButton>
             </Stack>
           )}
         </Grid>

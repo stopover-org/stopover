@@ -13,6 +13,7 @@ import useFormContext from "../../../../../lib/hooks/useFormContext";
 import useUniqueMomentDates from "../../../../../lib/hooks/useUniqueMomentDates";
 import Link from "../../../../../components/v2/Link";
 import { EventActions_EventFragment$key } from "../../../../../artifacts/EventActions_EventFragment.graphql";
+import SubmitButton from "../../../../../components/shared/SubmitButton";
 
 interface EventActionsProps {
   eventFragmentRef: EventActions_EventFragment$key;
@@ -44,7 +45,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
     `,
     eventFragmentRef
   );
-  const { useFormField } = useFormContext();
+  const { useFormField, ...form } = useFormContext();
   const dateField = useFormField<Moment>("date");
   const attendeesCountField = useFormField<number>("attendeesCount");
   const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
@@ -104,12 +105,12 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
         </Box>
         <Box>
           {!booking && (
-            <Button
-              type="submit"
+            <SubmitButton
+              submitting={form.formState.isSubmitting}
               disabled={!dateField.value.isValid() || !isValidTime}
             >
               Book Event
-            </Button>
+            </SubmitButton>
           )}
           {booking && (
             <Link href={`/trips/${booking.trip.id}`} underline={false}>
