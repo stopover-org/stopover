@@ -1,8 +1,8 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import Button from "../../v2/Button/Button";
 import { useVerifyEvent } from "./useVerifyEvent";
 import { VerifyEventInformation_EventFragment$key } from "../../../artifacts/VerifyEventInformation_EventFragment.graphql";
+import SubmitButton from "../SubmitButton";
 
 interface VerifyEventProps {
   eventFragmentRef: VerifyEventInformation_EventFragment$key;
@@ -21,9 +21,13 @@ const VerifyEvent = ({ eventFragmentRef }: VerifyEventProps) => {
 
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Button size="sm" type="submit" color="neutral">
+      <SubmitButton
+        size="sm"
+        submitting={form.formState.isSubmitting}
+        color="neutral"
+      >
         Verify
-      </Button>
+      </SubmitButton>
     </form>
   );
 };

@@ -1,9 +1,10 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { IconButton, Tooltip } from "@mui/joy";
+import { Tooltip } from "@mui/joy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRemoveAttendeeForm } from "./useRemoveAttendeeForm";
 import { RemoveAttendee_AttendeeFragment$key } from "../../../artifacts/RemoveAttendee_AttendeeFragment.graphql";
+import SubmitButton from "../SubmitButton";
 
 interface RegisterAttendeeProps {
   attendeeFragmentRef: RemoveAttendee_AttendeeFragment$key;
@@ -21,16 +22,16 @@ const RemoveAttendee = ({ attendeeFragmentRef }: RegisterAttendeeProps) => {
   const form = useRemoveAttendeeForm(attendee);
   return (
     <form onSubmit={form.handleSubmit()}>
-      <IconButton
-        color="danger"
+      <SubmitButton
+        submitting={form.formState.isSubmitting}
+        icon
         size="sm"
-        sx={{ marginRight: "10px" }}
-        type="submit"
+        color="danger"
       >
         <Tooltip title="Remove this attendee and refund it">
           <DeleteIcon />
         </Tooltip>
-      </IconButton>
+      </SubmitButton>
     </form>
   );
 };

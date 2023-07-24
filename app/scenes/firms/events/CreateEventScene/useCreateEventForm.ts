@@ -13,7 +13,7 @@ import { dateTimeFormat, setTime } from "../../../../lib/utils/dates";
 import {
   momentTransform,
   numberTransform,
-} from "../../../../lib/utils/validations";
+} from "../../../../lib/utils/transforms";
 
 export interface CreateEventFields {
   city?: string;

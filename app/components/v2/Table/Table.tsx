@@ -104,7 +104,11 @@ const Table = ({
 
   return (
     <Sheet sx={{ overflow: "auto" }}>
-      <JoyTable aria-labelledby="tableTitle" hoverRow={hoverRow}>
+      <JoyTable
+        aria-labelledby="tableTitle"
+        hoverRow={hoverRow}
+        borderAxis="bothBetween"
+      >
         <TableHead cells={headers} />
         <TableBody data={rows} keys={keys} onRowClick={onRowClickHandler} />
         {withPagination && (

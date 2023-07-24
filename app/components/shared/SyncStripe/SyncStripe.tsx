@@ -1,8 +1,8 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import Button from "../../v2/Button/Button";
 import { useSyncStripeForm } from "./useSyncStripeForm";
 import { SyncStripe_EventFragment$key } from "../../../artifacts/SyncStripe_EventFragment.graphql";
+import SubmitButton from "../SubmitButton";
 
 interface SyncStripeProps {
   eventFragmentRef: SyncStripe_EventFragment$key;
@@ -20,14 +20,14 @@ const SyncStripe = ({ eventFragmentRef }: SyncStripeProps) => {
   const form = useSyncStripeForm(event);
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Button
+      <SubmitButton
         size="sm"
         sx={{ marginRight: "10px" }}
-        type="submit"
         color="neutral"
+        submitting={form.formState.isSubmitting}
       >
         Sync
-      </Button>
+      </SubmitButton>
     </form>
   );
 };

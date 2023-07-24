@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../../../v2/Button";
+import SubmitButton from "../../SubmitButton";
 import { useVerifyFirm } from "../useVerifyFirm";
 
 const VerifyFirm = () => {
@@ -7,9 +7,13 @@ const VerifyFirm = () => {
 
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Button size="sm" type="submit" color="neutral">
+      <SubmitButton
+        size="sm"
+        submitting={form.formState.isSubmitting}
+        color="neutral"
+      >
         Verify
-      </Button>
+      </SubmitButton>
     </form>
   );
 };

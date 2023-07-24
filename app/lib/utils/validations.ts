@@ -1,9 +1,8 @@
-import moment from "moment/moment";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
-export function numberTransform(value: any) {
-  return Number.isNaN(value) ? undefined : value;
-}
-
-export function momentTransform(value: any) {
-  return moment(value).isValid() ? moment(value).toDate() : null;
+export function validatePhone(value: string | undefined, ctx: any) {
+  return (
+    isValidPhoneNumber(value as string) ||
+    ctx.createError({ message: "invalid" })
+  );
 }

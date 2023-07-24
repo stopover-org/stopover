@@ -1,10 +1,11 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { IconButton, Tooltip } from "@mui/joy";
+import { Tooltip } from "@mui/joy";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDeclineStripeConnectForm } from "./useDeclineStripeConnectForm";
 import { DeclineStripeConnect_StripeConnect$key } from "../../../artifacts/DeclineStripeConnect_StripeConnect.graphql";
+import SubmitButton from "../SubmitButton";
 
 interface DeclineStripeConnectProps {
   stripeConnectRef: DeclineStripeConnect_StripeConnect$key;
@@ -26,16 +27,16 @@ const DeclineStripeConnect = ({
   const form = useDeclineStripeConnectForm(stripeConnect, force);
   return (
     <form onSubmit={form.handleSubmit()}>
-      <IconButton
-        color="danger"
+      <SubmitButton
+        submitting={form.formState.isSubmitting}
+        icon
         size="sm"
-        sx={{ marginRight: "10px" }}
-        type="submit"
+        color="danger"
       >
         <Tooltip title={`${force ? "Remove" : "Decline"} Stripe Connect`}>
           {force ? <DeleteIcon /> : <CloseIcon />}
         </Tooltip>
-      </IconButton>
+      </SubmitButton>
     </form>
   );
 };

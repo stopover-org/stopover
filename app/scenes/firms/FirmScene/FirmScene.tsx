@@ -55,7 +55,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
   return (
     <Box>
       <Breadcrumbs items={["My Firm"]} />
-      <Grid container spacing={2} sm={12} md={8}>
+      <Grid container spacing={2} sm={12} md={12} lg={8}>
         <Fieldset>
           <Grid xs={12}>
             <Typography level="h3" sx={{ display: "inline" }}>

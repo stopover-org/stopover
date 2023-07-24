@@ -25,7 +25,7 @@ function useFormContext<FieldsType extends FieldValues>() {
         onChange: (value: PathValue<FieldsType, Path<FieldsType>>) => {
           form.setValue(name, value);
         },
-        error: form.formState.errors[name] as FieldError,
+        error: form.formState.errors?.[name] as FieldError,
       }),
       [field, form.watch, form.setValue, form.formState.errors]
     );

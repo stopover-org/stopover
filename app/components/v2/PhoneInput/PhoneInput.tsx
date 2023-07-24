@@ -1,11 +1,16 @@
 import React from "react";
-import { Select, Option } from "@mui/joy";
-import countryCodeEmoji from "country-code-emoji";
+import examples from "libphonenumber-js/mobile/examples";
 import { InputProps as JoyInputProps } from "@mui/joy/Input/InputProps";
 import { FieldError } from "react-hook-form";
+import {
+  CountryCode,
+  formatIncompletePhoneNumber,
+  getCountryCallingCode,
+  getExampleNumber,
+} from "libphonenumber-js";
 import Input from "../Input";
 import { getCountryFromOffset } from "../../../lib/utils/timezones";
-import { getCountryPhoneCodes } from "../../../lib/utils/phones";
+import CountryCodesAutocomplete from "./CountryCodesAutocomplete";
 
 export interface PhoneInputProps {
   onChange: (value: string) => void;
@@ -27,58 +32,42 @@ const PhoneInput = React.forwardRef(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
-    const countryPhoneCodes = getCountryPhoneCodes();
+    const [focusedInput, setFocusedInput] = React.useState(false);
     const defaultCountry = React.useMemo(
       () => getCountryFromOffset() || "RU",
       []
     );
     const [country, setCountry] = React.useState(defaultCountry);
-    const inputPlaceholder =
-      placeholder || country
-        ? `+${countryPhoneCodes[country]}`
-        : "Choose country";
 
     React.useEffect(() => {
       if (defaultCountry) {
-        onChange(`+${countryPhoneCodes[country]}`);
+        onChange(`+${getCountryCallingCode(country as CountryCode)}`);
       }
     }, []);
 
     const onChangeHandler = (val: string) => {
-      if (!val.startsWith(`+${countryPhoneCodes[country]}`)) {
-        onChange(`+${countryPhoneCodes[country]}`);
-        return;
-      }
-      onChange(val);
+      onChange(formatIncompletePhoneNumber(val));
     };
+    const sample = getExampleNumber(country as CountryCode, examples);
+    const inputPlaceholder = sample ? sample.number : "Choose country";
+
     return (
       <Input
         startDecorator={
-          <Select
-            variant="plain"
-            value={country}
-            onChange={(_, val) => {
-              if (!val) return;
-              onChange(`+${countryPhoneCodes[val]}`);
-
-              setCountry(val);
-            }}
-            sx={{ "&:hover": { bgcolor: "transparent" } }}
-          >
-            {Object.keys(countryPhoneCodes)
-              .filter(Boolean)
-              .map((countryCode: string) => (
-                <Option key={countryCode} value={countryCode}>
-                  {countryCodeEmoji(countryCode)}
-                  (+{countryPhoneCodes[countryCode]})
-                </Option>
-              ))}
-          </Select>
+          <CountryCodesAutocomplete
+            selectedCountry={country}
+            onChange={onChange}
+            onCountryChange={setCountry}
+            width={focusedInput ? "100px" : "180px"}
+          />
         }
         placeholder={inputPlaceholder}
         onChange={onChangeHandler}
-        value={value}
+        value={formatIncompletePhoneNumber(value)}
         label={label}
+        sx={{ paddingLeft: 0 }}
+        onFocus={() => setFocusedInput(true)}
+        onBlurCapture={() => setFocusedInput(false)}
         {...props}
       />
     );

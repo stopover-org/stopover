@@ -1,8 +1,8 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import Button from "../../v2/Button/Button";
 import { useUnpublishEventForm } from "./useUnpublishEventForm";
 import { UnpublishEvent_EventFragment$key } from "../../../artifacts/UnpublishEvent_EventFragment.graphql";
+import SubmitButton from "../SubmitButton";
 
 interface PublishEventProps {
   eventFragmentRef: UnpublishEvent_EventFragment$key;
@@ -20,9 +20,13 @@ const UnpublishEvent = ({ eventFragmentRef }: PublishEventProps) => {
   const form = useUnpublishEventForm(event);
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Button size="sm" sx={{ marginRight: "10px" }} type="submit">
+      <SubmitButton
+        size="sm"
+        sx={{ marginRight: "10px" }}
+        submitting={form.formState.isSubmitting}
+      >
         Unpublish
-      </Button>
+      </SubmitButton>
     </form>
   );
 };

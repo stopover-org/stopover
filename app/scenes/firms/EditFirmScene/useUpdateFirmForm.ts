@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useUpdateFirmForm_FirmFragment$key } from "../../../artifacts/useUpdateFirmForm_FirmFragment.graphql";
 import { useUpdateFirmForm_UpdateFirmMutation } from "../../../artifacts/useUpdateFirmForm_UpdateFirmMutation.graphql";
+import { validatePhone } from "../../../lib/utils/validations";
 
 interface UpdateFirmFields {
   title: string;
@@ -83,7 +84,9 @@ const validationSchema = Yup.object().shape({
   houseNumber: Yup.string(),
   fullAddress: Yup.string(),
   primaryEmail: Yup.string().email().required(),
-  primaryPhone: Yup.string().required(),
+  primaryPhone: Yup.string()
+    .test("validate-phone", "invalid", validatePhone)
+    .required(),
   contacts: Yup.string(),
   website: Yup.string(),
   description: Yup.string(),
