@@ -62,14 +62,16 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
                                                              stopover_model_name: integrated_event.class.name
                                                          } })
                                                  .and_return({ id: 'product_id' })
-      expect(Stripe::Price).to receive(:update).with({ unit_amount_decimal: 22,
-                                                       id: 'price_id_full_amount',
+      expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 22,
+                                                       product: 'product_id',
+                                                       currency: :usd,
+                                                       billing_scheme: 'per_unit',
                                                        nickname: 'full_amount',
                                                        metadata: {
                                                          stopover_id: integrated_event.id,
                                                            stopover_model_name: integrated_event.class.name
                                                        } })
-                                               .and_return({ id: 'price_id1' })
+                                               .and_return({ id: 'price_id_full_amount' })
       expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id' }).exactly(1).times
       expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_full_amount').and_return({ id: 'price_id_full_amount' }).exactly(1).times
 
@@ -80,7 +82,9 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
         expect(stripe_integration.price_id).to eq('price_id_full_amount')
       end
 
-      expect(integrated_event.stripe_integrations.count).to eq(1)
+      expect(integrated_event.stripe_integrations.pluck(:version)).to eq([2, 1])
+
+      expect(integrated_event.stripe_integrations.count).to eq(2)
     end
 
     context 'delete' do
@@ -129,15 +133,16 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
                                                              stopover_id: event.id,
                                                              stopover_model_name: event.class.name
                                                            } }).and_return(product: { id: 'product_id' }).exactly(1).time
-        expect(Stripe::Price).to receive(:update).with({
-                                                         id: 'price_id_full_amount',
-                                                         unit_amount_decimal: 11,
+        expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 11,
+                                                         product: 'product_id',
+                                                         currency: :usd,
+                                                         billing_scheme: 'per_unit',
                                                          nickname: 'full_amount',
                                                          metadata: {
                                                            stopover_id: event.id,
-                                                           stopover_model_name: event.class.name
-                                                         }
-                                                       }).and_return(price: { id: 'price_id' }).exactly(1).time
+                                                             stopover_model_name: event.class.name
+                                                         } })
+                                                 .and_return(price: { id: 'price_id' }).exactly(1).time
         Stopover::StripeIntegrator.sync(event)
       end
     end
