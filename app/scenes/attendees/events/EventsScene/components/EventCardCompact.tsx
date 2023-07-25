@@ -1,76 +1,83 @@
 import React from "react";
 import { AspectRatio, Box, Card, CardOverflow, Grid, Stack } from "@mui/joy";
 import { graphql, useFragment, useMutation } from "react-relay";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import Typography from "../../../../../components/v2/Typography";
 import Rating from "../../../../../components/v2/Rating/Rating";
 import Link from "../../../../../components/v2/Link";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
-import Button from "../../../../../components/v2/Button";
 import Tag from "../../../../../components/v2/Tag";
-import { EventCardCompacts_ScheduleFragment$key } from "../../../../../artifacts/EventCardCompacts_ScheduleFragment.graphql";
-import { getDate, getHumanDateTime } from "../../../../../lib/utils/dates";
 import { EventCardCompact_BookEventMutation } from "../../../../../artifacts/EventCardCompact_BookEventMutation.graphql";
+import { EventCardCompacts_EventFragment$key } from "../../../../../artifacts/EventCardCompacts_EventFragment.graphql";
+import SubmitButton from "../../../../../components/shared/SubmitButton/SubmitButton";
+import DateAutocomplete from "./DateAutocomplete";
+import Button from "../../../../../components/v2/Button/Button";
 
 interface Props {
-  scheduleReference: EventCardCompacts_ScheduleFragment$key;
+  eventFragmentRef: EventCardCompacts_EventFragment$key;
 }
 
-const EventCardCompact = ({ scheduleReference }: Props) => {
-  const schedule = useFragment(
+const EventCardCompact = ({ eventFragmentRef }: Props) => {
+  const event = useFragment(
     graphql`
-      fragment EventCardCompacts_ScheduleFragment on Schedule {
+      fragment EventCardCompacts_EventFragment on Event {
         id
-        scheduledFor
-        event {
+        title
+        images
+        interests {
           id
           title
-          images
-          interests {
-            id
-            title
-          }
-          attendeePricePerUom {
-            cents
-            currency {
-              name
-            }
-          }
-          tags {
-            id
-            title
-          }
-          averageRating
-          myBookings {
-            bookedFor
-            trip {
-              id
-            }
+        }
+        attendeePricePerUom {
+          cents
+          currency {
+            name
           }
         }
+        tags {
+          id
+          title
+        }
+        availableDates
+        averageRating
+        myBookings {
+          bookedFor
+          trip {
+            id
+          }
+        }
+        ...DateAutocomplete_Event
       }
     `,
-    scheduleReference
+    eventFragmentRef
   );
 
-  const [mutation] = useMutation<EventCardCompact_BookEventMutation>(graphql`
-    mutation EventCardCompact_BookEventMutation($input: BookEventInput!) {
-      bookEvent(input: $input) {
-        accessToken
-        booking {
-          id
-          event {
+  const [mutation, submitting] =
+    useMutation<EventCardCompact_BookEventMutation>(graphql`
+      mutation EventCardCompact_BookEventMutation($input: BookEventInput!) {
+        bookEvent(input: $input) {
+          accessToken
+          booking {
             id
-          }
-          schedule {
-            ...EventCardCompacts_ScheduleFragment
-            ...EventCardWide_ScheduleFragment
+            event {
+              id
+              ...EventCardCompacts_EventFragment
+              ...EventCardWide_EventFragment
+              ...DateAutocomplete_Event
+            }
           }
         }
       }
-    }
-  `);
+    `);
+
+  const [date, setDate] = React.useState<Moment>(
+    moment(event.myBookings?.[0]?.bookedFor)
+  );
+
+  const booking = React.useMemo(
+    () => event.myBookings.find((b) => moment(b.bookedFor).isSame(date)),
+    [date, event]
+  );
 
   const bookEvent = (eventId: string, bookedFor: Date) => {
     mutation({
@@ -83,14 +90,6 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
       },
     });
   };
-  const { event } = schedule;
-  const alreadyBooked = React.useMemo(
-    () =>
-      event.myBookings.find((booking) =>
-        moment(booking.bookedFor).isSame(schedule.scheduledFor, "day")
-      ),
-    [event, schedule]
-  );
 
   return (
     <Grid sx={{ minWidth: "290px", width: "calc(30% + 20px)" }} padding="10px">
@@ -112,13 +111,6 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
                 {tag.title}
               </Tag>
             ))}
-            <Tag
-              key={schedule.id}
-              href={`/events?date=${getDate(moment(schedule.scheduledFor))}`}
-              primary
-            >
-              {getHumanDateTime(moment(schedule.scheduledFor))}
-            </Tag>
           </Box>
         </CardOverflow>
         <Link href={`/events/${event.id}`}>
@@ -151,25 +143,24 @@ const EventCardCompact = ({ scheduleReference }: Props) => {
               event?.attendeePricePerUom?.currency?.name
             )}
           </Typography>
-          {alreadyBooked && (
-            <Link href={`/trips/${event?.myBookings?.[0]?.trip?.id}`}>
-              <Button
-                size="sm"
-                onClick={() => bookEvent(event.id, schedule.scheduledFor)}
-              >
-                <AddShoppingCartIcon />
-                My Trips
-              </Button>
-            </Link>
-          )}
-          {!alreadyBooked && (
-            <Button
+          <DateAutocomplete
+            value={date}
+            onChange={setDate}
+            eventFragmentRef={event}
+          />
+          {date.isValid() && !booking && (
+            <SubmitButton
+              submitting={submitting}
               size="sm"
-              onClick={() => bookEvent(event.id, schedule.scheduledFor)}
+              onClick={() => bookEvent(event.id, date.toDate())}
             >
-              <AddShoppingCartIcon />
-              Add
-            </Button>
+              Book
+            </SubmitButton>
+          )}
+          {booking && (
+            <Link href={`/trips/${booking.trip.id}`} underline={false}>
+              <Button size="sm">Trip</Button>
+            </Link>
           )}
         </Stack>
       </Card>

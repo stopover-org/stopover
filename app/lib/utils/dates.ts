@@ -5,7 +5,7 @@ export const dateTimeFormat = "DD/MM/YYYY HH:mm";
 export const timeFormat = "HH:mm";
 export const shortDayMonthFormat = "DD/MM";
 export const dayMonthFormat = "D MMMM";
-export const dayMonthTimeFormat = "D MMMM HH:mm";
+export const dayMonthTimeFormat = "D MMM HH:mm";
 
 export const calculateDate = (
   initialDate: Moment,

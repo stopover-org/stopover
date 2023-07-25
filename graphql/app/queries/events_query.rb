@@ -24,6 +24,6 @@ class EventsQuery
                                     @params[:max_price])
     end
 
-    @relations
+    @relations.distinct
   end
 end
