@@ -6,7 +6,7 @@ import moment from "moment/moment";
 import { BookingDatesEditForm_BookingFragment$key } from "../../../../../artifacts/BookingDatesEditForm_BookingFragment.graphql";
 import { useBookingDatesEditForm } from "./useBookingDatesEditForm";
 import ButtonDatePicker from "../../../../../components/v2/ButtonDatePicker/ButtonDatePicker";
-import { getDate, timeFormat } from "../../../../../lib/utils/dates";
+import { getDate, setTime, timeFormat } from "../../../../../lib/utils/dates";
 import Select from "../../../../../components/v2/Select/Select";
 import useUniqueMomentDates from "../../../../../lib/hooks/useUniqueMomentDates";
 import useTimeFromDate from "../../../../../lib/hooks/useTimeFromDate";
@@ -40,6 +40,10 @@ const BookingDatesEditForm = ({
     booking.event.availableDates as Date[]
   );
   const availableTimes = useTimeFromDate(availableDates, dateField.value);
+  const isValidTime = availableTimes.filter((dt) =>
+    dt.isSame(dateField?.value)
+  ).length;
+
   const disabled = React.useMemo(
     () =>
       booking.status !== "active" ||
@@ -65,21 +69,19 @@ const BookingDatesEditForm = ({
           </ButtonDatePicker>
         </Box>
         <Box paddingRight="10px">
+          {" "}
           <Select
-            onChange={(_, value) => {
+            onChange={(value: string) => {
               if (!value) return;
+
               timeField.onChange(value);
             }}
             value={timeField.value}
             placeholder="Select time"
-            disabled={disabled}
           >
-            {availableTimes.map((time, index) => (
-              <Option
-                key={`${index}-${time}-${dateField.value?.toISOString()}`}
-                value={time}
-              >
-                {time}
+            {availableTimes.map((time) => (
+              <Option key={time.unix()} value={time.format(timeFormat)}>
+                {time.format(timeFormat)}
               </Option>
             ))}
           </Select>

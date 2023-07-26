@@ -50,9 +50,9 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
   const attendeesCountField = useFormField<number>("attendeesCount");
   const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
   const availableTimes = useTimeFromDate(availableDates, dateField.value);
-  const isValidTime = availableTimes.includes(
-    dateField?.value?.format(timeFormat)
-  );
+  const isValidTime = availableTimes.filter((dt) =>
+    dt.isSame(dateField?.value)
+  ).length;
 
   const bookedDates = useUniqueMomentDates(
     event.myBookings.map((b) => b.bookedFor)
@@ -88,17 +88,17 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
         </Box>
         <Box paddingRight="10px">
           <Select
-            onChange={(_, value) => {
+            onChange={(value: string) => {
               if (!value) return;
 
-              dateField.onChange(setTime(dateField.value, value.toString()));
+              dateField.onChange(setTime(dateField.value, value));
             }}
             value={selectedTime}
             placeholder="Select time"
           >
             {availableTimes.map((time) => (
-              <Option key={time} value={time}>
-                {time}
+              <Option key={time.unix()} value={time.format(timeFormat)}>
+                {time.format(timeFormat)}
               </Option>
             ))}
           </Select>

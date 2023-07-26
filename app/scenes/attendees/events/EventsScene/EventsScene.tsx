@@ -54,8 +54,6 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     );
   const events = usePagedEdges(data.events, currentPage, 10);
 
-  console.log(events);
-
   return (
     <Grid
       container
