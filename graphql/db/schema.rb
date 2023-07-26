@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_24_210306) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_26_215216) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -235,9 +235,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_24_210306) do
     t.datetime "single_days_with_time", precision: nil, default: [], array: true
     t.string "ref_number"
     t.string "landmark"
-    t.string "prepaid_type"
-    t.decimal "prepaid_amount_cents", default: "0.0", null: false
-    t.boolean "requires_prepaid", default: false, null: false
+    t.decimal "deposit_amount_cents", default: "0.0", null: false
+    t.boolean "requires_deposit", default: false, null: false
     t.integer "max_attendees"
     t.integer "min_attendees", default: 0
     t.bigint "firm_id"
@@ -270,6 +269,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_24_210306) do
     t.string "postal_code"
     t.string "ref_number"
     t.string "payment_types", default: [], null: false, array: true
+    t.integer "margin", default: 0
     t.index ["ref_number"], name: "index_firms_on_ref_number", unique: true
   end
 

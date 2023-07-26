@@ -31,6 +31,8 @@ function useFormContext<FieldsType extends FieldValues>() {
     );
   }
 
+  console.log(form.formState);
+
   return React.useMemo(
     () => ({
       ...form,

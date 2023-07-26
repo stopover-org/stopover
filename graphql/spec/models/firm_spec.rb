@@ -15,6 +15,7 @@
 #  house_number      :string
 #  latitude          :float
 #  longitude         :float
+#  margin            :integer          default(0)
 #  payment_types     :string           default([]), not null, is an Array
 #  postal_code       :string
 #  primary_email     :string

@@ -374,9 +374,10 @@ input CreateEventInput {
   """
   clientMutationId: String
   country: String
+  depositAmountCents: Int!
   description: String!
   durationTime: String!
-  endDate: DateTime!
+  endDate: DateTime
   eventOptions: [CreateEventOptionInput!]
   eventType: EventTypeEnum!
   fullAddress: String!
@@ -392,6 +393,7 @@ input CreateEventInput {
   region: String
   requiresCheckIn: Boolean
   requiresContract: Boolean
+  requiresDeposit: Boolean
   requiresPassport: Boolean
   singleDates: [String!]!
   street: String
@@ -564,6 +566,7 @@ type Event implements Node {
   ): BookingConnection!
   city: String
   country: String
+  depositAmount: Money!
   description: String!
   durationTime: String!
   endDate: DateTime
@@ -583,15 +586,13 @@ type Event implements Node {
   minAttendees: Int
   myBookings: [Booking!]!
   organizerPricePerUom: Money
-  prepaidAmount: Money!
-  prepaidType: String
   ratingsCount: Int
   recurringDaysWithTime: [String!]!
   region: String
   requiresCheckIn: Boolean!
   requiresContract: Boolean!
+  requiresDeposit: Boolean!
   requiresPassport: Boolean!
-  requiresPrepaid: Boolean!
   schedules(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -798,6 +799,7 @@ type Firm implements Node {
   image: String
   latitude: Float
   longitude: Float
+  margin: Int!
   paymentTypes: [String!]!
   payments(
     """
@@ -1715,6 +1717,7 @@ input UpdateEventInput {
   """
   clientMutationId: String
   country: String
+  depositAmountCents: Int
   description: String
   durationTime: String
   endDate: DateTime
@@ -1734,6 +1737,7 @@ input UpdateEventInput {
   region: String
   requiresCheckIn: Boolean
   requiresContract: Boolean
+  requiresDeposit: Boolean
   requiresPassport: Boolean
   singleDates: [String!]
   street: String

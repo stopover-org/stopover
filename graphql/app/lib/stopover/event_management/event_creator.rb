@@ -8,12 +8,14 @@ module Stopover
       end
 
       def execute(**args)
+        event = Event.new
+
         Event.transaction do
-          event = Event.new
           event.assign_attributes(args.except(:recurring_dates,
                                               :single_dates,
                                               :event_options,
-                                              :images))
+                                              :images,
+                                              :deposit_amount_cents))
           event.firm = @context[:current_user].account.current_firm
           if args[:event_options].present?
             event.event_options = args[:event_options].map do |option|
@@ -21,6 +23,8 @@ module Stopover
               event_option.assign_attributes(**option)
             end
           end
+
+          event.deposit_amount = Money.new(args[:deposit_amount_cents]) if args[:requires_deposit]
 
           event.recurring_days_with_time = Stopover::EventSupport.prepare_dates('recurrent',
                                                                                 args[:recurring_dates])

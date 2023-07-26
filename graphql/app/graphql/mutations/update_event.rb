@@ -40,10 +40,12 @@ module Mutations
     argument :requires_contract,  Boolean, required: false
     argument :requires_passport,  Boolean, required: false
     argument :requires_check_in,  Boolean, required: false
+    argument :requires_deposit,   Boolean, required: false
     argument :max_attendees,      Integer, required: false
     argument :min_attendees,      Integer, required: false
 
     argument :organizer_price_per_uom_cents, Integer, required: false
+    argument :deposit_amount_cents, Integer, required: false
 
     argument :images, [String], required: false
 

@@ -18,9 +18,6 @@ const GeneralStep = () => {
   const requiresContractField = form.useFormField("requiresContract");
   const requiresPassport = form.useFormField("requiresPassport");
   const eventType = form.useFormField("eventType");
-  const organizerPriceField = form.useFormField<number>(
-    "organizerPricePerUomCents"
-  );
 
   return (
     <>
@@ -41,17 +38,6 @@ const GeneralStep = () => {
           />
         </Grid>
         <ImagesPreviewFields />
-        <Grid xs={12}>
-          <Input
-            placeholder="Amount"
-            startDecorator="$"
-            label="Organizer Price"
-            sx={{ width: 300 }}
-            type="number"
-            {...organizerPriceField}
-            value={organizerPriceField.value.toString()}
-          />
-        </Grid>
       </Fieldset>
       <AddressFieldset />
       <Fieldset>

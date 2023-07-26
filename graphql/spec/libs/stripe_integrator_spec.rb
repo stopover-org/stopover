@@ -20,8 +20,8 @@ require 'rails_helper'
 
 RSpec.describe Stopover::StripeIntegrator, type: :model do
   describe 'stripe integrator' do
-    let!(:event) { create(:event, organizer_price_per_uom: Money.new(20), prepaid_amount: Money.new(5)) }
-    let!(:integrated_event) { create(:stripe_integration_factory, organizer_price_per_uom: Money.new(20), prepaid_amount: Money.new(5)) }
+    let!(:event) { create(:event, organizer_price_per_uom: Money.new(20), deposit_amount: Money.new(5)) }
+    let!(:integrated_event) { create(:stripe_integration_factory, organizer_price_per_uom: Money.new(20), deposit_amount: Money.new(5)) }
 
     it 'is created and product_id and price_id eq Stripe ids' do
       expect(Stripe::Product).to receive(:create).with({
@@ -122,7 +122,7 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
     context 'update' do
       let!(:event) { create(:stripe_integration_factory, organizer_price_per_uom: Money.new(10)) }
       it 'price and product' do
-        event.update(title: 'new_title', organizer_price_per_uom: Money.new(10), prepaid_amount: Money.new(5))
+        event.update(title: 'new_title', organizer_price_per_uom: Money.new(10), deposit_amount: Money.new(5))
         expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id', name: 'product_name' }).exactly(1).time
         expect(Stripe::Price).to receive(:retrieve).with(id: 'price_id_full_amount').and_return({ unit_amount: 22 }).exactly(1).time
 

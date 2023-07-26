@@ -42,6 +42,8 @@ export interface CreateEventFields {
     hour: number | null;
     minute: number | null;
   }>;
+  requiresDeposit: boolean;
+  depositAmountCents: number;
   singleDates: Array<{
     date: Moment;
     hour: number | null;
@@ -59,11 +61,13 @@ function useDefaultValues(): Partial<CreateEventFields> {
       eventType: "excursion",
       images: [],
       organizerPricePerUomCents: 0,
+      depositAmountCents: 0,
       durationTime: "0h 0m",
       recurringDates: [{ day: null, hour: null, minute: null }],
       requiresCheckIn: false,
       requiresContract: false,
       requiresPassport: false,
+      requiresDeposit: false,
       singleDates: [],
       endDate: null,
     }),
@@ -97,6 +101,9 @@ const validationSchema = Yup.object().shape({
   organizerPricePerUomCents: Yup.number()
     .transform(numberTransform)
     .required("Required"),
+  depositAmountCents: Yup.number()
+    .transform(numberTransform)
+    .required("Required"),
   recurringDates: Yup.array()
     .of(
       Yup.object().shape({
@@ -110,6 +117,7 @@ const validationSchema = Yup.object().shape({
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),
   requiresPassport: Yup.boolean(),
+  requiresDeposit: Yup.boolean(),
   singleDates: Yup.array()
     .of(
       Yup.object().shape({

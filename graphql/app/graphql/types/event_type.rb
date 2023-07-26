@@ -28,15 +28,14 @@ module Types
     field :min_attendees, Integer
     field :my_bookings, [BookingType], null: false
     field :organizer_price_per_uom, Types::MoneyType
-    field :prepaid_amount, Types::MoneyType, null: false
-    field :prepaid_type, String
+    field :deposit_amount, Types::MoneyType, null: false
     field :ratings_count, Integer
     field :recurring_days_with_time, [String], null: false
     field :region, String
     field :requires_check_in, Boolean, null: false
     field :requires_contract, Boolean, null: false
     field :requires_passport, Boolean, null: false
-    field :requires_prepaid, Boolean, null: false
+    field :requires_deposit,  Boolean, null: false
     field :schedules, Types::ScheduleType.connection_type, null: false
     field :single_days_with_time, [Types::DateTimeType], null: false
     field :status, String, null: false

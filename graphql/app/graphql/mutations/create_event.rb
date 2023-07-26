@@ -17,7 +17,7 @@ module Mutations
     argument :recurring_dates,  [String]
     argument :single_dates,     [String]
     argument :duration_time,    String
-    argument :end_date,         Types::DateTimeType
+    argument :end_date,         Types::DateTimeType, required: false
 
     # Address Fields
     argument :house_number, String, required: false
@@ -38,10 +38,12 @@ module Mutations
     argument :requires_contract,  Boolean, required: false
     argument :requires_passport,  Boolean, required: false
     argument :requires_check_in,  Boolean, required: false
+    argument :requires_deposit,   Boolean, required: false
     argument :max_attendees,      Integer, required: false
     argument :min_attendees,      Integer, required: false
 
     argument :organizer_price_per_uom_cents, Integer
+    argument :deposit_amount_cents, Integer
 
     argument :images, [String], required: false
 
