@@ -155,6 +155,7 @@ export function useCreateEventForm() {
       singleDates,
       recurringDates,
       eventOptions,
+      depositAmountCents,
       ...values
     }) => ({
       input: {
@@ -179,6 +180,7 @@ export function useCreateEventForm() {
           ...opt,
         })),
         organizerPricePerUomCents: organizerPricePerUomCents! * 100,
+        depositAmountCents: (depositAmountCents || 0) * 100,
       },
     }),
     {

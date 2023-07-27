@@ -36,7 +36,8 @@ export interface UpdateEventFields {
   images?: string[];
   maxAttendees?: number | null;
   minAttendees?: number | null;
-  organizerPricePerUomCents?: number;
+  organizerPricePerUomCents: number;
+  depositAmountCents: number;
   region?: string | null;
   requiresCheckIn: boolean;
   requiresContract: boolean;
@@ -74,6 +75,9 @@ function useDefaultValues(
         maxAttendees
         minAttendees
         organizerPricePerUom {
+          cents
+        }
+        depositAmount {
           cents
         }
         recurringDaysWithTime
@@ -136,6 +140,7 @@ function useDefaultValues(
       maxAttendees: event.maxAttendees,
       minAttendees: event.minAttendees,
       organizerPricePerUomCents: event.organizerPricePerUom!.cents! / 100,
+      depositAmountCents: event.depositAmount!.cents! / 100,
       region: event.region,
       requiresCheckIn: Boolean(event.requiresCheckIn),
       requiresContract: Boolean(event.requiresContract),
@@ -174,6 +179,7 @@ const validationSchema = Yup.object().shape({
   organizerPricePerUomCents: Yup.number()
     .transform(numberTransform)
     .required("Required"),
+  depositAmountCents: Yup.number().transform(numberTransform),
   recurringDates: Yup.array()
     .of(
       Yup.object().shape({
@@ -222,6 +228,7 @@ export function useUpdateEventForm(
     ({
       images,
       organizerPricePerUomCents,
+      depositAmountCents,
       singleDates,
       recurringDates,
       id,
@@ -251,6 +258,7 @@ export function useUpdateEventForm(
           ...opt,
         })),
         organizerPricePerUomCents: organizerPricePerUomCents! * 100,
+        depositAmountCents: organizerPricePerUomCents! * 100,
       },
     }),
     {

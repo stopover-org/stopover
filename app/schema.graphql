@@ -1489,9 +1489,11 @@ type SignOutPayload {
 
 type StripeConnect implements Node {
   activatedAt: DateTime
+  createdAt: DateTime!
   firm: Firm!
   id: String!
   status: StripeConnectStatusEnum!
+  updatedAt: DateTime!
 }
 
 enum StripeConnectStatusEnum {

@@ -25,9 +25,10 @@ module Stopover
     def self.create_stripe_account(user)
       raise StandardError('Account has\'t firm') unless user.account.current_firm
       firm = user.account.current_firm
+      country_code = ISO3166::Country.find_country_by_iso_short_name(firm.country)&.alpha2 || 'DE'
       account = Stripe::Account.create({
                                          type: 'express',
-                                         country: ISO3166::Country.find_country_by_iso_short_name(firm.country)&.alpha2 || 'DE',
+                                         country: country_code,
                                          email: firm.primary_email,
                                          capabilities: {
                                            card_payments: { requested: true },
@@ -43,7 +44,7 @@ module Stopover
           individual: {
             address: {
               city: firm.city,
-              country: firm.country,
+              country: country_code,
               line1: firm.street,
               postal_code: firm.postal_code
             },
@@ -62,7 +63,7 @@ module Stopover
           company: {
             address: {
               city: firm.city,
-              country: firm.country,
+              country: country_code,
               line1: firm.street,
               line2: nil,
               postal_code: firm.postal_code,

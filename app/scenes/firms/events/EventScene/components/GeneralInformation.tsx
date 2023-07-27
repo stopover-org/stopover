@@ -42,6 +42,12 @@ const GeneralInformation = ({
         singleDaysWithTime
         street
         title
+        depositAmount {
+          cents
+          currency {
+            name
+          }
+        }
         organizerPricePerUom {
           cents
           currency {
@@ -53,6 +59,9 @@ const GeneralInformation = ({
           currency {
             name
           }
+        }
+        firm {
+          paymentTypes
         }
       }
     `,
@@ -87,13 +96,25 @@ const GeneralInformation = ({
               )}
             </Grid>
 
-            <Grid xs={2}>Attendee pay</Grid>
+            <Grid xs={2}>They pay</Grid>
             <Grid xs={10}>
               {getCurrencyFormat(
                 event.attendeePricePerUom?.cents,
                 event.attendeePricePerUom?.currency.name
               )}
             </Grid>
+
+            {event.firm.paymentTypes.includes("cash") && (
+              <>
+                <Grid xs={2}>For Cash Payment requires deposit</Grid>
+                <Grid xs={10}>
+                  {getCurrencyFormat(
+                    event.depositAmount?.cents,
+                    event.depositAmount?.currency.name
+                  )}
+                </Grid>
+              </>
+            )}
 
             <Grid xs={2}>Recurring Dates</Grid>
             <Grid xs={10}>
