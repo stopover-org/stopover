@@ -83,7 +83,7 @@ function useDefaultValues(): Partial<CreateEventFields> {
 }
 
 const validationSchema = Yup.object().shape({
-  city: Yup.string().nullable(),
+  city: Yup.string().required("Required"),
   country: Yup.string().nullable(),
   description: Yup.string().required("Required"),
   durationTime: Yup.string().required("Required"),

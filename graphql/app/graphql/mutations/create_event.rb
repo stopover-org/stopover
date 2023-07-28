@@ -54,8 +54,6 @@ module Mutations
     def resolve(**args)
       event = Stopover::EventManagement::EventCreator.new(context).execute(**args)
 
-      event.save!
-
       { event: event }
     end
   end

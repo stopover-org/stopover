@@ -150,6 +150,7 @@ class Event < ApplicationRecord
 
   # DELEGATIONS ==============================================================
   delegate :count, to: :ratings, prefix: true
+  delegate :margin, to: :firm
 
   def can_be_scheduled_for?(date)
     return false if date.past?
