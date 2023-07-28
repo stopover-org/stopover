@@ -24,7 +24,7 @@ export interface UpdateEventFields {
   durationTime: string;
   endDate: Moment | null;
   eventOptions: Array<{
-    id: string;
+    id?: string;
     title: string;
     organizerPriceCents: number;
     builtIn: boolean;
@@ -54,12 +54,19 @@ export interface UpdateEventFields {
   }>;
   street?: string | null;
   title: string;
+  bookingCancellationOptions: Array<{
+    id?: string;
+    penaltyPriceCents: number;
+    description: string;
+    deadline: number;
+    status: string;
+  }>;
 }
 
 function useDefaultValues(
   eventFragmentRef: useUpdateEventForm_EventFragment$key
 ): Partial<UpdateEventFields> {
-  const event = useFragment(
+  const event = useFragment<useUpdateEventForm_EventFragment$key>(
     graphql`
       fragment useUpdateEventForm_EventFragment on Event {
         city
@@ -88,6 +95,15 @@ function useDefaultValues(
         singleDaysWithTime
         street
         title
+        bookingCancellationOptions {
+          id
+          penaltyPrice {
+            cents
+          }
+          deadline
+          status
+          description
+        }
         eventOptions {
           builtIn
           forAttendee
@@ -127,6 +143,15 @@ function useDefaultValues(
           minute: date.minute(),
         };
       }),
+      bookingCancellationOptions: event.bookingCancellationOptions.map(
+        (opt) => ({
+          id: opt.id,
+          description: opt.description,
+          deadline: parseInt(opt.deadline.replace("h", ""), 10),
+          penaltyPriceCents: opt.penaltyPrice.cents / 100,
+          status: opt.status,
+        })
+      ),
       city: event.city,
       country: event.country,
       description: event.description,
@@ -204,6 +229,15 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
   street: Yup.string().nullable(),
   title: Yup.string().required("Required"),
+  bookingCancellationOptions: Yup.array().of(
+    Yup.object().shape({
+      deadline: Yup.number().transform(numberTransform).required("Required"),
+      description: Yup.string().required("Required"),
+      penaltyPriceCents: Yup.number()
+        .transform(numberTransform)
+        .required("Required"),
+    })
+  ),
 });
 
 export function useUpdateEventForm(
@@ -233,6 +267,7 @@ export function useUpdateEventForm(
       recurringDates,
       id,
       eventOptions,
+      bookingCancellationOptions,
       ...values
     }) => ({
       input: {
@@ -259,6 +294,12 @@ export function useUpdateEventForm(
         })),
         organizerPricePerUomCents: organizerPricePerUomCents! * 100,
         depositAmountCents: organizerPricePerUomCents! * 100,
+        bookingCancellationOptions: bookingCancellationOptions.map((opt) => ({
+          id: opt.id,
+          penaltyPriceCents: opt.penaltyPriceCents * 100,
+          deadline: `${opt.deadline}h`,
+          description: opt.description,
+        })),
       },
     }),
     {

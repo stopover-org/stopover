@@ -12,11 +12,13 @@ module Stopover
           @event.assign_attributes(args.except(:recurring_dates,
                                                :single_dates,
                                                :event_options,
-                                               :images))
+                                               :images,
+                                               :booking_cancellation_options))
 
           if args[:event_options].present?
-            @event.event_options = args[:event_options].map do |option|
+            args[:event_options].map do |option|
               event_option = option[:id]
+              event_option ||= @event.event_options.build
               event_option.assign_attributes(**option.to_h.except(:id))
               event_option.save!
 
@@ -41,6 +43,15 @@ module Stopover
             args[:images].each do |url|
               io_object = Stopover::FilesSupport.url_to_io(url)
               event.images.attach(io_object)
+            end
+          end
+
+          if args[:booking_cancellation_options].present?
+            args[:booking_cancellation_options].map do |option|
+              booking_cancellation_option = option[:id]
+              booking_cancellation_option ||= @event.booking_cancellation_options.build
+              booking_cancellation_option.assign_attributes(**option.to_h.except(:id))
+              booking_cancellation_option.save!
             end
           end
 

@@ -160,22 +160,27 @@ const EventScene = ({
             <Tab variant={tab === 3 ? "outlined" : "plain"}>
               Bookings ( {event.bookings.nodes.length} )
             </Tab>
-            <Tab variant={tab === 4 ? "outlined" : "plain"}>
-              Stripe Integrations ( {event.stripeIntegrations.nodes.length} ){" "}
-              <Tag
-                link={false}
-                color="neutral"
-                sx={{ height: "18px", fontSize: "10px", padding: "2px 4px" }}
-              >
-                Service User
-              </Tag>
-            </Tab>
+            {currentUser?.serviceUser && (
+              <Tab variant={tab === 4 ? "outlined" : "plain"}>
+                Stripe Integrations ( {event.stripeIntegrations.nodes.length} ){" "}
+                <Tag
+                  link={false}
+                  color="neutral"
+                  sx={{ height: "18px", fontSize: "10px", padding: "2px 4px" }}
+                >
+                  Service User
+                </Tag>
+              </Tab>
+            )}
           </TabList>
           <GeneralInformation index={0} eventFragmentRef={event} />
           <EventOptionsInformation index={1} eventFragmentRef={event} />
           <SchedulesInformation index={2} eventFragmentRef={event} />
           <BookingsInformation index={3} eventFragmentRef={event} />
-          <StripeIntegrationsInformation index={4} eventFragmentRef={event} />
+
+          {currentUser?.serviceUser && (
+            <StripeIntegrationsInformation index={4} eventFragmentRef={event} />
+          )}
         </Tabs>
       </Grid>
     </Grid>

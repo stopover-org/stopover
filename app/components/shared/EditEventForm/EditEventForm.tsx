@@ -51,12 +51,14 @@ const EditEventForm = ({
       ],
       ["recurringDates", "singleDates", "durationTime", "endDate"],
       ["eventOptions"],
-      ["organizerPricePerUomCents", "depositAmountCents"],
+      [
+        "organizerPricePerUomCents",
+        "depositAmountCents",
+        "bookingCancellationOptions",
+      ],
     ],
     []
   );
-
-  console.log(form);
 
   return (
     <Grid container spacing={2} md={10} sm={12}>

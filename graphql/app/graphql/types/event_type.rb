@@ -7,7 +7,7 @@ module Types
     field :available_dates, [Types::DateTimeType], null: false
     field :average_rating, Float, null: false
     field :bookings, Types::BookingType.connection_type, null: false, require_manager: true
-    field :booking_cancellation_options, [Types::BookingCancellationOptionType]
+    field :booking_cancellation_options, [Types::BookingCancellationOptionType], null: false
     field :city, String
     field :country, String
     field :description, String, null: false

@@ -34,6 +34,10 @@ module Mutations
              [Types::CreateEventOptionInput],
              required: false
 
+    argument :booking_cancellation_options,
+             [Types::CreateBookingCancellationOptionInput],
+             required: false
+
     # Check In Options
     argument :requires_contract,  Boolean, required: false
     argument :requires_passport,  Boolean, required: false

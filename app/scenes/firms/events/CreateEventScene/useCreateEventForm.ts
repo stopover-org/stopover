@@ -52,24 +52,31 @@ export interface CreateEventFields {
   endDate: Moment | null;
   street?: string;
   title: string;
+  bookingCancellationOptions: Array<{
+    penaltyPriceCents: number;
+    description: string;
+    deadline: string;
+    status: string;
+  }>;
 }
 
 function useDefaultValues(): Partial<CreateEventFields> {
   return React.useMemo(
     () => ({
+      bookingCancellationOptions: [],
+      depositAmountCents: 0,
+      durationTime: "0h 0m",
+      endDate: null,
       eventOptions: [],
       eventType: "excursion",
       images: [],
       organizerPricePerUomCents: 0,
-      depositAmountCents: 0,
-      durationTime: "0h 0m",
       recurringDates: [{ day: null, hour: null, minute: null }],
       requiresCheckIn: false,
       requiresContract: false,
-      requiresPassport: false,
       requiresDeposit: false,
+      requiresPassport: false,
       singleDates: [],
-      endDate: null,
     }),
     []
   );
@@ -130,6 +137,13 @@ const validationSchema = Yup.object().shape({
   endDate: Yup.date().transform(momentTransform).nullable(),
   street: Yup.string().nullable(),
   title: Yup.string().required("Required"),
+  bookingCancellationOptions: Yup.array().of(
+    Yup.object().shape({
+      deadline: Yup.string().required("Required"),
+      description: Yup.string().required("Required"),
+      penaltyPriceCents: Yup.number().required("Required"),
+    })
+  ),
 });
 
 export function useCreateEventForm() {
@@ -156,6 +170,7 @@ export function useCreateEventForm() {
       recurringDates,
       eventOptions,
       depositAmountCents,
+      bookingCancellationOptions,
       ...values
     }) => ({
       input: {
@@ -181,6 +196,11 @@ export function useCreateEventForm() {
         })),
         organizerPricePerUomCents: organizerPricePerUomCents! * 100,
         depositAmountCents: (depositAmountCents || 0) * 100,
+        bookingCancellationOptions: bookingCancellationOptions.map((opt) => ({
+          penaltyPriceCents: opt.penaltyPriceCents * 100,
+          deadline: `${opt.deadline}h`,
+          description: opt.description,
+        })),
       },
     }),
     {
@@ -188,7 +208,7 @@ export function useCreateEventForm() {
       resolver: yupResolver(validationSchema),
       onCompleted(result) {
         if (result.createEvent?.event?.id) {
-          router.replace(`my-firm/events/${result.createEvent?.event?.id}`);
+          router.replace(`/my-firm/events/${result.createEvent?.event?.id}`);
         }
       },
     }

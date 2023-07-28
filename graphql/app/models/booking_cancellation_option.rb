@@ -5,9 +5,9 @@
 # Table name: booking_cancellation_options
 #
 #  id                  :bigint           not null, primary key
-#  deadline            :datetime
+#  deadline            :string           not null
 #  description         :text             default("")
-#  penalty_price_cents :integer
+#  penalty_price_cents :decimal(, )
 #  status              :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
@@ -19,7 +19,7 @@
 #
 class BookingCancellationOption < ApplicationRecord
   # MODULES ===============================================================
-  enum status: { active: 0, disabled: 1 }
+  include AASM
 
   # MONETIZE =====================================================================
   monetize :penalty_price_cents
@@ -36,7 +36,24 @@ class BookingCancellationOption < ApplicationRecord
   belongs_to :event
 
   # AASM STATES ================================================================
-  #
+  aasm column: :status do
+    state :active, initial: true
+    state :inactive
+    state :deleted
+
+    event :activate, before_save: :set_activated_at do
+      transitions from: %i[inactive], to: :active
+    end
+
+    event :deactivate do
+      transitions from: %i[active], to: :inactive
+    end
+
+    event :soft_delete do
+      transitions from: %i[active inactive], to: :deleted
+    end
+  end
+
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================

@@ -2,16 +2,16 @@ import React from "react";
 import { Grid, IconButton, Stack } from "@mui/joy";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import useFormContext from "../../../../lib/hooks/useFormContext";
-import { CreateEventFields } from "../../../../scenes/firms/events/CreateEventScene/useCreateEventForm";
 import Button from "../../../v2/Button/Button";
 import Fieldset from "../../../v2/Fieldset";
 import Checkbox from "../../../v2/Checkbox";
 import Input from "../../../v2/Input";
+import { UpdateEventFields } from "../../../../scenes/firms/events/EditEventScene/useUpdateEventForm";
 
 const EventOptionsFieldset = () => {
-  const form = useFormContext<CreateEventFields>();
+  const form = useFormContext<UpdateEventFields>();
   const eventOptionsField =
-    form.useFormField<CreateEventFields["eventOptions"]>("eventOptions");
+    form.useFormField<UpdateEventFields["eventOptions"]>("eventOptions");
 
   const onEventOptionChange = React.useCallback(
     <ValueType extends string | number | boolean>(
@@ -85,24 +85,26 @@ const EventOptionsFieldset = () => {
                 }
               />
             </Grid>
-            <Grid xs={1}>
-              <Stack
-                justifyContent="flex-start"
-                alignItems="flex-end"
-                height="100%"
-                sx={{ paddingTop: "2em" }}
-              >
-                <IconButton
-                  size="sm"
-                  color="danger"
-                  onClick={() => {
-                    removeEventOption(index);
-                  }}
+            {!eventOption.id && (
+              <Grid xs={1}>
+                <Stack
+                  justifyContent="flex-start"
+                  alignItems="flex-end"
+                  height="100%"
+                  sx={{ paddingTop: "2em" }}
                 >
-                  <DeleteForeverIcon />
-                </IconButton>
-              </Stack>
-            </Grid>
+                  <IconButton
+                    size="sm"
+                    color="danger"
+                    onClick={() => {
+                      removeEventOption(index);
+                    }}
+                  >
+                    <DeleteForeverIcon />
+                  </IconButton>
+                </Stack>
+              </Grid>
+            )}
             <Grid xs={3} />
             <Grid xs={4}>
               <Checkbox

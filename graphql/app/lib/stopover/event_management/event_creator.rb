@@ -15,12 +15,14 @@ module Stopover
                                               :single_dates,
                                               :event_options,
                                               :images,
-                                              :deposit_amount_cents))
+                                              :deposit_amount_cents,
+                                              :booking_cancellation_options))
           event.firm = @context[:current_user].account.current_firm
           if args[:event_options].present?
-            event.event_options = args[:event_options].map do |option|
-              event_option = EventOption.new
+            args[:event_options].map do |option|
+              event_option = event.event_options.build
               event_option.assign_attributes(**option)
+              event_option.save!
             end
           end
 
@@ -35,6 +37,14 @@ module Stopover
             args[:images].each do |base64_image|
               io_object = Stopover::FilesSupport.url_to_io(base64_image)
               event.images.attach(io_object)
+            end
+          end
+
+          if args[:booking_cancellation_options].present?
+            args[:booking_cancellation_options].map do |option|
+              booking_cancellation_option = event.booking_cancellation_options.build
+              booking_cancellation_option.assign_attributes(**option)
+              booking_cancellation_option.save!
             end
           end
 
