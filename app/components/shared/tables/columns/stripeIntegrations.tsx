@@ -21,12 +21,12 @@ const StatusTag = ({ status }: { status: string }) => {
 export function useStripeIntegrationsHeaders() {
   return React.useMemo(
     () => [
-      { key: "status", label: "Status" },
-      { key: "belongsTo", label: "Belongs To" },
-      { key: "priceType", label: "Price Type" },
-      { key: "priceId", label: "Price Id in Stripe" },
-      { key: "productId", label: "Product Id in Stripe" },
-      { key: "version", label: "Integration Version" },
+      { key: "status", width: 100, label: "Status" },
+      { key: "belongsTo", width: 150, label: "Belongs To" },
+      { key: "priceType", width: 100, label: "Price Type" },
+      { key: "priceId", width: 300, label: "Price Id in Stripe" },
+      { key: "productId", width: 300, label: "Product Id in Stripe" },
+      { key: "version", width: 100, label: "Integration Version" },
     ],
     []
   );

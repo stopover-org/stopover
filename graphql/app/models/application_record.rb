@@ -23,7 +23,8 @@ class ApplicationRecord < ActiveRecord::Base
   # CALLBACKS ================================================================
   #
   # SCOPES =====================================================================
-  #
+  default_scope { order(updated_at: :desc) if try(:updated_at) }
+
   # DELEGATIONS ==============================================================
 
   def graphql_object_type

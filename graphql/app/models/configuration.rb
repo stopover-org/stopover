@@ -53,11 +53,6 @@ class Configuration < ApplicationRecord
       value: 'osm',
       description: 'which one maps provider will be used. supports only osm.'
     },
-    EVENT_MARGIN: {
-      key: 'EVENT_MARGIN',
-      value: 10,
-      description: 'payment to the holder of the website'
-    },
     SCHEDULE_DAYS_IN_ADVANCE: {
       key: 'SCHEDULE_DAYS_IN_ADVANCE',
       value: Rails.env.test? ? 28 : 365,

@@ -159,7 +159,7 @@ class Event < ApplicationRecord
   end
 
   def adjust_prices
-    self.attendee_price_per_uom = (organizer_price_per_uom * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0)))
+    self.attendee_price_per_uom = (organizer_price_per_uom * (1 + (margin / 100.0)))
   end
 
   def set_prices
