@@ -61,6 +61,6 @@ class BookingCancellationOption < ApplicationRecord
   # CALLBACKS ================================================================
   #
   # SCOPES =====================================================================
-  #
+  default_scope { order(deadline: :desc) }
   # DELEGATIONS ==============================================================
 end

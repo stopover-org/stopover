@@ -26,7 +26,7 @@ module Stopover
             end
           end
 
-          event.deposit_amount = Money.new(args[:deposit_amount_cents]) if args[:requires_deposit]
+          @event.deposit_amount = Money.new(args[:deposit_amount_cents]) if args[:requires_deposit]
 
           if args[:recurring_dates]
             @event.recurring_days_with_time = Stopover::EventSupport.prepare_dates('recurrent',
@@ -39,10 +39,10 @@ module Stopover
           end
 
           if args[:images].present?
-            event.images.delete_all
+            @event.images.delete_all
             args[:images].each do |url|
               io_object = Stopover::FilesSupport.url_to_io(url)
-              event.images.attach(io_object)
+              @event.images.attach(io_object)
             end
           end
 

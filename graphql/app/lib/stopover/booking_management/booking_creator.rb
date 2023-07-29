@@ -18,9 +18,15 @@ module Stopover
 
         return bookings.first if bookings.any?
 
+        attendees = (1..attendees_count).map { Attendee.new }
+        attendees[0].assign_attributes(first_name:  @account.name,
+                                       last_name:   @account.last_name,
+                                       email:       @account.user.email,
+                                       phone:       @account.user.phone)
+
         event.bookings.create!(
           schedule: event.schedules.find_by(scheduled_for: booked_for),
-          attendees: (1..attendees_count).map { Attendee.new },
+          attendees: attendees,
           trip: @current_trip
         )
       end

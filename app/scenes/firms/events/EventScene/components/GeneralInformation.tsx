@@ -8,6 +8,8 @@ import Tag from "../../../../../components/v2/Tag/Tag";
 import { dateFormat, dateTimeFormat } from "../../../../../lib/utils/dates";
 import Checkbox from "../../../../../components/v2/Checkbox";
 import ImagesPreview from "../../../../../components/shared/ImagesPreview";
+import CancellationsSection from "./CancellationsSection";
+import Section from "../../../../../components/v2/Section";
 
 interface GeneralInformationProps {
   eventFragmentRef: GeneralInformation_EventFragment$key;
@@ -63,6 +65,7 @@ const GeneralInformation = ({
         firm {
           paymentTypes
         }
+        ...CancellationsSection_EventFragment
       }
     `,
     eventFragmentRef
@@ -71,7 +74,7 @@ const GeneralInformation = ({
   return (
     <TabPanel value={index} size="sm" sx={{ paddingTop: "20px" }}>
       <Sheet>
-        <Card sx={{ width: "100%", fontSize: "sm" }} variant="outlined">
+        <Section>
           <Grid container xs={12}>
             <Grid xs={2}>Title</Grid>
             <Grid xs={10}>{event.title}</Grid>
@@ -202,7 +205,8 @@ const GeneralInformation = ({
               {event.endDate ? moment(event.endDate).format(dateFormat) : "N/A"}
             </Grid>
           </Grid>
-        </Card>
+        </Section>
+        <CancellationsSection eventFragmentRef={event} />
       </Sheet>
     </TabPanel>
   );
