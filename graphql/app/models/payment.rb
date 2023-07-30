@@ -69,7 +69,8 @@ class Payment < ApplicationRecord
     stripe: 'stripe'
   }
   enum payment_type: {
-    full_amount: 'full_amount'
+    full_amount: 'full_amount',
+    deposit: 'deposit'
   }
 
   # VALIDATIONS ================================================================

@@ -358,7 +358,7 @@ input CreateCheckoutInput {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
-  paymentType: String!
+  paymentType: PaymentTypesEnum!
 }
 
 """
@@ -1152,6 +1152,18 @@ type PaymentEdge {
   The item at the end of the edge.
   """
   node: Payment
+}
+
+enum PaymentTypesEnum {
+  """
+  Deposit only
+  """
+  deposit
+
+  """
+  Full amount
+  """
+  full_amount
 }
 
 """

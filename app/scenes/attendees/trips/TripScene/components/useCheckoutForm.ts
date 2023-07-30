@@ -9,6 +9,7 @@ import { useCheckoutForm_CreateCheckoutMutation } from "../../../../../artifacts
 
 interface CreateCheckoutFields {
   bookingId: string;
+  paymentMethod: string;
 }
 
 function useDefaultValues(
@@ -18,14 +19,24 @@ function useDefaultValues(
     graphql`
       fragment useCheckoutForm_BookingFragment on Booking {
         id
+        event {
+          firm {
+            paymentTypes
+          }
+        }
       }
     `,
     bookingFragmentRef
   );
 
+  const preferredMethod = booking.event.firm.paymentTypes.includes("stripe")
+    ? "stripe"
+    : "cash";
+
   return React.useMemo(
     () => ({
       bookingId: booking.id,
+      paymentMethod: preferredMethod,
     }),
     [booking]
   );
@@ -33,6 +44,7 @@ function useDefaultValues(
 
 const validationSchema = Yup.object().shape({
   bookingId: Yup.string().required(),
+  paymentMethod: Yup.string().required(),
 });
 
 export function useCheckoutForm(
@@ -62,8 +74,11 @@ export function useCheckoutForm(
         }
       }
     `,
-    (values) => ({
-      input: { ...values, paymentType: "full_amount" },
+    ({ paymentMethod, ...values }) => ({
+      input: {
+        ...values,
+        paymentType: paymentMethod === "cash" ? "deposit" : "full_amount",
+      },
     }),
     {
       defaultValues: useDefaultValues(bookingFragmentRef),

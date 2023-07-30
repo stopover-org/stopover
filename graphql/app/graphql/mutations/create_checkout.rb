@@ -6,13 +6,15 @@ module Mutations
     field :url, String
     field :payment, Types::PaymentType
 
-    argument :payment_type, String
+    argument :payment_type, Types::PaymentTypesEnum
     argument :booking_id, ID, loads: Types::BookingType
 
     def resolve(booking:, **args)
-      raise GraphQL::ExecutionError, 'multiple payments in process' if booking.payments.processing.count > 1
-      if booking.payments.processing.any?
-        payment = booking.payments.processing.last
+      payments = booking.payments.where(payment_type: args[:payment_type]).processing
+      raise GraphQL::ExecutionError, 'multiple payments in process' if payments.count > 1
+
+      if payments.any?
+        payment = payments.last
 
         checkout = Stripe::Checkout::Session.retrieve(payment.stripe_checkout_session_id)
 
