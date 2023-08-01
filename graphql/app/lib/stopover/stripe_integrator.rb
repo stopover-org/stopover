@@ -10,7 +10,7 @@ module Stopover
     def self.retrieve(model)
       product = nil
       prices = {}
-      if model.try(:stripe_integrations)
+      if model.try(:current_stripe_integration)
         stripe_integration = model.current_stripe_integration
         product = Stripe::Product.retrieve(id: stripe_integration.product_id) if !product && stripe_integration.try(:product_id)
         prices.store(stripe_integration.price_id.to_sym, Stripe::Price.retrieve(id: stripe_integration.price_id)) if stripe_integration.try(:price_id)
@@ -126,7 +126,7 @@ module Stopover
         )
       end
 
-      if stripe[:prices][:full_amount][:unit_amount] != stripe_integration.unit_amount.cents
+      if stripe[:prices][stripe_integration.price_id.to_sym][:unit_amount] != stripe_integration.unit_amount.cents
         dup_stripe_integration = stripe_integration.dup
         dup_stripe_integration.version += 1
         price = Stripe::Price.create(unit_amount_decimal: dup_stripe_integration.unit_amount.cents,

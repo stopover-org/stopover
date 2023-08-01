@@ -74,9 +74,8 @@ class EventOption < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
-  def current_stripe_integration(**opts)
+  def current_stripe_integration
     stripe_integrations.active
-                       .where(**opts)
                        .last
   end
 

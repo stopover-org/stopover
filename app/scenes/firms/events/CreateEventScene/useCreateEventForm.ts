@@ -107,10 +107,17 @@ const validationSchema = Yup.object().shape({
   minAttendees: Yup.number().transform(numberTransform),
   organizerPricePerUomCents: Yup.number()
     .transform(numberTransform)
+    .min(0)
+    .integer()
     .required("Required"),
   depositAmountCents: Yup.number()
-    .transform(numberTransform)
-    .required("Required"),
+    .min(0)
+    .lessThan(
+      Yup.ref("organizerPricePerUomCents"),
+      "Deposit should be less then general for attendee price"
+    )
+    .integer()
+    .transform(numberTransform),
   recurringDates: Yup.array()
     .of(
       Yup.object().shape({
@@ -171,6 +178,7 @@ export function useCreateEventForm() {
       eventOptions,
       depositAmountCents,
       bookingCancellationOptions,
+      requiresDeposit,
       ...values
     }) => ({
       input: {
@@ -196,6 +204,9 @@ export function useCreateEventForm() {
         })),
         organizerPricePerUomCents: organizerPricePerUomCents! * 100,
         depositAmountCents: (depositAmountCents || 0) * 100,
+        requiresDeposit: requiresDeposit
+          ? depositAmountCents !== 0
+          : requiresDeposit,
         bookingCancellationOptions: bookingCancellationOptions.map((opt) => ({
           penaltyPriceCents: opt.penaltyPriceCents * 100,
           deadline: `${opt.deadline}h`,

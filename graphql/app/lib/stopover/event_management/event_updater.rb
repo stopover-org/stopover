@@ -43,6 +43,10 @@ module Stopover
             args[:images].each do |url|
               io_object = Stopover::FilesSupport.url_to_io(url)
               @event.images.attach(io_object)
+              # when we can't fetch url
+              # we need to log this error
+            rescue StandardError => e
+              Sentry.capture_exception(e) if Rails.env.production?
             end
           end
 

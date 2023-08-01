@@ -42,6 +42,7 @@ export interface UpdateEventFields {
   requiresCheckIn: boolean;
   requiresContract: boolean;
   requiresPassport: boolean;
+  requiresDeposit: boolean;
   recurringDates: Array<{
     day: string | null;
     hour: number | null;
@@ -92,6 +93,7 @@ function useDefaultValues(
         requiresCheckIn
         requiresContract
         requiresPassport
+        requiresDeposit
         singleDaysWithTime
         street
         title
@@ -170,6 +172,7 @@ function useDefaultValues(
       requiresCheckIn: Boolean(event.requiresCheckIn),
       requiresContract: Boolean(event.requiresContract),
       requiresPassport: Boolean(event.requiresPassport),
+      requiresDeposit: Boolean(event.requiresDeposit),
       street: event.street,
       title: event.title,
     }),
@@ -202,9 +205,18 @@ const validationSchema = Yup.object().shape({
   maxAttendees: Yup.number().transform(numberTransform),
   minAttendees: Yup.number().transform(numberTransform),
   organizerPricePerUomCents: Yup.number()
+    .min(0)
+    .integer()
     .transform(numberTransform)
     .required("Required"),
-  depositAmountCents: Yup.number().transform(numberTransform),
+  depositAmountCents: Yup.number()
+    .min(0)
+    .lessThan(
+      Yup.ref("organizerPricePerUomCents"),
+      "Deposit should be less then general for attendee price"
+    )
+    .integer()
+    .transform(numberTransform),
   recurringDates: Yup.array()
     .of(
       Yup.object().shape({
@@ -268,6 +280,7 @@ export function useUpdateEventForm(
       id,
       eventOptions,
       bookingCancellationOptions,
+      requiresDeposit,
       ...values
     }) => ({
       input: {
@@ -293,7 +306,10 @@ export function useUpdateEventForm(
           ...opt,
         })),
         organizerPricePerUomCents: organizerPricePerUomCents! * 100,
-        depositAmountCents: organizerPricePerUomCents! * 100,
+        depositAmountCents: depositAmountCents! * 100,
+        requiresDeposit: requiresDeposit
+          ? depositAmountCents !== 0
+          : requiresDeposit,
         bookingCancellationOptions: bookingCancellationOptions.map((opt) => ({
           id: opt.id,
           penaltyPriceCents: opt.penaltyPriceCents * 100,

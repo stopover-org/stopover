@@ -161,6 +161,7 @@ class Event < ApplicationRecord
 
   def adjust_prices
     self.attendee_price_per_uom = (organizer_price_per_uom * (1 + (margin / 100.0)))
+    self.deposit_amount         = attendee_price_per_uom if deposit_amount > attendee_price_per_uom
   end
 
   def set_prices
@@ -205,9 +206,8 @@ class Event < ApplicationRecord
     times
   end
 
-  def current_stripe_integration(**opts)
+  def current_stripe_integration
     stripe_integrations.active
-                       .where(**opts)
                        .last
   end
 
