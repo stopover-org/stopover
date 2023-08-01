@@ -5,7 +5,6 @@
 # Table name: stripe_integrations
 #
 #  id              :bigint           not null, primary key
-#  price_type      :string
 #  status          :string
 #  stripeable_type :string
 #  version         :integer          default(1)
@@ -39,8 +38,8 @@ RSpec.describe StripeIntegration, type: :model do
     context 'methods' do
       let!(:event) { create(:stripe_integration_factory) }
       it 'name and unit_amount' do
-        expect(event.stripe_integrations.first.name).to eq(event.title)
-        expect(event.stripe_integrations.first.unit_amount).to eq(event.attendee_price_per_uom)
+        expect(event.current_stripe_integration.name).to eq(event.title)
+        expect(event.current_stripe_integration.unit_amount).to eq(event.attendee_price_per_uom)
       end
     end
   end

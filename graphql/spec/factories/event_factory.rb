@@ -102,8 +102,7 @@ FactoryBot.define do
         create(:stripe_integration,
                stripeable: event,
                product_id: 'product_id',
-               price_id: 'price_id_full_amount',
-               price_type: :full_amount)
+               price_id: 'price_id_full_amount')
       end
     end
 

@@ -5,7 +5,6 @@
 # Table name: stripe_integrations
 #
 #  id              :bigint           not null, primary key
-#  price_type      :string
 #  status          :string
 #  stripeable_type :string
 #  version         :integer          default(1)
@@ -37,10 +36,6 @@ class StripeIntegration < ApplicationRecord
   belongs_to :stripeable, polymorphic: true
 
   # AASM STATES ================================================================
-  enum price_type: {
-    full_amount: 'full_amount'
-  }
-
   aasm column: :status do
     state :active, initial: true
     state :deleted
@@ -56,8 +51,8 @@ class StripeIntegration < ApplicationRecord
   #
   # VALIDATIONS ================================================================
   validates :version, :status,
-            :price_type, :price_id,
-            :product_id, presence: true, uniqueness: { scope: [:id] }
+            :price_id, :product_id,
+            presence: true, uniqueness: { scope: [:id] }
   # CALLBACKS ================================================================
   #
   # SCOPES =====================================================================

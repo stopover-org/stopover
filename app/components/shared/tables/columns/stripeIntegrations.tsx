@@ -23,7 +23,6 @@ export function useStripeIntegrationsHeaders() {
     () => [
       { key: "status", width: 100, label: "Status" },
       { key: "belongsTo", width: 150, label: "Belongs To" },
-      { key: "priceType", width: 100, label: "Price Type" },
       { key: "priceId", width: 300, label: "Price Id in Stripe" },
       { key: "productId", width: 300, label: "Product Id in Stripe" },
       { key: "version", width: 100, label: "Integration Version" },
@@ -43,7 +42,6 @@ export function useStripeIntegrationsColumns(
             status
             stripeableId
             stripeableType
-            priceType
             priceId
             productId
             version
@@ -59,7 +57,6 @@ export function useStripeIntegrationsColumns(
       event.stripeIntegrations.nodes.map((stripeIntegration) => ({
         status: <StatusTag status={stripeIntegration.status} />,
         belongsTo: `${stripeIntegration.stripeableType} (${stripeIntegration.stripeableId})`,
-        priceType: stripeIntegration.priceType,
         priceId: stripeIntegration.priceId,
         productId: stripeIntegration.productId,
         version: stripeIntegration.version,

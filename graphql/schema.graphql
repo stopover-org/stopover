@@ -1546,7 +1546,6 @@ enum StripeConnectStatusEnum {
 type StripeIntegration implements Node {
   id: String!
   priceId: String!
-  priceType: String!
   productId: String!
   status: StripeIntegrationStatusEnum!
   stripeableId: String!

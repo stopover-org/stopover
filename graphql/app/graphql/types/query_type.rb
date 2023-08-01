@@ -60,8 +60,8 @@ module Types
       ::SchedulesQuery.new(args[:filters].to_h || {}).all
     end
 
-    def event(**args)
-      args[:id]
+    def event(id:)
+      id
     end
 
     def trips(**args)

@@ -11,9 +11,9 @@ module Stopover
       product = nil
       prices = {}
       if model.try(:stripe_integrations)
-        stripe_integration = model.stripe_integrations.active.full_amount.first
+        stripe_integration = model.current_stripe_integration
         product = Stripe::Product.retrieve(id: stripe_integration.product_id) if !product && stripe_integration.try(:product_id)
-        prices.store(stripe_integration.price_type.to_sym, Stripe::Price.retrieve(id: stripe_integration.price_id)) if stripe_integration.try(:price_id)
+        prices.store(stripe_integration.price_id.to_sym, Stripe::Price.retrieve(id: stripe_integration.price_id)) if stripe_integration.try(:price_id)
       end
       {
         product: product,
@@ -47,7 +47,7 @@ module Stopover
           }
         )
 
-        price_ids.store(stripe_integration.price_type.to_sym, stripe_integration.price_id)
+        price_ids.store(stripe_integration.price_id.to_sym, stripe_integration.price_id)
         product_ids << product_id
 
         stripe_integration.soft_delete!
@@ -68,7 +68,7 @@ module Stopover
     # checkout sessions will not be expired
     # all existing bookings will be connected to existing stripe integrations
     def self.sync(model)
-      if model.stripe_integrations.active.full_amount.empty?
+      if model.current_stripe_integration.nil?
         create_full_amount(model)
         return model.stripe_integrations
       else
@@ -82,10 +82,10 @@ module Stopover
     end
 
     def self.create_full_amount(model)
-      return if model.stripe_integrations.active.full_amount.any?
+      return unless model.current_stripe_integration.nil?
 
       stripe_integration = model.stripe_integrations.build
-      stripe_integration.assign_attributes(price_type: :full_amount, stripeable_type: model.class.name, stripeable_id: model.id)
+      stripe_integration.assign_attributes(stripeable_type: model.class.name, stripeable_id: model.id)
 
       product = Stripe::Product.create(
         name: stripe_integration.name,
@@ -100,7 +100,6 @@ module Stopover
                                    product: product[:id],
                                    currency: stripe_integration.unit_amount.currency.id,
                                    billing_scheme: 'per_unit',
-                                   nickname: stripe_integration.price_type,
                                    metadata: {
                                      stopover_id: stripe_integration.stripeable_id,
                                      stopover_model_name: stripe_integration.stripeable_type
@@ -112,7 +111,7 @@ module Stopover
     end
 
     def self.update_full_amount(model)
-      stripe_integration = model.stripe_integrations.active.full_amount.first
+      stripe_integration = model.current_stripe_integration
       stripe = retrieve(model)
 
       if stripe[:product][:name] != stripe_integration.name
@@ -134,7 +133,6 @@ module Stopover
                                      product: dup_stripe_integration.product_id,
                                      currency: dup_stripe_integration.unit_amount.currency.id,
                                      billing_scheme: 'per_unit',
-                                     nickname: dup_stripe_integration.price_type,
                                      metadata: {
                                        stopover_id: dup_stripe_integration.stripeable_id,
                                        stopover_model_name: dup_stripe_integration.stripeable_type

@@ -51,7 +51,7 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
       end
 
       expect(event.stripe_integrations.count).to eq(1)
-      expect(event.stripe_integrations.first.price_id).to eq('price_id1')
+      expect(event.current_stripe_integration.price_id).to eq('price_id1')
     end
     it 'is updated and product_id and price_id eq Stripe ids' do
       expect(Stripe::Product).to receive(:update).with({ name: integrated_event.title,
@@ -93,7 +93,7 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
         event.stripe_integrations.each do |stripe_integration|
           expect(Stripe::Price).to receive(:update).with(stripe_integration.price_id, { active: false }).and_return(price: { id: stripe_integration.price_id }).exactly(1).time
         end
-        expect(Stripe::Product).to receive(:update).with(event.stripe_integrations.first.product_id, { active: false }).and_return(product: { id: 'product_id' }).exactly(1).time
+        expect(Stripe::Product).to receive(:update).with(event.current_stripe_integration.product_id, { active: false }).and_return(product: { id: 'product_id' }).exactly(1).time
         Stopover::StripeIntegrator.delete(event)
         event.reload.stripe_integrations.each do |stripe_integration|
           expect(stripe_integration.status).to eq('deleted')
@@ -113,7 +113,7 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
         event.stripe_integrations.each do |stripe_integration|
           expect(Stripe::Price).to receive(:retrieve).with(id: stripe_integration.price_id).and_return('price').exactly(1).time
         end
-        expect(Stripe::Product).to receive(:retrieve).with(id: event.stripe_integrations.first.product_id).and_return('product').exactly(1).time
+        expect(Stripe::Product).to receive(:retrieve).with(id: event.current_stripe_integration.product_id).and_return('product').exactly(1).time
         expect(Stopover::StripeIntegrator.retrieve(event)).to eq({ product: 'product',
                                                                    prices: { full_amount: 'price' } })
       end

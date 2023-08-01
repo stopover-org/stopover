@@ -4,23 +4,26 @@
 #
 # Table name: bookings
 #
-#  id          :bigint           not null, primary key
-#  status      :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  event_id    :bigint
-#  schedule_id :bigint
-#  trip_id     :bigint
+#  id                    :bigint           not null, primary key
+#  status                :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  event_id              :bigint
+#  schedule_id           :bigint
+#  stripe_integration_id :bigint
+#  trip_id               :bigint
 #
 # Indexes
 #
-#  index_bookings_on_event_id     (event_id)
-#  index_bookings_on_schedule_id  (schedule_id)
-#  index_bookings_on_trip_id      (trip_id)
+#  index_bookings_on_event_id               (event_id)
+#  index_bookings_on_schedule_id            (schedule_id)
+#  index_bookings_on_stripe_integration_id  (stripe_integration_id)
+#  index_bookings_on_trip_id                (trip_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (schedule_id => schedules.id)
+#  fk_rails_...  (stripe_integration_id => stripe_integrations.id)
 #
 class Booking < ApplicationRecord
   # MODULES ===============================================================
@@ -44,6 +47,7 @@ class Booking < ApplicationRecord
   belongs_to :event
   belongs_to :trip
   belongs_to :schedule
+  belongs_to :stripe_integration
 
   has_one :account, through: :trip
 
@@ -77,6 +81,7 @@ class Booking < ApplicationRecord
   # CALLBACKS ================================================================
   before_validation :create_trip, if: :should_create_trip
   before_validation :create_attendee
+  before_validation :adjust_stripe_integration, on: :create
   before_create :create_booking_options
 
   # SCOPES =====================================================================
@@ -162,5 +167,9 @@ class Booking < ApplicationRecord
 
   def create_trip
     Trip.create(bookings: [self])
+  end
+
+  def adjust_stripe_integration
+    self.stripe_integration = event.current_stripe_integration
   end
 end
