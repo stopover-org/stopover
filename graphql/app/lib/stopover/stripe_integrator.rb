@@ -50,7 +50,7 @@ module Stopover
         price_ids.store(stripe_integration.price_id.to_sym, stripe_integration.price_id)
         product_ids << product_id
 
-        stripe_integration.soft_delete!
+        stripe_integration.remove!
       end
 
       {

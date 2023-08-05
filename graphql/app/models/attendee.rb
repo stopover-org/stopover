@@ -55,7 +55,7 @@ class Attendee < ApplicationRecord
       transitions from: :registered, to: :not_registered
     end
 
-    event :soft_delete do
+    event :remove do
       transitions from: %i[registered not_registered], to: :removed
     end
   end

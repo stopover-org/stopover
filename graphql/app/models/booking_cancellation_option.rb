@@ -39,7 +39,7 @@ class BookingCancellationOption < ApplicationRecord
   aasm column: :status do
     state :active, initial: true
     state :inactive
-    state :deleted
+    state :removed
 
     event :activate, before_save: :set_activated_at do
       transitions from: %i[inactive], to: :active
@@ -49,8 +49,8 @@ class BookingCancellationOption < ApplicationRecord
       transitions from: %i[active], to: :inactive
     end
 
-    event :soft_delete do
-      transitions from: %i[active inactive], to: :deleted
+    event :remove do
+      transitions from: %i[active inactive], to: :removed
     end
   end
 

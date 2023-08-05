@@ -47,7 +47,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
 
   const tagColor = useStatusColor({
     primary: ["active"],
-    danger: ["deleted"],
+    danger: ["removed"],
     info: ["pending"],
     status: firm.status,
   });
@@ -193,7 +193,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
         <Fieldset>
           <Grid xs={12}>
             <Stack flexDirection="row" justifyContent="flex-start">
-              {firm.status !== "deleted" && (
+              {firm.status !== "removed" && (
                 <Link href="/my-firm/edit" underline={false}>
                   <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
                     Edit

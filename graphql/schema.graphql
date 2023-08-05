@@ -163,14 +163,14 @@ enum BookingCancellationOptionStatusEnum {
   active
 
   """
-  removed cancellation option
-  """
-  deleted
-
-  """
   disabled cancellation option
   """
   inactive
+
+  """
+  removed cancellation option
+  """
+  removed
 }
 
 """
@@ -1528,11 +1528,6 @@ enum StripeConnectStatusEnum {
   active
 
   """
-  stripe connect was removed
-  """
-  deleted
-
-  """
   stripe connect was out of sync
   """
   inactive
@@ -1541,6 +1536,11 @@ enum StripeConnectStatusEnum {
   default value. stripe connect was just initialized
   """
   pending
+
+  """
+  stripe connect was removed
+  """
+  removed
 }
 
 type StripeIntegration implements Node {
@@ -1597,7 +1597,7 @@ enum StripeIntegrationStatusEnum {
   """
   stripe integration was removed
   """
-  deleted
+  removed
 }
 
 """

@@ -46,7 +46,7 @@ export function useStripeConnectsHeaders(currentUserFragmentRef: any) {
 }
 const StatusTag = ({ status }: { status: string }) => {
   const color = useStatusColor({
-    danger: ["deleted", "inactive"],
+    danger: ["removed", "inactive"],
     primary: ["active"],
     neutral: ["pending"],
     status,

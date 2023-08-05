@@ -4,6 +4,6 @@ module Types
   class BookingCancellationOptionStatusEnum < Types::BaseEnum
     value 'active', 'available cancellation option'
     value 'inactive', 'disabled cancellation option'
-    value 'deleted', 'removed cancellation option'
+    value 'removed', 'removed cancellation option'
   end
 end

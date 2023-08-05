@@ -91,7 +91,7 @@ class Event < ApplicationRecord
     state :draft, initial: true
     state :published
     state :unpublished
-    state :deleted
+    state :removed
 
     event :publish do
       transitions from: :unpublished, to: :published, guard: :can_publish
@@ -99,11 +99,11 @@ class Event < ApplicationRecord
     event :unpublish do
       transitions from: %i[draft published], to: :unpublished
     end
-    event :soft_delete do
-      transitions from: %i[published unpublished draft], to: :deleted
+    event :remove do
+      transitions from: %i[published unpublished draft], to: :removed
     end
     event :restore do
-      transitions from: :deleted, to: :draft
+      transitions from: :removed, to: :draft
     end
   end
 
@@ -142,7 +142,7 @@ class Event < ApplicationRecord
 
   # CALLBACKS ================================================================
   before_validation :set_prices
-  before_validation :adjust_prices, unless: :deleted?
+  before_validation :adjust_prices, unless: :removed?
   after_commit :sync_stripe
 
   # SCOPES =====================================================================

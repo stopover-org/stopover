@@ -96,7 +96,7 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
         expect(Stripe::Product).to receive(:update).with(event.current_stripe_integration.product_id, { active: false }).and_return(product: { id: 'product_id' }).exactly(1).time
         Stopover::StripeIntegrator.delete(event)
         event.reload.stripe_integrations.each do |stripe_integration|
-          expect(stripe_integration.status).to eq('deleted')
+          expect(stripe_integration.status).to eq('removed')
         end
       end
       let!(:event_no_stripe) { create(:event) }

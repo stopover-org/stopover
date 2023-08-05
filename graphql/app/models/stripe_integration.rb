@@ -38,13 +38,13 @@ class StripeIntegration < ApplicationRecord
   # AASM STATES ================================================================
   aasm column: :status do
     state :active, initial: true
-    state :deleted
+    state :removed
 
-    event :soft_delete do
-      transitions from: :active, to: :deleted
+    event :remove do
+      transitions from: :active, to: :removed
     end
     event :activate do
-      transitions from: :deleted, to: :active
+      transitions from: :removed, to: :active
     end
   end
   # ENUMS =======================================================================

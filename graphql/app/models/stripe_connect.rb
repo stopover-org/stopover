@@ -36,7 +36,7 @@ class StripeConnect < ApplicationRecord
     state :pending, initial: true
     state :active
     state :inactive
-    state :deleted
+    state :removed
 
     event :activate, before_save: :set_activated_at do
       before do
@@ -49,8 +49,8 @@ class StripeConnect < ApplicationRecord
       transitions from: %i[pending active], to: :inactive
     end
 
-    event :soft_delete do
-      transitions from: %i[pending active inactive], to: :deleted
+    event :remove do
+      transitions from: %i[pending active inactive], to: :removed
     end
   end
 

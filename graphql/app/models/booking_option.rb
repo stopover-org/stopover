@@ -28,7 +28,7 @@
 #
 class BookingOption < ApplicationRecord
   # MODULES ===============================================================
-  include AASM
+  include Mixins::OptionStatuses
 
   # MONETIZE =====================================================================
   monetize :attendee_price_cents
@@ -48,19 +48,7 @@ class BookingOption < ApplicationRecord
   belongs_to :event_option
   belongs_to :stripe_integration
 
-  # AASM STATES ================================================================
-  aasm column: :status do
-    state :available, initial: true
-    state :not_available
-
-    event :disable do
-      transitions from: :available, to: :not_available
-    end
-
-    event :restore do
-      transitions from: :not_available, to: :available
-    end
-  end
+  # AASM STATES ================================================================d
 
   # ENUMS =======================================================================
   #

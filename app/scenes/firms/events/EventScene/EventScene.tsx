@@ -84,7 +84,7 @@ const EventScene = ({
   const [tab, setTab] = React.useState(0);
   const tagColor = useStatusColor({
     primary: ["published"],
-    danger: ["deleted"],
+    danger: ["removed"],
     info: ["unpublished"],
     neutral: ["draft"],
     status: event.status,
@@ -123,7 +123,7 @@ const EventScene = ({
           {event.status === "published" && event.firm.status === "active" && (
             <UnpublishEvent eventFragmentRef={event} />
           )}
-          {event.status !== "deleted" && (
+          {event.status !== "removed" && (
             <RemoveEvent eventFragmentRef={event} />
           )}
           {currentUser.serviceUser &&

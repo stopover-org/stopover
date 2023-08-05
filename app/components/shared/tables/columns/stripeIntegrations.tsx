@@ -6,7 +6,7 @@ import Tag from "../../../v2/Tag/Tag";
 
 const StatusTag = ({ status }: { status: string }) => {
   const color = useStatusColor({
-    danger: ["deleted"],
+    danger: ["removed"],
     primary: ["active"],
     status,
   });
