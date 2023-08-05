@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Mutations
-  module TripeMutations
+  module TripsMutations
     class CancelTrip < BaseMutation
       authorized_only
       authorize ->(trip:) { 'You don\'t have permission' if trip.account != current_account }

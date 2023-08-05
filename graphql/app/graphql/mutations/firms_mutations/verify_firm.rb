@@ -1,15 +1,17 @@
 # frozen_string_literal: true
 
 module Mutations
-  class VerifyFirm < BaseMutation
-    service_user_only
-    field :firm, Types::FirmType
+  module FirmsMutations
+    class VerifyFirm < BaseMutation
+      service_user_only
+      field :firm, Types::FirmType
 
-    def resolve(**_args)
-      current_firm.activate!
-      {
-        firm: current_firm
-      }
+      def resolve(**_args)
+        current_firm.activate!
+        {
+          firm: current_firm
+        }
+      end
     end
   end
 end

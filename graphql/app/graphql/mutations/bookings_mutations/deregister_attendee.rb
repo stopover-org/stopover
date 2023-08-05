@@ -1,18 +1,20 @@
 # frozen_string_literal: true
 
 module Mutations
-  class DeregisterAttendee < BaseMutation
-    manager_only
+  module BookingsMutations
+    class DeregisterAttendee < BaseMutation
+      manager_only
 
-    field :attendee, Types::AttendeeType
+      field :attendee, Types::AttendeeType
 
-    argument :attendee_id, ID, loads: Types::AttendeeType
-    def resolve(attendee:, **_args)
-      attendee.deregister!
+      argument :attendee_id, ID, loads: Types::AttendeeType
+      def resolve(attendee:, **_args)
+        attendee.deregister!
 
-      {
-        attendee: attendee
-      }
+        {
+          attendee: attendee
+        }
+      end
     end
   end
 end
