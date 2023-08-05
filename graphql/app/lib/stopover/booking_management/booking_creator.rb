@@ -4,8 +4,8 @@ module Stopover
   module BookingManagement
     class BookingCreator
       def initialize(user = nil)
-        @user = user || User.create!(status: :temporary)
-        @account = @user.account || Account.create!(user: @user)
+        @user = user
+        @account = @user.account
         @current_trip_service = Stopover::CurrentTripService.new(user: @user)
       end
 

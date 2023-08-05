@@ -60,13 +60,14 @@ class GraphqlController < ApplicationController
            status: :internal_server_error
   end
 
-  def skip_authorization?
-    true
-    # return [:sign_in, :introspection_query].include?(params[:operationName].underscore.to_sym)
-  end
-
   def authorize!
     user = Stopover::AuthorizationSupport.decode_user(headers: request.headers, cookies: cookies)
+
+    if user.nil?
+      user = User.create!(status: :temporary)
+      Account.create!(user: user)
+    end
+
     @current_user = user
   rescue StandardError => e
     Sentry.capture_exception(e) if Rails.env.production?
