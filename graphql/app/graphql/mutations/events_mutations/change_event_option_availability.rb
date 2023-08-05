@@ -2,6 +2,7 @@
 
 module Mutations
   class ChangeEventOptionAvailability < BaseMutation
+    manager_only
     field :event_option, Types::EventOptionType
 
     argument :event_option_id, ID, loads: Types::EventOptionType

@@ -2,6 +2,9 @@
 
 module Mutations
   class CancelBooking < BaseMutation
+    authorized_only
+    authorize ->(booking:) { 'You don\'t have permissions' if booking.user != current_user && current_firm != booking.firm }
+
     field :booking, Types::BookingType
     field :trip, Types::TripType
 
@@ -9,14 +12,7 @@ module Mutations
 
     def resolve(booking:)
       {
-        booking: Stopover::BookingManagement::BookingCancellation.new(booking, context[:current_user]).perform,
-        trip: booking.trip
-      }
-    rescue StandardError => e
-      Sentry.capture_exception(e) if Rails.env.production?
-
-      {
-        booking: nil,
+        booking: Stopover::BookingManagement::BookingCancellation.new(booking, current_user).perform,
         trip: booking.trip
       }
     end

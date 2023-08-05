@@ -11,7 +11,7 @@ module Mutations
 
       def resolve(event:)
         {
-          event: Stopover::EventManagement::EventRescheduler.new(event, context[:current_user]).perform
+          event: Stopover::EventManagement::EventRescheduler.new(event, current_user).perform
         }
       end
     end

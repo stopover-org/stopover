@@ -2,6 +2,8 @@
 
 module Mutations
   class ChangeBookingOptionAvailability < BaseMutation
+    manager_only
+
     field :booking_option, Types::BookingOptionType
 
     argument :booking_option_id, ID, loads: Types::BookingOptionType

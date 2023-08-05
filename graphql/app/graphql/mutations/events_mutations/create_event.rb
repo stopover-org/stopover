@@ -55,7 +55,7 @@ module Mutations
       argument :images, [String], required: false
 
       def resolve(**args)
-        event = Stopover::EventManagement::EventCreator.new(context).execute(**args)
+        event = Stopover::EventManagement::EventCreator.new(current_firm).execute(**args)
 
         { event: event }
       end

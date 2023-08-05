@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Mutations
-  class CreateFirm < BaseMutation
+  class UpdateFirm < BaseMutation
+    manager_only
     field :firm, Types::FirmType
 
     argument :city,           String, required: false
@@ -24,26 +25,17 @@ module Mutations
     argument :payment_types,  [String], required: false
 
     def resolve(**args)
-      raise GraphQL::ExecutionError, 'unauthorized'               unless context[:current_user]
-      raise GraphQL::ExecutionError, 'user has no account'        unless context[:current_user].account
-      raise GraphQL::ExecutionError, 'account already has a firm' if context[:current_user].account
-                                                                                           .current_firm
+      current_firm.update!(args.except(:image))
 
-      firm = Firm.new
-      firm.assign_attributes(args.except(:image))
-
-      firm.primary_email = context[:current_user].email if args[:primary_email].blank?
-      firm.primary_phone = context[:current_user].phone if args[:primary_phone].blank?
-
-      firm.account_firms.build(firm: firm, account: context[:current_user].account)
-      firm.save!
-
-      if args[:image]
-        io_object = Stopover::FilesSupport.base64_to_file(args[:image])
-        firm.image.attach(io_object)
+      if args[:image].present?
+        current_firm.image.purge if current_firm.image.present?
+        io_object = Stopover::FilesSupport.url_to_io(args[:image])
+        current_firm.image.attach(io_object)
+      elsif current_firm.image.present?
+        current_firm.image.purge
       end
 
-      { firm: firm }
+      { firm: current_firm }
     end
   end
 end

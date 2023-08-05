@@ -50,8 +50,8 @@ class Booking < ApplicationRecord
   belongs_to :stripe_integration
 
   has_one :account, through: :trip
-
   has_one :user,    through: :account
+  has_one :firm,    through: :event
 
   has_many :booking_cancellation_options, through: :event
 

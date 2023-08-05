@@ -2,6 +2,9 @@
 
 module Mutations
   class UpdateBooking < BaseMutation
+    authorized_only
+    authorize ->(booking:) { 'You don\'t have permissions' if booking.user != current_user && current_firm != booking.firm }
+
     argument :booking_id, ID, loads: Types::BookingType
     argument :status, String, required: false
     argument :booked_for, Types::DateTimeType, required: false
@@ -23,13 +26,6 @@ module Mutations
 
       {
         booking: booking
-      }
-    rescue StandardError => e
-      Sentry.capture_exception(e) if Rails.env.production?
-
-      {
-        booking: nil,
-        error: e.message
       }
     end
   end

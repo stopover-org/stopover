@@ -3,8 +3,8 @@
 module Stopover
   module EventManagement
     class EventCreator
-      def initialize(context)
-        @context = context
+      def initialize(current_firm)
+        @current_firm = current_firm
       end
 
       def execute(**args)
@@ -17,7 +17,7 @@ module Stopover
                                               :images,
                                               :deposit_amount_cents,
                                               :booking_cancellation_options))
-          event.firm = @context[:current_user].account.current_firm
+          event.firm = @current_firm
           if args[:event_options].present?
             args[:event_options].map do |option|
               event_option = event.event_options.build

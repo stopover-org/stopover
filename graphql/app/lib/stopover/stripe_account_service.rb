@@ -22,24 +22,22 @@ module Stopover
       stripe_connect
     end
 
-    def self.create_stripe_account(user)
-      raise StandardError('Account has\'t firm') unless user.account.current_firm
-      firm = user.account.current_firm
+    def self.create_stripe_account(firm, account)
       country_code = ISO3166::Country.find_country_by_iso_short_name(firm.country)&.alpha2 || 'DE'
-      account = Stripe::Account.create({
-                                         type: 'express',
+      stripe_account = Stripe::Account.create({
+                                                type: 'express',
                                          country: country_code,
                                          email: firm.primary_email,
                                          capabilities: {
                                            card_payments: { requested: true },
                                            transfers: { requested: true }
                                          }
-                                       })
+                                              })
 
       # Prefil company details before sending url to the customer
-      if user.account.current_firm.individual?
+      if firm.individual?
         Stripe::Account.update(
-          account.id,
+          stripe_account.id,
           business_type: firm.business_type,
           individual: {
             address: {
@@ -49,17 +47,17 @@ module Stopover
               postal_code: firm.postal_code
             },
             email: firm.primary_email,
-            first_name: user.account.name,
-            last_name: user.account.last_name,
+            first_name: account.name,
+            last_name: account.last_name,
             phone: firm.primary_phone
           }
         )
       end
 
-      if user.account.current_firm.company?
+      if firm.company?
         Stripe::Account.update(
-          account.id,
-          business_type: user.account.current_firm.business_type,
+          stripe_account.id,
+          business_type: firm.business_type,
           company: {
             address: {
               city: firm.city,
@@ -73,22 +71,16 @@ module Stopover
         )
       end
 
-      user.account.current_firm.update!(stripe_account_id: account.id)
+      firm.update!(stripe_account_id: stripe_account.id)
 
       account_link = Stripe::AccountLink.create({
-                                                  account: account[:id],
+                                                  account: stripe_account[:id],
                                                   refresh_url: "#{Rails.application.credentials.frontend_url}/my-firm/dashboard?stripe_connect=verify",
                                                   return_url: "#{Rails.application.credentials.frontend_url}/my-firm/dashboard?stripe_connect=verify",
                                                   type: 'account_onboarding'
                                                 })
       {
         account_link: account_link.url
-      }
-    rescue StandardError => e
-      Sentry.capture_exception(e) if Rails.env.production?
-
-      {
-        account_link: nil
       }
     end
   end

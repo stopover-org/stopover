@@ -2,6 +2,9 @@
 
 module Mutations
   class UpdateAttendee < BaseMutation
+    authorized_only
+    authorize ->(attendee:) { 'You don\'t have permissions' if attendee.booking.user != current_user && current_firm != attendee.booking.firm }
+
     field :attendee, Types::AttendeeType
 
     argument :attendee_id, ID, loads: Types::AttendeeType
@@ -24,13 +27,6 @@ module Mutations
       attendee.update!(**args.except(:event_options))
       {
         attendee: attendee
-      }
-    rescue StandardError => e
-      Sentry.capture_exception(e) if Rails.env.production?
-
-      {
-        attendee: nil,
-        error: e.message
       }
     end
   end

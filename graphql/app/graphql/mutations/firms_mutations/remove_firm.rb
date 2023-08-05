@@ -2,12 +2,13 @@
 
 module Mutations
   class RemoveFirm < BaseMutation
+    manager_only
     field :firm, Types::FirmType
 
     def resolve(**_args)
-      context[:current_user].account.current_firm.remove!
+      current_firm.remove!
       {
-        firm: context[:current_user].account.current_firm
+        firm: current_firm
       }
     end
   end

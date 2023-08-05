@@ -9,10 +9,8 @@ module Mutations
 
       argument :event_id, ID, loads: Types::EventType
       def resolve(event:)
-        publisher = Stopover::EventManagement::EventPublisher.new(event, context[:current_user])
-
         {
-          event: publisher.unpublish
+          event: Stopover::EventManagement::EventPublisher.new(event, current_user).unpublish
         }
       end
     end

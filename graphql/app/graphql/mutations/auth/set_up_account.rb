@@ -2,6 +2,8 @@
 
 module Mutations
   class SetUpAccount < BaseMutation
+    authorized_only
+
     field :user, Types::UserType
 
     argument :name, String

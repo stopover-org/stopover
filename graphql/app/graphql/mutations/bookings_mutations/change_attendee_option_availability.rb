@@ -2,6 +2,8 @@
 
 module Mutations
   class ChangeAttendeeOptionAvailability < BaseMutation
+    manager_only
+
     field :attendee_option, Types::AttendeeOptionType
 
     argument :attendee_option_id, ID, loads: Types::AttendeeOptionType
