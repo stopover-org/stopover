@@ -12,15 +12,21 @@
 #  updated_at            :datetime         not null
 #  attendee_id           :bigint
 #  event_option_id       :bigint
+#  stripe_integration_id :bigint
 #
 # Indexes
 #
-#  index_attendee_options_on_attendee_id      (attendee_id)
-#  index_attendee_options_on_event_option_id  (event_option_id)
+#  index_attendee_options_on_attendee_id            (attendee_id)
+#  index_attendee_options_on_event_option_id        (event_option_id)
+#  index_attendee_options_on_stripe_integration_id  (stripe_integration_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (stripe_integration_id => stripe_integrations.id)
 #
 class AttendeeOption < ApplicationRecord
   # MODULES ======================================================================
-  include AASM
+  include Mixins::OptionStatuses
 
   # MONETIZE =====================================================================
   monetize :attendee_price_cents
@@ -38,20 +44,9 @@ class AttendeeOption < ApplicationRecord
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :attendee
   belongs_to :event_option
+  belongs_to :stripe_integration
 
   # AASM STATES ================================================================
-  aasm column: :status do
-    state :available, initial: true
-    state :not_available
-
-    event :disable do
-      transitions from: :available, to: :not_available
-    end
-
-    event :restore do
-      transitions from: :not_available, to: :available
-    end
-  end
 
   # ENUMS =======================================================================
   #
@@ -60,6 +55,7 @@ class AttendeeOption < ApplicationRecord
 
   # CALLBACKS ================================================================
   before_validation :adjust_prices
+  before_validation :adjust_stripe_integration, on: :create
 
   # SCOPES =====================================================================
   #
@@ -78,5 +74,9 @@ class AttendeeOption < ApplicationRecord
     return if attendee.booking.payments.where(status: %i[successful]).any?
     adjust_prices
     save!
+  end
+
+  def adjust_stripe_integration
+    self.stripe_integration = event_option.current_stripe_integration
   end
 end

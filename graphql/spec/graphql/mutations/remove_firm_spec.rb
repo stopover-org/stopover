@@ -23,7 +23,7 @@ RSpec.describe Firm, type: :model do
                             context: { current_user: firm.accounts.first.user })
     end
 
-    it 'firm deleted' do
+    it 'firm removed' do
       expect(RemoveFirmJob).to receive(:perform_later).with(firm.id)
       subject
     end

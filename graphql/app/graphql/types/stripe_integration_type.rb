@@ -7,7 +7,7 @@ module Types
     field :stripeable_id, String, null: false
     field :price_id, String, null: false
     field :product_id, String, null: false
-    field :price_type, String, null: false
+    field :version, Integer, null: false
     field :status, Types::StripeIntegrationStatusEnum, null: false
   end
 end

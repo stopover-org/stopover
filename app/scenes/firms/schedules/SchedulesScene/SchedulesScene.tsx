@@ -42,6 +42,7 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
                 }
                 bookings {
                   id
+                  status
                   event {
                     id
                     title
@@ -70,6 +71,24 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
                     lastName
                     phone
                     email
+                  }
+                  bookingOptions {
+                    id
+                    eventOption {
+                      title
+                    }
+                    organizerPrice {
+                      cents
+                      currency {
+                        name
+                      }
+                    }
+                    attendeePrice {
+                      cents
+                      currency {
+                        name
+                      }
+                    }
                   }
                 }
               }

@@ -5,9 +5,9 @@
 # Table name: stripe_integrations
 #
 #  id              :bigint           not null, primary key
-#  price_type      :string
 #  status          :string
 #  stripeable_type :string
+#  version         :integer          default(1)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  price_id        :string
@@ -36,29 +36,28 @@ class StripeIntegration < ApplicationRecord
   belongs_to :stripeable, polymorphic: true
 
   # AASM STATES ================================================================
-  enum price_type: {
-    full_amount: 'full_amount'
-  }
-
   aasm column: :status do
     state :active, initial: true
-    state :deleted
+    state :removed
 
-    event :soft_delete do
-      transitions from: :active, to: :deleted
+    event :remove do
+      transitions from: :active, to: :removed
     end
     event :activate do
-      transitions from: :deleted, to: :active
+      transitions from: :removed, to: :active
     end
   end
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  #
+  validates :version, :status,
+            :price_id, :product_id,
+            presence: true, uniqueness: { scope: [:id] }
   # CALLBACKS ================================================================
   #
   # SCOPES =====================================================================
-  #
+  default_scope { order(version: :desc) }
+
   # DELEGATIONS ==============================================================
 
   def name

@@ -8,6 +8,8 @@ import Tag from "../../../../../components/v2/Tag/Tag";
 import { dateFormat, dateTimeFormat } from "../../../../../lib/utils/dates";
 import Checkbox from "../../../../../components/v2/Checkbox";
 import ImagesPreview from "../../../../../components/shared/ImagesPreview";
+import CancellationsSection from "./CancellationsSection";
+import Section from "../../../../../components/v2/Section";
 
 interface GeneralInformationProps {
   eventFragmentRef: GeneralInformation_EventFragment$key;
@@ -42,6 +44,12 @@ const GeneralInformation = ({
         singleDaysWithTime
         street
         title
+        depositAmount {
+          cents
+          currency {
+            name
+          }
+        }
         organizerPricePerUom {
           cents
           currency {
@@ -54,6 +62,10 @@ const GeneralInformation = ({
             name
           }
         }
+        firm {
+          paymentTypes
+        }
+        ...CancellationsSection_EventFragment
       }
     `,
     eventFragmentRef
@@ -62,7 +74,7 @@ const GeneralInformation = ({
   return (
     <TabPanel value={index} size="sm" sx={{ paddingTop: "20px" }}>
       <Sheet>
-        <Card sx={{ width: "100%", fontSize: "sm" }} variant="outlined">
+        <Section>
           <Grid container xs={12}>
             <Grid xs={2}>Title</Grid>
             <Grid xs={10}>{event.title}</Grid>
@@ -87,13 +99,25 @@ const GeneralInformation = ({
               )}
             </Grid>
 
-            <Grid xs={2}>Attendee pay</Grid>
+            <Grid xs={2}>They pay</Grid>
             <Grid xs={10}>
               {getCurrencyFormat(
                 event.attendeePricePerUom?.cents,
                 event.attendeePricePerUom?.currency.name
               )}
             </Grid>
+
+            {event.firm.paymentTypes.includes("cash") && (
+              <>
+                <Grid xs={2}>For Cash Payment requires deposit</Grid>
+                <Grid xs={10}>
+                  {getCurrencyFormat(
+                    event.depositAmount?.cents,
+                    event.depositAmount?.currency.name
+                  )}
+                </Grid>
+              </>
+            )}
 
             <Grid xs={2}>Recurring Dates</Grid>
             <Grid xs={10}>
@@ -181,7 +205,8 @@ const GeneralInformation = ({
               {event.endDate ? moment(event.endDate).format(dateFormat) : "N/A"}
             </Grid>
           </Grid>
-        </Card>
+        </Section>
+        <CancellationsSection eventFragmentRef={event} />
       </Sheet>
     </TabPanel>
   );

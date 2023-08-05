@@ -98,7 +98,7 @@ RSpec.describe Mutations::UpdateAttendee do
                               })
       end
 
-      it 'attendee options deleted' do
+      it 'attendee options removed' do
         expect(attendee.attendee_options.first).to eq(attendee_option1)
         expect(attendee.attendee_options.second).to eq(attendee_option2)
         subject

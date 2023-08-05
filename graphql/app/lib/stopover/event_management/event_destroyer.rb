@@ -9,9 +9,9 @@ module Stopover
       end
 
       def perform
-        @event.soft_delete!
+        @event.remove!
 
-        RemoveEventJob.perform_later(@event.id)
+        RemoveEventJob.perform_later(event_id: @event.id)
 
         @event
       end

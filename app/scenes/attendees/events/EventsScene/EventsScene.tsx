@@ -35,13 +35,13 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String", defaultValue: "" }
         ) {
-          schedules(first: $count, after: $cursor)
-            @connection(key: "EventsScene_query_schedules") {
+          events(first: $count, after: $cursor)
+            @connection(key: "EventsScene_query_events") {
             edges {
               node {
                 id
-                ...EventCardCompacts_ScheduleFragment
-                ...EventCardWide_ScheduleFragment
+                ...EventCardCompacts_EventFragment
+                ...EventCardWide_EventFragment
               }
             }
           }
@@ -52,7 +52,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       `,
       eventsFragmentRef
     );
-  const schedules = usePagedEdges(data.schedules, currentPage, 10);
+  const events = usePagedEdges(data.events, currentPage, 10);
 
   return (
     <Grid
@@ -80,22 +80,17 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           <SearchBar />
         </Grid>
         <Grid xl={9} lg={12} xs={12} container>
-          {schedules.map((schedule, index) => {
+          {events.map((event, index) => {
             if (index === 0) {
               if (isVeryLargeDisplay || isLargeDisplay) {
                 return (
-                  <Grid key={schedule.id} xs={12} lg={12} xl={12} padding={0}>
-                    <EventCardWide scheduleReference={schedule} />
+                  <Grid key={event.id} xs={12} lg={12} xl={12} padding={0}>
+                    <EventCardWide eventFragmentRef={event} />
                   </Grid>
                 );
               }
             }
-            return (
-              <EventCardCompact
-                key={schedule.id}
-                scheduleReference={schedule}
-              />
-            );
+            return <EventCardCompact key={event.id} eventFragmentRef={event} />;
           })}
           <Grid xs={12}>
             <Pagination

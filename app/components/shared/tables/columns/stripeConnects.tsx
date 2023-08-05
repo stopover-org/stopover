@@ -13,11 +13,7 @@ export function useStripeConnectsHeaders(currentUserFragmentRef: any) {
   const currentUser = useFragment(
     graphql`
       fragment stripeConnects_HeadersRef on User {
-        account {
-          firm {
-            id
-          }
-        }
+        serviceUser
       }
     `,
     currentUserFragmentRef
@@ -32,7 +28,15 @@ export function useStripeConnectsHeaders(currentUserFragmentRef: any) {
         label: "Activated At",
         key: "activatedAt",
       },
-      currentUser?.account?.firm?.id && {
+      {
+        label: "Created At",
+        key: "createdAt",
+      },
+      {
+        label: "Updated At",
+        key: "updatedAt",
+      },
+      currentUser?.serviceUser && {
         label: "Actions",
         key: "actions",
       },
@@ -42,7 +46,7 @@ export function useStripeConnectsHeaders(currentUserFragmentRef: any) {
 }
 const StatusTag = ({ status }: { status: string }) => {
   const color = useStatusColor({
-    danger: ["deleted", "inactive"],
+    danger: ["removed", "inactive"],
     primary: ["active"],
     neutral: ["pending"],
     status,
@@ -65,6 +69,8 @@ export function useStripeConnectsColumns(
         stripeConnects {
           status
           activatedAt
+          createdAt
+          updatedAt
           ...VerifyStripeConnect_StripeConnect
           ...DeclineStripeConnect_StripeConnect
         }
@@ -95,6 +101,8 @@ export function useStripeConnectsColumns(
       activatedAt: stripeConnect.activatedAt
         ? getHumanDateTime(moment(stripeConnect.activatedAt))
         : "Not Activated",
+      createdAt: getHumanDateTime(moment(stripeConnect.createdAt)),
+      updatedAt: getHumanDateTime(moment(stripeConnect.updatedAt)),
       actions: currentUser?.account?.firm?.id && (
         <Stack direction="row">
           {!activeStripeAccount &&

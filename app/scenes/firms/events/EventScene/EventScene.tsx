@@ -47,6 +47,7 @@ const EventScene = ({
         }
         firm {
           status
+          paymentTypes
         }
         stripeIntegrations {
           nodes {
@@ -83,7 +84,7 @@ const EventScene = ({
   const [tab, setTab] = React.useState(0);
   const tagColor = useStatusColor({
     primary: ["published"],
-    danger: ["deleted"],
+    danger: ["removed"],
     info: ["unpublished"],
     neutral: ["draft"],
     status: event.status,
@@ -122,7 +123,7 @@ const EventScene = ({
           {event.status === "published" && event.firm.status === "active" && (
             <UnpublishEvent eventFragmentRef={event} />
           )}
-          {event.status !== "deleted" && (
+          {event.status !== "removed" && (
             <RemoveEvent eventFragmentRef={event} />
           )}
           {currentUser.serviceUser &&
@@ -132,7 +133,8 @@ const EventScene = ({
             )}
           {currentUser.serviceUser &&
             ["published", "unpublished"].includes(event.status) &&
-            event.firm.status === "active" && (
+            event.firm.status === "active" &&
+            event.firm.paymentTypes.includes("stripe") && (
               <SyncStripe eventFragmentRef={event} />
             )}
         </Stack>
@@ -158,22 +160,27 @@ const EventScene = ({
             <Tab variant={tab === 3 ? "outlined" : "plain"}>
               Bookings ( {event.bookings.nodes.length} )
             </Tab>
-            <Tab variant={tab === 4 ? "outlined" : "plain"}>
-              Stripe Integrations ( {event.stripeIntegrations.nodes.length} ){" "}
-              <Tag
-                link={false}
-                color="neutral"
-                sx={{ height: "18px", fontSize: "10px", padding: "2px 4px" }}
-              >
-                Service User
-              </Tag>
-            </Tab>
+            {currentUser?.serviceUser && (
+              <Tab variant={tab === 4 ? "outlined" : "plain"}>
+                Stripe Integrations ( {event.stripeIntegrations.nodes.length} ){" "}
+                <Tag
+                  link={false}
+                  color="neutral"
+                  sx={{ height: "18px", fontSize: "10px", padding: "2px 4px" }}
+                >
+                  Service User
+                </Tag>
+              </Tab>
+            )}
           </TabList>
           <GeneralInformation index={0} eventFragmentRef={event} />
           <EventOptionsInformation index={1} eventFragmentRef={event} />
           <SchedulesInformation index={2} eventFragmentRef={event} />
           <BookingsInformation index={3} eventFragmentRef={event} />
-          <StripeIntegrationsInformation index={4} eventFragmentRef={event} />
+
+          {currentUser?.serviceUser && (
+            <StripeIntegrationsInformation index={4} eventFragmentRef={event} />
+          )}
         </Tabs>
       </Grid>
     </Grid>

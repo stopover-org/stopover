@@ -14,11 +14,14 @@ interface EditEventSceneProps {
 }
 
 const CreateEventScene = ({ eventFragmentRef }: EditEventSceneProps) => {
-  const event = useFragment(
+  const event = useFragment<EditEventScene_EventFragment$key>(
     graphql`
       fragment EditEventScene_EventFragment on Event {
         title
         id
+        firm {
+          ...EditEventForm_FirmFragment
+        }
         ...useUpdateEventForm_EventFragment
       }
     `,
@@ -29,6 +32,7 @@ const CreateEventScene = ({ eventFragmentRef }: EditEventSceneProps) => {
     "Event Data",
     "Dates",
     "Event Options",
+    "Payment Settings",
   ]);
 
   return (
@@ -63,6 +67,7 @@ const CreateEventScene = ({ eventFragmentRef }: EditEventSceneProps) => {
             onPrevStep={setPreviousStep}
             currentStep={currentStep}
             steps={steps}
+            firmFragmentRef={event.firm}
           />
         </form>
       </FormProvider>

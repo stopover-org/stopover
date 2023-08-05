@@ -54,9 +54,9 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
   const attendeesCountField = useFormField("attendeesCount");
   const availableDates = useUniqueMomentDates(event.availableDates as Date[]);
   const availableTimes = useTimeFromDate(availableDates, dateField.value);
-  const isValidTime = availableTimes.includes(
-    dateField?.value?.format(timeFormat)
-  );
+  const isValidTime = availableTimes.filter((dt) =>
+    dt.isSame(dateField?.value)
+  ).length;
 
   const bookedDates = useUniqueMomentDates(
     event.myBookings.map((b) => b.bookedFor)
@@ -100,16 +100,17 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
         <Box paddingBottom="10px">
           <Select
             label="Choose Time"
-            onChange={(_, value) => {
+            onChange={(value: string) => {
               if (!value) return;
-              dateField.onChange(setTime(dateField.value, value.toString()));
+
+              dateField.onChange(setTime(dateField.value, value));
             }}
             value={selectedTime}
             placeholder="Select time"
           >
             {availableTimes.map((time) => (
-              <Option key={time} value={time}>
-                {time}
+              <Option key={time.unix()} value={time.format(timeFormat)}>
+                {time.format(timeFormat)}
               </Option>
             ))}
           </Select>
@@ -123,7 +124,13 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
                 ? booking.attendees.length.toString()
                 : attendeesCountField.value.toString()
             }
-            onChange={attendeesCountField.onChange}
+            onChange={(value) => {
+              if (parseInt(value, 10) > 0) {
+                attendeesCountField.onChange(value);
+              } else {
+                attendeesCountField.onChange(1);
+              }
+            }}
             readOnly={Boolean(booking)}
           />
         </Box>

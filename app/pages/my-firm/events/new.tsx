@@ -18,6 +18,7 @@ const Query = graphql`
       account {
         firm {
           id
+          ...CreateEventScene_FirmFragment
         }
       }
     }
@@ -45,7 +46,7 @@ const New = ({
         redirectTo="/firms/new"
       >
         <SidebarContent>
-          <CreateEventScene />
+          <CreateEventScene firmFragmentRef={currentUser?.account?.firm!} />
         </SidebarContent>
       </AuthGuard>
     </Layout>

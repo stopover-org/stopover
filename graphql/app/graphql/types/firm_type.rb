@@ -29,6 +29,7 @@ module Types
     field :events, Types::EventType.connection_type, null: false
 
     field :stripe_connects, [Types::StripeConnectType], null: false, require_manager: true
+    field :margin, Integer, null: false, require_service_user: true
 
     field :accounts, [Types::AccountType]
     field :event, Types::EventType do

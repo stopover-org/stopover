@@ -6,7 +6,7 @@ module Mutations
 
     argument :attendee_id, ID, loads: Types::AttendeeType
     def resolve(attendee:, **_args)
-      attendee.soft_delete!
+      attendee.remove!
       {
         attendee: attendee
       }

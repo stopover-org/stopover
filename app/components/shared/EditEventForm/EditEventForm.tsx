@@ -1,5 +1,6 @@
 import { Grid, Stack } from "@mui/joy";
 import React from "react";
+import { graphql, useFragment } from "react-relay";
 import Fieldset from "../../v2/Fieldset/Fieldset";
 import Button from "../../v2/Button/Button";
 import useFormContext from "../../../lib/hooks/useFormContext";
@@ -7,12 +8,15 @@ import GeneralStep from "./components/GeneralStep";
 import DatesStep from "./components/DatesStep";
 import EventOptionsStep from "./components/EventOptionsStep";
 import SubmitButton from "../SubmitButton";
+import PaymentSettingsStep from "./components/PaymentSettingsStep";
+import { EditEventForm_FirmFragment$key } from "../../../artifacts/EditEventForm_FirmFragment.graphql";
 
 interface EditEventFormProps {
   steps: string[];
   currentStep: number;
   onNextStep: () => void;
   onPrevStep: () => void;
+  firmFragmentRef: EditEventForm_FirmFragment$key;
 }
 
 const EditEventForm = ({
@@ -20,7 +24,16 @@ const EditEventForm = ({
   onPrevStep,
   currentStep,
   steps,
+  firmFragmentRef,
 }: EditEventFormProps) => {
+  const firm = useFragment(
+    graphql`
+      fragment EditEventForm_FirmFragment on Firm {
+        ...PaymentSettingsStep_FirmFragment
+      }
+    `,
+    firmFragmentRef
+  );
   const form = useFormContext();
   const stepFields = React.useMemo(
     () => [
@@ -33,12 +46,16 @@ const EditEventForm = ({
         "description",
         "maxAttendees",
         "minAttendees",
-        "organizerPricePerUomCents",
         "title",
         "fullAddress",
       ],
       ["recurringDates", "singleDates", "durationTime", "endDate"],
       ["eventOptions"],
+      [
+        "organizerPricePerUomCents",
+        "depositAmountCents",
+        "bookingCancellationOptions",
+      ],
     ],
     []
   );
@@ -48,6 +65,7 @@ const EditEventForm = ({
       {currentStep === 0 && <GeneralStep />}
       {currentStep === 1 && <DatesStep />}
       {currentStep === 2 && <EventOptionsStep />}
+      {currentStep === 3 && <PaymentSettingsStep firmFragmentRef={firm} />}
       <Fieldset>
         <Grid xs={12}>
           {currentStep === steps.length - 1 ? (

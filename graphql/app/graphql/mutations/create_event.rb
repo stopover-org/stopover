@@ -17,7 +17,7 @@ module Mutations
     argument :recurring_dates,  [String]
     argument :single_dates,     [String]
     argument :duration_time,    String
-    argument :end_date,         Types::DateTimeType
+    argument :end_date,         Types::DateTimeType, required: false
 
     # Address Fields
     argument :house_number, String, required: false
@@ -34,28 +34,25 @@ module Mutations
              [Types::CreateEventOptionInput],
              required: false
 
+    argument :booking_cancellation_options,
+             [Types::CreateBookingCancellationOptionInput],
+             required: false
+
     # Check In Options
     argument :requires_contract,  Boolean, required: false
     argument :requires_passport,  Boolean, required: false
     argument :requires_check_in,  Boolean, required: false
+    argument :requires_deposit,   Boolean, required: false
     argument :max_attendees,      Integer, required: false
     argument :min_attendees,      Integer, required: false
 
     argument :organizer_price_per_uom_cents, Integer
+    argument :deposit_amount_cents, Integer
 
     argument :images, [String], required: false
 
     def resolve(**args)
       event = Stopover::EventManagement::EventCreator.new(context).execute(**args)
-
-      unless args[:images].empty?
-        args[:images].each do |base64_image|
-          io_object = Stopover::FilesSupport.url_to_io(base64_image)
-          event.images.attach(io_object)
-        end
-      end
-
-      event.save!
 
       { event: event }
     end

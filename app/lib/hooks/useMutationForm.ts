@@ -118,12 +118,34 @@ function useMutationForm<
     }
   }, [JSON.stringify(form.getValues())]);
 
+  const {
+    isDirty,
+    isLoading,
+    isSubmitted,
+    isSubmitSuccessful,
+    isValidating,
+    isValid,
+    submitCount,
+    dirtyFields,
+    touchedFields,
+    errors,
+  } = form.formState;
+
   return React.useMemo(
     () => ({
       ...form,
       formState: {
-        ...form.formState,
+        isDirty,
+        isLoading,
+        isSubmitted,
+        isSubmitSuccessful,
         isSubmitting,
+        isValidating,
+        isValid,
+        submitCount,
+        dirtyFields,
+        touchedFields,
+        errors,
       },
       handleSubmit,
       useFormField,

@@ -22,7 +22,7 @@
 #
 class EventOption < ApplicationRecord
   # MODULES ===============================================================
-  include AASM
+  include Mixins::OptionStatuses
 
   # MONETIZE =====================================================================
   monetize :attendee_price_cents
@@ -45,18 +45,6 @@ class EventOption < ApplicationRecord
   belongs_to :event
 
   # AASM STATES ================================================================
-  aasm column: :status do
-    state :available, initial: true
-    state :not_available
-
-    event :disable do
-      transitions from: :available, to: :not_available
-    end
-
-    event :restore do
-      transitions from: :not_available, to: :available
-    end
-  end
 
   # ENUMS =======================================================================
   #
@@ -74,6 +62,11 @@ class EventOption < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
+  def current_stripe_integration
+    stripe_integrations.active
+                       .last
+  end
+
   private
 
   def sync_stripe
@@ -81,7 +74,7 @@ class EventOption < ApplicationRecord
   end
 
   def adjust_prices
-    self.attendee_price = (organizer_price * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0))).round(
+    self.attendee_price = (organizer_price * (1 + (event.firm.margin / 100.0))).round(
       2, BigDecimal::ROUND_UP
     )
   end

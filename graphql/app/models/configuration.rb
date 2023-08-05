@@ -53,20 +53,10 @@ class Configuration < ApplicationRecord
       value: 'osm',
       description: 'which one maps provider will be used. supports only osm.'
     },
-    EVENT_MARGIN: {
-      key: 'EVENT_MARGIN',
-      value: 10,
-      description: 'payment to the holder of the website'
-    },
     SCHEDULE_DAYS_IN_ADVANCE: {
       key: 'SCHEDULE_DAYS_IN_ADVANCE',
       value: Rails.env.test? ? 28 : 365,
       description: 'how many days in advance can be scheduled for events'
-    },
-    ENABLE_STRIPE_INTEGRATION: {
-      key: 'ENABLE_STRIPE_INTEGRATION',
-      value: Rails.env.test? ? 'false' : 'true',
-      description: 'enable creating strip products and prices'
     },
     GET_TRIP_WINDOW: {
       key: 'GET_TRIP_WINDOW',

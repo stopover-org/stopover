@@ -42,7 +42,7 @@ const TextArea = React.forwardRef(
 
     return (
       <>
-        {label && <FormLabel>{label}</FormLabel>}
+        {label && <FormLabel sx={{ paddingBottom: "5px" }}>{label}</FormLabel>}
         <JoyTextArea
           onChange={onChangeHandler}
           value={value}

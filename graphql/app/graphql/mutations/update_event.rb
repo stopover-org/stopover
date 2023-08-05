@@ -36,14 +36,20 @@ module Mutations
              [Types::UpdateEventOptionInput],
              required: false
 
+    argument :booking_cancellation_options,
+             [Types::UpdateBookingCancellationOptionInput],
+             required: false
+
     # Check In Options
     argument :requires_contract,  Boolean, required: false
     argument :requires_passport,  Boolean, required: false
     argument :requires_check_in,  Boolean, required: false
+    argument :requires_deposit,   Boolean, required: false
     argument :max_attendees,      Integer, required: false
     argument :min_attendees,      Integer, required: false
 
     argument :organizer_price_per_uom_cents, Integer, required: false
+    argument :deposit_amount_cents, Integer, required: false
 
     argument :images, [String], required: false
 
@@ -52,14 +58,6 @@ module Mutations
       raise GraphQL::ExecutionError, 'firm does not have current event' unless context[:current_user].account.current_firm.events.include?(event)
 
       event = Stopover::EventManagement::EventUpdater.new(event).execute(**args)
-
-      if args[:images].present?
-        event.images.delete_all
-        args[:images].each do |url|
-          io_object = Stopover::FilesSupport.url_to_io(url)
-          event.images.attach(io_object)
-        end
-      end
 
       {
         event: event

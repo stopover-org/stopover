@@ -33,7 +33,6 @@ RSpec.describe Mutations::CreateCheckout do
     end
 
     it 'create checkout session in stripe correctly' do
-      ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
       expect(Stripe::Checkout::Session).to receive(:create)
         .and_return({ url: 'my_url', id: 'checkout_id' })
 
@@ -55,7 +54,6 @@ RSpec.describe Mutations::CreateCheckout do
       let!(:payment) { create(:payment, balance: booking.event.firm.balance, booking: booking) }
 
       it 'booking was given, but without event options' do
-        ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
         expect(Stripe::Checkout::Session).to receive(:create).and_raise(StandardError)
 
         expect { subject }.to change { Payment.count }.by(1)
@@ -76,8 +74,6 @@ RSpec.describe Mutations::CreateCheckout do
       let!(:payment) { create(:payment_in_process, balance: booking.event.firm.balance, booking: booking) }
 
       it 'not expired' do
-        ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
-
         expect(Stripe::Checkout::Session).to receive(:retrieve).with(
           payment.stripe_checkout_session_id
         ).and_return({ status: 'not_expired' })
@@ -91,7 +87,6 @@ RSpec.describe Mutations::CreateCheckout do
       end
 
       it 'expired' do
-        ::Configuration.set_value('ENABLE_STRIPE_INTEGRATION', 'true')
         expect(Stripe::Checkout::Session).to receive(:create)
           .and_return({ url: 'my_url', id: 'checkout_id' })
         expect(Stripe::Checkout::Session).to receive(:retrieve).with(

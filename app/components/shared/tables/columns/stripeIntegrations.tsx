@@ -6,7 +6,7 @@ import Tag from "../../../v2/Tag/Tag";
 
 const StatusTag = ({ status }: { status: string }) => {
   const color = useStatusColor({
-    danger: ["deleted"],
+    danger: ["removed"],
     primary: ["active"],
     status,
   });
@@ -21,11 +21,11 @@ const StatusTag = ({ status }: { status: string }) => {
 export function useStripeIntegrationsHeaders() {
   return React.useMemo(
     () => [
-      { key: "status", label: "Status" },
-      { key: "belongsTo", label: "Belongs To" },
-      { key: "priceType", label: "Price Type" },
-      { key: "priceId", label: "Price Id in Stripe" },
-      { key: "productId", label: "Product Id in Stripe" },
+      { key: "status", width: 100, label: "Status" },
+      { key: "belongsTo", width: 150, label: "Belongs To" },
+      { key: "priceId", width: 300, label: "Price Id in Stripe" },
+      { key: "productId", width: 300, label: "Product Id in Stripe" },
+      { key: "version", width: 100, label: "Integration Version" },
     ],
     []
   );
@@ -42,9 +42,9 @@ export function useStripeIntegrationsColumns(
             status
             stripeableId
             stripeableType
-            priceType
             priceId
             productId
+            version
           }
         }
       }
@@ -57,9 +57,9 @@ export function useStripeIntegrationsColumns(
       event.stripeIntegrations.nodes.map((stripeIntegration) => ({
         status: <StatusTag status={stripeIntegration.status} />,
         belongsTo: `${stripeIntegration.stripeableType} (${stripeIntegration.stripeableId})`,
-        priceType: stripeIntegration.priceType,
         priceId: stripeIntegration.priceId,
         productId: stripeIntegration.productId,
+        version: stripeIntegration.version,
       })),
     [event]
   );

@@ -11,7 +11,7 @@ module Mutations
       if soft
         stripe_connect.deactivate!
       else
-        stripe_connect.soft_delete!
+        stripe_connect.remove!
       end
 
       { stripe_connect: stripe_connect }

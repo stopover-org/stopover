@@ -24,7 +24,7 @@ export interface UpdateEventFields {
   durationTime: string;
   endDate: Moment | null;
   eventOptions: Array<{
-    id: string;
+    id?: string;
     title: string;
     organizerPriceCents: number;
     builtIn: boolean;
@@ -36,11 +36,13 @@ export interface UpdateEventFields {
   images?: string[];
   maxAttendees?: number | null;
   minAttendees?: number | null;
-  organizerPricePerUomCents?: number;
+  organizerPricePerUomCents: number;
+  depositAmountCents: number;
   region?: string | null;
   requiresCheckIn: boolean;
   requiresContract: boolean;
   requiresPassport: boolean;
+  requiresDeposit: boolean;
   recurringDates: Array<{
     day: string | null;
     hour: number | null;
@@ -53,12 +55,19 @@ export interface UpdateEventFields {
   }>;
   street?: string | null;
   title: string;
+  bookingCancellationOptions: Array<{
+    id?: string;
+    penaltyPriceCents: number;
+    description: string;
+    deadline: number;
+    status: string;
+  }>;
 }
 
 function useDefaultValues(
   eventFragmentRef: useUpdateEventForm_EventFragment$key
 ): Partial<UpdateEventFields> {
-  const event = useFragment(
+  const event = useFragment<useUpdateEventForm_EventFragment$key>(
     graphql`
       fragment useUpdateEventForm_EventFragment on Event {
         city
@@ -76,14 +85,27 @@ function useDefaultValues(
         organizerPricePerUom {
           cents
         }
+        depositAmount {
+          cents
+        }
         recurringDaysWithTime
         region
         requiresCheckIn
         requiresContract
         requiresPassport
+        requiresDeposit
         singleDaysWithTime
         street
         title
+        bookingCancellationOptions {
+          id
+          penaltyPrice {
+            cents
+          }
+          deadline
+          status
+          description
+        }
         eventOptions {
           builtIn
           forAttendee
@@ -123,6 +145,15 @@ function useDefaultValues(
           minute: date.minute(),
         };
       }),
+      bookingCancellationOptions: event.bookingCancellationOptions.map(
+        (opt) => ({
+          id: opt.id,
+          description: opt.description,
+          deadline: parseInt(opt.deadline.replace("h", ""), 10),
+          penaltyPriceCents: opt.penaltyPrice.cents / 100,
+          status: opt.status,
+        })
+      ),
       city: event.city,
       country: event.country,
       description: event.description,
@@ -136,10 +167,12 @@ function useDefaultValues(
       maxAttendees: event.maxAttendees,
       minAttendees: event.minAttendees,
       organizerPricePerUomCents: event.organizerPricePerUom!.cents! / 100,
+      depositAmountCents: event.depositAmount!.cents! / 100,
       region: event.region,
       requiresCheckIn: Boolean(event.requiresCheckIn),
       requiresContract: Boolean(event.requiresContract),
       requiresPassport: Boolean(event.requiresPassport),
+      requiresDeposit: Boolean(event.requiresDeposit),
       street: event.street,
       title: event.title,
     }),
@@ -172,8 +205,18 @@ const validationSchema = Yup.object().shape({
   maxAttendees: Yup.number().transform(numberTransform),
   minAttendees: Yup.number().transform(numberTransform),
   organizerPricePerUomCents: Yup.number()
+    .min(0)
+    .integer()
     .transform(numberTransform)
     .required("Required"),
+  depositAmountCents: Yup.number()
+    .min(0)
+    .lessThan(
+      Yup.ref("organizerPricePerUomCents"),
+      "Deposit should be less then general for attendee price"
+    )
+    .integer()
+    .transform(numberTransform),
   recurringDates: Yup.array()
     .of(
       Yup.object().shape({
@@ -198,6 +241,15 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
   street: Yup.string().nullable(),
   title: Yup.string().required("Required"),
+  bookingCancellationOptions: Yup.array().of(
+    Yup.object().shape({
+      deadline: Yup.number().transform(numberTransform).required("Required"),
+      description: Yup.string().required("Required"),
+      penaltyPriceCents: Yup.number()
+        .transform(numberTransform)
+        .required("Required"),
+    })
+  ),
 });
 
 export function useUpdateEventForm(
@@ -222,10 +274,13 @@ export function useUpdateEventForm(
     ({
       images,
       organizerPricePerUomCents,
+      depositAmountCents,
       singleDates,
       recurringDates,
       id,
       eventOptions,
+      bookingCancellationOptions,
+      requiresDeposit,
       ...values
     }) => ({
       input: {
@@ -251,6 +306,16 @@ export function useUpdateEventForm(
           ...opt,
         })),
         organizerPricePerUomCents: organizerPricePerUomCents! * 100,
+        depositAmountCents: depositAmountCents! * 100,
+        requiresDeposit: requiresDeposit
+          ? depositAmountCents !== 0
+          : requiresDeposit,
+        bookingCancellationOptions: bookingCancellationOptions.map((opt) => ({
+          id: opt.id,
+          penaltyPriceCents: opt.penaltyPriceCents * 100,
+          deadline: `${opt.deadline}h`,
+          description: opt.description,
+        })),
       },
     }),
     {

@@ -8,6 +8,7 @@
 #  attendee_price_per_uom_cents  :decimal(, )      default(0.0)
 #  city                          :string
 #  country                       :string
+#  deposit_amount_cents          :decimal(, )      default(0.0), not null
 #  description                   :text             not null
 #  duration_time                 :string
 #  end_date                      :datetime
@@ -20,15 +21,13 @@
 #  max_attendees                 :integer
 #  min_attendees                 :integer          default(0)
 #  organizer_price_per_uom_cents :decimal(, )      default(0.0)
-#  prepaid_amount_cents          :decimal(, )      default(0.0), not null
-#  prepaid_type                  :string
 #  recurring_days_with_time      :string           default([]), is an Array
 #  ref_number                    :string
 #  region                        :string
 #  requires_check_in             :boolean          default(FALSE), not null
 #  requires_contract             :boolean          default(FALSE), not null
+#  requires_deposit              :boolean          default(FALSE), not null
 #  requires_passport             :boolean          default(FALSE), not null
-#  requires_prepaid              :boolean          default(FALSE), not null
 #  single_days_with_time         :datetime         default([]), is an Array
 #  status                        :string
 #  street                        :string
@@ -58,7 +57,7 @@ FactoryBot.define do
     unit { create(:unit) }
     firm { create(:firm) }
     organizer_price_per_uom_cents { 500 }
-    prepaid_amount_cents { 100 }
+    deposit_amount_cents { 100 }
     country { Faker::Address.country }
     city { Faker::Address.city }
     full_address { Faker::Address.full_address }
@@ -103,8 +102,7 @@ FactoryBot.define do
         create(:stripe_integration,
                stripeable: event,
                product_id: 'product_id',
-               price_id: 'price_id_full_amount',
-               price_type: :full_amount)
+               price_id: 'price_id_full_amount')
       end
     end
 

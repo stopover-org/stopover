@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_22_171000) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_01_220208) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -100,8 +100,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_22_171000) do
     t.decimal "attendee_price_cents", default: "0.0"
     t.decimal "organizer_price_cents", default: "0.0"
     t.string "status", default: "available"
+    t.bigint "stripe_integration_id"
     t.index ["attendee_id"], name: "index_attendee_options_on_attendee_id"
     t.index ["event_option_id"], name: "index_attendee_options_on_event_option_id"
+    t.index ["stripe_integration_id"], name: "index_attendee_options_on_stripe_integration_id"
   end
 
   create_table "attendees", force: :cascade do |t|
@@ -125,13 +127,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_22_171000) do
   end
 
   create_table "booking_cancellation_options", force: :cascade do |t|
-    t.integer "penalty_price_cents"
-    t.datetime "deadline", precision: nil
+    t.decimal "penalty_price_cents"
     t.text "description", default: ""
     t.string "status"
     t.bigint "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "deadline", null: false
     t.index ["event_id"], name: "index_booking_cancellation_options_on_event_id"
   end
 
@@ -143,8 +145,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_22_171000) do
     t.decimal "attendee_price_cents", default: "0.0"
     t.decimal "organizer_price_cents", default: "0.0"
     t.string "status", default: "available"
+    t.bigint "stripe_integration_id"
     t.index ["booking_id"], name: "index_booking_options_on_booking_id"
     t.index ["event_option_id"], name: "index_booking_options_on_event_option_id"
+    t.index ["stripe_integration_id"], name: "index_booking_options_on_stripe_integration_id"
   end
 
   create_table "bookings", force: :cascade do |t|
@@ -154,8 +158,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_22_171000) do
     t.datetime "updated_at", null: false
     t.bigint "trip_id"
     t.bigint "schedule_id"
+    t.bigint "stripe_integration_id"
     t.index ["event_id"], name: "index_bookings_on_event_id"
     t.index ["schedule_id"], name: "index_bookings_on_schedule_id"
+    t.index ["stripe_integration_id"], name: "index_bookings_on_stripe_integration_id"
     t.index ["trip_id"], name: "index_bookings_on_trip_id"
   end
 
@@ -235,9 +241,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_22_171000) do
     t.datetime "single_days_with_time", precision: nil, default: [], array: true
     t.string "ref_number"
     t.string "landmark"
-    t.string "prepaid_type"
-    t.decimal "prepaid_amount_cents", default: "0.0", null: false
-    t.boolean "requires_prepaid", default: false, null: false
+    t.decimal "deposit_amount_cents", default: "0.0", null: false
+    t.boolean "requires_deposit", default: false, null: false
     t.integer "max_attendees"
     t.integer "min_attendees", default: 0
     t.bigint "firm_id"
@@ -270,6 +275,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_22_171000) do
     t.string "postal_code"
     t.string "ref_number"
     t.string "payment_types", default: [], null: false, array: true
+    t.integer "margin", default: 0
     t.index ["ref_number"], name: "index_firms_on_ref_number", unique: true
   end
 
@@ -365,7 +371,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_22_171000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status"
-    t.string "price_type"
+    t.integer "version", default: 1
     t.index ["stripeable_id", "stripeable_type"], name: "index_stripe_integrations_on_stripeable_id_and_stripeable_type"
   end
 
@@ -421,9 +427,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_22_171000) do
   add_foreign_key "account_interests", "interests"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "attendee_options", "stripe_integrations"
   add_foreign_key "booking_options", "bookings"
   add_foreign_key "booking_options", "event_options"
+  add_foreign_key "booking_options", "stripe_integrations"
   add_foreign_key "bookings", "schedules"
+  add_foreign_key "bookings", "stripe_integrations"
   add_foreign_key "event_achievements", "achievements"
   add_foreign_key "event_achievements", "events"
   add_foreign_key "event_interests", "events"

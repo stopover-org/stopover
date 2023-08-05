@@ -8,7 +8,7 @@ RSpec.describe RemoveFirmJob, type: :job do
     let!(:firm) { create(:firm) }
     let!(:events) { create_list(:recurring_event, 10, skip_schedules: true, firm_id: firm.id) }
 
-    it 'deleted events associated with firm' do
+    it 'removed events associated with firm' do
       expect(events.count).to eq(10)
       events.each do |event|
         expect(event.schedules.count).to eq(0)
@@ -17,7 +17,7 @@ RSpec.describe RemoveFirmJob, type: :job do
       RemoveFirmJob.perform_now(firm.id)
 
       events.each do |event|
-        expect(event.reload.status).to eq('deleted')
+        expect(event.reload.status).to eq('removed')
         expect(event.schedules.count).to eq(0)
       end
     end
@@ -26,14 +26,14 @@ RSpec.describe RemoveFirmJob, type: :job do
       let!(:firm) { create(:firm) }
       let!(:events) { create_list(:recurring_event, 10, firm_id: firm.id) }
 
-      it 'deleted' do
+      it 'removed' do
         expect(events.count).to eq(10)
         events.each do |event|
           expect(event.schedules.count).to eq(56)
         end
         RemoveFirmJob.perform_now(firm.id)
         events.each do |event|
-          expect(event.reload.status).to eq('deleted')
+          expect(event.reload.status).to eq('removed')
           expect(event.schedules.count).to eq(0)
         end
       end
@@ -43,14 +43,14 @@ RSpec.describe RemoveFirmJob, type: :job do
       let!(:firm) { create(:firm) }
       let!(:events) { create_list(:schedules_past_date, 10, firm_id: firm.id) }
 
-      it 'deleted' do
+      it 'removed' do
         expect(events.count).to eq(10)
         events.each do |event|
           expect(event.schedules.count).to eq(59)
         end
         RemoveFirmJob.perform_now(firm.id)
         events.each do |event|
-          expect(event.reload.status).to eq('deleted')
+          expect(event.reload.status).to eq('removed')
           expect(event.schedules.count).to eq(3)
         end
       end
@@ -60,7 +60,7 @@ RSpec.describe RemoveFirmJob, type: :job do
       let!(:firm) { create(:firm) }
       let!(:events) { create_list(:schedule_is_booked, 10, firm_id: firm.id) }
 
-      it 'deleted' do
+      it 'removed' do
         expect(events.count).to eq(10)
         expect(Booking.all.count).to eq(10)
         events.each do |event|
@@ -68,7 +68,7 @@ RSpec.describe RemoveFirmJob, type: :job do
         end
         RemoveFirmJob.perform_now(firm.id)
         events.each do |event|
-          expect(event.reload.status).to eq('deleted')
+          expect(event.reload.status).to eq('removed')
           expect(event.schedules.count).to eq(4)
           expect(event.bookings.count).to eq(1)
         end

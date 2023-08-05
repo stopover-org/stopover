@@ -8,6 +8,7 @@
 #  attendee_price_per_uom_cents  :decimal(, )      default(0.0)
 #  city                          :string
 #  country                       :string
+#  deposit_amount_cents          :decimal(, )      default(0.0), not null
 #  description                   :text             not null
 #  duration_time                 :string
 #  end_date                      :datetime
@@ -20,15 +21,13 @@
 #  max_attendees                 :integer
 #  min_attendees                 :integer          default(0)
 #  organizer_price_per_uom_cents :decimal(, )      default(0.0)
-#  prepaid_amount_cents          :decimal(, )      default(0.0), not null
-#  prepaid_type                  :string
 #  recurring_days_with_time      :string           default([]), is an Array
 #  ref_number                    :string
 #  region                        :string
 #  requires_check_in             :boolean          default(FALSE), not null
 #  requires_contract             :boolean          default(FALSE), not null
+#  requires_deposit              :boolean          default(FALSE), not null
 #  requires_passport             :boolean          default(FALSE), not null
-#  requires_prepaid              :boolean          default(FALSE), not null
 #  single_days_with_time         :datetime         default([]), is an Array
 #  status                        :string
 #  street                        :string
@@ -60,7 +59,7 @@ class Event < ApplicationRecord
   # MONETIZE =====================================================================
   monetize :attendee_price_per_uom_cents
   monetize :organizer_price_per_uom_cents
-  monetize :prepaid_amount_cents
+  monetize :deposit_amount_cents
 
   # ATTACHMENTS ===========================================================
   has_many_attached :images
@@ -92,7 +91,7 @@ class Event < ApplicationRecord
     state :draft, initial: true
     state :published
     state :unpublished
-    state :deleted
+    state :removed
 
     event :publish do
       transitions from: :unpublished, to: :published, guard: :can_publish
@@ -100,11 +99,11 @@ class Event < ApplicationRecord
     event :unpublish do
       transitions from: %i[draft published], to: :unpublished
     end
-    event :soft_delete do
-      transitions from: %i[published unpublished draft], to: :deleted
+    event :remove do
+      transitions from: %i[published unpublished draft], to: :removed
     end
     event :restore do
-      transitions from: :deleted, to: :draft
+      transitions from: :removed, to: :draft
     end
   end
 
@@ -143,13 +142,15 @@ class Event < ApplicationRecord
 
   # CALLBACKS ================================================================
   before_validation :set_prices
-  before_validation :adjust_prices, unless: :deleted?
+  before_validation :adjust_prices, unless: :removed?
+  after_commit :sync_stripe
 
   # SCOPES =====================================================================
   scope :by_city, ->(city) { where(city: city) }
 
   # DELEGATIONS ==============================================================
   delegate :count, to: :ratings, prefix: true
+  delegate :margin, to: :firm
 
   def can_be_scheduled_for?(date)
     return false if date.past?
@@ -159,7 +160,8 @@ class Event < ApplicationRecord
   end
 
   def adjust_prices
-    self.attendee_price_per_uom = (organizer_price_per_uom * (1 + (::Configuration.get_value('EVENT_MARGIN').value.to_i / 100.0)))
+    self.attendee_price_per_uom = (organizer_price_per_uom * (1 + (margin / 100.0)))
+    self.deposit_amount         = attendee_price_per_uom if deposit_amount > attendee_price_per_uom
   end
 
   def set_prices
@@ -204,7 +206,16 @@ class Event < ApplicationRecord
     times
   end
 
+  def current_stripe_integration
+    stripe_integrations.active
+                       .last
+  end
+
   private
+
+  def sync_stripe
+    StripeIntegratorSyncJob.perform_later('event', id)
+  end
 
   def can_publish
     firm.active?

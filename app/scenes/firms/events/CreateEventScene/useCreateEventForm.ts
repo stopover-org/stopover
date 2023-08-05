@@ -42,6 +42,8 @@ export interface CreateEventFields {
     hour: number | null;
     minute: number | null;
   }>;
+  requiresDeposit: boolean;
+  depositAmountCents: number;
   singleDates: Array<{
     date: Moment;
     hour: number | null;
@@ -50,29 +52,38 @@ export interface CreateEventFields {
   endDate: Moment | null;
   street?: string;
   title: string;
+  bookingCancellationOptions: Array<{
+    penaltyPriceCents: number;
+    description: string;
+    deadline: string;
+    status: string;
+  }>;
 }
 
 function useDefaultValues(): Partial<CreateEventFields> {
   return React.useMemo(
     () => ({
+      bookingCancellationOptions: [],
+      depositAmountCents: 0,
+      durationTime: "0h 0m",
+      endDate: null,
       eventOptions: [],
       eventType: "excursion",
       images: [],
       organizerPricePerUomCents: 0,
-      durationTime: "0h 0m",
       recurringDates: [{ day: null, hour: null, minute: null }],
       requiresCheckIn: false,
       requiresContract: false,
+      requiresDeposit: false,
       requiresPassport: false,
       singleDates: [],
-      endDate: null,
     }),
     []
   );
 }
 
 const validationSchema = Yup.object().shape({
-  city: Yup.string().nullable(),
+  city: Yup.string().required("Required"),
   country: Yup.string().nullable(),
   description: Yup.string().required("Required"),
   durationTime: Yup.string().required("Required"),
@@ -96,7 +107,17 @@ const validationSchema = Yup.object().shape({
   minAttendees: Yup.number().transform(numberTransform),
   organizerPricePerUomCents: Yup.number()
     .transform(numberTransform)
+    .min(0)
+    .integer()
     .required("Required"),
+  depositAmountCents: Yup.number()
+    .min(0)
+    .lessThan(
+      Yup.ref("organizerPricePerUomCents"),
+      "Deposit should be less then general for attendee price"
+    )
+    .integer()
+    .transform(numberTransform),
   recurringDates: Yup.array()
     .of(
       Yup.object().shape({
@@ -110,6 +131,7 @@ const validationSchema = Yup.object().shape({
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),
   requiresPassport: Yup.boolean(),
+  requiresDeposit: Yup.boolean(),
   singleDates: Yup.array()
     .of(
       Yup.object().shape({
@@ -122,6 +144,13 @@ const validationSchema = Yup.object().shape({
   endDate: Yup.date().transform(momentTransform).nullable(),
   street: Yup.string().nullable(),
   title: Yup.string().required("Required"),
+  bookingCancellationOptions: Yup.array().of(
+    Yup.object().shape({
+      deadline: Yup.string().required("Required"),
+      description: Yup.string().required("Required"),
+      penaltyPriceCents: Yup.number().required("Required"),
+    })
+  ),
 });
 
 export function useCreateEventForm() {
@@ -147,6 +176,9 @@ export function useCreateEventForm() {
       singleDates,
       recurringDates,
       eventOptions,
+      depositAmountCents,
+      bookingCancellationOptions,
+      requiresDeposit,
       ...values
     }) => ({
       input: {
@@ -171,6 +203,15 @@ export function useCreateEventForm() {
           ...opt,
         })),
         organizerPricePerUomCents: organizerPricePerUomCents! * 100,
+        depositAmountCents: (depositAmountCents || 0) * 100,
+        requiresDeposit: requiresDeposit
+          ? depositAmountCents !== 0
+          : requiresDeposit,
+        bookingCancellationOptions: bookingCancellationOptions.map((opt) => ({
+          penaltyPriceCents: opt.penaltyPriceCents * 100,
+          deadline: `${opt.deadline}h`,
+          description: opt.description,
+        })),
       },
     }),
     {
@@ -178,7 +219,7 @@ export function useCreateEventForm() {
       resolver: yupResolver(validationSchema),
       onCompleted(result) {
         if (result.createEvent?.event?.id) {
-          router.replace(`my-firm/events/${result.createEvent?.event?.id}`);
+          router.replace(`/my-firm/events/${result.createEvent?.event?.id}`);
         }
       },
     }

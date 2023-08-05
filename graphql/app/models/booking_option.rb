@@ -12,20 +12,23 @@
 #  updated_at            :datetime         not null
 #  booking_id            :bigint
 #  event_option_id       :bigint
+#  stripe_integration_id :bigint
 #
 # Indexes
 #
-#  index_booking_options_on_booking_id       (booking_id)
-#  index_booking_options_on_event_option_id  (event_option_id)
+#  index_booking_options_on_booking_id             (booking_id)
+#  index_booking_options_on_event_option_id        (event_option_id)
+#  index_booking_options_on_stripe_integration_id  (stripe_integration_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (booking_id => bookings.id)
 #  fk_rails_...  (event_option_id => event_options.id)
+#  fk_rails_...  (stripe_integration_id => stripe_integrations.id)
 #
 class BookingOption < ApplicationRecord
   # MODULES ===============================================================
-  include AASM
+  include Mixins::OptionStatuses
 
   # MONETIZE =====================================================================
   monetize :attendee_price_cents
@@ -43,20 +46,9 @@ class BookingOption < ApplicationRecord
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :booking
   belongs_to :event_option
+  belongs_to :stripe_integration
 
-  # AASM STATES ================================================================
-  aasm column: :status do
-    state :available, initial: true
-    state :not_available
-
-    event :disable do
-      transitions from: :available, to: :not_available
-    end
-
-    event :restore do
-      transitions from: :not_available, to: :available
-    end
-  end
+  # AASM STATES ================================================================d
 
   # ENUMS =======================================================================
   #
@@ -65,6 +57,7 @@ class BookingOption < ApplicationRecord
 
   # CALLBACKS ================================================================
   before_validation :adjust_prices
+  before_validation :adjust_stripe_integration, on: :create
 
   # SCOPES =====================================================================
   #
@@ -85,5 +78,9 @@ class BookingOption < ApplicationRecord
 
   def has_same_event
     errors.add(:event_option, 'booking and event option belongs to different event') if event_option.event.id != booking.event.id
+  end
+
+  def adjust_stripe_integration
+    self.stripe_integration = event_option.current_stripe_integration
   end
 end

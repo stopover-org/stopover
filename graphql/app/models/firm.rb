@@ -15,6 +15,7 @@
 #  house_number      :string
 #  latitude          :float
 #  longitude         :float
+#  margin            :integer          default(0)
 #  payment_types     :string           default([]), not null, is an Array
 #  postal_code       :string
 #  primary_email     :string
@@ -59,13 +60,13 @@ class Firm < ApplicationRecord
   aasm column: :status do
     state :pending, initial: true
     state :active
-    state :deleted
+    state :removed
 
     event :activate do
-      transitions from: %i[pending deleted], to: :active
+      transitions from: %i[pending removed], to: :active
     end
-    event :soft_delete, after_commit: :soft_delete_callback do
-      transitions from: %i[active pending], to: :deleted
+    event :remove, after_commit: :remove_callback do
+      transitions from: %i[active pending], to: :removed
     end
   end
 
@@ -104,7 +105,7 @@ class Firm < ApplicationRecord
     self.balance = Balance.new
   end
 
-  def soft_delete_callback
+  def remove_callback
     RemoveFirmJob.perform_later(id)
   end
 end
