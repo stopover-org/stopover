@@ -34,48 +34,56 @@ RSpec.describe Mutations::BookingsMutations::AddAttendee do
                           }, context: { current_user: current_user })
   end
 
+  shared_examples :success do
+    it 'success' do
+      result = nil
+
+      expect(booking.attendees.count).to eq(1)
+
+      Timecop.freeze(default_time) do
+        expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(1)
+                                                                                         .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(1)
+                                                                                                                                                                     .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(1)
+        expect(result.dig(:data, :addAttendee, :booking, :attendees).count).to eq(2)
+        expect(result.dig(:data, :addAttendee, :errors)).to be_nil
+        expect(result.dig(:data, :addAttendee, :redirectUrl)).to be_nil
+        expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee added')
+      end
+    end
+  end
+
+  shared_examples :fail do |errors:|
+    it 'fail' do
+      result = nil
+
+      expect(booking.attendees.count).to eq(1)
+
+      Timecop.freeze(default_time) do
+        expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(0)
+                                                                                         .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(0)
+                                                                                                                                                                     .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(0)
+
+        expect(result.dig(:data, :addAttendee, :errors)).to eq(errors)
+      end
+    end
+  end
+
   describe 'add attendee to existing booking' do
     let(:event) { create(:recurring_event) }
     context 'without min/max limitations' do
       let(:booking) { create(:future_booking, event: event) }
       let(:current_user) { booking.firm.accounts.first.user }
       let(:input) { { bookingId: GraphqlSchema.id_from_object(booking) } }
-      it 'success' do
-        result = nil
-
-        expect(booking.event.min_attendees).to eq(0)
-        expect(booking.event.max_attendees).to be_nil
-        expect(booking.attendees.count).to eq(1)
-
-        Timecop.freeze(default_time) do
-          expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(1)
-                                                              .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(1)
-                                                              .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(1)
-          expect(result.dig(:data, :addAttendee, :booking, :attendees).count).to eq(2)
-          expect(result.dig(:data, :addAttendee, :errors)).to be_nil
-          expect(result.dig(:data, :addAttendee, :redirectUrl)).to be_nil
-          expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee added')
-        end
-      end
-      context 'fail' do
-        let(:booking) { create(:past_booking) }
-        let(:current_user) { booking.firm.accounts.first.user }
-        let(:input) { { bookingId: GraphqlSchema.id_from_object(booking) } }
-        it 'for past booking' do
-          result = nil
-
-          expect(booking.attendees.count).to eq(1)
-
-          Timecop.freeze(default_time) do
-            expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(0)
-                                                                .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(0)
-                                                                .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(0)
-
-            expect(result.dig(:data, :addAttendee, :errors)).to eq(['Event past'])
-          end
-        end
-      end
+      include_examples :success
     end
+
+    context 'for past booking' do
+      let(:booking) { create(:past_booking) }
+      let(:current_user) { booking.firm.accounts.first.user }
+      let(:input) { { bookingId: GraphqlSchema.id_from_object(booking) } }
+      include_examples :fail, errors: ['Event past']
+    end
+
     context 'with min/max limitations' do
       let(:event) { create(:limited_event, max_attendees: 3) }
       let(:booking) { create(:future_booking, event: event) }
@@ -142,76 +150,28 @@ RSpec.describe Mutations::BookingsMutations::AddAttendee do
 
       context 'as guest' do
         let(:current_user) { create(:temporary_user) }
-        it 'fail' do
-          result = nil
-
-          expect(booking.attendees.count).to eq(1)
-
-          Timecop.freeze(default_time) do
-            expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(0)
-                                                                .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(0)
-                                                                .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(0)
-            expect(result.dig(:data, :addAttendee, :booking)).to be_nil
-            expect(result.dig(:data, :addAttendee, :errors)).to eq(['You don\'t have permissions'])
-            expect(result.dig(:data, :addAttendee, :redirectUrl)).to eq('/errors/not_authorized')
-            expect(result.dig(:data, :addAttendee, :notification)).to eq('You don\'t have permission')
-          end
-        end
+        include_examples :fail, errors: ['You don\'t have permissions']
       end
+
       context 'as common user' do
         let(:current_user) { create(:active_user) }
-        it 'fail' do
-          result = nil
-
-          expect(booking.attendees.count).to eq(1)
-
-          Timecop.freeze(default_time) do
-            expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(0)
-                                                                                             .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(0)
-                                                                                                                                                                         .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(0)
-            expect(result.dig(:data, :addAttendee, :booking)).to be_nil
-            expect(result.dig(:data, :addAttendee, :errors)).to eq(['You don\'t have permissions'])
-            expect(result.dig(:data, :addAttendee, :redirectUrl)).to eq('/errors/not_authorized')
-            expect(result.dig(:data, :addAttendee, :notification)).to eq('You don\'t have permission')
-          end
-        end
+        include_examples :fail, errors: ['You don\'t have permissions']
       end
+
       context 'as manager' do
         let(:current_user) { booking.event.firm.accounts.last.user }
-        it 'success' do
-          result = nil
-
-          expect(booking.attendees.count).to eq(1)
-
-          Timecop.freeze(default_time) do
-            expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(1)
-                                                                .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(1)
-                                                                .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(1)
-            expect(result.dig(:data, :addAttendee, :booking, :attendees).count).to eq(2)
-            expect(result.dig(:data, :addAttendee, :errors)).to be_nil
-            expect(result.dig(:data, :addAttendee, :redirectUrl)).to be_nil
-            expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee added')
-          end
-        end
+        include_examples :success
       end
+
+      context 'as trip owner' do
+        let(:current_user) { booking.trip.account.user }
+        include_examples :success
+      end
+
       context 'as manager of another firm' do
         let(:firm) { create(:firm) }
         let(:current_user) { firm.accounts.last.user }
-        it 'fail' do
-          result = nil
-
-          expect(booking.attendees.count).to eq(1)
-
-          Timecop.freeze(default_time) do
-            expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(0)
-                                                                                             .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(0)
-                                                                                                                                                                         .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(0)
-            expect(result.dig(:data, :addAttendee, :booking)).to be_nil
-            expect(result.dig(:data, :addAttendee, :errors)).to eq(['You don\'t have permissions'])
-            expect(result.dig(:data, :addAttendee, :redirectUrl)).to eq('/errors/not_authorized')
-            expect(result.dig(:data, :addAttendee, :notification)).to eq('You don\'t have permission')
-          end
-        end
+        include_examples :fail, errors: ['You don\'t have permissions']
       end
     end
   end
