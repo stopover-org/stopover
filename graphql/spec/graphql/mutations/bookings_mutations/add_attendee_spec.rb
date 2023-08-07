@@ -45,9 +45,9 @@ RSpec.describe Mutations::BookingsMutations::AddAttendee do
 
         expect(booking.event.min_attendees).to eq(0)
         expect(booking.event.max_attendees).to be_nil
+        expect(booking.attendees.count).to eq(1)
 
         Timecop.freeze(default_time) do
-          debugger
           expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(1)
                                                               .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(1)
                                                               .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(1)
@@ -64,6 +64,8 @@ RSpec.describe Mutations::BookingsMutations::AddAttendee do
         it 'for past booking' do
           result = nil
 
+          expect(booking.attendees.count).to eq(1)
+
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(0)
                                                                 .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(0)
@@ -75,38 +77,140 @@ RSpec.describe Mutations::BookingsMutations::AddAttendee do
       end
     end
     context 'with min/max limitations' do
+      let(:event) { create(:limited_event, max_attendees: 3) }
+      let(:booking) { create(:future_booking, event: event) }
+      let(:booking2) { create(:future_booking, event: event, schedule: booking.schedule) }
+      let(:booking3) { create(:future_booking, event: event, schedule: booking.schedule) }
+      let(:current_user) { booking.firm.accounts.first.user }
+      let(:input) { { bookingId: GraphqlSchema.id_from_object(booking) } }
       it 'without reaching maximum' do
+        result = nil
+
+        expect(booking.event.min_attendees).to eq(0)
+        expect(booking.event.max_attendees).to eq(3)
+        expect(booking.attendees.count).to eq(1)
+
         Timecop.freeze(default_time) do
+          expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(1)
+                                                              .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(1)
+                                                              .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(1)
+          expect(result.dig(:data, :addAttendee, :booking, :attendees).count).to eq(2)
+          expect(result.dig(:data, :addAttendee, :errors)).to be_nil
+          expect(result.dig(:data, :addAttendee, :redirectUrl)).to be_nil
+          expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee added')
         end
       end
       it 'with exactly max attendees reaching' do
+        result = nil
+
+        expect(booking.event.min_attendees).to eq(0)
+        expect(booking.event.max_attendees).to eq(3)
+        expect(booking.attendees.count).to eq(1)
+        expect(booking2.attendees.count).to eq(1)
+
         Timecop.freeze(default_time) do
+          expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(1)
+                                                              .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(1)
+                                                              .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(1)
+          expect(result.dig(:data, :addAttendee, :booking, :attendees).count).to eq(2)
+          expect(result.dig(:data, :addAttendee, :errors)).to be_nil
+          expect(result.dig(:data, :addAttendee, :redirectUrl)).to be_nil
+          expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee added')
         end
       end
       it 'with more than maximum attendee reaching' do
+        result = nil
+
+        expect(booking.event.min_attendees).to eq(0)
+        expect(booking.event.max_attendees).to eq(3)
+        expect(booking.attendees.count).to eq(1)
+        expect(booking2.attendees.count).to eq(1)
+        expect(booking3.attendees.count).to eq(1)
+
         Timecop.freeze(default_time) do
+          expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(0)
+                                                              .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(0)
+                                                              .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(0)
+          expect(result.dig(:data, :addAttendee, :booking)).to be_nil
+          expect(result.dig(:data, :addAttendee, :errors)).to eq(['All places are occupied'])
         end
       end
     end
-    context 'permissions' do
-      it 'as guest' do
-        Timecop.freeze(default_time) do
+    describe 'permissions' do
+      let(:booking) { create(:future_booking, event: event) }
+      let(:input) { { bookingId: GraphqlSchema.id_from_object(booking) } }
+
+      context 'as guest' do
+        let(:current_user) { create(:temporary_user) }
+        it 'fail' do
+          result = nil
+
+          expect(booking.attendees.count).to eq(1)
+
+          Timecop.freeze(default_time) do
+            expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(0)
+                                                                .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(0)
+                                                                .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(0)
+            expect(result.dig(:data, :addAttendee, :booking)).to be_nil
+            expect(result.dig(:data, :addAttendee, :errors)).to eq(['You don\'t have permissions'])
+            expect(result.dig(:data, :addAttendee, :redirectUrl)).to eq('/errors/not_authorized')
+            expect(result.dig(:data, :addAttendee, :notification)).to eq('You don\'t have permission')
+          end
         end
       end
-      it 'as common user' do
-        Timecop.freeze(default_time) do
+      context 'as common user' do
+        let(:current_user) { create(:active_user) }
+        it 'fail' do
+          result = nil
+
+          expect(booking.attendees.count).to eq(1)
+
+          Timecop.freeze(default_time) do
+            expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(0)
+                                                                                             .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(0)
+                                                                                                                                                                         .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(0)
+            expect(result.dig(:data, :addAttendee, :booking)).to be_nil
+            expect(result.dig(:data, :addAttendee, :errors)).to eq(['You don\'t have permissions'])
+            expect(result.dig(:data, :addAttendee, :redirectUrl)).to eq('/errors/not_authorized')
+            expect(result.dig(:data, :addAttendee, :notification)).to eq('You don\'t have permission')
+          end
         end
       end
-      it 'as manager' do
-        Timecop.freeze(default_time) do
+      context 'as manager' do
+        let(:current_user) { booking.event.firm.accounts.last.user }
+        it 'success' do
+          result = nil
+
+          expect(booking.attendees.count).to eq(1)
+
+          Timecop.freeze(default_time) do
+            expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(1)
+                                                                .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(1)
+                                                                .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(1)
+            expect(result.dig(:data, :addAttendee, :booking, :attendees).count).to eq(2)
+            expect(result.dig(:data, :addAttendee, :errors)).to be_nil
+            expect(result.dig(:data, :addAttendee, :redirectUrl)).to be_nil
+            expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee added')
+          end
         end
       end
-      it 'as service_user' do
-        Timecop.freeze(default_time) do
-        end
-      end
-      it 'as manager of another firm' do
-        Timecop.freeze(default_time) do
+      context 'as manager of another firm' do
+        let(:firm) { create(:firm) }
+        let(:current_user) { firm.accounts.last.user }
+        it 'fail' do
+          result = nil
+
+          expect(booking.attendees.count).to eq(1)
+
+          Timecop.freeze(default_time) do
+            expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(0)
+                                                                                             .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(0)
+                                                                                                                                                                         .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(0)
+            expect(result.dig(:data, :addAttendee, :booking)).to be_nil
+            expect(result.dig(:data, :addAttendee, :errors)).to eq(['You don\'t have permissions'])
+            expect(result.dig(:data, :addAttendee, :redirectUrl)).to eq('/errors/not_authorized')
+            expect(result.dig(:data, :addAttendee, :notification)).to eq('You don\'t have permission')
+          end
         end
       end
     end

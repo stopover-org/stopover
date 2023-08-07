@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/ClassVars
 module Mutations
   class BaseMutation < GraphQL::Schema::RelayClassicMutation
     argument_class Types::BaseArgument
@@ -11,37 +12,34 @@ module Mutations
     field :notification, String
     field :redirect_url, String
 
-    @@manager_only = false
-    @@service_user_only = false
-    @@authorized_only = false
-    @@authorize_lambda = false
+    @@guards = {}
 
     def self.manager_only
-      @@manager_only = true
-      @@service_user_only = true
-      @@authorized_only = true
+      @@guards[self] = {} if @@guards[self].nil?
+      @@guards[self][:manager_only] = true
 
       nil
     end
 
     def self.service_user_only
-      @@service_user_only = true
-      @@manager_only = false
-      @@authorized_only = true
+      @@guards[self] = {} if @@guards[self].nil?
+      @@guards[self][:service_user_only] = true
 
       nil
     end
 
     def self.authorized_only
-      @@service_user_only = false
-      @@manager_only = false
-      @@authorized_only = true
+      @@guards[self] = {} if @@guards[self].nil?
+      @@guards[self][:authorized_only] = true
 
       nil
     end
 
     def self.authorize(lambda_fn)
-      @@authorize_lambda = lambda_fn
+      @@guards[self] = {} if @@guards[self].nil?
+      @@guards[self][:authorize_lambda] = lambda_fn
+
+      nil
     end
 
     def current_user
@@ -57,7 +55,10 @@ module Mutations
     end
 
     def permit!(**args)
-      if @@authorized_only && current_user&.temporary?
+      mutation_guard = self.class
+      return if @@guards[mutation_guard].nil?
+
+      if @@guards[mutation_guard][:authorized_only] && current_user&.temporary?
         @permission_error = {
           errors: ['You are not authorized'],
           notification: 'You need to Sign In',
@@ -65,7 +66,7 @@ module Mutations
         }
       end
 
-      if @@manager_only && current_user&.nil?
+      if @@guards[mutation_guard][:manager_only] && current_user&.nil?
         @permission_error = {
           errors: ['You are not authorized'],
           notification: 'You don\'t have permission',
@@ -73,7 +74,7 @@ module Mutations
         }
       end
 
-      if @@service_user_only && !current_user&.service_user
+      if @@guards[mutation_guard][:service_user_only] && !current_user&.service_user
         @permission_error = {
           errors: ['You are not authorized'],
           notification: 'You don\'t have permission',
@@ -81,8 +82,8 @@ module Mutations
         }
       end
 
-      if @@authorize_lambda
-        err = @@authorize_lambda&.call(**args, current_user: current_user, current_account: current_account, current_firm: current_firm)
+      if @@guards[mutation_guard][:authorize_lambda]
+        err = @@guards[mutation_guard][:authorize_lambda]&.call(**args, current_user: current_user, current_account: current_account, current_firm: current_firm)
 
         if err
           @permission_error = {
@@ -105,3 +106,5 @@ module Mutations
     end
   end
 end
+
+# rubocop:enable Style/ClassVars

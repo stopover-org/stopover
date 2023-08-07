@@ -9,7 +9,7 @@ type Account implements Node {
   longitude: Float
   name: String!
   phone: [String!]
-  primaryPhone: String!
+  primaryNotificationMethod: String!
   region: String
   status: String!
   street: String
@@ -1495,7 +1495,6 @@ type SignInPayload {
   delay: Int
   errors: [String!]
   notification: String
-  reason: String
   redirectUrl: String
   user: User
 }

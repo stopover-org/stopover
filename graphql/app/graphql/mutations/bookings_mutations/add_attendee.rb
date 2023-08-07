@@ -4,9 +4,10 @@ module Mutations
   module BookingsMutations
     class AddAttendee < BaseMutation
       authorized_only
-      authorize lambda { |booking:, current_user:, current_firm:|
+      authorize lambda { |booking:, current_user:, current_firm:, **_args|
+        booking = GraphqlSchema.object_from_id(booking)
         return 'You don\'t have permissions' if booking.user != current_user && current_firm != booking.firm
-        return 'Event past already' if booking.schedule.scheduled_for.past?
+        return 'Event past' if booking.schedule.scheduled_for.past?
         return 'All places are occupied' if booking.event.max_attendees && booking.event.max_attendees <= Attendee.where(booking_id: booking.schedule.bookings).count
       }
 
