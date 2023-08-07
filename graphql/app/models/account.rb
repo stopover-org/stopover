@@ -4,26 +4,26 @@
 #
 # Table name: accounts
 #
-#  id            :bigint           not null, primary key
-#  city          :string
-#  country       :string
-#  date_of_birth :datetime
-#  full_address  :string
-#  house_number  :string
-#  last_name     :string
-#  latitude      :float
-#  longitude     :float
-#  name          :string
-#  phones        :string           default([]), is an Array
-#  postal_code   :string
-#  primary_phone :string
-#  region        :string
-#  status        :string           default("initial"), not null
-#  street        :string
-#  verified_at   :datetime
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  user_id       :bigint
+#  id                          :bigint           not null, primary key
+#  city                        :string
+#  country                     :string
+#  date_of_birth               :datetime
+#  full_address                :string
+#  house_number                :string
+#  last_name                   :string
+#  latitude                    :float
+#  longitude                   :float
+#  name                        :string
+#  phones                      :string           default([]), is an Array
+#  postal_code                 :string
+#  primary_notification_method :string
+#  region                      :string
+#  status                      :string           default("initial"), not null
+#  street                      :string
+#  verified_at                 :datetime
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  user_id                     :bigint
 #
 # Indexes
 #
@@ -59,7 +59,6 @@ class Account < ApplicationRecord
   #
   # VALIDATIONS ================================================================
   validates :name, presence: true, if: :should_have_name?
-  validates :primary_phone, phone: { message: 'Phone is invalid' }, allow_blank: true
 
   # CALLBACKS ================================================================
   before_validation :set_user_info
@@ -85,8 +84,6 @@ class Account < ApplicationRecord
   def set_user_info
     return unless user
 
-    self.primary_phone = user.phone if user.phone
     phones.concat([user.phone]) if user.phone && phones.exclude?(user.phone)
-    phones.concat([primary_phone]) if primary_phone && phones.exclude?(primary_phone)
   end
 end

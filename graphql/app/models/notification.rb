@@ -8,6 +8,7 @@
 #  content         :string           not null
 #  delivery_method :string           not null
 #  from            :string
+#  origin_key      :string           not null
 #  sent_at         :datetime
 #  subject         :string
 #  to              :string           not null
@@ -15,6 +16,13 @@
 #  updated_at      :datetime         not null
 #
 class Notification < ApplicationRecord
+  ORIGIN_KEYS = {
+    confirmation_code_sent: :confirmation_code_sent,
+    signed_in: :signed_in,
+    firm_attendee_added: 'firms/attendee_added',
+    trip_attendee_added: 'trips/attendee_added'
+  }.freeze
+
   before_validation :set_from
   after_commit :trigger, unless: :sent_at
 
@@ -22,6 +30,8 @@ class Notification < ApplicationRecord
     email: 'email',
     sms: 'sms'
   }, _prefix: true
+
+  enum origin_key: ORIGIN_KEYS
 
   def trigger
     service.deliver(from: from, to: to, content: content, subject: subject, type: 'text/html')

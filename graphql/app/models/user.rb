@@ -51,13 +51,13 @@ class User < ApplicationRecord
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  validates :email, format: { with: /\A(.+)@(.+)\z/, message: 'Email is invalid' },
+  validates :email, format: { with: /\A(.+)@(.+)\z/, message: 'is invalid' },
             uniqueness: { case_sensitive: false },
             length: { minimum: 4, maximum: 254 },
             allow_blank: true
   validates :phone,
             uniqueness: { case_sensitive: false },
-            phone: { message: 'Phone is invalid' },
+            phone: { allow_blank: true, possible: true },
             allow_blank: true
 
   # CALLBACKS ================================================================
@@ -79,15 +79,21 @@ class User < ApplicationRecord
     save!
 
     if method == 'email' && email
-      Notification.create!(delivery_method: 'email',
-                           to: email,
-                           subject: 'Your confirmation code',
-                           content: Stopover::MailProvider.prepare_content(file: 'mailer/auth/confirmation_code_sent',
-                                                                           locals: { confirmation_code: confirmation_code }))
+      Notification.create!(
+        origin_key: Notification::ORIGIN_KEYS[:confirmation_code_sent],
+        delivery_method: 'email',
+        to: email,
+        subject: 'Your confirmation code',
+        content: Stopover::MailProvider.prepare_content(file: 'mailer/auth/confirmation_code_sent',
+                                                        locals: { confirmation_code: confirmation_code })
+      )
     elsif method == 'phone' && phone
-      Notification.create!(delivery_method: 'sms',
-                           to: phone,
-                           content: "Your confirmation code: ##{confirmation_code}")
+      Notification.create!(
+        origin_key: Notification::ORIGIN_KEYS[:confirmation_code_sent],
+        delivery_method: 'sms',
+        to: phone,
+        content: "Your confirmation code: ##{confirmation_code}"
+      )
     end
   end
 
@@ -104,7 +110,7 @@ class User < ApplicationRecord
     unless account
       account = Account.new
       account.assign_attributes(name: phone || email,
-                                primary_phone: phone,
+                                primary_notification_method: method,
                                 phones: phone.present? ? [phone] : [],
                                 user: self)
       account.save!
@@ -116,6 +122,7 @@ class User < ApplicationRecord
 
     if method == 'email' && email
       Notification.create!(
+        origin_key: Notification::ORIGIN_KEYS[:signed_in],
         to: email,
         subject: 'Your confirmation code',
         content: Stopover::MailProvider.prepare_content(file: 'mailer/auth/successfully_signed_in'),
@@ -125,6 +132,7 @@ class User < ApplicationRecord
 
     if method == 'phone' && phone
       Notification.create!(
+        origin_key: Notification::ORIGIN_KEYS[:signed_in],
         to: phone,
         content: 'You successfully signed in',
         delivery_method: 'sms'

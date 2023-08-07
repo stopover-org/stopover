@@ -61,7 +61,11 @@ class Trip < ApplicationRecord
     end
   end
   # ENUMS =======================================================================
-  #
+  enum primary_notification_method: {
+    email: 'email',
+    sms: 'sms'
+  }
+
   # VALIDATIONS ================================================================
   #
   # CALLBACKS ================================================================
@@ -94,6 +98,19 @@ class Trip < ApplicationRecord
   def cancel_trip
     bookings.where.not(status: :cancelled).find_each do |booking|
       booking.cancel!
+    end
+  end
+
+  def delivery_method
+    account.primary_notification_method
+  end
+
+  def delivery_to
+    case delivery_method
+    when 'email'
+      account.user.email
+    when 'sms'
+      account.user.phone
     end
   end
 end

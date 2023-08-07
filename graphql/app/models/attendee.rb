@@ -77,7 +77,9 @@ class Attendee < ApplicationRecord
   private
 
   def create_attendee_options
-    booking.event.event_options.available.where(built_in: true, for_attendee: true).find_each do |event_option|
+    return if event.event_options.empty?
+
+    event.event_options.available.where(built_in: true, for_attendee: true).find_each do |event_option|
       attendee_options.build(event_option: event_option)
     end
   end

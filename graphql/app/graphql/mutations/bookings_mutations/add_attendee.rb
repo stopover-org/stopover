@@ -4,7 +4,11 @@ module Mutations
   module BookingsMutations
     class AddAttendee < BaseMutation
       authorized_only
-      authorize ->(booking:) { 'You don\'t have permissions' if booking.user != current_user && current_firm != booking.firm }
+      authorize lambda { |booking:, current_user:, current_firm:|
+        return 'You don\'t have permissions' if booking.user != current_user && current_firm != booking.firm
+        return 'Event past already' if booking.schedule.scheduled_for.past?
+        return 'All places are occupied' if booking.event.max_attendees && booking.event.max_attendees <= Attendee.where(booking_id: booking.schedule.bookings).count
+      }
 
       field :booking, Types::BookingType
 
@@ -12,7 +16,8 @@ module Mutations
 
       def resolve(booking:)
         {
-          booking: Stopover::BookingManagement::BookingUpdater.new(booking, current_user).add_attendee
+          booking: Stopover::BookingManagement::BookingUpdater.new(booking, current_user).add_attendee,
+          notification: 'Attendee added'
         }
       end
     end

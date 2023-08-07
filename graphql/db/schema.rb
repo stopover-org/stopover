@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_01_220208) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_07_192303) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,7 +45,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_220208) do
     t.float "latitude"
     t.string "status", default: "initial", null: false
     t.string "phones", default: [], array: true
-    t.string "primary_phone"
     t.bigint "user_id"
     t.datetime "verified_at", precision: nil
     t.datetime "created_at", null: false
@@ -53,6 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_220208) do
     t.string "postal_code"
     t.datetime "date_of_birth"
     t.string "last_name"
+    t.string "primary_notification_method"
     t.index ["user_id"], name: "index_accounts_on_user_id", unique: true
   end
 
@@ -308,6 +308,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_220208) do
     t.datetime "sent_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "origin_key", null: false
   end
 
   create_table "payment_connections", force: :cascade do |t|

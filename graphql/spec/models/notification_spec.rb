@@ -8,6 +8,7 @@
 #  content         :string           not null
 #  delivery_method :string           not null
 #  from            :string
+#  origin_key      :string           not null
 #  sent_at         :datetime
 #  subject         :string
 #  to              :string           not null

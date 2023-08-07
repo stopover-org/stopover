@@ -47,7 +47,7 @@ class Booking < ApplicationRecord
   belongs_to :event
   belongs_to :trip
   belongs_to :schedule
-  belongs_to :stripe_integration
+  belongs_to :stripe_integration, optional: true
 
   has_one :account, through: :trip
   has_one :user,    through: :account
@@ -152,6 +152,8 @@ class Booking < ApplicationRecord
   end
 
   def create_booking_options
+    return if event.event_options.empty?
+
     event.event_options.available.where(built_in: true, for_attendee: false).find_each do |event_option|
       booking_options.build(event_option: event_option)
     end

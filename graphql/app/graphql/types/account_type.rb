@@ -14,7 +14,7 @@ module Types
     field :longitude, Float
     field :latitude, Float
     field :phone, [String]
-    field :primary_phone, String, null: false
+    field :primary_notification_method, String, null: false
     field :verified_at, String
     field :interests, [Types::InterestType]
     field :firm, Types::FirmType

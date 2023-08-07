@@ -24,7 +24,7 @@
 #
 FactoryBot.define do
   factory :user do
-    phone { Faker::PhoneNumber.phone_number }
+    phone { "+38161523#{(0...4).map { rand(1..9) }.join}" }
     email { Faker::Internet.email }
 
     trait :active do
@@ -43,8 +43,12 @@ FactoryBot.define do
       status { 'inactive' }
     end
 
-    after(:create) do |user|
-      create(:account, user: user) if user.active?
+    transient do
+      with_account { false }
+    end
+
+    after(:create) do |user, evaluator|
+      Account.create!(user: user, name: Faker::Name.name) if evaluator.with_account
     end
 
     factory :active_user, traits: [:active]

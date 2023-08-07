@@ -9,23 +9,36 @@ module Stopover
       end
 
       def add_attendee
-        check_permission
-
         @booking.attendees.create!
+
+        notify_attendee
+        notify_manager
 
         @booking
       end
 
       private
 
-      def check_permission
-        same_firm = @booking.user == @current_user || @booking.event.firm.accounts.include?(@current_user.account)
-        if same_firm
-          raise 'All places reserved' if @booking.attendees.count == @booking.event.max_attendees
-          raise 'Booking was already paid' if @booking.paid?
-          return
-        end
-        raise 'Unauthorized'
+      def notify_attendee
+        Notification.create!(
+          origin_key: Notification::ORIGIN_KEYS[:trip_attendee_added],
+          to: @booking.trip.delivery_to,
+          subject: 'Attendee added',
+          content: Stopover::MailProvider.prepare_content(file: "mailer/#{Notification::ORIGIN_KEYS[:trip_attendee_added]}",
+                                                          locals: { booking: @booking }),
+          delivery_method: @booking.trip.delivery_method
+        )
+      end
+
+      def notify_manager
+        Notification.create!(
+          origin_key: Notification::ORIGIN_KEYS[:firm_attendee_added],
+          to: @booking.firm.delivery_to,
+          subject: 'Attendee added',
+          content: Stopover::MailProvider.prepare_content(file: "mailer/#{Notification::ORIGIN_KEYS[:firm_attendee_added]}",
+                                                          locals: { booking: @booking }),
+          delivery_method: @booking.firm.delivery_method
+        )
       end
     end
   end

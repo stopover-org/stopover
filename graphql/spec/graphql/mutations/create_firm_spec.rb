@@ -46,7 +46,6 @@ RSpec.describe Mutations::CreateFirm do
       it 'correct email and phone number' do
         expect { subject }.to change { Firm.count }.by(1)
         expect(Firm.last.primary_email).to eq(account.user.email)
-        expect(Firm.last.primary_phone).to eq(account.primary_phone)
       end
     end
 

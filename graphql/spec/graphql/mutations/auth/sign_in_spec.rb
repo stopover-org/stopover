@@ -42,7 +42,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(1)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(1)
 
             user = User.find_by_email(email)
             expect(user.status).to eq('inactive')
@@ -68,7 +68,8 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(1)
-                                        .and change { Notification.count }.by(1)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(1)
+
             user = User.find_by_email(email)
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -87,7 +88,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
             user = User.find_by_email(email)
             expect(user.delay).to eq(30)
             expect(user.last_try).to eq(30.seconds.ago)
@@ -106,7 +107,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
             user = User.find_by_email(email)
             expect(user.delay).to eq(0)
             expect(user.last_try).to eq(90.seconds.ago)
@@ -130,7 +131,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.count }.by(0)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(0)
@@ -163,7 +164,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_email.count }.by(1)
 
             user = User.last
             expect(user.status).to eq('active')
@@ -175,7 +176,6 @@ RSpec.describe Mutations::Auth::SignIn do
 
             account = user.account
             expect(account.name).to eq(email)
-            expect(account.primary_phone).to be_nil
             expect(account.phones).to be_empty
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
@@ -207,7 +207,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.signed_in.delivery_method_email.count }.by(0)
 
             user = User.last
             expect(user.status).to eq('inactive')
@@ -246,7 +246,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(1)
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -267,7 +267,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -304,7 +304,7 @@ RSpec.describe Mutations::Auth::SignIn do
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_email.count }.by(1)
 
             user = User.last
             expect(user.delay).to eq(60)
@@ -334,7 +334,9 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(1)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.status).to eq('inactive')
@@ -356,7 +358,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(1)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(1)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(60)
@@ -376,7 +378,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(0)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(30)
@@ -396,7 +398,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(0)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(0)
@@ -421,7 +423,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.count }.by(0)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(0)
@@ -442,7 +444,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.count }.by(0)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(0)
@@ -475,7 +477,9 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_sms.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.last
             expect(user.status).to eq('active')
@@ -487,7 +491,6 @@ RSpec.describe Mutations::Auth::SignIn do
 
             account = user.account
             expect(account.name).to eq('+381617931517')
-            expect(account.primary_phone).to eq('+381617931517')
             expect(account.phones).to eq(['+381617931517'])
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
@@ -519,7 +522,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.signed_in.delivery_method_sms.count }.by(0)
 
             user = User.last
             expect(user.status).to eq('inactive')
@@ -558,7 +561,8 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(1)
+
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -579,7 +583,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(0)
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -616,7 +620,10 @@ RSpec.describe Mutations::Auth::SignIn do
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_sms.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
+
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -648,7 +655,9 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.find_by_email(email)
             expect(user.status).to eq('inactive')
@@ -674,7 +683,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(1)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(1)
             user = User.find_by_email(email)
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -693,7 +702,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
             user = User.find_by_email(email)
             expect(user.delay).to eq(30)
             expect(user.last_try).to eq(30.seconds.ago)
@@ -712,7 +721,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
             user = User.find_by_email(email)
             expect(user.delay).to eq(0)
             expect(user.last_try).to eq(90.seconds.ago)
@@ -736,7 +745,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(0)
@@ -769,7 +778,9 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_email.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.last
             expect(user.status).to eq('active')
@@ -781,7 +792,6 @@ RSpec.describe Mutations::Auth::SignIn do
 
             account = user.account
             expect(account.name).to eq(email)
-            expect(account.primary_phone).to be_nil
             expect(account.phones).to be_empty
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
@@ -813,7 +823,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.signed_in.delivery_method_email.count }.by(0)
 
             user = User.last
             expect(user.status).to eq('inactive')
@@ -852,7 +862,8 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(1)
+
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -873,7 +884,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -910,7 +921,9 @@ RSpec.describe Mutations::Auth::SignIn do
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_email.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.last
             expect(user.delay).to eq(60)
@@ -940,7 +953,9 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.status).to eq('inactive')
@@ -962,7 +977,9 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(60)
@@ -982,7 +999,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(0)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(30)
@@ -1002,7 +1019,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(0)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(0)
@@ -1027,7 +1044,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.count }.by(0)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(0)
@@ -1048,7 +1065,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.count }.by(0)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(0)
@@ -1081,7 +1098,9 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_sms.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.last
             expect(user.status).to eq('active')
@@ -1093,7 +1112,6 @@ RSpec.describe Mutations::Auth::SignIn do
 
             account = user.account
             expect(account.name).to eq('+381617931517')
-            expect(account.primary_phone).to eq('+381617931517')
             expect(account.phones).to eq(['+381617931517'])
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
@@ -1125,7 +1143,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.signed_in.delivery_method_sms.count }.by(0)
 
             user = User.last
             expect(user.status).to eq('inactive')
@@ -1164,7 +1182,8 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(1)
+
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -1185,7 +1204,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(0)
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -1222,7 +1241,10 @@ RSpec.describe Mutations::Auth::SignIn do
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_sms.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
+
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -1243,7 +1265,7 @@ RSpec.describe Mutations::Auth::SignIn do
   context 'sign in (existing active user)' do
     let(:email) { 'email@stopover.com' }
     let(:phone) { '+381 61 793 1517'.gsub(/[\s()\-]/, '') }
-    let!(:current_user) { create(:active_user, email: email, phone: phone) }
+    let!(:current_user) { create(:active_user, email: email, phone: phone, with_account: true) }
     context 'by email' do
       let(:type) { 'email' }
 
@@ -1256,7 +1278,9 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = current_user
             expect(user.status).to eq('active')
@@ -1283,7 +1307,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(1)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(1)
             user = current_user
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -1302,7 +1326,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
 
             user = current_user
             expect(user.delay).to eq(30)
@@ -1322,7 +1346,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
 
             user = current_user
             expect(user.delay).to eq(0)
@@ -1359,7 +1383,9 @@ RSpec.describe Mutations::Auth::SignIn do
             input[:code] = user.confirmation_code
             expect(user.account).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_email.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = current_user
             expect(user.status).to eq('active')
@@ -1397,7 +1423,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.signed_in.delivery_method_email.count }.by(0)
 
             user = current_user
             expect(user.status).to eq('active')
@@ -1433,7 +1459,8 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(1)
+
             user = current_user
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -1455,7 +1482,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
             user = current_user
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -1492,7 +1519,9 @@ RSpec.describe Mutations::Auth::SignIn do
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_email.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = current_user
             expect(user.delay).to eq(60)
@@ -1522,7 +1551,9 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = current_user
             expect(user.status).to eq('active')
@@ -1544,7 +1575,9 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = current_user
             expect(user.delay).to eq(60)
@@ -1564,7 +1597,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(0)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(30)
@@ -1584,7 +1617,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(0)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(0)
@@ -1621,7 +1654,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_sms.count }.by(1)
 
             user = current_user
             expect(user.status).to eq('active')
@@ -1662,7 +1695,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.signed_in.delivery_method_sms.count }.by(0)
 
             user = current_user
             expect(user.status).to eq('active')
@@ -1697,7 +1730,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = current_user
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(1)
 
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -1719,7 +1752,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = current_user
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(0)
 
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -1756,7 +1789,9 @@ RSpec.describe Mutations::Auth::SignIn do
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_sms.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -1789,7 +1824,9 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.find_by_email(email)
             expect(user.status).to eq('inactive')
@@ -1815,7 +1852,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(1)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(1)
             user = User.find_by_email(email)
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -1834,7 +1871,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
             user = User.find_by_email(email)
             expect(user.delay).to eq(30)
             expect(user.last_try).to eq(30.seconds.ago)
@@ -1853,7 +1890,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
             user = User.find_by_email(email)
             expect(user.delay).to eq(0)
             expect(user.last_try).to eq(90.seconds.ago)
@@ -1888,7 +1925,9 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_email.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.last
             expect(user.status).to eq('active')
@@ -1926,7 +1965,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.signed_in.delivery_method_email.count }.by(0)
 
             user = User.last
             expect(user.status).to eq('inactive')
@@ -1964,7 +2003,8 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(1)
+
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -1985,7 +2025,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_email.count }.by(0)
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -2021,7 +2061,9 @@ RSpec.describe Mutations::Auth::SignIn do
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_email.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.last
             expect(user.delay).to eq(60)
@@ -2050,7 +2092,9 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.status).to eq('inactive')
@@ -2072,7 +2116,9 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(1)
+
+            expect(Notification.confirmation_code_sent.count).to eq(1)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(60)
@@ -2092,7 +2138,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(0)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(30)
@@ -2112,7 +2158,7 @@ RSpec.describe Mutations::Auth::SignIn do
                                                input: input
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
-                                        .and change { Notification.count }.by(0)
+                                        .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(0)
 
             user = User.find_by_phone(phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(0)
@@ -2148,7 +2194,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_sms.count }.by(1)
 
             user = User.last
             expect(user.status).to eq('active')
@@ -2160,7 +2206,6 @@ RSpec.describe Mutations::Auth::SignIn do
 
             account = user.account
             expect(account.name).to eq('+381617931517')
-            expect(account.primary_phone).to eq('+381617931517')
             expect(account.phones).to eq(['+381617931517'])
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
@@ -2191,7 +2236,7 @@ RSpec.describe Mutations::Auth::SignIn do
 
           Timecop.freeze(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.signed_in.delivery_method_sms.count }.by(0)
 
             user = User.last
             expect(user.status).to eq('inactive')
@@ -2229,7 +2274,8 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(1)
+
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -2250,7 +2296,7 @@ RSpec.describe Mutations::Auth::SignIn do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(0)
+                                                                                         .and change { Notification.confirmation_code_sent.delivery_method_sms.count }.by(0)
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)
@@ -2286,7 +2332,8 @@ RSpec.describe Mutations::Auth::SignIn do
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                                         .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.signed_in.delivery_method_sms.count }.by(1)
+
             user = User.last
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.zone.now)

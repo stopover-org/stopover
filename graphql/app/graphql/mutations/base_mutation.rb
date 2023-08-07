@@ -11,37 +11,37 @@ module Mutations
     field :notification, String
     field :redirect_url, String
 
-    @manager_only = false
-    @service_user_only = false
-    @authorized_only = false
-    @authorize_lambda = false
+    @@manager_only = false
+    @@service_user_only = false
+    @@authorized_only = false
+    @@authorize_lambda = false
 
     def self.manager_only
-      @manager_only = true
-      @service_user_only = true
-      @authorized_only = true
+      @@manager_only = true
+      @@service_user_only = true
+      @@authorized_only = true
 
       nil
     end
 
     def self.service_user_only
-      @service_user_only = true
-      @manager_only = false
-      @authorized_only = true
+      @@service_user_only = true
+      @@manager_only = false
+      @@authorized_only = true
 
       nil
     end
 
     def self.authorized_only
-      @service_user_only = false
-      @manager_only = false
-      @authorized_only = true
+      @@service_user_only = false
+      @@manager_only = false
+      @@authorized_only = true
 
       nil
     end
 
-    def self.authorize(lambda)
-      @authorize_lambda = lambda
+    def self.authorize(lambda_fn)
+      @@authorize_lambda = lambda_fn
     end
 
     def current_user
@@ -57,7 +57,7 @@ module Mutations
     end
 
     def permit!(**args)
-      if @authorized_only && current_user&.temporary?
+      if @@authorized_only && current_user&.temporary?
         @permission_error = {
           errors: ['You are not authorized'],
           notification: 'You need to Sign In',
@@ -65,7 +65,7 @@ module Mutations
         }
       end
 
-      if @manager_only && current_user&.nil?
+      if @@manager_only && current_user&.nil?
         @permission_error = {
           errors: ['You are not authorized'],
           notification: 'You don\'t have permission',
@@ -73,7 +73,7 @@ module Mutations
         }
       end
 
-      if @service_user_only && !current_user&.service_user
+      if @@service_user_only && !current_user&.service_user
         @permission_error = {
           errors: ['You are not authorized'],
           notification: 'You don\'t have permission',
@@ -81,14 +81,16 @@ module Mutations
         }
       end
 
-      if @authorize_lambda
-        err = @authorize_lambda&.call(**args, current_user: current_user, current_account: current_account, current_firm: current_firm)
+      if @@authorize_lambda
+        err = @@authorize_lambda&.call(**args, current_user: current_user, current_account: current_account, current_firm: current_firm)
 
-        @permission_error = {
-          errors: [err],
-          notification: 'You don\'t have permission',
-          redirect_url: '/errors/not_authorized'
-        }
+        if err
+          @permission_error = {
+            errors: [err],
+            notification: 'You don\'t have permission',
+            redirect_url: '/errors/not_authorized'
+          }
+        end
       end
 
       nil

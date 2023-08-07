@@ -31,5 +31,23 @@ FactoryBot.define do
     event { create(:recurring_event) }
     trip { create(:trip) }
     schedule { event.schedules.last }
+    trait :future do
+      schedule do
+        schedule = event.schedules.last
+        schedule.update(scheduled_for: 1.week.from_now)
+        schedule
+      end
+    end
+
+    trait :past do
+      schedule do
+        schedule = event.schedules.first
+        schedule.update(scheduled_for: 1.week.ago)
+        schedule
+      end
+    end
+
+    factory :future_booking, traits: [:future]
+    factory :past_booking, traits: [:past]
   end
 end

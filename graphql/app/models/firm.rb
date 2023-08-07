@@ -101,6 +101,16 @@ class Firm < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
+  def delivery_method
+    'email'
+  end
+
+  def delivery_to
+    primary_email
+  end
+
+  private
+
   def create_balance
     self.balance = Balance.new
   end

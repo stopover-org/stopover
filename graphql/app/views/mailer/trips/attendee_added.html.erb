@@ -1,0 +1,2 @@
+New attendee was added to <a href="<%= "#{Rails.application.credentials.frontend_url}/trips/#{GraphqlSchema.id_from_object(booking.trip)}?bookingId=#{GraphqlSchema.id_from_object(booking)}" %>"><%= booking.event.title %> (<%= booking.schedule.scheduled_for %>) %></a>.
+Please fill details for new attendee
