@@ -1495,7 +1495,6 @@ type SignInPayload {
   delay: Int
   errors: [String!]
   notification: String
-  reason: String
   redirectUrl: String
   user: User
 }

@@ -33,7 +33,7 @@ RSpec.describe User, type: :model do
 
     let(:user) { create(:user) }
     let(:primary_method) { 'phone' }
-    subject { user.send_confirmation_code!(primary: primary_method) }
+    subject { user.send_confirmation_code!(method: primary_method) }
 
     shared_examples :sign_in do
       it 'sending confirmation code' do

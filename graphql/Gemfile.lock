@@ -397,6 +397,7 @@ GEM
     stripe (8.3.0)
     strscan (3.0.1)
     thor (1.2.1)
+    timecop (0.9.6)
     timeout (0.2.0)
     turbo-rails (1.0.1)
       actionpack (>= 6.0.0)
@@ -485,6 +486,7 @@ DEPENDENCIES
   sprockets-rails
   stimulus-rails
   stripe (~> 8.3)
+  timecop (~> 0.9.6)
   turbo-rails
   twilio-ruby
   tzinfo-data

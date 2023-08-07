@@ -31,7 +31,6 @@
 #
 FactoryBot.define do
   factory :account do
-    user { create :active_user }
     name { Faker::Name.name }
     house_number { Faker::Address.building_number }
     street { Faker::Address.street_name }
@@ -39,6 +38,5 @@ FactoryBot.define do
     country { Faker::Address.country }
     full_address { Faker::Address.full_address }
     phones { 5.times.map { Faker::PhoneNumber.phone_number } }
-    primary_phone { user.phone }
   end
 end

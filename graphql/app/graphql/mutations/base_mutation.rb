@@ -7,9 +7,14 @@ module Mutations
     input_object_class Types::BaseInputObject
     object_class Types::BaseObject
 
-    field :errors, [String], null: true
-    field :notification, String, null: true
-    field :redirect_url, String, null: true
+    field :errors, [String]
+    field :notification, String
+    field :redirect_url, String
+
+    @manager_only = false
+    @service_user_only = false
+    @authorized_only = false
+    @authorize_lambda = false
 
     def self.manager_only
       @manager_only = true
@@ -44,42 +49,44 @@ module Mutations
     end
 
     def current_account
-      current_user.account
+      current_user&.account
     end
 
-    delegate :current_firm, to: :current_account
+    def current_firm
+      current_account&.current_firm
+    end
 
-    def permit!(**_args)
-      if @@authorized_only && current_user.temporary?
+    def permit!(**args)
+      if @authorized_only && current_user&.temporary?
         @permission_error = {
-          error: { auth: 'You are not authorized' },
-          message: 'You need to Sign In',
+          errors: ['You are not authorized'],
+          notification: 'You need to Sign In',
           redirect_url: '/auth/sign_in'
         }
       end
 
-      if @@manager_only && current_firm.nil?
+      if @manager_only && current_user&.nil?
         @permission_error = {
-          error: { auth: 'You are not authorized' },
-          message: 'You don\'t have permission',
+          errors: ['You are not authorized'],
+          notification: 'You don\'t have permission',
           redirect_url: '/errors/not_authorized'
         }
       end
 
-      if @@service_user_only && !current_user.service_user
+      if @service_user_only && !current_user&.service_user
         @permission_error = {
-          error: { auth: 'You are not authorized' },
-          message: 'You don\'t have permission',
+          errors: ['You are not authorized'],
+          notification: 'You don\'t have permission',
           redirect_url: '/errors/not_authorized'
         }
       end
 
-      if @@authorize_lambda
-        err = @@authorize_lambda.call(**args)
+      if @authorize_lambda
+        err = @authorize_lambda&.call(**args, current_user: current_user, current_account: current_account, current_firm: current_firm)
 
         @permission_error = {
-          error: err,
-          message: 'You don\'t have permission',
+          errors: [err],
+          notification: 'You don\'t have permission',
           redirect_url: '/errors/not_authorized'
         }
       end

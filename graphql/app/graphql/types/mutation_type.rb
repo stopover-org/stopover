@@ -2,7 +2,7 @@
 
 module Types
   class MutationType < Types::BaseObject
-    field :sign_in,                   mutation: Mutations::Auth::SignIn
+    field :sign_in, mutation: Mutations::Auth::SignIn
     field :sign_out,                  mutation: Mutations::Auth::SignOut
 
     field :create_event,              mutation: Mutations::EventsMutations::CreateEvent,     require_manager: true

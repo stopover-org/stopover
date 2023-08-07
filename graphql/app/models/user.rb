@@ -25,6 +25,7 @@
 require 'jwt'
 
 class User < ApplicationRecord
+  SIGN_IN_DELAY = 60
   # MODULES ===============================================================
   include AASM
 
@@ -48,13 +49,16 @@ class User < ApplicationRecord
   end
 
   # ENUMS =======================================================================
-  enum primary: { email: 'email', phone: 'phone' }, _prefix: true
-
+  #
   # VALIDATIONS ================================================================
-  validates :email, presence:   true, if: :should_have_email?
-  validates :email, uniqueness: true, if: :should_have_email?
-  validates :phone, presence:   true, if: :should_have_phone?
-  validates :phone, uniqueness: true, if: :should_have_phone?
+  validates :email, format: { with: /\A(.+)@(.+)\z/, message: 'Email is invalid' },
+            uniqueness: { case_sensitive: false },
+            length: { minimum: 4, maximum: 254 },
+            allow_blank: true
+  validates :phone,
+            uniqueness: { case_sensitive: false },
+            phone: { message: 'Phone is invalid' },
+            allow_blank: true
 
   # CALLBACKS ================================================================
   #
@@ -62,7 +66,7 @@ class User < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
-  def send_confirmation_code!(primary:)
+  def send_confirmation_code!(method:)
     return if temporary?
 
     raise 'You are trying to resend confirmation code too often' unless can_send_code?
@@ -74,20 +78,20 @@ class User < ApplicationRecord
 
     save!
 
-    if primary == 'email' && email
+    if method == 'email' && email
       Notification.create!(delivery_method: 'email',
                            to: email,
                            subject: 'Your confirmation code',
                            content: Stopover::MailProvider.prepare_content(file: 'mailer/auth/confirmation_code_sent',
                                                                            locals: { confirmation_code: confirmation_code }))
-    elsif primary == 'phone' && phone
+    elsif method == 'phone' && phone
       Notification.create!(delivery_method: 'sms',
                            to: phone,
                            content: "Your confirmation code: ##{confirmation_code}")
     end
   end
 
-  def activate!(code:)
+  def activate!(code:, method:)
     return if temporary?
 
     raise StandardError, 'Confirmation code is incorrect' if code != confirmation_code || confirmation_code.nil?
@@ -110,14 +114,16 @@ class User < ApplicationRecord
 
     save!
 
-    if primary_email?
+    if method == 'email' && email
       Notification.create!(
         to: email,
         subject: 'Your confirmation code',
         content: Stopover::MailProvider.prepare_content(file: 'mailer/auth/successfully_signed_in'),
         delivery_method: 'email'
       )
-    elsif primary_phone?
+    end
+
+    if method == 'phone' && phone
       Notification.create!(
         to: phone,
         content: 'You successfully signed in',
@@ -129,7 +135,7 @@ class User < ApplicationRecord
   def delay
     return if temporary?
 
-    actual_delay = ::Configuration.get_value(:SIGN_IN_DELAY).value.to_i - (Time.zone.now.to_i - (last_try&.to_i || 0))
+    actual_delay = SIGN_IN_DELAY - (Time.zone.now.to_i - (last_try&.to_i || 0))
     return actual_delay if actual_delay.positive?
     0
   end

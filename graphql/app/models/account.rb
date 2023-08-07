@@ -59,6 +59,7 @@ class Account < ApplicationRecord
   #
   # VALIDATIONS ================================================================
   validates :name, presence: true, if: :should_have_name?
+  validates :primary_phone, phone: { message: 'Phone is invalid' }, allow_blank: true
 
   # CALLBACKS ================================================================
   before_validation :set_user_info
@@ -78,7 +79,7 @@ class Account < ApplicationRecord
   private
 
   def should_have_name?
-    !user.temporary?
+    !user&.temporary?
   end
 
   def set_user_info

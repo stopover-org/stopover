@@ -4,7 +4,9 @@ module Mutations
   module TripsMutations
     class CancelTrip < BaseMutation
       authorized_only
-      authorize ->(trip:) { 'You don\'t have permission' if trip.account != current_account }
+      authorize lambda { |**args|
+        'You don\'t have permission' if args[:trip]&.account != args[:current_account]
+      }
 
       field :trip, Types::TripType
 
