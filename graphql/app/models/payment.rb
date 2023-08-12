@@ -14,12 +14,14 @@
 #  updated_at                 :datetime         not null
 #  balance_id                 :bigint
 #  booking_id                 :bigint
+#  firm_id                    :bigint
 #  stripe_checkout_session_id :string
 #
 # Indexes
 #
 #  index_payments_on_balance_id  (balance_id)
 #  index_payments_on_booking_id  (booking_id)
+#  index_payments_on_firm_id     (firm_id)
 #
 class Payment < ApplicationRecord
   # MODULES ===============================================================
@@ -42,6 +44,7 @@ class Payment < ApplicationRecord
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :booking
   belongs_to :balance
+  belongs_to :firm
 
   # AASM STATES ================================================================
 
@@ -60,12 +63,17 @@ class Payment < ApplicationRecord
   # CALLBACKS ================================================================
   before_validation :calculate_fee, on: :create
   before_validation :set_price, on: :create
+  before_validation :set_balance, on: :create
 
   # SCOPES =====================================================================
   #
   # DELEGATIONS ==============================================================
 
   private
+
+  def set_balance
+    self.balance = firm.balance
+  end
 
   def calculate_fee
     self.fee = booking.attendee_total_price - booking.organizer_total_price

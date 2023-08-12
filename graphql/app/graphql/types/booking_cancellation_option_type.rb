@@ -6,6 +6,6 @@ module Types
     field :penalty_price, Types::MoneyType, null: false
     field :deadline, String, null: false
     field :description, String, null: false
-    field :status, Types::BookingCancellationOptionStatusEnum, null: false
+    field :status, Types::Statuses::BookingCancellationOptionStatusEnum, null: false
   end
 end

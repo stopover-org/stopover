@@ -5,7 +5,7 @@ module Types
     field :id, ID, null: false
     field :email, String, null: true
     field :phone, String, null: true
-    field :status, Types::UserStatusEnum, null: false
+    field :status, Types::Statuses::UserStatusEnum, null: false
     field :account, Types::AccountType, null: false
     field :service_user, Boolean, null: false, require_service_user: true
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_12_114529) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_12_141644) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -331,8 +331,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_12_114529) do
     t.string "provider"
     t.decimal "fee_cents", default: "0.0"
     t.string "payment_type"
+    t.bigint "firm_id"
     t.index ["balance_id"], name: "index_payments_on_balance_id"
     t.index ["booking_id"], name: "index_payments_on_booking_id"
+    t.index ["firm_id"], name: "index_payments_on_firm_id"
   end
 
   create_table "penalties", force: :cascade do |t|

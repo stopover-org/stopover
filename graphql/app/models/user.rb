@@ -51,13 +51,13 @@ class User < ApplicationRecord
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  validates :email, format: { with: /\A(.+)@(.+)\z/, message: 'is invalid' },
+  validates :email, format: { with: /\A(.+)@(.+)\z/, message: 'Email is invalid' },
             uniqueness: { case_sensitive: false },
             length: { minimum: 4, maximum: 254 },
             allow_blank: true
   validates :phone,
             uniqueness: { case_sensitive: false },
-            phone: { allow_blank: true, possible: true },
+            phone: { allow_blank: true, possible: true, message: 'Phone is invalid' },
             allow_blank: true
 
   # CALLBACKS ================================================================

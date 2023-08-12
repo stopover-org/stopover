@@ -110,11 +110,17 @@ FactoryBot.define do
       status { :published }
     end
 
+    trait :free do
+      organizer_price_per_uom_cents { 0 }
+    end
+
     factory :published_event, traits: [:published]
     factory :stripe_integration_factory, traits: %i[stripe_integration_trait recurring]
     factory :limited_event, traits: %i[limited_attendee recurring]
     factory :recurring_event, traits: [:recurring]
     factory :schedules_past_date, traits: %i[past_schedules recurring]
     factory :schedule_is_booked, traits: %i[past_schedules recurring booking_schedule]
+
+    factory :free_event, traits: %i[free published recurring]
   end
 end

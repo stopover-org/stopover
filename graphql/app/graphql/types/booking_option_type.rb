@@ -7,6 +7,6 @@ module Types
     field :builtIn, Boolean, null: false
     field :booking, Types::BookingType, null: false
     field :event_option, Types::EventOptionType, null: false
-    field :status, Types::EventOptionStatusEnum, null: false
+    field :status, Types::Statuses::EventOptionStatusEnum, null: false
   end
 end

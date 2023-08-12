@@ -3,7 +3,7 @@
 module Types
   class StripeConnectType < Types::ModelObject
     field :id, String, null: false
-    field :status, StripeConnectStatusEnum, null: false
+    field :status, Types::Statuses::StripeConnectStatusEnum, null: false
     field :activated_at, Types::DateTimeType
     field :firm, Types::FirmType, null: false
     field :updated_at, Types::DateTimeType, null: false

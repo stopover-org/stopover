@@ -8,6 +8,6 @@ module Types
     field :price_id, String, null: false
     field :product_id, String, null: false
     field :version, Integer, null: false
-    field :status, Types::StripeIntegrationStatusEnum, null: false
+    field :status, Types::Statuses::StripeIntegrationStatusEnum, null: false
   end
 end

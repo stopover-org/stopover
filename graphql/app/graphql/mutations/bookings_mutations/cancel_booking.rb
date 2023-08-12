@@ -12,6 +12,7 @@ module Mutations
       argument :booking_id, ID, loads: Types::BookingType
 
       def resolve(booking:)
+        debugger
         {
           booking: Stopover::BookingManagement::BookingCancellation.new(booking, current_user).perform,
           trip: booking.trip

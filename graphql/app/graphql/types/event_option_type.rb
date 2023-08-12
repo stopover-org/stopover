@@ -9,7 +9,7 @@ module Types
     field :id, ID, null: false
     field :organizer_price, Types::MoneyType
     field :title, String, null: false
-    field :status, Types::EventOptionStatusEnum, null: false
+    field :status, Types::Statuses::EventOptionStatusEnum, null: false
     field :event, Types::EventType, null: false
   end
 end

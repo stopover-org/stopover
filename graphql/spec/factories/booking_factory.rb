@@ -31,6 +31,7 @@ FactoryBot.define do
     event { create(:recurring_event) }
     trip { create(:trip) }
     schedule { event.schedules.last }
+
     trait :future do
       schedule do
         schedule = event.schedules.last
@@ -53,8 +54,15 @@ FactoryBot.define do
 
     trait :paid do
       status { 'paid' }
+      payments { create_list(:payment_successful, 1, total_price: event.attendee_price_per_uom_cents) }
     end
 
+    trait :not_paid do
+      status { 'paid' }
+      payments { [] }
+    end
+
+    factory :not_paid_booking, traits: [:not_paid]
     factory :future_booking, traits: [:future]
     factory :past_booking, traits: [:past]
     factory :cancelled_booking, traits: [:cancelled]

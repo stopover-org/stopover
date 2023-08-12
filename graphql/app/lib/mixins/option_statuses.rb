@@ -2,7 +2,9 @@
 
 module Mixins
   module OptionStatuses
-    class << self
+    extend ActiveSupport::Concern
+
+    included do
       include AASM
 
       aasm column: :status do

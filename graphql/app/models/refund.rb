@@ -30,6 +30,7 @@ class Refund < ApplicationRecord
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :balance
   belongs_to :booking
+  belongs_to :account
 
   # HAS_ONE ASSOCIATIONS ==========================================================
   has_one :penalty
