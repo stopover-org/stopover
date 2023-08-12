@@ -3,13 +3,13 @@
 module Mutations
   module Auth
     class SignIn < BaseMutation
-      field :user, Types::UserType
+      field :user, Types::AccountRelated::UserType
       field :delay, Integer, null: true
       field :access_token, String, null: true
 
       argument :username, String, required: true
       argument :code, String, required: false
-      argument :type, Types::SignInTypesEnum, required: true
+      argument :type, Types::AccountRelated::SignInTypesEnum, required: true
       argument :reset_code, Boolean, required: false
 
       def resolve(username:, type:, **args)

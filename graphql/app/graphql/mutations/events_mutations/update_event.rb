@@ -6,19 +6,19 @@ module Mutations
       manager_only
       authorize ->(event:) { 'firm does not have current event' unless current_firm.events.include?(event) }
 
-      field :event, Types::EventType
+      field :event, Types::EventRelated::EventType
 
-      argument :event_id, ID, loads: Types::EventType
+      argument :event_id, ID, loads: Types::EventRelated::EventType
 
       argument :interest_ids, [ID],
-               loads: Types::InterestType,
+               loads: Types::EventRelated::InterestType,
                required: false
       argument :unit_id,      ID,
                loads: Types::UnitType,
                required: false
 
       argument :title,            String, required: true
-      argument :event_type,       Types::EventTypeEnum, required: false
+      argument :event_type,       Types::EventRelated::EventTypeEnum, required: false
       argument :description,      String, required: false
       argument :recurring_dates,  [String], required: false
       argument :single_dates,     [String], required: false
@@ -37,11 +37,11 @@ module Mutations
 
       # Event Options Fields
       argument :event_options,
-               [Types::UpdateEventOptionInput],
+               [Types::Inputs::UpdateEventOptionInput],
                required: false
 
       argument :booking_cancellation_options,
-               [Types::UpdateBookingCancellationOptionInput],
+               [Types::Inputs::UpdateBookingCancellationOptionInput],
                required: false
 
       # Check In Options

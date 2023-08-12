@@ -4,7 +4,7 @@ module Mutations
   module FirmsMutations
     class UpdateFirm < BaseMutation
       manager_only
-      field :firm, Types::FirmType
+      field :firm, Types::FirmRelated::FirmType
 
       argument :city,           String, required: false
       argument :contact_person, String, required: false

@@ -5,9 +5,9 @@ module Mutations
     class RegisterAttendee < BaseMutation
       manager_only
 
-      field :attendee, Types::AttendeeType
+      field :attendee, Types::BookingRelated::AttendeeType
 
-      argument :attendee_id, ID, loads: Types::AttendeeType
+      argument :attendee_id, ID, loads: Types::BookingRelated::AttendeeType
       def resolve(attendee:, **_args)
         attendee.register!
 

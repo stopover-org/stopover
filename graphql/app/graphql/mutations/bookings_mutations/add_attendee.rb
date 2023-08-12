@@ -12,9 +12,9 @@ module Mutations
         return 'All places are occupied' if booking.event.max_attendees && booking.event.max_attendees <= Attendee.where(booking_id: booking.schedule.bookings).count
       }
 
-      field :booking, Types::BookingType
+      field :booking, Types::BookingRelated::BookingType
 
-      argument :booking_id, ID, loads: Types::BookingType
+      argument :booking_id, ID, loads: Types::BookingRelated::BookingType
 
       def resolve(booking:)
         {

@@ -6,9 +6,9 @@ module Mutations
       service_user_only
       authorize -> { 'Stripe is not available payment method' unless current_firm.payment_types.include?('stripe') }
 
-      field :event, Types::EventType
+      field :event, Types::EventRelated::EventType
 
-      argument :event_id, ID, loads: Types::EventType
+      argument :event_id, ID, loads: Types::EventRelated::EventType
 
       def resolve(event:)
         Stopover::StripeIntegrator.sync(event)

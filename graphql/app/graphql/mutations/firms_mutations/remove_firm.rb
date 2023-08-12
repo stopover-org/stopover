@@ -4,7 +4,7 @@ module Mutations
   module FirmsMutations
     class RemoveFirm < BaseMutation
       manager_only
-      field :firm, Types::FirmType
+      field :firm, Types::FirmRelated::FirmType
 
       def resolve(**_args)
         current_firm.remove!

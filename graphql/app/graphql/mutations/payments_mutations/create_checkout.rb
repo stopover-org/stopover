@@ -9,12 +9,12 @@ module Mutations
         'Multiple payments in process' if payments.count > 1
       }
 
-      field :booking, Types::BookingType
+      field :booking, Types::BookingRelated::BookingType
       field :url, String
-      field :payment, Types::PaymentType
+      field :payment, Types::PaymentRelated::PaymentType
 
-      argument :payment_type, Types::PaymentTypesEnum
-      argument :booking_id, ID, loads: Types::BookingType
+      argument :payment_type, Types::PaymentRelated::PaymentTypesEnum
+      argument :booking_id, ID, loads: Types::BookingRelated::BookingType
 
       def resolve(booking:, **args)
         payments = booking.payments.where(payment_type: args[:payment_type]).processing

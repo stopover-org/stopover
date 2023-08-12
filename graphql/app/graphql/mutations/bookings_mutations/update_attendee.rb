@@ -6,11 +6,11 @@ module Mutations
       authorized_only
       authorize ->(attendee:) { 'You don\'t have permissions' if attendee.booking.user != current_user && current_firm != attendee.booking.firm }
 
-      field :attendee, Types::AttendeeType
+      field :attendee, Types::BookingRelated::AttendeeType
 
-      argument :attendee_id, ID, loads: Types::AttendeeType
+      argument :attendee_id, ID, loads: Types::BookingRelated::AttendeeType
       argument :event_option_ids, [ID],
-               loads: Types::EventOptionType,
+               loads: Types::EventRelated::EventOptionType,
                required: false
       argument :first_name, String, required: false
       argument :last_name, String, required: false

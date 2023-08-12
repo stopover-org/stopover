@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_12_141644) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_12_154406) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -365,10 +365,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_12_141644) do
     t.bigint "amount_cents", null: false
     t.bigint "balance_id"
     t.bigint "booking_id"
-    t.string "author", null: false
+    t.string "author_type", null: false
     t.string "status", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id"
+    t.index ["account_id"], name: "index_refunds_on_account_id"
     t.index ["balance_id"], name: "index_refunds_on_balance_id"
     t.index ["booking_id"], name: "index_refunds_on_booking_id"
   end

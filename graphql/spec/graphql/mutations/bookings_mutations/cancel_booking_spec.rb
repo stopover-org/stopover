@@ -6,16 +6,16 @@ RSpec.describe Mutations::BookingsMutations::CancelBooking do
   let(:default_time) { Time.zone.now.at_beginning_of_hour }
   let(:mutation) do
     "
-      mutation CancelBooking($input: CancelBooking!) {
+      mutation CancelBooking($input: CancelBookingInput!) {
         cancelBooking(input: $input) {
           booking {
             status
-          }
-          refunds {
-            status
-            penalty {
-              amount {
-                cents
+            refunds {
+              status
+              penalty {
+                amount {
+                  cents
+                }
               }
             }
           }

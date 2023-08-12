@@ -5,9 +5,9 @@ module Mutations
     class ChangeBookingOptionAvailability < BaseMutation
       manager_only
 
-      field :booking_option, Types::BookingOptionType
+      field :booking_option, Types::BookingRelated::BookingOptionType
 
-      argument :booking_option_id, ID, loads: Types::BookingOptionType
+      argument :booking_option_id, ID, loads: Types::BookingRelated::BookingOptionType
 
       def resolve(booking_option:, **_args)
         case booking_option.status

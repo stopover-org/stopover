@@ -3,10 +3,10 @@
 module Mutations
   module EventsMutations
     class BookEvent < BaseMutation
-      field :booking, Types::BookingType
+      field :booking, Types::BookingRelated::BookingType
       field :access_token, String
 
-      argument :event_id, ID, loads: Types::EventType
+      argument :event_id, ID, loads: Types::EventRelated::EventType
       argument :booked_for, Types::DateTimeType
       argument :attendees_count, Integer
 

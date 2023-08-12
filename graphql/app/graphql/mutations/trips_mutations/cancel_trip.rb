@@ -8,9 +8,9 @@ module Mutations
         'You don\'t have permission' if args[:trip]&.account != args[:current_account]
       }
 
-      field :trip, Types::TripType
+      field :trip, Types::TripRelated::TripType
 
-      argument :trip_id, ID, loads: Types::TripType
+      argument :trip_id, ID, loads: Types::TripRelated::TripType
       def resolve(trip:, **_args)
         trip.cancel!
 

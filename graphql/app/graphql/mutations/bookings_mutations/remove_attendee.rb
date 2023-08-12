@@ -6,9 +6,9 @@ module Mutations
       authorized_only
       authorize ->(attendee:) { 'You don\'t have permissions' if attendee.booking.user != current_user && current_firm != attendee.booking.firm }
 
-      field :attendee, Types::AttendeeType
+      field :attendee, Types::BookingRelated::AttendeeType
 
-      argument :attendee_id, ID, loads: Types::AttendeeType
+      argument :attendee_id, ID, loads: Types::BookingRelated::AttendeeType
       def resolve(attendee:, **_args)
         attendee.remove!
         {
