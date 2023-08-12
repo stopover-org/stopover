@@ -64,6 +64,10 @@ class Booking < ApplicationRecord
     state :cancelled
     state :paid
 
+    event :unpay do
+      transitions from: :paid, to: :active
+    end
+
     event :pay do
       transitions from: :active, to: :paid
     end
@@ -135,6 +139,10 @@ class Booking < ApplicationRecord
     end
 
     event_price + booking_options_price + attendee_options_price
+  end
+
+  def ensure_paid
+    unpay! if left_to_pay_price.positive? && paid?
   end
 
   def left_to_pay_price

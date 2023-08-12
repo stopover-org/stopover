@@ -22,9 +22,9 @@
 #  index_payments_on_booking_id  (booking_id)
 #
 class Payment < ApplicationRecord
-  include AASM
   # MODULES ===============================================================
-  #
+  include Mixins::PaymentStatuses
+
   # MONETIZE =====================================================================
   monetize :total_price_cents
   monetize :fee_cents
@@ -44,30 +44,12 @@ class Payment < ApplicationRecord
   belongs_to :balance
 
   # AASM STATES ================================================================
-  aasm column: :status do
-    state :pending, initial: true
-    state :processing
-    state :canceled
-    state :successful
-
-    event :process do
-      transitions from: %i[successful pending canceled], to: :processing
-    end
-    event :cancel do
-      transitions from: :processing, to: :canceled
-    end
-    event :success do
-      after_commit do
-        top_up_balance
-      end
-      transitions from: :processing, to: :successful
-    end
-  end
 
   # ENUMS =======================================================================
   enum provider: {
     stripe: 'stripe'
   }
+
   enum payment_type: {
     full_amount: 'full_amount',
     deposit: 'deposit'
@@ -94,6 +76,6 @@ class Payment < ApplicationRecord
   end
 
   def top_up_balance
-    balance.update!(total_amount: balance.total_amount + Money.new(total_price))
+    balance.update!(total_amount: balance.total_amount + total_price)
   end
 end

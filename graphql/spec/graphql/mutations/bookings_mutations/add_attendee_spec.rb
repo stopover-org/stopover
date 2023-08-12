@@ -9,6 +9,7 @@ RSpec.describe Mutations::BookingsMutations::AddAttendee do
       mutation AddAttendee($input: AddAttendeeInput!) {
         addAttendee(input: $input) {
           booking {
+            status
             event {
               minAttendees
               maxAttendees
@@ -25,16 +26,13 @@ RSpec.describe Mutations::BookingsMutations::AddAttendee do
     "
   end
 
-  let(:temporary_user) { create(:temporary_user) }
-  let(:customer) { create(:active_user) }
-
   subject do
     GraphqlSchema.execute(mutation, variables: {
                             input: input
                           }, context: { current_user: current_user })
   end
 
-  shared_examples :success do
+  shared_examples :success do |status: 'active'|
     it 'success' do
       result = nil
 
@@ -42,9 +40,10 @@ RSpec.describe Mutations::BookingsMutations::AddAttendee do
 
       Timecop.freeze(default_time) do
         expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(1)
-                                                                                         .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(1)
-                                                                                                                                                                     .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(1)
+                                                            .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(1)
+                                                            .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(1)
         expect(result.dig(:data, :addAttendee, :booking, :attendees).count).to eq(2)
+        expect(result.dig(:data, :addAttendee, :booking, :status)).to eq(status)
         expect(result.dig(:data, :addAttendee, :errors)).to be_nil
         expect(result.dig(:data, :addAttendee, :redirectUrl)).to be_nil
         expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee added')
@@ -59,9 +58,11 @@ RSpec.describe Mutations::BookingsMutations::AddAttendee do
       expect(booking.attendees.count).to eq(1)
 
       Timecop.freeze(default_time) do
-        expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(0)
-                                                                                         .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(0)
-                                                                                                                                                                     .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(0)
+        expect do
+          result = subject.to_h.deep_symbolize_keys
+        end.to change { Attendee.count }.by(0)
+                                        .and change { Notification.firm_attendee_added.delivery_method_email.count }.by(0)
+                                        .and change { Notification.trip_attendee_added.delivery_method_email.count }.by(0)
 
         expect(result.dig(:data, :addAttendee, :errors)).to eq(errors)
       end
@@ -82,6 +83,28 @@ RSpec.describe Mutations::BookingsMutations::AddAttendee do
       let(:current_user) { booking.firm.accounts.first.user }
       let(:input) { { bookingId: GraphqlSchema.id_from_object(booking) } }
       include_examples :fail, errors: ['Event past']
+    end
+
+    context 'for cancelled booking' do
+      let(:booking) { create(:cancelled_booking) }
+      let(:current_user) { booking.firm.accounts.first.user }
+      let(:input) { { bookingId: GraphqlSchema.id_from_object(booking) } }
+      include_examples :fail, errors: ['Booking was cancelled']
+    end
+
+    context 'for paid booking' do
+      let(:booking) { create(:paid_booking, event: event) }
+      let(:current_user) { booking.firm.accounts.first.user }
+      let(:input) { { bookingId: GraphqlSchema.id_from_object(booking) } }
+      include_examples :success
+    end
+
+    context 'for free event' do
+      let(:event) { create(:recurring_event, organizer_price_per_uom_cents: 0) }
+      let(:booking) { create(:paid_booking, event: event) }
+      let(:current_user) { booking.firm.accounts.first.user }
+      let(:input) { { bookingId: GraphqlSchema.id_from_object(booking) } }
+      include_examples :success, status: 'paid'
     end
 
     context 'with min/max limitations' do
@@ -144,6 +167,7 @@ RSpec.describe Mutations::BookingsMutations::AddAttendee do
         end
       end
     end
+
     describe 'permissions' do
       let(:booking) { create(:future_booking, event: event) }
       let(:input) { { bookingId: GraphqlSchema.id_from_object(booking) } }

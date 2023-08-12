@@ -10,6 +10,7 @@ module Stopover
 
       def add_attendee
         @booking.attendees.create!
+        @booking.ensure_paid
 
         notify_attendee
         notify_manager

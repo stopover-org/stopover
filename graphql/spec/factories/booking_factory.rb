@@ -47,7 +47,17 @@ FactoryBot.define do
       end
     end
 
+    trait :cancelled do
+      status { 'cancelled' }
+    end
+
+    trait :paid do
+      status { 'paid' }
+    end
+
     factory :future_booking, traits: [:future]
     factory :past_booking, traits: [:past]
+    factory :cancelled_booking, traits: [:cancelled]
+    factory :paid_booking, traits: [:paid]
   end
 end

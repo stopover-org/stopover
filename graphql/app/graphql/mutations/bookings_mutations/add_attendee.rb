@@ -7,6 +7,7 @@ module Mutations
       authorize lambda { |booking:, current_user:, current_firm:, **_args|
         booking = GraphqlSchema.object_from_id(booking)
         return 'You don\'t have permissions' if booking.user != current_user && current_firm != booking.firm
+        return 'Booking was cancelled' if booking.cancelled?
         return 'Event past' if booking.schedule.scheduled_for.past?
         return 'All places are occupied' if booking.event.max_attendees && booking.event.max_attendees <= Attendee.where(booking_id: booking.schedule.bookings).count
       }

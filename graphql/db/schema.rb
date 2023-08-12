@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_07_192303) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_12_114529) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -335,6 +335,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_07_192303) do
     t.index ["booking_id"], name: "index_payments_on_booking_id"
   end
 
+  create_table "penalties", force: :cascade do |t|
+    t.bigint "balance_id"
+    t.bigint "booking_id"
+    t.bigint "booking_cancellation_option_id"
+    t.bigint "refund_id"
+    t.bigint "amount_cents", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["balance_id"], name: "index_penalties_on_balance_id"
+    t.index ["booking_cancellation_option_id"], name: "index_penalties_on_booking_cancellation_option_id"
+    t.index ["booking_id"], name: "index_penalties_on_booking_id"
+    t.index ["refund_id"], name: "index_penalties_on_refund_id"
+  end
+
   create_table "ratings", force: :cascade do |t|
     t.integer "rating_value"
     t.bigint "event_id"
@@ -343,6 +357,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_07_192303) do
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_ratings_on_account_id"
     t.index ["event_id"], name: "index_ratings_on_event_id"
+  end
+
+  create_table "refunds", force: :cascade do |t|
+    t.bigint "amount_cents", null: false
+    t.bigint "balance_id"
+    t.bigint "booking_id"
+    t.string "author", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["balance_id"], name: "index_refunds_on_balance_id"
+    t.index ["booking_id"], name: "index_refunds_on_booking_id"
   end
 
   create_table "schedules", force: :cascade do |t|

@@ -1,0 +1,55 @@
+<% module_namespacing do -%>
+class <%= class_name %> < <%= parent_class_name.classify %>
+  # MODULES =======================================================================
+
+  # MONETIZE ======================================================================
+
+  # SECURE PASSWORD ===============================================================
+<% if attributes.any?(&:password_digest?) -%>
+  has_secure_password
+<% end -%>
+
+  # ATTACHMENTS ===================================================================
+<% attributes.select(&:attachment?).each do |attribute| -%>
+  has_one_attached :<%= attribute.name %>
+<% end -%>
+<% attributes.select(&:attachments?).each do |attribute| -%>
+  has_many_attached :<%= attribute.name %>
+<% end -%>
+
+  # BELONGS_TO ASSOCIATIONS =======================================================
+<% attributes.select(&:reference?).each do |attribute| -%>
+  belongs_to :<%= attribute.name %><%= ", polymorphic: true" if attribute.polymorphic? %>
+<% end -%>
+
+  # HAS_ONE ASSOCIATIONS ==========================================================
+
+  # HAS_MANY ASSOCIATIONS =========================================================
+
+  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+
+  # HAS_ONE :THROUGH ASSOCIATIONS =================================================
+
+  # RICH TEXT =====================================================================
+<% attributes.select(&:rich_text?).each do |attribute| -%>
+  has_rich_text :<%= attribute.name %>
+<% end -%>
+
+  # SECURE TOKENS =================================================================
+<% attributes.select(&:token?).each do |attribute| -%>
+  has_secure_token<% if attribute.name != "token" %> :<%= attribute.name %><% end %>
+<% end -%>
+
+  # AASM STATES ===================================================================
+
+  # ENUMS =========================================================================
+
+  # VALIDATIONS ===================================================================
+
+  # CALLBACKS =====================================================================
+
+  # SCOPES ========================================================================
+
+  # DELEGATIONS ===================================================================
+end
+<% end -%>

@@ -16,11 +16,30 @@
 #  updated_at      :datetime         not null
 #
 class Notification < ApplicationRecord
+  # MODULES =======================================================================
+  # MONETIZE ======================================================================
+  # ATTACHMENTS ===================================================================
+  # HAS_ONE ASSOCIATIONS ==========================================================
+  # HAS_MANY ASSOCIATIONS =========================================================
+  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  # BELONGS_TO ASSOCIATIONS =======================================================
+  # AASM STATES ===================================================================
+  # ENUMS =========================================================================
+  # VALIDATIONS ===================================================================
+  # CALLBACKS =====================================================================
+  # SCOPES ========================================================================
+  # DELEGATIONS ===================================================================
   ORIGIN_KEYS = {
     confirmation_code_sent: :confirmation_code_sent,
-    signed_in: :signed_in,
-    firm_attendee_added: 'firms/attendee_added',
-    trip_attendee_added: 'trips/attendee_added'
+    signed_in:              :signed_in,
+
+    firm_attendee_added:    'firms/attendee_added',
+    firm_booking_cancelled: 'firms/booking_cancelled',
+    firm_refund_created:    'firms/refund_created',
+
+    trip_attendee_added:    'trips/attendee_added',
+    trip_refund_created:    'trips/refund_created',
+    trip_booking_cancelled: 'trips/booking_cancelled'
   }.freeze
 
   before_validation :set_from
