@@ -101,6 +101,11 @@ input AttendeesFilter {
   status: AttendeeStatusEnum
 }
 
+enum AuthorTypeEnum {
+  attendee
+  manager
+}
+
 type Balance implements Node {
   firm: Firm!
   id: ID!
@@ -143,12 +148,14 @@ type Booking implements Node {
   attendees(filters: AttendeesFilter): [Attendee!]!
   bookedFor: DateTime!
   bookingOptions: [BookingOption!]!
+  cancelledBy: Account
   event: Event!
   eventOptions: [EventOption!]!
   id: ID!
   leftToPayPrice: Money!
   organizerTotalPrice: Money!
   payments: [Payment!]!
+  refunds: [Refund!]!
   schedule: Schedule!
   status: String!
   trip: Trip!
@@ -1187,6 +1194,25 @@ type PaymentEdge {
   node: Payment
 }
 
+enum PaymentStatusEnum {
+  """
+  """
+  cancelled
+
+  """
+  initial
+  """
+  pending
+
+  """
+  """
+  processing
+
+  """
+  """
+  successful
+}
+
 enum PaymentTypesEnum {
   """
   Deposit only
@@ -1197,6 +1223,12 @@ enum PaymentTypesEnum {
   Full amount
   """
   full_amount
+}
+
+type Penalty implements Node {
+  amount: Money
+  bookingCancellationOption: BookingCancellationOption
+  id: ID!
 }
 
 """
@@ -1295,6 +1327,15 @@ type Query {
     last: Int
   ): ScheduleConnection!
   trips(filters: TripsFilter): [Trip!]
+}
+
+type Refund implements Node {
+  account: Account
+  amount: Money
+  authorType: AuthorTypeEnum
+  id: ID!
+  penalty: Penalty
+  status: PaymentStatusEnum
 }
 
 """

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: refunds
@@ -20,6 +22,17 @@
 #
 FactoryBot.define do
   factory :refund do
-    
+    account { booking.account }
+    firm { booking.event.firm }
+    trait :manager do
+      author_type { 'manager' }
+    end
+
+    trait :attendee do
+      author_type { 'attendee' }
+    end
+
+    factory :manager_refund, traits: [:manager]
+    factory :attendee_refund, traits: [:attendee]
   end
 end

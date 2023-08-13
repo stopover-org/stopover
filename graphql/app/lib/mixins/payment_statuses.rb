@@ -10,14 +10,14 @@ module Mixins
       aasm column: :status do
         state :pending, initial: true
         state :processing
-        state :canceled
+        state :cancelled
         state :successful
 
         event :process do
-          transitions from: %i[successful pending canceled], to: :processing
+          transitions from: %i[successful pending cancelled], to: :processing
         end
         event :cancel do
-          transitions from: :processing, to: :canceled
+          transitions from: :processing, to: :cancelled
         end
         event :success do
           after_commit do

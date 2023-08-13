@@ -95,7 +95,7 @@ RSpec.describe Mutations::PaymentsMutations::CreateCheckout do
 
         expect { subject }.to change { Payment.count }.by(1)
         expect(Payment.all.processing.any?).to eq(true)
-        expect(Payment.all.canceled.any?).to eq(true)
+        expect(Payment.all.cancelled.any?).to eq(true)
 
         res = subject.to_h
         expect(res['data']['createCheckout']).to eq({

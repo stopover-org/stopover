@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_12_154406) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_13_000133) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -159,6 +159,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_12_154406) do
     t.bigint "trip_id"
     t.bigint "schedule_id"
     t.bigint "stripe_integration_id"
+    t.bigint "cancelled_by_id"
+    t.index ["cancelled_by_id"], name: "index_bookings_on_cancelled_by_id"
     t.index ["event_id"], name: "index_bookings_on_event_id"
     t.index ["schedule_id"], name: "index_bookings_on_schedule_id"
     t.index ["stripe_integration_id"], name: "index_bookings_on_stripe_integration_id"
@@ -464,6 +466,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_12_154406) do
   add_foreign_key "booking_options", "stripe_integrations"
   add_foreign_key "bookings", "schedules"
   add_foreign_key "bookings", "stripe_integrations"
+  add_foreign_key "bookings", "users", column: "cancelled_by_id"
   add_foreign_key "event_achievements", "achievements"
   add_foreign_key "event_achievements", "events"
   add_foreign_key "event_interests", "events"

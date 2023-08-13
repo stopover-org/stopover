@@ -53,6 +53,10 @@ class Schedule < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
+  def attendees
+    Attendee.where(booking: Booking.where(schedule: self))
+  end
+
   private
 
   def can_disable

@@ -65,6 +65,7 @@ class Attendee < ApplicationRecord
   #
   # CALLBACKS ================================================================
   before_create :create_attendee_options
+  before_create :check_max_attendees_count
 
   # SCOPES =====================================================================
   #
@@ -75,6 +76,10 @@ class Attendee < ApplicationRecord
   end
 
   private
+
+  def check_max_attendees_count
+    booking.check_max_attendees
+  end
 
   def create_attendee_options
     return if event.event_options.empty?

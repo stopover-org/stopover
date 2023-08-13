@@ -148,6 +148,7 @@ type Booking implements Node {
   attendees(filters: AttendeesFilter): [Attendee!]!
   bookedFor: DateTime!
   bookingOptions: [BookingOption!]!
+  cancelledBy: Account
   event: Event!
   eventOptions: [EventOption!]!
   id: ID!

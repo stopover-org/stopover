@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: refunds
@@ -36,6 +38,7 @@ class Refund < ApplicationRecord
 
   # HAS_ONE ASSOCIATIONS ==========================================================
   has_one :penalty
+  has_one :firm, through: :balance
 
   # HAS_MANY ASSOCIATIONS =========================================================
 
@@ -56,9 +59,9 @@ class Refund < ApplicationRecord
   }
 
   # VALIDATIONS ===================================================================
-  validates :author, presence: true
 
   # CALLBACKS =====================================================================
+  after_create_commit :notify_manager
 
   # SCOPES ========================================================================
 
@@ -66,5 +69,22 @@ class Refund < ApplicationRecord
 
   def top_up_balance
     balance.update!(total_amount: balance.total_amount + amount)
+  end
+
+  private
+
+  def update_booking
+    booking.cancel! if successful?
+  end
+
+  def notify_manager
+    Notification.create(
+      origin_key: Notification::ORIGIN_KEYS[:firm_refund_created],
+      to: firm.delivery_to,
+      subject: 'Refund was created',
+      content: Stopover::MailProvider.prepare_content(file: "mailer/#{Notification::ORIGIN_KEYS[:firm_refund_created]}",
+                                                      locals: { refund: self }),
+      delivery_method: firm.delivery_method
+    )
   end
 end

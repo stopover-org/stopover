@@ -6,10 +6,7 @@ module Mutations
       authorized_only
       authorize lambda { |booking:, current_user:, current_firm:, **_args|
         booking = GraphqlSchema.object_from_id(booking)
-        return 'You don\'t have permissions' if booking.user != current_user && current_firm != booking.firm
-        return 'Booking was cancelled' if booking.cancelled?
-        return 'Event past' if booking.schedule.scheduled_for.past?
-        return 'All places are occupied' if booking.event.max_attendees && booking.event.max_attendees <= Attendee.where(booking_id: booking.schedule.bookings).count
+        return Mutations::BookingsMutations::AddAttendee.validate(booking, current_user, current_firm)
       }
 
       field :booking, Types::BookingRelated::BookingType
@@ -21,6 +18,16 @@ module Mutations
           booking: Stopover::BookingManagement::BookingUpdater.new(booking, current_user).add_attendee,
           notification: 'Attendee added'
         }
+      end
+
+      def self.validate(booking, current_user, current_firm)
+        return 'You don\'t have permissions' if booking.user != current_user && current_firm != booking.firm
+
+        return 'Booking was cancelled' if booking.cancelled?
+
+        return 'Event past' if booking.schedule.scheduled_for.past?
+
+        return 'All places are occupied' if booking.event.max_attendees && booking.event.max_attendees <= booking.schedule.attendees.count
       end
     end
   end

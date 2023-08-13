@@ -110,8 +110,8 @@ RSpec.describe Mutations::BookingsMutations::AddAttendee do
     context 'with min/max limitations' do
       let(:event) { create(:limited_event, max_attendees: 3) }
       let(:booking) { create(:future_booking, event: event) }
-      let(:booking2) { create(:future_booking, event: event, schedule: booking.schedule) }
-      let(:booking3) { create(:future_booking, event: event, schedule: booking.schedule) }
+      let(:booking2) { create(:booking, event: event, schedule: booking.schedule) }
+      let(:booking3) { create(:booking, event: event, schedule: booking.schedule) }
       let(:current_user) { booking.firm.accounts.first.user }
       let(:input) { { bookingId: GraphqlSchema.id_from_object(booking) } }
       it 'without reaching maximum' do

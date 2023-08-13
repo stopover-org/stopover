@@ -8,6 +8,7 @@
 #  status                :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  cancelled_by_id       :bigint
 #  event_id              :bigint
 #  schedule_id           :bigint
 #  stripe_integration_id :bigint
@@ -15,6 +16,7 @@
 #
 # Indexes
 #
+#  index_bookings_on_cancelled_by_id        (cancelled_by_id)
 #  index_bookings_on_event_id               (event_id)
 #  index_bookings_on_schedule_id            (schedule_id)
 #  index_bookings_on_stripe_integration_id  (stripe_integration_id)
@@ -22,6 +24,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (cancelled_by_id => users.id)
 #  fk_rails_...  (schedule_id => schedules.id)
 #  fk_rails_...  (stripe_integration_id => stripe_integrations.id)
 #

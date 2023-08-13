@@ -38,7 +38,6 @@ class Notification < ApplicationRecord
     firm_refund_created:    'firms/refund_created',
 
     trip_attendee_added:    'trips/attendee_added',
-    trip_refund_created:    'trips/refund_created',
     trip_booking_cancelled: 'trips/booking_cancelled'
   }.freeze
 

@@ -20,6 +20,7 @@ module Types
         argument :filters, Types::Filters::AttendeesFilter, required: false
       end
       field :refunds, [Types::PaymentRelated::RefundType], null: false
+      field :cancelled_by, Types::AccountRelated::AccountType
 
       def booked_for
         object.schedule.scheduled_for

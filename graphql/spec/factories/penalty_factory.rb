@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: penalties
@@ -20,6 +22,8 @@
 #
 FactoryBot.define do
   factory :penalty do
-    
+    balance { booking.firm.balance }
+    amount { Money.new(10) }
+    booking_cancellation_option { build(:booking_cancellation_option, event: booking.event) }
   end
 end
