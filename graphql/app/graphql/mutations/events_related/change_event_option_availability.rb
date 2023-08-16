@@ -3,9 +3,9 @@
 module Mutations
   module EventsRelated
     class ChangeEventOptionAvailability < BaseMutation
-      field :event_option, Types::EventOptionType
+      field :event_option, Types::EventsRelated::EventOptionType
 
-      argument :event_option_id, ID, loads: Types::EventOptionType
+      argument :event_option_id, ID, loads: Types::EventsRelated::EventOptionType
 
       def resolve(event_option:, **_args)
         case event_option.status

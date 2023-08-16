@@ -3,9 +3,9 @@
 module Mutations
   module TripsRelated
     class CancelTrip < BaseMutation
-      field :trip, Types::TripType
+      field :trip, Types::TripsRelated::TripType
 
-      argument :trip_id, ID, loads: Types::TripType
+      argument :trip_id, ID, loads: Types::TripsRelated::TripType
       def resolve(trip:, **_args)
         trip.cancel!
         { trip: trip }

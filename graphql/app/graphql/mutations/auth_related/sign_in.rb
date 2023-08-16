@@ -5,14 +5,14 @@ require 'phonelib'
 module Mutations
   module AuthRelated
     class SignIn < BaseMutation
-      field :user, Types::UserType
+      field :user, Types::UsersRelated::UserType
       field :delay, Integer, null: true
       field :access_token, String, null: true
       field :reason, String, null: true
 
       argument :username, String, required: true
       argument :code, String, required: false
-      argument :type, Types::SignInTypesEnum, required: true
+      argument :type, Types::UsersRelated::SignInTypesEnum, required: true
       argument :reset_code, Boolean, required: false
 
       def resolve(username:, type:, **args)

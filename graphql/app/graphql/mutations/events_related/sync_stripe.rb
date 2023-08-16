@@ -3,9 +3,9 @@
 module Mutations
   module EventsRelated
     class SyncStripe < BaseMutation
-      field :event, Types::EventType
+      field :event, Types::EventsRelated::EventType
 
-      argument :event_id, ID, loads: Types::EventType
+      argument :event_id, ID, loads: Types::EventsRelated::EventType
 
       def resolve(event:)
         raise GraphQL::ExecutionError, 'Stripe is not available payment method' unless event.firm.payment_types.include?('stripe')

@@ -1505,7 +1505,7 @@ enum StripeConnectStatusEnum {
 }
 
 type StripeIntegration implements Node {
-  id: String!
+  id: ID!
   priceId: String!
   productId: String!
   status: StripeIntegrationStatusEnum!

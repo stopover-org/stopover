@@ -3,17 +3,17 @@
 module Mutations
   module EventsRelated
     class CreateEvent < BaseMutation
-      field :event, Types::EventType
+      field :event, Types::EventsRelated::EventType
 
       argument :interest_ids, [ID],
-               loads: Types::InterestType,
+               loads: Types::EventsRelated::InterestType,
                required: false
-      argument :unit_id,      ID,
-               loads: Types::UnitType,
+      argument :unit_id, ID,
+               loads: Types::EventsRelated::UnitType,
                required: false
 
       argument :title,            String, required: true
-      argument :event_type,       Types::EventTypeEnum
+      argument :event_type,       Types::EventsRelated::EventTypeEnum
       argument :description,      String
       argument :recurring_dates,  [String]
       argument :single_dates,     [String]
@@ -32,11 +32,11 @@ module Mutations
 
       # Event Options Fields
       argument :event_options,
-               [Types::CreateEventOptionInput],
+               [Types::Inputs::CreateEventOptionInput],
                required: false
 
       argument :booking_cancellation_options,
-               [Types::CreateBookingCancellationOptionInput],
+               [Types::Inputs::CreateBookingCancellationOptionInput],
                required: false
 
       # Check In Options

@@ -3,9 +3,9 @@
 module Mutations
   module BookingsRelated
     class ChangeAttendeeOptionAvailability < BaseMutation
-      field :attendee_option, Types::AttendeeOptionType
+      field :attendee_option, Types::BookingsRelated::AttendeeOptionType
 
-      argument :attendee_option_id, ID, loads: Types::AttendeeOptionType
+      argument :attendee_option_id, ID, loads: Types::BookingsRelated::AttendeeOptionType
 
       def resolve(attendee_option:, **_args)
         case attendee_option.status
