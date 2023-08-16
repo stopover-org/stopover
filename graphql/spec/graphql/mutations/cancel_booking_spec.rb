@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Attendee, type: :model do
+RSpec.describe Mutations::BookingsRelated::CancelBooking, type: :mutation do
   describe 'cancel booking' do
     let!(:mutation) do
       "

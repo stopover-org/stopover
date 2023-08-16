@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::CreateFirm do
+RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
   describe 'mutation create firm' do
     let!(:mutation) do
       "

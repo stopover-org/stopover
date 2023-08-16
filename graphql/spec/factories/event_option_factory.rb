@@ -30,8 +30,16 @@ FactoryBot.define do
     trait :built_in_option do
       built_in { true }
     end
+
     trait :for_attendee_option do
       for_attendee { true }
+    end
+
+    after(:create) do |event_option|
+      create(:stripe_integration,
+             stripeable: event_option,
+             product_id: 'product_id',
+             price_id: 'price_id_full_amount')
     end
 
     factory :built_in_event_option, traits: [:built_in_option]

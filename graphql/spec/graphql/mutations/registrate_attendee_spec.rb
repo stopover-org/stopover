@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::RegisterAttendee do
+RSpec.describe Mutations::BookingsRelated::RegisterAttendee, type: :mutation do
   describe 'register attendee' do
     let!(:mutation) do
       "

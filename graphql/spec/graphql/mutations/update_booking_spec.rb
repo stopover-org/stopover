@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::UpdateBooking do
+RSpec.describe Mutations::BookingsRelated::UpdateBooking, type: :mutation do
   describe 'mutation update booking' do
     let!(:mutation) do
       "

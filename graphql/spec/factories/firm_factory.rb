@@ -37,6 +37,7 @@ FactoryBot.define do
   factory :firm do
     title { Faker::App.name }
     primary_email { Faker::Internet.email }
+    margin { 10 }
 
     transient do
       accounts { create_list(:account, 1) }

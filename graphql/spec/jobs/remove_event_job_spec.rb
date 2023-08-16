@@ -8,7 +8,7 @@ RSpec.describe RemoveEventJob, type: :job do
 
     it 'event status changed' do
       expect(event.status).to eq('published')
-      RemoveEventJob.perform_now(event.id)
+      RemoveEventJob.perform_now(event_id: event.id)
       expect(event.reload.status).to eq('removed')
     end
   end
