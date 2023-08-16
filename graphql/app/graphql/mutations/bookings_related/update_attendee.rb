@@ -3,11 +3,11 @@
 module Mutations
   module BookingsRelated
     class UpdateAttendee < BaseMutation
-      field :attendee, Types::AttendeeType
+      field :attendee, Types::BookingsRelated::AttendeeType
 
-      argument :attendee_id, ID, loads: Types::AttendeeType
+      argument :attendee_id, ID, loads: Types::BookingsRelated::AttendeeType
       argument :event_option_ids, [ID],
-               loads: Types::EventOptionType,
+               loads: Types::EventsRelated::EventOptionType,
                required: false
       argument :first_name, String, required: false
       argument :last_name, String, required: false

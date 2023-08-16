@@ -3,9 +3,9 @@
 module Mutations
   module EventsRelated
     class RemoveEvent < BaseMutation
-      field :event, Types::EventType
+      field :event, Types::EventsRelated::EventType
 
-      argument :event_id, ID, loads: Types::EventType
+      argument :event_id, ID, loads: Types::EventsRelated::EventType
 
       def resolve(event:)
         {

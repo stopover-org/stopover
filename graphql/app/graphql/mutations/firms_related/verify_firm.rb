@@ -3,7 +3,7 @@
 module Mutations
   module FirmsRelated
     class VerifyFirm < BaseMutation
-      field :firm, Types::FirmType
+      field :firm, Types::FirmsRelated::FirmType
 
       def resolve(**_args)
         raise GraphQL::ExecutionError, "You don't have rights to do it" unless context[:current_user].service_user

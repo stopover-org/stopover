@@ -3,10 +3,10 @@
 module Mutations
   module BookingsRelated
     class CancelBooking < BaseMutation
-      field :booking, Types::BookingType
-      field :trip, Types::TripType
+      field :booking, Types::BookingsRelated::BookingType
+      field :trip, Types::TripsRelated::TripType
 
-      argument :booking_id, ID, loads: Types::BookingType
+      argument :booking_id, ID, loads: Types::BookingsRelated::BookingType
 
       def resolve(booking:)
         {

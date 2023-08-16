@@ -3,7 +3,7 @@
 module Mutations
   module FirmsRelated
     class RemoveFirm < BaseMutation
-      field :firm, Types::FirmType
+      field :firm, Types::FirmsRelated::FirmType
 
       def resolve(**_args)
         context[:current_user].account.current_firm.remove!

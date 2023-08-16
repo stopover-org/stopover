@@ -3,12 +3,12 @@
 module Mutations
   module PaymentsRelated
     class CreateCheckout < BaseMutation
-      field :booking, Types::BookingType
+      field :booking, Types::BookingsRelated::BookingType
       field :url, String
-      field :payment, Types::PaymentType
+      field :payment, Types::PaymentsRelated::PaymentType
 
-      argument :payment_type, Types::PaymentTypesEnum
-      argument :booking_id, ID, loads: Types::BookingType
+      argument :payment_type, Types::PaymentsRelated::PaymentTypesEnum
+      argument :booking_id, ID, loads: Types::BookingsRelated::BookingType
 
       def resolve(booking:, **args)
         payments = booking.payments.where(payment_type: args[:payment_type]).processing

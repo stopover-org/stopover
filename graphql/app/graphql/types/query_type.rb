@@ -6,34 +6,34 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-    field :current_user, Types::UserType
+    field :current_user, Types::UsersRelated::UserType
 
-    field :interests, [Types::InterestType] do
-      argument :filters, Types::InterestsFilter, required: false
+    field :interests, [Types::EventsRelated::InterestType] do
+      argument :filters, Types::Filters::InterestsFilter, required: false
     end
 
-    field :events, Types::EventType.connection_type, null: false do
-      argument :filters, Types::EventsFilter, required: false
+    field :events, Types::EventsRelated::EventType.connection_type, null: false do
+      argument :filters, Types::Filters::EventsFilter, required: false
     end
 
-    field :schedules, Types::ScheduleType.connection_type, null: false do
-      argument :filters, Types::EventsFilter, required: false
+    field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false do
+      argument :filters, Types::Filters::EventsFilter, required: false
     end
 
-    field :event_filters, Types::EventFiltersType, null: false do
+    field :event_filters, Types::EventsRelated::EventFiltersType, null: false do
       argument :city, String, required: false
     end
 
-    field :event, Types::EventType do
-      argument :id, ID, required: true, loads: Types::EventType
+    field :event, Types::EventsRelated::EventType do
+      argument :id, ID, required: true, loads: Types::EventsRelated::EventType
     end
 
-    field :bookings, [Types::BookingType] do
-      argument :filters, Types::BookingsFilter, required: false
+    field :bookings, [Types::BookingsRelated::BookingType] do
+      argument :filters, Types::Filters::BookingsFilter, required: false
     end
 
-    field :trips, [Types::TripType] do
-      argument :filters, Types::TripsFilter, required: false
+    field :trips, [Types::TripsRelated::TripType] do
+      argument :filters, Types::Filters::TripsFilter, required: false
     end
 
     def bookings(**args)

@@ -3,19 +3,19 @@
 module Mutations
   module EventsRelated
     class UpdateEvent < BaseMutation
-      field :event, Types::EventType
+      field :event, Types::EventsRelated::EventType
 
-      argument :event_id, ID, loads: Types::EventType
+      argument :event_id, ID, loads: Types::EventsRelated::EventType
 
       argument :interest_ids, [ID],
-               loads: Types::InterestType,
+               loads: Types::EventsRelated::InterestType,
                required: false
       argument :unit_id,      ID,
-               loads: Types::UnitType,
+               loads: Types::EventsRelated::UnitType,
                required: false
 
       argument :title,            String, required: true
-      argument :event_type,       Types::EventTypeEnum, required: false
+      argument :event_type,       Types::EventsRelated::EventTypeEnum, required: false
       argument :description,      String, required: false
       argument :recurring_dates,  [String], required: false
       argument :single_dates,     [String], required: false
@@ -34,11 +34,11 @@ module Mutations
 
       # Event Options Fields
       argument :event_options,
-               [Types::UpdateEventOptionInput],
+               [Types::Inputs::UpdateEventOptionInput],
                required: false
 
       argument :booking_cancellation_options,
-               [Types::UpdateBookingCancellationOptionInput],
+               [Types::Inputs::UpdateBookingCancellationOptionInput],
                required: false
 
       # Check In Options

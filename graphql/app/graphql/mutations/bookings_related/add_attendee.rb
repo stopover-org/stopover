@@ -3,9 +3,9 @@
 module Mutations
   module BookingsRelated
     class AddAttendee < BaseMutation
-      field :booking, Types::BookingType
+      field :booking, Types::BookingsRelated::BookingType
 
-      argument :booking_id, ID, loads: Types::BookingType
+      argument :booking_id, ID, loads: Types::BookingsRelated::BookingType
 
       def resolve(booking:)
         {

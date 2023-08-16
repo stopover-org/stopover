@@ -3,8 +3,8 @@
 module Mutations
   module EventsRelated
     class RescheduleEvent < BaseMutation
-      field :event, Types::EventType
-      argument :event_id, ID, loads: Types::EventType
+      field :event, Types::EventsRelated::EventType
+      argument :event_id, ID, loads: Types::EventsRelated::EventType
 
       def resolve(event:)
         {
