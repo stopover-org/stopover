@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::CreateCheckout do
+RSpec.describe Mutations::PaymentsRelated::CreateCheckout, type: :mutation do
   describe 'mutation create checkout' do
     let!(:mutation) do
       "

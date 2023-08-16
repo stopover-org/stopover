@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::BookEvent do
+RSpec.describe Mutations::BookingsRelated::BookEvent, type: :mutation do
   describe 'mutation book event' do
     let!(:mutation) do
       "

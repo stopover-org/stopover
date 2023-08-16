@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::UpdateEvent do
+RSpec.describe Mutations::EventsRelated::UpdateEvent, type: :mutation do
   describe 'mutation update event' do
     let!(:mutation) do
       "

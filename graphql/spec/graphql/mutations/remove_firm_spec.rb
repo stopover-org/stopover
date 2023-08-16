@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Firm, type: :model do
+RSpec.describe Mutations::FirmsRelated::RemoveFirm, type: :mutation do
   describe 'remove firm' do
     let!(:mutation) do
       "

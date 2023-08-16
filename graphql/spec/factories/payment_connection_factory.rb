@@ -22,15 +22,7 @@
 #  index_payments_on_booking_id  (booking_id)
 #
 FactoryBot.define do
-  factory :payment do
-    total_price_cents { 200 }
-    booking { create(:booking) }
-    payment_type { 'full_amount' }
-
-    trait :payment_in_process_trait do
-      status { 'processing' }
-    end
-
-    factory :payment_in_process, traits: [:payment_in_process_trait]
+  factory :payment_connection do
+    stripe_integration { create(:stripe_integration) }
   end
 end

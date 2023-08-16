@@ -10,17 +10,17 @@ RSpec.describe BookingQuery, type: :query do
   let!(:future_4_day) { now + 4.days }
 
   let!(:event_in_to_past_date) do
-    create(:event,
+    create(:published_event,
            single_days_with_time: [past_date],
            schedules: [build(:schedule, scheduled_for: past_date)])
   end
   let!(:event_in_to_2_days) do
-    create(:event,
+    create(:published_event,
            single_days_with_time: [future_2_day],
            schedules: [build(:schedule, scheduled_for: future_2_day)])
   end
   let!(:event_in_to_4_days) do
-    create(:event,
+    create(:published_event,
            single_days_with_time: [future_4_day],
            schedules: [build(:schedule, scheduled_for: future_4_day)])
   end

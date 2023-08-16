@@ -36,7 +36,6 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
                                                        product: 'product_id',
                                                        currency: :usd,
                                                        billing_scheme: 'per_unit',
-                                                       nickname: 'full_amount',
                                                        metadata: {
                                                          stopover_id: event.id,
                                                          stopover_model_name: event.class.name
@@ -66,7 +65,6 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
                                                        product: 'product_id',
                                                        currency: :usd,
                                                        billing_scheme: 'per_unit',
-                                                       nickname: 'full_amount',
                                                        metadata: {
                                                          stopover_id: integrated_event.id,
                                                            stopover_model_name: integrated_event.class.name
@@ -115,7 +113,7 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
         end
         expect(Stripe::Product).to receive(:retrieve).with(id: event.current_stripe_integration.product_id).and_return('product').exactly(1).time
         expect(Stopover::StripeIntegrator.retrieve(event)).to eq({ product: 'product',
-                                                                   prices: { full_amount: 'price' } })
+                                                                   prices: { price_id_full_amount: 'price' } })
       end
     end
 
@@ -137,7 +135,6 @@ RSpec.describe Stopover::StripeIntegrator, type: :model do
                                                          product: 'product_id',
                                                          currency: :usd,
                                                          billing_scheme: 'per_unit',
-                                                         nickname: 'full_amount',
                                                          metadata: {
                                                            stopover_id: event.id,
                                                              stopover_model_name: event.class.name
