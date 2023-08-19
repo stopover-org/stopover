@@ -6,12 +6,16 @@ module Mutations
       field :firm, Types::FirmsRelated::FirmType
 
       def resolve(**_args)
-        raise GraphQL::ExecutionError, "You don't have rights to do it" unless context[:current_user].service_user
-
-        context[:current_user].account.current_firm.activate!
+        current_firm.activate!
         {
-          firm: context[:current_user].account.current_firm
+          firm: current_firm,
+          notification: 'Firm was verified!'
         }
+      end
+
+      def authorized?(**inputs)
+        return false, { notification: 'You are not authorized' } unless service_user?
+        super
       end
     end
   end

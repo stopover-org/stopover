@@ -10,6 +10,7 @@ import {
 import { useMutation } from "react-relay";
 import { FieldValues } from "react-hook-form/dist/types/fields";
 import { UseMutationConfig } from "react-relay/relay-hooks/useMutation";
+import { toast } from "sonner";
 
 interface UseMutationFormProps<
   Fields extends FieldValues,
@@ -24,6 +25,7 @@ interface UseMutationFormProps<
   ) => (values: Fields) => void;
   autosave?: boolean;
   autosaveTimeout?: number;
+  targetName?: string;
 }
 
 function useMutationForm<
@@ -38,6 +40,7 @@ function useMutationForm<
     autosave,
     autosaveTimeout = 500,
     defaultValues,
+    targetName,
     ...opts
   }: UseMutationFormProps<FieldsType, MutationType>
 ) {
@@ -66,9 +69,24 @@ function useMutationForm<
         onCompleted: (...completedRest) => {
           setIsSubmitting(false);
 
-          if (onCompleted instanceof Function) {
-            onCompleted(...completedRest);
+          // eslint-disable-next-line prefer-destructuring
+          if (!targetName) targetName = Object.keys(completedRest[0])[0];
+
+          if (
+            targetName &&
+            // @ts-ignore
+            completedRest[0][targetName] &&
+            // @ts-ignore
+            completedRest[0][targetName].notification
+          ) {
+            // @ts-ignore
+            toast.message(completedRest[0][targetName].notification);
           }
+
+          if (completedRest[0])
+            if (onCompleted instanceof Function) {
+              onCompleted(...completedRest);
+            }
         },
       });
     };

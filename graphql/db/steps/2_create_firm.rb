@@ -8,8 +8,8 @@ firms_data.each do |firm_data|
   firm = Firm.new
   firm.assign_attributes(**firm_data)
   associated_users.each do |user_data|
-      user = User.find_by_email(user_data[:email])
-      firm.account_firms.build(account: user.account)
+    user = User.find_by_email(user_data[:email])
+    firm.account_firms.build(account: user.account)
   end
   firm.save!
 end
