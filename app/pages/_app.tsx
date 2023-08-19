@@ -6,6 +6,7 @@ import { CssVarsProvider } from "@mui/joy";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import React from "react";
+import { Toaster } from "sonner";
 import { getClientEnvironment } from "../lib/clientEnvironment";
 import "rc-slider/assets/index.css";
 import "react-phone-input-2/lib/style.css";
@@ -24,6 +25,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <ApiKeysProvider>
+      <Toaster />
       <RelayEnvironmentProvider environment={env}>
         <CssVarsProvider theme={theme}>
           <LocalizationProvider dateAdapter={AdapterMoment}>

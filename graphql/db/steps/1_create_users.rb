@@ -8,6 +8,7 @@ users_data.each do |user_data|
   user.save!
   user.send_confirmation_code!(primary: 'email')
   user.activate!(code: user.confirmation_code)
+  user.update(last_try: nil)
 end
 
 ActiveRecord::Base.connection_pool.flush!
