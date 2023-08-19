@@ -14,7 +14,7 @@ module Mutations
       end
 
       def authorized?(**inputs)
-        return false, { notification: 'You are not authorized' } unless service_user?
+        return false, { errors: ['You are not authorized'] } unless service_user?
         super
       end
     end
