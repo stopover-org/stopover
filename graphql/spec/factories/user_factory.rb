@@ -24,8 +24,12 @@
 #
 FactoryBot.define do
   factory :user do
-    phone { Faker::PhoneNumber.phone_number }
-    email { Faker::Internet.email }
+    sequence :phone do |n|
+      "+38111#{n.to_s.rjust(5, '1')}"
+    end
+    sequence :email do |n|
+      "#{n.to_s.rjust(100, '1')}@example.com"
+    end
 
     trait :active do
       session_password { Faker::Internet.password }

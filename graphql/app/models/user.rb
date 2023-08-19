@@ -52,8 +52,8 @@ class User < ApplicationRecord
   enum primary: { email: 'email', phone: 'phone' }, _prefix: true
 
   # VALIDATIONS ================================================================
-  validates :email, uniqueness: { message: 'Email is taken', allow_blank: true }
-  validates :phone, uniqueness: { message: 'Phone is taken', allow_blank: true }
+  validates :email, uniqueness: { message: 'is taken', allow_blank: true }
+  validates :phone, uniqueness: { message: 'is taken', allow_blank: true }
   validates :phone, phone: { message: 'is invalid', allow_blank: true }
 
   # CALLBACKS ================================================================
