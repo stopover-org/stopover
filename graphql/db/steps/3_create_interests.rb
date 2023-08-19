@@ -23,14 +23,12 @@ end
         Rails.logger.info 'skip'
       else
         interest = Interest.create!(title: title, slug: slug)
-        if with_images
-          interest.preview.attach(io: URI.parse(interest_image).open, filename: SecureRandom.hex.to_s)
-        end
+        interest.preview.attach(io: URI.parse(interest_image).open, filename: SecureRandom.hex.to_s) if with_images
         Rails.logger.info { "Interest was created #{interest.id}" }
       end
 
       ActiveRecord::Base.connection_pool.release_connection
-    rescue => e
+    rescue StandardError => e
       Rails.logger.info("ERROR: #{e.message}")
       ActiveRecord::Base.connection_pool.release_connection
     end
