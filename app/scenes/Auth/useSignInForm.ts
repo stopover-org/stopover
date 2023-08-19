@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { UseFormReturn } from "react-hook-form/dist/types";
 import { UseMutationConfig } from "react-relay/relay-hooks/useMutation";
 import { Disposable } from "relay-runtime";
+import { toast } from "sonner";
 import {
   SignInInput,
   useSignInForm_AuthLoginMutation,
@@ -57,17 +58,23 @@ export function useSignInForm(onNextStep: (delay: number) => void) {
           },
         },
         onCompleted(result) {
-          if (result.signIn?.reason) {
-            form.setError("code", { message: result.signIn?.reason });
+          if (result.signIn?.errors?.length) {
+            form.setError("code", { message: result.signIn?.errors?.[0] });
 
-            form.setError("username", { message: result.signIn?.reason });
+            form.setError("username", { message: result.signIn?.errors?.[0] });
+
+            toast.error(result.signIn?.errors?.[0]);
             return;
           }
 
           if (result.signIn?.delay !== null) {
             onNextStep(result.signIn?.delay!);
+
+            toast.success(result.signIn?.notification!);
           } else if (result.signIn?.user?.id) {
             router.push("/events");
+
+            toast.success(result.signIn?.notification!);
           }
         },
       });
@@ -85,7 +92,8 @@ export function useSignInForm(onNextStep: (delay: number) => void) {
           }
           accessToken
           delay
-          reason
+          errors
+          notification
         }
       }
     `,

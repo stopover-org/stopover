@@ -32,17 +32,17 @@ module Mutations
 
           context[:current_user] = user.reload
 
-          return { user: user, access_token: user.access_token }
+          return { user: user, access_token: user.access_token, notification: 'You successfully signed in' }
         elsif args[:reset_code] || !user.confirmation_code
           user.send_confirmation_code!(primary: type)
 
-          return { user: nil, delay: user.delay }
+          return { user: nil, delay: user.delay, notification: 'Confirmation code was sent' }
         end
 
-        { user: nil, delay: user.delay }
+        { user: nil, delay: user.delay, notification: 'Confirmation code was sent' }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
-        { user: nil, delay: user&.delay, reason: e.message }
+        { user: nil, delay: user&.delay, errors: [e.message] }
       end
     end
   end

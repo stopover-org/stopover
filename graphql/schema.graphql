@@ -46,6 +46,8 @@ type AddAttendeePayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
 }
 
 type Attendee implements Node {
@@ -129,6 +131,8 @@ type BookEventPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
 }
 
 type Booking implements Node {
@@ -247,6 +251,8 @@ type CancelBookingPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
   trip: Trip
 }
 
@@ -269,6 +275,8 @@ type CancelTripPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
   trip: Trip
 }
 
@@ -294,6 +302,8 @@ type ChangeAttendeeOptionAvailabilityPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
 }
 
 """
@@ -318,6 +328,8 @@ type ChangeBookingOptionAvailabilityPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
 }
 
 """
@@ -339,7 +351,9 @@ type ChangeEventOptionAvailabilityPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   eventOption: EventOption
+  notification: String
 }
 
 input CreateBookingCancellationOptionInput {
@@ -371,6 +385,8 @@ type CreateCheckoutPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
   payment: Payment
   url: String
 }
@@ -428,7 +444,9 @@ type CreateEventPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   event: Event
+  notification: String
 }
 
 """
@@ -468,7 +486,9 @@ type CreateFirmPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   firm: Firm
+  notification: String
 }
 
 """
@@ -489,6 +509,8 @@ type CreateStripeAccountPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
   setupAccountUrl: String
 }
 
@@ -523,6 +545,8 @@ type DeclineStripeConnectPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
   stripeConnect: StripeConnect!
 }
 
@@ -548,6 +572,8 @@ type DeregisterAttendeePayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
 }
 
 type Event implements Node {
@@ -1179,7 +1205,9 @@ type PublishEventPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   event: Event
+  notification: String
 }
 
 type Query {
@@ -1277,6 +1305,8 @@ type RegisterAttendeePayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
 }
 
 """
@@ -1301,6 +1331,8 @@ type RemoveAttendeePayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
 }
 
 """
@@ -1322,7 +1354,9 @@ type RemoveEventPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   event: Event
+  notification: String
 }
 
 """
@@ -1343,7 +1377,9 @@ type RemoveFirmPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   firm: Firm
+  notification: String
 }
 
 """
@@ -1365,7 +1401,9 @@ type RescheduleEventPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   event: Event
+  notification: String
 }
 
 type Schedule implements Node {
@@ -1436,6 +1474,8 @@ type SignInPayload {
   """
   clientMutationId: String
   delay: Int
+  errors: [String!]
+  notification: String
   reason: String
   user: User
 }
@@ -1470,6 +1510,8 @@ type SignOutPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
   signedOut: Boolean
 }
 
@@ -1580,7 +1622,9 @@ type SyncStripePayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   event: Event
+  notification: String
 }
 
 type Tag implements Node {
@@ -1634,7 +1678,9 @@ type UnpublishEventPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   event: Event
+  notification: String
 }
 
 """
@@ -1664,6 +1710,8 @@ type UpdateAttendeePayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
 }
 
 input UpdateBookingCancellationOptionInput {
@@ -1698,6 +1746,8 @@ type UpdateBookingPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
 }
 
 """
@@ -1756,7 +1806,9 @@ type UpdateEventPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   event: Event
+  notification: String
 }
 
 """
@@ -1796,7 +1848,9 @@ type UpdateFirmPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   firm: Firm
+  notification: String
 }
 
 type User implements Node {
@@ -1844,7 +1898,9 @@ type VerifyEventPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   event: Event
+  notification: String
 }
 
 """
@@ -1865,7 +1921,9 @@ type VerifyFirmPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
   firm: Firm
+  notification: String
 }
 
 """
@@ -1887,5 +1945,7 @@ type VerifyStripeConnectPayload {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  errors: [String!]
+  notification: String
   stripeConnect: StripeConnect!
 }

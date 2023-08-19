@@ -20,6 +20,8 @@ export function useVerifyFirm() {
           firm {
             ...FirmSection_FirmFragment
           }
+          errors
+          notification
         }
       }
     `,
