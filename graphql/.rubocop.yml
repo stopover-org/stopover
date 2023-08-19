@@ -24,6 +24,9 @@ AllCops:
 Rails/SkipsModelValidations:
   Enabled: false
 
+Rails/I18nLocaleTexts:
+  Enabled: false
+
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 

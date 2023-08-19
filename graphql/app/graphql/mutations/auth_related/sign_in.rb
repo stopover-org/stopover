@@ -20,8 +20,6 @@ module Mutations
 
         case type
         when 'phone'
-          raise 'Phone is invalid' unless Phonelib.valid? username
-
           user = User.find_or_create_by!(phone: username)
         when 'email'
           user = User.find_or_create_by!(email: username)
