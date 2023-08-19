@@ -25,7 +25,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <ApiKeysProvider>
-      <Toaster />
+      <Toaster richColors />
       <RelayEnvironmentProvider environment={env}>
         <CssVarsProvider theme={theme}>
           <LocalizationProvider dateAdapter={AdapterMoment}>

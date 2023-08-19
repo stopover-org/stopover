@@ -83,10 +83,25 @@ function useMutationForm<
             toast.message(completedRest[0][targetName].notification);
           }
 
-          if (completedRest[0])
+          if (
+            targetName &&
+            // @ts-ignore
+            completedRest[0][targetName] &&
+            // @ts-ignore
+            completedRest[0][targetName].errors
+          ) {
+            // @ts-ignore
+            completedRest[0][targetName].errors.forEach((err) => {
+              // @ts-ignore
+              toast.error(err);
+            });
+          }
+
+          if (completedRest[0]) {
             if (onCompleted instanceof Function) {
               onCompleted(...completedRest);
             }
+          }
         },
       });
     };
