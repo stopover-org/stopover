@@ -9,7 +9,8 @@ module Mutations
         context[:current_user] = nil
 
         {
-          signed_out: true
+          signed_out: true,
+          notification: 'You were signed out successfully'
         }
       end
     end

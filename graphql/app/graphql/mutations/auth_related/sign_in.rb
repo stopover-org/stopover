@@ -20,10 +20,22 @@ module Mutations
 
         case type
         when 'phone'
-          user = User.find_or_create_by!(phone: username)
+          if current_user
+            user = current_user
+            user.update!(phone: username.gsub(/[\s()\-]/, ''))
+          else
+            user = User.find_or_create_by!(phone: username.gsub(/[\s()\-]/, ''))
+          end
         when 'email'
-          user = User.find_or_create_by!(email: username)
+          if current_user
+            user = current_user
+            user.update!(email: username)
+          else
+            user = User.find_or_create_by!(email: username)
+          end
         end
+
+        user.inactive! if user.temporary?
 
         if args[:code]
           user.activate!(code: args[:code])
@@ -37,7 +49,7 @@ module Mutations
           return { user: nil, delay: user.delay, notification: 'Confirmation code was sent' }
         end
 
-        { user: nil, delay: user.delay, notification: 'Confirmation code was sent' }
+        { user: nil, delay: user.delay }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
         { user: nil, delay: user&.delay, errors: [e.message] }

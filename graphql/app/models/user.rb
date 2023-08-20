@@ -46,6 +46,10 @@ class User < ApplicationRecord
     state :temporary
     state :active
     state :disabled
+
+    event :inactive do
+      transitions from: :temporary, to: :inactive
+    end
   end
 
   # ENUMS =======================================================================
@@ -55,6 +59,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: { message: 'is taken', allow_blank: true }
   validates :phone, uniqueness: { message: 'is taken', allow_blank: true }
   validates :phone, phone: { message: 'is invalid', allow_blank: true }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is invalid', allow_blank: true }
 
   # CALLBACKS ================================================================
   #

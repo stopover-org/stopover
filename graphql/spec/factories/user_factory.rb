@@ -37,6 +37,26 @@ FactoryBot.define do
       confirmed_at { Time.zone.now }
     end
 
+    trait :temporary do
+      status { 'temporary' }
+      phone { nil }
+      email { nil }
+    end
+
+    trait :inactive do
+      status { 'inactive' }
+    end
+
+    transient do
+      with_account { false }
+    end
+
+    after(:create) do |user, evaluator|
+      user.account = Account.create!(user: user, name: user.phone || user.email) if evaluator.with_account
+    end
+
     factory :active_user, traits: [:active]
+    factory :temporary_user, traits: [:temporary]
+    factory :inactive_user, traits: [:inactive]
   end
 end

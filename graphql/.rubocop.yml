@@ -60,6 +60,7 @@ Metrics/BlockLength:
   Exclude:
     - 'lib/tasks/*'
     - 'config/routes/*'
+    - 'spec/**/*'
 
 Metrics/ModuleLength:
   Max: 1000
