@@ -97,7 +97,7 @@ const BookingCancellationOptionsFieldset = () => {
                 onChange={(value) =>
                   onBookingCancellationOptionChange(value, index, "deadline")
                 }
-                value={opt.deadline}
+                value={opt.deadline.toString()}
                 error={
                   form.formState.errors?.bookingCancellationOptions?.[index]
                     ?.deadline

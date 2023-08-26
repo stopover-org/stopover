@@ -23,6 +23,7 @@
 #  index_users_on_phone  (phone) UNIQUE
 #
 require 'jwt'
+require 'phonelib'
 
 class User < ApplicationRecord
   # MODULES ===============================================================
@@ -45,16 +46,20 @@ class User < ApplicationRecord
     state :temporary
     state :active
     state :disabled
+
+    event :inactive do
+      transitions from: :temporary, to: :inactive
+    end
   end
 
   # ENUMS =======================================================================
   enum primary: { email: 'email', phone: 'phone' }, _prefix: true
 
   # VALIDATIONS ================================================================
-  validates :email, presence:   true, if: :should_have_email?
-  validates :email, uniqueness: true, if: :should_have_email?
-  validates :phone, presence:   true, if: :should_have_phone?
-  validates :phone, uniqueness: true, if: :should_have_phone?
+  validates :email, uniqueness: { message: 'is taken', allow_blank: true }
+  validates :phone, uniqueness: { message: 'is taken', allow_blank: true }
+  validates :phone, phone: { message: 'is invalid', allow_blank: true }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is invalid', allow_blank: true }
 
   # CALLBACKS ================================================================
   #
