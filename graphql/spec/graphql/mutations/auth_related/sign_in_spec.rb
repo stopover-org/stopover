@@ -1209,7 +1209,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
   context 'sign in (existing active user)' do
     let(:email) { 'email@stopover.com' }
     let(:phone) { '+381 61 793 1517'.gsub(/[\s()\-]/, '') }
-    let!(:current_urubocopser) { create(:active_user, email: email, phone: phone, with_account: true) }
+    let!(:current_user) { create(:active_user, email: email, phone: phone, with_account: true) }
     context 'by email' do
       let(:type) { 'email' }
 
