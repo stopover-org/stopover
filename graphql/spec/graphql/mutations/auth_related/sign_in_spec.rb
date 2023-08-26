@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
-  let(:default_time) { Time.zone.now.at_beginning_of_hour }
+  let(:default_time) { Time.current.at_beginning_of_hour }
   let(:mutation) do
     "
       mutation SignIn($input: SignInInput!) {
@@ -39,7 +39,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'successful' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(1)
 
             user = User.find_by(email: email)
@@ -59,7 +59,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'delay and last try updating' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -68,7 +68,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
             user = User.find_by(email: email)
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -77,7 +77,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :notification)).to eq('Confirmation code was sent')
           end
 
-          Timecop.freeze(default_time + 30.seconds) do
+          travel_to(default_time + 30.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -95,7 +95,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :notification)).to be_nil
           end
 
-          Timecop.freeze(Time.zone.now.at_beginning_of_hour + 90.seconds) do
+          travel_to(default_time + 90.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -123,7 +123,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
@@ -141,7 +141,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, code: nil } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -153,7 +153,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
@@ -162,8 +162,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.zone.now)
-            expect(user.confirmed_at).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
+            expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
             account = user.account
@@ -185,7 +185,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, code: '<invalid-code>' } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -197,7 +197,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
@@ -221,7 +221,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -233,14 +233,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -254,14 +254,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed (too often)' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -278,7 +278,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -290,7 +290,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'will authorize user' do
           result = nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
@@ -298,7 +298,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -322,7 +322,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'successful' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(1)
 
             user = User.find_by(phone: phone.gsub(/[\s()\-]/, ''))
@@ -343,12 +343,12 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'delay and last try updating' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(1)
 
             user = User.find_by(phone: phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -358,7 +358,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(default_time + 30.seconds) do
+          travel_to(default_time + 30.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -377,7 +377,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(Time.zone.now.at_beginning_of_hour + 90.seconds) do
+          travel_to(default_time + 90.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -405,7 +405,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
@@ -425,7 +425,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
@@ -443,7 +443,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, code: nil } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -455,7 +455,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
@@ -464,8 +464,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.zone.now)
-            expect(user.confirmed_at).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
+            expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
             account = user.account
@@ -487,7 +487,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, code: '<invalid-code>' } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -499,7 +499,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
@@ -523,7 +523,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -535,14 +535,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -556,14 +556,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed (too often)' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -580,7 +580,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -592,7 +592,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'will authorize user' do
           result = nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
@@ -600,7 +600,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -627,7 +627,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'successful' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.find_by(email: email)
@@ -648,7 +648,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'delay and last try updating' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -657,7 +657,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
             user = User.find_by(email: email)
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -667,7 +667,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(default_time + 30.seconds) do
+          travel_to(default_time + 30.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -686,7 +686,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(Time.zone.now.at_beginning_of_hour + 90.seconds) do
+          travel_to(default_time + 90.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -714,7 +714,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
@@ -732,7 +732,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, code: nil } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -744,7 +744,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
@@ -753,8 +753,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.zone.now)
-            expect(user.confirmed_at).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
+            expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
             account = user.account
@@ -776,7 +776,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, code: '<invalid-code>' } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -788,7 +788,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
@@ -812,7 +812,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -824,14 +824,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -845,14 +845,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed (too often)' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -869,7 +869,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -881,7 +881,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'will authorize user' do
           result = nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
@@ -889,7 +889,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -913,7 +913,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'successful' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.find_by(phone: phone.gsub(/[\s()\-]/, ''))
@@ -934,12 +934,12 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'delay and last try updating' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.find_by(phone: phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -949,7 +949,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(default_time + 30.seconds) do
+          travel_to(default_time + 30.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -968,7 +968,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(Time.zone.now.at_beginning_of_hour + 90.seconds) do
+          travel_to(default_time + 90.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -996,7 +996,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
@@ -1016,7 +1016,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
@@ -1034,7 +1034,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, code: nil } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -1046,7 +1046,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
@@ -1055,8 +1055,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.zone.now)
-            expect(user.confirmed_at).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
+            expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
             account = user.account
@@ -1078,7 +1078,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, code: '<invalid-code>' } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -1090,7 +1090,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
@@ -1114,7 +1114,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -1126,14 +1126,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -1147,14 +1147,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed (too often)' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -1171,7 +1171,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -1183,7 +1183,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'will authorize user' do
           result = nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
@@ -1191,7 +1191,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -1220,7 +1220,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           result = nil
           expect(current_user.account).not_to be_nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = current_user
@@ -1242,7 +1242,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           result = nil
           expect(current_user.account).not_to be_nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -1251,7 +1251,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
             user = current_user
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -1261,7 +1261,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(default_time + 30.seconds) do
+          travel_to(default_time + 30.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -1280,7 +1280,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(Time.zone.now.at_beginning_of_hour + 90.seconds) do
+          travel_to(default_time + 90.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -1305,7 +1305,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, code: nil } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -1317,7 +1317,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             input[:code] = user.confirmation_code
             expect(user.account).not_to be_nil
@@ -1327,8 +1327,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.zone.now)
-            expect(user.confirmed_at).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
+            expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
@@ -1345,7 +1345,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, code: '<invalid-code>' } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -1357,7 +1357,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = current_user
@@ -1377,7 +1377,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -1390,14 +1390,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           result = nil
           expect(current_user.account).not_to be_nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = current_user
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -1412,14 +1412,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           result = nil
           expect(current_user.account).not_to be_nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = current_user
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -1435,7 +1435,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -1448,7 +1448,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           result = nil
           expect(current_user.account).not_to be_nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
@@ -1456,7 +1456,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
             user = current_user
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -1480,7 +1480,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           result = nil
           expect(current_user.account).not_to be_nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = current_user
@@ -1501,12 +1501,12 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'delay and last try updating' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = current_user
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -1516,7 +1516,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(default_time + 30.seconds) do
+          travel_to(default_time + 30.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -1535,7 +1535,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(Time.zone.now.at_beginning_of_hour + 90.seconds) do
+          travel_to(default_time + 90.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -1560,7 +1560,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, code: nil } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -1573,7 +1573,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           result = nil
           expect(current_user.account).not_to be_nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
@@ -1582,8 +1582,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.zone.now)
-            expect(user.confirmed_at).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
+            expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
             account = user.account
@@ -1602,7 +1602,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, code: '<invalid-code>' } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -1615,7 +1615,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           result = nil
           expect(current_user.account).not_to be_nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = current_user
@@ -1634,7 +1634,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -1647,13 +1647,13 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           result = nil
           expect(current_user.account).not_to be_nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = current_user
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -1668,13 +1668,13 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           result = nil
           expect(current_user.account).not_to be_nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = current_user
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -1690,7 +1690,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -1703,14 +1703,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           result = nil
           expect(current_user.account).not_to be_nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = current_user
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -1738,7 +1738,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'successful' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.find_by(email: email)
@@ -1759,7 +1759,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'delay and last try updating' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -1768,7 +1768,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
             user = User.find_by(email: email)
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -1778,7 +1778,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(default_time + 30.seconds) do
+          travel_to(default_time + 30.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -1797,7 +1797,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(Time.zone.now.at_beginning_of_hour + 90.seconds) do
+          travel_to(default_time + 90.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -1822,7 +1822,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, code: nil } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -1834,7 +1834,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
@@ -1843,8 +1843,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.zone.now)
-            expect(user.confirmed_at).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
+            expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
@@ -1861,7 +1861,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, code: '<invalid-code>' } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -1873,7 +1873,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
@@ -1896,7 +1896,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -1908,14 +1908,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -1929,14 +1929,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed (too often)' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -1952,7 +1952,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: email, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: email, type: type }
@@ -1964,7 +1964,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'will authorize user' do
           result = nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
@@ -1972,7 +1972,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -1995,7 +1995,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'successful' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.find_by(phone: phone.gsub(/[\s()\-]/, ''))
@@ -2016,12 +2016,12 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'delay and last try updating' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.find_by(phone: phone.gsub(/[\s()\-]/, ''))
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -2031,7 +2031,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(default_time + 30.seconds) do
+          travel_to(default_time + 30.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -2050,7 +2050,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(result.dig(:data, :signIn, :redirectUrl)).to be_nil
           end
 
-          Timecop.freeze(Time.zone.now.at_beginning_of_hour + 90.seconds) do
+          travel_to(default_time + 90.seconds) do
             expect do
               result = GraphqlSchema.execute(mutation, variables: {
                                                input: input
@@ -2075,7 +2075,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, code: nil } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -2087,7 +2087,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
@@ -2096,8 +2096,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.zone.now)
-            expect(user.confirmed_at).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
+            expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
             account = user.account
@@ -2118,7 +2118,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, code: '<invalid-code>' } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -2130,7 +2130,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
@@ -2153,7 +2153,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -2165,14 +2165,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'success' do
           result = nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -2186,14 +2186,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed (too often)' do
           result = nil
 
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -2209,7 +2209,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:input) { { username: phone, type: type, resetCode: true } }
 
         before do
-          Timecop.freeze(default_time) do
+          travel_to(default_time) do
             GraphqlSchema.execute(mutation,
                                   variables: {
                                     input: { username: phone, type: type }
@@ -2221,7 +2221,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'will authorize user' do
           result = nil
 
-          Timecop.freeze(default_time + 60.seconds) do
+          travel_to(default_time + 60.seconds) do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
@@ -2229,7 +2229,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
             user = User.last
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.zone.now)
+            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
