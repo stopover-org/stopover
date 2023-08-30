@@ -14,7 +14,9 @@ module Mutations
       end
 
       def authorized?(**inputs)
+        return false, { errors: ['You are not authorized'] } unless current_user&.active?
         return false, { errors: ['You are not authorized'] } unless service_user?
+        return false, { errors: ['Firm already verified'] } if current_firm&.active?
         super
       end
     end

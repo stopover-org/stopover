@@ -47,6 +47,10 @@ FactoryBot.define do
       status { 'inactive' }
     end
 
+    trait :service do
+      service_user { true }
+    end
+
     transient do
       with_account { false }
     end
@@ -56,6 +60,7 @@ FactoryBot.define do
     end
 
     factory :active_user, traits: [:active]
+    factory :service_user, traits: %i[active service]
     factory :temporary_user, traits: [:temporary]
     factory :inactive_user, traits: [:inactive]
   end
