@@ -63,7 +63,7 @@ const PhoneInput = React.forwardRef(
         }
         placeholder={inputPlaceholder}
         onChange={onChangeHandler}
-        value={formatIncompletePhoneNumber(value)}
+        value={value ? formatIncompletePhoneNumber(value) : ""}
         label={label}
         sx={{ paddingLeft: 0 }}
         onFocus={() => setFocusedInput(true)}

@@ -93,7 +93,21 @@ class Firm < ApplicationRecord
   validates :ref_number,
             uniqueness: true,
             allow_blank: true
+  validates :city,
+            presence: true
+  validates :country,
+            presence: true
+  validates :country,
+            inclusion: { in: ISO3166::Country.all.map(&:iso_short_name) }
+  validates :primary_email,
+            format: { with: URI::MailTo::EMAIL_REGEXP,
+                      message: 'is invalid',
+                      allow_blank: true }
+  validates :primary_phone,
+            phone: { message: 'is invalid',
+                     allow_blank: true }
 
+  before_validation :transform_phone
   # CALLBACKS ================================================================
   after_create :create_balance
 
@@ -107,5 +121,11 @@ class Firm < ApplicationRecord
 
   def remove_callback
     RemoveFirmJob.perform_later(id)
+  end
+
+  private
+
+  def transform_phone
+    self.primary_phone = primary_phone.gsub(/[\s()\-]/, '') if primary_phone
   end
 end

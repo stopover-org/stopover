@@ -79,6 +79,8 @@ export function useCreateFirmForm() {
           firm {
             id
           }
+          notification
+          errors
         }
       }
     `,
