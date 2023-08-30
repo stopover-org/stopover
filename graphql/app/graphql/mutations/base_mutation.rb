@@ -15,11 +15,11 @@ module Mutations
     end
 
     def current_account
-      context[:current_user]
+      context[:current_user]&.account
     end
 
     def current_firm
-      context[:current_firm]
+      context[:current_user]&.account&.current_firm
     end
 
     def service_user?

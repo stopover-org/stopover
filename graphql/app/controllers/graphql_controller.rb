@@ -16,8 +16,6 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       current_user: @current_user || nil,
-      current_account: @current_user&.account,
-      current_firm: @current_user&.account&.current_firm,
       cookies: cookies
     }
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)

@@ -38,6 +38,8 @@ FactoryBot.define do
     title { Faker::App.name }
     primary_email { Faker::Internet.email }
     margin { 10 }
+    city { 'Belgrade' }
+    country { 'Serbia' }
 
     transient do
       accounts { create_list(:account, 1) }

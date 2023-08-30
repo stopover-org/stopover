@@ -26,6 +26,7 @@ require 'jwt'
 require 'phonelib'
 
 class User < ApplicationRecord
+  SIGN_IN_DELAY = 60
   # MODULES ===============================================================
   include AASM
 
@@ -62,7 +63,7 @@ class User < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is invalid', allow_blank: true }
 
   # CALLBACKS ================================================================
-  #
+
   # SCOPES =====================================================================
   #
   # DELEGATIONS ==============================================================
@@ -134,7 +135,7 @@ class User < ApplicationRecord
   def delay
     return if temporary?
 
-    actual_delay = ::Configuration.get_value(:SIGN_IN_DELAY).value.to_i - (Time.zone.now.to_i - (last_try&.to_i || 0))
+    actual_delay = SIGN_IN_DELAY - (Time.zone.now.to_i - (last_try&.to_i || 0))
     return actual_delay if actual_delay.positive?
     0
   end
@@ -151,7 +152,7 @@ class User < ApplicationRecord
   def can_send_code?
     return true unless last_try || confirmation_code
 
-    required_delay = ::Configuration.get_value(:SIGN_IN_DELAY)&.value.to_i
+    required_delay = SIGN_IN_DELAY
     required_delay <= Time.zone.now.to_i - last_try.to_i
   end
 
