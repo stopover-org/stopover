@@ -39,7 +39,7 @@ module Stopover
       # Prefil company details before sending url to the customer
       if user.account.current_firm.individual?
         Stripe::Account.update(
-          account.id,
+          account[:id],
           business_type: firm.business_type,
           individual: {
             address: {
@@ -58,7 +58,7 @@ module Stopover
 
       if user.account.current_firm.company?
         Stripe::Account.update(
-          account.id,
+          account[:id],
           business_type: user.account.current_firm.business_type,
           company: {
             address: {
@@ -73,7 +73,7 @@ module Stopover
         )
       end
 
-      user.account.current_firm.update!(stripe_account_id: account.id)
+      user.account.current_firm.update!(stripe_account_id: account[:id])
 
       account_link = Stripe::AccountLink.create({
                                                   account: account[:id],
@@ -81,8 +81,9 @@ module Stopover
                                                   return_url: "#{Rails.application.credentials.frontend_url}/my-firm/dashboard?stripe_connect=verify",
                                                   type: 'account_onboarding'
                                                 })
+
       {
-        account_link: account_link.url
+        account_link: account_link[:url]
       }
     rescue StandardError => e
       Sentry.capture_exception(e) if Rails.env.production?

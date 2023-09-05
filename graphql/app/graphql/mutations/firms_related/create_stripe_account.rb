@@ -5,19 +5,28 @@ module Mutations
     class CreateStripeAccount < BaseMutation
       field :setup_account_url, String
       def resolve
-        raise GraphQL::ExecutionError, 'Account already exist' if context[:current_user].account.current_firm.stripe_connects.active.any?
-
         context[:current_user].account.current_firm.stripe_connects.create!
         account_link = Stopover::StripeAccountService.create_stripe_account(context[:current_user])
         {
-          setup_account_url: account_link[:account_link]
+          setup_account_url: account_link[:account_link],
+          notification: 'Stripe Connect was created!'
         }
       rescue StandardError => e
-        Sentry.capture_exception(e) if Rails.env.production?
-
         {
-          setup_account_url: nil
+          setup_account_url: nil,
+          errors: ['Something went wrong']
         }
+      end
+
+      def authorized?(**_inputs)
+        return false, { errors: ['You are not authorized'] } unless current_user
+        return false, { errors: ['You are not authorized'] } if current_user&.temporary?
+        return false, { errors: ['You are not authorized'] } if current_user&.inactive?
+        return false, { errors: ['You are not authorized'] } unless current_user&.service_user
+        return false, { errors: ['You don\'t have firm'] } unless current_firm
+        return false, { errors: ['Stripe Connect already exist'] } if current_firm.stripe_connects.active.any?
+
+        true
       end
     end
   end
