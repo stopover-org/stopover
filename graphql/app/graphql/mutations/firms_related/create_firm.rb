@@ -39,7 +39,7 @@ module Mutations
           firm.image.attach(io_object)
         end
 
-        { firm: firm }
+        { firm: firm, notification: 'Firm was created' }
       rescue StandardError => e
         { errors: [e.message], notification: 'Something went wrong' }
       end

@@ -25,11 +25,6 @@ module Mutations
       argument :payment_types,  [String], required: false
 
       def resolve(**args)
-        raise GraphQL::ExecutionError, 'unauthorized'         unless context[:current_user]
-        raise GraphQL::ExecutionError, 'user has no account'  unless context[:current_user].account
-        raise GraphQL::ExecutionError, 'firm does not exist'  unless context[:current_user].account
-                                                                                           .current_firm
-
         firm = context[:current_user].account.current_firm
         firm.update!(args.except(:image))
 
@@ -41,7 +36,17 @@ module Mutations
           firm.image.purge
         end
 
-        { firm: firm }
+        { firm: firm, notification: 'Firm was updated' }
+      rescue StandardError => e
+        { errors: [e.message], notification: 'Something went wrong' }
+      end
+
+      def authorized?(**inputs)
+        return false, { errors: ['You are not authorized'] } unless current_user
+        return false, { errors: ['You are not authorized'] } if current_user&.temporary?
+        return false, { errors: ['You are not authorized'] } if current_user&.inactive?
+        return false, { errors: ['You don\'t have firm'] } unless current_firm
+        super
       end
     end
   end

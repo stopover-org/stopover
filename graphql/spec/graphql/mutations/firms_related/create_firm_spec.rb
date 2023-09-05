@@ -92,6 +92,8 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
       expect(result.dig(:data, :createFirm, :firm, :street)).to       eq('Street Name')
       expect(result.dig(:data, :createFirm, :firm, :houseNumber)).to  eq('House Number')
       expect(result.dig(:data, :createFirm, :firm, :fullAddress)).to  eq('Full Address')
+
+      expect(result.dig(:data, :createFirm, :notification)).to eq('Firm was created')
     end
   end
 
