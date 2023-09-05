@@ -60,7 +60,7 @@ RSpec.describe Mutations::FirmsRelated::CreateStripeAccount, type: :mutation do
         let(:current_user) { nil }
         it 'fails' do
           result = nil
-          expect { result = subject.to_h.deep_symbolize_keys }.to change { FiStripeConnectrm.count }.by(0)
+          expect { result = subject.to_h.deep_symbolize_keys }.to change { StripeConnect.count }.by(0)
           expect(result.dig(:data, :createStripeAccount, :setupAccountUrl)).to be_nil
           expect(result.dig(:data, :createStripeAccount, :errors)).to include('You are not authorized')
         end
