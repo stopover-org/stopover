@@ -49,15 +49,15 @@ class Booking < ApplicationRecord
   belongs_to :schedule
   belongs_to :stripe_integration
 
+  has_one :firm, through: :event
   has_one :account, through: :trip
-
   has_one :user,    through: :account
 
   has_many :booking_cancellation_options, through: :event
-
   has_many :event_options,
            -> { where(for_attendee: false) },
            through: :event
+
   # AASM STATES ================================================================
   aasm column: :status do
     state :active, initial: true
@@ -143,6 +143,10 @@ class Booking < ApplicationRecord
 
   def already_paid_price
     payments.successful.map(&:total_price).sum(Money.new(0))
+  end
+
+  def past?
+    schedule.scheduled_for.past?
   end
 
   private
