@@ -2,13 +2,15 @@
 
 module Stopover
   class CurrentTripService
+    TRIP_WINDOW = 14
+
     def initialize(user:)
       @user = user
       @trips = user.account.trips.where(status: %i[active draft])
     end
 
     def get_current_trip(booked_for)
-      config_value = Configuration.get_value('GET_TRIP_WINDOW').value.to_i
+      config_value = Stopover::CurrentTripService::TRIP_WINDOW
 
       existing_trips = @trips.joins(:bookings)
                              .where(bookings: Booking.joins(:schedule)

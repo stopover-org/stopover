@@ -27,14 +27,6 @@ RSpec.describe Stopover::CurrentTripService, type: :service do
                                             .schedule
                                             .scheduled_for + 23.days)).not_to eq(trip)
       end
-
-      it 'range is bigger' do
-        Configuration.set_value('GET_TRIP_WINDOW', 25)
-        expect(service.get_current_trip(trip.bookings
-                                            .first
-                                            .schedule
-                                            .scheduled_for + 23.days)).to eq(trip)
-      end
     end
   end
 end

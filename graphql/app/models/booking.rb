@@ -79,7 +79,6 @@ class Booking < ApplicationRecord
   validate :check_max_attendees
 
   # CALLBACKS ================================================================
-  before_validation :create_trip, if: :should_create_trip
   before_validation :create_attendee
   before_validation :adjust_stripe_integration, on: :create
   before_create :create_booking_options
@@ -163,14 +162,6 @@ class Booking < ApplicationRecord
 
   def create_attendee
     attendees.build if attendees.empty?
-  end
-
-  def should_create_trip
-    !trip
-  end
-
-  def create_trip
-    Trip.create(bookings: [self])
   end
 
   def adjust_stripe_integration
