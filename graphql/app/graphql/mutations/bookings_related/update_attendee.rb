@@ -24,15 +24,29 @@ module Mutations
 
         attendee.update!(**args.except(:event_options))
         {
-          attendee: attendee
+          attendee: attendee,
+          notification: 'Attendee was updated!'
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
 
         {
           attendee: nil,
-          error: e.message
+          errors: [e.message]
         }
+      end
+
+      def authorized?(**inputs)
+        attendee = inputs[:attendee]
+        booking = attendee.booking
+
+        return false, { errors: ['You are not authorized'] } if !owner?(booking) && !manager?(booking)
+        return false, { errors: ['Booking cancelled'] } if booking.cancelled?
+        return false, { errors: ['Event past'] } if booking.past?
+        return false, { errors: ['Attendee was removed'] } if attendee.removed?
+        return false, { errors: ['Wrong option type'] } if inputs[:event_options]&.reject { |opt| opt.for_attendee }&.any?
+
+        super
       end
     end
   end

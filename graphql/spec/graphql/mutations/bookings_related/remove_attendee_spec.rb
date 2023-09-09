@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::BookingsRelated::DeregisterAttendee, type: :mutation do
+RSpec.describe Mutations::BookingsRelated::RemoveAttendee, type: :mutation do
   let(:mutation) do
     "
       mutation RemoveAttendee($input: RemoveAttendeeInput!) {
