@@ -9,8 +9,28 @@ module Mutations
       def resolve(attendee:, **_args)
         attendee.remove!
         {
-          attendee: attendee
+          attendee: attendee,
+          notification: 'Attendee was removed!'
         }
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+
+        {
+          e: [e.message],
+            attendee: nil
+        }
+      end
+
+      private
+
+      def authorized?(**inputs)
+        attendee = inputs[:attendee]
+        return false, { errors: ['You are not authorized'] } unless manager?(attendee)
+
+        return false, { errors: ['Attendee was removed already'] } if attendee.removed?
+        return false, { errors: ['Event past'] } if attendee.booking.past?
+        return false, { errors: ['Booking was cancelled'] } if attendee.booking.cancelled?
+        super
       end
     end
   end
