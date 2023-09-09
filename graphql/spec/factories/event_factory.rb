@@ -93,7 +93,12 @@ FactoryBot.define do
 
     trait :booking_schedule do
       after(:create) do |event|
-        event.bookings.create!(event_id: event.id, schedule_id: event.schedules.last.id, stripe_integration: event.current_stripe_integration)
+        user = create(:active_user, with_account: true)
+        event.bookings.create!(event_id: event.id,
+                               schedule_id: event.schedules.last.id,
+                               stripe_integration: event.current_stripe_integration,
+                               trip: create(:trip,
+                                            account: user.account))
       end
     end
 

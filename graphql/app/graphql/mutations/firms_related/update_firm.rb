@@ -38,6 +38,8 @@ module Mutations
 
         { firm: firm, notification: 'Firm was updated' }
       rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+
         { errors: [e.message], notification: 'Something went wrong' }
       end
 
@@ -46,6 +48,7 @@ module Mutations
         return false, { errors: ['You are not authorized'] } if current_user&.temporary?
         return false, { errors: ['You are not authorized'] } if current_user&.inactive?
         return false, { errors: ['You don\'t have firm'] } unless current_firm
+
         super
       end
     end

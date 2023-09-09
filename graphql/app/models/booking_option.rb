@@ -48,6 +48,8 @@ class BookingOption < ApplicationRecord
   belongs_to :event_option
   belongs_to :stripe_integration
 
+  has_one :firm, through: :booking
+
   # AASM STATES ================================================================d
 
   # ENUMS =======================================================================

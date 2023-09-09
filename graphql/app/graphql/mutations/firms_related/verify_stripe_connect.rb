@@ -12,6 +12,8 @@ module Mutations
 
         { stripe_connect: stripe_connect, notification: 'Stripe Connect verified!' }
       rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+
         {
           stripe_connect: nil,
           errors: ['Something went wrong']
@@ -26,7 +28,7 @@ module Mutations
         return false, { errors: ['You don\'t have firm'] } unless current_firm
         return false, { errors: ['Stripe Connect already verified'] } if current_firm.stripe_connects.active.any?
 
-        true
+        super
       end
     end
   end

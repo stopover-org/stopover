@@ -16,6 +16,10 @@ module Mutations
         end
 
         { stripe_connect: stripe_connect, notification: soft ? 'Stripe Connect deactivated!' : 'Stripe Connect removed!' }
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+
+        { errors: [e.message], notification: 'Something went wrong' }
       end
 
       def authorized?(**_inputs)
@@ -25,7 +29,7 @@ module Mutations
         return false, { errors: ['You are not authorized'] } unless current_user&.service_user
         return false, { errors: ['You don\'t have firm'] } unless current_firm
 
-        true
+        super
       end
     end
   end

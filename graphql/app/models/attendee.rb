@@ -37,6 +37,7 @@ class Attendee < ApplicationRecord
 
   # this has_one should be defined after belongs_to booking
   has_one :event, through: :booking
+  has_one :firm, through: :booking
 
   # this has_one should be defined after has_one event
   has_many :event_options, -> { where(for_attendee: true) }, through: :event, inverse_of: :event

@@ -29,7 +29,7 @@ RSpec.describe Mutations::FirmsRelated::VerifyFirm, type: :mutation do
                           }, context: { current_user: current_user })
   end
 
-  context 'should verify firm' do
+  context 'verify firm' do
     it 'check pending firm' do
       expect(current_firm.status).to eq('pending')
     end

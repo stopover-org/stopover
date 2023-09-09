@@ -46,6 +46,9 @@ class AttendeeOption < ApplicationRecord
   belongs_to :event_option
   belongs_to :stripe_integration
 
+  has_one :booking, through: :attendee
+  has_one :firm, through: :attendee
+
   # AASM STATES ================================================================
 
   # ENUMS =======================================================================

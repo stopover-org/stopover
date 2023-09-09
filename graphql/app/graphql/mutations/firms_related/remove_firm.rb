@@ -12,6 +12,10 @@ module Mutations
           firm: firm.reload,
           notification: 'Firm was removed'
         }
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+
+        { errors: [e.message], notification: 'Something went wrong' }
       end
 
       def authorized?(**inputs)
@@ -20,6 +24,7 @@ module Mutations
         return false, { errors: ['You are not authorized'] } if current_user&.inactive?
         return false, { errors: ['You don\'t have firm'] } unless current_firm
         return false, { errors: ['Firm was removed'] } if current_firm.removed?
+
         super
       end
     end

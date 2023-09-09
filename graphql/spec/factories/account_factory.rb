@@ -31,7 +31,7 @@
 #
 FactoryBot.define do
   factory :account do
-    user { create :active_user }
+    user { create(:active_user) }
     name { Faker::Name.name }
     house_number { Faker::Address.building_number }
     street { Faker::Address.street_name }

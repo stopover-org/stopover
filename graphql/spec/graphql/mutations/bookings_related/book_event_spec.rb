@@ -64,7 +64,7 @@ RSpec.describe Mutations::BookingsRelated::AddAttendee, type: :mutation do
     end
   end
 
-  context 'add attendee' do
+  context 'book event' do
     context 'as active user' do
       include_examples :successful
     end

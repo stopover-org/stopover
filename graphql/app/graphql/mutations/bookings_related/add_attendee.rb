@@ -15,10 +15,12 @@ module Mutations
       end
 
       def authorized?(**inputs)
-        return false, { errors: ['You are not authorized'] } if inputs[:booking].account != current_account && !current_firm
-        return false, { errors: ['Booking cancelled'] } if inputs[:booking].cancelled?
-        return false, { errors: ['Booking past'] } if inputs[:booking].past?
-        return false, { errors: ['All places are reserved'] } if inputs[:booking].event.max_attendees && Attendee.where(booking_id: inputs[:booking].id).count >= inputs[:booking].event.max_attendees
+        booking = inputs[:booking]
+
+        return false, { errors: ['You are not authorized'] } if !owner?(booking) && !manager?(booking)
+        return false, { errors: ['Booking cancelled'] } if booking.cancelled?
+        return false, { errors: ['Booking past'] } if booking.past?
+        return false, { errors: ['All places are reserved'] } if booking.event.max_attendees && Attendee.where(booking_id: booking.id).count >= booking.event.max_attendees
 
         super
       end
