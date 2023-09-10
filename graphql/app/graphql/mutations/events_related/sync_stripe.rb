@@ -8,7 +8,6 @@ module Mutations
       argument :event_id, ID, loads: Types::EventsRelated::EventType
 
       def resolve(event:)
-        raise GraphQL::ExecutionError, 'Stripe is not available payment method' unless event.firm.payment_types.include?('stripe')
         Stopover::StripeIntegrator.sync(event)
 
         event.event_options.each do |event_option|
@@ -16,8 +15,29 @@ module Mutations
         end
 
         {
-          event: event
+          event: event,
+          notification: 'Event sync in progress!'
         }
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+
+        {
+          booking: nil,
+          errors: [e.message]
+        }
+      end
+
+      private
+
+      def authorized?(**inputs)
+        event = inputs[:event]
+
+        return false, { errors: ['You are not authorized'] } unless current_firm
+        return false, { errors: ['Event is removed already'] } if event.removed?
+        return false, { errors: ['Event wasn\'t verified yet'] } if event.draft?
+        return false, { errors: ['Stripe is not available payment method'] } unless event.firm.payment_types.include?('stripe')
+
+        super
       end
     end
   end
