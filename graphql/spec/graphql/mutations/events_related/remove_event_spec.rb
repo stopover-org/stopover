@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::EventsRelated::PublishEvent, type: :mutation do
+RSpec.describe Mutations::EventsRelated::RemoveEvent, type: :mutation do
   let(:mutation) do
     "
-      mutation PublishEvent($input: PublishEventInput!) {
-        publishEvent(input: $input) {
+      mutation RemoveEvent($input: RemoveEventInput!) {
+        removeEvent(input: $input) {
           event {
             id
             status
@@ -18,7 +18,7 @@ RSpec.describe Mutations::EventsRelated::PublishEvent, type: :mutation do
       }
     "
   end
-  let!(:event) { create(:recurring_not_published_event, status: 'unpublished', skip_schedules: true) }
+  let!(:event) { create(:recurring_not_published_event) }
   let(:current_user) { event.firm.accounts.last.user }
 
   let(:input) do
@@ -34,13 +34,13 @@ RSpec.describe Mutations::EventsRelated::PublishEvent, type: :mutation do
   shared_examples :successful do
     it 'successful' do
       result = nil
-      expect(event.schedules.count).to eq(0)
-      expect(ScheduleEventJob).to receive(:perform_later).with(event_id: event.id)
+      expect(event.schedules.count).to eq(56)
+      expect(RemoveEventJob).to receive(:perform_later).with(event_id: event.id)
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Event.count }.by(0)
 
-      expect(result.dig(:data, :publishEvent, :event, :id)).to eq(GraphqlSchema.id_from_object(event))
-      expect(result.dig(:data, :publishEvent, :event, :status)).to eq('published')
-      expect(result.dig(:data, :publishEvent, :notification)).to eq('Event published!')
+      expect(result.dig(:data, :removeEvent, :event, :id)).to eq(GraphqlSchema.id_from_object(event))
+      expect(result.dig(:data, :removeEvent, :event, :status)).to eq('removed')
+      expect(result.dig(:data, :removeEvent, :notification)).to eq('Event removed!')
     end
   end
 
@@ -49,36 +49,32 @@ RSpec.describe Mutations::EventsRelated::PublishEvent, type: :mutation do
       result = nil
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Event.count }.by(0)
 
-      expect(result.dig(:data, :publishEvent, :event)).to be_nil
-      expect(result.dig(:data, :publishEvent, :errors)).to include(error)
+      expect(result.dig(:data, :removeEvent, :event)).to be_nil
+      expect(result.dig(:data, :removeEvent, :errors)).to include(error)
     end
   end
 
   context 'change event option availability' do
     before { event.firm.update(status: 'active') }
     context 'as manager' do
-      include_examples :successful
+      context 'for published event' do
+        before { event.update(status: 'published') }
+        include_examples :successful
+      end
+      context 'for unpublished event' do
+        before { event.update(status: 'unpublished') }
+        include_examples :successful
+      end
+      context 'for draft event' do
+        before { event.update(status: 'draft') }
+        include_examples :successful
+      end
     end
 
     context 'permissions' do
-      context 'for already published event' do
-        before { event.update(status: 'published') }
-        include_examples :fail, 'Event published already'
-      end
-
-      context 'for draft firm' do
-        before { event.firm.update(status: 'pending') }
-        include_examples :fail, 'Firm is not verified'
-      end
-
-      context 'for draft event' do
-        before { event.update(status: 'draft') }
-        include_examples :fail, 'Event is not verified'
-      end
-
       context 'for removed event' do
         before { event.update(status: 'removed') }
-        include_examples :fail, 'Event removed'
+        include_examples :fail, 'Event is removed already'
       end
 
       context 'as common user' do

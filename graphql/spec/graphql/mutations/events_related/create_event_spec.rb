@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::EventsRelated::ChangeEventOptionAvailability, type: :mutation do
+RSpec.describe Mutations::EventsRelated::CreateEvent, type: :mutation do
   let(:mutation) do
     "
       mutation CreateEvent($input: CreateEventInput!) {
@@ -200,7 +200,7 @@ RSpec.describe Mutations::EventsRelated::ChangeEventOptionAvailability, type: :m
       end
     end
 
-    it 'check booking cancellation options' do
+    it 'create event' do
       result = nil
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Event.count }.by(1)
 
