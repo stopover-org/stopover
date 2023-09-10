@@ -119,11 +119,11 @@ class Booking < ApplicationRecord
 
   def organizer_total_price
     event_price = event.organizer_price_per_uom * attendees.count
-    booking_options_price = booking_options.sum(Money.new(0)) { |opt| opt.event_option.built_in ? 0 : opt.organizer_price }
+    booking_options_price = booking_options.sum(Money.new(0)) { |opt| opt.event_option.built_in || opt.not_available? ? 0 : opt.organizer_price }
     attendee_options_price = attendees.sum(Money.new(0)) do |att|
       res = Money.new(0)
       att.attendee_options.each do |opt|
-        res += if opt.event_option.built_in
+        res += if opt.event_option.built_in || opt.not_available?
                  0
                else
                  opt.organizer_price

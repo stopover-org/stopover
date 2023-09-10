@@ -31,7 +31,7 @@ module Stopover
           hours   = hours.to_i
           minutes = minutes.to_i
 
-          DateTime.new(year, month, day, hours, minutes)
+          DateTime.new(year, month, day, hours, minutes).to_time
         end
       end
     end

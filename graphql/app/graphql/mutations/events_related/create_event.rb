@@ -55,7 +55,22 @@ module Mutations
       def resolve(**args)
         event = Stopover::EventManagement::EventCreator.new(context).execute(**args)
 
-        { event: event }
+        { event: event, notification: 'Event created!' }
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+
+        {
+          booking: nil,
+            errors: [e.message]
+        }
+      end
+
+      private
+
+      def authorized?(**inputs)
+        return false, { errors: ['You are not authorized'] } unless current_firm
+
+        super
       end
     end
   end
