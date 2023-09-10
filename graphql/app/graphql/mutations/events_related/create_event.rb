@@ -61,7 +61,7 @@ module Mutations
 
         {
           booking: nil,
-            errors: [e.message]
+          errors: [e.message]
         }
       end
 
