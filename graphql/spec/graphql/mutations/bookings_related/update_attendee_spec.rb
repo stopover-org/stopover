@@ -28,6 +28,7 @@ RSpec.describe Mutations::BookingsRelated::UpdateAttendee, type: :mutation do
   end
   let!(:attendee) { create(:attendee) }
   let(:current_user) { attendee.booking.firm.accounts.last.user }
+  let(:event_options) { create_list(:event_option, 4, for_attendee: true, event: attendee.booking.event) }
 
   let(:input) do
     { attendeeId: GraphqlSchema.id_from_object(attendee),
@@ -43,7 +44,7 @@ RSpec.describe Mutations::BookingsRelated::UpdateAttendee, type: :mutation do
                           }, context: { current_user: current_user })
   end
 
-  shared_examples :successful do |with_attendee, status|
+  shared_examples :successful do |with_options, status|
     it 'successful' do
       result = nil
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(0)
@@ -54,9 +55,9 @@ RSpec.describe Mutations::BookingsRelated::UpdateAttendee, type: :mutation do
       expect(result.dig(:data, :updateAttendee, :attendee, :lastName)).to eq('Surname')
       expect(result.dig(:data, :updateAttendee, :attendee, :email)).to eq('some@mail.com')
       expect(result.dig(:data, :updateAttendee, :attendee, :phone)).to eq('+8 88888 88 88')
-      if with_attendee
+      if with_options
         result.dig(:data, :updateAttendee, :attendee, :eventOptions).each_with_index do |opt, idx|
-          expect(opt[:id]).to eq(event_options[idx].id)
+          expect(opt[:id]).to eq(GraphqlSchema.id_from_object(event_options[idx]))
           expect(opt[:forAttendee]).to eq(true)
         end
       end
@@ -79,7 +80,7 @@ RSpec.describe Mutations::BookingsRelated::UpdateAttendee, type: :mutation do
       let(:current_user) { attendee.booking.user }
 
       context 'with event options' do
-        before { input[:eventOptionIds] = create_list(:event_option, 4, for_attendee: true).map { |opt| GraphqlSchema.id_from_object(opt) } }
+        before { input[:eventOptionIds] = event_options.map { |opt| GraphqlSchema.id_from_object(opt) } }
 
         context 'for registered attendee' do
           before { attendee.update(status: 'registered') }
@@ -107,7 +108,7 @@ RSpec.describe Mutations::BookingsRelated::UpdateAttendee, type: :mutation do
       let(:current_user) { attendee.booking.user }
 
       context 'with event options' do
-        before { input[:eventOptionIds] = create_list(:event_option, 4, for_attendee: true).map { |opt| GraphqlSchema.id_from_object(opt) } }
+        before { input[:eventOptionIds] = event_options.map { |opt| GraphqlSchema.id_from_object(opt) } }
 
         context 'for registered attendee' do
           let(:current_user) { attendee.booking.user }

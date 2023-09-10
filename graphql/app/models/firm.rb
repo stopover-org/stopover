@@ -116,7 +116,7 @@ class Firm < ApplicationRecord
   # DELEGATIONS ==============================================================
 
   def create_balance
-    self.balance = Balance.new
+    self.balance = Balance.create!(firm: self)
   end
 
   def remove_callback
