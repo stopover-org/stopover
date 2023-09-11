@@ -181,8 +181,8 @@ function useDefaultValues(
 }
 
 const validationSchema = Yup.object().shape({
-  city: Yup.string().nullable(),
-  country: Yup.string().nullable(),
+  city: Yup.string().required(),
+  country: Yup.string().required(),
   description: Yup.string().required("Required"),
   durationTime: Yup.string().required("Required"),
   endDate: Yup.date().transform(momentTransform).nullable(),
