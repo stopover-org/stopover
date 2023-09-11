@@ -71,6 +71,8 @@ export function useCheckoutForm(
               ...AttendeeEditForm_AttendeeFragment
             }
           }
+          notification
+          errors
         }
       }
     `,

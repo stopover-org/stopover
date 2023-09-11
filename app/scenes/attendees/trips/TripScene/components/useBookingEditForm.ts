@@ -64,6 +64,8 @@ export function useBookingEditForm(
               }
             }
           }
+          notification
+          errors
         }
       }
     `,

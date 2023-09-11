@@ -41,6 +41,8 @@ export function useRemoveEventForm(
             ...EventScene_FirmEventFragment
             ...SchedulesInformation_EventFragment
           }
+          notification
+          errors
         }
       }
     `,

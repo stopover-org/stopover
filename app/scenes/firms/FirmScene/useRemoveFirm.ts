@@ -23,6 +23,9 @@ export function useRemoveFirm() {
           firm {
             id
           }
+
+          notification
+          errors
         }
       }
     `,

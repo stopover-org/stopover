@@ -26,6 +26,8 @@ export function useConnectStripeForm() {
       ) {
         createStripeAccount(input: $input) {
           setupAccountUrl
+          notification
+          errors
         }
       }
     `,

@@ -41,6 +41,8 @@ export function useUnpublishEventForm(
             ...EventScene_FirmEventFragment
             ...SchedulesInformation_EventFragment
           }
+          notification
+          errors
         }
       }
     `,

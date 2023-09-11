@@ -45,6 +45,8 @@ export function useChangeAttendeeOptionAvailabilityForm(
               }
             }
           }
+          notification
+          errors
         }
       }
     `,

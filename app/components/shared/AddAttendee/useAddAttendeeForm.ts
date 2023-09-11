@@ -40,6 +40,8 @@ export function useAddAttendeeForm(
           booking {
             ...BookingScene_FirmBookingFragment
           }
+          notification
+          errors
         }
       }
     `,

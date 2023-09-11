@@ -61,6 +61,8 @@ export function useBookingDatesEditForm(
             ...BookingDatesEditForm_BookingFragment
             id
           }
+          notification
+          errors
         }
       }
     `,

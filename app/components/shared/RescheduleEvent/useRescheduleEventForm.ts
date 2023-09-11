@@ -41,6 +41,8 @@ export function useRescheduleEventForm(
             ...EventScene_FirmEventFragment
             ...SchedulesInformation_EventFragment
           }
+          notification
+          errors
         }
       }
     `,

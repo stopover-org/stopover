@@ -50,6 +50,8 @@ export function useCancelBookingForm(
             ...DateBookingsSection_TripFragment
             ...TripScene_TripFragment
           }
+          notification
+          errors
         }
       }
     `,

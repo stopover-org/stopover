@@ -45,6 +45,8 @@ export function useVerifyStripeConnectForm(
               ...stripeConnects_FirmFragment
             }
           }
+          notification
+          errors
         }
       }
     `,

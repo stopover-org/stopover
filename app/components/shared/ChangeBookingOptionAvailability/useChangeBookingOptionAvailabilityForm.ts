@@ -43,6 +43,8 @@ export function useChangeBookingOptionAvailabilityForm(
               ...BookingScene_FirmBookingFragment
             }
           }
+          notification
+          errors
         }
       }
     `,

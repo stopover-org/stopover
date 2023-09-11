@@ -42,6 +42,8 @@ export function useChangeEventOptionAvailabilityForm(
               ...EventOptionsInformation_EventFragment
             }
           }
+          notification
+          errors
         }
       }
     `,

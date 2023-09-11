@@ -40,6 +40,8 @@ export function useSyncStripeForm(
             ...SchedulesInformation_EventFragment
             ...StripeIntegrationsInformation_EventFragment
           }
+          notification
+          errors
         }
       }
     `,

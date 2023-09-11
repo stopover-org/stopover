@@ -38,6 +38,8 @@ export function useVerifyEvent(
           event {
             ...EventScene_FirmEventFragment
           }
+          notification
+          errors
         }
       }
     `,

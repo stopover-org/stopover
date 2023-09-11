@@ -80,6 +80,8 @@ export function useBookEventForm(
               ...EventScene_EventFragment
             }
           }
+          notification
+          errors
         }
       }
     `,

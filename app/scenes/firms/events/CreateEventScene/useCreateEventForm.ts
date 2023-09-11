@@ -167,6 +167,8 @@ export function useCreateEventForm() {
           event {
             id
           }
+          notification
+          errors
         }
       }
     `,

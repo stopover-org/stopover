@@ -268,6 +268,8 @@ export function useUpdateEventForm(
           event {
             id
           }
+          notification
+          errors
         }
       }
     `,
