@@ -70,6 +70,10 @@ class Trip < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
+  def firm
+    account.current_firm
+  end
+
   def can_cancel
     return false if cancelled?
     return false if bookings.paid.any?
