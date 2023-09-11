@@ -26,7 +26,7 @@ module Mutations
         Sentry.capture_exception(e) if Rails.env.production?
 
         {
-          booking: nil,
+          event_option: nil,
           errors: [e.message]
         }
       end

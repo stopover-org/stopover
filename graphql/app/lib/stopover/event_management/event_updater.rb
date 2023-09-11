@@ -26,7 +26,11 @@ module Stopover
             end
           end
 
-          @event.deposit_amount = Money.new(args[:deposit_amount_cents]) if args[:requires_deposit]
+          @event.deposit_amount = if args[:requires_deposit]
+                                    Money.new(args[:deposit_amount_cents])
+                                  else
+                                    Money.new(0)
+                                  end
 
           if args[:recurring_dates]
             @event.recurring_days_with_time = Stopover::EventSupport.prepare_dates('recurrent',

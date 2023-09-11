@@ -55,14 +55,27 @@ module Mutations
       argument :images, [String], required: false
 
       def resolve(event:, **args)
-        raise GraphQL::ExecutionError, 'account has no firm' unless context[:current_user].account.current_firm
-        raise GraphQL::ExecutionError, 'firm does not have current event' unless context[:current_user].account.current_firm.events.include?(event)
-
         event = Stopover::EventManagement::EventUpdater.new(event).execute(**args)
 
         {
-          event: event
+          event: event,
+          notification: 'Event updated!'
         }
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+
+        {
+          event: nil,
+          errors: [e.message]
+        }
+      end
+
+      private
+
+      def authorized?(**inputs)
+        return false, { errors: ['You are not authorized'] } unless current_firm
+
+        super
       end
     end
   end

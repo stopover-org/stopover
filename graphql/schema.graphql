@@ -1792,7 +1792,7 @@ input UpdateEventInput {
 
 input UpdateEventOptionInput {
   builtIn: Boolean!
-  forAttendee: Boolean!
+  forAttendee: Boolean
   id: ID
   organizerPriceCents: Int!
   title: String!
