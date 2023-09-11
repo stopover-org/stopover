@@ -63,8 +63,8 @@ function useDefaultValues(
 
 const validationSchema = Yup.object().shape({
   eventId: Yup.string().required(),
-  date: Yup.date().required(),
-  attendeesCount: Yup.number().required(),
+  date: Yup.date().required("Required"),
+  attendeesCount: Yup.number().required("Required"),
 });
 
 export function useBookEventForm(

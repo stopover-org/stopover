@@ -75,18 +75,18 @@ function useDefaultValues(
 }
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required(),
+  title: Yup.string().required("Required"),
   contactPerson: Yup.string().nullable(),
-  country: Yup.string().required(),
+  country: Yup.string().required("Required"),
   region: Yup.string().nullable(),
-  city: Yup.string().required(),
+  city: Yup.string().required("Required"),
   street: Yup.string().nullable(),
   houseNumber: Yup.string().nullable(),
   fullAddress: Yup.string().nullable(),
-  primaryEmail: Yup.string().email().required(),
+  primaryEmail: Yup.string().email().required("Required"),
   primaryPhone: Yup.string()
     .test("validate-phone", "invalid", validatePhone)
-    .required(),
+    .required("Required"),
   contacts: Yup.string().nullable(),
   website: Yup.string().nullable(),
   description: Yup.string().nullable(),

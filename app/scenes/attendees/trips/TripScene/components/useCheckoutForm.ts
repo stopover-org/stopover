@@ -43,8 +43,8 @@ function useDefaultValues(
 }
 
 const validationSchema = Yup.object().shape({
-  bookingId: Yup.string().required(),
-  paymentMethod: Yup.string().required(),
+  bookingId: Yup.string().required("Required"),
+  paymentMethod: Yup.string().required("Required"),
 });
 
 export function useCheckoutForm(

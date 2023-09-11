@@ -16,7 +16,7 @@ RSpec.describe Mutations::FirmsRelated::CreateStripeAccount, type: :mutation do
     "
   end
   let(:current_firm) { create(:firm) }
-  let(:current_user) { create(:service_user, with_account: true) }
+  let(:current_user) { current_firm.accounts.last.user }
   let!(:firm_account) { current_user&.account&.account_firms&.create(firm: current_firm) }
 
   let(:input) { {} }
@@ -39,7 +39,7 @@ RSpec.describe Mutations::FirmsRelated::CreateStripeAccount, type: :mutation do
 
       expect(result.dig(:data, :createStripeAccount, :setupAccountUrl)).to eq('http://example.com')
       expect(result.dig(:data, :createStripeAccount, :error)).to be_nil
-      expect(result.dig(:data, :createStripeAccount, :notification)).to eq('Stripe Connect was created!')
+      expect(result.dig(:data, :createStripeAccount, :notification)).to eq('You will be redirected')
     end
 
     context 'permissions' do
