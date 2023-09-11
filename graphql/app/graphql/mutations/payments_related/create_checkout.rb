@@ -34,13 +34,16 @@ module Mutations
             return {
               url: checkout[:url],
               booking: booking,
-              payment: checkout[:payment]
+              payment: checkout[:payment],
+              notification: 'You will be redirected to checkout page'
             }
           end
+
           return {
             url: checkout[:url],
             booking: booking,
-            payment: payment
+            payment: payment,
+            notification: 'You will be redirected to checkout page'
           }
         end
 
@@ -49,7 +52,8 @@ module Mutations
         {
           url: checkout[:url],
           booking: booking,
-          payment: checkout[:payment]
+          payment: checkout[:payment],
+          notification: 'You will be redirected to checkout page'
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
@@ -59,6 +63,22 @@ module Mutations
           booking: booking,
           payment: nil
         }
+      end
+
+      private
+
+      def authorized?(**inputs)
+        booking = inputs[:booking]
+
+        return false, { errors: ['You are not authorized'] } unless owner?(booking)
+        return false, { errors: ['You are not authorized'] } unless current_user&.active?
+        return false, { errors: ['Booking was removed'] } if booking.cancelled?
+        return false, { errors: ['You are not authorized'] } if booking.firm.removed?
+        return false, { errors: ['You are not authorized'] } if booking.event.removed?
+        return false, { errors: ['Something went wrong'] } unless booking.stripe_integration&.active?
+        return false, { errors: ['Something went wrong'] } unless booking.firm.payment_types.include?('stripe')
+
+        super
       end
     end
   end
