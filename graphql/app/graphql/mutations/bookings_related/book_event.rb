@@ -16,8 +16,22 @@ module Mutations
         context[:current_user] = booking.account.user
         {
           booking: booking,
-          access_token: booking.user.access_token
+          access_token: booking.user.access_token,
+          notification: 'You booked this event!'
         }
+      end
+
+      private
+
+      def authorized?(**inputs)
+        schedules = inputs[:event].schedules.active.where(scheduled_for: inputs[:booked_for])
+
+        return false, { errors: ['Event past'] } if inputs[:booked_for].past?
+        return false, { errors: ['Something went wrong'] } if schedules.empty?
+        return false, { errors: ['You already booked this event'] } if current_account && current_account.bookings.where(schedule_id: schedules.ids).any?
+        return false, { errors: ['All places are already reserved'] } if inputs[:event].max_attendees && Attendee.where(booking_id: schedules.first.booking_ids).count >= inputs[:event].max_attendees
+
+        super
       end
     end
   end

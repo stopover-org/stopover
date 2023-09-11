@@ -21,14 +21,7 @@ module Stopover
       def unpublish
         @event.unpublish!
 
-        Schedule.where(event_id: @event.id)
-                .where('schedules.scheduled_for > ?', Time.zone.now)
-                .where.not(id: Schedule.joins(:bookings))
-                .destroy_all
-
-        Booking.active.each do |booking|
-          booking.schedule.disable!
-        end
+        ClearSchedulesJob.perform_later(event_id: @event.id)
 
         @event
       end

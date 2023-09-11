@@ -11,12 +11,17 @@ module Mutations
           firm: current_firm,
           notification: 'Firm was verified!'
         }
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+
+        { errors: [e.message], notification: 'Something went wrong' }
       end
 
       def authorized?(**inputs)
         return false, { errors: ['You are not authorized'] } unless current_user&.active?
         return false, { errors: ['You are not authorized'] } unless service_user?
         return false, { errors: ['Firm already verified'] } if current_firm&.active?
+
         super
       end
     end

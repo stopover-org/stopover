@@ -93,7 +93,12 @@ FactoryBot.define do
 
     trait :booking_schedule do
       after(:create) do |event|
-        event.bookings.create!(event_id: event.id, schedule_id: event.schedules.last.id, stripe_integration: event.current_stripe_integration)
+        user = create(:active_user, with_account: true)
+        event.bookings.create!(event_id: event.id,
+                               schedule_id: event.schedules.last.id,
+                               stripe_integration: event.current_stripe_integration,
+                               trip: create(:trip,
+                                            account: user.account))
       end
     end
 
@@ -113,6 +118,7 @@ FactoryBot.define do
     factory :published_event, traits: %i[published stripe_integration_trait]
     factory :stripe_integration_factory, traits: %i[stripe_integration_trait recurring published]
     factory :limited_event, traits: %i[limited_attendee recurring]
+    factory :recurring_not_published_event, traits: %i[recurring stripe_integration_trait]
     factory :recurring_event, traits: %i[recurring published stripe_integration_trait]
     factory :schedules_past_date, traits: %i[past_schedules recurring]
     factory :schedule_is_booked, traits: %i[past_schedules recurring stripe_integration_trait booking_schedule]

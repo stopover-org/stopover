@@ -9,17 +9,9 @@ module Stopover
       end
 
       def perform
-        check_permission
-
         @booking.cancel!
 
         @booking
-      end
-
-      private
-
-      def check_permission
-        raise 'Unauthorized' if @booking.user != @current_user
       end
     end
   end

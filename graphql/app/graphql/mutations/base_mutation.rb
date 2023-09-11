@@ -25,5 +25,17 @@ module Mutations
     def service_user?
       context[:current_user]&.service_user
     end
+
+    def manager?(record)
+      return record.firm == current_firm if record.respond_to?(:firm)
+
+      false
+    end
+
+    def owner?(record)
+      return record.account == current_account if record.respond_to?(:account)
+
+      false
+    end
   end
 end

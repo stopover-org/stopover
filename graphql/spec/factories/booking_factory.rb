@@ -31,5 +31,25 @@ FactoryBot.define do
     event { create(:recurring_event) }
     trip { create(:trip) }
     schedule { event.schedules.last }
+    trait :fully_paid do
+      after(:create) do |booking|
+        booking.payments = create_list(:payment, 2,
+                                       total_price_cents: booking.left_to_pay_price / 2,
+                                       balance: booking.firm.balance,
+                                       status: 'successful')
+      end
+    end
+
+    trait :partially_paid do
+      after(:create) do |booking|
+        booking.payments = create_list(:payment, 2,
+                                       total_price_cents: booking.left_to_pay_price / 3,
+                                       balance: booking.firm.balance,
+                                       status: 'successful')
+      end
+    end
+
+    factory :fully_paid_booking, traits: %i[fully_paid]
+    factory :partially_paid_booking, traits: %i[partially_paid]
   end
 end

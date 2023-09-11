@@ -12,6 +12,8 @@ module Mutations
           notification: 'Stripe Connect was created!'
         }
       rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+
         {
           setup_account_url: nil,
           errors: ['Something went wrong']
@@ -26,7 +28,7 @@ module Mutations
         return false, { errors: ['You don\'t have firm'] } unless current_firm
         return false, { errors: ['Stripe Connect already exist'] } if current_firm.stripe_connects.active.any?
 
-        true
+        super
       end
     end
   end

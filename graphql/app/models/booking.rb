@@ -49,15 +49,15 @@ class Booking < ApplicationRecord
   belongs_to :schedule
   belongs_to :stripe_integration
 
+  has_one :firm, through: :event
   has_one :account, through: :trip
-
   has_one :user,    through: :account
 
   has_many :booking_cancellation_options, through: :event
-
   has_many :event_options,
            -> { where(for_attendee: false) },
            through: :event
+
   # AASM STATES ================================================================
   aasm column: :status do
     state :active, initial: true
@@ -79,7 +79,6 @@ class Booking < ApplicationRecord
   validate :check_max_attendees
 
   # CALLBACKS ================================================================
-  before_validation :create_trip, if: :should_create_trip
   before_validation :create_attendee
   before_validation :adjust_stripe_integration, on: :create
   before_create :create_booking_options
@@ -120,11 +119,11 @@ class Booking < ApplicationRecord
 
   def organizer_total_price
     event_price = event.organizer_price_per_uom * attendees.count
-    booking_options_price = booking_options.sum(Money.new(0)) { |opt| opt.event_option.built_in ? 0 : opt.organizer_price }
+    booking_options_price = booking_options.sum(Money.new(0)) { |opt| opt.event_option.built_in || opt.not_available? ? 0 : opt.organizer_price }
     attendee_options_price = attendees.sum(Money.new(0)) do |att|
       res = Money.new(0)
       att.attendee_options.each do |opt|
-        res += if opt.event_option.built_in
+        res += if opt.event_option.built_in || opt.not_available?
                  0
                else
                  opt.organizer_price
@@ -145,6 +144,10 @@ class Booking < ApplicationRecord
     payments.successful.map(&:total_price).sum(Money.new(0))
   end
 
+  def past?
+    schedule.scheduled_for.past?
+  end
+
   private
 
   def can_cancel
@@ -159,14 +162,6 @@ class Booking < ApplicationRecord
 
   def create_attendee
     attendees.build if attendees.empty?
-  end
-
-  def should_create_trip
-    !trip
-  end
-
-  def create_trip
-    Trip.create(bookings: [self])
   end
 
   def adjust_stripe_integration
