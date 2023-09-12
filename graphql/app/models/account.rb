@@ -33,39 +33,52 @@ class Account < ApplicationRecord
   # MODULES ===============================================================
   include AASM
 
-  # HAS_ONE ASSOCIATIONS ==========================================================
-  #
-  # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :account_interests,  dependent: :destroy
-  has_many :trips,              dependent: :destroy
-  has_many :ratings
-  has_many :account_firms
+  # MONETIZE ==============================================================
 
-  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :interests,  through: :account_interests
-  has_many :bookings,   through: :trips
-  has_many :firms, through: :account_firms
-
-  # BELONGS_TO ASSOCIATIONS =======================================================
+  # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :user, optional: false
 
-  # AASM STATES ================================================================
+  # HAS_ONE ASSOCIATIONS ==================================================
+
+  # HAS_ONE THROUGH ASSOCIATIONS ==========================================
+
+  # HAS_MANY ASSOCIATIONS =================================================
+  has_many :account_interests,  dependent: :destroy
+  has_many :trips,              dependent: :destroy
+  has_many :account_firms,      dependent: :destroy
+  has_many :ratings,            dependent: :nullify
+  has_many :refunds,            dependent: :nullify
+
+  # HAS_MANY THROUGH ASSOCIATIONS =========================================
+  has_many :interests,  through: :account_interests
+  has_many :bookings,   through: :trips
+  has_many :firms,      through: :account_firms
+
+  # AASM STATES ===========================================================
   aasm column: :status do
     state :initial, initial: true
     state :verified
   end
 
-  # ENUMS =======================================================================
-  #
-  # VALIDATIONS ================================================================
+  # ENUMS =================================================================
+
+  # SECURE TOKEN ==========================================================
+
+  # SECURE PASSWORD =======================================================
+
+  # ATTACHMENTS ===========================================================
+
+  # RICH_TEXT =============================================================
+
+  # VALIDATIONS ===========================================================
   validates :name, presence: true, if: :should_have_name?
 
-  # CALLBACKS ================================================================
+  # CALLBACKS =============================================================
   before_validation :set_user_info
 
-  # SCOPES =====================================================================
-  #
-  # DELEGATIONS ==============================================================
+  # SCOPES ================================================================
+
+  # DELEGATION ============================================================
 
   def current_trip
     trips.last

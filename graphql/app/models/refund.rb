@@ -2,58 +2,52 @@
 
 # == Schema Information
 #
-# Table name: booking_cancellation_options
+# Table name: refunds
 #
-#  id                  :bigint           not null, primary key
-#  deadline            :string           not null
-#  description         :text             default("")
-#  penalty_price_cents :decimal(, )
-#  status              :string
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  event_id            :bigint
+#  id                             :bigint           not null, primary key
+#  penalty_amount_cents           :decimal(, )      default(0.0), not null
+#  refund_amount_cents            :decimal(, )      default(0.0), not null
+#  status                         :string           default("pending"), not null
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  account_id                     :bigint
+#  booking_cancellation_option_id :bigint
+#  booking_id                     :bigint
+#  firm_id                        :bigint
+#  payment_id                     :bigint
 #
 # Indexes
 #
-#  index_booking_cancellation_options_on_event_id  (event_id)
+#  index_refunds_on_account_id                      (account_id)
+#  index_refunds_on_booking_cancellation_option_id  (booking_cancellation_option_id)
+#  index_refunds_on_booking_id                      (booking_id)
+#  index_refunds_on_firm_id                         (firm_id)
+#  index_refunds_on_payment_id                      (payment_id)
 #
-class BookingCancellationOption < ApplicationRecord
+class Refund < ApplicationRecord
   # MODULES ===============================================================
-  include AASM
+  include Mixins::PaymentStatuses
 
   # MONETIZE ==============================================================
-  monetize :penalty_price_cents
+  monetize :refund_amount_cents
+  monetize :penalty_amount_cents
 
   # BELONGS_TO ASSOCIATIONS ===============================================
-  belongs_to :event
+  belongs_to :booking_cancellation_option, optional: true
+  belongs_to :payment, optional: true
+  belongs_to :booking
+  belongs_to :account
+  belongs_to :firm
 
   # HAS_ONE ASSOCIATIONS ==================================================
 
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
 
   # HAS_MANY ASSOCIATIONS =================================================
-  has_many :refunds, dependent: :nullify
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
 
   # AASM STATES ===========================================================
-  aasm column: :status do
-    state :active, initial: true
-    state :inactive
-    state :removed
-
-    event :activate, before_save: :set_activated_at do
-      transitions from: %i[inactive], to: :active
-    end
-
-    event :deactivate do
-      transitions from: %i[active], to: :inactive
-    end
-
-    event :remove do
-      transitions from: %i[active inactive], to: :removed
-    end
-  end
 
   # ENUMS =================================================================
 
@@ -70,7 +64,6 @@ class BookingCancellationOption < ApplicationRecord
   # CALLBACKS =============================================================
 
   # SCOPES ================================================================
-  default_scope { order(deadline: :desc) }
 
   # DELEGATION ============================================================
 end

@@ -22,66 +22,60 @@
 #  index_payments_on_booking_id  (booking_id)
 #
 class Payment < ApplicationRecord
-  include AASM
   # MODULES ===============================================================
-  #
-  # MONETIZE =====================================================================
+  include Mixins::PaymentStatuses
+
+  # MONETIZE ==============================================================
   monetize :total_price_cents
   monetize :fee_cents
 
-  # ATTACHMENTS ===========================================================
-  #
-  # HAS_ONE ASSOCIATIONS ==========================================================
-  #
-  # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :payment_connections
-
-  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :stripe_integrations, through: :payment_connections
-
-  # BELONGS_TO ASSOCIATIONS =======================================================
+  # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :booking
   belongs_to :balance
 
-  # AASM STATES ================================================================
-  aasm column: :status do
-    state :pending, initial: true
-    state :processing
-    state :canceled
-    state :successful
+  # HAS_ONE ASSOCIATIONS ==================================================
 
-    event :process do
-      transitions from: %i[successful pending canceled], to: :processing
-    end
-    event :cancel do
-      transitions from: :processing, to: :canceled
-    end
-    event :success do
-      after_commit do
-        top_up_balance
-      end
-      transitions from: :processing, to: :successful
-    end
-  end
+  # HAS_ONE THROUGH ASSOCIATIONS ==========================================
 
-  # ENUMS =======================================================================
+  # HAS_MANY ASSOCIATIONS =================================================
+  has_many :payment_connections
+  has_many :refunds, dependent: :nullify
+
+  # HAS_MANY THROUGH ASSOCIATIONS =========================================
+  has_many :stripe_integrations, through: :payment_connections
+
+  # AASM STATES ===========================================================
+
+  # ENUMS =================================================================
   enum provider: {
     stripe: 'stripe'
   }
   enum payment_type: {
     full_amount: 'full_amount',
-    deposit: 'deposit'
+      deposit: 'deposit'
   }
 
-  # VALIDATIONS ================================================================
-  #
-  # CALLBACKS ================================================================
+  # SECURE TOKEN ==========================================================
+
+  # SECURE PASSWORD =======================================================
+
+  # ATTACHMENTS ===========================================================
+
+  # RICH_TEXT =============================================================
+
+  # VALIDATIONS ===========================================================
+
+  # CALLBACKS =============================================================
   before_validation :calculate_fee, on: :create
   before_validation :set_price, on: :create
 
-  # SCOPES =====================================================================
-  #
-  # DELEGATIONS ==============================================================
+  # SCOPES ================================================================
+
+  # DELEGATION ============================================================
+
+  def top_up_balance
+    balance.update!(total_amount: balance.total_amount + Money.new(total_price))
+  end
 
   private
 
@@ -91,9 +85,5 @@ class Payment < ApplicationRecord
 
   def set_price
     self.total_price = booking.attendee_total_price
-  end
-
-  def top_up_balance
-    balance.update!(total_amount: balance.total_amount + Money.new(total_price))
   end
 end

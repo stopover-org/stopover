@@ -29,36 +29,35 @@ class Booking < ApplicationRecord
   # MODULES ===============================================================
   include AASM
 
-  # MONETIZE =====================================================================
-  #
-  # ATTACHMENTS ===========================================================
-  #
-  # HAS_ONE ASSOCIATIONS ==========================================================
+  # MONETIZE ==============================================================
 
-  # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :booking_options,  dependent: :destroy
-  has_many :attendees,        dependent: :destroy
-  has_many :payments,         dependent: :destroy
-
-  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :attendee_options, through: :attendees
-
-  # BELONGS_TO ASSOCIATIONS =======================================================
+  # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :event
   belongs_to :trip
   belongs_to :schedule
   belongs_to :stripe_integration
 
-  has_one :firm, through: :event
+  # HAS_ONE ASSOCIATIONS ==================================================
+
+  # HAS_ONE THROUGH ASSOCIATIONS ==========================================
+  has_one :firm,    through: :event
   has_one :account, through: :trip
   has_one :user,    through: :account
 
+  # HAS_MANY ASSOCIATIONS =================================================
+  has_many :booking_options,  dependent: :destroy
+  has_many :attendees,        dependent: :destroy
+  has_many :payments,         dependent: :nullify
+  has_many :refunds,          dependent: :nullify
+
+  # HAS_MANY THROUGH ASSOCIATIONS =========================================
+  has_many :attendee_options,             through: :attendees
   has_many :booking_cancellation_options, through: :event
   has_many :event_options,
            -> { where(for_attendee: false) },
            through: :event
 
-  # AASM STATES ================================================================
+  # AASM STATES ===========================================================
   aasm column: :status do
     state :active, initial: true
     state :cancelled
@@ -73,19 +72,27 @@ class Booking < ApplicationRecord
     end
   end
 
-  # ENUMS =======================================================================
-  #
-  # VALIDATIONS ================================================================
+  # ENUMS =================================================================
+
+  # SECURE TOKEN ==========================================================
+
+  # SECURE PASSWORD =======================================================
+
+  # ATTACHMENTS ===========================================================
+
+  # RICH_TEXT =============================================================
+
+  # VALIDATIONS ===========================================================
   validate :check_max_attendees
 
-  # CALLBACKS ================================================================
+  # CALLBACKS =============================================================
   before_validation :create_attendee
   before_validation :adjust_stripe_integration, on: :create
   before_create :create_booking_options
 
-  # SCOPES =====================================================================
-  #
-  # DELEGATIONS ==============================================================
+  # SCOPES ================================================================
+
+  # DELEGATION ============================================================
 
   def check_max_attendees
     return true if event.max_attendees.nil?
