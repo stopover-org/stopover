@@ -5,7 +5,7 @@
 # Table name: booking_cancellation_options
 #
 #  id                  :bigint           not null, primary key
-#  deadline            :string           not null
+#  deadline            :integer          not null
 #  description         :text             default("")
 #  penalty_price_cents :decimal(, )
 #  status              :string

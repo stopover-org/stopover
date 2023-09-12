@@ -62,8 +62,14 @@ class Refund < ApplicationRecord
   # VALIDATIONS ===========================================================
 
   # CALLBACKS =============================================================
+  before_validation :adjust_references
 
   # SCOPES ================================================================
 
   # DELEGATION ============================================================
+  private
+
+  def adjust_references
+    self.firm = booking.firm unless firm
+  end
 end

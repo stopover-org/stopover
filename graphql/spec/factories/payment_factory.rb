@@ -23,7 +23,7 @@
 #
 FactoryBot.define do
   factory :payment do
-    total_price_cents { 200 }
+    total_price { Money.new(200) }
     booking { create(:booking) }
     payment_type { 'full_amount' }
 

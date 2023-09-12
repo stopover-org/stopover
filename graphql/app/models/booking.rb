@@ -158,7 +158,7 @@ class Booking < ApplicationRecord
   private
 
   def can_cancel
-    !paid?
+    payments.processing.empty?
   end
 
   def create_booking_options

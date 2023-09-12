@@ -84,6 +84,6 @@ class Payment < ApplicationRecord
   end
 
   def set_price
-    self.total_price = booking.attendee_total_price
+    self.total_price = booking.attendee_total_price unless total_price
   end
 end

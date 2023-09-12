@@ -289,21 +289,21 @@ RSpec.describe Mutations::EventsRelated::CreateEvent, type: :mutation do
         before do
           input[:bookingCancellationOptions] = [{
             penaltyPriceCents: 10,
-            deadline: '24h',
+            deadline: 24,
             description: 'description'
           }, {
             penaltyPriceCents: 20,
-            deadline: '48h',
+            deadline: 48,
             description: 'description'
           }]
 
           expected[:bookingCancellationOptions] = [{
             penaltyPrice: 20,
-              deadline: '48h',
+              deadline: 48,
               description: 'description'
           }, {
             penaltyPrice: 10,
-            deadline: '24h',
+            deadline: 24,
             description: 'description'
           }]
         end

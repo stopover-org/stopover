@@ -153,7 +153,7 @@ type Booking implements Node {
 }
 
 type BookingCancellationOption implements Node {
-  deadline: String!
+  deadline: Int!
   description: String!
   id: ID!
   penaltyPrice: Money!
@@ -357,7 +357,7 @@ type ChangeEventOptionAvailabilityPayload {
 }
 
 input CreateBookingCancellationOptionInput {
-  deadline: String!
+  deadline: Int!
   description: String!
   penaltyPriceCents: Int!
 }
@@ -1716,7 +1716,7 @@ type UpdateAttendeePayload {
 }
 
 input UpdateBookingCancellationOptionInput {
-  deadline: String!
+  deadline: Int!
   description: String!
   id: ID
   penaltyPriceCents: Int!
