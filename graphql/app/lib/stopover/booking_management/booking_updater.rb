@@ -8,10 +8,16 @@ module Stopover
         @current_user = current_user
       end
 
-      def add_attendee
-        @booking.attendees.create!
+      def perform(**args)
+        schedule = @booking.event.schedules.find_by(scheduled_for: args[:booked_for])
+        @booking.update!(schedule: schedule, **args.except(:booked_for, :event_options))
 
-        @booking
+        if args[:event_options].is_a? Array
+          @booking.booking_options.destroy_all
+          args[:event_options].each do |option|
+            @booking.booking_options.create!(booking: @booking, event_option: option)
+          end
+        end
       end
     end
   end

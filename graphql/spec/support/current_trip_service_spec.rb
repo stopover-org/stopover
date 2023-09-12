@@ -8,7 +8,7 @@ RSpec.describe Stopover::CurrentTripService, type: :service do
     let!(:service) { Stopover::CurrentTripService.new(user: user) }
 
     it 'create trip' do
-      expect { service.get_current_trip(DateTime.now + 2.days) }.to change { Trip.count }.by(1)
+      expect { service.get_current_trip(2.days.from_now) }.to change { Trip.count }.by(1)
     end
 
     context 'for existing trips' do

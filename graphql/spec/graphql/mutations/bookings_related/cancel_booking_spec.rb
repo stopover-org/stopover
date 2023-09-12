@@ -54,6 +54,8 @@ RSpec.describe Mutations::BookingsRelated::CancelBooking, type: :mutation do
   shared_examples :successful_refund do |refund, penalty|
     it 'successful_refund' do
       result = nil
+      expect(booking.already_paid_price).to eq(Money.new(refund + penalty))
+
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Refund.count }.by(1)
 
       expect(booking.attendees.count).to eq(1)
@@ -62,7 +64,7 @@ RSpec.describe Mutations::BookingsRelated::CancelBooking, type: :mutation do
       expect(result.dig(:data, :cancelBooking, :booking, :status)).to eq('cancelled')
       expect(result.dig(:data, :cancelBooking, :notification)).to eq('Booking cancelled!')
 
-      expect(booking.already_paid_price).to eq(Money.new(refund + penalty))
+      expect(booking.already_paid_price).to eq(Money.new(0))
       expect(booking.refunds.last.refund_amount).to eq(Money.new(refund))
       expect(booking.refunds.last.penalty_amount).to eq(Money.new(penalty))
     end

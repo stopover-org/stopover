@@ -7,9 +7,10 @@ module Mutations
 
       argument :attendee_id, ID, loads: Types::BookingsRelated::AttendeeType
       def resolve(attendee:, **_args)
-        attendee.remove!
+        Stopover::AttendeeManagement::RemoveAttendeeService.new(attendee, current_user).perform
+
         {
-          attendee: attendee,
+          attendee: attendee.reload,
           notification: 'Attendee was removed!'
         }
       rescue StandardError => e
@@ -17,7 +18,7 @@ module Mutations
 
         {
           e: [e.message],
-            attendee: nil
+          attendee: nil
         }
       end
 

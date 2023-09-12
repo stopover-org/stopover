@@ -8,9 +8,17 @@ module Mutations
       argument :booking_id, ID, loads: Types::BookingsRelated::BookingType
 
       def resolve(booking:)
+        Stopover::AttendeeManagement::AddAttendeeService.new(booking, current_user).perform
         {
-          booking: Stopover::BookingManagement::BookingUpdater.new(booking, context[:current_user]).add_attendee,
+          booking: booking.reload,
           notification: 'Attendee was added!'
+        }
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+
+        {
+          e: [e.message],
+            attendee: nil
         }
       end
 

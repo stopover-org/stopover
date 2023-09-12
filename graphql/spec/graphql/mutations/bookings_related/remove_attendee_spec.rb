@@ -42,6 +42,24 @@ RSpec.describe Mutations::BookingsRelated::RemoveAttendee, type: :mutation do
     end
   end
 
+  shared_examples :successful_with_refund do |refund|
+    it 'successful with refund' do
+      booking = attendee.booking
+      expect(booking.already_paid_price - booking.attendee_total_price).to eq(Money.new(0))
+      expect(booking.event.attendee_price_per_uom).to eq(Money.new(refund))
+
+      result = nil
+      expect { result = subject.to_h.deep_symbolize_keys }.to change { Refund.count }.by(1)
+
+      expect(result.dig(:data, :removeAttendee, :attendee, :id)).to eq(GraphqlSchema.id_from_object(attendee))
+      expect(result.dig(:data, :removeAttendee, :attendee, :status)).to eq('removed')
+      expect(result.dig(:data, :removeAttendee, :notification)).to eq('Attendee was removed!')
+
+      expect(booking.refunds.last.refund_amount).to eq(Money.new(refund))
+      expect(booking.refunds.last.penalty_amount).to eq(Money.new(0))
+    end
+  end
+
   shared_examples :fail do |error|
     it 'fails' do
       result = nil
@@ -60,6 +78,17 @@ RSpec.describe Mutations::BookingsRelated::RemoveAttendee, type: :mutation do
 
       context 'for deregistered attendee' do
         include_examples :successful
+      end
+
+      context 'for paid attendee' do
+        let!(:payment) do
+          create(:payment,
+                 total_price: attendee.booking.attendee_total_price,
+                 booking: attendee.booking,
+                 balance: attendee.booking.event.firm.balance,
+                 status: 'successful')
+        end
+        include_examples :successful_with_refund, 550
       end
     end
 

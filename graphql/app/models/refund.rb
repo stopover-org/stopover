@@ -36,7 +36,7 @@ class Refund < ApplicationRecord
   belongs_to :booking_cancellation_option, optional: true
   belongs_to :payment, optional: true
   belongs_to :booking
-  belongs_to :account
+  belongs_to :account, optional: true
   belongs_to :firm
 
   # HAS_ONE ASSOCIATIONS ==================================================
@@ -67,6 +67,10 @@ class Refund < ApplicationRecord
   # SCOPES ================================================================
 
   # DELEGATION ============================================================
+  def total_amount
+    refund_amount + penalty_amount
+  end
+
   private
 
   def adjust_references

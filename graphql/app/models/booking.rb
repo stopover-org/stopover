@@ -53,9 +53,7 @@ class Booking < ApplicationRecord
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :attendee_options,             through: :attendees
   has_many :booking_cancellation_options, through: :event
-  has_many :event_options,
-           -> { where(for_attendee: false) },
-           through: :event
+  has_many :event_options,                through: :event
 
   # AASM STATES ===========================================================
   aasm column: :status do
@@ -88,7 +86,8 @@ class Booking < ApplicationRecord
   # CALLBACKS =============================================================
   before_validation :create_attendee
   before_validation :adjust_stripe_integration, on: :create
-  before_create :create_booking_options
+  before_validation :create_booking_options,    on: :create
+  after_commit :refund_diff, if: :refundable?
 
   # SCOPES ================================================================
 
@@ -105,13 +104,13 @@ class Booking < ApplicationRecord
   end
 
   def attendee_total_price
-    event_price = event.attendee_price_per_uom * attendees.count
+    event_price = event.attendee_price_per_uom * attendees.where.not(status: 'removed').count
 
-    booking_options_price = booking_options.sum(Money.new(0)) { |opt| opt.event_option.built_in ? 0 : opt.attendee_price }
+    booking_options_price = booking_options.sum(Money.new(0)) { |opt| opt.event_option.built_in || opt.not_available? ? 0 : opt.attendee_price }
     attendee_options_price = attendees.sum(Money.new(0)) do |att|
       res = Money.new(0)
       att.attendee_options.each do |opt|
-        res += if opt.event_option.built_in
+        res += if opt.event_option.built_in || opt.not_available?
                  0
                else
                  opt.attendee_price
@@ -125,7 +124,7 @@ class Booking < ApplicationRecord
   end
 
   def organizer_total_price
-    event_price = event.organizer_price_per_uom * attendees.count
+    event_price = event.organizer_price_per_uom * attendees.where.not(status: 'removed').count
     booking_options_price = booking_options.sum(Money.new(0)) { |opt| opt.event_option.built_in || opt.not_available? ? 0 : opt.organizer_price }
     attendee_options_price = attendees.sum(Money.new(0)) do |att|
       res = Money.new(0)
@@ -148,11 +147,22 @@ class Booking < ApplicationRecord
   end
 
   def already_paid_price
-    payments.successful.map(&:total_price).sum(Money.new(0))
+    total_payments = payments.where.not(status: :cancelled).map(&:total_price).sum(Money.new(0))
+    total_refunds = refunds.where.not(status: :cancelled).map(&:total_amount).sum(Money.new(0))
+
+    total_payments - total_refunds
   end
 
   def past?
     schedule.scheduled_for.past?
+  end
+
+  def refundable?
+    already_paid_price > attendee_total_price
+  end
+
+  def refund_diff
+    refunds.create!(firm: firm, refund_amount: already_paid_price - attendee_total_price, penalty_amount: Money.new(0))
   end
 
   private
