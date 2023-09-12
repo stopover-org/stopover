@@ -43,6 +43,8 @@ export function useRemoveAttendeeForm(
               ...BookingScene_FirmBookingFragment
             }
           }
+          notification
+          errors
         }
       }
     `,

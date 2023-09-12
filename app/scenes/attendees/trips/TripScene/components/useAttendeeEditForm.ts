@@ -82,6 +82,8 @@ export function useAttendeeEditForm(
               }
             }
           }
+          notification
+          errors
         }
       }
     `,

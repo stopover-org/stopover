@@ -48,6 +48,8 @@ const EditEventForm = ({
         "minAttendees",
         "title",
         "fullAddress",
+        "country",
+        "city",
       ],
       ["recurringDates", "singleDates", "durationTime", "endDate"],
       ["eventOptions"],

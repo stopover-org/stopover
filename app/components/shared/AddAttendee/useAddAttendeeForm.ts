@@ -25,7 +25,7 @@ function useDefaultValues(
 }
 
 const validationSchema = Yup.object().shape({
-  bookingId: Yup.string().required(),
+  bookingId: Yup.string().required("Required"),
 });
 
 export function useAddAttendeeForm(
@@ -40,6 +40,8 @@ export function useAddAttendeeForm(
           booking {
             ...BookingScene_FirmBookingFragment
           }
+          notification
+          errors
         }
       }
     `,

@@ -46,6 +46,8 @@ export function useDeclineStripeConnectForm(
               ...stripeConnects_FirmFragment
             }
           }
+          notification
+          errors
         }
       }
     `,

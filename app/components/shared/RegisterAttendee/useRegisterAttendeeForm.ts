@@ -43,6 +43,8 @@ export function useRegisterAttendeeForm(
               ...BookingScene_FirmBookingFragment
             }
           }
+          notification
+          errors
         }
       }
     `,

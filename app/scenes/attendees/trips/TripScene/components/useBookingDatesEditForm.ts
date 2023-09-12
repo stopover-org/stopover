@@ -43,9 +43,9 @@ function useDefaultValues(
 }
 
 const validationSchema = Yup.object().shape({
-  bookingId: Yup.string().required(),
-  date: Yup.date().required(),
-  time: Yup.string().required(),
+  bookingId: Yup.string().required("Required"),
+  date: Yup.date().required("Required"),
+  time: Yup.string().required("Required"),
 });
 
 export function useBookingDatesEditForm(
@@ -61,6 +61,8 @@ export function useBookingDatesEditForm(
             ...BookingDatesEditForm_BookingFragment
             id
           }
+          notification
+          errors
         }
       }
     `,

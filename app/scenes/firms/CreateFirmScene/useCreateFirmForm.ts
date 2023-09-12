@@ -48,18 +48,18 @@ function useDefaultValues(): CreateFirmFields {
   );
 }
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required(),
+  title: Yup.string().required("Required"),
   contactPerson: Yup.string(),
-  country: Yup.string().required(),
+  country: Yup.string().required("Required"),
   region: Yup.string(),
-  city: Yup.string().required(),
+  city: Yup.string().required("Required"),
   street: Yup.string(),
   houseNumber: Yup.string(),
   fullAddress: Yup.string(),
-  primaryEmail: Yup.string().email().required(),
+  primaryEmail: Yup.string().email().required("Required"),
   primaryPhone: Yup.string()
     .test("validate-phone", "invalid", validatePhone)
-    .required(),
+    .required("Required"),
   contacts: Yup.string(),
   website: Yup.string(),
   description: Yup.string(),

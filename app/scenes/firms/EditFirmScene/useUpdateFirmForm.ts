@@ -75,22 +75,22 @@ function useDefaultValues(
 }
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required(),
-  contactPerson: Yup.string(),
-  country: Yup.string().required(),
-  region: Yup.string(),
-  city: Yup.string().required(),
-  street: Yup.string(),
-  houseNumber: Yup.string(),
-  fullAddress: Yup.string(),
-  primaryEmail: Yup.string().email().required(),
+  title: Yup.string().required("Required"),
+  contactPerson: Yup.string().nullable(),
+  country: Yup.string().required("Required"),
+  region: Yup.string().nullable(),
+  city: Yup.string().required("Required"),
+  street: Yup.string().nullable(),
+  houseNumber: Yup.string().nullable(),
+  fullAddress: Yup.string().nullable(),
+  primaryEmail: Yup.string().email().required("Required"),
   primaryPhone: Yup.string()
     .test("validate-phone", "invalid", validatePhone)
-    .required(),
-  contacts: Yup.string(),
-  website: Yup.string(),
-  description: Yup.string(),
-  image: Yup.string().nullable(),
+    .required("Required"),
+  contacts: Yup.string().nullable(),
+  website: Yup.string().nullable(),
+  description: Yup.string().nullable(),
+  image: Yup.string().nullable().nullable(),
   paymentTypes: Yup.array().required("Required"),
 });
 
@@ -108,6 +108,8 @@ export function useUpdateFirmForm(
           firm {
             id
           }
+          notification
+          errors
         }
       }
     `,

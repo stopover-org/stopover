@@ -48,7 +48,7 @@ const BalanceSection = ({
   );
 
   const activeStripeConnect = firm.stripeConnects.find(
-    ({ status }) => status === "active"
+    ({ status }) => status === "active" || status === "pending"
   );
   return (
     <Section>
