@@ -43,7 +43,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
             name
           }
         }
-        attendees {
+        attendees(filters: { status: [registered, not_registered] }) {
           id
         }
         event {

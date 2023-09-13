@@ -154,8 +154,12 @@ class Booking < ApplicationRecord
     attendee_total_price - already_paid_price
   end
 
+  def left_to_pay_deposit_price
+    event.deposit_amount - already_paid_price
+  end
+
   def already_paid_price
-    total_payments = payments.where.not(status: :cancelled).map(&:total_price).sum(Money.new(0))
+    total_payments = payments.where.not(status: %i[cancelled pending processing]).map(&:total_price).sum(Money.new(0))
     total_refunds = refunds.where.not(status: :cancelled).map(&:total_amount).sum(Money.new(0))
 
     total_payments - total_refunds

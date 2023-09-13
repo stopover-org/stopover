@@ -20,6 +20,9 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
         booking {
           bookedFor
           status
+          alreadyPaidPrice {
+            cents
+          }
           ...EventOptionEditForm_BookingFragment
         }
         eventOptions {
@@ -35,7 +38,7 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
 
   const form = useAttendeeEditForm(
     attendee,
-    attendee.booking.status !== "active"
+    attendee.booking.alreadyPaidPrice.cents > 0
   );
 
   const disabled = React.useMemo(

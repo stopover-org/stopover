@@ -97,7 +97,7 @@ input AttendeesFilter {
   firstName: String
   lastName: String
   phone: String
-  status: AttendeeStatusEnum
+  status: [AttendeeStatusEnum!]
 }
 
 type Balance implements Node {

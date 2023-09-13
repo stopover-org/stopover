@@ -20,7 +20,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
         id
         status
         bookedFor
-        attendees {
+        attendees(filters: { status: [registered, not_registered] }) {
           id
           ...AttendeeEditForm_AttendeeFragment
         }

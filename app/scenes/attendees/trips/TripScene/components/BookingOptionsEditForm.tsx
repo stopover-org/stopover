@@ -19,6 +19,9 @@ const BookingOptionsEditForm = ({
       fragment BookingOptionsEditForm_BookingFragment on Booking {
         id
         status
+        alreadyPaidPrice {
+          cents
+        }
         eventOptions {
           id
           builtIn
@@ -47,7 +50,7 @@ const BookingOptionsEditForm = ({
       ),
     [booking]
   );
-  const form = useBookingEditForm(booking, booking.status !== "active");
+  const form = useBookingEditForm(booking, booking.alreadyPaidPrice.cents > 0);
 
   return (
     <FormProvider {...form}>
