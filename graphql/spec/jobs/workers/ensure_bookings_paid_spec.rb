@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Workers::EnsureBookingsPaid, type: :job do
+RSpec.describe Workers::EnsureBookingsPaidJob, type: :job do
   describe 'refund or mark bookings as active if needed' do
     let(:firm) { create(:firm) }
     let(:booking) { create(:booking) }
@@ -18,7 +18,7 @@ RSpec.describe Workers::EnsureBookingsPaid, type: :job do
       before { booking.update(status: 'active') }
       it 'successful' do
         Sidekiq::Testing.inline! do
-          Workers::EnsureBookingsPaid.perform_now
+          Workers::EnsureBookingsPaidJob.perform_now
           expect(booking.reload.status).to eq('paid')
         end
       end
@@ -35,7 +35,7 @@ RSpec.describe Workers::EnsureBookingsPaid, type: :job do
       before { booking.update(status: 'paid') }
       it 'successful' do
         Sidekiq::Testing.inline! do
-          Workers::EnsureBookingsPaid.perform_now
+          Workers::EnsureBookingsPaidJob.perform_now
           expect(booking.reload.status).to eq('paid')
           expect(booking.refunds.count).to eq(2)
         end
@@ -53,7 +53,7 @@ RSpec.describe Workers::EnsureBookingsPaid, type: :job do
       before { booking.update(status: 'paid') }
       it 'successful' do
         Sidekiq::Testing.inline! do
-          Workers::EnsureBookingsPaid.perform_now
+          Workers::EnsureBookingsPaidJob.perform_now
           expect(booking.reload.status).to eq('active')
         end
       end

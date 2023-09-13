@@ -61,6 +61,8 @@ module Stopover
                                                account: @current_user.account)
         end
 
+        @parent_refund.process!
+
         @parent_refund.related_refunds.each do |child_refund|
           execute_refund(child_refund)
         end
@@ -91,6 +93,8 @@ module Stopover
       end
 
       def execute_refund(child_refund)
+        return unless child_refund.pending?
+
         child_refund.process!
         if child_refund&.payment&.payment_intent_id
           refund_id = Stripe::Refund.create({

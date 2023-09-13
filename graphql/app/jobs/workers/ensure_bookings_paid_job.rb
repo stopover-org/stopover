@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Workers
-  class EnsureBookingsPaid < ApplicationJob
+  class EnsureBookingsPaidJob < ApplicationJob
     queue_as :default
 
     def perform
