@@ -38,7 +38,7 @@ function useMutationForm<
     onSubmit: submitHandler,
     onCompleted,
     autosave,
-    autosaveTimeout = 500,
+    autosaveTimeout = 1500,
     defaultValues,
     targetName,
     ...opts
@@ -50,60 +50,72 @@ function useMutationForm<
     form.formState.isSubmitting
   );
 
+  const {
+    isDirty,
+    isLoading,
+    isSubmitted,
+    isSubmitSuccessful,
+    isValidating,
+    isValid,
+    submitCount,
+    dirtyFields,
+    touchedFields,
+    errors,
+  } = form.formState;
+
+  function mutate(values: FieldsType) {
+    setIsSubmitting(true);
+
+    mutation({
+      variables: variables(values),
+      onError: (...errorRest) => {
+        setIsSubmitting(false);
+
+        if (opts.onError instanceof Function) {
+          opts.onError(...errorRest);
+        }
+      },
+      // @ts-ignore
+      onCompleted: (...completedRest: Record<string, any>[]) => {
+        setIsSubmitting(false);
+
+        // eslint-disable-next-line prefer-destructuring
+        if (!targetName) targetName = Object.keys(completedRest[0])[0];
+
+        if (
+          targetName &&
+          completedRest[0][targetName] &&
+          completedRest[0][targetName].notification
+        ) {
+          toast.message(completedRest[0][targetName].notification);
+        }
+
+        if (
+          targetName &&
+          completedRest[0][targetName] &&
+          completedRest[0][targetName].errors
+        ) {
+          completedRest[0][targetName].errors.forEach((err: any) => {
+            toast.error(err);
+          });
+        }
+
+        if (completedRest[0]) {
+          if (onCompleted instanceof Function) {
+            // @ts-ignore
+            onCompleted(...completedRest);
+          }
+        }
+      },
+    });
+  }
+
   function onSubmit(...rest: any) {
     if (submitHandler instanceof Function) {
       return submitHandler(mutation, form, ...rest);
     }
     return function submit(values: FieldsType) {
-      setIsSubmitting(true);
-
-      mutation({
-        variables: variables(values),
-        onError: (...errorRest) => {
-          setIsSubmitting(false);
-
-          if (opts.onError instanceof Function) {
-            opts.onError(...errorRest);
-          }
-        },
-        onCompleted: (...completedRest) => {
-          setIsSubmitting(false);
-
-          // eslint-disable-next-line prefer-destructuring
-          if (!targetName) targetName = Object.keys(completedRest[0])[0];
-
-          if (
-            targetName &&
-            // @ts-ignore
-            completedRest[0][targetName] &&
-            // @ts-ignore
-            completedRest[0][targetName].notification
-          ) {
-            // @ts-ignore
-            toast.message(completedRest[0][targetName].notification);
-          }
-
-          if (
-            targetName &&
-            // @ts-ignore
-            completedRest[0][targetName] &&
-            // @ts-ignore
-            completedRest[0][targetName].errors
-          ) {
-            // @ts-ignore
-            completedRest[0][targetName].errors.forEach((err) => {
-              // @ts-ignore
-              toast.error(err);
-            });
-          }
-
-          if (completedRest[0]) {
-            if (onCompleted instanceof Function) {
-              onCompleted(...completedRest);
-            }
-          }
-        },
-      });
+      mutate(values);
     };
   }
 
@@ -132,37 +144,24 @@ function useMutationForm<
   const handleSubmit = (...rest: any) => form.handleSubmit(onSubmit(...rest));
 
   React.useEffect(() => {
-    if (autosave) return;
+    if (autosave || isSubmitting) return;
     requestRef.current = null;
 
     form.reset(defaultValues as FieldsType);
   }, [defaultValues]);
 
   React.useEffect(() => {
-    if (autosave) {
+    if (autosave && !isSubmitting) {
       if (requestRef.current) {
         return;
       }
       requestRef.current = setTimeout(() => {
         requestRef.current = null;
 
-        handleSubmit()();
+        mutate(form.getValues());
       }, autosaveTimeout);
     }
-  }, [JSON.stringify(form.getValues())]);
-
-  const {
-    isDirty,
-    isLoading,
-    isSubmitted,
-    isSubmitSuccessful,
-    isValidating,
-    isValid,
-    submitCount,
-    dirtyFields,
-    touchedFields,
-    errors,
-  } = form.formState;
+  }, [JSON.stringify(form.getValues()), autosave]);
 
   return React.useMemo(
     () => ({

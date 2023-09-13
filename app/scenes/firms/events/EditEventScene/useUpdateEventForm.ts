@@ -149,7 +149,7 @@ function useDefaultValues(
         (opt) => ({
           id: opt.id,
           description: opt.description,
-          deadline: parseInt(opt.deadline.replace("h", ""), 10),
+          deadline: opt.deadline,
           penaltyPriceCents: opt.penaltyPrice.cents / 100,
           status: opt.status,
         })
@@ -315,7 +315,7 @@ export function useUpdateEventForm(
         bookingCancellationOptions: bookingCancellationOptions.map((opt) => ({
           id: opt.id,
           penaltyPriceCents: opt.penaltyPriceCents * 100,
-          deadline: `${opt.deadline}h`,
+          deadline: opt.deadline,
           description: opt.description,
         })),
       },
