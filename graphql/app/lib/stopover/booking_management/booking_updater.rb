@@ -9,8 +9,10 @@ module Stopover
       end
 
       def perform(**args)
-        schedule = @booking.event.schedules.find_by(scheduled_for: args[:booked_for])
-        @booking.update!(schedule: schedule, **args.except(:booked_for, :event_options))
+        if args[:booked_for]
+          schedule = @booking.event.schedules.find_by(scheduled_for: args[:booked_for])
+          @booking.update!(schedule: schedule, **args.except(:booked_for, :event_options))
+        end
 
         if args[:event_options].is_a? Array
           @booking.booking_options.destroy_all

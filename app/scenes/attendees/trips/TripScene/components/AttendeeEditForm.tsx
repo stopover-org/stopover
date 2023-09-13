@@ -32,7 +32,12 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
     `,
     attendeeFragmentRef
   );
-  const form = useAttendeeEditForm(attendee);
+
+  const form = useAttendeeEditForm(
+    attendee,
+    attendee.booking.status !== "active"
+  );
+
   const disabled = React.useMemo(
     () =>
       attendee.booking.status !== "active" ||
