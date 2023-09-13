@@ -1,5 +1,5 @@
 ensure_payments:
-  cron: '* * * * *'
+  cron: '*/15 * * * *'
   class: 'Workers::EnsurePaymentsJob'
 ensure_bookings:
   cron: '* * * * *'
