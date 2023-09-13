@@ -14,6 +14,7 @@
 #  updated_at                 :datetime         not null
 #  balance_id                 :bigint
 #  booking_id                 :bigint
+#  payment_intent_id          :string
 #  stripe_checkout_session_id :string
 #
 # Indexes

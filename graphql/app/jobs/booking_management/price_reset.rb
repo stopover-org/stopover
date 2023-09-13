@@ -11,7 +11,7 @@ module BookingManagement
       booking.partially_pay! if booking.partially_paid?
       booking.payments.processing.find_each do |payment|
         checkout = Stripe::Checkout::Session.retrieve(payment.stripe_checkout_session_id)
-        ::Stopover::StripeCheckoutService.complete(payment) if checkout[:status] == 'complete'
+        ::Stopover::StripeCheckoutService.complete(payment, checkout) if checkout[:status] == 'complete'
         ::Stopover::StripeCheckoutService.expire_checkout_session(payment) if checkout[:status] == 'open'
       end
     end

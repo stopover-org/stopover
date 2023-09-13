@@ -14,6 +14,7 @@
 #  updated_at                 :datetime         not null
 #  balance_id                 :bigint
 #  booking_id                 :bigint
+#  payment_intent_id          :string
 #  stripe_checkout_session_id :string
 #
 # Indexes
@@ -52,7 +53,7 @@ class Payment < ApplicationRecord
   }
   enum payment_type: {
     full_amount: 'full_amount',
-      deposit: 'deposit'
+    deposit: 'deposit'
   }
 
   # SECURE TOKEN ==========================================================
@@ -72,6 +73,10 @@ class Payment < ApplicationRecord
   # SCOPES ================================================================
 
   # DELEGATION ============================================================
+
+  def refundable_amount
+    total_price - refunds.successful.map(&:refund_amount).sum(Money.new(0))
+  end
 
   def top_up_balance
     balance.update!(total_amount: balance.total_amount + Money.new(total_price))

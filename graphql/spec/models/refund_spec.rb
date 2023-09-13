@@ -16,6 +16,7 @@
 #  firm_id                        :bigint
 #  payment_id                     :bigint
 #  refund_id                      :bigint
+#  stripe_refund_id               :string
 #
 # Indexes
 #

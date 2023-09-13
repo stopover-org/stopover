@@ -16,6 +16,7 @@
 #  firm_id                        :bigint
 #  payment_id                     :bigint
 #  refund_id                      :bigint
+#  stripe_refund_id               :string
 #
 # Indexes
 #
@@ -40,7 +41,7 @@ class Refund < ApplicationRecord
   belongs_to :booking
   belongs_to :account, optional: true
   belongs_to :firm
-  belongs_to :parent_refund, class_name: 'Refund', optional: true
+  belongs_to :parent_refund, class_name: 'Refund', optional: true, foreign_key: 'refund_id', inverse_of: :related_refunds
 
   # HAS_ONE ASSOCIATIONS ==================================================
 
