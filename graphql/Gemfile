@@ -11,7 +11,7 @@ gem 'rails', '~> 7.0.0'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 
-#Use the money-rails
+# Use the money-rails
 gem 'money-rails', '~>1.12'
 
 # Use postgresql as the database for Active Record
@@ -33,7 +33,7 @@ gem 'stimulus-rails'
 gem 'jbuilder'
 
 # Use Redis adapter to run Action Cable in production
-# gem "redis", "~> 4.0"
+gem 'redis', '~> 4.0'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -55,14 +55,14 @@ gem 'bootsnap', require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem 'capistrano', '~> 3.10', require: false
+  gem 'capistrano3-puma'
+  gem 'capistrano-rails', '~> 1.3', require: false
+  gem 'capistrano-rbenv', '~> 2.2'
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'faker', git: 'https://github.com/faker-ruby/faker.git', branch: 'master'
   gem 'rails-erd'
   gem 'rspec-rails'
-  gem "capistrano", "~> 3.10", require: false
-  gem "capistrano-rails", "~> 1.3", require: false
-  gem 'capistrano-rbenv', '~> 2.2'
-  gem 'capistrano3-puma'
 end
 
 group :development do
@@ -84,16 +84,16 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
+  gem 'rspec-sidekiq', '~> 3.1'
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'webdrivers'
-  gem "rspec-sidekiq", "~> 3.1"
 end
 
-gem 'graphiql-rails', git: 'https://github.com/rmosolgo/graphiql-rails.git', branch: 'master'
 gem 'aasm'
 gem 'after_commit_everywhere', '~> 1.0'
 gem 'geocoder'
+gem 'graphiql-rails', git: 'https://github.com/rmosolgo/graphiql-rails.git', branch: 'master'
 gem 'graphql'
 gem 'jwt'
 gem 'phonelib'
@@ -112,13 +112,14 @@ gem 'foreman'
 gem 'net-sftp'
 gem 'sidekiq', '~> 6.5'
 
-gem "stripe", "~> 8.3"
+gem 'stripe', '~> 8.3'
 
-gem "roo", "~> 2.10.0"
+gem 'roo', '~> 2.10.0'
 
-gem "countries", "~> 5.5"
-gem "sentry-ruby"
-gem "sentry-rails"
+gem 'countries', '~> 5.5'
 gem 'flipper'
+gem 'sentry-rails'
+gem 'sentry-ruby'
 
-gem "timecop", "~> 0.9.8"
+gem 'sidekiq-cron'
+gem 'timecop', '~> 0.9.8'

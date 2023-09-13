@@ -1,0 +1,6 @@
+ensure_payments:
+  cron: '* * * * *'
+  class: 'Workers::EnsurePaymentsJob'
+ensure_bookings:
+  cron: '* * * * *'
+  class: 'Workers::EnsurePaymentsJob'

@@ -28,7 +28,9 @@ module Mutations
         return false, { errors: ['You are not authorized'] } if !owner?(booking) && !manager?(booking)
         return false, { errors: ['Booking cancelled'] } if booking.cancelled?
         return false, { errors: ['Booking past'] } if booking.past?
-        return false, { errors: ['All places are reserved'] } if booking.event.max_attendees && Attendee.where(booking_id: booking.id).count >= booking.event.max_attendees
+        return false, { errors: ['All places are reserved'] } if booking.event.max_attendees && Attendee.where(booking_id: booking.id)
+                                                                                                        .where.not(status: 'removed')
+                                                                                                        .count >= booking.event.max_attendees
 
         super
       end

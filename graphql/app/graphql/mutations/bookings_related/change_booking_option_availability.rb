@@ -19,7 +19,7 @@ module Mutations
           message = 'Booking Option is available from now'
         end
 
-        booking.refund_diff if booking.refundable?
+        BookingManagement::PriceReset.perform_later(booking.id)
 
         {
           booking_option: booking_option,

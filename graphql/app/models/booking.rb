@@ -65,6 +65,10 @@ class Booking < ApplicationRecord
       transitions from: :active, to: :paid
     end
 
+    event :partially_pay do
+      transitions from: :paid, to: :active
+    end
+
     event :cancel do
       transitions from: %i[active paid], to: :cancelled, guard: :can_cancel
     end
@@ -96,9 +100,13 @@ class Booking < ApplicationRecord
   def check_max_attendees
     return true if event.max_attendees.nil?
     reached_max_attendees = if schedule
-                              Attendee.where(booking_id: Booking.where(schedule_id: schedule.reload.id)).count + attendees.count > event.max_attendees
+                              Attendee.where.not(status: 'removed')
+                                      .where(booking_id: Booking.where(schedule_id: schedule.reload.id)
+                                                                .where.not(status: 'cancelled')
+                                                                .where.not(id: id))
+                                      .count + attendees.where.not(status: 'removed').count > event.max_attendees
                             else
-                              attendees.count > event.max_attendees
+                              attendees.where.not(status: 'removed').count > event.max_attendees
                             end
     errors.add(:attendees, 'all places reserved') if reached_max_attendees
   end
@@ -159,6 +167,10 @@ class Booking < ApplicationRecord
 
   def refundable?
     already_paid_price > attendee_total_price
+  end
+
+  def partially_paid?
+    left_to_pay_price.positive?
   end
 
   def refund_diff

@@ -4,8 +4,8 @@ module Stopover
   class StripeCheckoutService
     def self.complete(payment)
       payment.success!
-      payment.booking.pay! if payment.full_amount?
-      payment.booking.trip.activate!
+      payment.booking.pay! if payment.booking.left_to_pay_price.zero?
+      payment.booking.trip.activate! unless payment.booking.trip.active?
 
       payment
     end
@@ -121,6 +121,11 @@ module Stopover
         url: checkout[:url],
           payment: payment
       }
+    end
+
+    def self.expire_checkout_session(payment)
+      Stripe::Checkout::Session.expire(payment.stripe_checkout_session_id)
+      payment.cancel!
     end
   end
 end

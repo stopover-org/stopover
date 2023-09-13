@@ -71,6 +71,10 @@ class Refund < ApplicationRecord
     refund_amount + penalty_amount
   end
 
+  def top_up_balance
+    balance.update!(total_amount: balance.total_amount - refund_amount)
+  end
+
   private
 
   def adjust_references

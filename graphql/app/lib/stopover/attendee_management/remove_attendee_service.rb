@@ -11,7 +11,7 @@ module Stopover
 
       def perform
         @attendee.remove!
-        @booking.refund_diff if @booking.refundable?
+        ::BookingManagement::PriceReset.perform_later(@booking.id)
 
         @attendee
       end

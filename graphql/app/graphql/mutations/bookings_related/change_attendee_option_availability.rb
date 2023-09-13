@@ -8,7 +8,6 @@ module Mutations
       argument :attendee_option_id, ID, loads: Types::BookingsRelated::AttendeeOptionType
 
       def resolve(attendee_option:, **_args)
-        message = ''
         booking = attendee_option.booking
 
         case attendee_option.status
@@ -20,7 +19,7 @@ module Mutations
           message = 'Attendee Option is available from now'
         end
 
-        booking.refund_diff if booking.refundable?
+        BookingManagement::PriceReset.perform_later(booking.id)
 
         {
           attendee_option: attendee_option,

@@ -31,6 +31,14 @@ FactoryBot.define do
       status { 'processing' }
     end
 
+    transient do
+      with_checkout_session_id { false }
+    end
+
+    after(:create) do |payment, evaluator|
+      payment.update!(stripe_checkout_session_id: SecureRandom.hex) if evaluator.with_checkout_session_id
+    end
+
     factory :payment_in_process, traits: [:payment_in_process_trait]
   end
 end
