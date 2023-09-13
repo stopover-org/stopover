@@ -15,6 +15,7 @@
 #  booking_id                     :bigint
 #  firm_id                        :bigint
 #  payment_id                     :bigint
+#  refund_id                      :bigint
 #
 # Indexes
 #
@@ -23,6 +24,7 @@
 #  index_refunds_on_booking_id                      (booking_id)
 #  index_refunds_on_firm_id                         (firm_id)
 #  index_refunds_on_payment_id                      (payment_id)
+#  index_refunds_on_refund_id                       (refund_id)
 #
 require 'rails_helper'
 

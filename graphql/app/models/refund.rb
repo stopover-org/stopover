@@ -15,6 +15,7 @@
 #  booking_id                     :bigint
 #  firm_id                        :bigint
 #  payment_id                     :bigint
+#  refund_id                      :bigint
 #
 # Indexes
 #
@@ -23,6 +24,7 @@
 #  index_refunds_on_booking_id                      (booking_id)
 #  index_refunds_on_firm_id                         (firm_id)
 #  index_refunds_on_payment_id                      (payment_id)
+#  index_refunds_on_refund_id                       (refund_id)
 #
 class Refund < ApplicationRecord
   # MODULES ===============================================================
@@ -38,12 +40,14 @@ class Refund < ApplicationRecord
   belongs_to :booking
   belongs_to :account, optional: true
   belongs_to :firm
+  belongs_to :parent_refund, class_name: 'Refund', optional: true
 
   # HAS_ONE ASSOCIATIONS ==================================================
 
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
 
   # HAS_MANY ASSOCIATIONS =================================================
+  has_many :related_refunds, class_name: 'Refund'
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
 

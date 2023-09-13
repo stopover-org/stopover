@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_12_011432) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_13_203439) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -355,11 +355,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_12_011432) do
     t.decimal "penalty_amount_cents", default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "refund_id"
     t.index ["account_id"], name: "index_refunds_on_account_id"
     t.index ["booking_cancellation_option_id"], name: "index_refunds_on_booking_cancellation_option_id"
     t.index ["booking_id"], name: "index_refunds_on_booking_id"
     t.index ["firm_id"], name: "index_refunds_on_firm_id"
     t.index ["payment_id"], name: "index_refunds_on_payment_id"
+    t.index ["refund_id"], name: "index_refunds_on_refund_id"
   end
 
   create_table "schedules", force: :cascade do |t|

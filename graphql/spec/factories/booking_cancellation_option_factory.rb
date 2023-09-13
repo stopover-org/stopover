@@ -2,23 +2,20 @@
 
 # == Schema Information
 #
-# Table name: event_options
+# Table name: booking_cancellation_options
 #
-#  id                    :bigint           not null, primary key
-#  attendee_price_cents  :decimal(, )      default(0.0)
-#  built_in              :boolean          default(FALSE)
-#  description           :text
-#  for_attendee          :boolean          default(FALSE)
-#  organizer_price_cents :decimal(, )      default(0.0)
-#  status                :string           default("available")
-#  title                 :string
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  event_id              :bigint           not null
+#  id                  :bigint           not null, primary key
+#  deadline            :integer          not null
+#  description         :text             default("")
+#  penalty_price_cents :decimal(, )
+#  status              :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  event_id            :bigint
 #
 # Indexes
 #
-#  index_event_options_on_event_id  (event_id)
+#  index_booking_cancellation_options_on_event_id  (event_id)
 #
 FactoryBot.define do
   factory :booking_cancellation_option do
