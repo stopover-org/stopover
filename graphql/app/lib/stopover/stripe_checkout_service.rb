@@ -13,7 +13,9 @@ module Stopover
     def self.generate_stripe_checkout_session(booking, payment_type)
       event_stripe_integration = booking.stripe_integration
 
-      payment = booking.payments.create!(payment_type: payment_type, balance: booking.event.firm.balance)
+      payment = booking.payments.create!(payment_type: payment_type,
+                                         balance: booking.event.firm.balance,
+                                         total_price: payment_type == 'full_amount' ? booking.attendee_total_price : booking.event.deposit_amount)
       payment.stripe_integrations << event_stripe_integration
 
       case payment_type

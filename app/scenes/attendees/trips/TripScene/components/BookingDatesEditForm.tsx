@@ -40,10 +40,6 @@ const BookingDatesEditForm = ({
     booking.event.availableDates as Date[]
   );
   const availableTimes = useTimeFromDate(availableDates, dateField.value);
-  const isValidTime = availableTimes.filter((dt) =>
-    dt.isSame(dateField?.value)
-  ).length;
-
   const disabled = React.useMemo(
     () =>
       booking.status !== "active" ||

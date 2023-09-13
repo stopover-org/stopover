@@ -45,16 +45,14 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
         {booking.attendees.map((attendee) => (
           <AttendeeEditForm key={attendee.id} attendeeFragmentRef={attendee} />
         ))}
-        {!disabled && (
-          <>
-            <Grid xs={12}>
-              <BookingDatesEditForm bookingFragmentRef={booking} />
-            </Grid>
-            <Grid xs={12}>
-              <CancelBookingForm bookingFragmentRef={booking} />
-            </Grid>
-          </>
-        )}
+        <>
+          <Grid xs={12}>
+            <BookingDatesEditForm bookingFragmentRef={booking} />
+          </Grid>
+          <Grid xs={12}>
+            <CancelBookingForm bookingFragmentRef={booking} />
+          </Grid>
+        </>
       </Grid>
       <Grid xs={5}>
         <BookingOptionsEditForm bookingFragmentRef={booking} />

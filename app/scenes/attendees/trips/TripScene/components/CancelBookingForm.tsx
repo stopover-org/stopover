@@ -29,7 +29,6 @@ const CancelBookingForm = ({ bookingFragmentRef }: CancelBookingFormProps) => {
   return (
     <form onSubmit={form.handleSubmit()}>
       <SubmitButton
-        disabled={disabled}
         variant="plain"
         color="danger"
         size="sm"

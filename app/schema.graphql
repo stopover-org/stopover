@@ -147,6 +147,7 @@ type Booking implements Node {
   leftToPayPrice: Money!
   organizerTotalPrice: Money!
   payments: [Payment!]!
+  refunds: [Refund!]!
   schedule: Schedule!
   status: String!
   trip: Trip!
@@ -1282,6 +1283,16 @@ type Query {
     last: Int
   ): ScheduleConnection!
   trips(filters: TripsFilter): [Trip!]
+}
+
+type Refund implements Node {
+  booking: Booking!
+  createdAt: DateTime!
+  id: ID!
+  penaltyAmount: Money!
+  status: String!
+  totalAmount: Money!
+  updatedAt: DateTime!
 }
 
 """

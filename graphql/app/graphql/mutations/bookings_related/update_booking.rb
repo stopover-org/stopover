@@ -35,7 +35,7 @@ module Mutations
         return false, { errors: ['Event past'] } if booking.past?
         return false, { errors: ['Booking cancelled'] } if booking.cancelled?
 
-        return false, { errors: ['Date past'] } if inputs[:booked_for].past?
+        return false, { errors: ['Date past'] } if inputs[:booked_for]&.past?
         return false, { errors: ['Wrong option type'] } if inputs[:event_options]&.select { |opt| opt.for_attendee }&.any?
 
         super

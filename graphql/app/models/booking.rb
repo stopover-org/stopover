@@ -66,7 +66,7 @@ class Booking < ApplicationRecord
     end
 
     event :cancel do
-      transitions from: :active, to: :cancelled, guard: :can_cancel
+      transitions from: %i[active paid], to: :cancelled, guard: :can_cancel
     end
   end
 
