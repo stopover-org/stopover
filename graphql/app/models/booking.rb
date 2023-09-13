@@ -159,8 +159,11 @@ class Booking < ApplicationRecord
   end
 
   def already_paid_price
-    total_payments = payments.where.not(status: %i[cancelled pending processing]).map(&:total_price).sum(Money.new(0))
-    total_refunds = refunds.where.not(status: :cancelled).map(&:total_amount).sum(Money.new(0))
+    total_payments = payments.where.not(status: %i[cancelled pending processing])
+                             .map(&:total_price).sum(Money.new(0))
+    total_refunds = refunds.where.not(status: :cancelled)
+                           .where.not(refund_id: nil)
+                           .map(&:total_amount).sum(Money.new(0))
 
     total_payments - total_refunds
   end
@@ -178,7 +181,8 @@ class Booking < ApplicationRecord
   end
 
   def refund_diff
-    refunds.create!(firm: firm, refund_amount: already_paid_price - attendee_total_price, penalty_amount: Money.new(0))
+    refund = refunds.create!(firm: firm, refund_amount: already_paid_price - attendee_total_price, penalty_amount: Money.new(0))
+    Stopover::RefundManagement::RefundCreator.new(self, user, refund).perform
   end
 
   private

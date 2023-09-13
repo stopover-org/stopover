@@ -49,7 +49,7 @@ RSpec.describe Mutations::BookingsRelated::ChangeBookingOptionAvailability, type
         expect(booking.already_paid_price - booking.attendee_total_price).to eq(Money.new(0))
         expect(booking_option.attendee_price).to eq(Money.new(refund))
 
-        expect { subject.to_h.deep_symbolize_keys }.to change { Refund.count }.by(1)
+        expect { subject.to_h.deep_symbolize_keys }.to change { Refund.count }.by(2)
 
         expect(booking.refunds.last.refund_amount).to eq(Money.new(refund))
         expect(booking.refunds.last.penalty_amount).to eq(Money.new(0))

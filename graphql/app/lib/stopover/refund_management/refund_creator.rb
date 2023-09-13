@@ -13,7 +13,7 @@ module Stopover
         refund = calculate_refund
         penalty = calculate_penalty
 
-        if refund
+        if refund.positive?
           @parent_refund ||= @booking.refunds.build(penalty_amount: penalty,
                                                     refund_amount: refund,
                                                     booking: @booking,
@@ -61,7 +61,9 @@ module Stopover
                                                account: @current_user.account)
         end
 
-        @parent_refund.related_refunds
+        @parent_refund.related_refunds.each do |child_refund|
+          execute_refund(child_refund)
+        end
       end
 
       def calculate_refund

@@ -37,7 +37,7 @@ RSpec.describe Workers::EnsureBookingsPaid, type: :job do
         Sidekiq::Testing.inline! do
           Workers::EnsureBookingsPaid.perform_now
           expect(booking.reload.status).to eq('paid')
-          expect(booking.refunds.count).to eq(1)
+          expect(booking.refunds.count).to eq(2)
         end
       end
     end

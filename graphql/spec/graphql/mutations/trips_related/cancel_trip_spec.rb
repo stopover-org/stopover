@@ -52,7 +52,7 @@ RSpec.describe Mutations::TripsRelated::CancelTrip, type: :mutation do
       result = nil
       expect(booking.already_paid_price).to eq(Money.new(refund + penalty))
 
-      expect { result = subject.to_h.deep_symbolize_keys }.to change { Refund.count }.by(1)
+      expect { result = subject.to_h.deep_symbolize_keys }.to change { Refund.count }.by(2)
 
       expect(result.dig(:data, :cancelTrip, :trip, :id)).to eq(GraphqlSchema.id_from_object(booking.trip))
       expect(result.dig(:data, :cancelTrip, :trip, :status)).to eq('cancelled')

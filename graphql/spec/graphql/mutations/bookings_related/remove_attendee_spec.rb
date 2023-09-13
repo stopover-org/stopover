@@ -50,7 +50,7 @@ RSpec.describe Mutations::BookingsRelated::RemoveAttendee, type: :mutation do
         expect(booking.event.attendee_price_per_uom).to eq(Money.new(refund))
 
         result = nil
-        expect { result = subject.to_h.deep_symbolize_keys }.to change { Refund.count }.by(1)
+        expect { result = subject.to_h.deep_symbolize_keys }.to change { Refund.count }.by(2)
 
         expect(result.dig(:data, :removeAttendee, :attendee, :id)).to eq(GraphqlSchema.id_from_object(attendee))
         expect(result.dig(:data, :removeAttendee, :attendee, :status)).to eq('removed')

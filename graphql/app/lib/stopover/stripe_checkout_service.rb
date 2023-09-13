@@ -2,7 +2,8 @@
 
 module Stopover
   class StripeCheckoutService
-    def self.complete(payment, checkout)
+    def self.complete(payment, checkout = nil)
+      checkout ||= Stripe::Checkout::Session.retrieve(payment.stripe_checkout_session_id)
       payment.update!(payment_intent_id: checkout[:payment_intent]) if checkout[:payment_intent]
       payment.success!
       payment.booking.pay! if payment.booking.left_to_pay_price.zero?
