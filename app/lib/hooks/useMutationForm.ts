@@ -38,7 +38,7 @@ function useMutationForm<
     onSubmit: submitHandler,
     onCompleted,
     autosave,
-    autosaveTimeout = 1500,
+    autosaveTimeout = 500,
     defaultValues,
     targetName,
     ...opts
