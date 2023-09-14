@@ -41,20 +41,23 @@ RSpec.describe Booking, type: :model do
       expect(booking.booking_options.count).to eq(1)
     end
 
-    it do
-      expect(booking.booking_options.first.attendee_price_cents).to eq(440)
-      expect(booking.booking_options.first.organizer_price_cents).to eq(400)
-      expect(booking.attendees.first.attendee_options.first.attendee_price_cents).to eq(440)
-      expect(booking.attendees.first.attendee_options.first.organizer_price_cents).to eq(400)
+    it 'check price' do
+      expect(booking.booking_options.first.attendee_price).to eq(Money.new(440))
+      expect(booking.booking_options.first.organizer_price).to eq(Money.new(400))
+      expect(booking.attendees.first.attendee_options.first.attendee_price).to eq(Money.new(440))
+      expect(booking.attendees.first.attendee_options.first.organizer_price).to eq(Money.new(400))
     end
 
-    it do
-      event.event_options.first.update!(organizer_price_cents: 500)
-      event.event_options.last.update!(organizer_price_cents: 500)
-      expect(booking.booking_options.first.reload.attendee_price_cents).to eq(550)
-      expect(booking.booking_options.first.organizer_price_cents).to eq(500)
-      expect(booking.attendees.first.attendee_options.first.attendee_price_cents).to eq(550)
-      expect(booking.attendees.first.attendee_options.first.organizer_price_cents).to eq(500)
+    it 'check price on update' do
+      booking.event_options.find_each { |event_option| event_option.update!(organizer_price_cents: 500) }
+
+      booking_option = booking.booking_options.first
+      attendee_option = booking.attendee_options.first
+      expect(booking_option.reload.attendee_price).to eq(Money.new(550))
+      expect(booking_option.organizer_price).to eq(Money.new(500))
+
+      expect(attendee_option.reload.attendee_price).to eq(Money.new(550))
+      expect(attendee_option.organizer_price).to eq(Money.new(500))
     end
   end
   context 'methods' do
@@ -63,8 +66,10 @@ RSpec.describe Booking, type: :model do
     let!(:booking_option) { create(:booking_option, booking: booking) }
 
     it 'sum of prices' do
-      expect(booking.attendee_total_price.cents).to eq(990)
-      expect(booking.organizer_total_price.cents).to eq(900)
+      booking.reload
+
+      expect(booking.attendee_total_price).to eq(Money.new(990))
+      expect(booking.organizer_total_price).to eq(Money.new(900))
     end
   end
 end

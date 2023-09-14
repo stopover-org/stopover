@@ -2,24 +2,18 @@
 
 # == Schema Information
 #
-# Table name: payments
+# Table name: payment_connections
 #
-#  id                         :bigint           not null, primary key
-#  fee_cents                  :decimal(, )      default(0.0)
-#  payment_type               :string
-#  provider                   :string
-#  status                     :string
-#  total_price_cents          :decimal(, )      default(0.0)
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
-#  balance_id                 :bigint
-#  booking_id                 :bigint
-#  stripe_checkout_session_id :string
+#  id                    :bigint           not null, primary key
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  payment_id            :bigint
+#  stripe_integration_id :bigint
 #
 # Indexes
 #
-#  index_payments_on_balance_id  (balance_id)
-#  index_payments_on_booking_id  (booking_id)
+#  index_payment_connections_on_payment_id             (payment_id)
+#  index_payment_connections_on_stripe_integration_id  (stripe_integration_id)
 #
 FactoryBot.define do
   factory :payment_connection do

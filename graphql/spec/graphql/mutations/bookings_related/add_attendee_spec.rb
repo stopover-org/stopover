@@ -31,34 +31,30 @@ RSpec.describe Mutations::BookingsRelated::AddAttendee, type: :mutation do
                           }, context: { current_user: current_user })
   end
 
+  shared_examples :successful do
+    it 'successful' do
+      result = nil
+
+      expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(1)
+      booking.reload
+
+      expect(result.dig(:data, :addAttendee, :booking, :attendees).size).to eq(2)
+      expect(result.dig(:data, :addAttendee, :booking, :attendees, 1, :status)).to eq('not_registered')
+      expect(result.dig(:data, :addAttendee, :booking, :attendees, 1, :id)).to eq(GraphqlSchema.id_from_object(booking.attendees.last))
+      expect(result.dig(:data, :addAttendee, :errors)).to be_nil
+      expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee was added!')
+    end
+  end
+
   context 'add attendee' do
     context 'as manager' do
       let(:current_user) { booking.firm.accounts.last.user }
 
-      it 'successful' do
-        result = nil
-
-        expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(1)
-
-        expect(result.dig(:data, :addAttendee, :booking, :attendees).size).to eq(2)
-        expect(result.dig(:data, :addAttendee, :booking, :attendees, 1, :status)).to eq('not_registered')
-        expect(result.dig(:data, :addAttendee, :booking, :attendees, 1, :id)).to eq(GraphqlSchema.id_from_object(booking.attendees.last))
-        expect(result.dig(:data, :addAttendee, :errors)).to be_nil
-        expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee was added!')
-      end
+      include_examples :successful
     end
 
     context 'as booking owner' do
-      it 'successful' do
-        result = nil
-        expect { result = subject.to_h.deep_symbolize_keys }.to change { Attendee.count }.by(1)
-
-        expect(result.dig(:data, :addAttendee, :booking, :attendees).size).to eq(2)
-        expect(result.dig(:data, :addAttendee, :booking, :attendees, 1, :status)).to eq('not_registered')
-        expect(result.dig(:data, :addAttendee, :booking, :attendees, 1, :id)).to eq(GraphqlSchema.id_from_object(booking.attendees.last))
-        expect(result.dig(:data, :addAttendee, :errors)).to be_nil
-        expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee was added!')
-      end
+      include_examples :successful
     end
 
     context 'permissions' do

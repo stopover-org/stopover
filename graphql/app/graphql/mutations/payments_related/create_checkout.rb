@@ -20,7 +20,7 @@ module Mutations
           checkout = Stripe::Checkout::Session.retrieve(payment.stripe_checkout_session_id)
 
           if checkout[:status] == 'complete'
-            ::Stopover::StripeCheckoutService.complete(payment)
+            ::Stopover::StripeCheckoutService.complete(payment, checkout)
             return {
               url: nil,
               booking: booking.reload,

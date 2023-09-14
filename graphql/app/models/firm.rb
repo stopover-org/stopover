@@ -36,27 +36,28 @@ class Firm < ApplicationRecord
   # MODULES ===============================================================
   include AASM
 
-  # ATTACHMENTS ===========================================================
-  has_one_attached :image
+  # MONETIZE ==============================================================
 
-  # HAS_ONE ASSOCIATIONS ==========================================================
+  # BELONGS_TO ASSOCIATIONS ===============================================
+
+  # HAS_ONE ASSOCIATIONS ==================================================
   has_one :balance
 
-  # HAS_MANY ASSOCIATIONS =========================================================
-  # has_many :accounts
-  has_many :account_firms
-  has_many :events, dependent: :destroy
-  has_many :stripe_connects
+  # HAS_ONE THROUGH ASSOCIATIONS ==========================================
 
-  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :accounts, through: :account_firms
-  has_many :bookings, through: :events
-  has_many :schedules, through: :events
-  has_many :payments, through: :balance
+  # HAS_MANY ASSOCIATIONS =================================================
+  has_many :account_firms,    dependent: :destroy
+  has_many :events,           dependent: :destroy
+  has_many :stripe_connects,  dependent: :nullify
+  has_many :refunds,          dependent: :nullify
 
-  # BELONGS_TO ASSOCIATIONS =======================================================
+  # HAS_MANY THROUGH ASSOCIATIONS =========================================
+  has_many :accounts,   through: :account_firms
+  has_many :bookings,   through: :events
+  has_many :schedules,  through: :events
+  has_many :payments,   through: :balance
 
-  # AASM STATES ================================================================
+  # AASM STATES ===========================================================
   aasm column: :status do
     state :pending, initial: true
     state :active
@@ -70,16 +71,25 @@ class Firm < ApplicationRecord
     end
   end
 
-  # ENUMS =======================================================================
+  # ENUMS =================================================================
   enum business_type: {
     individual: 'individual',
-    company: 'company',
-    non_profit: 'non_profit',
-    # US only
-    government_entity: 'government_entity'
+      company: 'company',
+      non_profit: 'non_profit',
+      # US only
+      government_entity: 'government_entity'
   }
 
-  # VALIDATIONS ================================================================
+  # SECURE TOKEN ==========================================================
+
+  # SECURE PASSWORD =======================================================
+
+  # ATTACHMENTS ===========================================================
+  has_one_attached :image
+
+  # RICH_TEXT =============================================================
+
+  # VALIDATIONS ===========================================================
   validates :primary_email,
             presence: true,
             unless: :primary_phone
@@ -107,13 +117,13 @@ class Firm < ApplicationRecord
             phone: { message: 'is invalid',
                      allow_blank: true }
 
+  # CALLBACKS =============================================================
   before_validation :transform_phone
-  # CALLBACKS ================================================================
   after_create :create_balance
 
-  # SCOPES =====================================================================
-  #
-  # DELEGATIONS ==============================================================
+  # SCOPES ================================================================
+
+  # DELEGATION ============================================================
 
   def create_balance
     self.balance = Balance.create!(firm: self)

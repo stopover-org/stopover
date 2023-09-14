@@ -289,21 +289,21 @@ RSpec.describe Mutations::EventsRelated::CreateEvent, type: :mutation do
         before do
           input[:bookingCancellationOptions] = [{
             penaltyPriceCents: 10,
-            deadline: '24h',
+            deadline: 24,
             description: 'description'
           }, {
             penaltyPriceCents: 20,
-            deadline: '48h',
+            deadline: 48,
             description: 'description'
           }]
 
           expected[:bookingCancellationOptions] = [{
             penaltyPrice: 20,
-              deadline: '48h',
+              deadline: 48,
               description: 'description'
           }, {
             penaltyPrice: 10,
-            deadline: '24h',
+            deadline: 24,
             description: 'description'
           }]
         end
@@ -312,7 +312,7 @@ RSpec.describe Mutations::EventsRelated::CreateEvent, type: :mutation do
 
       context 'with single dates' do
         before do
-          dates = [7.days.from_now + 20.hours, 14.days.from_now + 20.hours]
+          dates = [7.days.ago + 20.hours, 14.days.ago + 20.hours]
           input[:singleDates] = dates.map { |dt| "#{dt.day.to_s.rjust(2, '0')}/#{dt.month.to_s.rjust(2, '0')}/#{dt.year.to_s.rjust(2, '0')} #{dt.hour.to_s.rjust(2, '0')}:#{dt.min.to_s.rjust(2, '0')}" }
 
           expected[:singleDaysWithTime] = dates.map { |dt| dt.change(sec: 0) }.map(&:iso8601)

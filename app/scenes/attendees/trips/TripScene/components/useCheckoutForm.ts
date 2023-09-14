@@ -67,7 +67,7 @@ export function useCheckoutForm(
             ...BookingDatesEditForm_BookingFragment
             ...BookingEditForm_BookingFragment
             ...BookingOptionsEditForm_BookingFragment
-            attendees {
+            attendees(filters: { status: [registered, not_registered] }) {
               ...AttendeeEditForm_AttendeeFragment
             }
           }

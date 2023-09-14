@@ -11,18 +11,10 @@ module Mutations
 
       field :booking, Types::BookingsRelated::BookingType
       def resolve(booking:, **args)
-        schedule = booking.event.schedules.find_by(scheduled_for: args[:booked_for])
-        booking.update!(schedule: schedule, **args.except(:booked_for, :event_options))
-
-        if args[:event_options].is_a? Array
-          booking.booking_options.destroy_all
-          args[:event_options].each do |option|
-            booking.booking_options.create!(booking: booking, event_option: option)
-          end
-        end
+        Stopover::BookingManagement::BookingUpdater.new(booking, current_user).perform(**args)
 
         {
-          booking: booking,
+          booking: booking.reload,
           notification: 'Booking was updated!'
         }
       rescue StandardError => e
@@ -43,7 +35,7 @@ module Mutations
         return false, { errors: ['Event past'] } if booking.past?
         return false, { errors: ['Booking cancelled'] } if booking.cancelled?
 
-        return false, { errors: ['Date past'] } if inputs[:booked_for].past?
+        return false, { errors: ['Date past'] } if inputs[:booked_for]&.past?
         return false, { errors: ['Wrong option type'] } if inputs[:event_options]&.select { |opt| opt.for_attendee }&.any?
 
         super

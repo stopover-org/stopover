@@ -97,7 +97,7 @@ class Trip < ApplicationRecord
 
   def cancel_trip
     bookings.where.not(status: :cancelled).find_each do |booking|
-      booking.cancel!
+      Stopover::BookingManagement::BookingCancellation.new(booking, booking.user).perform
     end
   end
 end

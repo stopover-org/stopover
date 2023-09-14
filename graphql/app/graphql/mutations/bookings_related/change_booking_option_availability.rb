@@ -8,6 +8,8 @@ module Mutations
       argument :booking_option_id, ID, loads: Types::BookingsRelated::BookingOptionType
 
       def resolve(booking_option:, **_args)
+        booking = booking_option.booking
+
         case booking_option.status
         when 'available'
           booking_option.disable!
@@ -16,6 +18,8 @@ module Mutations
           booking_option.restore!
           message = 'Booking Option is available from now'
         end
+
+        BookingManagement::PriceReset.perform_later(booking.id)
 
         {
           booking_option: booking_option,

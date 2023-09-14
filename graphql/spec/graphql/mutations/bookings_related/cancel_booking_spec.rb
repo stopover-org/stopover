@@ -43,10 +43,30 @@ RSpec.describe Mutations::BookingsRelated::CancelBooking, type: :mutation do
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Booking.count }.by(0)
 
       expect(booking.attendees.count).to eq(1)
+      expect(Refund.count).to eq(0)
       expect(result.dig(:data, :cancelBooking, :booking, :id)).to eq(GraphqlSchema.id_from_object(booking))
       expect(result.dig(:data, :cancelBooking, :trip, :id)).to eq(GraphqlSchema.id_from_object(booking.trip))
       expect(result.dig(:data, :cancelBooking, :booking, :status)).to eq('cancelled')
       expect(result.dig(:data, :cancelBooking, :notification)).to eq('Booking cancelled!')
+    end
+  end
+
+  shared_examples :successful_refund do |refund, penalty|
+    it 'successful_refund' do
+      result = nil
+      expect(booking.already_paid_price).to eq(Money.new(refund + penalty))
+
+      expect { result = subject.to_h.deep_symbolize_keys }.to change { Refund.count }.by(2)
+
+      expect(booking.attendees.count).to eq(1)
+      expect(result.dig(:data, :cancelBooking, :booking, :id)).to eq(GraphqlSchema.id_from_object(booking))
+      expect(result.dig(:data, :cancelBooking, :trip, :id)).to eq(GraphqlSchema.id_from_object(booking.trip))
+      expect(result.dig(:data, :cancelBooking, :booking, :status)).to eq('cancelled')
+      expect(result.dig(:data, :cancelBooking, :notification)).to eq('Booking cancelled!')
+
+      expect(booking.already_paid_price).to eq(Money.new(0))
+      expect(booking.refunds.last.refund_amount).to eq(Money.new(refund))
+      expect(booking.refunds.last.penalty_amount).to eq(Money.new(penalty))
     end
   end
 
@@ -62,11 +82,229 @@ RSpec.describe Mutations::BookingsRelated::CancelBooking, type: :mutation do
   context 'cancel booking' do
     context 'as active user' do
       include_examples :successful
+
+      context 'partially paid booking' do
+        let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+        include_examples :successful_refund, 30, 0
+      end
+
+      context 'fully paid booking' do
+        let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+        include_examples :successful_refund, 550, 0
+      end
+
+      context 'with one cancellation options' do
+        let!(:cancellation_option) { create(:booking_cancellation_option, event: booking.event, deadline: 24, penalty_price: Money.new(10)) }
+
+        context 'up to 20 hours' do
+          before { travel_to(booking.schedule.scheduled_for - 20.hours) }
+          include_examples :successful
+
+          context 'partially paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+            include_examples :successful_refund, 20, 10
+          end
+
+          context 'fully paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+            include_examples :successful_refund, 540, 10
+          end
+        end
+
+        context 'up to 40 hours' do
+          before { travel_to(booking.schedule.scheduled_for - 40.hours) }
+          include_examples :successful
+
+          context 'partially paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+            include_examples :successful_refund, 30, 0
+          end
+
+          context 'fully paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+            include_examples :successful_refund, 550, 0
+          end
+        end
+
+        context 'up to 60 hours' do
+          before { travel_to(booking.schedule.scheduled_for - 60.hours) }
+          include_examples :successful
+
+          context 'partially paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+            include_examples :successful_refund, 30, 0
+          end
+
+          context 'fully paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+            include_examples :successful_refund, 550, 0
+          end
+        end
+      end
+
+      context 'with two cancellation options' do
+        let!(:cancellation_option) { create(:booking_cancellation_option, event: booking.event, deadline: 24, penalty_price: Money.new(20)) }
+        let!(:cancellation_option2) { create(:booking_cancellation_option, event: booking.event, deadline: 48, penalty_price: Money.new(10)) }
+
+        context 'up to 20 hours' do
+          before { travel_to(booking.schedule.scheduled_for - 20.hours) }
+          include_examples :successful
+
+          context 'partially paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+            include_examples :successful_refund, 10, 20
+          end
+
+          context 'fully paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+            include_examples :successful_refund, 530, 20
+          end
+        end
+
+        context 'up to 40 hours' do
+          before { travel_to(booking.schedule.scheduled_for - 40.hours) }
+          include_examples :successful
+
+          context 'partially paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+            include_examples :successful_refund, 20, 10
+          end
+
+          context 'fully paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+            include_examples :successful_refund, 540, 10
+          end
+        end
+
+        context 'up to 60 hours' do
+          before { travel_to(booking.schedule.scheduled_for - 60.hours) }
+          include_examples :successful
+
+          context 'partially paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+            include_examples :successful_refund, 30, 0
+          end
+
+          context 'fully paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+            include_examples :successful_refund, 550, 0
+          end
+        end
+      end
     end
 
     context 'as manager' do
-      let(:current_user) { booking.firm.accounts.last.user }
+      let!(:current_user) { booking.firm.accounts.last.user }
       include_examples :successful
+
+      context 'partially paid booking' do
+        let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+        include_examples :successful_refund, 30, 0
+      end
+
+      context 'fully paid booking' do
+        let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+        include_examples :successful_refund, 550, 0
+      end
+
+      context 'with one cancellation options' do
+        let!(:cancellation_option) { create(:booking_cancellation_option, event: booking.event, deadline: 24, penalty_price: Money.new(10)) }
+
+        context 'up to 20 hours' do
+          before { travel_to(booking.schedule.scheduled_for - 20.hours) }
+          include_examples :successful
+
+          context 'partially paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+            include_examples :successful_refund, 30, 0
+          end
+
+          context 'fully paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+            include_examples :successful_refund, 550, 0
+          end
+        end
+
+        context 'up to 40 hours' do
+          before { travel_to(booking.schedule.scheduled_for - 40.hours) }
+          include_examples :successful
+
+          context 'partially paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+            include_examples :successful_refund, 30, 0
+          end
+
+          context 'fully paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+            include_examples :successful_refund, 550, 0
+          end
+        end
+
+        context 'up to 60 hours' do
+          before { travel_to(booking.schedule.scheduled_for - 60.hours) }
+          include_examples :successful
+
+          context 'partially paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+            include_examples :successful_refund, 30, 0
+          end
+
+          context 'fully paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+            include_examples :successful_refund, 550, 0
+          end
+        end
+      end
+
+      context 'with two cancellation options' do
+        let!(:cancellation_option) { create(:booking_cancellation_option, event: booking.event, deadline: 24, penalty_price: Money.new(20)) }
+        let!(:cancellation_option2) { create(:booking_cancellation_option, event: booking.event, deadline: 48, penalty_price: Money.new(10)) }
+
+        context 'up to 20 hours' do
+          before { travel_to(booking.schedule.scheduled_for - 20.hours) }
+          include_examples :successful
+
+          context 'partially paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+            include_examples :successful_refund, 30, 0
+          end
+
+          context 'fully paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+            include_examples :successful_refund, 550, 0
+          end
+        end
+
+        context 'up to 40 hours' do
+          before { travel_to(booking.schedule.scheduled_for - 40.hours) }
+          include_examples :successful
+
+          context 'partially paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+            include_examples :successful_refund, 30, 0
+          end
+
+          context 'fully paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+            include_examples :successful_refund, 550, 0
+          end
+        end
+
+        context 'up to 60 hours' do
+          before { travel_to(booking.schedule.scheduled_for - 60.hours) }
+          include_examples :successful
+
+          context 'partially paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: Money.new(30), balance: booking.firm.balance) }
+            include_examples :successful_refund, 30, 0
+          end
+
+          context 'fully paid booking' do
+            let!(:payment) { create(:payment, booking: booking, status: 'successful', total_price: booking.attendee_total_price, balance: booking.firm.balance) }
+            include_examples :successful_refund, 550, 0
+          end
+        end
+      end
     end
 
     context 'permissions' do

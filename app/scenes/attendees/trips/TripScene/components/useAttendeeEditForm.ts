@@ -61,7 +61,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useAttendeeEditForm(
-  attendeeFragmentRef: useAttendeeEditForm_AttendeeFragment$key
+  attendeeFragmentRef: useAttendeeEditForm_AttendeeFragment$key,
+  disabled?: boolean
 ) {
   return useMutationForm(
     graphql`
@@ -82,7 +83,6 @@ export function useAttendeeEditForm(
               }
             }
           }
-          notification
           errors
         }
       }
@@ -95,7 +95,7 @@ export function useAttendeeEditForm(
     {
       defaultValues: useDefaultValues(attendeeFragmentRef),
       resolver: yupResolver(validationSchema),
-      autosave: true,
+      autosave: !disabled,
     }
   );
 }

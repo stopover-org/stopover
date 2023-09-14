@@ -11,6 +11,8 @@ module Stopover
       def perform
         @booking.cancel!
 
+        Stopover::RefundManagement::RefundCreator.new(@booking, @current_user).perform
+
         @booking
       end
     end

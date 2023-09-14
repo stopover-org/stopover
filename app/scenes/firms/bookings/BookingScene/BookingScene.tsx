@@ -18,6 +18,10 @@ import {
   usePaymentsHeaders,
 } from "../../../../components/shared/tables/columns/payments";
 import Table from "../../../../components/v2/Table";
+import {
+  useRefundsColumns,
+  useRefundsHeaders,
+} from "../../../../components/shared/tables/columns/refunds";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
@@ -41,6 +45,23 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           id
           status
           totalPrice {
+            cents
+            currency {
+              name
+            }
+          }
+          createdAt
+        }
+        refunds {
+          id
+          status
+          totalAmount {
+            cents
+            currency {
+              name
+            }
+          }
+          penaltyAmount {
             cents
             currency {
               name
@@ -74,6 +95,22 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
       createdAt: payment.createdAt,
       totalPrice: payment.totalPrice,
       status: payment.status,
+    }))
+  );
+  const refundsHeaders = useRefundsHeaders();
+  const refundsData = useRefundsColumns(
+    booking.refunds.map((refund) => ({
+      event: {
+        id: booking.event.id,
+        title: booking.event.title,
+      },
+      booking: {
+        id: booking.id,
+      },
+      createdAt: refund.createdAt,
+      totalAmount: refund.totalAmount,
+      penaltyAmount: refund.penaltyAmount,
+      status: refund.status,
     }))
   );
 
@@ -129,6 +166,10 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
       <Grid xs={12}>
         <Typography level="h4">Payments</Typography>
         <Table headers={paymentsHeaders} data={paymentsData} />
+      </Grid>
+      <Grid xs={12}>
+        <Typography level="h4">Refunds</Typography>
+        <Table headers={refundsHeaders} data={refundsData} />
       </Grid>
     </Grid>
   );

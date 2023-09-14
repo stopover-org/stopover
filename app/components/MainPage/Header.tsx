@@ -57,7 +57,9 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
   return (
     <Grid container>
       <Grid xs={9} sm={6}>
-        <Image src="https://placehold.co/250x75" width={250} height={75} />
+        <Link href="/">
+          <Image src="https://placehold.co/250x75" width={250} height={75} />
+        </Link>
       </Grid>
 
       <Grid xs={3} sm={6}>

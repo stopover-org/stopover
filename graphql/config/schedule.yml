@@ -1,0 +1,12 @@
+ensure_payments:
+  cron: '*/15 * * * *'
+  class: 'Workers::EnsurePaymentsJob'
+ensure_bookings:
+  cron: '* * * * *'
+  class: 'Workers::EnsurePaymentsJob'
+enqueue_refunds:
+  cron: '* * * * *'
+  class: 'Workers::EnqueueRefundsJob'
+ensure_refunds_status_job:
+  cron: '* * * * *'
+  class: 'Workers::EnsureRefundsStatusJob'

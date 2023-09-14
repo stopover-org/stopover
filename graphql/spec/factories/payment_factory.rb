@@ -14,6 +14,7 @@
 #  updated_at                 :datetime         not null
 #  balance_id                 :bigint
 #  booking_id                 :bigint
+#  payment_intent_id          :string
 #  stripe_checkout_session_id :string
 #
 # Indexes
@@ -23,12 +24,20 @@
 #
 FactoryBot.define do
   factory :payment do
-    total_price_cents { 200 }
+    total_price { Money.new(200) }
     booking { create(:booking) }
     payment_type { 'full_amount' }
 
     trait :payment_in_process_trait do
       status { 'processing' }
+    end
+
+    transient do
+      with_checkout_session_id { false }
+    end
+
+    after(:create) do |payment, evaluator|
+      payment.update!(stripe_checkout_session_id: SecureRandom.hex) if evaluator.with_checkout_session_id
     end
 
     factory :payment_in_process, traits: [:payment_in_process_trait]

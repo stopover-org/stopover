@@ -19,7 +19,8 @@ module Mutations
 
         {
           booking: nil,
-          trip: booking.trip
+          trip: booking.trip,
+          errors: [e.message]
         }
       end
 

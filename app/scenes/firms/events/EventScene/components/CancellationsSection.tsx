@@ -46,15 +46,15 @@ const CancellationsSection = ({
           <Grid xs={12}>
             <Typography>
               Cancellation prior to{" "}
-              {event.bookingCancellationOptions[0]?.deadline.replace("h", "")}{" "}
-              hours prior to event will result {getCurrencyFormat(0, "usd")}
+              {event.bookingCancellationOptions[0]?.deadline} hours prior to
+              event will result {getCurrencyFormat(0, "usd")}
             </Typography>
           </Grid>
           {event.bookingCancellationOptions.map((opt) => (
             <Grid xs={12}>
               <Typography>
-                Cancellation up to {opt.deadline.replace("h", "")} hours prior
-                to event will result{" "}
+                Cancellation up to {opt.deadline} hours prior to event will
+                result{" "}
                 {getCurrencyFormat(
                   opt.penaltyPrice?.cents,
                   opt.penaltyPrice?.currency?.name

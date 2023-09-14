@@ -67,7 +67,7 @@ const EventOptionEditForm = ({
     } else {
       eventOptions.onChange([...eventOptions.value, eventOption.id]);
     }
-  }, [eventOptions.value, disabled]);
+  }, [eventOptions, disabled]);
 
   return (
     <Grid container xs={12}>

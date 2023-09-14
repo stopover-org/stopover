@@ -52,13 +52,13 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
-  travel_to DateTime.new(2022, 1, 1, 0, 0)
+  before { travel_to Time.zone.local(2022, 1, 1, 0, 0, 0) }
   describe 'active event' do
     context 'with recurrent dates' do
       let!(:event) { create(:recurring_event, recurring_days_with_time: ['Monday 11:30']) }
       it 'should return array of future dates' do
         expect(event.available_dates.length).to eq(4)
-        expect(event.available_dates.first).to eq(DateTime.new(2022, 1, 3, 11, 30))
+        expect(event.available_dates.first).to eq(Time.zone.local(2022, 1, 3, 11, 30))
       end
     end
   end
@@ -109,14 +109,14 @@ RSpec.describe Event, type: :model do
         expect(event.schedules.count).to eq(8)
         expect(event.schedules.map(&:scheduled_for).map(&:wday)).to all(eq(1))
 
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 3, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 3, 18, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 10, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 10, 18, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 17, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 17, 18, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 24, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 24, 18, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 3, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 3, 18, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 10, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 10, 18, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 17, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 17, 18, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 24, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 24, 18, 30, 0, 0)).count).to eq(1)
       end
 
       it 'for the next 4 Tuesdays' do
@@ -128,10 +128,10 @@ RSpec.describe Event, type: :model do
         expect(event.schedules.count).to eq(4)
         expect(event.schedules.map(&:scheduled_for).map(&:wday)).to all(eq(2))
 
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 4, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 11, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 18, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 25, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 4, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 11, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 18, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 25, 11, 30, 0, 0)).count).to eq(1)
       end
 
       it 'for the next 4 Mondays and 4 Tuesdays' do
@@ -143,14 +143,14 @@ RSpec.describe Event, type: :model do
         expect(event.schedules.count).to eq(8)
         expect(event.schedules.map(&:scheduled_for).map(&:wday)).to eq([1, 2, 1, 2, 1, 2, 1, 2])
 
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 3, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 4, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 10, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 11, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 17, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 18, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 24, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 25, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 3, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 4, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 10, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 11, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 17, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 18, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 24, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 25, 11, 30, 0, 0)).count).to eq(1)
       end
 
       it 'for the next single day' do
@@ -189,14 +189,14 @@ RSpec.describe Event, type: :model do
         expect(event.schedules.count).to eq(9)
         expect(event.schedules.order(scheduled_for: :asc).map(&:scheduled_for).map(&:wday)).to eq([1, 2, 1, 2, 1, 2, 1, 2, 5])
         expect(event.schedules.where(scheduled_for: Time.zone.now.to_datetime.at_beginning_of_day + 27.days + 9.hours).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 3, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 4, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 10, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 11, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 17, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 18, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 24, 11, 30, 0, 0)).count).to eq(1)
-        expect(event.schedules.where(scheduled_for: Time.new(2022, 1, 25, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 3, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 4, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 10, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 11, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 17, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 18, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 24, 11, 30, 0, 0)).count).to eq(1)
+        expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 25, 11, 30, 0, 0)).count).to eq(1)
       end
 
       context 'with existing schedules' do

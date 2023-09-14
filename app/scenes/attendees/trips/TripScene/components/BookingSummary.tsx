@@ -25,7 +25,7 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
             name
           }
         }
-        attendees {
+        attendees(filters: { status: [registered, not_registered] }) {
           id
         }
       }

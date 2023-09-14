@@ -16,6 +16,7 @@ module Types
       field :already_paid_price,    Types::MoneyType, null: false
       field :trip,      Types::TripsRelated::TripType, null: false
       field :payments,  [Types::PaymentsRelated::PaymentType], null: false, require_manager: true
+      field :refunds, [Types::PaymentsRelated::RefundType], null: false, require_manager: true
       field :attendees, [Types::BookingsRelated::AttendeeType], null: false do
         argument :filters, Types::Filters::AttendeesFilter, required: false
       end

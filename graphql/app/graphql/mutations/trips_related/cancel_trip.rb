@@ -15,7 +15,7 @@ module Mutations
 
         {
           booking: nil,
-          trip: booking.trip
+          trip: trip
         }
       end
 

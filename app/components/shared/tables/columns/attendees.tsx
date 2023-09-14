@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton, Stack } from "@mui/joy";
+import { Box, IconButton, Stack } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import UnfoldMoreDoubleIcon from "@mui/icons-material/UnfoldMoreDouble";
 import RegisterAttendee from "../../RegisterAttendee";
@@ -14,6 +14,7 @@ import { ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key } from "../
 import OptionTagColor from "../../OptionTagColor/OptionTagColor";
 import Typography from "../../../v2/Typography/Typography";
 import Table from "../../../v2/Table/Table";
+import Checkbox from "../../../v2/Checkbox";
 
 export function useAttendeesHeaders() {
   return React.useMemo(
@@ -62,6 +63,7 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
             status
             eventOption {
               title
+              builtIn
             }
             organizerPrice {
               cents
@@ -93,6 +95,7 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
       { label: "You get", width: 100, key: "organizerPrice" },
       { label: "Attendee pay", width: 100, key: "attendeePrice" },
       { label: "Status", width: 100, key: "status" },
+      { label: "Built In", width: 100, key: "builtIn" },
       { label: "", width: 100, key: "actions" },
     ],
     []
@@ -103,7 +106,7 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
         const attendeeOptionsData = att.attendeeOptions.map(
           (opt: Record<string, any>, i: number) => {
             const {
-              eventOption: { title },
+              eventOption: { title, builtIn },
               organizerPrice,
               attendeePrice,
               status,
@@ -113,14 +116,15 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
               title: title || "N/A",
               organizerPrice:
                 getCurrencyFormat(
-                  organizerPrice?.cents,
+                  builtIn ? 0 : organizerPrice?.cents,
                   organizerPrice?.currency?.name
                 ) || "N/A",
               attendeePrice:
                 getCurrencyFormat(
-                  attendeePrice?.cents,
+                  builtIn ? 0 : attendeePrice?.cents,
                   attendeePrice?.currency?.name
                 ) || "N/A",
+              builtIn: <Checkbox label="" checked={builtIn} readOnly />,
               status: <OptionTagColor status={status} />,
               actions: (
                 <ChangeAttendeeOptionAvailability
@@ -144,12 +148,14 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
             </IconButton>
           ),
           tables: [
-            <Typography level="h5">Attendee Options</Typography>,
-            <Table
-              hoverRow={false}
-              headers={attendeeOptionsHeaders}
-              data={attendeeOptionsData}
-            />,
+            <Box sx={{ marginLeft: "50px" }}>
+              <Typography level="h5">Attendee Options</Typography>,
+              <Table
+                hoverRow={false}
+                headers={attendeeOptionsHeaders}
+                data={attendeeOptionsData}
+              />
+            </Box>,
           ],
           actions: (
             <Stack direction="row" justifyContent="flex-end">
@@ -163,9 +169,11 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
                 booking.status === "active" && (
                   <DeregisterAttendee attendeeFragmentRef={att} />
                 )}
-              {att.status !== "removed" && booking.status === "active" && (
-                <RemoveAttendee attendeeFragmentRef={att} />
-              )}
+              {att.status !== "removed" &&
+                booking.status !== "cancelled" &&
+                booking.attendees.length > 1 && (
+                  <RemoveAttendee attendeeFragmentRef={att} />
+                )}
             </Stack>
           ),
         };

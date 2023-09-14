@@ -55,7 +55,7 @@ export interface CreateEventFields {
   bookingCancellationOptions: Array<{
     penaltyPriceCents: number;
     description: string;
-    deadline: string;
+    deadline: number;
     status: string;
   }>;
 }
@@ -146,7 +146,7 @@ const validationSchema = Yup.object().shape({
   title: Yup.string().required("Required"),
   bookingCancellationOptions: Yup.array().of(
     Yup.object().shape({
-      deadline: Yup.string().required("Required"),
+      deadline: Yup.number().transform(numberTransform).required("Required"),
       description: Yup.string().required("Required"),
       penaltyPriceCents: Yup.number().required("Required"),
     })
@@ -211,7 +211,7 @@ export function useCreateEventForm() {
           : requiresDeposit,
         bookingCancellationOptions: bookingCancellationOptions.map((opt) => ({
           penaltyPriceCents: opt.penaltyPriceCents * 100,
-          deadline: `${opt.deadline}h`,
+          deadline: opt.deadline,
           description: opt.description,
         })),
       },

@@ -5,6 +5,7 @@ import { bookingOptions_BookingFragmentRef$key } from "../../../../artifacts/boo
 import ChangeBookingOptionAvailability from "../../ChangeBookingOptionAvailability";
 import { ChangeBookingOptionAvailability_BookingOptionFragment$key } from "../../../../artifacts/ChangeBookingOptionAvailability_BookingOptionFragment.graphql";
 import OptionTagColor from "../../OptionTagColor/OptionTagColor";
+import Checkbox from "../../../v2/Checkbox";
 
 export function useBookingOptionsHeaders() {
   return React.useMemo(
@@ -24,6 +25,11 @@ export function useBookingOptionsHeaders() {
         width: 100,
         key: "attendeePrice",
       },
+      {
+        label: "Built In",
+        width: 100,
+        key: "builtIn",
+      },
       { label: "Status", width: 100, key: "status" },
       { label: "", width: 100, key: "actions" },
     ],
@@ -42,6 +48,7 @@ export function useBookingOptionsColumns(
           status
           eventOption {
             title
+            builtIn
           }
           organizerPrice {
             cents
@@ -74,9 +81,12 @@ export function useBookingOptionsColumns(
           opt.attendeePrice.cents,
           opt.attendeePrice.currency.name
         ),
+        builtIn: (
+          <Checkbox label="" checked={opt.eventOption.builtIn} readOnly />
+        ),
         status: <OptionTagColor status={opt.status} />,
         actions:
-          booking.status === "active" ? (
+          booking.status !== "cancelled" ? (
             <ChangeBookingOptionAvailability
               optionFragmentRef={
                 opt as ChangeBookingOptionAvailability_BookingOptionFragment$key

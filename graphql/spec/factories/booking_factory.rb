@@ -34,7 +34,7 @@ FactoryBot.define do
     trait :fully_paid do
       after(:create) do |booking|
         booking.payments = create_list(:payment, 2,
-                                       total_price_cents: booking.left_to_pay_price / 2,
+                                       total_price: booking.left_to_pay_price / 2,
                                        balance: booking.firm.balance,
                                        status: 'successful')
       end
@@ -43,7 +43,7 @@ FactoryBot.define do
     trait :partially_paid do
       after(:create) do |booking|
         booking.payments = create_list(:payment, 2,
-                                       total_price_cents: booking.left_to_pay_price / 3,
+                                       total_price: booking.left_to_pay_price / 3,
                                        balance: booking.firm.balance,
                                        status: 'successful')
       end

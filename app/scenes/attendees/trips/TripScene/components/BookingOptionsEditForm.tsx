@@ -19,9 +19,13 @@ const BookingOptionsEditForm = ({
       fragment BookingOptionsEditForm_BookingFragment on Booking {
         id
         status
+        alreadyPaidPrice {
+          cents
+        }
         eventOptions {
           id
           builtIn
+          forAttendee
           ...EventOptionEditForm_EventOptionFragment
         }
         ...EventOptionEditForm_BookingFragment
@@ -32,15 +36,25 @@ const BookingOptionsEditForm = ({
   );
 
   const commonOptions = React.useMemo(
-    () => booking.eventOptions.filter((option) => !option.builtIn),
+    () =>
+      booking.eventOptions.filter(
+        (option) => !option.builtIn && !option.forAttendee
+      ),
     [booking]
   );
 
   const builtInOptions = React.useMemo(
-    () => booking.eventOptions.filter((option) => option.builtIn),
+    () =>
+      booking.eventOptions.filter(
+        (option) => option.builtIn && !option.forAttendee
+      ),
     [booking]
   );
-  const form = useBookingEditForm(booking, booking.status !== "active");
+
+  const form = useBookingEditForm(
+    booking,
+    booking.alreadyPaidPrice.cents > 0 || booking.status === "cancelled"
+  );
 
   return (
     <FormProvider {...form}>

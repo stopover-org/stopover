@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_01_220208) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_13_222547) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -133,7 +133,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_220208) do
     t.bigint "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "deadline", null: false
+    t.integer "deadline", null: false
     t.index ["event_id"], name: "index_booking_cancellation_options_on_event_id"
   end
 
@@ -330,6 +330,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_220208) do
     t.string "provider"
     t.decimal "fee_cents", default: "0.0"
     t.string "payment_type"
+    t.string "payment_intent_id"
     t.index ["balance_id"], name: "index_payments_on_balance_id"
     t.index ["booking_id"], name: "index_payments_on_booking_id"
   end
@@ -342,6 +343,27 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_01_220208) do
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_ratings_on_account_id"
     t.index ["event_id"], name: "index_ratings_on_event_id"
+  end
+
+  create_table "refunds", force: :cascade do |t|
+    t.bigint "booking_cancellation_option_id"
+    t.bigint "payment_id"
+    t.bigint "booking_id"
+    t.bigint "account_id"
+    t.bigint "firm_id"
+    t.string "status", default: "pending", null: false
+    t.decimal "refund_amount_cents", default: "0.0", null: false
+    t.decimal "penalty_amount_cents", default: "0.0", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "refund_id"
+    t.string "stripe_refund_id"
+    t.index ["account_id"], name: "index_refunds_on_account_id"
+    t.index ["booking_cancellation_option_id"], name: "index_refunds_on_booking_cancellation_option_id"
+    t.index ["booking_id"], name: "index_refunds_on_booking_id"
+    t.index ["firm_id"], name: "index_refunds_on_firm_id"
+    t.index ["payment_id"], name: "index_refunds_on_payment_id"
+    t.index ["refund_id"], name: "index_refunds_on_refund_id"
   end
 
   create_table "schedules", force: :cascade do |t|

@@ -42,6 +42,21 @@ RSpec.describe Mutations::BookingsRelated::ChangeAttendeeOptionAvailability, typ
     end
   end
 
+  shared_examples :successful_with_refund do |refund|
+    it 'successful with refund' do
+      Sidekiq::Testing.inline! do
+        booking = attendee_option.booking
+        expect(booking.already_paid_price - booking.attendee_total_price).to eq(Money.new(0))
+        expect(attendee_option.attendee_price).to eq(Money.new(refund))
+
+        expect { subject.to_h.deep_symbolize_keys }.to change { Refund.count }.by(2)
+
+        expect(booking.refunds.last.refund_amount).to eq(Money.new(refund))
+        expect(booking.refunds.last.penalty_amount).to eq(Money.new(0))
+      end
+    end
+  end
+
   shared_examples :fail do |error|
     it 'fails' do
       result = nil
@@ -63,6 +78,17 @@ RSpec.describe Mutations::BookingsRelated::ChangeAttendeeOptionAvailability, typ
       context 'as manager' do
         before { attendee_option.update(status: 'available') }
         include_examples :successful, 'not_available', 'Attendee Option is unavailable from now'
+
+        context 'for paid option' do
+          let!(:payment) do
+            create(:payment,
+                   total_price: attendee_option.booking.attendee_total_price,
+                   booking: attendee_option.booking,
+                   balance: attendee_option.booking.event.firm.balance,
+                   status: 'successful')
+          end
+          include_examples :successful_with_refund, 440
+        end
       end
     end
 

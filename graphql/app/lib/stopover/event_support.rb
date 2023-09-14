@@ -31,14 +31,14 @@ module Stopover
           hours   = hours.to_i
           minutes = minutes.to_i
 
-          DateTime.new(year, month, day, hours, minutes).to_time
+          Time.zone.local(year, month, day, hours, minutes).to_time
         end
       end
     end
 
     def self.schedule(event)
       ::Configuration.get_value('SCHEDULE_DAYS_IN_ADVANCE').value.to_i.times do |i|
-        date = Time.zone.now + i.days
+        date = (Time.current + i.days)
         break if event.end_date && event.end_date < date
 
         times = event.reload.get_time(date) || []
