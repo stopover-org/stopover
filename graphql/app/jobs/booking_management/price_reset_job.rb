@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BookingManagement
-  class PriceReset < ApplicationJob
+  class PriceResetJob < ApplicationJob
     queue_as :default
 
     def perform(booking_id)

@@ -1,24 +1,8 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: stripe_integrations
-#
-#  id              :bigint           not null, primary key
-#  stripeable_type :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  price_id        :string
-#  product_id      :string
-#  stripeable_id   :bigint
-#
-# Indexes
-#
-#  index_stripe_integrations_on_stripeable_id_and_stripeable_type  (stripeable_id,stripeable_type)
-#
 require 'rails_helper'
 
-RSpec.describe Stopover::StripeIntegrator, type: :model do
+RSpec.describe Stopover::StripeIntegrator do
   describe 'stripe integrator' do
     let!(:event) { create(:event, organizer_price_per_uom: Money.new(20), deposit_amount: Money.new(5)) }
     let!(:integrated_event) { create(:stripe_integration_factory, organizer_price_per_uom: Money.new(20), deposit_amount: Money.new(5)) }

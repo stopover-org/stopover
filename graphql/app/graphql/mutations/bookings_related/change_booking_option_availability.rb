@@ -19,7 +19,7 @@ module Mutations
           message = 'Booking Option is available from now'
         end
 
-        BookingManagement::PriceReset.perform_later(booking.id)
+        BookingManagement::PriceResetJob.perform_later(booking.id)
 
         {
           booking_option: booking_option,
