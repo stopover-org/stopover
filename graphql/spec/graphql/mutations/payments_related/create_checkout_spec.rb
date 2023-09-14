@@ -38,6 +38,7 @@ RSpec.describe Mutations::PaymentsRelated::CreateCheckout, type: :mutation do
         .and_return({ url: 'my_url', id: 'checkout_id' })
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Payment.count }.by(1)
 
+      expect(booking.reload.payment_type).to eq(input[:paymentType] == 'full_amount' ? 'stripe' : 'cash')
       expect(result.dig(:data, :createCheckout, :url)).to be('my_url')
       expect(result.dig(:data, :createCheckout, :notification)).to eq('You will be redirected to checkout page')
     end
@@ -75,24 +76,49 @@ RSpec.describe Mutations::PaymentsRelated::CreateCheckout, type: :mutation do
   context 'create checkout url' do
     before { booking.firm.update(payment_types: ['stripe']) }
     context 'as common user' do
-      context 'without existing payment' do
-        include_examples :successful
-      end
-      context 'with existing payment' do
-        let!(:payment) do
-          create(:payment,
-                 booking: booking,
-                         total_price: booking.attendee_total_price,
-                         balance: booking.firm.balance,
-                         stripe_checkout_session_id: 'stripe_checkout_session_id',
-                         status: 'processing')
+      context 'for full amount' do
+        context 'without existing payment' do
+          include_examples :successful
         end
-        context 'for completed payment' do
-          include_examples :successful_with_existing_payment, 'complete'
-        end
+        context 'with existing payment' do
+          let!(:payment) do
+            create(:payment,
+                   booking: booking,
+                   total_price: booking.attendee_total_price,
+                   balance: booking.firm.balance,
+                   stripe_checkout_session_id: 'stripe_checkout_session_id',
+                   status: 'processing')
+          end
+          context 'for completed payment' do
+            include_examples :successful_with_existing_payment, 'complete'
+          end
 
-        context 'for expired url' do
-          include_examples :successful_with_existing_payment, 'expired'
+          context 'for expired url' do
+            include_examples :successful_with_existing_payment, 'expired'
+          end
+        end
+      end
+      context 'for deposit' do
+        before { input[:paymentType] = 'deposit' }
+        context 'without existing payment' do
+          include_examples :successful
+        end
+        context 'with existing payment' do
+          let!(:payment) do
+            create(:payment,
+                   booking: booking,
+                   total_price: booking.attendee_total_price,
+                   balance: booking.firm.balance,
+                   stripe_checkout_session_id: 'stripe_checkout_session_id',
+                   status: 'processing')
+          end
+          context 'for completed payment' do
+            include_examples :successful_with_existing_payment, 'complete'
+          end
+
+          context 'for expired url' do
+            include_examples :successful_with_existing_payment, 'expired'
+          end
         end
       end
     end

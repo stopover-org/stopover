@@ -2,25 +2,30 @@
 
 # == Schema Information
 #
-# Table name: trips
+# Table name: refunds
 #
-#  id           :bigint           not null, primary key
-#  city         :string
-#  country      :string
-#  end_date     :date
-#  full_address :string
-#  latitude     :float
-#  longitude    :float
-#  region       :string
-#  start_date   :date
-#  status       :string           not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  account_id   :bigint
+#  id                             :bigint           not null, primary key
+#  penalty_amount_cents           :decimal(, )      default(0.0), not null
+#  refund_amount_cents            :decimal(, )      default(0.0), not null
+#  status                         :string           default("pending"), not null
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  account_id                     :bigint
+#  booking_cancellation_option_id :bigint
+#  booking_id                     :bigint
+#  firm_id                        :bigint
+#  payment_id                     :bigint
+#  refund_id                      :bigint
+#  stripe_refund_id               :string
 #
 # Indexes
 #
-#  index_trips_on_account_id  (account_id)
+#  index_refunds_on_account_id                      (account_id)
+#  index_refunds_on_booking_cancellation_option_id  (booking_cancellation_option_id)
+#  index_refunds_on_booking_id                      (booking_id)
+#  index_refunds_on_firm_id                         (firm_id)
+#  index_refunds_on_payment_id                      (payment_id)
+#  index_refunds_on_refund_id                       (refund_id)
 #
 FactoryBot.define do
   factory :refund do

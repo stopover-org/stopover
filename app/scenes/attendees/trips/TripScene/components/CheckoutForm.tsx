@@ -17,11 +17,12 @@ interface CheckoutFormProps {
 }
 
 const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
-  const booking = useFragment(
+  const booking = useFragment<CheckoutForm_BookingFragmentRef$key>(
     graphql`
       fragment CheckoutForm_BookingFragmentRef on Booking {
         status
         bookedFor
+        paymentType
         event {
           firm {
             paymentTypes
@@ -53,13 +54,15 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
 
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Select {...paymentMethodField} placeholder="Select Payment Method">
-        {booking.event.firm.paymentTypes.map((paymentType) => (
-          <Option key={paymentType} value={paymentType}>
-            {capitalize(paymentType)}
-          </Option>
-        ))}
-      </Select>
+      {!booking.paymentType && (
+        <Select {...paymentMethodField} placeholder="Select Payment Method">
+          {booking.event.firm.paymentTypes.map((paymentType) => (
+            <Option key={paymentType} value={paymentType}>
+              {capitalize(paymentType)}
+            </Option>
+          ))}
+        </Select>
+      )}
       <br />
       <SubmitButton
         submitting={form.formState.isSubmitting}

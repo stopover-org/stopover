@@ -15,10 +15,11 @@ interface CreateCheckoutFields {
 function useDefaultValues(
   bookingFragmentRef: useCheckoutForm_BookingFragment$key
 ): CreateCheckoutFields {
-  const booking = useFragment(
+  const booking = useFragment<useCheckoutForm_BookingFragment$key>(
     graphql`
       fragment useCheckoutForm_BookingFragment on Booking {
         id
+        paymentType
         event {
           firm {
             paymentTypes
@@ -29,9 +30,12 @@ function useDefaultValues(
     bookingFragmentRef
   );
 
-  const preferredMethod = booking.event.firm.paymentTypes.includes("stripe")
+  let preferredMethod = booking.event.firm.paymentTypes.includes("stripe")
     ? "stripe"
     : "cash";
+  if (booking.paymentType) {
+    preferredMethod = booking.paymentType;
+  }
 
   return React.useMemo(
     () => ({

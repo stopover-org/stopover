@@ -144,8 +144,10 @@ type Booking implements Node {
   event: Event!
   eventOptions: [EventOption!]!
   id: ID!
+  leftToPayDepositPrice: Money!
   leftToPayPrice: Money!
   organizerTotalPrice: Money!
+  paymentType: String
   payments: [Payment!]!
   refunds: [Refund!]!
   schedule: Schedule!

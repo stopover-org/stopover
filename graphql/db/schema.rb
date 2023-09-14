@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_13_222547) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_14_230602) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -159,6 +159,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_222547) do
     t.bigint "trip_id"
     t.bigint "schedule_id"
     t.bigint "stripe_integration_id"
+    t.string "payment_type"
     t.index ["event_id"], name: "index_bookings_on_event_id"
     t.index ["schedule_id"], name: "index_bookings_on_schedule_id"
     t.index ["stripe_integration_id"], name: "index_bookings_on_stripe_integration_id"

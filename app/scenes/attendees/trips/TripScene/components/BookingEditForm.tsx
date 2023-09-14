@@ -20,6 +20,9 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
         id
         status
         bookedFor
+        leftToPayDepositPrice {
+          cents
+        }
         attendees(filters: { status: [registered, not_registered] }) {
           id
           ...AttendeeEditForm_AttendeeFragment
@@ -36,7 +39,8 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
   const disabled = React.useMemo(
     () =>
       booking.status !== "active" ||
-      moment(booking.bookedFor).isBefore(new Date()),
+      moment(booking.bookedFor).isBefore(new Date()) ||
+      booking?.leftToPayDepositPrice?.cents === 0,
     [booking.status, booking.bookedFor]
   );
   return (
