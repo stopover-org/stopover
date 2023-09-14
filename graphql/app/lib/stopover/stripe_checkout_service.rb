@@ -15,7 +15,7 @@ module Stopover
     def self.generate_stripe_checkout_session(booking, payment_type)
       payment = booking.payments.create!(payment_type: payment_type,
                                          balance: booking.event.firm.balance,
-                                         total_price: payment_type == 'full_amount' ? booking.left_to_pay_price : booking.event.left_to_pay_deposit_price)
+                                         total_price: payment_type == 'full_amount' ? booking.left_to_pay_price : booking.left_to_pay_deposit_price)
 
       case payment_type
       when 'full_amount'
@@ -131,7 +131,7 @@ module Stopover
 
       {
         url: checkout[:url],
-          payment: payment
+        payment: payment
       }
     end
 

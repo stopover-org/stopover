@@ -38,7 +38,8 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
 
   const form = useAttendeeEditForm(
     attendee,
-    attendee.booking.alreadyPaidPrice.cents > 0
+    attendee.booking.alreadyPaidPrice.cents > 0 ||
+      attendee.booking.status === "cancelled"
   );
 
   const disabled = React.useMemo(

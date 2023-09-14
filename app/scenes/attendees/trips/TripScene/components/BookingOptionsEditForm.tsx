@@ -50,7 +50,11 @@ const BookingOptionsEditForm = ({
       ),
     [booking]
   );
-  const form = useBookingEditForm(booking, booking.alreadyPaidPrice.cents > 0);
+
+  const form = useBookingEditForm(
+    booking,
+    booking.alreadyPaidPrice.cents > 0 || booking.status === "cancelled"
+  );
 
   return (
     <FormProvider {...form}>
