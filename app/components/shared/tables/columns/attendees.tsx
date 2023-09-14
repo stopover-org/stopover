@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton, Stack } from "@mui/joy";
+import { Box, IconButton, Stack } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import UnfoldMoreDoubleIcon from "@mui/icons-material/UnfoldMoreDouble";
 import RegisterAttendee from "../../RegisterAttendee";
@@ -148,12 +148,14 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
             </IconButton>
           ),
           tables: [
-            <Typography level="h5">Attendee Options</Typography>,
-            <Table
-              hoverRow={false}
-              headers={attendeeOptionsHeaders}
-              data={attendeeOptionsData}
-            />,
+            <Box sx={{ marginLeft: "50px" }}>
+              <Typography level="h5">Attendee Options</Typography>,
+              <Table
+                hoverRow={false}
+                headers={attendeeOptionsHeaders}
+                data={attendeeOptionsData}
+              />
+            </Box>,
           ],
           actions: (
             <Stack direction="row" justifyContent="flex-end">
