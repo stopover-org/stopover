@@ -8,7 +8,7 @@ import Typography from "../../../../../components/v2/Typography/Typography";
 import { DateAutocomplete_Event$key } from "../../../../../artifacts/DateAutocomplete_Event.graphql";
 
 interface DateAutocompleteProps {
-  value: Moment;
+  value: Moment | null;
   onChange: (value: Moment) => void;
   eventFragmentRef: DateAutocomplete_Event$key;
 }
@@ -50,7 +50,7 @@ const DateAutocomplete = ({
           : value.format(dayMonthTimeFormat),
       }}
       onChange={(_, dt) => dt && onChange(moment(dt.value))}
-      sx={{ borderRadius: "0" }}
+      sx={{ borderRadius: "0", marginRight: "5px" }}
       renderOption={(props, option) => (
         <AutocompleteOption {...props}>
           <Typography

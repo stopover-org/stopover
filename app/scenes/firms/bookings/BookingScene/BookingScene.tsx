@@ -22,6 +22,7 @@ import {
   useRefundsColumns,
   useRefundsHeaders,
 } from "../../../../components/shared/tables/columns/refunds";
+import RefundBookingForm from "./components/RefundBookingForm";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
@@ -72,6 +73,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
         ...EventOptionsTable_BookingFragment
         ...AttendeesTable_BookingFragment
         ...AddAttendee_BookingFragment
+        ...RefundBookingForm_BookingFragment
       }
     `,
     bookingFragmentRef
@@ -143,11 +145,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
             </Typography>
           </Box>
           {booking.status !== "cancelled" && (
-            <Box>
-              <Button size="sm" color="danger">
-                Refund
-              </Button>
-            </Box>
+            <RefundBookingForm bookingFragmentRef={booking} />
           )}
         </Stack>
       </Grid>
