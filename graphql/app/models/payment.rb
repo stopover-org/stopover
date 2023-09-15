@@ -5,11 +5,12 @@
 # Table name: payments
 #
 #  id                         :bigint           not null, primary key
-#  fee_cents                  :decimal(, )      default(0.0)
 #  payment_type               :string
 #  provider                   :string
 #  status                     :string
 #  total_price_cents          :decimal(, )      default(0.0)
+#  withdrawn_at               :datetime
+#  withdrawn_cents            :bigint           default(0)
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  balance_id                 :bigint
@@ -28,7 +29,7 @@ class Payment < ApplicationRecord
 
   # MONETIZE ==============================================================
   monetize :total_price_cents
-  monetize :fee_cents
+  monetize :withdrawn_cents
 
   # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :booking
@@ -67,12 +68,17 @@ class Payment < ApplicationRecord
   # VALIDATIONS ===========================================================
 
   # CALLBACKS =============================================================
-  before_validation :calculate_fee, on: :create
   before_validation :set_price, on: :create
 
   # SCOPES ================================================================
+  scope :withdrawn, -> { successful.where('withdrawn_cents = total_price') }
+  scope :withdrawable, -> { successful.where.not('withdrawn_cents = total_price') }
 
   # DELEGATION ============================================================
+
+  def available_amount
+    total_price - withdrawn
+  end
 
   def refundable_amount
     total_price - refunds.successful.map(&:refund_amount).sum(Money.new(0))
@@ -83,10 +89,6 @@ class Payment < ApplicationRecord
   end
 
   private
-
-  def calculate_fee
-    self.fee = booking.attendee_total_price - booking.organizer_total_price
-  end
 
   def set_price
     self.total_price = booking.attendee_total_price unless total_price

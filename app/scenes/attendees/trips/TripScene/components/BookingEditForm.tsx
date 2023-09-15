@@ -20,7 +20,11 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
         id
         status
         bookedFor
+        paymentType
         leftToPayDepositPrice {
+          cents
+        }
+        leftToPayPrice {
           cents
         }
         attendees(filters: { status: [registered, not_registered] }) {
@@ -36,12 +40,20 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
     bookingFragmentRef
   );
 
+  const leftToPay = React.useMemo(
+    () =>
+      booking.paymentType === "stripe"
+        ? booking.leftToPayPrice.cents
+        : booking.leftToPayDepositPrice.cents,
+    [booking]
+  );
+
   const disabled = React.useMemo(
     () =>
-      booking.status !== "active" ||
+      booking.status === "cancelled" ||
       moment(booking.bookedFor).isBefore(new Date()) ||
-      booking?.leftToPayDepositPrice?.cents === 0,
-    [booking.status, booking.bookedFor]
+      leftToPay,
+    [booking.status, booking.bookedFor, leftToPay]
   );
   return (
     <Grid container spacing={2}>

@@ -8,7 +8,6 @@ import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
 import { getHumanDateTime } from "../../../../lib/utils/dates";
 import EventOptionsTable from "./components/EventOptionsTable";
 import AttendeesTable from "./components/AttendeesTable";
-import Button from "../../../../components/v2/Button";
 import Link from "../../../../components/v2/Link";
 import Tag from "../../../../components/v2/Tag/Tag";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
