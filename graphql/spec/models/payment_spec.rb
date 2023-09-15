@@ -30,7 +30,7 @@ RSpec.describe Payment, type: :model do
     let!(:balance) { create(:balance) }
     let!(:payment) { create(:payment_in_process, balance: balance, total_price: Money.new(250)) }
     it 'first create' do
-      expect(payment.total_price.cents).to eq(350)
+      expect(payment.total_price.cents).to eq(250)
     end
 
     it 'success and top up balance' do
