@@ -70,8 +70,10 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
       }
     `);
 
-  const [date, setDate] = React.useState<Moment>(
-    moment(event.myBookings?.[0]?.bookedFor)
+  const [date, setDate] = React.useState<Moment | null>(
+    event.myBookings?.[0]?.bookedFor
+      ? moment(event.myBookings?.[0]?.bookedFor)
+      : null
   );
 
   const booking = React.useMemo(
@@ -135,6 +137,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
         <Stack
           flexDirection="row"
           alignItems="center"
+          justifyContent="flex-end"
           sx={{ paddingTop: "5px" }}
         >
           <Typography fontSize="lg" paddingRight="10px">
@@ -148,7 +151,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
             onChange={setDate}
             eventFragmentRef={event}
           />
-          {date.isValid() && !booking && (
+          {date?.isValid() && !booking && (
             <SubmitButton
               submitting={submitting}
               size="sm"

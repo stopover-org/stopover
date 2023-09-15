@@ -19,9 +19,11 @@ module Stopover
 
       case payment_type
       when 'full_amount'
+        booking.update!(payment_type: 'stripe')
         generate_session_full_amount(booking: booking,
                                      payment: payment)
       when 'deposit'
+        booking.update!(payment_type: 'cash')
         generate_session_deposit(booking: booking,
                                  payment: payment)
       end

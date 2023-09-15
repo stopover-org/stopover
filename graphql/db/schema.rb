@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_13_222547) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_15_124846) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -123,6 +123,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_222547) do
     t.decimal "total_amount_cents", default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "withdrawn_at", precision: nil
     t.index ["firm_id"], name: "index_balances_on_firm_id"
   end
 
@@ -159,6 +160,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_222547) do
     t.bigint "trip_id"
     t.bigint "schedule_id"
     t.bigint "stripe_integration_id"
+    t.string "payment_type"
     t.index ["event_id"], name: "index_bookings_on_event_id"
     t.index ["schedule_id"], name: "index_bookings_on_schedule_id"
     t.index ["stripe_integration_id"], name: "index_bookings_on_stripe_integration_id"
@@ -328,9 +330,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_222547) do
     t.bigint "booking_id"
     t.string "stripe_checkout_session_id"
     t.string "provider"
-    t.decimal "fee_cents", default: "0.0"
     t.string "payment_type"
     t.string "payment_intent_id"
+    t.datetime "withdrawn_at", precision: nil
+    t.bigint "withdrawn_cents", default: 0
     t.index ["balance_id"], name: "index_payments_on_balance_id"
     t.index ["booking_id"], name: "index_payments_on_booking_id"
   end

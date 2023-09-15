@@ -5,11 +5,12 @@
 # Table name: payments
 #
 #  id                         :bigint           not null, primary key
-#  fee_cents                  :decimal(, )      default(0.0)
 #  payment_type               :string
 #  provider                   :string
 #  status                     :string
 #  total_price_cents          :decimal(, )      default(0.0)
+#  withdrawn_at               :datetime
+#  withdrawn_cents            :bigint           default(0)
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  balance_id                 :bigint

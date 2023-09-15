@@ -8,7 +8,6 @@ import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
 import { getHumanDateTime } from "../../../../lib/utils/dates";
 import EventOptionsTable from "./components/EventOptionsTable";
 import AttendeesTable from "./components/AttendeesTable";
-import Button from "../../../../components/v2/Button";
 import Link from "../../../../components/v2/Link";
 import Tag from "../../../../components/v2/Tag/Tag";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
@@ -22,6 +21,7 @@ import {
   useRefundsColumns,
   useRefundsHeaders,
 } from "../../../../components/shared/tables/columns/refunds";
+import RefundBookingForm from "./components/RefundBookingForm";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
@@ -72,6 +72,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
         ...EventOptionsTable_BookingFragment
         ...AttendeesTable_BookingFragment
         ...AddAttendee_BookingFragment
+        ...RefundBookingForm_BookingFragment
       }
     `,
     bookingFragmentRef
@@ -143,11 +144,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
             </Typography>
           </Box>
           {booking.status !== "cancelled" && (
-            <Box>
-              <Button size="sm" color="danger">
-                Refund
-              </Button>
-            </Box>
+            <RefundBookingForm bookingFragmentRef={booking} />
           )}
         </Stack>
       </Grid>

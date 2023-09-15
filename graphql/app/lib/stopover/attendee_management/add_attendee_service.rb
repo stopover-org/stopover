@@ -9,8 +9,10 @@ module Stopover
       end
 
       def perform
+        return if @booking.cancelled?
+
         @booking.attendees.create!
-        ::BookingManagement::PriceReset.perform_later(@booking.id)
+        ::BookingManagement::PriceResetJob.perform_later(@booking.id)
 
         @booking
       end

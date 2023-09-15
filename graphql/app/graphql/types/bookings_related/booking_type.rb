@@ -9,11 +9,13 @@ module Types
       field :booking_options, [Types::BookingsRelated::BookingOptionType], null: false
       field :event_options,   [Types::EventsRelated::EventOptionType], null: false
       field :status,          String, null: false
+      field :payment_type,    String, null: true
       field :schedule,        Types::EventsRelated::ScheduleType, null: false
       field :attendee_total_price,  Types::MoneyType, null: false
       field :organizer_total_price, Types::MoneyType, null: false, require_manager: true
       field :left_to_pay_price,     Types::MoneyType, null: false
-      field :already_paid_price,    Types::MoneyType, null: false
+      field :left_to_pay_deposit_price, Types::MoneyType, null: false
+      field :already_paid_price, Types::MoneyType, null: false
       field :trip,      Types::TripsRelated::TripType, null: false
       field :payments,  [Types::PaymentsRelated::PaymentType], null: false, require_manager: true
       field :refunds, [Types::PaymentsRelated::RefundType], null: false, require_manager: true

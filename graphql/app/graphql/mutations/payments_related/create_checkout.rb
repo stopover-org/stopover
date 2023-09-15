@@ -11,7 +11,7 @@ module Mutations
       argument :booking_id, ID, loads: Types::BookingsRelated::BookingType
 
       def resolve(booking:, **args)
-        payments = booking.payments.where(payment_type: args[:payment_type]).processing
+        payments = booking.payments.processing
         raise GraphQL::ExecutionError, 'multiple payments in process' if payments.count > 1
 
         if payments.any?
