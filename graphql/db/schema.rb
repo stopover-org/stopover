@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_15_124846) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_15_213040) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -123,7 +123,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_15_124846) do
     t.decimal "total_amount_cents", default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "withdrawn_at", precision: nil
+    t.datetime "last_payout_at", precision: nil
     t.index ["firm_id"], name: "index_balances_on_firm_id"
   end
 
@@ -332,10 +332,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_15_124846) do
     t.string "provider"
     t.string "payment_type"
     t.string "payment_intent_id"
-    t.datetime "withdrawn_at", precision: nil
-    t.bigint "withdrawn_cents", default: 0
+    t.bigint "firm_id"
     t.index ["balance_id"], name: "index_payments_on_balance_id"
     t.index ["booking_id"], name: "index_payments_on_booking_id"
+    t.index ["firm_id"], name: "index_payments_on_firm_id"
+  end
+
+  create_table "payouts", force: :cascade do |t|
+    t.bigint "firm_id"
+    t.bigint "balance_id"
+    t.bigint "payment_id"
+    t.decimal "total_amount_cents"
+    t.string "status"
+    t.datetime "completed_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["balance_id"], name: "index_payouts_on_balance_id"
+    t.index ["firm_id"], name: "index_payouts_on_firm_id"
+    t.index ["payment_id"], name: "index_payouts_on_payment_id"
   end
 
   create_table "ratings", force: :cascade do |t|

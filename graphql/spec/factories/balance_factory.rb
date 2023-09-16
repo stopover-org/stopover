@@ -5,8 +5,8 @@
 # Table name: balances
 #
 #  id                 :bigint           not null, primary key
+#  last_payout_at     :datetime
 #  total_amount_cents :decimal(, )      default(0.0)
-#  withdrawn_at       :datetime
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  firm_id            :bigint

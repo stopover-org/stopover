@@ -32,14 +32,14 @@ module Stopover
         penalty_left = @parent_refund.penalty_amount
         refund_left = @parent_refund.refund_amount
         @booking.payments.successful.each do |payment|
-          next if payment.refundable_amount.zero? || (penalty_left.zero? && refund_left.zero?)
+          next if payment.balance_amount.zero? || (penalty_left.zero? && refund_left.zero?)
           payment_penalty = Money.new(0)
           payment_refund = Money.new(0)
 
-          if payment.refundable_amount > penalty_left
+          if payment.balance_amount > penalty_left
             payment_penalty = penalty_left
 
-            possible_refund = payment.refundable_amount - penalty_left
+            possible_refund = payment.balance_amount - penalty_left
 
             payment_refund = if possible_refund > refund_left
                                refund_left
@@ -47,7 +47,7 @@ module Stopover
                                possible_refund
                              end
           else
-            payment_penalty = payment.refundable_amount
+            payment_penalty = payment.balance_amount
           end
 
           penalty_left -= payment_penalty

@@ -2,37 +2,41 @@
 
 # == Schema Information
 #
-# Table name: balances
+# Table name: payouts
 #
 #  id                 :bigint           not null, primary key
-#  last_payout_at     :datetime
-#  total_amount_cents :decimal(, )      default(0.0)
+#  completed_at       :datetime
+#  status             :string
+#  total_amount_cents :decimal(, )
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  balance_id         :bigint
 #  firm_id            :bigint
+#  payment_id         :bigint
 #
 # Indexes
 #
-#  index_balances_on_firm_id  (firm_id)
+#  index_payouts_on_balance_id  (balance_id)
+#  index_payouts_on_firm_id     (firm_id)
+#  index_payouts_on_payment_id  (payment_id)
 #
-require 'date'
-
-class Balance < ApplicationRecord
+class Payout < ApplicationRecord
   # MODULES ===============================================================
+  include Mixins::PaymentStatuses
 
   # MONETIZE ==============================================================
   monetize :total_amount_cents
 
   # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :firm
+  belongs_to :balance
+  belongs_to :payment
 
   # HAS_ONE ASSOCIATIONS ==================================================
 
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
 
   # HAS_MANY ASSOCIATIONS =================================================
-  has_many :payments, dependent: :nullify
-  has_many :payouts,  dependent: :nullify
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
 
@@ -49,6 +53,7 @@ class Balance < ApplicationRecord
   # RICH_TEXT =============================================================
 
   # VALIDATIONS ===========================================================
+  before_validation :adjust_firm
 
   # CALLBACKS =============================================================
 
@@ -56,47 +61,10 @@ class Balance < ApplicationRecord
 
   # DELEGATION ============================================================
 
-  def successful_amount
-    payments.successful.map(&:total_price).sum(Money.new(0))
-  end
+  private
 
-  def pending_amount
-    payments.pending.map(&:balance_amount).sum(Money.new(0))
-  end
-
-  def processing_amount
-    payments.processing.map(&:balance_amount).sum(Money.new(0))
-  end
-
-  def withdrawn_amount
-    payments.successful
-            .map(&:payouts_amount)
-            .sum(Money.new(0))
-  end
-
-  def withdrawable_amount
-    payments.successful
-            .map(&:balance_amount)
-            .sum(Money.new(0))
-  end
-
-  def payout!(amount)
-    return if amount > withdrawable_amount
-
-    left_to_withdraw = amount
-    payments.withdrawable.find_each do |payment|
-      if payment.balance_amount < left_to_withdraw
-        payment.payouts.create!(firm: payment.firm, balance: self, total_amount: payment.balance_amount)
-        left_to_withdraw -= payment.total_price
-      else
-        left_to_withdraw = Money.new(0)
-        payment.payouts.create!(firm: payment.firm, balance: self, total_amount: left_to_withdraw)
-        left_to_withdraw -= payment.total_price
-      end
-    end
-
-    self.last_payout_at = Time.current
-    self.total_amount = total_amount - amount
-    save!
+  def adjust_firm
+    self.firm = payment.firm unless firm
+    self.balance = firm.balance unless balance
   end
 end

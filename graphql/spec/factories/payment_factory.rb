@@ -9,12 +9,11 @@
 #  provider                   :string
 #  status                     :string
 #  total_price_cents          :decimal(, )      default(0.0)
-#  withdrawn_at               :datetime
-#  withdrawn_cents            :bigint           default(0)
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  balance_id                 :bigint
 #  booking_id                 :bigint
+#  firm_id                    :bigint
 #  payment_intent_id          :string
 #  stripe_checkout_session_id :string
 #
@@ -22,6 +21,7 @@
 #
 #  index_payments_on_balance_id  (balance_id)
 #  index_payments_on_booking_id  (booking_id)
+#  index_payments_on_firm_id     (firm_id)
 #
 FactoryBot.define do
   factory :payment do

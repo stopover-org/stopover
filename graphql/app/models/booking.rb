@@ -182,6 +182,8 @@ class Booking < ApplicationRecord
   end
 
   def refund_diff
+    return unless (already_paid_price - attendee_total_price).positive?
+
     refund = refunds.create!(firm: firm, refund_amount: already_paid_price - attendee_total_price, penalty_amount: Money.new(0))
     Stopover::RefundManagement::RefundCreator.new(self, user, refund).perform
   end
