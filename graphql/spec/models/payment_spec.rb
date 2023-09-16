@@ -72,7 +72,7 @@ RSpec.describe Payment, type: :model do
     end
   end
 
-  describe 'payment' do
+  describe 'instance_methods' do
     let!(:payment) { create(:payment_in_process, booking: create(:booking), total_price: Money.new(250)) }
     it 'first create' do
       expect(payment.total_price.cents).to eq(250)

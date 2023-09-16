@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_15_213040) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_16_031405) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,6 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_15_213040) do
     t.string "postal_code"
     t.datetime "date_of_birth"
     t.string "last_name"
+    t.string "primary_email"
     t.index ["user_id"], name: "index_accounts_on_user_id", unique: true
   end
 
