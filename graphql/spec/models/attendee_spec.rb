@@ -80,5 +80,14 @@ RSpec.describe Attendee, type: :model do
         expect(attendee.firm).to eq(booking.firm)
       end
     end
+
+    context 'instance_methods' do
+      let(:event) { create(:recurring_event) }
+      let(:booking) { create(:booking, event: event, schedule: event.schedules.last) }
+      let(:attendee) { create(:attendee, booking: booking, first_name: 'John', last_name: 'Dow') }
+      it 'full_name' do
+        expect(attendee.full_name).to eq('John Dow')
+      end
+    end
   end
 end

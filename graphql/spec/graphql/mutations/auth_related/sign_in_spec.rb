@@ -27,6 +27,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                           }, context: { current_user: current_user })
   end
 
+  before(:each) do
+    $skip_phone_validation = false
+  end
+
+  teardown do
+    $skip_phone_validation = true
+  end
+
   context 'sign in (new user)' do
     let(:current_user) { nil }
     context 'by email' do

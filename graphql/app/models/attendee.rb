@@ -87,10 +87,6 @@ class Attendee < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  def attendee_total_price
-    event.attendee_price_per_uom + attendee_options.where(built_in: false).sum(&:attendee_price)
-  end
-
   private
 
   def adjust_booking_info

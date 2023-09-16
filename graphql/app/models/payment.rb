@@ -77,17 +77,7 @@ class Payment < ApplicationRecord
   # DELEGATION ============================================================
 
   def balance_amount
-    total = total_price - payouts_amount - refunds_amount
-    if total.positive?
-      total
-    else
-      Money.new(0)
-    end
-  end
-
-  def payouts_amount
-    payouts.where(status: %i[processing successful])
-           .map(&:total_amount).sum(Money.new(0))
+    total_price - refunds_amount
   end
 
   def refunds_amount

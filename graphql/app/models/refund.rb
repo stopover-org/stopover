@@ -11,6 +11,7 @@
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
 #  account_id                     :bigint
+#  balance_id                     :bigint
 #  booking_cancellation_option_id :bigint
 #  booking_id                     :bigint
 #  firm_id                        :bigint
@@ -21,6 +22,7 @@
 # Indexes
 #
 #  index_refunds_on_account_id                      (account_id)
+#  index_refunds_on_balance_id                      (balance_id)
 #  index_refunds_on_booking_cancellation_option_id  (booking_cancellation_option_id)
 #  index_refunds_on_booking_id                      (booking_id)
 #  index_refunds_on_firm_id                         (firm_id)
@@ -41,6 +43,7 @@ class Refund < ApplicationRecord
   belongs_to :booking
   belongs_to :account, optional: true
   belongs_to :firm
+  belongs_to :balance
   belongs_to :parent_refund, class_name: 'Refund', optional: true, foreign_key: 'refund_id', inverse_of: :related_refunds
 
   # HAS_ONE ASSOCIATIONS ==================================================
@@ -83,6 +86,7 @@ class Refund < ApplicationRecord
   private
 
   def adjust_references
-    self.firm = booking.firm unless firm
+    self.firm = booking&.firm unless firm
+    self.balance = firm&.balance unless balance
   end
 end

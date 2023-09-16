@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_16_041934) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_16_213638) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -356,7 +356,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_16_041934) do
   create_table "payouts", force: :cascade do |t|
     t.bigint "firm_id"
     t.bigint "balance_id"
-    t.bigint "payment_id"
     t.decimal "total_amount_cents"
     t.string "status"
     t.datetime "completed_at", precision: nil
@@ -364,7 +363,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_16_041934) do
     t.datetime "updated_at", null: false
     t.index ["balance_id"], name: "index_payouts_on_balance_id"
     t.index ["firm_id"], name: "index_payouts_on_firm_id"
-    t.index ["payment_id"], name: "index_payouts_on_payment_id"
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -390,7 +388,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_16_041934) do
     t.datetime "updated_at", null: false
     t.bigint "refund_id"
     t.string "stripe_refund_id"
+    t.bigint "balance_id"
     t.index ["account_id"], name: "index_refunds_on_account_id"
+    t.index ["balance_id"], name: "index_refunds_on_balance_id"
     t.index ["booking_cancellation_option_id"], name: "index_refunds_on_booking_cancellation_option_id"
     t.index ["booking_id"], name: "index_refunds_on_booking_id"
     t.index ["firm_id"], name: "index_refunds_on_firm_id"

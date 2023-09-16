@@ -30,7 +30,6 @@ RSpec.describe Payment, type: :model do
     it 'relations' do
       should have_many(:payment_connections).dependent(:destroy)
       should have_many(:refunds).dependent(:nullify)
-      should have_many(:payouts).dependent(:nullify)
 
       should have_many(:stripe_integrations).through(:payment_connections)
 
@@ -99,11 +98,6 @@ RSpec.describe Payment, type: :model do
           expect(payment.refunds_amount).to eq(amount)
         end
       end
-      shared_examples :check_payouts_amount do |amount|
-        it 'payouts_amount' do
-          expect(payment.payouts_amount).to eq(amount)
-        end
-      end
       context 'pending' do
         context 'with refunds' do
           let!(:refund) do
@@ -116,37 +110,6 @@ RSpec.describe Payment, type: :model do
           end
           include_examples :check_balance_amount, Money.new(10_000)
           include_examples :check_refunds_amount, Money.new(0)
-          include_examples :check_payouts_amount, Money.new(0)
-        end
-        context 'with payouts' do
-          let!(:payout) do
-            create(:payout,
-                   payment: payment,
-                   total_amount: Money.new(1000),
-                   status: 'pending')
-          end
-          include_examples :check_balance_amount, Money.new(10_000)
-          include_examples :check_refunds_amount, Money.new(0)
-          include_examples :check_payouts_amount, Money.new(0)
-        end
-        context 'with payouts and refunds' do
-          let!(:refund) do
-            create(:refund,
-                   payment: payment,
-                   firm: payment.firm,
-                   refund_amount: Money.new(1000),
-                   status: 'pending',
-                   parent_refund: create(:refund, refund_amount: Money.new(1000)))
-          end
-          let!(:payout) do
-            create(:payout,
-                   payment: payment,
-                   total_amount: Money.new(1000),
-                   status: 'pending')
-          end
-          include_examples :check_balance_amount, Money.new(10_000)
-          include_examples :check_refunds_amount, Money.new(0)
-          include_examples :check_payouts_amount, Money.new(0)
         end
       end
       context 'processing' do
@@ -161,37 +124,6 @@ RSpec.describe Payment, type: :model do
           end
           include_examples :check_balance_amount, Money.new(9000)
           include_examples :check_refunds_amount, Money.new(1000)
-          include_examples :check_payouts_amount, Money.new(0)
-        end
-        context 'with payouts' do
-          let!(:payout) do
-            create(:payout,
-                   payment: payment,
-                   total_amount: Money.new(1000),
-                   status: 'processing')
-          end
-          include_examples :check_balance_amount, Money.new(9000)
-          include_examples :check_refunds_amount, Money.new(0)
-          include_examples :check_payouts_amount, Money.new(1000)
-        end
-        context 'with payouts and refunds' do
-          let!(:refund) do
-            create(:refund,
-                   payment: payment,
-                   firm: payment.firm,
-                   refund_amount: Money.new(1000),
-                   status: 'processing',
-                   parent_refund: create(:refund, refund_amount: Money.new(1000)))
-          end
-          let!(:payout) do
-            create(:payout,
-                   payment: payment,
-                   total_amount: Money.new(1000),
-                   status: 'processing')
-          end
-          include_examples :check_balance_amount, Money.new(8000)
-          include_examples :check_refunds_amount, Money.new(1000)
-          include_examples :check_payouts_amount, Money.new(1000)
         end
       end
       context 'successful' do
@@ -206,37 +138,6 @@ RSpec.describe Payment, type: :model do
           end
           include_examples :check_balance_amount, Money.new(9000)
           include_examples :check_refunds_amount, Money.new(1000)
-          include_examples :check_payouts_amount, Money.new(0)
-        end
-        context 'with payouts' do
-          let!(:payout) do
-            create(:payout,
-                   payment: payment,
-                   total_amount: Money.new(1000),
-                   status: 'successful')
-          end
-          include_examples :check_balance_amount, Money.new(9000)
-          include_examples :check_refunds_amount, Money.new(0)
-          include_examples :check_payouts_amount, Money.new(1000)
-        end
-        context 'with payouts and refunds' do
-          let!(:refund) do
-            create(:refund,
-                   payment: payment,
-                   firm: payment.firm,
-                   refund_amount: Money.new(1000),
-                   status: 'successful',
-                   parent_refund: create(:refund, refund_amount: Money.new(1000)))
-          end
-          let!(:payout) do
-            create(:payout,
-                   payment: payment,
-                   total_amount: Money.new(1000),
-                   status: 'successful')
-          end
-          include_examples :check_balance_amount, Money.new(8000)
-          include_examples :check_refunds_amount, Money.new(1000)
-          include_examples :check_payouts_amount, Money.new(1000)
         end
       end
       context 'cancelled' do
@@ -251,37 +152,6 @@ RSpec.describe Payment, type: :model do
           end
           include_examples :check_balance_amount, Money.new(10_000)
           include_examples :check_refunds_amount, Money.new(0)
-          include_examples :check_payouts_amount, Money.new(0)
-        end
-        context 'with payouts' do
-          let!(:payout) do
-            create(:payout,
-                   payment: payment,
-                   total_amount: Money.new(1000),
-                   status: 'canceled')
-          end
-          include_examples :check_balance_amount, Money.new(10_000)
-          include_examples :check_refunds_amount, Money.new(0)
-          include_examples :check_payouts_amount, Money.new(0)
-        end
-        context 'with payouts and refunds' do
-          let!(:refund) do
-            create(:refund,
-                   payment: payment,
-                   firm: payment.firm,
-                   refund_amount: Money.new(1000),
-                   status: 'canceled',
-                   parent_refund: create(:refund, refund_amount: Money.new(1000)))
-          end
-          let!(:payout) do
-            create(:payout,
-                   payment: payment,
-                   total_amount: Money.new(1000),
-                   status: 'canceled')
-          end
-          include_examples :check_balance_amount, Money.new(10_000)
-          include_examples :check_refunds_amount, Money.new(0)
-          include_examples :check_payouts_amount, Money.new(0)
         end
       end
     end

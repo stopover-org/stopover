@@ -4,9 +4,12 @@ ensure_payments:
 ensure_bookings:
   cron: '* * * * *'
   class: 'Workers::EnsurePaymentsJob'
-enqueue_refunds:
-  cron: '* * * * *'
-  class: 'Workers::EnqueueRefundsJob'
 ensure_refunds_status_job:
   cron: '* * * * *'
   class: 'Workers::EnsureRefundsStatusJob'
+enqueue_refunds:
+  cron: '* * * * *'
+  class: 'Workers::EnqueueRefundsJob'
+enqueue_payouts:
+  cron: '* * * * *'
+  class: 'Workers::EnqueuePayouts'

@@ -33,6 +33,7 @@ class Balance < ApplicationRecord
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :payments, dependent: :nullify
   has_many :payouts,  dependent: :nullify
+  has_many :refunds,  dependent: :nullify
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
 
@@ -56,44 +57,34 @@ class Balance < ApplicationRecord
 
   # DELEGATION ============================================================
 
-  def successful_amount
-    payments.successful.map(&:total_price).sum(Money.new(0))
+  def successful_payments
+    payments.successful.map(&:balance_amount).sum(Money.new(0))
   end
 
-  def pending_amount
+  def pending_payments
     payments.pending.map(&:balance_amount).sum(Money.new(0))
   end
 
-  def processing_amount
+  def processing_payments
     payments.processing.map(&:balance_amount).sum(Money.new(0))
   end
 
   def withdrawn_amount
-    payments.successful
-            .map(&:payouts_amount)
-            .sum(Money.new(0))
+    payouts.where(status: %w[processing successful])
+           .map(&:total_amount)
+           .sum(Money.new(0))
   end
 
   def withdrawable_amount
-    payments.successful
-            .map(&:balance_amount)
-            .sum(Money.new(0))
+    successful_payments - withdrawn_amount
   end
 
   def payout!(amount)
     return if amount > withdrawable_amount
 
-    left_to_withdraw = amount
-    payments.withdrawable.find_each do |payment|
-      if payment.balance_amount < left_to_withdraw
-        payment.payouts.create!(firm: payment.firm, balance: self, total_amount: payment.balance_amount)
-        left_to_withdraw -= payment.total_price
-      else
-        left_to_withdraw = Money.new(0)
-        payment.payouts.create!(firm: payment.firm, balance: self, total_amount: left_to_withdraw)
-        left_to_withdraw -= payment.total_price
-      end
-    end
+    payout = payouts.create!(total_amount: amount, firm: firm, balance: self)
+
+    PayoutManagement::PayoutProcessing.perform_later(payout.id)
 
     self.last_payout_at = Time.current
     self.total_amount = total_amount - amount

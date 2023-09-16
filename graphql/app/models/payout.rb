@@ -12,13 +12,11 @@
 #  updated_at         :datetime         not null
 #  balance_id         :bigint
 #  firm_id            :bigint
-#  payment_id         :bigint
 #
 # Indexes
 #
 #  index_payouts_on_balance_id  (balance_id)
 #  index_payouts_on_firm_id     (firm_id)
-#  index_payouts_on_payment_id  (payment_id)
 #
 class Payout < ApplicationRecord
   # MODULES ===============================================================
@@ -30,7 +28,6 @@ class Payout < ApplicationRecord
   # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :firm
   belongs_to :balance
-  belongs_to :payment
 
   # HAS_ONE ASSOCIATIONS ==================================================
 
