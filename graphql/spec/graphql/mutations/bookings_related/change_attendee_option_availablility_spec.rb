@@ -19,7 +19,7 @@ RSpec.describe Mutations::BookingsRelated::ChangeAttendeeOptionAvailability, typ
     "
   end
   let!(:attendee_option) { create(:attendee_option) }
-  let(:current_user) { attendee_option.booking.firm.accounts.last.user }
+  let(:current_user) { attendee_option.firm.accounts.last.user }
 
   let(:input) do
     { attendeeOptionId: GraphqlSchema.id_from_object(attendee_option) }
@@ -84,7 +84,7 @@ RSpec.describe Mutations::BookingsRelated::ChangeAttendeeOptionAvailability, typ
             create(:payment,
                    total_price: attendee_option.booking.attendee_total_price,
                    booking: attendee_option.booking,
-                   balance: attendee_option.booking.event.firm.balance,
+                   balance: attendee_option.firm.balance,
                    status: 'successful')
           end
           include_examples :successful_with_refund, 440
@@ -94,7 +94,7 @@ RSpec.describe Mutations::BookingsRelated::ChangeAttendeeOptionAvailability, typ
 
     context 'permissions' do
       context 'for past booking' do
-        before { attendee_option.booking.schedule.update(scheduled_for: 5.days.ago) }
+        before { attendee_option.schedule.update(scheduled_for: 5.days.ago) }
         include_examples :fail, 'Event past'
       end
 

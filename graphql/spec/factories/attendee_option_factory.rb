@@ -11,13 +11,21 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  attendee_id           :bigint
+#  booking_id            :bigint
+#  event_id              :bigint
 #  event_option_id       :bigint
+#  firm_id               :bigint
+#  schedule_id           :bigint
 #  stripe_integration_id :bigint
 #
 # Indexes
 #
 #  index_attendee_options_on_attendee_id            (attendee_id)
+#  index_attendee_options_on_booking_id             (booking_id)
+#  index_attendee_options_on_event_id               (event_id)
 #  index_attendee_options_on_event_option_id        (event_option_id)
+#  index_attendee_options_on_firm_id                (firm_id)
+#  index_attendee_options_on_schedule_id            (schedule_id)
 #  index_attendee_options_on_stripe_integration_id  (stripe_integration_id)
 #
 # Foreign Keys

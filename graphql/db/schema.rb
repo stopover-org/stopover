@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_16_035908) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_16_041934) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -102,8 +102,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_16_035908) do
     t.decimal "organizer_price_cents", default: "0.0"
     t.string "status", default: "available"
     t.bigint "stripe_integration_id"
+    t.bigint "firm_id"
+    t.bigint "event_id"
+    t.bigint "schedule_id"
+    t.bigint "booking_id"
     t.index ["attendee_id"], name: "index_attendee_options_on_attendee_id"
+    t.index ["booking_id"], name: "index_attendee_options_on_booking_id"
+    t.index ["event_id"], name: "index_attendee_options_on_event_id"
     t.index ["event_option_id"], name: "index_attendee_options_on_event_option_id"
+    t.index ["firm_id"], name: "index_attendee_options_on_firm_id"
+    t.index ["schedule_id"], name: "index_attendee_options_on_schedule_id"
     t.index ["stripe_integration_id"], name: "index_attendee_options_on_stripe_integration_id"
   end
 

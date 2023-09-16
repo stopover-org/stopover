@@ -100,7 +100,7 @@ class Attendee < ApplicationRecord
   end
 
   def create_attendee_options
-    event.event_options.available.where(built_in: true, for_attendee: true).find_each do |event_option|
+    event_options.available.where(built_in: true).find_each do |event_option|
       attendee_options.build(event_option: event_option)
     end
   end

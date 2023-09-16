@@ -51,6 +51,8 @@ class Firm < ApplicationRecord
   has_many :stripe_connects,  dependent: :nullify
   has_many :refunds,          dependent: :nullify
   has_many :payouts,          dependent: :nullify
+  has_many :attendees,        dependent: :nullify
+  has_many :attendee_options, dependent: :nullify
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :accounts,   through: :account_firms
