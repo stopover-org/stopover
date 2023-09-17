@@ -29,7 +29,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useRemoveAttendeeForm(
-  attendeeFragmentRef: useRemoveAttendeeForm_AttendeeFragment$key
+  attendeeFragmentRef: useRemoveAttendeeForm_AttendeeFragment$key,
+  onSuccess: () => void
 ) {
   return useMutationForm(
     graphql`
@@ -52,6 +53,7 @@ export function useRemoveAttendeeForm(
     {
       defaultValues: useDefaultValues(attendeeFragmentRef),
       resolver: yupResolver(validationSchema),
+      onCompleted: onSuccess,
     }
   );
 }

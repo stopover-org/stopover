@@ -42,6 +42,7 @@ const SubmitButton = React.forwardRef(
         loading={submitting}
         loadingPosition="end"
         disabled={submitting}
+        sx={{ marginRight: "10px" }}
         {...props}
       >
         {children}

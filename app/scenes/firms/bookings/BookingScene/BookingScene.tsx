@@ -23,6 +23,7 @@ import {
 } from "../../../../components/shared/tables/columns/refunds";
 import RefundBookingModal from "./components/RefundBookingModal";
 import Button from "../../../../components/v2/Button";
+import AddAttendeeModal from "./components/AddAttendeeModal";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
@@ -72,7 +73,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
         }
         ...EventOptionsTable_BookingFragment
         ...AttendeesTable_BookingFragment
-        ...AddAttendee_BookingFragment
+        ...AddAttendeeModal_BookingFragment
         ...RefundBookingModal_BookingFragment
       }
     `,
@@ -163,7 +164,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           <AttendeesTable bookingFragmentRef={booking} />
           <br />
           {booking.status !== "cancelled" && (
-            <AddAttendee bookingFragmentRef={booking} />
+            <AddAttendeeModal bookingFragmentRef={booking} />
           )}
         </Grid>
         <Grid xs={4}>

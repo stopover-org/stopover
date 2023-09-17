@@ -29,7 +29,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useChangeBookingOptionAvailabilityForm(
-  optionFragmentRef: useChangeBookingOptionAvailabilityForm_BookingOption$key
+  optionFragmentRef: useChangeBookingOptionAvailabilityForm_BookingOption$key,
+  onSuccess: () => void
 ) {
   return useMutationForm(
     graphql`
@@ -52,6 +53,7 @@ export function useChangeBookingOptionAvailabilityForm(
     {
       defaultValues: useDefaultValues(optionFragmentRef),
       resolver: yupResolver(validationSchema),
+      onCompleted: onSuccess,
     }
   );
 }

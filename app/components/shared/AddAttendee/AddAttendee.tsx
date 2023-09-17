@@ -6,9 +6,10 @@ import SubmitButton from "../SubmitButton";
 
 interface AddAttendeeProps {
   bookingFragmentRef: AddAttendee_BookingFragment$key;
+  onSuccess: () => void;
 }
 
-const AddAttendee = ({ bookingFragmentRef }: AddAttendeeProps) => {
+const AddAttendee = ({ bookingFragmentRef, onSuccess }: AddAttendeeProps) => {
   const booking = useFragment(
     graphql`
       fragment AddAttendee_BookingFragment on Booking {
@@ -17,13 +18,12 @@ const AddAttendee = ({ bookingFragmentRef }: AddAttendeeProps) => {
     `,
     bookingFragmentRef
   );
-  const form = useAddAttendeeForm(booking);
+  const form = useAddAttendeeForm(booking, onSuccess);
   return (
     <form onSubmit={form.handleSubmit()}>
       <SubmitButton
         size="sm"
         sx={{ marginRight: "10px" }}
-        color="neutral"
         submitting={form.formState.isSubmitting}
       >
         Add Attendee

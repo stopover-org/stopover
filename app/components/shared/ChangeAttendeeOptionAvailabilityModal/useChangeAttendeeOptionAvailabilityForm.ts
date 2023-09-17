@@ -29,7 +29,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useChangeAttendeeOptionAvailabilityForm(
-  optionFragmentRef: useChangeAttendeeOptionAvailabilityForm_AttendeeOption$key
+  optionFragmentRef: useChangeAttendeeOptionAvailabilityForm_AttendeeOption$key,
+  onSuccess: () => void
 ) {
   return useMutationForm(
     graphql`
@@ -54,6 +55,7 @@ export function useChangeAttendeeOptionAvailabilityForm(
     {
       defaultValues: useDefaultValues(optionFragmentRef),
       resolver: yupResolver(validationSchema),
+      onCompleted: onSuccess,
     }
   );
 }
