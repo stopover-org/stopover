@@ -83,7 +83,7 @@ const BalanceSection = ({
           </Typography>
         </Grid>
         <Grid xs={4}>
-          <WithdrawBalanceForm balanceFragmentRef={firm.balance} />
+          <WithdrawBalanceForm balanceFragmentRef={firm.balance!} />
         </Grid>
 
         <Grid xs={12}>
