@@ -7,9 +7,13 @@ import { RefundBookingForm_BookingFragment$key } from "../../../../../artifacts/
 
 interface RefundBookingFormProps {
   bookingFragmentRef: RefundBookingForm_BookingFragment$key;
+  onSuccess: () => void;
 }
 
-const RefundBookingForm = ({ bookingFragmentRef }: RefundBookingFormProps) => {
+const RefundBookingForm = ({
+  bookingFragmentRef,
+  onSuccess,
+}: RefundBookingFormProps) => {
   const booking = useFragment<RefundBookingForm_BookingFragment$key>(
     graphql`
       fragment RefundBookingForm_BookingFragment on Booking {
@@ -23,7 +27,7 @@ const RefundBookingForm = ({ bookingFragmentRef }: RefundBookingFormProps) => {
     `,
     bookingFragmentRef
   );
-  const form = useRefundBookingForm(booking);
+  const form = useRefundBookingForm(booking, onSuccess);
   const disabled = React.useMemo(
     () =>
       booking.status === "cancelled" ||

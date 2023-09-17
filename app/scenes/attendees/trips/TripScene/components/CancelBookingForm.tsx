@@ -1,18 +1,20 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import moment from "moment";
-import Typography from "../../../../../components/v2/Typography";
 import { CancelBookingForm_BookingFragment$key } from "../../../../../artifacts/CancelBookingForm_BookingFragment.graphql";
 import { useCancelBookingForm } from "./useCancelBookingForm";
-import Button from "../../../../../components/v2/Button";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
 
 interface CancelBookingFormProps {
   bookingFragmentRef: CancelBookingForm_BookingFragment$key;
+  onSuccess: () => void;
 }
 
-const CancelBookingForm = ({ bookingFragmentRef }: CancelBookingFormProps) => {
-  const booking = useFragment(
+const CancelBookingForm = ({
+  bookingFragmentRef,
+  onSuccess,
+}: CancelBookingFormProps) => {
+  const booking = useFragment<CancelBookingForm_BookingFragment$key>(
     graphql`
       fragment CancelBookingForm_BookingFragment on Booking {
         status
@@ -25,7 +27,7 @@ const CancelBookingForm = ({ bookingFragmentRef }: CancelBookingFormProps) => {
     `,
     bookingFragmentRef
   );
-  const form = useCancelBookingForm(booking);
+  const form = useCancelBookingForm(booking, onSuccess);
   const disabled = React.useMemo(
     () =>
       booking.status === "cancelled" ||

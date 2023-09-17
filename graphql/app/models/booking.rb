@@ -53,8 +53,8 @@ class Booking < ApplicationRecord
   has_many :attendee_options, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
-  has_many :booking_cancellation_options, through: :event
-  has_many :event_options,                through: :event
+  has_many :booking_ft_options, through: :event
+  has_many :event_options, through: :event
 
   # AASM STATES ===========================================================
   aasm column: :status do
@@ -143,11 +143,17 @@ class Booking < ApplicationRecord
   end
 
   def left_to_pay_price
-    attendee_total_price - already_paid_price
+    price = attendee_total_price - already_paid_price
+
+    return Money.new(0) if price.negative?
+    price
   end
 
   def left_to_pay_deposit_price
-    event.deposit_amount - already_paid_price
+    price = event.deposit_amount - already_paid_price
+
+    return Money.new(0) if price.negative?
+    price
   end
 
   def already_paid_price

@@ -7,7 +7,8 @@ import { BookingEditForm_BookingFragment$key } from "../../../../../artifacts/Bo
 import BookingOptionsEditForm from "./BookingOptionsEditForm";
 import BookingDatesEditForm from "./BookingDatesEditForm";
 import CheckoutForm from "./CheckoutForm";
-import CancelBookingForm from "./CancelBookingForm";
+import Button from "../../../../../components/v2/Button";
+import CancelBookingModal from "./CancelBookingModal";
 
 interface BookingEditFormProps {
   bookingFragmentRef: BookingEditForm_BookingFragment$key;
@@ -34,12 +35,12 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
         ...BookingDatesEditForm_BookingFragment
         ...BookingOptionsEditForm_BookingFragment
         ...CheckoutForm_BookingFragmentRef
-        ...CancelBookingForm_BookingFragment
+        ...CancelBookingModal_BookingFragment
       }
     `,
     bookingFragmentRef
   );
-
+  const [modal, setModal] = React.useState(false);
   const leftToPay = React.useMemo(
     () =>
       booking.paymentType === "stripe"
@@ -56,25 +57,39 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
     [booking.status, booking.bookedFor, leftToPay]
   );
   return (
-    <Grid container spacing={2}>
-      <Grid xs={7}>
-        {booking.attendees.map((attendee) => (
-          <AttendeeEditForm key={attendee.id} attendeeFragmentRef={attendee} />
-        ))}
-        <>
-          <Grid xs={12}>
-            <BookingDatesEditForm bookingFragmentRef={booking} />
-          </Grid>
-          <Grid xs={12}>
-            <CancelBookingForm bookingFragmentRef={booking} />
-          </Grid>
-        </>
+    <>
+      <Grid container spacing={2}>
+        <Grid xs={7}>
+          {booking.attendees.map((attendee) => (
+            <AttendeeEditForm
+              key={attendee.id}
+              attendeeFragmentRef={attendee}
+            />
+          ))}
+          <>
+            <Grid xs={12}>
+              <BookingDatesEditForm bookingFragmentRef={booking} />
+            </Grid>
+            {!disabled && (
+              <Grid xs={12}>
+                <Button size="sm" color="danger" onClick={() => setModal(true)}>
+                  Cancel Booking
+                </Button>
+              </Grid>
+            )}
+          </>
+        </Grid>
+        <Grid xs={5}>
+          <BookingOptionsEditForm bookingFragmentRef={booking} />
+          {!disabled && <CheckoutForm bookingFragmentRef={booking} />}
+        </Grid>
       </Grid>
-      <Grid xs={5}>
-        <BookingOptionsEditForm bookingFragmentRef={booking} />
-        {!disabled && <CheckoutForm bookingFragmentRef={booking} />}
-      </Grid>
-    </Grid>
+      <CancelBookingModal
+        open={modal}
+        onClose={() => setModal(false)}
+        bookingFragmentRef={booking}
+      />
+    </>
   );
 };
 

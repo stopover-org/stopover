@@ -35,7 +35,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useCancelBookingForm(
-  bookingFragmentRef: useCancelBookingForm_BookingFragment$key
+  bookingFragmentRef: useCancelBookingForm_BookingFragment$key,
+  onSuccess: () => void
 ) {
   return useMutationForm<
     CancelBookingFormFields,
@@ -61,6 +62,7 @@ export function useCancelBookingForm(
     {
       defaultValues: useDefaultValues(bookingFragmentRef),
       resolver: yupResolver(validationSchema),
+      onCompleted: onSuccess,
     }
   );
 }
