@@ -24,6 +24,8 @@ module Stopover
                                        email:       @account.user.email,
                                        phone:       @account.user.phone)
 
+        @current_trip.update!(status: 'active') if @current_trip.cancelled?
+
         event.bookings.create!(
           schedule: event.schedules.find_by(scheduled_for: booked_for),
           attendees: attendees,

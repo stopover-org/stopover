@@ -28,16 +28,24 @@ module Types
       argument :id, ID, required: true, loads: Types::EventsRelated::EventType
     end
 
+    field :booking, Types::BookingsRelated::BookingType do
+      argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
+    end
+
     field :bookings, [Types::BookingsRelated::BookingType] do
       argument :filters, Types::Filters::BookingsFilter, required: false
     end
 
     field :trips, [Types::TripsRelated::TripType] do
-      argument :filters, Types::Filters::TripsFilter, required: false
+      argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
     end
 
     def bookings(**args)
       ::BookingQuery.new(args[:filters].to_h || {}, Booking.all, current_user).all
+    end
+
+    def booking(id:)
+      id
     end
 
     def current_user

@@ -2,10 +2,10 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import { bookingOptions_BookingFragmentRef$key } from "../../../../artifacts/bookingOptions_BookingFragmentRef.graphql";
-import ChangeBookingOptionAvailability from "../../ChangeBookingOptionAvailability";
-import { ChangeBookingOptionAvailability_BookingOptionFragment$key } from "../../../../artifacts/ChangeBookingOptionAvailability_BookingOptionFragment.graphql";
+import ChangeBookingOptionAvailability from "../../ChangeBookingOptionAvailabilityModal";
 import OptionTagColor from "../../OptionTagColor/OptionTagColor";
 import Checkbox from "../../../v2/Checkbox";
+import { ChangeBookingOptionAvailabilityModal_BookingOptionFragment$key } from "../../../../artifacts/ChangeBookingOptionAvailabilityModal_BookingOptionFragment.graphql";
 
 export function useBookingOptionsHeaders() {
   return React.useMemo(
@@ -62,7 +62,7 @@ export function useBookingOptionsColumns(
               name
             }
           }
-          ...ChangeBookingOptionAvailability_BookingOptionFragment
+          ...ChangeBookingOptionAvailabilityModal_BookingOptionFragment
         }
       }
     `,
@@ -74,11 +74,11 @@ export function useBookingOptionsColumns(
         title: opt.eventOption.title,
 
         organizerPrice: getCurrencyFormat(
-          opt.organizerPrice.cents,
+          opt.eventOption.builtIn ? 0 : opt.organizerPrice.cents,
           opt.organizerPrice.currency.name
         ),
         attendeePrice: getCurrencyFormat(
-          opt.attendeePrice.cents,
+          opt.eventOption.builtIn ? 0 : opt.attendeePrice.cents,
           opt.attendeePrice.currency.name
         ),
         builtIn: (
@@ -89,7 +89,7 @@ export function useBookingOptionsColumns(
           booking.status !== "cancelled" ? (
             <ChangeBookingOptionAvailability
               optionFragmentRef={
-                opt as ChangeBookingOptionAvailability_BookingOptionFragment$key
+                opt as ChangeBookingOptionAvailabilityModal_BookingOptionFragment$key
               }
             />
           ) : null,

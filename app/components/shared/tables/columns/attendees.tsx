@@ -8,13 +8,13 @@ import { attendees_BookingFragment$key } from "../../../../artifacts/attendees_B
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Tag from "../../../v2/Tag/Tag";
 import DeregisterAttendee from "../../DeregisterAttendee";
-import RemoveAttendee from "../../RemoveAttendee";
-import ChangeAttendeeOptionAvailability from "../../ChangeAttendeeOptionAvailability";
-import { ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key } from "../../../../artifacts/ChangeAttendeeOptionAvailability_AttendeeOptionFragment.graphql";
+import RemoveAttendee from "../../RemoveAttendeeModal";
+import ChangeAttendeeOptionAvailabilityModal from "../../ChangeAttendeeOptionAvailabilityModal";
 import OptionTagColor from "../../OptionTagColor/OptionTagColor";
 import Typography from "../../../v2/Typography/Typography";
 import Table from "../../../v2/Table/Table";
 import Checkbox from "../../../v2/Checkbox";
+import { ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key } from "../../../../artifacts/ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment.graphql";
 
 export function useAttendeesHeaders() {
   return React.useMemo(
@@ -77,11 +77,11 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
                 name
               }
             }
-            ...ChangeAttendeeOptionAvailability_AttendeeOptionFragment
+            ...ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment
           }
           ...RegisterAttendee_AttendeeFragment
           ...DeregisterAttendee_AttendeeFragment
-          ...RemoveAttendee_AttendeeFragment
+          ...RemoveAttendeeModal_BookingFragment
         }
       }
     `,
@@ -127,9 +127,9 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
               builtIn: <Checkbox label="" checked={builtIn} readOnly />,
               status: <OptionTagColor status={status} />,
               actions: (
-                <ChangeAttendeeOptionAvailability
+                <ChangeAttendeeOptionAvailabilityModal
                   optionFragmentRef={
-                    opt as ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key
+                    opt as ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key
                   }
                 />
               ),

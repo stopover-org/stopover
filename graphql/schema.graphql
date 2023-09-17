@@ -145,6 +145,7 @@ type Booking implements Node {
   attendees(filters: AttendeesFilter): [Attendee!]!
   bookedFor: DateTime!
   bookingOptions: [BookingOption!]!
+  cancellationTerms: String!
   event: Event!
   eventOptions: [EventOption!]!
   id: ID!
@@ -153,6 +154,8 @@ type Booking implements Node {
   organizerTotalPrice: Money!
   paymentType: String
   payments: [Payment!]!
+  possiblePenaltyAmount: Money!
+  possibleRefundAmount: Money!
   refunds: [Refund!]!
   schedule: Schedule!
   status: String!
@@ -1233,6 +1236,7 @@ type PublishEventPayload {
 }
 
 type Query {
+  booking(id: ID!): Booking
   bookings(filters: BookingsFilter): [Booking!]
   currentUser: User
   event(id: ID!): Event
@@ -1302,7 +1306,7 @@ type Query {
     """
     last: Int
   ): ScheduleConnection!
-  trips(filters: TripsFilter): [Trip!]
+  trips(id: ID!): [Trip!]
 }
 
 type Refund implements Node {
@@ -1676,12 +1680,6 @@ type Trip implements Node {
   images: [String!]!
   startDate: DateTime!
   status: String!
-}
-
-input TripsFilter {
-  bookings: [ID!]
-  endDate: DateTime
-  startDate: DateTime
 }
 
 type Unit implements Node {

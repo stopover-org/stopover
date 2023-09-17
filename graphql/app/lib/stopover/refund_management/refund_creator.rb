@@ -7,6 +7,8 @@ module Stopover
         @booking = booking
         @current_user = current_user
         @parent_refund = parent_refund
+
+        @current_cancellation_service = Stopover::BookingManagement::CurrentCancellation.new(@booking, @current_user)
       end
 
       def perform
@@ -18,7 +20,7 @@ module Stopover
                                                     refund_amount: refund,
                                                     booking: @booking,
                                                     account: @current_user.account,
-                                                    booking_cancellation_option: cancellation_option)
+                                                    booking_cancellation_option: @current_cancellation_service.perform)
 
           generate_related_refunds
 
@@ -75,21 +77,9 @@ module Stopover
       end
 
       def calculate_penalty
-        return Money.new(0) if include_penalty?
+        return Money.new(0) if @current_cancellation_service.include_penalty?
 
-        cancellation_option&.penalty_price || Money.new(0)
-      end
-
-      def cancellation_option
-        return nil if include_penalty?
-
-        time_diff = (@booking.schedule.scheduled_for - Time.current) / 3600
-
-        @booking.booking_cancellation_options.active.where('deadline > :time_diff', time_diff: time_diff).order(deadline: :asc).last
-      end
-
-      def include_penalty?
-        @current_user.account.current_firm == @booking.firm
+        @current_cancellation_service.perform&.penalty_price || Money.new(0)
       end
 
       def execute_refund(child_refund)

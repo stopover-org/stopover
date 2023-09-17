@@ -2,20 +2,20 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useMutationForm from "../../../../../lib/hooks/useMutationForm";
-import { useRefundBookingForm_BookingFragment$key } from "../../../../../artifacts/useRefundBookingForm_BookingFragment.graphql";
-import { useRefundBookingForm_RefundBookingMutation } from "../../../../../artifacts/useRefundBookingForm_RefundBookingMutation.graphql";
+import useMutationForm from "../../../lib/hooks/useMutationForm";
+import { useCancelBookingForm_BookingFragment$key } from "../../../artifacts/useCancelBookingForm_BookingFragment.graphql";
+import { useCancelBookingForm_CancelBookingMutation } from "../../../artifacts/useCancelBookingForm_CancelBookingMutation.graphql";
 
-interface RefundBookingFormFields {
+interface CancelBookingFormFields {
   bookingId: string;
 }
 
 function useDefaultValues(
-  bookingFragmentRef: useRefundBookingForm_BookingFragment$key
+  bookingFragmentRef: useCancelBookingForm_BookingFragment$key
 ) {
   const booking = useFragment(
     graphql`
-      fragment useRefundBookingForm_BookingFragment on Booking {
+      fragment useCancelBookingForm_BookingFragment on Booking {
         id
       }
     `,
@@ -34,20 +34,22 @@ const validationSchema = Yup.object().shape({
   bookingId: Yup.string().required(),
 });
 
-export function useRefundBookingForm(
-  bookingFragmentRef: useRefundBookingForm_BookingFragment$key
+export function useCancelBookingForm(
+  bookingFragmentRef: useCancelBookingForm_BookingFragment$key,
+  onSuccess: () => void
 ) {
   return useMutationForm<
-    RefundBookingFormFields,
-    useRefundBookingForm_RefundBookingMutation
+    CancelBookingFormFields,
+    useCancelBookingForm_CancelBookingMutation
   >(
     graphql`
-      mutation useRefundBookingForm_RefundBookingMutation(
+      mutation useCancelBookingForm_CancelBookingMutation(
         $input: CancelBookingInput!
       ) {
         cancelBooking(input: $input) {
-          booking {
-            ...BookingScene_FirmBookingFragment
+          trip {
+            ...DateBookingsSection_TripFragment
+            ...TripScene_TripFragment
           }
           notification
           errors
@@ -60,6 +62,7 @@ export function useRefundBookingForm(
     {
       defaultValues: useDefaultValues(bookingFragmentRef),
       resolver: yupResolver(validationSchema),
+      onCompleted: onSuccess,
     }
   );
 }

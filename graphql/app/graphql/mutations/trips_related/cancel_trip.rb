@@ -7,7 +7,7 @@ module Mutations
 
       argument :trip_id, ID, loads: Types::TripsRelated::TripType
       def resolve(trip:, **_args)
-        trip.cancel!
+        trip.cancel! unless trip.cancelled?
 
         { trip: trip, notification: 'Trip cancelled!' }
       rescue StandardError => e

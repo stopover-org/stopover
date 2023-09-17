@@ -9,15 +9,32 @@ const WithdrawBalanceForm = ({
 }: {
   balanceFragmentRef: WithdrawBalanceForm_BalanceFragment$key;
 }) => {
-  const balance = useFragment(
+  const balance = useFragment<WithdrawBalanceForm_BalanceFragment$key>(
     graphql`
       fragment WithdrawBalanceForm_BalanceFragment on Balance {
+        totalAmount {
+          cents
+        }
+        firm {
+          stripeConnects {
+            status
+          }
+        }
         ...useWithdrawBalanceForm_BalanceFragment
       }
     `,
     balanceFragmentRef
   );
   const form = useWithdrawBalanceForm(balance);
+  const activeStripeConnect = React.useMemo(
+    () =>
+      balance.firm.stripeConnects
+        .map((stripeConnect) => stripeConnect.status)
+        .find((status) => status === "active"),
+    [balance]
+  );
+
+  if (balance.totalAmount.cents <= 0 || !activeStripeConnect) return null;
 
   return (
     <form onSubmit={form.handleSubmit()}>

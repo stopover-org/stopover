@@ -16,9 +16,12 @@ module Types
       field :left_to_pay_price,     Types::MoneyType, null: false
       field :left_to_pay_deposit_price, Types::MoneyType, null: false
       field :already_paid_price, Types::MoneyType, null: false
+      field :possible_refund_amount, Types::MoneyType, null: false
+      field :possible_penalty_amount, Types::MoneyType, null: false
       field :trip,      Types::TripsRelated::TripType, null: false
       field :payments,  [Types::PaymentsRelated::PaymentType], null: false, require_manager: true
       field :refunds, [Types::PaymentsRelated::RefundType], null: false, require_manager: true
+      field :cancellation_terms, String, null: false
       field :attendees, [Types::BookingsRelated::AttendeeType], null: false do
         argument :filters, Types::Filters::AttendeesFilter, required: false
       end
@@ -29,6 +32,18 @@ module Types
 
       def attendees(**args)
         ::AttendeesQuery.new(args[:filters]&.to_h || {}, object.attendees).all
+      end
+
+      def cancellation_terms
+        Stopover::BookingManagement::CurrentCancellation.new(object, current_user).terms
+      end
+
+      def possible_refund_amount
+        Stopover::RefundManagement::RefundCreator.new(object, current_user).calculate_refund
+      end
+
+      def possible_penalty_amount
+        Stopover::RefundManagement::RefundCreator.new(object, current_user).calculate_penalty
       end
     end
   end

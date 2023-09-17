@@ -21,7 +21,9 @@ import {
   useRefundsColumns,
   useRefundsHeaders,
 } from "../../../../components/shared/tables/columns/refunds";
-import RefundBookingForm from "./components/RefundBookingForm";
+import RefundBookingModal from "./components/RefundBookingModal";
+import Button from "../../../../components/v2/Button";
+import AddAttendeeModal from "./components/AddAttendeeModal";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
@@ -71,13 +73,13 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
         }
         ...EventOptionsTable_BookingFragment
         ...AttendeesTable_BookingFragment
-        ...AddAttendee_BookingFragment
-        ...RefundBookingForm_BookingFragment
+        ...AddAttendeeModal_BookingFragment
+        ...RefundBookingModal_BookingFragment
       }
     `,
     bookingFragmentRef
   );
-
+  const [refundModal, setRefundModal] = React.useState(false);
   const tagColor = useStatusColor({
     primary: ["active"],
     danger: ["cancelled"],
@@ -116,59 +118,74 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
   );
 
   return (
-    <Grid container>
-      <Grid xs={12}>
-        <Breadcrumbs
-          padding={0}
-          items={[
-            { title: "My Firm", href: "/my-firm" },
-            "Bookings",
-            getHumanDateTime(moment(booking.bookedFor!))!,
-            booking.id,
-          ]}
-        />
-      </Grid>
-      <Grid xs={12}>
-        <Stack direction="row" justifyContent="space-between">
-          <Box>
-            <Typography>
-              <Link level="h3" href={`/my-firm/events/${booking.event.id}`}>
-                {booking.event.title}
-              </Link>
-              <Tag color={tagColor} link={false}>
-                {booking.status} booking
-              </Tag>
-            </Typography>
-            <Typography>
-              {getHumanDateTime(moment(booking.bookedFor!))}
-            </Typography>
-          </Box>
+    <>
+      <Grid container>
+        <Grid xs={12}>
+          <Breadcrumbs
+            padding={0}
+            items={[
+              { title: "My Firm", href: "/my-firm" },
+              "Bookings",
+              getHumanDateTime(moment(booking.bookedFor!))!,
+              booking.id,
+            ]}
+          />
+        </Grid>
+        <Grid xs={12}>
+          <Stack direction="row" justifyContent="space-between">
+            <Box>
+              <Typography>
+                <Link level="h3" href={`/my-firm/events/${booking.event.id}`}>
+                  {booking.event.title}
+                </Link>
+                <Tag color={tagColor} link={false}>
+                  {booking.status} booking
+                </Tag>
+              </Typography>
+              <Typography>
+                {getHumanDateTime(moment(booking.bookedFor!))}
+              </Typography>
+            </Box>
+            {booking.status !== "cancelled" && (
+              <Box>
+                <Button
+                  size="sm"
+                  color="danger"
+                  onClick={() => setRefundModal(true)}
+                >
+                  Refund this booking
+                </Button>
+              </Box>
+            )}
+          </Stack>
+        </Grid>
+        <Grid xs={8}>
+          <Typography level="h4">Attendees</Typography>
+          <AttendeesTable bookingFragmentRef={booking} />
+          <br />
           {booking.status !== "cancelled" && (
-            <RefundBookingForm bookingFragmentRef={booking} />
+            <AddAttendeeModal bookingFragmentRef={booking} />
           )}
-        </Stack>
+        </Grid>
+        <Grid xs={4}>
+          <Typography level="h4">Booking Options</Typography>
+          <EventOptionsTable bookingFragmentRef={booking} />
+        </Grid>
+        <Grid xs={12}>
+          <Typography level="h4">Payments</Typography>
+          <Table headers={paymentsHeaders} data={paymentsData} />
+        </Grid>
+        <Grid xs={12}>
+          <Typography level="h4">Refunds</Typography>
+          <Table headers={refundsHeaders} data={refundsData} />
+        </Grid>
       </Grid>
-      <Grid xs={8}>
-        <Typography level="h4">Attendees</Typography>
-        <AttendeesTable bookingFragmentRef={booking} />
-        <br />
-        {booking.status !== "cancelled" && (
-          <AddAttendee bookingFragmentRef={booking} />
-        )}
-      </Grid>
-      <Grid xs={4}>
-        <Typography level="h4">Booking Options</Typography>
-        <EventOptionsTable bookingFragmentRef={booking} />
-      </Grid>
-      <Grid xs={12}>
-        <Typography level="h4">Payments</Typography>
-        <Table headers={paymentsHeaders} data={paymentsData} />
-      </Grid>
-      <Grid xs={12}>
-        <Typography level="h4">Refunds</Typography>
-        <Table headers={refundsHeaders} data={refundsData} />
-      </Grid>
-    </Grid>
+      <RefundBookingModal
+        bookingFragmentRef={booking}
+        open={refundModal}
+        onClose={() => setRefundModal(false)}
+      />
+    </>
   );
 };
 

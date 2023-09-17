@@ -29,7 +29,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useAddAttendeeForm(
-  bookingFragmentRef: useAddAttendeeForm_BookingFragment$key
+  bookingFragmentRef: useAddAttendeeForm_BookingFragment$key,
+  onSuccess: () => void
 ) {
   return useMutationForm(
     graphql`
@@ -49,6 +50,7 @@ export function useAddAttendeeForm(
     {
       defaultValues: useDefaultValues(bookingFragmentRef),
       resolver: yupResolver(validationSchema),
+      onCompleted: onSuccess,
     }
   );
 }
