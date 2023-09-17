@@ -16,6 +16,7 @@
 #  name          :string
 #  phones        :string           default([]), is an Array
 #  postal_code   :string
+#  primary_email :string
 #  primary_phone :string
 #  region        :string
 #  status        :string           default("initial"), not null

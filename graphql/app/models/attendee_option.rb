@@ -11,13 +11,21 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  attendee_id           :bigint
+#  booking_id            :bigint
+#  event_id              :bigint
 #  event_option_id       :bigint
+#  firm_id               :bigint
+#  schedule_id           :bigint
 #  stripe_integration_id :bigint
 #
 # Indexes
 #
 #  index_attendee_options_on_attendee_id            (attendee_id)
+#  index_attendee_options_on_booking_id             (booking_id)
+#  index_attendee_options_on_event_id               (event_id)
 #  index_attendee_options_on_event_option_id        (event_option_id)
+#  index_attendee_options_on_firm_id                (firm_id)
+#  index_attendee_options_on_schedule_id            (schedule_id)
 #  index_attendee_options_on_stripe_integration_id  (stripe_integration_id)
 #
 # Foreign Keys
@@ -25,46 +33,53 @@
 #  fk_rails_...  (stripe_integration_id => stripe_integrations.id)
 #
 class AttendeeOption < ApplicationRecord
-  # MODULES ======================================================================
+  # MODULES ===============================================================
   include Mixins::OptionStatuses
 
-  # MONETIZE =====================================================================
+  # MONETIZE ==============================================================
   monetize :attendee_price_cents
   monetize :organizer_price_cents
 
-  # ATTACHMENTS ==================================================================
-  #
-  # HAS_ONE ASSOCIATIONS =========================================================
-  #
-  # HAS_MANY ASSOCIATIONS ========================================================
-  #
-  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :stripe_integrations, through: :event_option
-
-  # BELONGS_TO ASSOCIATIONS =======================================================
+  # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :attendee
+  belongs_to :booking
   belongs_to :event_option
+  belongs_to :event
+  belongs_to :firm
+  belongs_to :schedule
   belongs_to :stripe_integration
 
-  has_one :booking, through: :attendee
-  has_one :firm, through: :attendee
+  # HAS_ONE ASSOCIATIONS ==================================================
 
-  # AASM STATES ================================================================
+  # HAS_ONE THROUGH ASSOCIATIONS ==========================================
 
-  # ENUMS =======================================================================
-  #
-  # VALIDATIONS ================================================================
-  validate :event_option_has_for_attendee
+  # HAS_MANY ASSOCIATIONS =================================================
 
-  # CALLBACKS ================================================================
-  before_validation :adjust_prices
-  before_validation :adjust_stripe_integration, on: :create
+  # HAS_MANY THROUGH ASSOCIATIONS =========================================
 
-  # SCOPES =====================================================================
-  #
-  # DELEGATIONS ==============================================================
+  # AASM STATES ===========================================================
 
-  def event_option_has_for_attendee
+  # ENUMS =================================================================
+
+  # SECURE TOKEN ==========================================================
+
+  # SECURE PASSWORD =======================================================
+
+  # ATTACHMENTS ===========================================================
+
+  # RICH_TEXT =============================================================
+
+  # VALIDATIONS ===========================================================
+  validate :validate_option_type
+
+  # CALLBACKS =============================================================
+  before_validation :adjust_prices, on: :create
+  before_validation :adjust_event_option_info
+
+  # SCOPES ================================================================
+
+  # DELEGATION ============================================================
+  def validate_option_type
     errors.add(:attendee_option, 'event option is not for attendee') unless event_option&.for_attendee
   end
 
@@ -79,7 +94,13 @@ class AttendeeOption < ApplicationRecord
     save!
   end
 
-  def adjust_stripe_integration
-    self.stripe_integration = event_option.current_stripe_integration
+  private
+
+  def adjust_event_option_info
+    self.booking = attendee&.booking unless booking
+    self.event = event_option&.event unless event
+    self.firm = event&.firm unless firm
+    self.schedule = booking&.schedule unless schedule
+    self.stripe_integration = event_option&.current_stripe_integration unless stripe_integration
   end
 end

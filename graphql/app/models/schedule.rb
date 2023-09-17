@@ -29,6 +29,8 @@ class Schedule < ApplicationRecord
   #
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :bookings
+  has_many :attendees
+  has_many :attendee_options
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   #

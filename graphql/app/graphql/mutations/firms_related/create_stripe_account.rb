@@ -5,8 +5,8 @@ module Mutations
     class CreateStripeAccount < BaseMutation
       field :setup_account_url, String
       def resolve
-        context[:current_user].account.current_firm.stripe_connects.create!
-        account_link = Stopover::StripeAccountService.create_stripe_account(context[:current_user])
+        stripe_connect = context[:current_user].account.current_firm.stripe_connects.create!
+        account_link = Stopover::StripeAccountService.create_stripe_account(context[:current_user], stripe_connect)
         {
           setup_account_url: account_link[:account_link],
           notification: 'You will be redirected'

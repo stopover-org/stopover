@@ -59,7 +59,7 @@ class User < ApplicationRecord
   # VALIDATIONS ================================================================
   validates :email, uniqueness: { message: 'is taken', allow_blank: true }
   validates :phone, uniqueness: { message: 'is taken', allow_blank: true }
-  validates :phone, phone: { message: 'is invalid', allow_blank: true }
+  validates :phone, phone: { message: 'is invalid', allow_blank: true }, unless: :skip_phone_validation
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is invalid', allow_blank: true }
 
   # CALLBACKS ================================================================
@@ -148,6 +148,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def skip_phone_validation
+    $skip_phone_validation || false
+  end
 
   def can_send_code?
     return true unless last_try || confirmation_code

@@ -80,6 +80,9 @@ Rails/UnknownEnv:
 
 # STYLE
 
+Style/GlobalVars:
+  Enabled: false
+
 Style/HashLikeCase:
   Enabled: false
 

@@ -11,6 +11,7 @@
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
 #  account_id                     :bigint
+#  balance_id                     :bigint
 #  booking_cancellation_option_id :bigint
 #  booking_id                     :bigint
 #  firm_id                        :bigint
@@ -21,6 +22,7 @@
 # Indexes
 #
 #  index_refunds_on_account_id                      (account_id)
+#  index_refunds_on_balance_id                      (balance_id)
 #  index_refunds_on_booking_cancellation_option_id  (booking_cancellation_option_id)
 #  index_refunds_on_booking_id                      (booking_id)
 #  index_refunds_on_firm_id                         (firm_id)

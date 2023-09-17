@@ -9,12 +9,11 @@
 #  provider                   :string
 #  status                     :string
 #  total_price_cents          :decimal(, )      default(0.0)
-#  withdrawn_at               :datetime
-#  withdrawn_cents            :bigint           default(0)
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  balance_id                 :bigint
 #  booking_id                 :bigint
+#  firm_id                    :bigint
 #  payment_intent_id          :string
 #  stripe_checkout_session_id :string
 #
@@ -22,6 +21,7 @@
 #
 #  index_payments_on_balance_id  (balance_id)
 #  index_payments_on_booking_id  (booking_id)
+#  index_payments_on_firm_id     (firm_id)
 #
 class Payment < ApplicationRecord
   # MODULES ===============================================================
@@ -29,10 +29,10 @@ class Payment < ApplicationRecord
 
   # MONETIZE ==============================================================
   monetize :total_price_cents
-  monetize :withdrawn_cents
 
   # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :booking
+  belongs_to :firm
   belongs_to :balance
 
   # HAS_ONE ASSOCIATIONS ==================================================
@@ -40,8 +40,9 @@ class Payment < ApplicationRecord
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
 
   # HAS_MANY ASSOCIATIONS =================================================
-  has_many :payment_connections
+  has_many :payment_connections, dependent: :destroy
   has_many :refunds, dependent: :nullify
+  has_many :payouts, dependent: :nullify
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :stripe_integrations, through: :payment_connections
@@ -68,20 +69,21 @@ class Payment < ApplicationRecord
   # VALIDATIONS ===========================================================
 
   # CALLBACKS =============================================================
-  before_validation :set_price, on: :create
+  before_validation :adjust_price, on: :create
+  before_validation :adjust_firm
 
   # SCOPES ================================================================
-  scope :withdrawn, -> { successful.where('withdrawn_cents = total_price') }
-  scope :withdrawable, -> { successful.where.not('withdrawn_cents = total_price') }
 
   # DELEGATION ============================================================
 
-  def available_amount
-    total_price - withdrawn
+  def balance_amount
+    total_price - refunds_amount
   end
 
-  def refundable_amount
-    total_price - refunds.successful.map(&:refund_amount).sum(Money.new(0))
+  def refunds_amount
+    refunds.where(status: %i[processing successful])
+           .where.not(refund_id: nil)
+           .map(&:refund_amount).sum(Money.new(0))
   end
 
   def top_up_balance
@@ -90,7 +92,12 @@ class Payment < ApplicationRecord
 
   private
 
-  def set_price
-    self.total_price = booking.attendee_total_price unless total_price
+  def adjust_firm
+    self.firm = booking&.firm unless firm
+    self.balance = booking&.firm&.balance unless balance
+  end
+
+  def adjust_price
+    self.total_price = booking&.attendee_total_price if total_price.zero?
   end
 end

@@ -76,6 +76,8 @@ class Event < ApplicationRecord
   has_many :schedules, dependent: :destroy
   has_many :booking_cancellation_options, dependent: :destroy
   has_many :stripe_integrations, as: :stripeable
+  has_many :attendees, dependent: :nullify
+  has_many :attendee_options, dependent: :nullify
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :achievements, through: :event_achievements

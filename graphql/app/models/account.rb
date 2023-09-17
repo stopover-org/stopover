@@ -16,6 +16,7 @@
 #  name          :string
 #  phones        :string           default([]), is an Array
 #  postal_code   :string
+#  primary_email :string
 #  primary_phone :string
 #  region        :string
 #  status        :string           default("initial"), not null
@@ -74,7 +75,7 @@ class Account < ApplicationRecord
   validates :name, presence: true, if: :should_have_name?
 
   # CALLBACKS =============================================================
-  before_validation :set_user_info
+  before_validation :adjust_user_info
 
   # SCOPES ================================================================
 
@@ -91,14 +92,13 @@ class Account < ApplicationRecord
   private
 
   def should_have_name?
-    !user.temporary?
+    !user&.temporary?
   end
 
-  def set_user_info
-    return unless user
-
-    self.primary_phone = user.phone if user.phone
-    phones.concat([user.phone]) if user.phone && phones.exclude?(user.phone)
-    phones.concat([primary_phone]) if primary_phone && phones.exclude?(primary_phone)
+  def adjust_user_info
+    self.primary_phone = user.phone if user&.phone
+    self.primary_email = user.email if user&.email
+    phones.concat([user.phone]) if user&.phone && phones&.exclude?(user&.phone)
+    phones.concat([primary_phone]) if primary_phone && phones&.exclude?(primary_phone)
   end
 end
