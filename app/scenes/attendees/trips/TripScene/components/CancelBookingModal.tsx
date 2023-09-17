@@ -70,7 +70,7 @@ const CancelBookingModal = ({
                   )}
                 </Box>
                 <Box>
-                  Refund Amount:{" "}
+                  Penalty:{" "}
                   {getCurrencyFormat(
                     booking.possiblePenaltyAmount?.cents,
                     booking.possiblePenaltyAmount?.currency?.name

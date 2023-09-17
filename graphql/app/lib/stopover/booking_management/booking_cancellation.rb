@@ -13,6 +13,8 @@ module Stopover
 
         Stopover::RefundManagement::RefundCreator.new(@booking, @current_user).perform
 
+        @booking.trip.cancel! if @booking.trip.bookings.cancelled.count == @booking.trip.bookings.count
+
         @booking
       end
     end
