@@ -1,9 +1,9 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import moment from "moment";
-import SubmitButton from "../../../../../components/shared/SubmitButton";
+import SubmitButton from "../SubmitButton";
 import { useRefundBookingForm } from "./useRefundBookingForm";
-import { RefundBookingForm_BookingFragment$key } from "../../../../../artifacts/RefundBookingForm_BookingFragment.graphql";
+import { RefundBookingForm_BookingFragment$key } from "../../../artifacts/RefundBookingForm_BookingFragment.graphql";
 
 interface RefundBookingFormProps {
   bookingFragmentRef: RefundBookingForm_BookingFragment$key;

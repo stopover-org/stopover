@@ -3,7 +3,7 @@ import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import React from "react";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
-import CancelBookingForm from "./CancelBookingForm";
+import CancelBookingForm from "../../../../../components/shared/CancelBooking/CancelBookingForm";
 import Button from "../../../../../components/v2/Button";
 import { CancelBookingModal_BookingFragment$key } from "../../../../../artifacts/CancelBookingModal_BookingFragment.graphql";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
