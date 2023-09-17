@@ -28,7 +28,7 @@ module Stopover
 
         time_diff = (@booking.schedule.scheduled_for - Time.current) / 3600
 
-        @booking.booking_cancellation_options.active.where('deadline > :time_diff', time_diff: time_diff).order(deadline: :asc).last
+        @booking.event.booking_cancellation_options.active.where('deadline > :time_diff', time_diff: time_diff).order(deadline: :asc).last
       end
 
       def include_penalty?

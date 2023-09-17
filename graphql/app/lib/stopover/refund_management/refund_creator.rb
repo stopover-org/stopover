@@ -79,7 +79,7 @@ module Stopover
       def calculate_penalty
         return Money.new(0) if @current_cancellation_service.include_penalty?
 
-        cancellation_option&.penalty_price || Money.new(0)
+        @current_cancellation_service.perform&.penalty_price || Money.new(0)
       end
 
       def execute_refund(child_refund)
