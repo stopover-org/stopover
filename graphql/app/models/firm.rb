@@ -128,6 +128,10 @@ class Firm < ApplicationRecord
 
   # DELEGATION ============================================================
 
+  def current_stripe_connect
+    stripe_connects.active.last
+  end
+
   def create_balance
     self.balance = Balance.create!(firm: self)
   end

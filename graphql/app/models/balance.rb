@@ -80,14 +80,6 @@ class Balance < ApplicationRecord
   end
 
   def payout!(amount)
-    return if amount > withdrawable_amount
-
-    payout = payouts.create!(total_amount: amount, firm: firm, balance: self)
-
-    PayoutManagement::PayoutProcessing.perform_later(payout.id)
-
-    self.last_payout_at = Time.current
-    self.total_amount = total_amount - amount
-    save!
+    ::Stopover::BalanceManagement::PayoutCreator.new(self, amount).perform
   end
 end

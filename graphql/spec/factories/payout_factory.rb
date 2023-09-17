@@ -6,12 +6,14 @@
 #
 #  id                 :bigint           not null, primary key
 #  completed_at       :datetime
+#  sent_at            :datetime
 #  status             :string
 #  total_amount_cents :decimal(, )
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  balance_id         :bigint
 #  firm_id            :bigint
+#  stripe_transfer_id :string
 #
 # Indexes
 #

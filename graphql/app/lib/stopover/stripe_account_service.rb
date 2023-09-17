@@ -22,7 +22,7 @@ module Stopover
       stripe_connect
     end
 
-    def self.create_stripe_account(user)
+    def self.create_stripe_account(user, stripe_connect)
       raise StandardError('Account has\'t firm') unless user.account.current_firm
       firm = user.account.current_firm
       country_code = ISO3166::Country.find_country_by_iso_short_name(firm.country)&.alpha2 || 'DE'
@@ -73,7 +73,7 @@ module Stopover
         )
       end
 
-      user.account.current_firm.update!(stripe_account_id: account[:id])
+      stripe_connect.update!(stripe_connect_id: account[:id])
 
       account_link = Stripe::AccountLink.create({
                                                   account: account[:id],

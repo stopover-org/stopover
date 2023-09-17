@@ -8,6 +8,7 @@ import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import { capitalize } from "../../../../lib/utils/capitalize";
 import ConnectStripeForm from "./ConnectStripeForm";
 import StripeConnectsTable from "../../../../components/shared/tables/StripeConnectsTable";
+import WithdrawBalanceForm from "./WithdrawBalanceForm";
 
 interface BalanceSectionProps {
   firmFragmentRef: BalanceSection_FirmFragment$key;
@@ -28,6 +29,13 @@ const BalanceSection = ({
               name
             }
           }
+          processingPayments {
+            cents
+            currency {
+              name
+            }
+          }
+          ...WithdrawBalanceForm_BalanceFragment
         }
         stripeConnects {
           status
@@ -59,13 +67,23 @@ const BalanceSection = ({
         <Grid xs={3}>
           <Typography level="h4">Total:</Typography>
         </Grid>
-        <Grid xs={9}>
+        <Grid xs={4}>
           <Typography level="h4">
             {getCurrencyFormat(
               firm.balance?.totalAmount?.cents,
               firm.balance?.totalAmount?.currency?.name
             )}
           </Typography>
+          <Typography level="body1">
+            Processing:&nbsp;
+            {getCurrencyFormat(
+              firm.balance?.processingPayments?.cents,
+              firm.balance?.processingPayments?.currency?.name
+            )}
+          </Typography>
+        </Grid>
+        <Grid xs={4}>
+          <WithdrawBalanceForm balanceFragmentRef={firm.balance} />
         </Grid>
 
         <Grid xs={12}>

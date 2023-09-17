@@ -12,4 +12,4 @@ enqueue_refunds:
   class: 'Workers::EnqueueRefundsJob'
 enqueue_payouts:
   cron: '* * * * *'
-  class: 'Workers::EnqueuePayouts'
+  class: 'Workers::EnqueuePayoutsJob'

@@ -38,5 +38,6 @@ module Types
 
     field :create_checkout,           mutation: Mutations::PaymentsRelated::CreateCheckout
     field :create_stripe_account,     mutation: Mutations::FirmsRelated::CreateStripeAccount, require_manager: true
+    field :withdraw_balance,          mutation: Mutations::PaymentsRelated::WithdrawBalance, require_manager: true
   end
 end
