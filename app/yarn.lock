@@ -10,6 +10,20 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
+"@anycable/core@^0.7.6":
+  version "0.7.6"
+  resolved "https://registry.npmjs.org/@anycable/core/-/core-0.7.6.tgz"
+  integrity sha512-EI5jgQeGF/f8lb68houz8dY1BHsQDAdXlIv2COhoCNp4e+KxSfECUJu9jhDs+Cx1aJk0I3/gt9s3tmpbSN5k2g==
+  dependencies:
+    nanoevents "^7.0.1"
+
+"@anycable/web@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.npmjs.org/@anycable/web/-/web-0.7.2.tgz"
+  integrity sha512-q+w8bVJLmmdgdSBLvd0ZLTh53C92rO54lHSvR0N3Lu1/w9QLb2OPSflnrrbfWvSpK5LWrH13B0cgbCsoNWHw7g==
+  dependencies:
+    "@anycable/core" "^0.7.6"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.18.6", "@babel/code-frame@^7.5.5", "@babel/code-frame@^7.8.3":
   version "7.18.6"
   resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.18.6.tgz"
@@ -1834,6 +1848,11 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.7.tgz"
   integrity sha512-Cr4OjIkipTtcXKjAsm8agyleBuDHvxzeBoa1v543lbv1YaIwQjESsVcmjiWiPEbC1FIeHOG/Op9kdCmAmiS3Kw==
 
+"@rails/actioncable@^7.0.8":
+  version "7.0.8"
+  resolved "https://registry.npmjs.org/@rails/actioncable/-/actioncable-7.0.8.tgz"
+  integrity sha512-GjYQv89ZOOfbFw8VMNUOG33GXzyAA/TCVoD+742Ob4svm1XXUkd+w+ewqUXd+7VHQtV35y1/O78AGIPeJDTy/g==
+
 "@react-google-maps/api@^2.12.2":
   version "2.12.2"
   resolved "https://registry.npmjs.org/@react-google-maps/api/-/api-2.12.2.tgz"
@@ -3335,6 +3354,11 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
+"@types/actioncable@^5.2.8":
+  version "5.2.8"
+  resolved "https://registry.npmjs.org/@types/actioncable/-/actioncable-5.2.8.tgz"
+  integrity sha512-n+KkgO4X0tmg1fZbBHZSgm39B284/p6//6qxLgo4DrvRtdoIhLjb//sPa0Cv00g6htZz6iXvmwNnLs8fbXS4dw==
+
 "@types/aria-query@^4.2.0":
   version "4.2.2"
   resolved "https://registry.npmjs.org/@types/aria-query/-/aria-query-4.2.2.tgz"
@@ -4167,6 +4191,11 @@ acorn@^8.8.0:
   version "8.8.0"
   resolved "https://registry.npmjs.org/acorn/-/acorn-8.8.0.tgz"
   integrity sha512-QOxyigPVrpZ2GXT+PFyZTl6TtOFc5egxHIP9IlQ+RbupQuX4RkT/Bee4/kQuC02Xkzg84JcT7oLYtDIQxp+v7w==
+
+actioncable@^5.2.8-1:
+  version "5.2.8-1"
+  resolved "https://registry.npmjs.org/actioncable/-/actioncable-5.2.8-1.tgz"
+  integrity sha512-p/a9jeFs3KB3SWZ9w/T5HLyztooYSufOG++Uhau9YzprdBNyjFfsqrtN1roVVEzNDBGZJVr/2SSWwofvavPL1w==
 
 add-px-to-style@1.0.0:
   version "1.0.0"
@@ -7886,6 +7915,14 @@ grapheme-splitter@^1.0.4:
   resolved "https://registry.npmjs.org/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
+graphql-ruby-client@^1.11.9:
+  version "1.11.9"
+  resolved "https://registry.npmjs.org/graphql-ruby-client/-/graphql-ruby-client-1.11.9.tgz"
+  integrity sha512-bcwpod020KDcqUUVQ22sUifL7lRuIzcjFiYauFF/V/2oRt5Wd/fClKqRny2p+1RX7CHm+dzrQlKkuwBh7Z84HA==
+  dependencies:
+    glob "^7.1.4"
+    minimist "^1.2.0"
+
 graphql@^16.6.0:
   version "16.6.0"
   resolved "https://registry.npmjs.org/graphql/-/graphql-16.6.0.tgz"
@@ -9844,6 +9881,11 @@ nano-time@1.0.0:
   dependencies:
     big-integer "^1.6.16"
 
+nanoevents@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.npmjs.org/nanoevents/-/nanoevents-7.0.1.tgz"
+  integrity sha512-o6lpKiCxLeijK4hgsqfR6CNToPyRU3keKyyI6uwuHRvpRTbZ0wXw51WRgyldVugZqoJfkGFrjrIenYH3bfEO3Q==
+
 nanoid@^3.3.1, nanoid@^3.3.4:
   version "3.3.4"
   resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.3.4.tgz"
@@ -11760,7 +11802,16 @@ relay-nextjs@^0.9.0:
   dependencies:
     serialize-javascript "^5.0.1"
 
-relay-runtime@^14.1.0, relay-runtime@14.1.0:
+relay-runtime@^15.0.0:
+  version "15.0.0"
+  resolved "https://registry.npmjs.org/relay-runtime/-/relay-runtime-15.0.0.tgz"
+  integrity sha512-7AXkXLQo6gpJNBhk4Kii5b+Yat62HSDD1TgJBi021iSjT1muI8iYd4UZG4f/If209LmaVjkZt2HTNAlk6xtslw==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    fbjs "^3.0.2"
+    invariant "^2.2.4"
+
+relay-runtime@14.1.0:
   version "14.1.0"
   resolved "https://registry.npmjs.org/relay-runtime/-/relay-runtime-14.1.0.tgz"
   integrity sha512-t2DR2hZviHrdEQrOvFqwmvRWvZ0SjI/r4bS5f3qvMyXt4g1kw3RTb2RNVmbKGg6zEQhf7Na/brdqE4roApmclQ==

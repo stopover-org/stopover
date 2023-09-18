@@ -1,4 +1,9 @@
-import { graphql, useFragment } from "react-relay";
+import {
+  graphql,
+  requestSubscription,
+  useFragment,
+  useRelayEnvironment,
+} from "react-relay";
 import React from "react";
 import moment from "moment/moment";
 import { Box, Grid, Stack } from "@mui/joy";
@@ -11,7 +16,6 @@ import AttendeesTable from "./components/AttendeesTable";
 import Link from "../../../../components/v2/Link";
 import Tag from "../../../../components/v2/Tag/Tag";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
-import AddAttendee from "../../../../components/shared/AddAttendee";
 import {
   usePaymentsColumns,
   usePaymentsHeaders,
@@ -27,6 +31,20 @@ import AddAttendeeModal from "./components/AddAttendeeModal";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
+}
+
+function useSubscription(gql: any, variables: any) {
+  const environment = useRelayEnvironment();
+  const subscription = React.useCallback(
+    () =>
+      requestSubscription(environment, {
+        subscription: gql,
+        variables,
+      }),
+    [gql, variables]
+  );
+
+  return subscription();
 }
 
 const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
@@ -79,6 +97,20 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
     `,
     bookingFragmentRef
   );
+
+  useSubscription(
+    graphql`
+      subscription BookingScene_BookingChangedSubscription {
+        bookingChanged {
+          booking {
+            ...BookingScene_FirmBookingFragment
+          }
+        }
+      }
+    `,
+    {}
+  );
+
   const [refundModal, setRefundModal] = React.useState(false);
   const tagColor = useStatusColor({
     primary: ["active"],

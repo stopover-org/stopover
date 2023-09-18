@@ -57,6 +57,7 @@
 
 Rails.application.routes.draw do
   mount GraphiQL::Rails::Engine, at: '/graphiql', graphql_path: '/graphql' if Rails.env.development?
+  mount ActionCable.server, at: '/cable'
 
   post '/graphql', to: 'graphql#execute'
 

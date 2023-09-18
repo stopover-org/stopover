@@ -2,6 +2,7 @@
 
 class GraphqlSchema < GraphQL::Schema
   use GraphQL::Schema::AlwaysVisible
+  use GraphQL::Subscriptions::ActionCableSubscriptions
 
   mutation(Types::MutationType)
   query(Types::QueryType)
