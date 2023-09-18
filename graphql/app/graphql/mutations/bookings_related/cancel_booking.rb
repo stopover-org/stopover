@@ -10,7 +10,7 @@ module Mutations
 
       def resolve(booking:)
         {
-          booking: Stopover::BookingManagement::BookingCancellation.new(booking, context[:current_user]).perform,
+          booking: Stopover::BookingManagement::BookingCancellation.new(booking, current_user).perform,
           trip: booking.trip,
           notification: 'Booking cancelled!'
         }

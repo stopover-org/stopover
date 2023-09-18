@@ -3,9 +3,9 @@
 module Subscriptions
   class BaseSubscription < GraphQL::Schema::Subscription
     # Hook up base classes
-    object_class Types::BaseObject
-    field_class Types::BaseField
     argument_class Types::BaseArgument
+    field_class Types::BaseField
+    object_class Types::BaseObject
 
     def current_application_context
       context[:current_application_context]

@@ -1647,7 +1647,7 @@ enum StripeIntegrationStatusEnum {
 }
 
 type Subscription {
-  bookingChanged: BookingChangedPayload!
+  bookingChanged(bookingId: ID!): BookingChangedPayload!
 }
 
 """

@@ -14,6 +14,7 @@ class GraphqlChannel < ApplicationCable::Channel
       # in this channel or ApplicationCable::Channel
       # current_user: current_user,
       # Make sure the channel is in the context
+      current_user: current_user,
       channel: self
     }
 
@@ -26,7 +27,7 @@ class GraphqlChannel < ApplicationCable::Channel
 
     payload = {
       result: result.to_h,
-        more: result.subscription?
+      more: result.subscription?
     }
 
     # Track the subscription here so we can remove it
