@@ -121,11 +121,12 @@ const GeneralInformation = ({
 
             <Grid xs={2}>Recurring Dates</Grid>
             <Grid xs={10}>
-              {event.recurringDaysWithTime.map((date) => (
+              {event.recurringDaysWithTime.map((date, index) => (
                 <Tag
                   level="body3"
                   link={false}
                   sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+                  key={`recurring_date-${date}-${index}`}
                 >
                   {date}
                 </Tag>
@@ -139,6 +140,7 @@ const GeneralInformation = ({
                   level="body3"
                   link={false}
                   sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+                  key={`single_date-${date}-${index}`}
                 >
                   {moment(date).format(dateTimeFormat)}
                 </Tag>

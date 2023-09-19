@@ -26,16 +26,15 @@ const TableBody = ({ data, keys, onRowClick }: TableBodyProps) => {
   return (
     <tbody>
       {data.map((row, index) => (
-        <>
+        <React.Fragment key={`row-${ids[index]}-${index}`}>
           <tr
-            key={`${ids[index]}-${index}`}
             onClick={() => onRowClick(index)}
             style={{ verticalAlign: "top" }}
           >
             {keys.map((key) => (
               // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
               <td
-                key={`${ids[index]}-${key}-${index}`}
+                key={`expanded-first-${ids[index]}-${key}-${index}`}
                 onClick={() => {
                   if (key === "expand") {
                     if (expanded.includes(index)) {
@@ -52,23 +51,23 @@ const TableBody = ({ data, keys, onRowClick }: TableBodyProps) => {
           </tr>
 
           {expanded.includes(index) && Array.isArray(row.tables) && (
-            <>
+            <React.Fragment key={`expanded-includes-${ids[index]}-${index}`}>
               {row.tables?.map((table) => (
-                <>
+                <React.Fragment key={`expanded-${ids[index]}-${index}`}>
                   <br />
                   <tr>
                     <td colSpan={keys.length}>{table}</td>
                   </tr>
-                </>
+                </React.Fragment>
               ))}
               <br />
               <tr>
                 <td colSpan={keys.length} />
               </tr>
               <br />
-            </>
+            </React.Fragment>
           )}
-        </>
+        </React.Fragment>
       ))}
       {data.length === 0 && (
         <tr>

@@ -2,9 +2,11 @@
 
 class GraphqlSchema < GraphQL::Schema
   use GraphQL::Schema::AlwaysVisible
+  use GraphQL::Subscriptions::ActionCableSubscriptions
 
   mutation(Types::MutationType)
   query(Types::QueryType)
+  subscription(Types::SubscriptionType)
 
   # For batch-loading (see https://graphql-ruby.org/dataloader/overview.html)
   use GraphQL::Dataloader

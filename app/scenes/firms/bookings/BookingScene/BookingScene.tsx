@@ -11,7 +11,6 @@ import AttendeesTable from "./components/AttendeesTable";
 import Link from "../../../../components/v2/Link";
 import Tag from "../../../../components/v2/Tag/Tag";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
-import AddAttendee from "../../../../components/shared/AddAttendee";
 import {
   usePaymentsColumns,
   usePaymentsHeaders,
@@ -24,11 +23,11 @@ import {
 import RefundBookingModal from "./components/RefundBookingModal";
 import Button from "../../../../components/v2/Button";
 import AddAttendeeModal from "./components/AddAttendeeModal";
+import useSubscription from "../../../../lib/hooks/useSubscription";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
 }
-
 const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
   const booking = useFragment<BookingScene_FirmBookingFragment$key>(
     graphql`
@@ -79,6 +78,20 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
     `,
     bookingFragmentRef
   );
+
+  useSubscription({
+    variables: { bookingId: booking.id },
+    subscription: graphql`
+      subscription BookingScene_BookingChangedSubscription($bookingId: ID!) {
+        bookingChanged(bookingId: $bookingId) {
+          booking {
+            ...BookingScene_FirmBookingFragment
+          }
+        }
+      }
+    `,
+  });
+
   const [refundModal, setRefundModal] = React.useState(false);
   const tagColor = useStatusColor({
     primary: ["active"],

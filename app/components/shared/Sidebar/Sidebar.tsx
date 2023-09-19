@@ -21,7 +21,12 @@ const Sidebar = ({ items }: SidebarProps) => {
       <Grid xs={12}>
         <List sx={{ maxWidth: "250px", minWidth: "250px" }}>
           {items.map((item) => (
-            <Link level="h6" href={item.href} underline={false}>
+            <Link
+              level="h6"
+              href={item.href}
+              underline={false}
+              key={`item-${item.href}`}
+            >
               <ListItem key={item.href}>
                 <ListItemButton color="primary" href={item.href}>
                   {item.title}

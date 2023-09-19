@@ -9,6 +9,8 @@ module Workers
         checkout = Stripe::Checkout::Session.retrieve(payment.stripe_checkout_session_id)
         ::Stopover::StripeCheckoutService.complete(payment, checkout) if checkout[:status] == 'complete'
         payment.cancel! if checkout[:status] == 'expired'
+
+        GraphqlSchema.subscriptions.trigger(:booking_changed, { bookingId: payment.booking.id }, { booking: payment.booking })
       end
     end
   end
