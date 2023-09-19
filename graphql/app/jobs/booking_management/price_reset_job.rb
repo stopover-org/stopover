@@ -14,6 +14,8 @@ module BookingManagement
         ::Stopover::StripeCheckoutService.complete(payment, checkout) if checkout[:status] == 'complete'
         ::Stopover::StripeCheckoutService.expire_checkout_session(payment) if checkout[:status] == 'open'
       end
+
+      GraphqlSchema.subscriptions.trigger(:booking_changed, { bookingId: booking.id }, { booking: booking })
     end
   end
 end

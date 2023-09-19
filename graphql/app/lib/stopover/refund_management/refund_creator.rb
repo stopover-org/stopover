@@ -27,6 +27,8 @@ module Stopover
           @parent_refund.save!
         end
 
+        GraphqlSchema.subscriptions.trigger(:booking_changed, { bookingId: @booking.id }, { booking: @booking })
+
         @parent_refund
       end
 

@@ -9,6 +9,7 @@ import BookingDatesEditForm from "./BookingDatesEditForm";
 import CheckoutForm from "./CheckoutForm";
 import Button from "../../../../../components/v2/Button";
 import CancelBookingModal from "./CancelBookingModal";
+import useSubscription from "../../../../../lib/hooks/useSubscription";
 
 interface BookingEditFormProps {
   bookingFragmentRef: BookingEditForm_BookingFragment$key;
@@ -40,6 +41,20 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
     `,
     bookingFragmentRef
   );
+
+  useSubscription({
+    variables: { bookingId: booking.id },
+    subscription: graphql`
+      subscription BookingEditForm_BookingChangedSubscription($bookingId: ID!) {
+        bookingChanged(bookingId: $bookingId) {
+          booking {
+            ...BookingEditForm_BookingFragment
+          }
+        }
+      }
+    `,
+  });
+
   const [modal, setModal] = React.useState(false);
   const leftToPay = React.useMemo(
     () =>

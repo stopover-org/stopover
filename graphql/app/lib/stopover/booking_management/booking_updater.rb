@@ -20,6 +20,8 @@ module Stopover
             @booking.booking_options.create!(booking: @booking, event_option: option)
           end
         end
+
+        GraphqlSchema.subscriptions.trigger(:booking_changed, { bookingId: @booking.id }, { booking: @booking.reload })
       end
     end
   end
