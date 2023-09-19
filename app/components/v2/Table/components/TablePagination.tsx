@@ -41,26 +41,28 @@ const TablePagination = ({
             justifyContent: "flex-end",
           }}
         >
-          {rowsPerPageOptions && rowsPerPageOptions.length > 0 && (
-            <FormControl orientation="horizontal" size="sm">
-              <FormLabel>Rows per page:</FormLabel>
-              <Select
-                onChange={(perPage: number) => {
-                  if (onPerPageChange instanceof Function) {
-                    onPerPageChange(perPage);
-                  }
-                }}
-                value={rowsPerPage}
-                size="sm"
-              >
-                {rowsPerPageOptions.map((rowsPerPageOption) => (
-                  <Option key={rowsPerPageOption} value={rowsPerPageOption}>
-                    {rowsPerPageOption}
-                  </Option>
-                ))}
-              </Select>
-            </FormControl>
-          )}
+          {rowsPerPageOptions &&
+            rowsPerPageOptions.length > 1 &&
+            rowsPerPageOptions.length > 0 && (
+              <FormControl orientation="horizontal" size="sm">
+                <FormLabel>Rows per page:</FormLabel>
+                <Select
+                  onChange={(perPage: number) => {
+                    if (onPerPageChange instanceof Function) {
+                      onPerPageChange(perPage);
+                    }
+                  }}
+                  value={rowsPerPage}
+                  size="sm"
+                >
+                  {rowsPerPageOptions.map((rowsPerPageOption) => (
+                    <Option key={rowsPerPageOption} value={rowsPerPageOption}>
+                      {rowsPerPageOption}
+                    </Option>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
           <Typography textAlign="center" sx={{ minWidth: 80 }} fontSize="sm">
             {page}
           </Typography>

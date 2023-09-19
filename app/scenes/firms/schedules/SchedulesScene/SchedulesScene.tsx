@@ -14,7 +14,8 @@ import {
   useSchedulesColumns,
   useSchedulesHeaders,
 } from "../../../../components/shared/tables/columns/schedules";
-import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
+import useEdges from "../../../../lib/hooks/useEdges";
+import { SchedulesSceneFirmFragment } from "../../../../artifacts/SchedulesSceneFirmFragment.graphql";
 
 interface SchedulesSceneProps {
   firmFragmentRef: SchedulesScene_FirmFragment$key;
@@ -22,7 +23,10 @@ interface SchedulesSceneProps {
 
 const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
   const { data, hasNext, hasPrevious, loadNext, loadPrevious } =
-    usePaginationFragment(
+    usePaginationFragment<
+      SchedulesSceneFirmFragment,
+      SchedulesScene_FirmFragment$key
+    >(
       graphql`
         fragment SchedulesScene_FirmFragment on Firm
         @refetchable(queryName: "SchedulesSceneFirmFragment")
@@ -103,12 +107,12 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
     null
   );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const schedules = usePagedEdges(data.pagedSchedules, currentPage, 30);
+  const schedules = useEdges(data.pagedSchedules);
   const schedule = React.useMemo(
     () => schedules[selectedSchedule!],
     [schedules, selectedSchedule]
   );
-  const schedulesData = useSchedulesColumns(schedules as Record<string, any>[]);
+  const schedulesData = useSchedulesColumns(schedules);
   const schedulesHeaders = useSchedulesHeaders();
   const bookingsData = useBookingsColumns(
     (schedule ? schedule.bookings : []) as any[]
