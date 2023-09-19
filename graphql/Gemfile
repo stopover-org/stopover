@@ -86,9 +86,9 @@ group :test do
   gem 'capybara'
   gem 'rspec-sidekiq', '~> 3.1'
   gem 'selenium-webdriver'
+  gem 'shoulda-matchers', '~> 5.0'
   gem 'simplecov', require: false
   gem 'webdrivers'
-  gem 'shoulda-matchers', '~> 5.0'
 end
 
 gem 'aasm'
@@ -122,6 +122,7 @@ gem 'flipper'
 gem 'sentry-rails'
 gem 'sentry-ruby'
 
+gem 'opensearch-ruby'
+gem 'searchkick'
 gem 'sidekiq-cron'
 gem 'timecop', '~> 0.9.8'
-gem 'searchkick'

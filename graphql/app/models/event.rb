@@ -56,6 +56,7 @@ class Event < ApplicationRecord
   GRAPHQL_TYPE = Types::EventsRelated::EventType
 
   # MODULES ===============================================================
+  searchkick callbacks: :async
   include AASM
 
   # MONETIZE =====================================================================
@@ -213,6 +214,27 @@ class Event < ApplicationRecord
   def current_stripe_integration
     stripe_integrations.active
                        .last
+  end
+
+  def search_data
+    {
+      title: title,
+      description: description,
+      country: country,
+      city: city,
+      region: region,
+      address: full_address,
+      dates: schedules.map(&:scheduled_for),
+      unit: unit&.name,
+      unit_type: unit&.unit_type,
+      organizer: firm&.title,
+      tags: tags.map(&:title),
+      interests: interests.map(&:title)
+    }
+  end
+
+  def should_index?
+    published?
   end
 
   private

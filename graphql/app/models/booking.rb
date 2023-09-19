@@ -30,6 +30,7 @@ class Booking < ApplicationRecord
   GRAPHQL_TYPE = Types::BookingsRelated::BookingType
 
   # MODULES ===============================================================
+  searchkick callbacks: :async
   include AASM
 
   # MONETIZE ==============================================================
@@ -185,6 +186,21 @@ class Booking < ApplicationRecord
 
     refund = refunds.create!(firm: firm, refund_amount: already_paid_price - attendee_total_price, penalty_amount: Money.new(0))
     Stopover::RefundManagement::RefundCreator.new(self, user, refund).perform
+  end
+
+  def search_data
+    {
+      title: event.title,
+        description: event.description,
+        country: event.country,
+        city: event.city,
+        region: event.region,
+        address: event.full_address,
+        dates: schedule.scheduled_for,
+        organizer: firm&.title,
+        tags: event.tags.map(&:title),
+        interests: event.interests.map(&:title)
+    }
   end
 
   private
