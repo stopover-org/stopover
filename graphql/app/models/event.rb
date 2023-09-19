@@ -53,6 +53,8 @@
 require 'date'
 
 class Event < ApplicationRecord
+  GRAPHQL_TYPE = Types::EventsRelated::EventType
+
   # MODULES ===============================================================
   include AASM
 

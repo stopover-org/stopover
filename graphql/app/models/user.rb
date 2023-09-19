@@ -26,7 +26,9 @@ require 'jwt'
 require 'phonelib'
 
 class User < ApplicationRecord
+  GRAPHQL_TYPE = Types::UsersRelated::UserType
   SIGN_IN_DELAY = 60
+
   # MODULES ===============================================================
   include AASM
 

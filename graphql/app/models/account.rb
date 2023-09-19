@@ -31,6 +31,8 @@
 #  index_accounts_on_user_id  (user_id) UNIQUE
 #
 class Account < ApplicationRecord
+  GRAPHQL_TYPE = Types::UsersRelated::AccountType
+
   # MODULES ===============================================================
   include AASM
 

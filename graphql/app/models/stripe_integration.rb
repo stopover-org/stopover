@@ -19,6 +19,8 @@
 #  index_stripe_integrations_on_stripeable_id_and_stripeable_type  (stripeable_id,stripeable_type)
 #
 class StripeIntegration < ApplicationRecord
+  GRAPHQL_TYPE = Types::EventsRelated::StripeIntegrationType
+
   # MODULES ===============================================================
   include AASM
 

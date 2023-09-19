@@ -25,6 +25,8 @@
 #  index_attendees_on_schedule_id  (schedule_id)
 #
 class Attendee < ApplicationRecord
+  GRAPHQL_TYPE = Types::BookingsRelated::AttendeeType
+
   # MODULES ===============================================================
   include AASM
 

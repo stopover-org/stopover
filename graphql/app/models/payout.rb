@@ -21,6 +21,8 @@
 #  index_payouts_on_firm_id     (firm_id)
 #
 class Payout < ApplicationRecord
+  GRAPHQL_TYPE = Types::PaymentsRelated::PayoutType
+
   # MODULES ===============================================================
   include Mixins::PaymentStatuses
 

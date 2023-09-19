@@ -17,6 +17,8 @@
 #  index_stripe_connects_on_firm_id  (firm_id)
 #
 class StripeConnect < ApplicationRecord
+  GRAPHQL_TYPE = Types::FirmsRelated::StripeConnectType
+
   # MODULES ===============================================================
   include AASM
 

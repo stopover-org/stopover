@@ -11,6 +11,8 @@
 #  updated_at :datetime         not null
 #
 class Unit < ApplicationRecord
+  GRAPHQL_TYPE = Types::EventsRelated::UnitType
+
   # MODULES ===============================================================
   #
   # ATTACHMENTS ===========================================================

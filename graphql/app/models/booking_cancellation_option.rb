@@ -18,6 +18,8 @@
 #  index_booking_cancellation_options_on_event_id  (event_id)
 #
 class BookingCancellationOption < ApplicationRecord
+  GRAPHQL_TYPE = Types::EventsRelated::BookingCancellationOptionType
+
   # MODULES ===============================================================
   include AASM
 

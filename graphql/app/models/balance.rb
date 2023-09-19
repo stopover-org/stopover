@@ -18,6 +18,8 @@
 require 'date'
 
 class Balance < ApplicationRecord
+  GRAPHQL_TYPE = Types::FirmsRelated::BalanceType
+
   # MODULES ===============================================================
 
   # MONETIZE ==============================================================
