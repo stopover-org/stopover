@@ -30,6 +30,8 @@
 #  index_refunds_on_refund_id                       (refund_id)
 #
 class Refund < ApplicationRecord
+  GRAPHQL_TYPE = Types::PaymentsRelated::RefundType
+
   # MODULES ===============================================================
   include Mixins::PaymentStatuses
 

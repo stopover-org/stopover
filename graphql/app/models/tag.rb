@@ -14,6 +14,8 @@
 #  index_tags_on_title  (title) UNIQUE
 #
 class Tag < ApplicationRecord
+  GRAPHQL_TYPE = Types::TagType
+
   # MODULES ===============================================================
   #
   # ATTACHMENTS ===========================================================

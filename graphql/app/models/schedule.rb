@@ -20,6 +20,8 @@
 #  fk_rails_...  (event_id => events.id)
 #
 class Schedule < ApplicationRecord
+  GRAPHQL_TYPE = Types::EventsRelated::ScheduleType
+
   # MODULES ===============================================================
   include AASM
 

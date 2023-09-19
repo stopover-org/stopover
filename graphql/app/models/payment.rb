@@ -24,6 +24,8 @@
 #  index_payments_on_firm_id     (firm_id)
 #
 class Payment < ApplicationRecord
+  GRAPHQL_TYPE = Types::PaymentsRelated::PaymentType
+
   # MODULES ===============================================================
   include Mixins::PaymentStatuses
 

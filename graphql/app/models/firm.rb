@@ -33,6 +33,8 @@
 #  index_firms_on_ref_number  (ref_number) UNIQUE
 #
 class Firm < ApplicationRecord
+  GRAPHQL_TYPE = Types::FirmsRelated::FirmType
+
   # MODULES ===============================================================
   include AASM
 

@@ -27,6 +27,8 @@
 #  fk_rails_...  (stripe_integration_id => stripe_integrations.id)
 #
 class Booking < ApplicationRecord
+  GRAPHQL_TYPE = Types::BookingsRelated::BookingType
+
   # MODULES ===============================================================
   include AASM
 

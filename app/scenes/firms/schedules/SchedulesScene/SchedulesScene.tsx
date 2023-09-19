@@ -29,11 +29,11 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
     >(
       graphql`
         fragment SchedulesScene_FirmFragment on Firm
-        @refetchable(queryName: "SchedulesSceneFirmFragment")
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 30 }
           cursor: { type: "String", defaultValue: "" }
-        ) {
+        )
+        @refetchable(queryName: "SchedulesSceneFirmFragment") {
           pagedSchedules: schedules(first: $count, after: $cursor)
             @connection(key: "SchedulesScene_pagedSchedules") {
             edges {
@@ -134,7 +134,7 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
             rowsPerPageOptions: [30],
             rowsPerPage: 30,
             colSpan: schedulesHeaders.length,
-            hasPrevious: currentPage !== 1 || hasPrevious,
+            hasPrevious,
             hasNext,
             onNextPage: () => {
               if (hasNext) {

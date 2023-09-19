@@ -24,6 +24,8 @@
 
 # TODO: remove start_date end_date from the table
 class Trip < ApplicationRecord
+  GRAPHQL_TYPE = Types::TripsRelated::TripType
+
   # MODULES ===============================================================
   include AASM
 

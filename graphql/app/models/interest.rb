@@ -17,6 +17,8 @@
 #  index_interests_on_title  (title) UNIQUE
 #
 class Interest < ApplicationRecord
+  GRAPHQL_TYPE = Types::EventsRelated::InterestType
+
   # MODULES ===============================================================
   #
   # ATTACHMENTS ===========================================================

@@ -14,8 +14,11 @@ class GraphqlSchema < GraphQL::Schema
   # GraphQL-Ruby calls this when something goes wrong while running a query:
 
   # Union and Interface Resolution
-  def self.resolve_type(abstract_type, _obj, _ctx)
-    abstract_type
+  # def self.resolve_type(abstract_type, _obj, _ctx)
+  #   abstract_type
+  # end
+  def self.resolve_type(_abstract_type, obj, _ctx)
+    obj.class::GRAPHQL_TYPE
   end
 
   # Relay-style Object Identification:

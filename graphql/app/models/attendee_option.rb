@@ -33,6 +33,8 @@
 #  fk_rails_...  (stripe_integration_id => stripe_integrations.id)
 #
 class AttendeeOption < ApplicationRecord
+  GRAPHQL_TYPE = Types::BookingsRelated::AttendeeOptionType
+
   # MODULES ===============================================================
   include Mixins::OptionStatuses
 

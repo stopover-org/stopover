@@ -21,6 +21,8 @@
 #  index_event_options_on_event_id  (event_id)
 #
 class EventOption < ApplicationRecord
+  GRAPHQL_TYPE = Types::EventsRelated::EventOptionType
+
   # MODULES ===============================================================
   include Mixins::OptionStatuses
 

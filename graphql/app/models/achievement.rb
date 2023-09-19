@@ -15,6 +15,8 @@
 #  index_achievements_on_title  (title) UNIQUE
 #
 class Achievement < ApplicationRecord
+  GRAPHQL_TYPE = Types::FirmsRelated::AchievementType
+
   # MODULES ===============================================================
 
   # MONETIZE ==============================================================
