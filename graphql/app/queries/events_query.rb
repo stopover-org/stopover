@@ -14,8 +14,7 @@ class EventsQuery
     if @params[:start_date].present? && @params[:end_date].present?
       @relations = @relations.joins(:schedules)
                              .where('schedules.scheduled_for BETWEEN ? AND ?',
-                                    @params[:start_date],
-                                    @params[:end_date])
+                                    @params[:start_date], @params[:end_date])
                              .where(status: :published)
     end
     if @params[:min_price].present? && @params[:max_price].present?

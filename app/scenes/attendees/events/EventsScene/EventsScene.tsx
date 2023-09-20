@@ -26,7 +26,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   const isLargeDisplay = useMediaQuery(theme.breakpoints.up("lg"));
   const isVeryLargeDisplay = useMediaQuery(theme.breakpoints.up("xl"));
   const [currentPage, setCurrentPage] = React.useState(1);
-  const { data, hasPrevious, hasNext, loadPrevious, loadNext } =
+  const { data, hasPrevious, hasNext, loadPrevious, loadNext, refetch } =
     usePaginationFragment(
       graphql`
         fragment EventsScene_EventsPaginationFragment on Query
@@ -34,8 +34,9 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String", defaultValue: "" }
+          filters: { type: "EventsFilter", defaultValue: {} }
         ) {
-          events(first: $count, after: $cursor)
+          events(first: $count, after: $cursor, filters: $filters)
             @connection(key: "EventsScene_query_events") {
             edges {
               node {
@@ -62,7 +63,10 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     >
       {showSidebar && (
         <Grid xs={2} container width="250px">
-          <Sidebar eventFiltersFragment={data?.eventFilters} />
+          <Sidebar
+            eventFiltersFragment={data?.eventFilters}
+            refetch={refetch}
+          />
         </Grid>
       )}
 

@@ -790,10 +790,10 @@ enum EventTypeEnum {
 }
 
 input EventsFilter {
-  city: String!
+  city: String
   endDate: DateTime
-  maxPrice: Int!
-  minPrice: Int!
+  maxPrice: Int
+  minPrice: Int
   startDate: DateTime
   tags: [String!]
 }
