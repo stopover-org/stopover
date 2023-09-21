@@ -21,8 +21,6 @@ class EventsQuery
     @conditions[:price] = { gt: @params[:min_price], lt: @params[:max_price] } if @params[:min_price].present? && @params[:max_price].present?
     @conditions[:city] = @params[:city] if @params[:city].present? && !@params[:city].empty?
 
-    Rails.logger.debug @conditions
-
     Event.search(where: @conditions, offset: @offset, limit: PER_PAGE)
   end
 end

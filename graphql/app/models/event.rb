@@ -230,7 +230,7 @@ class Event < ApplicationRecord
       organizer: firm&.title,
       tags: tags.map(&:title),
       interests: interests.map(&:title),
-      price: attendee_price_per_uom_cents / 100
+      price: attendee_price_per_uom.cents
     }
   end
 
