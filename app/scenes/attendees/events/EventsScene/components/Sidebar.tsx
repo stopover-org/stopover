@@ -53,7 +53,7 @@ const Sidebar = ({ eventFiltersFragment, refetch }: Props) => {
         city,
       },
     }),
-    [refetch, selectedDates, priceRange, city, ref.current]
+    [selectedDates, priceRange, city]
   );
 
   React.useEffect(() => {
@@ -67,7 +67,7 @@ const Sidebar = ({ eventFiltersFragment, refetch }: Props) => {
 
       ref.current = null;
     }, 1000);
-  }, [filters, refetch]);
+  }, [filters, refetch, ref]);
 
   return (
     <Grid container flexDirection="column">
@@ -133,16 +133,16 @@ const Sidebar = ({ eventFiltersFragment, refetch }: Props) => {
           />
         </Grid>
       </Grid>
-      <Grid xs={12}>
-        <Checkbox
-          onChange={() => setOnlyIndividual(!onlyIndividual)}
-          checked={onlyIndividual}
-          label="Only Individual Events"
-        />
-      </Grid>
-      <Grid xs={12}>
-        <RatingSelector onSelect={setRating} rating={rating} />
-      </Grid>
+      {/* <Grid xs={12}> */}
+      {/*  <Checkbox */}
+      {/*    onChange={() => setOnlyIndividual(!onlyIndividual)} */}
+      {/*    checked={onlyIndividual} */}
+      {/*    label="Only Individual Events" */}
+      {/*  /> */}
+      {/* </Grid> */}
+      {/* <Grid xs={12}> */}
+      {/*  <RatingSelector onSelect={setRating} rating={rating} /> */}
+      {/* </Grid> */}
     </Grid>
   );
 };

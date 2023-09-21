@@ -61,7 +61,7 @@ module Types
     end
 
     def events(**args)
-      ::EventsQuery.new(args[:filters].to_h || {}).all
+      Connections::SearchkickConnection.new(arguments: { query_type: ::EventsQuery, **(args[:filters] || {}) })
     end
 
     def schedules(**args)

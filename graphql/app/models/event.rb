@@ -229,7 +229,8 @@ class Event < ApplicationRecord
       unit_type: unit&.unit_type,
       organizer: firm&.title,
       tags: tags.map(&:title),
-      interests: interests.map(&:title)
+      interests: interests.map(&:title),
+      price: attendee_price_per_uom_cents / 100
     }
   end
 
