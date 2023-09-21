@@ -40,6 +40,9 @@ module Types
       argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
     end
 
+    field :events_autocomplete, Types::EventsRelated::EventsAutocompleteType do
+      argument :query, String, required: true
+    end
     def bookings(**args)
       ::BookingQuery.new(args[:filters].to_h || {}, Booking.all, current_user).all
     end

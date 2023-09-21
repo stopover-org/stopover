@@ -789,6 +789,12 @@ enum EventTypeEnum {
   workshop
 }
 
+type EventsAutocomplete {
+  bookings: Booking
+  events: Event
+  interests: Interest
+}
+
 input EventsFilter {
   city: String
   endDate: DateTime
@@ -1270,6 +1276,7 @@ type Query {
     """
     last: Int
   ): EventConnection!
+  eventsAutocomplete(query: String!): EventsAutocomplete
   interests(filters: InterestsFilter): [Interest!]
 
   """
