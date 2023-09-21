@@ -54,6 +54,12 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       eventsFragmentRef
     );
   const events = usePagedEdges(data.events, currentPage, 10);
+  const [filters, setFilters] = React.useState<any>({});
+  React.useEffect(() => {
+    refetch({ ...filters, after: 1 });
+
+    setCurrentPage(1);
+  }, [filters]);
 
   return (
     <Grid
@@ -65,7 +71,9 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         <Grid xs={2} container width="250px">
           <Sidebar
             eventFiltersFragment={data?.eventFilters}
-            refetch={refetch}
+            onChange={(args) => {
+              setFilters(args);
+            }}
           />
         </Grid>
       )}

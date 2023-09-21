@@ -13,10 +13,10 @@ import { Sidebar_EventFiltersFragment$key } from "../../../../../artifacts/Sideb
 
 interface Props {
   eventFiltersFragment: Sidebar_EventFiltersFragment$key;
-  refetch: RefetchFn<any>;
+  onChange: (args: Record<string, any>) => void;
 }
 
-const Sidebar = ({ eventFiltersFragment, refetch }: Props) => {
+const Sidebar = ({ eventFiltersFragment, onChange }: Props) => {
   const edgeFiltersValues = useFragment(
     graphql`
       fragment Sidebar_EventFiltersFragment on EventFilters {
@@ -36,12 +36,11 @@ const Sidebar = ({ eventFiltersFragment, refetch }: Props) => {
   const [selectedDates, setDates] = React.useState<
     [Moment | null, Moment | null]
   >([null, null]);
-  const [rating, setRating] = React.useState(0);
+
   const [priceRange, setPriceRange] = React.useState<number[]>([
     edgeFiltersValues.minPrice.cents,
     edgeFiltersValues.maxPrice.cents,
   ]);
-  const [onlyIndividual, setOnlyIndividual] = React.useState(false);
   const [city, setCity] = React.useState("");
   const filters = React.useMemo(
     () => ({
@@ -63,11 +62,11 @@ const Sidebar = ({ eventFiltersFragment, refetch }: Props) => {
       ref.current = null;
     }
     ref.current = setTimeout(() => {
-      refetch(filters);
+      onChange(filters);
 
       ref.current = null;
     }, 1000);
-  }, [filters, refetch, ref]);
+  }, [filters, ref]);
 
   return (
     <Grid container flexDirection="column">
