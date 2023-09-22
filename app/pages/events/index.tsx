@@ -16,6 +16,7 @@ const Query = graphql`
       ...Layout_CurrentUserFragment
     }
     ...EventsScene_EventsPaginationFragment
+    ...EventsScene_EventsAutocompleteFragment
   }
 `;
 

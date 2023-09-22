@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, styled, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
-import { graphql, usePaginationFragment } from "react-relay";
+import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
 import { EventsScene_EventsPaginationFragment$key } from "../../../../artifacts/EventsScene_EventsPaginationFragment.graphql";
@@ -53,6 +53,15 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       `,
       eventsFragmentRef
     );
+
+  const eventsAutocomplete = useFragment(
+    graphql`
+      fragment EventsScene_EventsAutocompleteFragment on Query {
+        ...SearchBar_EventsAutocompleteFragment
+      }
+    `,
+    eventsFragmentRef
+  );
   const events = usePagedEdges(data.events, currentPage, 10);
   const [filters, setFilters] = React.useState<any>({});
   React.useEffect(() => {
@@ -89,7 +98,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         }}
       >
         <Grid xl={9} lg={12} xs={12}>
-          <SearchBar />
+          <SearchBar eventsAutocompleteFragmentRef={eventsAutocomplete} />
         </Grid>
         <Grid xl={9} lg={12} xs={12} container>
           {events.map((event, index) => {
