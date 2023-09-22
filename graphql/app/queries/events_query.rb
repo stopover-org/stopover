@@ -21,6 +21,8 @@ class EventsQuery
     @conditions[:price] = { gt: @params[:min_price], lt: @params[:max_price] } if @params[:min_price].present? && @params[:max_price].present?
     @conditions[:city] = @params[:city] if @params[:city].present? && !@params[:city].empty?
 
-    Event.search(where: @conditions, offset: @offset, limit: PER_PAGE)
+    query = @params[:query].nil? || @params[:query]&.empty? ? '*' : @params[:query]
+
+    Event.search(query, where: @conditions, offset: @offset, limit: PER_PAGE)
   end
 end

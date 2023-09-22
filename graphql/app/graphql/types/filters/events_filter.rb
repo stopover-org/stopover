@@ -9,6 +9,7 @@ module Types
       argument :max_price,  Integer, required: false
       argument :city,       String, required: false
       argument :tags,       [String], required: false
+      argument :query,      String, required: false
     end
   end
 end

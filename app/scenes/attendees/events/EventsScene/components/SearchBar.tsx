@@ -3,6 +3,7 @@ import { Search as SearchIcon } from "@mui/icons-material";
 import { graphql, useRefetchableFragment } from "react-relay";
 import { Autocomplete, AutocompleteOption, Chip } from "@mui/joy";
 import moment from "moment";
+import { useRouter } from "next/router";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import { SearchBar_EventsAutocompleteFragment$key } from "../../../../../artifacts/SearchBar_EventsAutocompleteFragment.graphql";
 import { SearchBarAutocompleteQuery } from "../../../../../artifacts/SearchBarAutocompleteQuery.graphql";
@@ -13,6 +14,7 @@ interface SearchBarProps {
 }
 
 const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
+  const router = useRouter();
   const [data, refetch] = useRefetchableFragment<
     SearchBarAutocompleteQuery,
     SearchBar_EventsAutocompleteFragment$key
@@ -45,7 +47,9 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
     eventsAutocompleteFragmentRef
   );
   const requestRef = React.useRef<NodeJS.Timeout | null>(null);
-  const [query, setQuery] = React.useState<string>("");
+  const [query, setQuery] = React.useState<string>(
+    typeof router?.query?.query === "string" ? router?.query?.query : ""
+  );
 
   React.useEffect(() => {
     if (requestRef.current) {
@@ -86,10 +90,18 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
       disableClearable
       options={options}
       size="sm"
-      getOptionLabel={(option) => option.title}
+      getOptionLabel={(option) =>
+        typeof option === "string" ? option : option.title
+      }
       sx={{ borderRadius: "0", marginRight: "5px" }}
       groupBy={(option) => option.type}
-      onInputChange={(_, value) => setQuery(value)}
+      onInputChange={(_, value) => {
+        if (value === "") {
+          router.push("/events");
+        }
+
+        setQuery(value);
+      }}
       renderOption={(props, option) => (
         <AutocompleteOption {...props}>
           <Link primary href={option.link}>
@@ -106,6 +118,17 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
           )}
         </AutocompleteOption>
       )}
+      onChange={(evt, value, reason) => {
+        console.log("value", value);
+        if (typeof value === "string") {
+          setQuery(value);
+
+          router.push(`/events?query=${value}`);
+        } else if (value.link) {
+          router.push(value.link);
+        }
+      }}
+      inputValue={query}
       endDecorator={<SearchIcon />}
       freeSolo
     />

@@ -4,6 +4,7 @@ import { Moment } from "moment/moment";
 import { Edit as EditIcon } from "@mui/icons-material";
 import { graphql, RefetchFn, useFragment } from "react-relay";
 import { useDebounce } from "use-debounce";
+import { useRouter } from "next/router";
 import Input from "../../../../../components/v2/Input/Input";
 import DateRangePicker from "../../../../../components/v2/DateRangePicker/DateRangePicker";
 import SliderRange from "../../../../../components/v2/SliderRange/SliderRange";
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const Sidebar = ({ eventFiltersFragment, onChange }: Props) => {
+  const router = useRouter();
   const edgeFiltersValues = useFragment(
     graphql`
       fragment Sidebar_EventFiltersFragment on EventFilters {
@@ -42,6 +44,12 @@ const Sidebar = ({ eventFiltersFragment, onChange }: Props) => {
     edgeFiltersValues.maxPrice.cents,
   ]);
   const [city, setCity] = React.useState("");
+  const query = React.useMemo(
+    () =>
+      typeof router?.query?.query === "string" ? router?.query?.query : "",
+    [router.query?.query]
+  );
+
   const filters = React.useMemo(
     () => ({
       filters: {
@@ -50,9 +58,10 @@ const Sidebar = ({ eventFiltersFragment, onChange }: Props) => {
         minPrice: priceRange[0],
         maxPrice: priceRange[1],
         city,
+        query,
       },
     }),
-    [selectedDates, priceRange, city]
+    [selectedDates, priceRange, city, query]
   );
 
   React.useEffect(() => {

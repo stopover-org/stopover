@@ -800,6 +800,7 @@ input EventsFilter {
   endDate: DateTime
   maxPrice: Int
   minPrice: Int
+  query: String
   startDate: DateTime
   tags: [String!]
 }
