@@ -85,10 +85,10 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
     <Autocomplete
       disableClearable
       options={options}
-      variant="plain"
       size="sm"
       getOptionLabel={(option) => option.title}
       sx={{ borderRadius: "0", marginRight: "5px" }}
+      groupBy={(option) => option.type}
       onInputChange={(_, value) => setQuery(value)}
       renderOption={(props, option) => (
         <AutocompleteOption {...props}>
@@ -107,6 +107,7 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
         </AutocompleteOption>
       )}
       endDecorator={<SearchIcon />}
+      freeSolo
     />
   );
 };
