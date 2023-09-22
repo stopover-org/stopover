@@ -45,6 +45,7 @@ const EditFirmForm = () => {
         </Grid>
         <Grid xs={12}>
           <Autocomplete
+            disableClearable
             multiple
             placeholder="Available Payment Types"
             options={["Cash", "Stripe"].map((v) => ({

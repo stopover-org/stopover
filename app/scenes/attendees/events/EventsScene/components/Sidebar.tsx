@@ -2,7 +2,9 @@ import { Grid } from "@mui/joy";
 import React from "react";
 import { Moment } from "moment/moment";
 import { Edit as EditIcon } from "@mui/icons-material";
-import { graphql, useFragment } from "react-relay";
+import { graphql, RefetchFn, useFragment } from "react-relay";
+import { useDebounce } from "use-debounce";
+import { useRouter } from "next/router";
 import Input from "../../../../../components/v2/Input/Input";
 import DateRangePicker from "../../../../../components/v2/DateRangePicker/DateRangePicker";
 import SliderRange from "../../../../../components/v2/SliderRange/SliderRange";
@@ -12,9 +14,11 @@ import { Sidebar_EventFiltersFragment$key } from "../../../../../artifacts/Sideb
 
 interface Props {
   eventFiltersFragment: Sidebar_EventFiltersFragment$key;
+  onChange: (args: Record<string, any>) => void;
 }
 
-const Sidebar = ({ eventFiltersFragment }: Props) => {
+const Sidebar = ({ eventFiltersFragment, onChange }: Props) => {
+  const router = useRouter();
   const edgeFiltersValues = useFragment(
     graphql`
       fragment Sidebar_EventFiltersFragment on EventFilters {
@@ -30,22 +34,55 @@ const Sidebar = ({ eventFiltersFragment }: Props) => {
     `,
     eventFiltersFragment
   );
-
+  const ref = React.useRef<NodeJS.Timeout | null>(null);
   const [selectedDates, setDates] = React.useState<
     [Moment | null, Moment | null]
   >([null, null]);
-  const [rating, setRating] = React.useState(0);
+
   const [priceRange, setPriceRange] = React.useState<number[]>([
     edgeFiltersValues.minPrice.cents,
     edgeFiltersValues.maxPrice.cents,
   ]);
-  const [onlyIndividual, setOnlyIndividual] = React.useState(false);
+  const [city, setCity] = React.useState("");
+  const query = React.useMemo(
+    () =>
+      typeof router?.query?.query === "string" ? router?.query?.query : "",
+    [router.query?.query]
+  );
+
+  const filters = React.useMemo(
+    () => ({
+      filters: {
+        startDate: selectedDates[0]?.toDate(),
+        endDate: selectedDates[1]?.toDate(),
+        minPrice: priceRange[0],
+        maxPrice: priceRange[1],
+        city,
+        query,
+      },
+    }),
+    [selectedDates, priceRange, city, query]
+  );
+
+  React.useEffect(() => {
+    if (ref.current) {
+      clearTimeout(ref.current);
+
+      ref.current = null;
+    }
+    ref.current = setTimeout(() => {
+      onChange(filters);
+
+      ref.current = null;
+    }, 1000);
+  }, [filters, ref]);
+
   return (
     <Grid container flexDirection="column">
       <Grid xs={12}>
         <Input
-          onChange={() => {}}
-          value=""
+          onChange={(value) => setCity(value)}
+          value={city}
           label="City"
           endDecorator={<EditIcon />}
         />
@@ -104,16 +141,16 @@ const Sidebar = ({ eventFiltersFragment }: Props) => {
           />
         </Grid>
       </Grid>
-      <Grid xs={12}>
-        <Checkbox
-          onChange={() => setOnlyIndividual(!onlyIndividual)}
-          checked={onlyIndividual}
-          label="Only Individual Events"
-        />
-      </Grid>
-      <Grid xs={12}>
-        <RatingSelector onSelect={setRating} rating={rating} />
-      </Grid>
+      {/* <Grid xs={12}> */}
+      {/*  <Checkbox */}
+      {/*    onChange={() => setOnlyIndividual(!onlyIndividual)} */}
+      {/*    checked={onlyIndividual} */}
+      {/*    label="Only Individual Events" */}
+      {/*  /> */}
+      {/* </Grid> */}
+      {/* <Grid xs={12}> */}
+      {/*  <RatingSelector onSelect={setRating} rating={rating} /> */}
+      {/* </Grid> */}
     </Grid>
   );
 };

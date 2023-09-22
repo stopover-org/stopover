@@ -192,6 +192,7 @@ GEM
     globalid (1.0.0)
       activesupport (>= 5.0)
     graphql (2.0.24)
+    hashie (5.0.0)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.2)
@@ -241,6 +242,7 @@ GEM
       money (~> 6.13)
       railties (>= 3.0)
     msgpack (1.5.1)
+    multi_json (1.15.0)
     multipart-post (2.1.1)
     net-imap (0.2.3)
       digest
@@ -268,6 +270,9 @@ GEM
       racc (~> 1.4)
     nokogiri (1.13.4-x86_64-linux)
       racc (~> 1.4)
+    opensearch-ruby (3.0.1)
+      faraday (>= 1.0, < 3)
+      multi_json (>= 1.0)
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
@@ -367,6 +372,9 @@ GEM
     ruby2_keywords (0.0.5)
     ruby_http_client (3.5.5)
     rubyzip (2.3.2)
+    searchkick (5.3.0)
+      activemodel (>= 6.1)
+      hashie
     selenium-webdriver (4.1.0)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
@@ -477,6 +485,7 @@ DEPENDENCIES
   kaminari
   money-rails (~> 1.12)
   net-sftp
+  opensearch-ruby
   pg (~> 1.1)
   phonelib
   puma (~> 5.0)
@@ -489,6 +498,7 @@ DEPENDENCIES
   rspec-sidekiq (~> 3.1)
   rubocop
   rubocop-rails
+  searchkick
   selenium-webdriver
   sendgrid-ruby
   sentry-rails

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+start_opensearch() {
+    if command -v "opensearch" &> /dev/null; then
+        echo "booting Opensearch..."
+        OPENSEARCH_JAVA_OPTS="-Xms2g -Xmx2g" opensearch -q >/dev/null 2>&1
+    else
+        echo "No binary found for Opensearch."
+        exit 1
+    fi
+}
+
+if [ "$SKIP_OPENSEARCH" != true ]; then
+  start_opensearch
+fi

@@ -36,8 +36,24 @@ module Types
       argument :filters, Types::Filters::BookingsFilter, required: false
     end
 
-    field :trips, [Types::TripsRelated::TripType] do
+    field :trips, [Types::TripsRelated::TripType], null: false do
       argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
+    end
+
+    field :events_autocomplete, Types::EventsRelated::EventsAutocompleteType, null: false do
+      argument :query, String, required: true
+    end
+
+    def events_autocomplete(**args)
+      if !args[:query] || args[:query]&.empty?
+        return { bookings: [],
+                 events: [],
+                 interests: [] }
+      end
+
+      { bookings: Booking.search(args[:query], limit: 5).to_a,
+        events: Event.search(args[:query], limit: 5).to_a,
+        interests: [] }
     end
 
     def bookings(**args)
@@ -61,7 +77,7 @@ module Types
     end
 
     def events(**args)
-      ::EventsQuery.new(args[:filters].to_h || {}).all
+      Connections::SearchkickConnection.new(arguments: { query_type: ::EventsQuery, **(args[:filters] || {}) })
     end
 
     def schedules(**args)

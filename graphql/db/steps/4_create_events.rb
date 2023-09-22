@@ -14,26 +14,31 @@ events_data.each do |event_data|
                                []
                              end
   single_days_with_time = if event_data[:single_days_with_time]
-                            [DateTime.parse(event_data[:single_days_with_time].to_s)]
+                            begin
+                              [DateTime.parse(event_data[:single_days_with_time].to_s)]
+                            rescue StandardError
+                              []
+                            end
                           else
                             []
                           end
+  next unless firm && event_data[:event_type]
   event.assign_attributes(
     **event_data.except(:firm_ref, :single_days_with_time, :recurring_days_with_time),
     firm: firm,
     interests: Interest.last(4),
-    country: firm.country,
-    region: firm.region,
-    city: firm.city,
-    street: firm.street,
-    house_number: firm.house_number,
-    full_address: firm.full_address,
+    country: firm&.country,
+    region: firm&.region,
+    city: firm&.city,
+    street: firm&.street,
+    house_number: firm&.house_number,
+    full_address: firm&.full_address,
     recurring_days_with_time: recurring_days_with_time,
     single_days_with_time: single_days_with_time
   )
   event.save!
 
-  options = event_options_data.select { |option_data| option_data[:event_ref] == event.ref_number }
+  options = event_options_data
   options.each do |option_data|
     event_option = EventOption.new
     event_option.assign_attributes(**option_data.except(:event_ref),

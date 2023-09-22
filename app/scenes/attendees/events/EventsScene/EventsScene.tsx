@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, styled, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
-import { graphql, usePaginationFragment } from "react-relay";
+import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
 import { EventsScene_EventsPaginationFragment$key } from "../../../../artifacts/EventsScene_EventsPaginationFragment.graphql";
@@ -9,9 +9,12 @@ import EventCardCompact from "./components/EventCardCompact";
 import EventCardWide from "./components/EventCardWide";
 import Pagination from "./components/Pagination";
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
+import { EventsScene_EventsAutocompleteFragment$key } from "../../../../artifacts/EventsScene_EventsAutocompleteFragment.graphql";
 
 interface Props {
-  eventsFragmentRef: EventsScene_EventsPaginationFragment$key;
+  eventsFragmentRef:
+    | EventsScene_EventsPaginationFragment$key
+    | EventsScene_EventsAutocompleteFragment$key;
 }
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
@@ -26,7 +29,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   const isLargeDisplay = useMediaQuery(theme.breakpoints.up("lg"));
   const isVeryLargeDisplay = useMediaQuery(theme.breakpoints.up("xl"));
   const [currentPage, setCurrentPage] = React.useState(1);
-  const { data, hasPrevious, hasNext, loadPrevious, loadNext } =
+  const { data, hasPrevious, hasNext, loadPrevious, loadNext, refetch } =
     usePaginationFragment(
       graphql`
         fragment EventsScene_EventsPaginationFragment on Query
@@ -34,8 +37,9 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String", defaultValue: "" }
+          filters: { type: "EventsFilter", defaultValue: {} }
         ) {
-          events(first: $count, after: $cursor)
+          events(first: $count, after: $cursor, filters: $filters)
             @connection(key: "EventsScene_query_events") {
             edges {
               node {
@@ -50,9 +54,25 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           }
         }
       `,
-      eventsFragmentRef
+      eventsFragmentRef as EventsScene_EventsPaginationFragment$key
+    );
+
+  const eventsAutocomplete =
+    useFragment<EventsScene_EventsAutocompleteFragment$key>(
+      graphql`
+        fragment EventsScene_EventsAutocompleteFragment on Query {
+          ...SearchBar_EventsAutocompleteFragment
+        }
+      `,
+      eventsFragmentRef as EventsScene_EventsAutocompleteFragment$key
     );
   const events = usePagedEdges(data.events, currentPage, 10);
+  const [filters, setFilters] = React.useState<any>({});
+  React.useEffect(() => {
+    refetch({ ...filters, after: 1 });
+
+    setCurrentPage(1);
+  }, [filters]);
 
   return (
     <Grid
@@ -62,7 +82,12 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     >
       {showSidebar && (
         <Grid xs={2} container width="250px">
-          <Sidebar eventFiltersFragment={data?.eventFilters} />
+          <Sidebar
+            eventFiltersFragment={data?.eventFilters}
+            onChange={(args) => {
+              setFilters(args);
+            }}
+          />
         </Grid>
       )}
 
@@ -77,7 +102,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         }}
       >
         <Grid xl={9} lg={12} xs={12}>
-          <SearchBar />
+          <SearchBar eventsAutocompleteFragmentRef={eventsAutocomplete} />
         </Grid>
         <Grid xl={9} lg={12} xs={12} container>
           {events.map((event, index) => {
