@@ -191,15 +191,15 @@ class Booking < ApplicationRecord
   def search_data
     {
       title: event.title,
-        description: event.description,
-        country: event.country,
-        city: event.city,
-        region: event.region,
-        address: event.full_address,
-        dates: schedule.scheduled_for,
-        organizer: firm&.title,
-        tags: event.tags.map(&:title),
-        interests: event.interests.map(&:title)
+      description: event.description,
+      country: event.country,
+      city: event.city,
+      region: event.region,
+      address: event.full_address,
+      dates: schedule.scheduled_for,
+      organizer: firm&.title,
+      tags: event.tags.map(&:title),
+      interests: event.interests.map(&:title)
     }
   end
 

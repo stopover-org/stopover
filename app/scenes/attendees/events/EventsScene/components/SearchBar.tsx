@@ -1,10 +1,12 @@
 import React from "react";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { graphql, useRefetchableFragment } from "react-relay";
-import { Autocomplete, AutocompleteOption } from "@mui/joy";
+import { Autocomplete, AutocompleteOption, Chip } from "@mui/joy";
+import moment from "moment";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import { SearchBar_EventsAutocompleteFragment$key } from "../../../../../artifacts/SearchBar_EventsAutocompleteFragment.graphql";
 import { SearchBarAutocompleteQuery } from "../../../../../artifacts/SearchBarAutocompleteQuery.graphql";
+import Link from "../../../../../components/v2/Link/Link";
 
 interface SearchBarProps {
   eventsAutocompleteFragmentRef: SearchBar_EventsAutocompleteFragment$key;
@@ -25,6 +27,9 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
             bookedFor
             event {
               title
+              id
+            }
+            trip {
               id
             }
           }
@@ -49,7 +54,7 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
       requestRef.current = null;
     }
     requestRef.current = setTimeout(() => {
-      refetch({ query });
+      refetch({ query }, { fetchPolicy: "store-and-network" });
     }, 750);
   }, [query]);
 
@@ -61,13 +66,15 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
               id: event.id,
               title: event.title,
               date: null,
-              type: "event",
+              type: "Event",
+              link: `/events/${event.id}`,
             })),
             ...data.eventsAutocomplete.bookings.map((booking) => ({
               id: booking.id,
               title: booking.event.title,
               date: booking.bookedFor,
-              type: "booking",
+              type: "Booking",
+              link: `/trips/${booking.trip.id}`,
             })),
           ]
         : [],
@@ -85,7 +92,18 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
       onInputChange={(_, value) => setQuery(value)}
       renderOption={(props, option) => (
         <AutocompleteOption {...props}>
-          <Typography>{option.title}</Typography>
+          <Link primary href={option.link}>
+            <Typography>{option.title}</Typography>
+          </Link>
+          &nbsp;
+          <Chip size="sm" variant="outlined">
+            {option.type}
+          </Chip>
+          {option.date && (
+            <Chip size="sm" variant="outlined">
+              {moment(option.date).calendar()}
+            </Chip>
+          )}
         </AutocompleteOption>
       )}
       endDecorator={<SearchIcon />}

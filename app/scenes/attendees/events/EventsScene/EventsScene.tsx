@@ -9,9 +9,12 @@ import EventCardCompact from "./components/EventCardCompact";
 import EventCardWide from "./components/EventCardWide";
 import Pagination from "./components/Pagination";
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
+import { EventsScene_EventsAutocompleteFragment$key } from "../../../../artifacts/EventsScene_EventsAutocompleteFragment.graphql";
 
 interface Props {
-  eventsFragmentRef: EventsScene_EventsPaginationFragment$key;
+  eventsFragmentRef:
+    | EventsScene_EventsPaginationFragment$key
+    | EventsScene_EventsAutocompleteFragment$key;
 }
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
@@ -51,17 +54,18 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           }
         }
       `,
-      eventsFragmentRef
+      eventsFragmentRef as EventsScene_EventsPaginationFragment$key
     );
 
-  const eventsAutocomplete = useFragment(
-    graphql`
-      fragment EventsScene_EventsAutocompleteFragment on Query {
-        ...SearchBar_EventsAutocompleteFragment
-      }
-    `,
-    eventsFragmentRef
-  );
+  const eventsAutocomplete =
+    useFragment<EventsScene_EventsAutocompleteFragment$key>(
+      graphql`
+        fragment EventsScene_EventsAutocompleteFragment on Query {
+          ...SearchBar_EventsAutocompleteFragment
+        }
+      `,
+      eventsFragmentRef as EventsScene_EventsAutocompleteFragment$key
+    );
   const events = usePagedEdges(data.events, currentPage, 10);
   const [filters, setFilters] = React.useState<any>({});
   React.useEffect(() => {
