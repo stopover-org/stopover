@@ -27,6 +27,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
         interests {
           id
           title
+          slug
         }
         attendeePricePerUom {
           cents
@@ -122,7 +123,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
           <Typography level="body3" sx={{ fontSize: "md" }}>
             {event.interests.map((interest) => (
               <React.Fragment key={interest.id}>
-                <Link primary href={`/events?interests=${interest.id}`}>
+                <Link primary href={`/events?interest=${interest.slug}`}>
                   {interest.title}
                 </Link>
                 &nbsp;

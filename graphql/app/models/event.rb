@@ -56,8 +56,8 @@ class Event < ApplicationRecord
   GRAPHQL_TYPE = Types::EventsRelated::EventType
 
   # MODULES ===============================================================
-  searchkick callbacks: :async
   include AASM
+  searchkick callbacks: :async
 
   # MONETIZE =====================================================================
   monetize :attendee_price_per_uom_cents

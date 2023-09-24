@@ -41,6 +41,11 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
             ...EventCardCompacts_EventFragment
             ...EventCardWide_EventFragment
           }
+          interests {
+            id
+            title
+            slug
+          }
         }
       }
     `,
@@ -80,6 +85,13 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
               type: "Booking",
               link: `/trips/${booking.trip.id}`,
             })),
+            ...data.eventsAutocomplete.interests.map((interest) => ({
+              id: interest.id,
+              title: interest.title,
+              date: null,
+              type: "Interest",
+              link: `/events?interest=${interest.slug}`,
+            })),
           ]
         : [],
     [data]
@@ -96,9 +108,12 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
       sx={{ borderRadius: "0", marginRight: "5px" }}
       groupBy={(option) => option.type}
       onInputChange={(_, value) => {
-        if (value === "") {
-          router.push("/events");
-        }
+        const q = router.query;
+        q.query = value;
+
+        router.push(
+          `/events?${new URLSearchParams(q as Record<string, any>).toString()}`
+        );
 
         setQuery(value);
       }}
@@ -118,14 +133,9 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
           )}
         </AutocompleteOption>
       )}
-      onChange={(evt, value, reason) => {
-        console.log("value", value);
-        if (typeof value === "string") {
-          setQuery(value);
-
-          router.push(`/events?query=${value}`);
-        } else if (value.link) {
-          router.push(value.link);
+      onChange={(evt, value) => {
+        if (value.link) {
+          router.push(value.link as string);
         }
       }}
       inputValue={query}
