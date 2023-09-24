@@ -89,18 +89,25 @@ const Sidebar = ({ eventFiltersFragment, onChange }: Props) => {
       </Grid>
       <DateRangePicker
         value={selectedDates}
-        onChange={(dates) => setDates(dates)}
+        onChange={(dates) => {
+          if (
+            dates.filter(Boolean).length === 2 ||
+            dates.filter(Boolean).length === 0
+          ) {
+            setDates(dates);
+          }
+        }}
         minDate={edgeFiltersValues.startDate}
         disablePast
         startInputProps={{
           label: "Start Date",
           placeholder: "Enter Start of your trip",
-          hint: "Start of your trip",
+          size: "sm",
         }}
         endInputProps={{
           label: "End Date",
           placeholder: "Enter End of your trip",
-          hint: "End of your trip",
+          size: "sm",
         }}
       />
       <Grid xs={12}>
@@ -118,6 +125,7 @@ const Sidebar = ({ eventFiltersFragment, onChange }: Props) => {
       <Grid xs={12} container>
         <Grid xs={6}>
           <Input
+            size="sm"
             type="number"
             value={priceRange[0].toString()}
             onChange={(value) => {
@@ -130,6 +138,7 @@ const Sidebar = ({ eventFiltersFragment, onChange }: Props) => {
         </Grid>
         <Grid xs={6}>
           <Input
+            size="sm"
             type="number"
             value={priceRange[1].toString()}
             onChange={(value) => {
@@ -141,16 +150,6 @@ const Sidebar = ({ eventFiltersFragment, onChange }: Props) => {
           />
         </Grid>
       </Grid>
-      {/* <Grid xs={12}> */}
-      {/*  <Checkbox */}
-      {/*    onChange={() => setOnlyIndividual(!onlyIndividual)} */}
-      {/*    checked={onlyIndividual} */}
-      {/*    label="Only Individual Events" */}
-      {/*  /> */}
-      {/* </Grid> */}
-      {/* <Grid xs={12}> */}
-      {/*  <RatingSelector onSelect={setRating} rating={rating} /> */}
-      {/* </Grid> */}
     </Grid>
   );
 };

@@ -1,15 +1,21 @@
 import React from "react";
 import { Grid, styled, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
-import { graphql, useFragment, usePaginationFragment } from "react-relay";
+import {
+  ConnectionHandler,
+  graphql,
+  useFragment,
+  usePaginationFragment,
+} from "react-relay";
 import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
 import { EventsScene_EventsPaginationFragment$key } from "../../../../artifacts/EventsScene_EventsPaginationFragment.graphql";
 import EventCardCompact from "./components/EventCardCompact";
 import EventCardWide from "./components/EventCardWide";
 import Pagination from "./components/Pagination";
-import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { EventsScene_EventsAutocompleteFragment$key } from "../../../../artifacts/EventsScene_EventsAutocompleteFragment.graphql";
+import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
+import useEdges from "../../../../lib/hooks/useEdges";
 
 interface Props {
   eventsFragmentRef:
@@ -36,7 +42,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         @refetchable(queryName: "EventsScenePaginationQuery")
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
-          cursor: { type: "String", defaultValue: "" }
+          cursor: { type: "String", defaultValue: "0" }
           filters: { type: "EventsFilter", defaultValue: {} }
         ) {
           events(first: $count, after: $cursor, filters: $filters)
@@ -67,11 +73,32 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       eventsFragmentRef as EventsScene_EventsAutocompleteFragment$key
     );
   const events = usePagedEdges(data.events, currentPage, 10);
-  const [filters, setFilters] = React.useState<any>({});
+  const [{ filters }, setFilters] = React.useState<any>({});
   React.useEffect(() => {
-    refetch({ ...filters, after: 1 });
+    const startDate = filters?.startDate
+      ? filters?.startDate.toISOString()
+      : undefined;
 
-    setCurrentPage(1);
+    const endDate = filters?.endDate
+      ? filters?.endDate.toISOString()
+      : undefined;
+
+    refetch(
+      {
+        filters: {
+          ...filters,
+          startDate,
+          endDate,
+        },
+        cursor: "0",
+      },
+      {
+        fetchPolicy: "store-and-network",
+        onComplete: () => {
+          setCurrentPage(1);
+        },
+      }
+    );
   }, [filters]);
 
   return (
@@ -104,43 +131,49 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         <Grid xl={9} lg={12} xs={12}>
           <SearchBar eventsAutocompleteFragmentRef={eventsAutocomplete} />
         </Grid>
-        <Grid xl={9} lg={12} xs={12} container>
-          {events.map((event, index) => {
-            if (index === 0) {
-              if (isVeryLargeDisplay || isLargeDisplay) {
-                return (
-                  <Grid key={event.id} xs={12} lg={12} xl={12} padding={0}>
-                    <EventCardWide eventFragmentRef={event} />
-                  </Grid>
-                );
+        <React.Suspense>
+          <Grid xl={9} lg={12} xs={12} container>
+            {events.map((event, index) => {
+              if (index === 0) {
+                if (isVeryLargeDisplay || isLargeDisplay) {
+                  return (
+                    <Grid key={event.id} xs={12} lg={12} xl={12} padding={0}>
+                      <EventCardWide eventFragmentRef={event} />
+                    </Grid>
+                  );
+                }
               }
-            }
-            return <EventCardCompact key={event.id} eventFragmentRef={event} />;
-          })}
-          <Grid xs={12}>
-            <Pagination
-              showPrev={hasPrevious}
-              showNext={hasNext}
-              onPrev={() => {
-                if (hasPrevious) {
-                  loadPrevious(10, {
-                    onComplete: () => setCurrentPage(currentPage - 1),
-                  });
-                  return;
-                }
-                setCurrentPage(currentPage - 1);
-              }}
-              onNext={() => {
-                if (hasNext) {
-                  loadNext(10, {
-                    onComplete: () => setCurrentPage(currentPage + 1),
-                  });
-                }
-              }}
-              currentPage={currentPage}
-            />
+              return (
+                <EventCardCompact key={event.id} eventFragmentRef={event} />
+              );
+            })}
+            <Grid xs={12}>
+              <Pagination
+                showPrev={hasPrevious}
+                showNext={hasNext}
+                onPrev={() => {
+                  if (hasPrevious) {
+                    loadPrevious(10, {
+                      onComplete: () => setCurrentPage(currentPage - 1),
+                    });
+                    return;
+                  }
+                  setCurrentPage(currentPage - 1);
+                }}
+                onNext={() => {
+                  if (hasNext) {
+                    loadNext(10, {
+                      onComplete: () => setCurrentPage(currentPage + 1),
+                    });
+                    return;
+                  }
+                  setCurrentPage(currentPage + 1);
+                }}
+                currentPage={currentPage}
+              />
+            </Grid>
           </Grid>
-        </Grid>
+        </React.Suspense>
       </ContentWrapper>
     </Grid>
   );

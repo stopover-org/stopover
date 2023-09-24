@@ -1,8 +1,9 @@
 import * as React from "react";
 import { PickersDayProps } from "@mui/x-date-pickers";
 import { Moment } from "moment/moment";
-import { FormControl, Grid } from "@mui/joy";
+import { FormControl, Grid, IconButton, Tooltip } from "@mui/joy";
 import { ClickAwayListener } from "@mui/base";
+import ClearIcon from "@mui/icons-material/Clear";
 import DatePicker from "../DatePicker";
 import { DatePickerProps as JoyDatePickerProps } from "../DatePicker/DatePicker";
 import Input, { InputProps } from "../Input/Input";
@@ -72,7 +73,7 @@ const DateRangePicker = ({
           newSelectedDates = [selectedDates[0], date];
         }
 
-        await setSelectedDays(
+        setSelectedDays(
           newSelectedDates.sort((a, b) => {
             if (!a || !b) return 0;
             return a.isSameOrAfter(b) ? 1 : -1;
@@ -95,23 +96,39 @@ const DateRangePicker = ({
       }}
     >
       <Grid xs={12} container spacing={1}>
-        <Grid xs={6}>
+        <Grid xs={5}>
           <Input
-            value={getDate(selectedDates[0])}
+            value={getDate(selectedDates[0]) || ""}
             {...startInputProps}
             onChange={() => {}}
             onClick={onInputClick}
             readOnly
           />
         </Grid>
-        <Grid xs={6}>
+        <Grid xs={5}>
           <Input
-            value={getDate(selectedDates[1])}
+            value={getDate(selectedDates[1]) || ""}
             {...endInputProps}
             onChange={() => {}}
             onClick={onInputClick}
             readOnly
           />
+        </Grid>
+        <Grid xs={2} sx={{ paddingTop: "30px" }}>
+          <IconButton
+            size="sm"
+            onClick={() => {
+              if (onChange instanceof Function) {
+                onChange([null, null]);
+              }
+
+              setSelectedDays([null, null]);
+            }}
+          >
+            <Tooltip title="Clear">
+              <ClearIcon />
+            </Tooltip>
+          </IconButton>
         </Grid>
         <Grid xs={12}>
           <FormControl ref={formControlRef}>

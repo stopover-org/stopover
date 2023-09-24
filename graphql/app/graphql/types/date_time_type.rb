@@ -9,7 +9,7 @@ module Types
 
       return unless input_value.is_a?(String)
 
-      super(input_value, context) # converts to iso8601
+      super(input_value, context).in_time_zone(Time.zone) # converts to iso8601
     end
 
     def self.coerce_result(ruby_value, context)
