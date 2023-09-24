@@ -56,8 +56,8 @@ class Event < ApplicationRecord
   GRAPHQL_TYPE = Types::EventsRelated::EventType
 
   # MODULES ===============================================================
-  searchkick callbacks: :async
   include AASM
+  searchkick callbacks: :async
 
   # MONETIZE =====================================================================
   monetize :attendee_price_per_uom_cents
@@ -229,7 +229,7 @@ class Event < ApplicationRecord
       unit_type: unit&.unit_type,
       organizer: firm&.title,
       tags: tags.map(&:title),
-      interests: interests.map(&:title),
+      interests: interests.map(&:slug),
       price: attendee_price_per_uom.cents
     }
   end

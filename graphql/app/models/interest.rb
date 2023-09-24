@@ -20,32 +20,62 @@ class Interest < ApplicationRecord
   GRAPHQL_TYPE = Types::EventsRelated::InterestType
 
   # MODULES ===============================================================
-  #
-  # ATTACHMENTS ===========================================================
-  has_one_attached :preview
+  searchkick callbacks: :async
 
-  # HAS_ONE ASSOCIATIONS ==========================================================
-  #
-  # HAS_MANY ASSOCIATIONS =========================================================
+  # MONETIZE ==============================================================
+
+  # BELONGS_TO ASSOCIATIONS ===============================================
+
+  # HAS_ONE ASSOCIATIONS ==================================================
+
+  # HAS_ONE THROUGH ASSOCIATIONS ==========================================
+
+  # HAS_MANY ASSOCIATIONS =================================================
   has_many :account_interests, dependent: :destroy
   has_many :event_interests, dependent: :destroy
 
-  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :accounts, through: :account_interests
   has_many :events, through: :event_interests
 
-  # BELONGS_TO ASSOCIATIONS =======================================================
-  #
-  # AASM STATES ================================================================
-  #
-  # ENUMS =======================================================================
-  #
-  # VALIDATIONS ================================================================
-  #
-  # CALLBACKS ================================================================
-  #
-  # SCOPES =====================================================================
-  scope :title_autocomplete, ->(title) { where('title LIKE ?', "%#{title}%") }
+  # AASM STATES ===========================================================
 
-  # DELEGATIONS ==============================================================
+  # ENUMS =================================================================
+
+  # SECURE TOKEN ==========================================================
+
+  # SECURE PASSWORD =======================================================
+
+  # ATTACHMENTS ===========================================================
+  has_one_attached :preview
+
+  # RICH_TEXT =============================================================
+
+  # VALIDATIONS ===========================================================
+  validates :title, :slug, presence: true
+  validates :slug, uniqueness: { case_sensitive: false }
+
+  # CALLBACKS =============================================================
+  before_validation :set_slug
+
+  # SCOPES ================================================================
+
+  # DELEGATION ============================================================
+
+  def search_data
+    {
+      title: title
+    }
+  end
+
+  def should_index?
+    active
+  end
+
+  def set_slug
+    return unless slug
+    parameterized_title = title.parameterize
+    self.slug = parameterized_title if Interest.where(slug: parameterized_title).empty
+    self.slug = SecureRandom.hex unless slug
+  end
 end

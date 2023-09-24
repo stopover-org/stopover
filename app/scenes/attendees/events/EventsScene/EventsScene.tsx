@@ -1,12 +1,9 @@
 import React from "react";
-import { Grid, styled, useTheme } from "@mui/joy";
+import { Chip, ChipDelete, Grid, styled, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
-import {
-  ConnectionHandler,
-  graphql,
-  useFragment,
-  usePaginationFragment,
-} from "react-relay";
+import { graphql, useFragment, usePaginationFragment } from "react-relay";
+import { useRouter } from "next/router";
+import { stringify } from "qs";
 import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
 import { EventsScene_EventsPaginationFragment$key } from "../../../../artifacts/EventsScene_EventsPaginationFragment.graphql";
@@ -15,12 +12,14 @@ import EventCardWide from "./components/EventCardWide";
 import Pagination from "./components/Pagination";
 import { EventsScene_EventsAutocompleteFragment$key } from "../../../../artifacts/EventsScene_EventsAutocompleteFragment.graphql";
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
-import useEdges from "../../../../lib/hooks/useEdges";
+import { EventsScenePaginationQuery } from "../../../../artifacts/EventsScenePaginationQuery.graphql";
+import { EventsScene_InterestsFragment$key } from "../../../../artifacts/EventsScene_InterestsFragment.graphql";
 
 interface Props {
   eventsFragmentRef:
     | EventsScene_EventsPaginationFragment$key
-    | EventsScene_EventsAutocompleteFragment$key;
+    | EventsScene_EventsAutocompleteFragment$key
+    | EventsScene_InterestsFragment$key;
 }
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
@@ -30,13 +29,17 @@ const ContentWrapper = styled(Grid)(({ theme }) => ({
 }));
 
 const EventsScene = ({ eventsFragmentRef }: Props) => {
+  const router = useRouter();
   const theme = useTheme();
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   const isLargeDisplay = useMediaQuery(theme.breakpoints.up("lg"));
   const isVeryLargeDisplay = useMediaQuery(theme.breakpoints.up("xl"));
   const [currentPage, setCurrentPage] = React.useState(1);
   const { data, hasPrevious, hasNext, loadPrevious, loadNext, refetch } =
-    usePaginationFragment(
+    usePaginationFragment<
+      EventsScenePaginationQuery,
+      EventsScene_EventsPaginationFragment$key
+    >(
       graphql`
         fragment EventsScene_EventsPaginationFragment on Query
         @refetchable(queryName: "EventsScenePaginationQuery")
@@ -63,7 +66,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       eventsFragmentRef as EventsScene_EventsPaginationFragment$key
     );
 
-  const eventsAutocomplete =
+  const eventsAutocompleteQuery =
     useFragment<EventsScene_EventsAutocompleteFragment$key>(
       graphql`
         fragment EventsScene_EventsAutocompleteFragment on Query {
@@ -72,8 +75,25 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       `,
       eventsFragmentRef as EventsScene_EventsAutocompleteFragment$key
     );
+
+  const interestsQuery = useFragment<EventsScene_InterestsFragment$key>(
+    graphql`
+      fragment EventsScene_InterestsFragment on Query {
+        ...Sidebar_InterestsFragment
+      }
+    `,
+    eventsFragmentRef as EventsScene_InterestsFragment$key
+  );
+  const q = { ...router.query };
+  const interestsSlug = (
+    Array.isArray(q["interests[]"]) ? q["interests[]"] : [q["interests[]"]]
+  ).filter(Boolean) as string[];
+  const { query } = router.query;
   const events = usePagedEdges(data.events, currentPage, 10);
-  const [{ filters }, setFilters] = React.useState<any>({});
+  const [{ filters }, setFilters] = React.useState<any>({
+    query,
+  });
+
   React.useEffect(() => {
     const startDate = filters?.startDate
       ? filters?.startDate.toISOString()
@@ -87,6 +107,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       {
         filters: {
           ...filters,
+          interests: interestsSlug,
           startDate,
           endDate,
         },
@@ -99,7 +120,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         },
       }
     );
-  }, [filters]);
+  }, [filters, router]);
 
   return (
     <Grid
@@ -108,14 +129,17 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       sx={{ paddingLeft: "20px", paddingRight: "20px" }}
     >
       {showSidebar && (
-        <Grid xs={2} container width="250px">
-          <Sidebar
-            eventFiltersFragment={data?.eventFilters}
-            onChange={(args) => {
-              setFilters(args);
-            }}
-          />
-        </Grid>
+        <React.Suspense>
+          <Grid xs={2} container width="250px">
+            <Sidebar
+              eventFiltersFragment={data?.eventFilters}
+              interestsQueryFragmentRef={interestsQuery}
+              onChange={(args) => {
+                setFilters(args);
+              }}
+            />
+          </Grid>
+        </React.Suspense>
       )}
 
       <ContentWrapper
@@ -126,11 +150,42 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           paddingTop: showSidebar ? "7px" : "20px",
           paddingLeft: showSidebar ? "60px" : "0",
           minWidth: "calc(100wv - 250px)",
+          flexDirection: "column",
         }}
       >
         <Grid xl={9} lg={12} xs={12}>
-          <SearchBar eventsAutocompleteFragmentRef={eventsAutocomplete} />
+          <SearchBar eventsAutocompleteFragmentRef={eventsAutocompleteQuery} />
         </Grid>
+        {interestsSlug.length > 0 && (
+          <Grid xl={9} lg={12} xs={12}>
+            {interestsSlug.map((interest) => (
+              <Chip
+                size="lg"
+                variant="outlined"
+                endDecorator={
+                  <ChipDelete
+                    onDelete={() => {
+                      q.interests = interestsSlug.filter(
+                        (slug) => slug !== interest
+                      );
+
+                      delete q["interests[]"];
+
+                      const url = `/events?${stringify(q, {
+                        arrayFormat: "brackets",
+                        encode: false,
+                      })}`;
+
+                      router.push(url);
+                    }}
+                  />
+                }
+              >
+                {interest}
+              </Chip>
+            ))}
+          </Grid>
+        )}
         <React.Suspense>
           <Grid xl={9} lg={12} xs={12} container>
             {events.map((event, index) => {

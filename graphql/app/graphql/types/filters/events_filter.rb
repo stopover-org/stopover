@@ -10,6 +10,7 @@ module Types
       argument :city,       String, required: false
       argument :tags,       [String], required: false
       argument :query,      String, required: false
+      argument :interests,  [String], required: false
     end
   end
 end

@@ -798,6 +798,7 @@ type EventsAutocomplete {
 input EventsFilter {
   city: String
   endDate: DateTime
+  interests: [String!]
   maxPrice: Int
   minPrice: Int
   query: String

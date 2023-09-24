@@ -53,7 +53,7 @@ module Types
 
       { bookings: Booking.search(args[:query], limit: 5).to_a,
         events: Event.search(args[:query], limit: 5).to_a,
-        interests: [] }
+        interests: Interest.search(args[:query], limit: 5).to_a }
     end
 
     def bookings(**args)

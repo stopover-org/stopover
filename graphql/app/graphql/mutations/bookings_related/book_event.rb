@@ -19,6 +19,14 @@ module Mutations
           access_token: booking.user.access_token,
           notification: 'You booked this event!'
         }
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+
+        {
+          booking: nil,
+          access_token: nil,
+          errors: [e.message]
+        }
       end
 
       private

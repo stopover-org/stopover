@@ -3,6 +3,8 @@ import { AspectRatio, Box, Card, CardOverflow, Grid, Stack } from "@mui/joy";
 import { graphql, useFragment, useMutation } from "react-relay";
 import moment from "moment";
 import { Moment } from "moment/moment";
+import { useRouter } from "next/router";
+import { stringify } from "qs";
 import Typography from "../../../../../components/v2/Typography";
 import Rating from "../../../../../components/v2/Rating/Rating";
 import Link from "../../../../../components/v2/Link";
@@ -19,6 +21,7 @@ interface Props {
 }
 
 const EventCardCompact = ({ eventFragmentRef }: Props) => {
+  const router = useRouter();
   const event = useFragment<EventCardWide_EventFragment$key>(
     graphql`
       fragment EventCardWide_EventFragment on Event {
@@ -28,6 +31,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
         interests {
           id
           title
+          slug
         }
         attendeePricePerUom {
           cents
@@ -122,14 +126,36 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
           </Link>
           <Box sx={{ paddingBottom: "5px" }}>
             <Typography level="body3" sx={{ fontSize: "md" }}>
-              {event.interests.map((interest) => (
-                <React.Fragment key={interest.id}>
-                  <Link primary href={`/events?interests=${interest.id}`}>
-                    {interest.title}
-                  </Link>
-                  &nbsp;
-                </React.Fragment>
-              ))}
+              {event.interests.map((interest) => {
+                const q = { ...router.query };
+                const rawInterests = (
+                  Array.isArray(q["interests[]"])
+                    ? q["interests[]"]
+                    : [q["interests[]"]]
+                ).filter(Boolean) as string[];
+
+                q.interests = [...rawInterests, interest.slug]
+                  .filter(
+                    (value, index, array) => array.indexOf(value) === index
+                  )
+                  .filter(Boolean);
+
+                delete q["interests[]"];
+
+                const url = `/events?${stringify(q, {
+                  arrayFormat: "brackets",
+                  encode: false,
+                })}`;
+
+                return (
+                  <React.Fragment key={interest.id}>
+                    <Link primary href={url}>
+                      {interest.title}
+                    </Link>
+                    &nbsp;
+                  </React.Fragment>
+                );
+              })}
             </Typography>
           </Box>
           <Rating
