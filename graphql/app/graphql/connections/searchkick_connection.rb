@@ -10,27 +10,38 @@ module Connections
     end
 
     def nodes
-      @query_type.new(arguments.except(:query_type), after: (@after_value&.to_i || 0) + 1).all.to_a
+      query.all
     end
 
     def has_next_page
-      @arguments[:query_type].total_pages
+      query.total > after_value + @query_type::PER_PAGE
     end
 
     def has_previous_page
-      @after_value.to_i != 1
+      after_value != 1
     end
 
     def start_cursor
-      @after_value.to_i
+      after_value
     end
 
     def end_cursor
-      @after_value.to_i + @query_type::PER_PAGE
+      after_value + nodes.count
     end
 
-    def cursor_for(_item)
-      'not implemented'
+    def cursor_for(item)
+      index = nodes.find_index { |node| node.id == item.id }
+
+      (after_value + index).to_s
+    end
+
+    def query
+      @query ||= @query_type.new(arguments.except(:query_type), after: after_value)
+    end
+
+    def after_value
+      raw_cursor = context&.query&.provided_variables ? context.query.provided_variables['cursor'] : nil
+      raw_cursor.to_i || @first_value || 0
     end
   end
 end

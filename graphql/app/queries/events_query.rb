@@ -9,20 +9,42 @@ class EventsQuery
 
   def initialize(
     params = {},
-    after: 1
+    after: 1,
+    limit: PER_PAGE
   )
     @params = params
     @conditions = { dates: { gt: Time.current } }
     @offset = after
+    @limit = limit
+  end
+
+  def execute(offset: 0, limit: @limit)
+    if query
+      Event.search(query, where: conditions, offset: offset, limit: limit)
+    else
+      Event.search(where: conditions, offset: offset, limit: limit)
+    end
   end
 
   def all
-    @conditions[:dates] = { gt: @params[:start_date], lt: @params[:end_date] } if @params[:start_date].present? && @params[:end_date].present?
-    @conditions[:price] = { gt: @params[:min_price], lt: @params[:max_price] } if @params[:min_price].present? && @params[:max_price].present?
+    execute(offset: @offset).to_a
+  end
+
+  def total
+    execute(offset: nil, limit: nil).count
+  end
+
+  def conditions
+    @conditions[:dates] = { gte: @params[:start_date], lte: @params[:end_date] } if @params[:start_date].present? && @params[:end_date].present?
+    @conditions[:price] = { gte: @params[:min_price], lte: @params[:max_price] } if @params[:min_price].present? && @params[:max_price].present?
     @conditions[:city] = @params[:city] if @params[:city].present? && !@params[:city].empty?
 
-    query = @params[:query].nil? || @params[:query]&.empty? ? '*' : @params[:query]
+    @conditions
+  end
 
-    Event.search(query, where: @conditions, offset: @offset, limit: PER_PAGE)
+  def query
+    @query ||= @params[:query].nil? || @params[:query]&.empty? ? nil : @params[:query]
+
+    @query
   end
 end

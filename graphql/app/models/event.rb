@@ -224,7 +224,7 @@ class Event < ApplicationRecord
       city: city,
       region: region,
       address: full_address,
-      dates: schedules.map(&:scheduled_for),
+      dates: schedules.map(&:scheduled_for).map(&:to_time),
       unit: unit&.name,
       unit_type: unit&.unit_type,
       organizer: firm&.title,
