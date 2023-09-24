@@ -1,4 +1,4 @@
-import { Grid } from "@mui/joy";
+import { Divider, Grid } from "@mui/joy";
 import React from "react";
 import { Moment } from "moment/moment";
 import { Edit as EditIcon } from "@mui/icons-material";
@@ -11,15 +11,22 @@ import SliderRange from "../../../../../components/v2/SliderRange/SliderRange";
 import Checkbox from "../../../../../components/v2/Checkbox/Checkbox";
 import RatingSelector from "../../../../../components/v2/RatingSelector";
 import { Sidebar_EventFiltersFragment$key } from "../../../../../artifacts/Sidebar_EventFiltersFragment.graphql";
+import InterestsSelect from "./InterestsSelect";
+import { Sidebar_InterestsFragment$key } from "../../../../../artifacts/Sidebar_InterestsFragment.graphql";
 
 interface Props {
   eventFiltersFragment: Sidebar_EventFiltersFragment$key;
+  interestsQueryFragmentRef: Sidebar_InterestsFragment$key;
   onChange: (args: Record<string, any>) => void;
 }
 
-const Sidebar = ({ eventFiltersFragment, onChange }: Props) => {
+const Sidebar = ({
+  eventFiltersFragment,
+  interestsQueryFragmentRef,
+  onChange,
+}: Props) => {
   const router = useRouter();
-  const edgeFiltersValues = useFragment(
+  const edgeFiltersValues = useFragment<Sidebar_EventFiltersFragment$key>(
     graphql`
       fragment Sidebar_EventFiltersFragment on EventFilters {
         startDate
@@ -33,6 +40,15 @@ const Sidebar = ({ eventFiltersFragment, onChange }: Props) => {
       }
     `,
     eventFiltersFragment
+  );
+
+  const interestsQuery = useFragment<Sidebar_InterestsFragment$key>(
+    graphql`
+      fragment Sidebar_InterestsFragment on Query {
+        ...InterestsSelect_InterestsFragment
+      }
+    `,
+    interestsQueryFragmentRef
   );
   const ref = React.useRef<NodeJS.Timeout | null>(null);
   const [selectedDates, setDates] = React.useState<
@@ -149,6 +165,12 @@ const Sidebar = ({ eventFiltersFragment, onChange }: Props) => {
             label="Max Price"
           />
         </Grid>
+      </Grid>
+      <Grid xs={12}>
+        <Divider />
+      </Grid>
+      <Grid xs={12} container>
+        <InterestsSelect queryFragmentRef={interestsQuery} />
       </Grid>
     </Grid>
   );

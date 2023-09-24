@@ -4,6 +4,7 @@ import { graphql, useRefetchableFragment } from "react-relay";
 import { Autocomplete, AutocompleteOption, Chip } from "@mui/joy";
 import moment from "moment";
 import { useRouter } from "next/router";
+import { stringify } from "qs";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import { SearchBar_EventsAutocompleteFragment$key } from "../../../../../artifacts/SearchBar_EventsAutocompleteFragment.graphql";
 import { SearchBarAutocompleteQuery } from "../../../../../artifacts/SearchBarAutocompleteQuery.graphql";
@@ -90,7 +91,7 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
               title: interest.title,
               date: null,
               type: "Interest",
-              link: `/events?interest=${interest.slug}`,
+              link: `/events?interests[]=${interest.slug}`,
             })),
           ]
         : [],
@@ -109,11 +110,18 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
       groupBy={(option) => option.type}
       onInputChange={(_, value) => {
         const q = router.query;
-        q.query = value;
+        if (value === "") {
+          delete q.query;
+        } else {
+          q.query = value;
+        }
 
-        router.push(
-          `/events?${new URLSearchParams(q as Record<string, any>).toString()}`
-        );
+        const url = `/events?${stringify(q, {
+          arrayFormat: "brackets",
+          encode: false,
+        })}`;
+
+        router.push(url);
 
         setQuery(value);
       }}

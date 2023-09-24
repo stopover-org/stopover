@@ -38,7 +38,7 @@ class EventsQuery
     @conditions[:dates] = { gte: @params[:start_date], lte: @params[:end_date] } if @params[:start_date].present? && @params[:end_date].present?
     @conditions[:price] = { gte: @params[:min_price], lte: @params[:max_price] } if @params[:min_price].present? && @params[:max_price].present?
     @conditions[:city] = @params[:city] if @params[:city].present? && !@params[:city].empty?
-    @conditions[:interests] = [@params[:interest]] if @params[:interest]
+    @conditions[:interests] = @params[:interests] if @params[:interests]&.any?
 
     @conditions
   end
