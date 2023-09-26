@@ -86,11 +86,13 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
               <BookingDatesEditForm bookingFragmentRef={booking} />
             </Grid>
 
-            <Grid xs={12}>
-              <Button size="sm" color="danger" onClick={() => setModal(true)}>
-                Cancel Booking
-              </Button>
-            </Grid>
+            {booking.status !== "cancelled" && (
+              <Grid xs={12}>
+                <Button size="sm" color="danger" onClick={() => setModal(true)}>
+                  Cancel Booking
+                </Button>
+              </Grid>
+            )}
           </>
         </Grid>
         <Grid xs={5}>
