@@ -96,8 +96,8 @@ module Stopover
       checkout = Stripe::Checkout::Session.create({
                                                     line_items: line_items,
                                                     mode: 'payment',
-                                                    success_url: "#{Rails.application.credentials.frontend_url}/checkouts/verify/#{GraphqlSchema.id_from_object(payment)}",
-                                                    cancel_url: "#{Rails.application.credentials.frontend_url}/checkouts/verify/#{GraphqlSchema.id_from_object(payment)}",
+                                                    success_url: "#{Rails.application.credentials.frontend_url}/checkouts/verify/#{GraphqlSchema.id_from_object(booking)}",
+                                                    cancel_url: "#{Rails.application.credentials.frontend_url}/checkouts/verify/#{GraphqlSchema.id_from_object(booking)}",
                                                     expires_at: (Time.zone.now + (30 * 60)).to_i
                                                   })
       payment.stripe_checkout_session_id = checkout[:id]
@@ -122,8 +122,8 @@ module Stopover
       checkout = Stripe::Checkout::Session.create({
                                                     line_items: line_items,
                                                     mode: 'payment',
-                                                    success_url: "#{Rails.application.credentials.frontend_url}/checkouts/verify/#{GraphqlSchema.id_from_object(payment)}",
-                                                    cancel_url: "#{Rails.application.credentials.frontend_url}/checkouts/verify/#{GraphqlSchema.id_from_object(payment)}",
+                                                    success_url: "#{Rails.application.credentials.frontend_url}/checkouts/verify/#{GraphqlSchema.id_from_object(booking)}",
+                                                    cancel_url: "#{Rails.application.credentials.frontend_url}/checkouts/verify/#{GraphqlSchema.id_from_object(booking)}",
                                                     expires_at: (Time.zone.now + (30 * 60)).to_i
                                                   })
 

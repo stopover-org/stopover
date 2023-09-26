@@ -140,6 +140,7 @@ type BookEventPayload {
 }
 
 type Booking implements Node {
+  account: Account!
   alreadyPaidPrice: Money!
   attendeeTotalPrice: Money!
   attendees(filters: AttendeesFilter): [Attendee!]!
@@ -1166,6 +1167,7 @@ type Payment implements Node {
   booking: Booking!
   createdAt: DateTime!
   id: ID!
+  refunds: [Refund!]!
   status: String!
   totalPrice: Money!
   updatedAt: DateTime!
@@ -1300,6 +1302,7 @@ type Query {
     """
     ids: [ID!]!
   ): [Node]!
+  payment(id: ID!): Payment
   schedules(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -1695,10 +1698,10 @@ type Trip implements Node {
   bookings: [Booking!]!
   canCancel: Boolean!
   cities: [String!]!
-  endDate: DateTime!
+  endDate: DateTime
   id: ID!
   images: [String!]!
-  startDate: DateTime!
+  startDate: DateTime
   status: String!
 }
 

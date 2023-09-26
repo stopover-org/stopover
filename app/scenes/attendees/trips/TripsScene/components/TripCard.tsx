@@ -37,6 +37,8 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
             ...TripsScene_AccountFragment
           }
         }
+        notification
+        errors
       }
     }
   `);

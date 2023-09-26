@@ -68,7 +68,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
     () =>
       booking.status === "cancelled" ||
       moment(booking.bookedFor).isBefore(new Date()) ||
-      leftToPay,
+      !leftToPay,
     [booking.status, booking.bookedFor, leftToPay]
   );
   return (

@@ -44,6 +44,14 @@ module Types
       argument :query, String, required: true
     end
 
+    field :payment, Types::PaymentsRelated::PaymentType do
+      argument :id, ID, required: true, loads: Types::PaymentsRelated::PaymentType
+    end
+
+    def payment(id:)
+      id
+    end
+
     def events_autocomplete(**args)
       if !args[:query] || args[:query]&.empty?
         return { bookings: [],

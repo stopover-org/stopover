@@ -30,7 +30,6 @@ const Trips = ({ preloadedQuery, apiKeys }: RelayProps<Props, trips_Query>) => {
 
   return (
     <Layout currentUserFragment={data.currentUser!}>
-      {/* <EventsScene eventsFragmentRef={data} /> */}
       <TripsScene accountFragmentRef={data.currentUser?.account!} />
     </Layout>
   );

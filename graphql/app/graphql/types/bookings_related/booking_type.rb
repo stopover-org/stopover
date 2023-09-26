@@ -4,6 +4,7 @@ module Types
   module BookingsRelated
     class BookingType < Types::ModelObject
       field :id,                        ID,                                           null: false
+      field :account,                   Types::UsersRelated::AccountType,             null: false
       field :booked_for,                Types::DateTimeType,                          null: false
       field :event,                     Types::EventsRelated::EventType,              null: false
       field :booking_options,           [Types::BookingsRelated::BookingOptionType],  null: false
