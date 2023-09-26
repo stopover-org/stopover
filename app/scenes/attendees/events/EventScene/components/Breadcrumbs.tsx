@@ -25,7 +25,7 @@ export const Breadcrumbs = ({
     <BreadcrumbsComponent
       items={event?.interests?.map((interest) => ({
         title: interest.title,
-        href: `/events?interest=${interest.slug}`,
+        href: `/events?interests[]=${interest.slug}`,
       }))}
     />
   );
