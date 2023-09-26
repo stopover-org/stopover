@@ -9,6 +9,7 @@ module Types
       field :updated_at,  DateTimeType, null: false
       field :created_at,  DateTimeType, null: false
       field :booking,     Types::BookingsRelated::BookingType, null: false
+      field :refunds,     [Types::PaymentsRelated::RefundType], null: false
     end
   end
 end

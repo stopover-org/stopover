@@ -79,16 +79,16 @@ class Trip < ApplicationRecord
   def can_cancel
     return false if cancelled?
     return false if bookings.paid.any?
-    return false if end_date.past?
+    return false if end_date&.past?
     true
   end
 
   def start_date
-    bookings.first.schedule.scheduled_for
+    bookings.first&.schedule&.scheduled_for
   end
 
   def end_date
-    bookings.last.schedule.scheduled_for
+    bookings.last&.schedule&.scheduled_for
   end
 
   def cities

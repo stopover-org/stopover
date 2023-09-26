@@ -14,11 +14,11 @@ import moment from "moment";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import Link from "../../../../../components/v2/Link";
 import BookingTime from "./BookingTime";
-import BookingSummary from "./BookingSummary";
 import BookingDescription from "./BookingDescription";
 import BookingEditForm from "./BookingEditForm";
 import Tag from "../../../../../components/v2/Tag/Tag";
 import { BookingCard_BookingFragment$key } from "../../../../../artifacts/BookingCard_BookingFragment.graphql";
+import BookingSummary from "../../../../../components/shared/BookingSummary";
 
 interface BookingCardProps {
   bookingFragmentRef: BookingCard_BookingFragment$key;
@@ -180,7 +180,19 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
             </Stack>
           </Box>
           <BookingDescription bookingFragmentRef={booking} />
-          <BookingSummary bookingFragmentRef={booking} />
+          <CardOverflow
+            sx={(theme) => ({
+              [theme.breakpoints.up("md")]: {
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                padding: "10px 5px 5px",
+              },
+            })}
+          >
+            <BookingSummary bookingFragmentRef={booking} />
+          </CardOverflow>{" "}
         </Stack>
       </Card>
       <Box width="100%">

@@ -68,7 +68,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
     () =>
       booking.status === "cancelled" ||
       moment(booking.bookedFor).isBefore(new Date()) ||
-      leftToPay,
+      !leftToPay,
     [booking.status, booking.bookedFor, leftToPay]
   );
   return (
@@ -85,7 +85,8 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
             <Grid xs={12}>
               <BookingDatesEditForm bookingFragmentRef={booking} />
             </Grid>
-            {!disabled && (
+
+            {booking.status !== "cancelled" && (
               <Grid xs={12}>
                 <Button size="sm" color="danger" onClick={() => setModal(true)}>
                   Cancel Booking
