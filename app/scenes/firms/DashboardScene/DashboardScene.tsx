@@ -43,33 +43,33 @@ const DashboardScene = ({
 
   return (
     <Grid container>
-      <Grid xs={12}>
+      <Grid lg={12} md={12}>
         <FirmSection
           firmFragmentRef={firm}
           currentUserFragmentRef={currentUser}
         />
       </Grid>
 
-      <Grid xs={8}>
+      <Grid lg={8} md={12}>
         <BalanceSection
           firmFragmentRef={firm}
           currentUserFragmentRef={currentUser}
         />
       </Grid>
 
-      <Grid xs={4}>
+      <Grid lg={4} md={12}>
         <PaymentsSection firmFragmentRef={firm} />
       </Grid>
 
-      <Grid xs={8}>
+      <Grid lg={8} md={12}>
         <BookingsSection firmFragmentRef={firm} />
       </Grid>
 
-      <Grid xs={4}>
+      <Grid lg={4} md={12}>
         <SchedulesSection firmFragmentRef={firm} />
       </Grid>
 
-      <Grid xs={12}>
+      <Grid lg={12} md={12}>
         <EventsSection firmFragmentRef={firm} />
       </Grid>
     </Grid>

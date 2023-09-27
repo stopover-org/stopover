@@ -1,7 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import moment from "moment";
-import { Grid } from "@mui/joy";
+import { Divider, Grid } from "@mui/joy";
 import AttendeeEditForm from "./AttendeeEditForm";
 import { BookingEditForm_BookingFragment$key } from "../../../../../artifacts/BookingEditForm_BookingFragment.graphql";
 import BookingOptionsEditForm from "./BookingOptionsEditForm";
@@ -32,7 +32,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
         attendees(filters: { status: [registered, not_registered] }) {
           id
           ...AttendeeEditForm_AttendeeFragment
-        }booking
+        }
         ...BookingDatesEditForm_BookingFragment
         ...BookingOptionsEditForm_BookingFragment
         ...CheckoutForm_BookingFragmentRef
@@ -76,13 +76,18 @@ console.log(booking.status, booking.bookedFor, moment(booking.bookedFor).isBefor
   return (
     <>
       <Grid container spacing={2}>
-        <Grid xs={7}>
+        <Grid lg={7} md={12}>
           {booking.attendees.map((attendee) => (
             <AttendeeEditForm
               key={attendee.id}
               attendeeFragmentRef={attendee}
             />
           ))}
+          <Divider />
+          <Grid md={12} sx={{lg: {display: 'none'}}}>
+            <BookingOptionsEditForm bookingFragmentRef={booking} />
+            {!disabled && <CheckoutForm bookingFragmentRef={booking} />}
+          </Grid>
           <>
             <Grid xs={12}>
               <BookingDatesEditForm bookingFragmentRef={booking} />
@@ -97,7 +102,7 @@ console.log(booking.status, booking.bookedFor, moment(booking.bookedFor).isBefor
             )}
           </>
         </Grid>
-        <Grid xs={5}>
+        <Grid lg={5} sx={{md: {display: 'none'}}}>
           <BookingOptionsEditForm bookingFragmentRef={booking} />
           {!disabled && <CheckoutForm bookingFragmentRef={booking} />}
         </Grid>

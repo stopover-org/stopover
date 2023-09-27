@@ -22,6 +22,7 @@ const Tag = React.forwardRef(
         <Link
           ref={ref}
           variant="solid"
+          level="body-xs"
           {...props}
           href={href!}
           sx={{ margin: "0 4px", display: "inline-block", ...props.sx }}
@@ -35,6 +36,7 @@ const Tag = React.forwardRef(
       <Typography
         ref={ref}
         variant="solid"
+        level="body-xs"
         {...props}
         sx={{
           margin: "0 4px",
