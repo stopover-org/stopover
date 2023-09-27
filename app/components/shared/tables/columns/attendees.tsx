@@ -161,12 +161,12 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
             <Stack direction="row" justifyContent="flex-end">
               {booking.event.requiresCheckIn &&
                 att.status === "not_registered" &&
-                booking.status === "active" && (
+                booking.status !== "cancelled" && (
                   <RegisterAttendee attendeeFragmentRef={att} />
                 )}
               {booking.event.requiresCheckIn &&
                 att.status === "registered" &&
-                booking.status === "active" && (
+                booking.status !== "cancelled" && (
                   <DeregisterAttendee attendeeFragmentRef={att} />
                 )}
               {att.status !== "removed" &&
