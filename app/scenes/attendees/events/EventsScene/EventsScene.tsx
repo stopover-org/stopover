@@ -1,5 +1,5 @@
 import React from "react";
-import { Chip, ChipDelete, Grid, styled, useTheme } from "@mui/joy";
+import { Chip, ChipDelete, Drawer, Grid, styled, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
 import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import { useRouter } from "next/router";
@@ -14,6 +14,7 @@ import { EventsScene_EventsAutocompleteFragment$key } from "../../../../artifact
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { EventsScenePaginationQuery } from "../../../../artifacts/EventsScenePaginationQuery.graphql";
 import { EventsScene_InterestsFragment$key } from "../../../../artifacts/EventsScene_InterestsFragment.graphql";
+import { GlobalSidebarContext } from '../../../../components/GlobalSidebarProvider'
 
 interface Props {
   eventsFragmentRef:
@@ -31,7 +32,7 @@ const ContentWrapper = styled(Grid)(({ theme }) => ({
 const EventsScene = ({ eventsFragmentRef }: Props) => {
   const router = useRouter();
   const theme = useTheme();
-  // const { opened, close, open } = React.useContext(GlobalSidebarContext);
+  const { opened, close, open } = React.useContext(GlobalSidebarContext);
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   const isLargeDisplay = useMediaQuery(theme.breakpoints.up("lg"));
   const isVeryLargeDisplay = useMediaQuery(theme.breakpoints.up("xl"));
@@ -124,6 +125,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   }, [filters, router]);
 
   return (
+    <>
     <Grid
       container
     >
@@ -231,6 +233,20 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         </React.Suspense>
       </ContentWrapper>
     </Grid>
+    <Drawer open={opened} onClose={close}>
+      <React.Suspense>
+        <Grid container padding='10px'>
+          <Sidebar
+            eventFiltersFragment={data?.eventFilters}
+            interestsQueryFragmentRef={interestsQuery}
+            onChange={(args) => {
+              setFilters(args);
+            }}
+          />
+        </Grid>
+      </React.Suspense>
+    </Drawer>
+    </>
   );
 };
 
