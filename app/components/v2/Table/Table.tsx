@@ -105,9 +105,9 @@ const Table = ({
   return (
     <Sheet sx={{ overflow: "auto" }}>
       <JoyTable
-        aria-labelledby="tableTitle"
         hoverRow={hoverRow}
         borderAxis="bothBetween"
+        // sx={{tableLayout: 'fixed'}}
       >
         <TableHead cells={headers} />
         <TableBody data={rows} keys={keys} onRowClick={onRowClickHandler} />

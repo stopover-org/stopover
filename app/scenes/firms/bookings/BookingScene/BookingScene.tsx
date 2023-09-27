@@ -1,7 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import moment from "moment/moment";
-import { Box, Grid, Stack } from "@mui/joy";
+import { Box, Divider, Grid, Stack } from "@mui/joy";
 import Typography from "../../../../components/v2/Typography";
 import { BookingScene_FirmBookingFragment$key } from "../../../../artifacts/BookingScene_FirmBookingFragment.graphql";
 import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
@@ -24,6 +24,7 @@ import RefundBookingModal from "./components/RefundBookingModal";
 import Button from "../../../../components/v2/Button";
 import AddAttendeeModal from "./components/AddAttendeeModal";
 import useSubscription from "../../../../lib/hooks/useSubscription";
+import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
@@ -35,6 +36,37 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
         bookedFor
         id
         status
+        paymentType
+        attendeeTotalPrice {
+          cents
+          currency {
+            name
+          }
+        }
+        organizerTotalPrice {
+          cents
+          currency {
+            name
+          }
+        }
+        alreadyPaidPrice {
+          cents
+          currency {
+            name
+          }
+        }
+        leftToPayPrice {
+          cents
+          currency {
+            name
+          }
+        }
+        leftToPayDepositPrice {
+          cents
+          currency {
+            name
+          }
+        }
         event {
           id
           title
@@ -144,6 +176,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
             ]}
           />
         </Grid>
+
         <Grid xs={12}>
           <Stack direction="row" justifyContent="space-between">
             <Box>
@@ -153,6 +186,9 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
                 </Link>
                 <Tag color={tagColor} link={false}>
                   {booking.status} booking
+                </Tag>
+                <Tag color='primary' link={false}>
+                  {booking.paymentType}
                 </Tag>
               </Typography>
               <Typography>
@@ -172,6 +208,47 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
             )}
           </Stack>
         </Grid>
+
+        <Grid xs={4}>
+          <Typography level='body-lg'>
+            You get: {getCurrencyFormat(
+              booking.organizerTotalPrice.cents,
+              booking.organizerTotalPrice.currency.name
+            )}
+          </Typography>
+          <Typography level='body-lg'>
+            They pay: {getCurrencyFormat(
+              booking.attendeeTotalPrice.cents,
+              booking.attendeeTotalPrice.currency.name
+            )}
+          </Typography>
+        </Grid>
+
+        <Grid xs={4}>
+          <Typography level='body-lg'>
+            Already paid: {getCurrencyFormat(
+              booking.alreadyPaidPrice.cents,
+              booking.alreadyPaidPrice.currency.name
+            )}
+          </Typography>
+          {booking.paymentType === 'stripe' && <Typography level='body-lg'>
+            Left to pay: {getCurrencyFormat(
+              booking.leftToPayPrice.cents,
+              booking.leftToPayPrice.currency.name
+            )}
+          </Typography>}
+          {booking.paymentType === 'cash' && <Typography level='body-lg'>
+            Left to pay: {getCurrencyFormat(
+              booking.leftToPayDepositPrice.cents,
+              booking.leftToPayDepositPrice.currency.name
+            )}
+          </Typography>}
+        </Grid>
+
+        <Grid xs={12} padding={5}>
+          <Divider />
+        </Grid>
+
         <Grid xs={8}>
           <Typography level="title-lg">Attendees</Typography>
           <AttendeesTable bookingFragmentRef={booking} />
@@ -180,14 +257,17 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
             <AddAttendeeModal bookingFragmentRef={booking} />
           )}
         </Grid>
+        
         <Grid xs={4}>
           <Typography level="title-lg">Booking Options</Typography>
           <EventOptionsTable bookingFragmentRef={booking} />
         </Grid>
+        
         <Grid xs={12}>
           <Typography level="title-lg">Payments</Typography>
           <Table headers={paymentsHeaders} data={paymentsData} />
         </Grid>
+        
         <Grid xs={12}>
           <Typography level="title-lg">Refunds</Typography>
           <Table headers={refundsHeaders} data={refundsData} />

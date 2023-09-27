@@ -44,6 +44,7 @@ const TableBody = ({ data, keys, onRowClick }: TableBodyProps) => {
                     }
                   }
                 }}
+                style={{ overflow: "hidden" }}
               >
                 {row[key]}
               </td>

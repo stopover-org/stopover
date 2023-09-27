@@ -15,6 +15,7 @@ import {
   useBookingsColumns,
   useBookingsHeaders,
 } from "../../../../../components/shared/tables/columns/bookings";
+import useEdges from "../../../../../lib/hooks/useEdges";
 
 interface SchedulesInformationProps {
   eventFragmentRef: SchedulesInformation_EventFragment$key;
@@ -41,6 +42,9 @@ const SchedulesInformation = ({
                 id
                 scheduledFor
                 status
+                event {
+                  id
+                }
                 bookings {
                   id
                   status
@@ -86,12 +90,12 @@ const SchedulesInformation = ({
     null
   );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const schedules = usePagedEdges(data.pagedSchedules, currentPage, 30);
+  const schedules = useEdges(data.pagedSchedules);
   const schedule = React.useMemo(
     () => schedules[selectedSchedule!],
     [schedules, selectedSchedule]
   );
-  const schedulesData = useSchedulesColumns(schedules as Record<string, any>[]);
+  const schedulesData = useSchedulesColumns(schedules);
   const schedulesHeaders = useSchedulesHeaders();
   const bookingsData = useBookingsColumns(
     (schedule ? schedule.bookings : []) as any[]
@@ -101,7 +105,7 @@ const SchedulesInformation = ({
   return (
     <TabPanel value={index} size="sm" sx={{ paddingTop: "20px" }}>
       <Grid xs={12} container>
-        <Grid xs={4}>
+        <Grid md={6} lg={4} sm={12}>
           <Typography level="h4">All Schedules</Typography>
           <Table
             data={schedulesData}
@@ -133,7 +137,7 @@ const SchedulesInformation = ({
             }}
           />
         </Grid>
-        <Grid xs={8}>
+        <Grid md={6} lg={8} sx={{sm: { display: 'none'}}}>
           {schedule ? (
             <>
               <Typography level="h4">

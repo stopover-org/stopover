@@ -55,7 +55,6 @@ const TripScene = ({ tripFragmentRef }: TripSceneProps) => {
           &nbsp;
           <Tag
             href="#"
-            fontSize="lg"
             primary
             sx={{ height: "1.5em", display: "inline-block" }}
           >

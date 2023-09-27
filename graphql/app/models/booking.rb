@@ -178,7 +178,7 @@ class Booking < ApplicationRecord
   end
 
   def partially_paid?
-    left_to_pay_price.positive? && paid?
+    (left_to_pay_price.positive? || left_to_pay_deposit_price.positive?) && paid?
   end
 
   def refund_diff
