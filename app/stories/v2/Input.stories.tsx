@@ -228,9 +228,6 @@ const Preview = () => {
             <Input onChange={onChange} value="danger color" color="danger" />
           </Grid>
           <Grid xs={12}>
-            <Input onChange={onChange} value="info color" color="info" />
-          </Grid>
-          <Grid xs={12}>
             <Input onChange={onChange} value="success color" color="success" />
           </Grid>
           <Grid xs={12}>

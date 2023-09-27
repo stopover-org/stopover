@@ -56,7 +56,7 @@ const BookingCancellationOptionsFieldset = () => {
     <Fieldset>
       <Grid container>
         <Grid xs={8}>
-          <Typography level="h3">Booking Cancellation Options</Typography>
+          <Typography level="title-lg">Booking Cancellation Options</Typography>
         </Grid>
         <Grid xs={4}>
           <Button size="sm" onClick={addBookingCancellationOption}>

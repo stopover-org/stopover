@@ -52,7 +52,7 @@ const TagColor = ({ status }: { status: string }) => {
   });
 
   return (
-    <Tag level="body3" link={false} color={color}>
+    <Tag level="body-md" link={false} color={color}>
       {status}
     </Tag>
   );
@@ -134,13 +134,13 @@ export function useBookingsColumns(
             </IconButton>
           ),
           tables: [
-            <Typography level="h5">Attendees</Typography>,
+            <Typography level="title-lg">Attendees</Typography>,
             <Table
               hoverRow={false}
               headers={attendeesHeaders}
               data={attendeesData}
             />,
-            <Typography level="h5">Booking Options</Typography>,
+            <Typography level="title-lg">Booking Options</Typography>,
             <Table
               hoverRow={false}
               headers={bookingOptionsHeaders}

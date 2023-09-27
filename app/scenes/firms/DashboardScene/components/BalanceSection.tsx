@@ -74,7 +74,7 @@ const BalanceSection = ({
               firm.balance?.totalAmount?.currency?.name
             )}
           </Typography>
-          <Typography level="body1">
+          <Typography level="body-md">
             Processing:&nbsp;
             {getCurrencyFormat(
               firm.balance?.processingPayments?.cents,

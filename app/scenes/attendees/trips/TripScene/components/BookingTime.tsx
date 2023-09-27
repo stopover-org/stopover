@@ -51,7 +51,7 @@ const BookingTime = ({ bookingFragmentRef }: BookingTimeProps) => {
       paddingTop={isMobileView ? "10px" : "inherit"}
     >
       <Typography
-        level="h3"
+        level="title-lg"
         sx={{
           fontSize: "22px",
         }}
@@ -70,7 +70,7 @@ const BookingTime = ({ bookingFragmentRef }: BookingTimeProps) => {
         )}
       </Typography>
       <Typography
-        level="h3"
+        level="title-lg"
         sx={{
           fontSize: "22px",
         }}
@@ -78,7 +78,7 @@ const BookingTime = ({ bookingFragmentRef }: BookingTimeProps) => {
         &nbsp;-&nbsp;
       </Typography>
       <Typography
-        level="h3"
+        level="title-lg"
         sx={{
           fontSize: "22px",
         }}

@@ -92,18 +92,18 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
             <Link
               href="/trips"
               textAlign="right"
-              level="body1"
+              level="body-md"
               lineHeight={`${imageSize.height}px`}
               paddingRight="10px"
             >
               My Trips
             </Link>
           )}
-          {isSmallDisplay && (
+          {isSmallDisplay && !isAuthorized && (
             <Link
               href="/auth/sign_in"
               textAlign="right"
-              level="body1"
+              level="body-md"
               fontSize="lg"
               lineHeight={`${imageSize.height}px`}
               paddingRight="10px"
@@ -117,7 +117,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
                 <Link
                   href="/my-firm/dashboard"
                   textAlign="right"
-                  level="body1"
+                  level="body-md"
                   lineHeight={`${imageSize.height}px`}
                   paddingRight="10px"
                 >
@@ -127,7 +127,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
                 <Link
                   href="/firms/new"
                   textAlign="right"
-                  level="body1"
+                  level="body-md"
                   lineHeight={`${imageSize.height}px`}
                   paddingRight="10px"
                 >
@@ -138,7 +138,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
               <Link
                 href="?#sign-out"
                 textAlign="right"
-                level="body1"
+                level="body-md"
                 lineHeight={`${imageSize.height}px`}
                 paddingRight="20px"
                 onClick={(e) => {

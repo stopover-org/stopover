@@ -121,7 +121,7 @@ const VerifyBookingScene = ({
             </AspectRatio>
           </CardOverflow>
           <CardContent>
-            <Typography level="h4">{booking.event.title}</Typography>
+            <Typography level="title-lg">{booking.event.title}</Typography>
             <Typography>{booking.event.fullAddress}</Typography>
             <BookingSummary bookingFragmentRef={booking} />
             <Checkout bookingFragmentRef={booking} />

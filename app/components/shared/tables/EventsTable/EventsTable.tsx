@@ -24,7 +24,7 @@ const TagColor = ({ status }: { status: string }) => {
   });
 
   return (
-    <Tag level="body3" link={false} color={color}>
+    <Tag level="body-md" link={false} color={color}>
       {status}
     </Tag>
   );
@@ -102,7 +102,7 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
         ),
         recurringDaysWithTime: event.recurringDaysWithTime.map((date) => (
           <Tag
-            level="body3"
+            level="body-md"
             link={false}
             sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
           >
@@ -112,7 +112,7 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
         singleDaysWithTime: event.singleDaysWithTime.map((date) => (
           <>
             <Tag
-              level="body3"
+              level="body-md"
               link={false}
               sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
             >

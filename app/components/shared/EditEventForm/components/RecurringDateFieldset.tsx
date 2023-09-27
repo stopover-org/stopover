@@ -79,7 +79,9 @@ const RecurringDateFieldset = () => {
       <Fieldset>
         <Grid xs={12} container>
           <Grid xs={6}>
-            <Typography level="h3">Event will take (duration time)</Typography>
+            <Typography level="title-lg">
+              Event will take (duration time)
+            </Typography>
           </Grid>
         </Grid>
         <Grid xs={12} container>
@@ -191,7 +193,7 @@ const RecurringDateFieldset = () => {
                   height="100%"
                   sx={{ paddingTop: "25px" }}
                 >
-                  <Typography level="h4">&nbsp;:&nbsp;</Typography>
+                  <Typography level="title-lg">&nbsp;:&nbsp;</Typography>
                 </Stack>
               </Grid>
               <Grid xs={2}>

@@ -71,9 +71,6 @@ const Preview = () => (
           <Button color="danger">Book</Button>
         </Grid>
         <Grid xs={12}>
-          <Button color="info">Book</Button>
-        </Grid>
-        <Grid xs={12}>
           <Button color="warning">Book</Button>
         </Grid>
         <Grid xs={12}>

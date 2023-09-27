@@ -21,7 +21,7 @@ const Breadcrumbs = ({ items, padding = 2 }: BreadcrumbsProps) => (
         ) : (
           <Typography key={item.title}>
             &nbsp;/&nbsp;
-            <Link level="body1" href={item.href}>
+            <Link level="body-md" href={item.href}>
               {item.title}
             </Link>
           </Typography>

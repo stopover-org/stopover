@@ -24,7 +24,7 @@ interface Props {
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
-    maxWidth: "calc(100vw - 260px)",
+    maxWidth: "calc(100vw - 270px)",
   },
 }));
 
@@ -126,12 +126,10 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   return (
     <Grid
       container
-      spacing={2}
-      sx={{ paddingLeft: "20px", paddingRight: "20px" }}
     >
       {showSidebar && (
         <React.Suspense>
-          <Grid xs={2} container width="250px">
+          <Grid xs={2} container width="250px" padding='10px'>
             <Sidebar
               eventFiltersFragment={data?.eventFilters}
               interestsQueryFragmentRef={interestsQuery}
@@ -144,6 +142,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       )}
 
       <ContentWrapper
+        lg={10}
         md={10}
         sm={12}
         container
@@ -160,6 +159,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           <Grid xl={9} lg={12} xs={12}>
             {interestsSlug.map((interest) => (
               <Chip
+                key={interest}
                 size="lg"
                 variant="outlined"
                 endDecorator={

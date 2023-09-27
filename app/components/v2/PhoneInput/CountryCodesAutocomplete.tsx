@@ -64,7 +64,7 @@ const CountryCodesAutocomplete = ({
             </ListItemDecorator>
             <ListItemContent sx={{ fontSize: "sm" }}>
               {countryName.of(countryCode)}
-              <Typography level="body3">
+              <Typography level="body-md">
                 ({countryCode}) +{callingCode}
               </Typography>
             </ListItemContent>

@@ -23,7 +23,7 @@ const GeneralStep = () => {
     <>
       <Fieldset>
         <Grid xs={12}>
-          <Typography level="h3">General Information</Typography>
+          <Typography level="title-lg">General Information</Typography>
         </Grid>
         <Grid xs={12}>
           <Input {...form.useFormField("title")} label="Title" />
@@ -42,7 +42,7 @@ const GeneralStep = () => {
       <AddressFieldset />
       <Fieldset>
         <Grid xs={12}>
-          <Typography level="h3">Event Requirements</Typography>
+          <Typography level="title-lg">Event Requirements</Typography>
         </Grid>
         <Grid xs={12}>
           <Stack>
@@ -73,7 +73,7 @@ const GeneralStep = () => {
         </Grid>
 
         <Grid xs={12}>
-          <Typography level="h3">Event Type</Typography>
+          <Typography level="title-lg">Event Type</Typography>
         </Grid>
         <Grid xs={12}>
           <Select
@@ -101,7 +101,7 @@ const GeneralStep = () => {
       <Fieldset>
         <Grid container>
           <Grid xs={12}>
-            <Typography level="h3">Attendees</Typography>
+            <Typography level="title-lg">Attendees</Typography>
           </Grid>
           <Grid xs={6}>
             <Input
@@ -135,7 +135,7 @@ const GeneralStep = () => {
       </Fieldset>
       <Fieldset>
         <Grid xs={12}>
-          <Typography level="h3">Description</Typography>
+          <Typography level="title-lg">Description</Typography>
         </Grid>
         <Grid xs={12}>
           <TextArea

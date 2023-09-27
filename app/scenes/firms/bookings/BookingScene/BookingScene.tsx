@@ -173,7 +173,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           </Stack>
         </Grid>
         <Grid xs={8}>
-          <Typography level="h4">Attendees</Typography>
+          <Typography level="title-lg">Attendees</Typography>
           <AttendeesTable bookingFragmentRef={booking} />
           <br />
           {booking.status !== "cancelled" && (
@@ -181,15 +181,15 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           )}
         </Grid>
         <Grid xs={4}>
-          <Typography level="h4">Booking Options</Typography>
+          <Typography level="title-lg">Booking Options</Typography>
           <EventOptionsTable bookingFragmentRef={booking} />
         </Grid>
         <Grid xs={12}>
-          <Typography level="h4">Payments</Typography>
+          <Typography level="title-lg">Payments</Typography>
           <Table headers={paymentsHeaders} data={paymentsData} />
         </Grid>
         <Grid xs={12}>
-          <Typography level="h4">Refunds</Typography>
+          <Typography level="title-lg">Refunds</Typography>
           <Table headers={refundsHeaders} data={refundsData} />
         </Grid>
       </Grid>

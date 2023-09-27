@@ -89,7 +89,7 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
             </Typography>
           </Link>
           <Box sx={{ paddingTop: "5px" }}>
-            <Typography level="body3" sx={{ fontSize: "sm" }}>
+            <Typography level="body-md" sx={{ fontSize: "sm" }}>
               {moment(trip.startDate).calendar()} -{" "}
               {moment(trip.endDate).calendar()}
             </Typography>
@@ -106,13 +106,13 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
           >
             <Grid container>
               <Grid xs={6}>
-                <Typography level="body3" sx={{ fontSize: "sm" }}>
+                <Typography level="body-md" sx={{ fontSize: "sm" }}>
                   {trip.attendeesCount} attendee(-s)
                 </Typography>
               </Grid>
               <Grid xs={6}>
                 <Typography
-                  level="body3"
+                  level="body-md"
                   sx={{ fontSize: "sm", textAlign: "end" }}
                 >
                   {trip.cities[0]}

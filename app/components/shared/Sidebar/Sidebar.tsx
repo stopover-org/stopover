@@ -22,7 +22,7 @@ const Sidebar = ({ items }: SidebarProps) => {
         <List sx={{ maxWidth: "250px", minWidth: "250px" }}>
           {items.map((item) => (
             <Link
-              level="h6"
+              level="body-lg"
               href={item.href}
               underline={false}
               key={`item-${item.href}`}

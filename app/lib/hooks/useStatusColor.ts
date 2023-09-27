@@ -11,7 +11,6 @@ interface StatusColorProps {
 }
 export function useStatusColor({
   danger = [""],
-  info = [""],
   neutral = [""],
   primary = [""],
   success = [""],
@@ -22,7 +21,6 @@ export function useStatusColor({
     if (!status) return "primary";
 
     if (danger.includes(status)) return "danger";
-    if (info.includes(status)) return "info";
     if (neutral.includes(status)) return "neutral";
     if (primary.includes(status)) return "primary";
     if (success.includes(status)) return "success";

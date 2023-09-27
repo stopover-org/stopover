@@ -39,7 +39,7 @@ const Link = React.forwardRef(
         {...props}
         ref={ref}
         color={primary ? "primary" : color}
-        level={level || "body3"}
+        level={level || "body-md"}
         sx={{
           textDecoration: underline ? "underline" : "unset",
           ...sx,

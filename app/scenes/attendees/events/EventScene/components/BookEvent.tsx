@@ -135,7 +135,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
           />
         </Box>
         <Box paddingBottom="10px">
-          <Typography textAlign="end" level="h3">
+          <Typography textAlign="end" level="title-lg">
             {getCurrencyFormat(
               parseInt(attendeesCountField.value, 10) *
                 (event.attendeePricePerUom?.cents || 0),

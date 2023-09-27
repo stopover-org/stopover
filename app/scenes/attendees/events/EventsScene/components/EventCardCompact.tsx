@@ -132,7 +132,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
           <Typography sx={{ fontSize: "xl" }}>{event.title}</Typography>
         </Link>
         <Box sx={{ paddingBottom: "5px" }}>
-          <Typography level="body3" sx={{ fontSize: "md" }}>
+          <Typography level="body-md" sx={{ fontSize: "md" }}>
             {event.interests.map((interest) => {
               const q = { ...router.query };
               const rawInterests = (

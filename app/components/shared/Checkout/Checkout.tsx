@@ -19,7 +19,7 @@ const StatusTag = ({ status }: { status: string }) => {
   });
 
   return (
-    <Tag level="body3" link={false} color={color}>
+    <Tag level="body-md" link={false} color={color}>
       {status}
     </Tag>
   );
@@ -61,7 +61,7 @@ const Checkout = ({ bookingFragmentRef }: CheckoutProps) => {
 
   return (
     <Box>
-      <Typography level="h4">Summary</Typography>
+      <Typography level="title-lg">Summary</Typography>
       <List>
         {booking.payments.map((payment) => (
           <ListItem key={payment.id}>
