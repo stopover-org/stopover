@@ -249,7 +249,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           <Divider />
         </Grid>
 
-        <Grid xs={8}>
+        <Grid lg={8} md={12}>
           <Typography level="title-lg">Attendees</Typography>
           <AttendeesTable bookingFragmentRef={booking} />
           <br />
@@ -258,7 +258,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           )}
         </Grid>
         
-        <Grid xs={4}>
+        <Grid lg={4} md={12}>
           <Typography level="title-lg">Booking Options</Typography>
           <EventOptionsTable bookingFragmentRef={booking} />
         </Grid>
