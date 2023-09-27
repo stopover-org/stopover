@@ -31,6 +31,7 @@ const ContentWrapper = styled(Grid)(({ theme }) => ({
 const EventsScene = ({ eventsFragmentRef }: Props) => {
   const router = useRouter();
   const theme = useTheme();
+  // const { opened, close, open } = React.useContext(GlobalSidebarContext);
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   const isLargeDisplay = useMediaQuery(theme.breakpoints.up("lg"));
   const isVeryLargeDisplay = useMediaQuery(theme.breakpoints.up("xl"));

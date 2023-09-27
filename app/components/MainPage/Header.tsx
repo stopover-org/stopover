@@ -8,6 +8,7 @@ import Menu from "@mui/icons-material/Menu";
 import Link from "../v2/Link";
 import { Header_CurrentUserFragment$key } from "../../artifacts/Header_CurrentUserFragment.graphql";
 import { Header_SignOutMutation } from "../../artifacts/Header_SignOutMutation.graphql";
+import { GlobalSidebarContext } from "../GlobalSidebarProvider";
 
 interface HeaderProps {
   currentUserFragment: Header_CurrentUserFragment$key;
@@ -17,6 +18,7 @@ interface HeaderProps {
 const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
   const router = useRouter();
   const theme = useTheme();
+  const { open } = React.useContext(GlobalSidebarContext);
   const isSmallDisplay = useMediaQuery(theme.breakpoints.up("sm"));
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
   const currentUser = useFragment(
@@ -74,7 +76,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
           alignItems="center"
         >
           {!isMediumDisplay && (
-            <Box sx={{ margin: "5px" }}>
+            <Box sx={{ margin: "5px" }} onClick={open}>
               <Menu />
             </Box>
           )}

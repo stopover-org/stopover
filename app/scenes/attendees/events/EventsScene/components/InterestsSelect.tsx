@@ -61,10 +61,9 @@ const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
       <Typography fontSize="lg">Categories</Typography>
       <List sx={{ height: "500px", overflow: "auto" }}>
         {interests?.map((interest, index) => (
-          <>
+          <React.Fragment key={interest.id}>
             {index !== 0 && index !== interests.length && <ListDivider />}
             <ListItem
-              key={interest.id}
               onClick={onClick(interest.slug)}
               color={
                 queryInterests.includes(interest.slug) ? "primary" : "neutral"
@@ -79,7 +78,7 @@ const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
               &nbsp;
               {interest.title}
             </ListItem>
-          </>
+          </React.Fragment>
         ))}
       </List>
     </>

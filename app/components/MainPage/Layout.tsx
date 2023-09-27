@@ -4,6 +4,7 @@ import { graphql, useFragment } from "react-relay";
 import Footer from "./Footer";
 import Header from "./Header";
 import { Layout_CurrentUserFragment$key } from "../../artifacts/Layout_CurrentUserFragment.graphql";
+import GlobalSidebarProvider from "../GlobalSidebarProvider";
 
 type LayoutProps = {
   children:
@@ -36,15 +37,17 @@ const Layout = ({
   );
 
   return (
-    <Sheet>
-      <div id="gallery-portal" />
-      <Header
-        currentUserFragment={currentUser}
-        showRegisterFirm={showRegisterFirm}
-      />
-      {!isSSR ? children : null}
-      <Footer />
-    </Sheet>
+    <GlobalSidebarProvider>
+      <Sheet>
+        <div id="gallery-portal" />
+        <Header
+          currentUserFragment={currentUser}
+          showRegisterFirm={showRegisterFirm}
+        />
+        {!isSSR ? children : null}
+        <Footer />
+      </Sheet>
+    </GlobalSidebarProvider>
   );
 };
 
