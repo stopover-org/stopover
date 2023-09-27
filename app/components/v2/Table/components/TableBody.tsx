@@ -52,8 +52,8 @@ const TableBody = ({ data, keys, onRowClick }: TableBodyProps) => {
 
           {expanded.includes(index) && Array.isArray(row.tables) && (
             <React.Fragment key={`expanded-includes-${ids[index]}-${index}`}>
-              {row.tables?.map((table) => (
-                <React.Fragment key={`expanded-${ids[index]}-${index}`}>
+              {row.tables?.map((table, tableIndex) => (
+                <React.Fragment key={`expanded-${ids[index]}-${tableIndex}`}>
                   <br />
                   <tr>
                     <td colSpan={keys.length}>{table}</td>

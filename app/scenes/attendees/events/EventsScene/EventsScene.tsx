@@ -1,5 +1,5 @@
 import React from "react";
-import { Chip, ChipDelete, Drawer, Grid, styled, useTheme } from "@mui/joy";
+import { Box, Chip, ChipDelete, Drawer, Grid, styled, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
 import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import { useRouter } from "next/router";
@@ -15,6 +15,7 @@ import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { EventsScenePaginationQuery } from "../../../../artifacts/EventsScenePaginationQuery.graphql";
 import { EventsScene_InterestsFragment$key } from "../../../../artifacts/EventsScene_InterestsFragment.graphql";
 import { GlobalSidebarContext } from '../../../../components/GlobalSidebarProvider'
+import Link from "../../../../components/v2/Link";
 
 interface Props {
   eventsFragmentRef:
@@ -243,6 +244,23 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
               setFilters(args);
             }}
           />
+          <Grid xs={12}>
+            <Box
+              sx={{
+                display: 'flex',
+                position: 'absolute',
+                bottom: '0',
+                borderTop: '1px solid',
+                borderColor: 'divider',
+                gap: 1,
+                p: 1.5,
+                pb: 2,
+                width: '90%'
+              }}
+            >
+              <Link href='/trips'>My Trips</Link>
+            </Box>
+          </Grid>
         </Grid>
       </React.Suspense>
     </Drawer>

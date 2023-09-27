@@ -104,16 +104,16 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
               padding: "10px 5px 5px",
             }}
           >
-            <Grid container>
+            <Grid container xs={12}>
               <Grid xs={6}>
-                <Typography level="body-md" sx={{ fontSize: "sm" }}>
+                <Typography level="body-sm">
                   {trip.attendeesCount} attendee(-s)
                 </Typography>
               </Grid>
               <Grid xs={6}>
                 <Typography
-                  level="body-md"
-                  sx={{ fontSize: "sm", textAlign: "end" }}
+                  level="body-sm"
+                  sx={{ textAlign: "end" }}
                 >
                   {trip.cities[0]}
                 </Typography>

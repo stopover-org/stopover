@@ -32,7 +32,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
         attendees(filters: { status: [registered, not_registered] }) {
           id
           ...AttendeeEditForm_AttendeeFragment
-        }
+        }booking
         ...BookingDatesEditForm_BookingFragment
         ...BookingOptionsEditForm_BookingFragment
         ...CheckoutForm_BookingFragmentRef
@@ -71,6 +71,8 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
       !leftToPay,
     [booking.status, booking.bookedFor, leftToPay]
   );
+console.log(booking.status, booking.bookedFor, moment(booking.bookedFor).isBefore(new Date()), leftToPay, disabled)
+
   return (
     <>
       <Grid container spacing={2}>

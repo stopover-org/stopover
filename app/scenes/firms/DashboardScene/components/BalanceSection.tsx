@@ -91,7 +91,7 @@ const BalanceSection = ({
         </Grid>
         <Grid xs={12}>
           {firm.paymentTypes.map((type) => (
-            <Chip sx={{ marginRight: "5px" }}>{capitalize(type)}</Chip>
+            <Chip key={type} sx={{ marginRight: "5px" }}>{capitalize(type)}</Chip>
           ))}
         </Grid>
 
