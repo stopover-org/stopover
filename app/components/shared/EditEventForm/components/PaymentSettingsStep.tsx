@@ -33,7 +33,7 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
     <>
       <Fieldset>
         <Grid xs={12}>
-          <Typography level="h3">Price</Typography>
+          <Typography level="title-lg">Price</Typography>
         </Grid>
         <Grid lg={3} md={12} sm={12}>
           <Input

@@ -57,7 +57,7 @@ const RefundBookingModal = ({
             <DialogContent>
               <Stack>
                 <Box>
-                  <Typography level="h5">
+                  <Typography level="title-lg">
                     {booking.cancellationTerms}
                   </Typography>
                 </Box>

@@ -87,14 +87,6 @@ const Preview = () => (
         </Grid>
         <Grid xs={12}>
           <Checkbox
-            label="Info"
-            color="info"
-            defaultChecked
-            onChange={() => {}}
-          />
-        </Grid>
-        <Grid xs={12}>
-          <Checkbox
             label="Success"
             color="success"
             defaultChecked

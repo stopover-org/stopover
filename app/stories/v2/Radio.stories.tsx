@@ -88,9 +88,6 @@ const Preview = () => (
           />
         </Grid>
         <Grid xs={12}>
-          <Radio label="Info" color="info" defaultChecked onChange={() => {}} />
-        </Grid>
-        <Grid xs={12}>
           <Radio
             label="Success"
             color="success"

@@ -41,7 +41,7 @@ const EditFirmForm = () => {
 
       <Fieldset>
         <Grid xs={12}>
-          <Typography level="h3">Contact Information</Typography>
+          <Typography level="title-lg">Contact Information</Typography>
         </Grid>
         <Grid xs={12}>
           <Autocomplete
@@ -79,7 +79,7 @@ const EditFirmForm = () => {
 
       <Fieldset>
         <Grid xs={12}>
-          <Typography level="h3">Contact Information</Typography>
+          <Typography level="title-lg">Contact Information</Typography>
         </Grid>
         <Grid md={6} sm={12}>
           <Input {...form.useFormField("primaryEmail")} label="Primary Email" />
@@ -100,7 +100,7 @@ const EditFirmForm = () => {
 
       <Fieldset>
         <Grid xs={12}>
-          <Typography level="h3">Description</Typography>
+          <Typography level="title-lg">Description</Typography>
         </Grid>
         <Grid xs={12}>
           <TextArea

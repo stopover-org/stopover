@@ -5,25 +5,6 @@ import { deepmerge } from "@mui/utils";
 
 const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
   components: {
-    JoyTypography: {
-      defaultProps: {
-        levelMapping: {
-          display1: "h1",
-          display2: "h1",
-          h1: "h2",
-          h2: "h2",
-          h3: "h3",
-          h4: "h3",
-          h5: "h3",
-          h6: "h3",
-          body1: "p",
-          body2: "div",
-          body3: "span",
-          body4: "span",
-          body5: "span",
-        },
-      },
-    },
     JoyButton: {
       styleOverrides: {
         root: {
@@ -35,6 +16,21 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
       styleOverrides: {
         root: {
           zIndex: "unset",
+          margin: "10px",
+        },
+      },
+    },
+    JoyFormControl: {
+      styleOverrides: {
+        root: {
+          padding: "5px",
+        },
+      },
+    },
+    JoyAutocomplete: {
+      styleOverrides: {
+        root: {
+          margin: "5px",
         },
       },
     },
@@ -47,50 +43,6 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
     sm: "300",
     md: "300",
     lg: "300",
-    xl: "300",
-    xl2: "300",
-    xl3: "300",
-  },
-  typography: {
-    display1: {
-      fontWeight: 300,
-    },
-    display2: {
-      fontWeight: 300,
-    },
-    h1: {
-      fontWeight: 300,
-    },
-    h2: {
-      fontWeight: 300,
-    },
-    h3: {
-      fontWeight: 300,
-    },
-    h4: {
-      fontWeight: 300,
-    },
-    h5: {
-      fontWeight: 300,
-    },
-    h6: {
-      fontWeight: 300,
-    },
-    body1: {
-      fontWeight: 300,
-    },
-    body2: {
-      fontWeight: 300,
-    },
-    body3: {
-      fontWeight: 300,
-    },
-    body4: {
-      fontWeight: 300,
-    },
-    body5: {
-      fontWeight: 300,
-    },
   },
   colorSchemes: {
     light: {
@@ -106,18 +58,6 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
           700: "#172509",
           800: "#0f1906",
           900: "#080c03",
-        },
-        info: {
-          50: "#ffffff",
-          100: "#cddef0",
-          200: "#9bbde0",
-          300: "#699bd1",
-          400: "#3a7abe",
-          500: "#2B5A8C",
-          600: "#224870",
-          700: "#1a3654",
-          800: "#112438",
-          900: "#09121c",
         },
         danger: {
           50: "#ffffff",
@@ -162,9 +102,6 @@ const { unstable_sxConfig: muiSxConfig, ...muiTheme } = extendMuiTheme({
         error: {
           main: joyTheme.colorSchemes.light.palette.danger[500],
         },
-        info: {
-          main: joyTheme.colorSchemes.light.palette.info[500],
-        },
         success: {
           main: joyTheme.colorSchemes.light.palette.success[500],
         },
@@ -190,9 +127,6 @@ const { unstable_sxConfig: muiSxConfig, ...muiTheme } = extendMuiTheme({
         grey: colors.grey,
         error: {
           main: colors.red[600],
-        },
-        info: {
-          main: colors.purple[600],
         },
         success: {
           main: colors.green[600],

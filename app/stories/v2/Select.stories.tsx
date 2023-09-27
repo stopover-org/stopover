@@ -169,30 +169,6 @@ const Preview = () => (
         <Grid xs={12}>
           <Select
             defaultValue="dog"
-            label="Common Select (Info)"
-            placeholder="Select an animal"
-            color="info"
-          >
-            <Option color="info" value="dog">
-              Dog
-            </Option>
-            <Option color="info" value="cat">
-              Cat
-            </Option>
-            <Option color="info" value="bird">
-              Bird
-            </Option>
-            <Option color="info" value="fish">
-              Fish
-            </Option>
-            <Option color="info" value="elephant">
-              Elephant
-            </Option>
-          </Select>
-        </Grid>
-        <Grid xs={12}>
-          <Select
-            defaultValue="dog"
             label="Common Select (Success)"
             placeholder="Select an animal"
             color="success"

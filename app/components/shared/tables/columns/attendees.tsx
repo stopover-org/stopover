@@ -40,7 +40,7 @@ const TagColor = ({ status }: { status: string }) => {
   });
 
   return (
-    <Tag level="body3" link={false} color={color}>
+    <Tag level="body-md" link={false} color={color}>
       {status}
     </Tag>
   );
@@ -149,7 +149,7 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
           ),
           tables: [
             <Box sx={{ marginLeft: "50px" }}>
-              <Typography level="h5">Attendee Options</Typography>,
+              <Typography level="title-md">Attendee Options</Typography>,
               <Table
                 hoverRow={false}
                 headers={attendeeOptionsHeaders}

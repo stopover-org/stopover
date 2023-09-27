@@ -1,5 +1,5 @@
 import React from "react";
-import { Chip, ChipDelete, Grid, styled, useTheme } from "@mui/joy";
+import { Box, Chip, ChipDelete, Drawer, Grid, styled, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
 import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import { useRouter } from "next/router";
@@ -14,6 +14,8 @@ import { EventsScene_EventsAutocompleteFragment$key } from "../../../../artifact
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { EventsScenePaginationQuery } from "../../../../artifacts/EventsScenePaginationQuery.graphql";
 import { EventsScene_InterestsFragment$key } from "../../../../artifacts/EventsScene_InterestsFragment.graphql";
+import { GlobalSidebarContext } from '../../../../components/GlobalSidebarProvider'
+import Link from "../../../../components/v2/Link";
 
 interface Props {
   eventsFragmentRef:
@@ -24,13 +26,14 @@ interface Props {
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
-    maxWidth: "calc(100vw - 260px)",
+    maxWidth: "calc(100vw - 270px)",
   },
 }));
 
 const EventsScene = ({ eventsFragmentRef }: Props) => {
   const router = useRouter();
   const theme = useTheme();
+  const { opened, close, open } = React.useContext(GlobalSidebarContext);
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   const isLargeDisplay = useMediaQuery(theme.breakpoints.up("lg"));
   const isVeryLargeDisplay = useMediaQuery(theme.breakpoints.up("xl"));
@@ -123,14 +126,13 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   }, [filters, router]);
 
   return (
+    <>
     <Grid
       container
-      spacing={2}
-      sx={{ paddingLeft: "20px", paddingRight: "20px" }}
     >
       {showSidebar && (
         <React.Suspense>
-          <Grid xs={2} container width="250px">
+          <Grid xs={2} container width="250px" padding='10px'>
             <Sidebar
               eventFiltersFragment={data?.eventFilters}
               interestsQueryFragmentRef={interestsQuery}
@@ -143,13 +145,13 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       )}
 
       <ContentWrapper
+        lg={10}
         md={10}
         sm={12}
         container
         sx={{
           paddingTop: showSidebar ? "7px" : "20px",
           paddingLeft: showSidebar ? "60px" : "0",
-          minWidth: "calc(100wv - 250px)",
           flexDirection: "column",
         }}
       >
@@ -160,6 +162,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           <Grid xl={9} lg={12} xs={12}>
             {interestsSlug.map((interest) => (
               <Chip
+                key={interest}
                 size="lg"
                 variant="outlined"
                 endDecorator={
@@ -231,6 +234,37 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         </React.Suspense>
       </ContentWrapper>
     </Grid>
+    <Drawer open={opened} onClose={close}>
+      <React.Suspense>
+        <Grid container padding='10px'>
+          <Sidebar
+            eventFiltersFragment={data?.eventFilters}
+            interestsQueryFragmentRef={interestsQuery}
+            onChange={(args) => {
+              setFilters(args);
+            }}
+          />
+          <Grid xs={12}>
+            <Box
+              sx={{
+                display: 'flex',
+                position: 'absolute',
+                bottom: '0',
+                borderTop: '1px solid',
+                borderColor: 'divider',
+                gap: 1,
+                p: 1.5,
+                pb: 2,
+                width: '90%'
+              }}
+            >
+              <Link href='/trips'>My Trips</Link>
+            </Box>
+          </Grid>
+        </Grid>
+      </React.Suspense>
+    </Drawer>
+    </>
   );
 };
 

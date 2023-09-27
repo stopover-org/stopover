@@ -57,7 +57,7 @@ const AddressFieldset = () => {
   return (
     <Fieldset>
       <Grid xs={12}>
-        <Typography level="h3">Address</Typography>
+        <Typography level="title-lg">Address</Typography>
       </Grid>
       <Grid xs={12}>
         <AddressAutocomplete

@@ -56,7 +56,7 @@ const BookingDescription = ({
         }}
       >
         <Typography
-          level="body3"
+          level="body-md"
           sx={{
             fontSize: "md",
           }}

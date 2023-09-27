@@ -90,7 +90,7 @@ const SingleDatesFieldset = () => {
                 height="100%"
                 sx={{ paddingTop: "25px" }}
               >
-                <Typography level="h4">&nbsp;:&nbsp;</Typography>
+                <Typography level="title-lg">&nbsp;:&nbsp;</Typography>
               </Stack>
             </Grid>
             <Grid xs={2}>

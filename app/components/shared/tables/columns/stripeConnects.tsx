@@ -53,7 +53,7 @@ const StatusTag = ({ status }: { status: string }) => {
   });
 
   return (
-    <Tag level="body3" link={false} color={color}>
+    <Tag level="body-md" link={false} color={color}>
       {status}
     </Tag>
   );

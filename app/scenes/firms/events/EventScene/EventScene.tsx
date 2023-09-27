@@ -146,41 +146,44 @@ const EventScene = ({
           defaultValue={0}
           sx={{ width: "100%", paddingTop: "10px" }}
           onChange={(_, value) => setTab(value as number)}
+           orientation='vertical'
         >
-          <TabList variant="plain" sx={{ width: "30%" }}>
+          <TabList variant="plain" sx={{minWidth: '175px'}}>
             <Tab variant={tab === 0 ? "outlined" : "plain"}>
               General Information
             </Tab>
             <Tab variant={tab === 1 ? "outlined" : "plain"}>
-              Event Options ( {event.eventOptions.length} )
+              Event Options ({event.eventOptions.length})
             </Tab>
             <Tab variant={tab === 2 ? "outlined" : "plain"}>
-              Schedules ( {event.schedules.nodes.length} )
+              Schedules ({event.schedules.nodes.length})
             </Tab>
             <Tab variant={tab === 3 ? "outlined" : "plain"}>
-              Bookings ( {event.bookings.nodes.length} )
+              Bookings ({event.bookings.nodes.length})
             </Tab>
             {currentUser?.serviceUser && (
               <Tab variant={tab === 4 ? "outlined" : "plain"}>
-                Stripe Integrations ( {event.stripeIntegrations.nodes.length} ){" "}
+                Str. Int. ({event.stripeIntegrations.nodes.length})
                 <Tag
                   link={false}
                   color="neutral"
-                  sx={{ height: "18px", fontSize: "10px", padding: "2px 4px" }}
+                  level='body-xs'
                 >
                   Service User
                 </Tag>
               </Tab>
             )}
           </TabList>
-          <GeneralInformation index={0} eventFragmentRef={event} />
-          <EventOptionsInformation index={1} eventFragmentRef={event} />
-          <SchedulesInformation index={2} eventFragmentRef={event} />
-          <BookingsInformation index={3} eventFragmentRef={event} />
+          <Box sx={{width: 'calc(100% - 175px)'}}>
+            <GeneralInformation index={0} eventFragmentRef={event} />
+            <EventOptionsInformation index={1} eventFragmentRef={event} />
+            <SchedulesInformation index={2} eventFragmentRef={event} />
+            <BookingsInformation index={3} eventFragmentRef={event} />
 
-          {currentUser?.serviceUser && (
-            <StripeIntegrationsInformation index={4} eventFragmentRef={event} />
-          )}
+            {currentUser?.serviceUser && (
+              <StripeIntegrationsInformation index={4} eventFragmentRef={event} />
+            )}
+          </Box>
         </Tabs>
       </Grid>
     </Grid>

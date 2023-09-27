@@ -1,18 +1,18 @@
-import { Divider, Grid } from "@mui/joy";
-import React from "react";
-import { Moment } from "moment/moment";
 import { Edit as EditIcon } from "@mui/icons-material";
-import { graphql, RefetchFn, useFragment } from "react-relay";
-import { useDebounce } from "use-debounce";
+import { Divider, Grid, useTheme } from "@mui/joy";
+import Image from "next/image";
+import { useMediaQuery } from "@mui/material";
+import { Moment } from "moment/moment";
 import { useRouter } from "next/router";
-import Input from "../../../../../components/v2/Input/Input";
-import DateRangePicker from "../../../../../components/v2/DateRangePicker/DateRangePicker";
-import SliderRange from "../../../../../components/v2/SliderRange/SliderRange";
-import Checkbox from "../../../../../components/v2/Checkbox/Checkbox";
-import RatingSelector from "../../../../../components/v2/RatingSelector";
+import React from "react";
+import { graphql, useFragment } from "react-relay";
 import { Sidebar_EventFiltersFragment$key } from "../../../../../artifacts/Sidebar_EventFiltersFragment.graphql";
-import InterestsSelect from "./InterestsSelect";
 import { Sidebar_InterestsFragment$key } from "../../../../../artifacts/Sidebar_InterestsFragment.graphql";
+import DateRangePicker from "../../../../../components/v2/DateRangePicker/DateRangePicker";
+import Input from "../../../../../components/v2/Input/Input";
+import Link from "../../../../../components/v2/Link";
+import SliderRange from "../../../../../components/v2/SliderRange/SliderRange";
+import InterestsSelect from "./InterestsSelect";
 
 interface Props {
   eventFiltersFragment: Sidebar_EventFiltersFragment$key;
@@ -26,6 +26,9 @@ const Sidebar = ({
   onChange,
 }: Props) => {
   const router = useRouter();
+  const theme = useTheme()
+  const isSmallDisplay = useMediaQuery(theme.breakpoints.up("sm"));
+  const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
   const edgeFiltersValues = useFragment<Sidebar_EventFiltersFragment$key>(
     graphql`
       fragment Sidebar_EventFiltersFragment on EventFilters {
@@ -95,6 +98,15 @@ const Sidebar = ({
 
   return (
     <Grid container flexDirection="column">
+      {!isMediumDisplay && <Grid xs={12}>
+        <Link href="/">
+          <Image
+            src="https://placehold.co/250x75"
+            width={300}
+            height={90}
+          />
+        </Link>
+      </Grid>}
       <Grid xs={12}>
         <Input
           onChange={(value) => setCity(value)}

@@ -34,10 +34,10 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
   );
 
   return (
-    <Grid container>
-      <Grid xs={6} alignItems="flex-end" display="flex">
+    <Grid container width="100%">
+      <Grid xs={6}>
         <Typography
-          level="body3"
+          level="body-md"
           sx={(theme) => ({
             fontSize: "22px",
             [theme.breakpoints.down("sm")]: {

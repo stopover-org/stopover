@@ -83,7 +83,7 @@ export const SignIn = () => {
               </Typography>
             </Link>
             {showCode && (
-              <Typography level="body2">{usernameField.value}</Typography>
+              <Typography level="body-md">{usernameField.value}</Typography>
             )}
           </Grid>
 
