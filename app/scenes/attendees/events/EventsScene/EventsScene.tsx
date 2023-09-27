@@ -149,7 +149,6 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         sx={{
           paddingTop: showSidebar ? "7px" : "20px",
           paddingLeft: showSidebar ? "60px" : "0",
-          minWidth: "calc(100wv - 250px)",
           flexDirection: "column",
         }}
       >

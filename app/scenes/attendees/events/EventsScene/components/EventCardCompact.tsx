@@ -98,7 +98,16 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
   };
 
   return (
-    <Grid sx={{ minWidth: "290px", width: "calc(30% + 20px)" }} padding="10px">
+    <Grid
+      sx={{ minWidth: "290px" }}
+      width={{
+        lg: "calc(33% - 20px)",
+        md: "calc(50% - 20px)",
+        sm: "calc(100% - 20px)",
+        width: "calc(100% - 20px)",
+      }}
+      padding="10px"
+    >
       <Card variant="outlined" sx={{ width: "100%", minWidth: "270px" }}>
         <CardOverflow>
           <AspectRatio ratio="2">
