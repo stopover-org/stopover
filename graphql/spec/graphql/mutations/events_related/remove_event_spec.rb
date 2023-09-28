@@ -40,7 +40,7 @@ RSpec.describe Mutations::EventsRelated::RemoveEvent, type: :mutation do
 
       expect(result.dig(:data, :removeEvent, :event, :id)).to eq(GraphqlSchema.id_from_object(event))
       expect(result.dig(:data, :removeEvent, :event, :status)).to eq('removed')
-      expect(result.dig(:data, :removeEvent, :notification)).to eq('Event removed!')
+      expect(result.dig(:data, :removeEvent, :notification)).to eq('Event removed')
     end
   end
 
@@ -74,7 +74,7 @@ RSpec.describe Mutations::EventsRelated::RemoveEvent, type: :mutation do
     context 'permissions' do
       context 'for removed event' do
         before { event.update(status: 'removed') }
-        include_examples :fail, 'Event is removed already'
+        include_examples :fail, 'Event removed'
       end
 
       context 'as common user' do

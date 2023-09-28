@@ -42,7 +42,7 @@ RSpec.describe Mutations::BookingsRelated::AddAttendee, type: :mutation do
       expect(result.dig(:data, :addAttendee, :booking, :attendees, 1, :status)).to eq('not_registered')
       expect(result.dig(:data, :addAttendee, :booking, :attendees, 1, :id)).to eq(GraphqlSchema.id_from_object(booking.attendees.last))
       expect(result.dig(:data, :addAttendee, :errors)).to be_nil
-      expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee was added!')
+      expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee added')
     end
   end
 

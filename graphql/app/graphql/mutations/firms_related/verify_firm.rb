@@ -9,18 +9,19 @@ module Mutations
         current_firm.activate!
         {
           firm: current_firm,
-          notification: 'Firm was verified!'
+          notification: I18n.t('graphql.mutations.verify_firm.notifications.success')
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
-        { errors: [e.message], notification: 'Something went wrong' }
+        { errors: [message], firm: nil }
       end
 
       def authorized?(**inputs)
-        return false, { errors: ['You are not authorized'] } unless current_user&.active?
-        return false, { errors: ['You are not authorized'] } unless service_user?
-        return false, { errors: ['Firm already verified'] } if current_firm&.active?
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_user&.active?
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless service_user?
+        return false, { errors: [I18n.t('graphql.errors.general')] } if current_firm&.active?
 
         super
       end

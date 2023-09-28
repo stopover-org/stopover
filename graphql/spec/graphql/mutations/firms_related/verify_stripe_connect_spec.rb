@@ -40,7 +40,7 @@ RSpec.describe Mutations::FirmsRelated::VerifyStripeConnect, type: :mutation do
       expect(result.dig(:data, :verifyStripeConnect, :stripeConnect, :id)).to eq(GraphqlSchema.id_from_object(current_firm.stripe_connects.last))
       expect(result.dig(:data, :verifyStripeConnect, :stripeConnect, :status)).to eq('active')
       expect(result.dig(:data, :verifyStripeConnect, :error)).to be_nil
-      expect(result.dig(:data, :verifyStripeConnect, :notification)).to eq('Stripe Connect verified!')
+      expect(result.dig(:data, :verifyStripeConnect, :notification)).to eq('Stripe Connect verified')
     end
 
     context 'permissions' do
@@ -51,7 +51,7 @@ RSpec.describe Mutations::FirmsRelated::VerifyStripeConnect, type: :mutation do
           expect { result = subject.to_h.deep_symbolize_keys }.to change { StripeConnect.count }.by(0)
 
           expect(result.dig(:data, :verifyStripeConnect, :stripeConnect)).to be_nil
-          expect(result.dig(:data, :verifyStripeConnect, :errors)).to include('Stripe Connect already verified')
+          expect(result.dig(:data, :verifyStripeConnect, :errors)).to include('Something went wrong')
           expect(result.dig(:data, :verifyStripeConnect, :notification)).to be_nil
         end
       end

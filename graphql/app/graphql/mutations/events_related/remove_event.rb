@@ -10,14 +10,15 @@ module Mutations
       def resolve(event:)
         {
           event: Stopover::EventManagement::EventDestroyer.new(event, context[:current_user]).perform,
-          notification: 'Event removed!'
+          notification: I18n.t('graphql.mutations.remove_event.notifications.success')
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
           event: nil,
-          errors: [e.message]
+          errors: [message]
         }
       end
 
@@ -26,8 +27,8 @@ module Mutations
       def authorized?(**inputs)
         event = inputs[:event]
 
-        return false, { errors: ['You are not authorized'] } unless current_firm
-        return false, { errors: ['Event is removed already'] } if event.removed?
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
+        return false, { errors: [I18n.t('graphql.errors.event_removed')] } if event.removed?
 
         super
       end

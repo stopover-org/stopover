@@ -40,7 +40,7 @@ RSpec.describe Mutations::EventsRelated::UnpublishEvent, type: :mutation do
 
       expect(result.dig(:data, :unpublishEvent, :event, :id)).to eq(GraphqlSchema.id_from_object(event))
       expect(result.dig(:data, :unpublishEvent, :event, :status)).to eq('unpublished')
-      expect(result.dig(:data, :unpublishEvent, :notification)).to eq('Event unpublished!')
+      expect(result.dig(:data, :unpublishEvent, :notification)).to eq('Event unpublished')
     end
   end
 
@@ -73,17 +73,17 @@ RSpec.describe Mutations::EventsRelated::UnpublishEvent, type: :mutation do
 
       context 'for removed event' do
         before { event.update(status: 'removed') }
-        include_examples :fail, 'Event is removed already'
+        include_examples :fail, 'Event removed'
       end
 
       context 'for draft event' do
         before { event.update(status: 'draft') }
-        include_examples :fail, 'Event wasn\'t verified yet'
+        include_examples :fail, 'Event was not verified'
       end
 
       context 'for unpublished event' do
         before { event.update(status: 'unpublished') }
-        include_examples :fail, 'Event wasn\'t published yet'
+        include_examples :fail, 'Something went wrong'
       end
 
       context 'as common user' do

@@ -13,10 +13,10 @@ module Mutations
         case booking_option.status
         when 'available'
           booking_option.disable!
-          message = 'Booking Option is unavailable from now'
+          message = I18n.t('graphql.mutations.change_booking_option_availability.notifications.unavailable')
         when 'not_available'
           booking_option.restore!
-          message = 'Booking Option is available from now'
+          message = I18n.t('graphql.mutations.change_booking_option_availability.notifications.available')
         end
 
         BookingManagement::PriceResetJob.perform_later(booking.id)
@@ -27,9 +27,10 @@ module Mutations
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
-          e: [e.message],
+          errors: [message],
           booking_option: nil
         }
       end
@@ -38,10 +39,10 @@ module Mutations
 
       def authorized?(**inputs)
         booking_option = inputs[:booking_option]
-        return false, { errors: ['You are not authorized'] } unless manager?(booking_option)
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless manager?(booking_option)
 
-        return false, { errors: ['Event past'] } if booking_option.booking.past?
-        return false, { errors: ['Booking was cancelled'] } if booking_option.booking.cancelled?
+        return false, { errors: [I18n.t('graphql.errors.event_past')] } if booking_option.booking.past?
+        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking_option.booking.cancelled?
         super
       end
     end

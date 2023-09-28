@@ -59,10 +59,11 @@ module Mutations
 
         {
           event: event,
-          notification: 'Event updated!'
+          notification: I18n.t('graphql.mutations.update_event.notifications.success')
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
           event: nil,
@@ -73,7 +74,7 @@ module Mutations
       private
 
       def authorized?(**inputs)
-        return false, { errors: ['You are not authorized'] } unless current_firm
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
 
         super
       end

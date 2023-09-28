@@ -12,10 +12,10 @@ module Mutations
         case event_option.status
         when 'available'
           event_option.disable!
-          message = 'Event Option is not available!'
+          message = I18n.t('graphql.mutations.change_event_option_availability.notifications.unavailable')
         when 'not_available'
           event_option.restore!
-          message = 'Event Option is available!'
+          message = I18n.t('graphql.mutations.change_event_option_availability.notifications.available')
         end
 
         {
@@ -24,10 +24,11 @@ module Mutations
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
           event_option: nil,
-          errors: [e.message]
+          errors: [message]
         }
       end
 
@@ -36,8 +37,8 @@ module Mutations
       def authorized?(**inputs)
         event = inputs[:event_option].event
 
-        return false, { errors: ['You are not authorized'] } unless manager?(event)
-        return false, { errors: ['Event removed'] } if event.removed?
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless manager?(event)
+        return false, { errors: [I18n.t('graphql.errors.event_removed')] } if event.removed?
 
         super
       end

@@ -39,7 +39,7 @@ RSpec.describe Mutations::FirmsRelated::CreateStripeAccount, type: :mutation do
 
       expect(result.dig(:data, :createStripeAccount, :setupAccountUrl)).to eq('http://example.com')
       expect(result.dig(:data, :createStripeAccount, :error)).to be_nil
-      expect(result.dig(:data, :createStripeAccount, :notification)).to eq('You will be redirected')
+      expect(result.dig(:data, :createStripeAccount, :notification)).to eq('You will be redirected to set up account page')
     end
 
     context 'permissions' do
@@ -51,7 +51,7 @@ RSpec.describe Mutations::FirmsRelated::CreateStripeAccount, type: :mutation do
           expect { result = subject.to_h.deep_symbolize_keys }.to change { StripeConnect.count }.by(0)
 
           expect(result.dig(:data, :createStripeAccount, :setupAccountUrl)).to be_nil
-          expect(result.dig(:data, :createStripeAccount, :errors)).to include('Stripe Connect already exist')
+          expect(result.dig(:data, :createStripeAccount, :errors)).to include('Something went wrong')
           expect(result.dig(:data, :createStripeAccount, :notification)).to be_nil
         end
       end

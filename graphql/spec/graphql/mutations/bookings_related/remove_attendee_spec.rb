@@ -38,7 +38,7 @@ RSpec.describe Mutations::BookingsRelated::RemoveAttendee, type: :mutation do
 
       expect(result.dig(:data, :removeAttendee, :attendee, :id)).to eq(GraphqlSchema.id_from_object(attendee))
       expect(result.dig(:data, :removeAttendee, :attendee, :status)).to eq('removed')
-      expect(result.dig(:data, :removeAttendee, :notification)).to eq('Attendee was removed!')
+      expect(result.dig(:data, :removeAttendee, :notification)).to eq('Attendee removed')
     end
   end
 
@@ -54,7 +54,7 @@ RSpec.describe Mutations::BookingsRelated::RemoveAttendee, type: :mutation do
 
         expect(result.dig(:data, :removeAttendee, :attendee, :id)).to eq(GraphqlSchema.id_from_object(attendee))
         expect(result.dig(:data, :removeAttendee, :attendee, :status)).to eq('removed')
-        expect(result.dig(:data, :removeAttendee, :notification)).to eq('Attendee was removed!')
+        expect(result.dig(:data, :removeAttendee, :notification)).to eq('Attendee removed')
 
         expect(booking.refunds.last.refund_amount).to eq(Money.new(refund))
         expect(booking.refunds.last.penalty_amount).to eq(Money.new(0))
@@ -97,7 +97,7 @@ RSpec.describe Mutations::BookingsRelated::RemoveAttendee, type: :mutation do
     context 'permissions' do
       context 'for removed attendee' do
         before { attendee.update(status: 'removed') }
-        include_examples :fail, 'Attendee was removed already'
+        include_examples :fail, 'Attendee removed'
       end
 
       context 'for past booking' do
@@ -107,7 +107,7 @@ RSpec.describe Mutations::BookingsRelated::RemoveAttendee, type: :mutation do
 
       context 'for cancelled booking' do
         before { attendee.booking.update(status: 'cancelled') }
-        include_examples :fail, 'Booking was cancelled'
+        include_examples :fail, 'Booking cancelled'
       end
 
       context 'as booking attendee' do

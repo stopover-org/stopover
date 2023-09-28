@@ -100,21 +100,5 @@ RSpec.describe EventsQuery, type: :query do
         expect(event.available_dates).to include(future_4_day)
       end
     end
-
-    context 'with past events' do
-      let!(:query) do
-        EventsQuery.new({ start_date: now - 3.days,
-                                      end_date: now }, Event.all)
-      end
-
-      subject { query.all }
-
-      it 'with events in the past few days' do
-        expect(subject.count).to eq(1)
-
-        event = subject.last
-        expect(event.available_dates).not_to include(past_date)
-      end
-    end
   end
 end

@@ -40,7 +40,7 @@ RSpec.describe Mutations::EventsRelated::RescheduleEvent, type: :mutation do
 
       expect(result.dig(:data, :rescheduleEvent, :event, :id)).to eq(GraphqlSchema.id_from_object(event))
       expect(result.dig(:data, :rescheduleEvent, :event, :status)).to eq(status)
-      expect(result.dig(:data, :rescheduleEvent, :notification)).to eq('Event rescheduled!')
+      expect(result.dig(:data, :rescheduleEvent, :notification)).to eq('Event rescheduled')
     end
   end
 
@@ -70,12 +70,12 @@ RSpec.describe Mutations::EventsRelated::RescheduleEvent, type: :mutation do
     context 'permissions' do
       context 'for removed event' do
         before { event.update(status: 'removed') }
-        include_examples :fail, 'Event is removed already'
+        include_examples :fail, 'Event removed'
       end
 
       context 'for draft event' do
         before { event.update(status: 'draft') }
-        include_examples :fail, 'Event wasn\'t verified yet'
+        include_examples :fail, 'Event was not verified'
       end
 
       context 'as common user' do

@@ -56,12 +56,12 @@ RSpec.describe Mutations::EventsRelated::ChangeEventOptionAvailability, type: :m
     context 'as manager' do
       context 'from available to not available' do
         before { event_option.update(status: 'available') }
-        include_examples :successful, 'not_available', 'Event Option is not available!'
+        include_examples :successful, 'not_available', 'Event Option is unavailable from now'
       end
 
       context 'from not available to available' do
         before { event_option.update(status: 'not_available') }
-        include_examples :successful, 'available', 'Event Option is available!'
+        include_examples :successful, 'available', 'Event Option is available from now'
       end
     end
 

@@ -10,20 +10,19 @@ module Mutations
         firm.remove!
         {
           firm: firm.reload,
-          notification: 'Firm was removed'
+          notification: I18n.t('graphql.mutations.remove_firm.notifications.success')
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
-        { errors: [e.message], notification: 'Something went wrong' }
+        { errors: [message], firm: nil }
       end
 
       def authorized?(**inputs)
-        return false, { errors: ['You are not authorized'] } unless current_user
-        return false, { errors: ['You are not authorized'] } if current_user&.temporary?
-        return false, { errors: ['You are not authorized'] } if current_user&.inactive?
-        return false, { errors: ['You don\'t have firm'] } unless current_firm
-        return false, { errors: ['Firm was removed'] } if current_firm.removed?
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_user
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
+        return false, { errors: [I18n.t('graphql.errors.firm_removed')] } if current_firm.removed?
 
         super
       end

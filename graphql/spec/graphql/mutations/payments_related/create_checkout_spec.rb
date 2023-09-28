@@ -136,17 +136,17 @@ RSpec.describe Mutations::PaymentsRelated::CreateCheckout, type: :mutation do
 
       context 'for cancelled booking' do
         before { booking.update(status: 'cancelled') }
-        include_examples :fail, 'Booking was removed'
+        include_examples :fail, 'Booking cancelled'
       end
 
       context 'for removed event' do
         before { booking.event.update(status: 'removed') }
-        include_examples :fail, 'You are not authorized'
+        include_examples :fail, 'Event removed'
       end
 
       context 'for removed firm' do
         before { booking.firm.update(status: 'removed') }
-        include_examples :fail, 'You are not authorized'
+        include_examples :fail, 'Firm removed'
       end
 
       context 'as common user' do

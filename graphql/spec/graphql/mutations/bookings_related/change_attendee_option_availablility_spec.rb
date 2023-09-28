@@ -100,7 +100,7 @@ RSpec.describe Mutations::BookingsRelated::ChangeAttendeeOptionAvailability, typ
 
       context 'for cancelled booking' do
         before { attendee_option.booking.update(status: 'cancelled') }
-        include_examples :fail, 'Booking was cancelled'
+        include_examples :fail, 'Booking cancelled'
       end
 
       context 'as booking attendee company' do

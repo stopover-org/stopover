@@ -70,7 +70,7 @@ RSpec.describe Mutations::PaymentsRelated::WithdrawBalance, type: :mutation do
     context 'permissions' do
       context 'without stripe connects' do
         before { StripeConnect.delete_all }
-        include_examples :fail, 'You need to set up stripe connect'
+        include_examples :fail, 'Something went wrong'
       end
 
       context 'for insufficient funds' do

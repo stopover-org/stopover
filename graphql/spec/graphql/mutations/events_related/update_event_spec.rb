@@ -182,7 +182,7 @@ RSpec.describe Mutations::EventsRelated::UpdateEvent, type: :mutation do
         expect(result.dig(:data, :updateEvent, :event, key)).to eq(value)
       end
 
-      expect(result.dig(:data, :updateEvent, :notification)).to eq('Event updated!')
+      expect(result.dig(:data, :updateEvent, :notification)).to eq('Event updated')
     end
 
     it 'check event options' do

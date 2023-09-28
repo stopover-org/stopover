@@ -9,21 +9,22 @@ module Mutations
         account_link = Stopover::StripeAccountService.create_stripe_account(context[:current_user], stripe_connect)
         {
           setup_account_url: account_link[:account_link],
-          notification: 'You will be redirected'
+          notification: I18n.t('graphql.mutations.create_stripe_account.notifications.redirection')
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
           setup_account_url: nil,
-          errors: ['Something went wrong']
+          errors: [message]
         }
       end
 
       def authorized?(**_inputs)
-        return false, { errors: ['You are not authorized'] } unless current_user&.active?
-        return false, { errors: ['You are not authorized'] } unless current_firm
-        return false, { errors: ['Stripe Connect already exist'] } if current_firm.stripe_connects.active.any?
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_user&.active?
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
+        return false, { errors: [I18n.t('graphql.errors.general')] } if current_firm.stripe_connects.active.any?
 
         super
       end

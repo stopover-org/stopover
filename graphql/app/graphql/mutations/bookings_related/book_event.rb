@@ -17,15 +17,16 @@ module Mutations
         {
           booking: booking,
           access_token: booking.user.access_token,
-          notification: 'You booked this event!'
+          notification: I18n.t('graphql.mutations.book_event.notifications.success')
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
           booking: nil,
           access_token: nil,
-          errors: [e.message]
+          errors: [message]
         }
       end
 
@@ -34,10 +35,10 @@ module Mutations
       def authorized?(**inputs)
         schedules = inputs[:event].schedules.active.where(scheduled_for: inputs[:booked_for])
 
-        return false, { errors: ['Event past'] } if inputs[:booked_for].past?
-        return false, { errors: ['Something went wrong'] } if schedules.empty?
-        return false, { errors: ['You already booked this event'] } if current_account && current_account.bookings.where(schedule_id: schedules.ids).any?
-        return false, { errors: ['All places are already reserved'] } if inputs[:event].max_attendees && Attendee.where(booking_id: schedules.first.booking_ids).count >= inputs[:event].max_attendees
+        return false, { errors: [I18n.t('graphql.errors.event_past')] } if inputs[:booked_for].past?
+        return false, { errors: [I18n.t('graphql.errors.general')] } if schedules.empty?
+        return false, { errors: [I18n.t('graphql.errors.already_booked')] } if current_account && current_account.bookings.where(schedule_id: schedules.ids).any?
+        return false, { errors: [I18n.t('graphql.errors.all_places_reserved')] } if inputs[:event].max_attendees && Attendee.where(booking_id: schedules.first.booking_ids).count >= inputs[:event].max_attendees
 
         super
       end

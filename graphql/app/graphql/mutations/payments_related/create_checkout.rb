@@ -35,7 +35,7 @@ module Mutations
               url: checkout[:url],
               booking: booking,
               payment: checkout[:payment],
-              notification: 'You will be redirected to checkout page'
+              notification: I18n.t('graphql.mutations.create_checkout.notifications.redirection')
             }
           end
 
@@ -43,7 +43,7 @@ module Mutations
             url: checkout[:url],
             booking: booking,
             payment: payment,
-            notification: 'You will be redirected to checkout page'
+            notification: I18n.t('graphql.mutations.create_checkout.notifications.redirection')
           }
         end
 
@@ -53,15 +53,17 @@ module Mutations
           url: checkout[:url],
           booking: booking,
           payment: checkout[:payment],
-          notification: 'You will be redirected to checkout page'
+          notification: I18n.t('graphql.mutations.create_checkout.notifications.redirection')
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
           url: nil,
           booking: booking,
-          payment: nil
+          payment: nil,
+          errors: [message]
         }
       end
 
@@ -70,13 +72,13 @@ module Mutations
       def authorized?(**inputs)
         booking = inputs[:booking]
 
-        return false, { errors: ['You are not authorized'] } unless owner?(booking)
-        return false, { errors: ['You are not authorized'] } unless current_user&.active?
-        return false, { errors: ['Booking was removed'] } if booking.cancelled?
-        return false, { errors: ['You are not authorized'] } if booking.firm.removed?
-        return false, { errors: ['You are not authorized'] } if booking.event.removed?
-        return false, { errors: ['Something went wrong'] } unless booking.stripe_integration&.active?
-        return false, { errors: ['Something went wrong'] } unless booking.firm.payment_types.include?('stripe')
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless owner?(booking)
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_user&.active?
+        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
+        return false, { errors: [I18n.t('graphql.errors.firm_removed')] } if booking.firm.removed?
+        return false, { errors: [I18n.t('graphql.errors.event_removed')] } if booking.event.removed?
+        return false, { errors: [I18n.t('graphql.errors.general')] } unless booking.stripe_integration&.active?
+        return false, { errors: [I18n.t('graphql.errors.general')] } unless booking.firm.payment_types.include?('stripe')
 
         super
       end
