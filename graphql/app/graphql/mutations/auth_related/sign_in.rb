@@ -42,11 +42,11 @@ module Mutations
 
           context[:current_user] = user.reload
 
-          return { user: user, access_token: user.access_token, notification: 'You successfully signed in' }
+          return { user: user, access_token: user.access_token, notification: I18n.t('graphql.mutations.sign_in.notifications.successfully_signed_in') }
         elsif args[:reset_code] || !user.confirmation_code
           user.send_confirmation_code!(primary: type)
 
-          return { user: nil, delay: user.delay, notification: 'Confirmation code was sent' }
+          return { user: nil, delay: user.delay, notification: I18n.t('graphql.mutations.sign_in.notifications.confirmation_code_sent') }
         end
 
         { user: nil, delay: user.delay }

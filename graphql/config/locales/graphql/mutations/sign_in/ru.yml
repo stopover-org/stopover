@@ -1,0 +1,7 @@
+ru:
+  graphql:
+    mutations:
+      sign_in:
+        notifications:
+          successfully_signed_in: 'Вы успешно вошли в систему'
+          confirmation_code_sent: "Код подтверждения был отправлен"
