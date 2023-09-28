@@ -15,28 +15,27 @@ module Mutations
 
         {
           booking: booking.reload,
-          notification: 'Booking was updated!'
+          notification: I18n.t('graphql.mutations.update_booking.notifications.success')
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
           booking: nil,
-          errors: [e.message]
+          errors: [message]
         }
       end
 
       def authorized?(**inputs)
         booking = inputs[:booking]
 
-        return false, { errors: ['You are not authorized'] } if !owner?(booking) && !manager?(booking)
-        return false, { errors: ['Booking paid already'] } if owner?(booking) && booking.payments.successful.any?
-
-        return false, { errors: ['Event past'] } if booking.past?
-        return false, { errors: ['Booking cancelled'] } if booking.cancelled?
-
-        return false, { errors: ['Date past'] } if inputs[:booked_for]&.past?
-        return false, { errors: ['Wrong option type'] } if inputs[:event_options]&.select { |opt| opt.for_attendee }&.any?
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !owner?(booking) && !manager?(booking)
+        return false, { errors: [I18n.t('graphql.errors.booking_paid')] } if owner?(booking) && booking.payments.successful.any?
+        return false, { errors: [I18n.t('graphql.errors.general')] } if booking.past?
+        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
+        return false, { errors: [I18n.t('graphql.errors.event_past')] } if inputs[:booked_for]&.past?
+        return false, { errors: [I18n.t('graphql.errors.general')] } if inputs[:event_options]&.select { |opt| opt.for_attendee }&.any?
 
         super
       end

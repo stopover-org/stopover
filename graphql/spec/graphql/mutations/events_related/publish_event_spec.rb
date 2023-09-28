@@ -40,7 +40,7 @@ RSpec.describe Mutations::EventsRelated::PublishEvent, type: :mutation do
 
       expect(result.dig(:data, :publishEvent, :event, :id)).to eq(GraphqlSchema.id_from_object(event))
       expect(result.dig(:data, :publishEvent, :event, :status)).to eq('published')
-      expect(result.dig(:data, :publishEvent, :notification)).to eq('Event published!')
+      expect(result.dig(:data, :publishEvent, :notification)).to eq('Event published')
     end
   end
 
@@ -63,17 +63,17 @@ RSpec.describe Mutations::EventsRelated::PublishEvent, type: :mutation do
     context 'permissions' do
       context 'for already published event' do
         before { event.update(status: 'published') }
-        include_examples :fail, 'Event published already'
+        include_examples :fail, 'Event published'
       end
 
       context 'for draft firm' do
         before { event.firm.update(status: 'pending') }
-        include_examples :fail, 'Firm is not verified'
+        include_examples :fail, 'Firm was not verified'
       end
 
       context 'for draft event' do
         before { event.update(status: 'draft') }
-        include_examples :fail, 'Event is not verified'
+        include_examples :fail, 'Event was not verified'
       end
 
       context 'for removed event' do

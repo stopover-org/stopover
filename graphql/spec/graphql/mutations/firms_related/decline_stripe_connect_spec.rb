@@ -44,7 +44,7 @@ RSpec.describe Mutations::FirmsRelated::DeclineStripeConnect, type: :mutation do
         expect(result.dig(:data, :declineStripeConnect, :stripeConnect, :id)).to eq(GraphqlSchema.id_from_object(current_firm.stripe_connects.last))
         expect(result.dig(:data, :declineStripeConnect, :stripeConnect, :status)).to eq('inactive')
         expect(result.dig(:data, :declineStripeConnect, :error)).to be_nil
-        expect(result.dig(:data, :declineStripeConnect, :notification)).to eq('Stripe Connect deactivated!')
+        expect(result.dig(:data, :declineStripeConnect, :notification)).to eq('Account declined')
       end
     end
 
@@ -59,7 +59,7 @@ RSpec.describe Mutations::FirmsRelated::DeclineStripeConnect, type: :mutation do
         expect(result.dig(:data, :declineStripeConnect, :stripeConnect, :id)).to eq(GraphqlSchema.id_from_object(current_firm.stripe_connects.last))
         expect(result.dig(:data, :declineStripeConnect, :stripeConnect, :status)).to eq('removed')
         expect(result.dig(:data, :declineStripeConnect, :error)).to be_nil
-        expect(result.dig(:data, :declineStripeConnect, :notification)).to eq('Stripe Connect removed!')
+        expect(result.dig(:data, :declineStripeConnect, :notification)).to eq('Account removed')
       end
     end
 

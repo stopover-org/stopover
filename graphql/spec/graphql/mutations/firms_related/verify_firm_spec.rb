@@ -42,7 +42,7 @@ RSpec.describe Mutations::FirmsRelated::VerifyFirm, type: :mutation do
 
       expect(result.dig(:data, :verifyFirm, :firm, :status)).to eq('active')
       expect(result.dig(:data, :verifyFirm, :error)).to be_nil
-      expect(result.dig(:data, :verifyFirm, :notification)).to eq('Firm was verified!')
+      expect(result.dig(:data, :verifyFirm, :notification)).to eq('Firm verified')
     end
 
     context 'permissions' do
@@ -53,7 +53,7 @@ RSpec.describe Mutations::FirmsRelated::VerifyFirm, type: :mutation do
           expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
 
           expect(result.dig(:data, :verifyFirm, :firm)).to be_nil
-          expect(result.dig(:data, :verifyFirm, :errors)).to include('Firm already verified')
+          expect(result.dig(:data, :verifyFirm, :errors)).to include('Something went wrong')
           expect(result.dig(:data, :verifyFirm, :notification)).to be_nil
         end
       end

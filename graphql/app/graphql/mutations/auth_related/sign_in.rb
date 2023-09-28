@@ -42,7 +42,7 @@ module Mutations
 
           context[:current_user] = user.reload
 
-          return { user: user, access_token: user.access_token, notification: I18n.t('graphql.mutations.sign_in.notifications.successfully_signed_in') }
+          return { user: user, access_token: user.access_token, notification: I18n.t('graphql.mutations.sign_in.notifications.success') }
         elsif args[:reset_code] || !user.confirmation_code
           user.send_confirmation_code!(primary: type)
 
@@ -52,6 +52,7 @@ module Mutations
         { user: nil, delay: user.delay }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+
         { user: nil, delay: user&.delay, errors: [e.message] }
       end
     end

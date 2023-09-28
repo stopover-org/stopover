@@ -93,7 +93,7 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
       expect(result.dig(:data, :createFirm, :firm, :houseNumber)).to  eq('House Number')
       expect(result.dig(:data, :createFirm, :firm, :fullAddress)).to  eq('Full Address')
 
-      expect(result.dig(:data, :createFirm, :notification)).to eq('Firm was created')
+      expect(result.dig(:data, :createFirm, :notification)).to eq('Firm created')
     end
   end
 
@@ -106,7 +106,6 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
           expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
           expect(result.dig(:data, :createFirm, :firm)).to be_nil
           expect(result.dig(:data, :createFirm, :errors)).to_not be_empty
-          expect(result.dig(:data, :createFirm, :notification)).to eq('Something went wrong')
         end
       end
     end
@@ -118,7 +117,6 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
         expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
         expect(result.dig(:data, :createFirm, :firm)).to be_nil
         expect(result.dig(:data, :createFirm, :errors)).to_not be_empty
-        expect(result.dig(:data, :createFirm, :notification)).to eq('Something went wrong')
       end
     end
 
@@ -129,7 +127,6 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
         expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
         expect(result.dig(:data, :createFirm, :firm)).to be_nil
         expect(result.dig(:data, :createFirm, :errors)).to_not be_empty
-        expect(result.dig(:data, :createFirm, :notification)).to eq('Something went wrong')
       end
     end
   end
@@ -142,7 +139,7 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
         result = nil
         expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
         expect(result.dig(:data, :createFirm, :firm)).to be_nil
-        expect(result.dig(:data, :createFirm, :errors)).to include('You already have firm')
+        expect(result.dig(:data, :createFirm, :errors)).to include('Something went wrong')
       end
     end
 

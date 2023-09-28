@@ -1,7 +1,0 @@
-en:
-  graphql:
-    mutations:
-      sign_in:
-        notifications:
-          successfully_signed_in: 'You successfully signed in'
-          confirmation_code_sent: 'Confirmation code was sent'

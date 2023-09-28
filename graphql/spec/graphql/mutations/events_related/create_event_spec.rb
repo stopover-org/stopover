@@ -178,7 +178,7 @@ RSpec.describe Mutations::EventsRelated::CreateEvent, type: :mutation do
         expect(result.dig(:data, :createEvent, :event, key)).to eq(value)
       end
 
-      expect(result.dig(:data, :createEvent, :notification)).to eq('Event created!')
+      expect(result.dig(:data, :createEvent, :notification)).to eq('Event created')
     end
 
     it 'check event options' do

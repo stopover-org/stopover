@@ -38,7 +38,7 @@ RSpec.describe Mutations::BookingsRelated::RegisterAttendee, type: :mutation do
 
       expect(result.dig(:data, :registerAttendee, :attendee, :id)).to eq(GraphqlSchema.id_from_object(attendee))
       expect(result.dig(:data, :registerAttendee, :attendee, :status)).to eq('registered')
-      expect(result.dig(:data, :registerAttendee, :notification)).to eq('Attendee was registered!')
+      expect(result.dig(:data, :registerAttendee, :notification)).to eq('Attendee registered')
     end
   end
 
@@ -60,12 +60,12 @@ RSpec.describe Mutations::BookingsRelated::RegisterAttendee, type: :mutation do
     context 'permissions' do
       context 'for registered attendee' do
         before { attendee.update(status: 'registered') }
-        include_examples :fail, 'Attendee was registered already'
+        include_examples :fail, 'Something went wrong'
       end
 
       context 'for removed attendee' do
         before { attendee.update(status: 'removed') }
-        include_examples :fail, 'Attendee was removed'
+        include_examples :fail, 'Attendee removed'
       end
 
       context 'for past booking' do
@@ -75,7 +75,7 @@ RSpec.describe Mutations::BookingsRelated::RegisterAttendee, type: :mutation do
 
       context 'for cancelled booking' do
         before { attendee.booking.update(status: 'cancelled') }
-        include_examples :fail, 'Booking was cancelled'
+        include_examples :fail, 'Booking cancelled'
       end
 
       context 'as booking attendee' do

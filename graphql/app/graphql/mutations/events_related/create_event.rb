@@ -55,20 +55,22 @@ module Mutations
       def resolve(**args)
         event = Stopover::EventManagement::EventCreator.new(context).execute(**args)
 
-        { event: event, notification: 'Event created!' }
+        { event: event,
+          notification: I18n.t('graphql.mutations.create_event.notifications.success') }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
           event: nil,
-          errors: [e.message]
+          errors: [message]
         }
       end
 
       private
 
       def authorized?(**inputs)
-        return false, { errors: ['You are not authorized'] } unless current_firm
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
 
         super
       end

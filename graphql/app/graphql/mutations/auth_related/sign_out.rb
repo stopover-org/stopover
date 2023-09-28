@@ -10,7 +10,15 @@ module Mutations
 
         {
           signed_out: true,
-          notification: 'You were signed out successfully'
+          notification: I18n.t('graphql.mutations.sign_out.notifications.success')
+        }
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
+
+        {
+          errors: [message],
+          attendee: nil
         }
       end
     end

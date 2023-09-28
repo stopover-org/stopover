@@ -6,19 +6,21 @@ module Mutations
       field :event, Types::EventsRelated::EventType
 
       argument :event_id, ID, loads: Types::EventsRelated::EventType
+
       def resolve(event:)
         publisher = Stopover::EventManagement::EventPublisher.new(event, context[:current_user])
 
         {
           event: publisher.publish,
-          notification: 'Event published!'
+          notification: I18n.t('graphql.mutations.publish_event.notifications.success')
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
           event: nil,
-          errors: [e.message]
+          errors: [message]
         }
       end
 
@@ -27,11 +29,11 @@ module Mutations
       def authorized?(**inputs)
         event = inputs[:event]
 
-        return false, { errors: ['You are not authorized'] } unless current_firm
-        return false, { errors: ['Firm is not verified'] } if current_firm.pending?
-        return false, { errors: ['Event is not verified'] } if event.draft?
-        return false, { errors: ['Event published already'] } if event.published?
-        return false, { errors: ['Event removed'] } if event.removed?
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
+        return false, { errors: [I18n.t('graphql.errors.firm_not_verified')] } if current_firm.pending?
+        return false, { errors: [I18n.t('graphql.errors.event_not_verified')] } if event.draft?
+        return false, { errors: [I18n.t('graphql.errors.event_published')] } if event.published?
+        return false, { errors: [I18n.t('graphql.errors.event_removed')] } if event.removed?
 
         super
       end

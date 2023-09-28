@@ -37,7 +37,7 @@ RSpec.describe Mutations::FirmsRelated::RemoveFirm, type: :mutation do
       expect(firm.status).to eq('removed')
 
       expect(result.dig(:data, :removeFirm, :firm, :status)).to eq('removed')
-      expect(result.dig(:data, :removeFirm, :notification)).to eq('Firm was removed')
+      expect(result.dig(:data, :removeFirm, :notification)).to eq('Firm removed')
     end
   end
 
@@ -48,7 +48,7 @@ RSpec.describe Mutations::FirmsRelated::RemoveFirm, type: :mutation do
         result = nil
         expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
         expect(result.dig(:data, :removeFirm, :firm)).to be_nil
-        expect(result.dig(:data, :removeFirm, :errors)).to include('You don\'t have firm')
+        expect(result.dig(:data, :removeFirm, :errors)).to include('You are not authorized')
       end
     end
 
@@ -90,7 +90,7 @@ RSpec.describe Mutations::FirmsRelated::RemoveFirm, type: :mutation do
         result = nil
         expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
         expect(result.dig(:data, :removeFirm, :firm)).to be_nil
-        expect(result.dig(:data, :removeFirm, :errors)).to include("You don't have firm")
+        expect(result.dig(:data, :removeFirm, :errors)).to include('You are not authorized')
       end
     end
   end

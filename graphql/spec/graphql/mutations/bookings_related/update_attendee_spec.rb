@@ -61,7 +61,7 @@ RSpec.describe Mutations::BookingsRelated::UpdateAttendee, type: :mutation do
           expect(opt[:forAttendee]).to eq(true)
         end
       end
-      expect(result.dig(:data, :updateAttendee, :notification)).to eq('Attendee was updated!')
+      expect(result.dig(:data, :updateAttendee, :notification)).to eq('Attendee updated')
     end
   end
 
@@ -136,12 +136,12 @@ RSpec.describe Mutations::BookingsRelated::UpdateAttendee, type: :mutation do
     context 'permissions' do
       context 'for removed attendee' do
         before { attendee.update(status: 'removed') }
-        include_examples :fail, 'Attendee was removed'
+        include_examples :fail, 'Attendee removed'
       end
 
       context 'with event options for bookings' do
         before { input[:eventOptionIds] = create_list(:event_option, 4, event: attendee.event, for_attendee: false).map { |opt| GraphqlSchema.id_from_object(opt) } }
-        include_examples :fail, 'Wrong option type'
+        include_examples :fail, 'Something went wrong'
       end
 
       context 'for past booking' do

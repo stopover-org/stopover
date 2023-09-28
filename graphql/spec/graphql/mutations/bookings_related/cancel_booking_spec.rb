@@ -47,7 +47,7 @@ RSpec.describe Mutations::BookingsRelated::CancelBooking, type: :mutation do
       expect(result.dig(:data, :cancelBooking, :booking, :id)).to eq(GraphqlSchema.id_from_object(booking))
       expect(result.dig(:data, :cancelBooking, :trip, :id)).to eq(GraphqlSchema.id_from_object(booking.trip))
       expect(result.dig(:data, :cancelBooking, :booking, :status)).to eq('cancelled')
-      expect(result.dig(:data, :cancelBooking, :notification)).to eq('Booking cancelled!')
+      expect(result.dig(:data, :cancelBooking, :notification)).to eq('Booking cancelled')
     end
   end
 
@@ -62,7 +62,7 @@ RSpec.describe Mutations::BookingsRelated::CancelBooking, type: :mutation do
       expect(result.dig(:data, :cancelBooking, :booking, :id)).to eq(GraphqlSchema.id_from_object(booking))
       expect(result.dig(:data, :cancelBooking, :trip, :id)).to eq(GraphqlSchema.id_from_object(booking.trip))
       expect(result.dig(:data, :cancelBooking, :booking, :status)).to eq('cancelled')
-      expect(result.dig(:data, :cancelBooking, :notification)).to eq('Booking cancelled!')
+      expect(result.dig(:data, :cancelBooking, :notification)).to eq('Booking cancelled')
 
       expect(booking.already_paid_price).to eq(Money.new(0))
       expect(booking.refunds.last.refund_amount).to eq(Money.new(refund))
@@ -310,12 +310,12 @@ RSpec.describe Mutations::BookingsRelated::CancelBooking, type: :mutation do
     context 'permissions' do
       context 'for past booking' do
         before { booking.schedule.update(scheduled_for: 5.days.ago) }
-        include_examples :fail, 'Event past'
+        include_examples :fail, 'Booking past'
       end
 
       context 'for cancelled booking' do
         before { booking.update(status: 'cancelled') }
-        include_examples :fail, 'Booking was cancelled'
+        include_examples :fail, 'Booking cancelled'
       end
 
       context 'without user' do

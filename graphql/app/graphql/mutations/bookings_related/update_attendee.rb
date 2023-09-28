@@ -25,14 +25,15 @@ module Mutations
         attendee.update!(**args.except(:event_options))
         {
           attendee: attendee,
-          notification: 'Attendee was updated!'
+          notification: I18n.t('graphql.mutations.update_attendee.notifications.success')
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
-          attendee: nil,
-          errors: [e.message]
+          errors: [message],
+          attendee: nil
         }
       end
 
@@ -40,11 +41,11 @@ module Mutations
         attendee = inputs[:attendee]
         booking = attendee.booking
 
-        return false, { errors: ['You are not authorized'] } if !owner?(booking) && !manager?(booking)
-        return false, { errors: ['Booking cancelled'] } if booking.cancelled?
-        return false, { errors: ['Event past'] } if booking.past?
-        return false, { errors: ['Attendee was removed'] } if attendee.removed?
-        return false, { errors: ['Wrong option type'] } if inputs[:event_options]&.reject { |opt| opt.for_attendee }&.any?
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !owner?(booking) && !manager?(booking)
+        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
+        return false, { errors: [I18n.t('graphql.errors.event_past')] } if booking.past?
+        return false, { errors: [I18n.t('graphql.errors.attendee_removed')] } if attendee.removed?
+        return false, { errors: [I18n.t('graphql.errors.general')] } if inputs[:event_options]&.reject { |opt| opt.for_attendee }&.any?
 
         super
       end

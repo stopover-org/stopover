@@ -52,7 +52,7 @@ RSpec.describe Mutations::BookingsRelated::UpdateBooking, type: :mutation do
           expect(opt[:forAttendee]).to eq(false)
         end
       end
-      expect(result.dig(:data, :updateBooking, :notification)).to eq('Booking was updated!')
+      expect(result.dig(:data, :updateBooking, :notification)).to eq('Booking updated')
     end
   end
 
@@ -122,17 +122,17 @@ RSpec.describe Mutations::BookingsRelated::UpdateBooking, type: :mutation do
     context 'permissions' do
       context 'with event options for bookings' do
         before { input[:eventOptionIds] = create_list(:event_option, 4, event: booking.event, for_attendee: true).map { |opt| GraphqlSchema.id_from_object(opt) } }
-        include_examples :fail, 'Wrong option type'
+        include_examples :fail, 'Something went wrong'
       end
 
       context 'for past schedule' do
         before { schedule.update(scheduled_for: 5.days.ago) }
-        include_examples :fail, 'Date past'
+        include_examples :fail, 'Event past'
       end
 
       context 'for past booking' do
         before { booking.schedule.update(scheduled_for: 5.days.ago) }
-        include_examples :fail, 'Event past'
+        include_examples :fail, 'Something went wrong'
       end
 
       context 'for cancelled booking' do
@@ -144,7 +144,7 @@ RSpec.describe Mutations::BookingsRelated::UpdateBooking, type: :mutation do
         context 'as common user' do
           let(:booking) { create(:partially_paid_booking) }
           let(:current_user) { booking.user }
-          include_examples :fail, 'Booking paid already'
+          include_examples :fail, 'Booking paid'
         end
       end
 
@@ -152,7 +152,7 @@ RSpec.describe Mutations::BookingsRelated::UpdateBooking, type: :mutation do
         context 'as common user' do
           let(:booking) { create(:fully_paid_booking) }
           let(:current_user) { booking.user }
-          include_examples :fail, 'Booking paid already'
+          include_examples :fail, 'Booking paid'
         end
       end
 

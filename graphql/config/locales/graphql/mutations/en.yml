@@ -1,0 +1,127 @@
+en:
+  graphql:
+    errors:
+      not_authorized: 'You are not authorized'
+      general: 'Something went wrong'
+      
+      firm_not_verified: 'Firm was not verified'
+      firm_removed: 'Firm removed'
+
+      booking_cancelled: 'Booking cancelled'
+      booking_past: 'Booking past'
+      booking_paid: 'Booking paid'
+      
+      event_past: 'Event past'
+      event_removed: 'Event removed'
+      all_places_reserved: 'All places are reserved'
+      already_booked: 'You are already booked this event'
+      event_not_verified: "Event was not verified"
+      event_published: 'Event published'
+      
+      attendee_removed: 'Attendee removed'
+      insufficient_funds: 'Insufficient funds'
+
+    mutations:
+      sign_in:
+        notifications:
+          success: 'You successfully signed in'
+          confirmation_code_sent: 'Confirmation code was sent'
+      sign_out:
+        notifications:
+          success: 'You were signed out successfully'
+
+      add_attendee:
+        notifications:
+          success: 'Attendee added'
+      book_event:
+        notifications:
+          success: 'You booked this event'
+      cancel_booking:
+        notifications:
+          success: 'Booking cancelled'
+      change_attendee_option_availability:
+        notifications:
+          available: 'Attendee Option is available from now'
+          unavailable: 'Attendee Option is unavailable from now'
+      change_booking_option_availability:
+        notifications:
+          available: 'Booking Option is available from now'
+          unavailable: 'Booking Option is unavailable from now'
+      deregister_attendee:
+        notifications:
+          success: 'Attendee deregistered'
+      register_attendee:
+        notifications:
+          success: 'Attendee registered'
+      remove_attendee:
+        notifications:
+          success: 'Attendee removed'
+      update_attendee:
+        notifications:
+          success: 'Attendee updated'
+      update_booking:
+        notifications:
+          success: 'Booking updated'
+
+      change_event_option_availability:
+        notifications:
+          available: 'Event Option is available from now'
+          unavailable: 'Event Option is unavailable from now'
+      create_event:
+        notifications:
+          success: 'Event created'
+      publish_event:
+        notifications:
+          success: 'Event published'
+      remove_event:
+        notifications:
+          success: 'Event removed'
+      reschedule_event:
+        notifications:
+          success: 'Event rescheduled'
+      sync_stripe:
+        notifications:
+          success: 'Sync in progress'
+      unpublish_event:
+        notifications:
+          success: 'Event unpublished'
+      update_event:
+        notifications:
+          success: 'Event updated'
+      verify_event:
+        notifications:
+          success: 'Event verified'
+
+      create_firm:
+        notifications:
+          success: 'Firm created'
+      create_stripe_account:
+        notifications:
+          redirection: 'You will be redirected to set up account page'
+      decline_stripe_connect:
+        notifications:
+          declined: 'Account declined'
+          removed: 'Account removed'
+      remove_firm:
+        notifications:
+          success: 'Firm removed'
+      update_firm:
+        notifications:
+          success: 'Firm updated'
+      verify_firm:
+        notifications:
+          success: 'Firm verified'
+      verify_stripe_connect:
+        notifications:
+          success: 'Stripe Connect verified'
+
+      create_checkout:
+        notifications:
+          redirection: 'You will be redirected to checkout page'
+      withdraw_balance:
+        notifications:
+          success: 'We sent money to your account!'
+      
+      cancel_trip:
+        notifications:
+          success: ''

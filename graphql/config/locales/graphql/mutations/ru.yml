@@ -1,0 +1,128 @@
+ru:
+  graphql:
+    errors:
+      not_authorized: 'У вас нет прав доступа'
+      general: 'Что-то пошло не так'
+      
+      firm_not_verified: 'Фирма должна быть верифицирована'
+      firm_removed: 'Фирма была удалена'
+      stripe_payment_method_required: 'Require stripe payment method'
+
+      booking_cancelled: 'Бронирование было отменено'
+      booking_past: 'Бронирование уже прошло'
+      booking_paid: 'Бронирование было оплачено'
+      
+      event_past: 'Мероприятие уже прошло'
+      event_removed: 'Мероприятие было удалено'
+      all_places_reserved: 'Нет мест'
+      already_booked: 'Уже забронировано'
+      event_not_verified: "Мероприятие не верфициаровано"
+      event_published: 'Мероприятие уже опубликовано'
+
+      attendee_removed: 'Участник был удален'
+      insufficient_funds: 'Недостаточно средств'
+
+    mutations:
+      sign_in:
+        notifications:
+          successfully_signed_in: 'Вы успешно вошли в систему'
+          confirmation_code_sent: "Код подтверждения был отправлен"
+      sign_out:
+        notifications:
+          success: "Вы успешно вышли из системы"
+
+      add_attendee:
+        notifications:
+          success: 'Участник добавлен'
+      book_event:
+        notifications:
+          success: 'Вы забрбонировали мероприятие'
+      cancel_booking:
+        notifications:
+          success: 'Бронирование отменено'
+      change_attendee_option_availability:
+        notifications:
+          available: 'Опция теперь доступна'
+          unavailable: 'Опция теперь недоступна'
+      change_booking_option_availability:
+        notifications:
+          available: 'Опция теперь доступна'
+          unavailable: 'Опция теперь недоступна'
+      deregister_attendee:
+        notifications:
+          success: 'Участник был снят с регистрации'
+      register_attendee:
+        notifications:
+          success: 'Участник зарегистрирован'
+      remove_attendee:
+        notifications:
+          success: 'Участник удален'
+      update_attendee:
+        notifications:
+          success: 'Участник обновлен'
+      update_booking:
+        notifications:
+          success: 'Бронирование обновлено'
+
+      change_event_option_availability:
+        notifications:
+          available: 'Опция теперь доступна'
+          unavailable: 'Опция теперь недоступна'
+      create_event:
+        notifications:
+          success: 'Мероприятие создано '
+      publish_event:
+        notifications:
+          success: 'Мероприятие опубликовано'
+      remove_event:
+        notifications:
+          success: 'Мероприятие удалено'
+      reschedule_event:
+        notifications:
+          success: 'Мероприятие запланировано еще раз'
+      sync_stripe:
+        notifications:
+          success: 'Синхронизация начата'
+      unpublish_event:
+        notifications:
+          success: 'Мероприятие снято с публикации'
+      update_event:
+        notifications:
+          success: 'Мероприятие обновлено'
+      verify_event:
+        notifications:
+          success: 'Мероприятие подтверждено'
+
+      create_firm:
+        notifications:
+          success: 'Фирма создана'
+      create_stripe_account:
+        notifications:
+          redirection: 'Вы будете перенаправлены на страницу подклчюения аккаунта'
+      decline_stripe_connect:
+        notifications:
+          decline: 'Аккаунт отклонен'
+          removed: 'Аккаунт удален'
+      remove_firm:
+        notifications:
+          success: 'Фирма удалена'
+      update_firm:
+        notifications:
+          success: 'Фирма обновлена'
+      verify_firm:
+        notifications:
+          success: 'Фирма подтверждена'
+      verify_stripe_connect:
+        notifications:
+          success: 'Аккаунт подтвержден'
+
+      create_checkout:
+        notifications:
+          redirection: 'Вы будете перенаправлены на страницу оплаты'
+      withdraw_balance:
+        notifications:
+          success: 'Мы отправили деньги на ваш аккаунт'
+      
+      cancel_trip:
+        notifications:
+          success: ''

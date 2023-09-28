@@ -10,13 +10,14 @@ module Mutations
         attendee.deregister!
         {
           attendee: attendee,
-          notification: 'Attendee was deregistered!'
+          notification: I18n.t('graphql.mutations.deregister_attendee.notifications.success')
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
-          e: [e.message],
+          errors: [message],
           attendee: nil
         }
       end
@@ -25,12 +26,12 @@ module Mutations
 
       def authorized?(**inputs)
         attendee = inputs[:attendee]
-        return false, { errors: ['You are not authorized'] } unless manager?(attendee)
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless manager?(attendee)
 
-        return false, { errors: ['Attendee was removed'] } if attendee.removed?
-        return false, { errors: ['Attendee was registered already'] } if attendee.not_registered?
-        return false, { errors: ['Event past'] } if attendee.booking.past?
-        return false, { errors: ['Booking was cancelled'] } if attendee.booking.cancelled?
+        return false, { errors: [I18n.t('graphql.errors.attendee_removed')] } if attendee.removed?
+        return false, { errors: [I18n.t('graphql.errors.general')] } if attendee.not_registered?
+        return false, { errors: [I18n.t('graphql.errors.event_past')] } if attendee.booking.past?
+        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if attendee.booking.cancelled?
         super
       end
     end

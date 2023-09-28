@@ -45,7 +45,7 @@ RSpec.describe Mutations::EventsRelated::SyncStripe, type: :mutation do
 
       expect(result.dig(:data, :syncStripe, :event, :id)).to eq(GraphqlSchema.id_from_object(event))
       expect(result.dig(:data, :syncStripe, :event, :status)).to eq(status)
-      expect(result.dig(:data, :syncStripe, :notification)).to eq('Event sync in progress!')
+      expect(result.dig(:data, :syncStripe, :notification)).to eq('Sync in progress')
     end
   end
 
@@ -88,19 +88,19 @@ RSpec.describe Mutations::EventsRelated::SyncStripe, type: :mutation do
     end
 
     context 'permissions' do
-      context 'for removed fir' do
+      context 'for removed firm' do
         before { event.firm.update(status: 'removed') }
         include_examples :fail, 'You are not authorized'
       end
 
       context 'for removed event' do
         before { event.update(status: 'removed') }
-        include_examples :fail, 'Event is removed already'
+        include_examples :fail, 'Event removed'
       end
 
       context 'for draft event' do
         before { event.update(status: 'draft') }
-        include_examples :fail, 'Event wasn\'t verified yet'
+        include_examples :fail, 'Event was not verified'
       end
 
       context 'as common user' do

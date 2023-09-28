@@ -38,7 +38,7 @@ RSpec.describe Mutations::EventsRelated::VerifyEvent, type: :mutation do
 
       expect(result.dig(:data, :verifyEvent, :event, :id)).to eq(GraphqlSchema.id_from_object(event))
       expect(result.dig(:data, :verifyEvent, :event, :status)).to eq('unpublished')
-      expect(result.dig(:data, :verifyEvent, :notification)).to eq('Event verified!')
+      expect(result.dig(:data, :verifyEvent, :notification)).to eq('Event verified')
     end
   end
 
@@ -78,12 +78,12 @@ RSpec.describe Mutations::EventsRelated::VerifyEvent, type: :mutation do
 
       context 'for published event' do
         before { event.update(status: 'published') }
-        include_examples :fail, 'Event was verified already'
+        include_examples :fail, 'Something went wrong'
       end
 
       context 'for unpublished event' do
         before { event.update(status: 'unpublished') }
-        include_examples :fail, 'Event was verified already'
+        include_examples :fail, 'Something went wrong'
       end
 
       context 'as manager' do

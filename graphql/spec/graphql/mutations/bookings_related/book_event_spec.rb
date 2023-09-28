@@ -51,7 +51,7 @@ RSpec.describe Mutations::BookingsRelated::AddAttendee, type: :mutation do
       expect(result.dig(:data, :bookEvent, :booking, :id)).to eq(GraphqlSchema.id_from_object(booking))
       expect(result.dig(:data, :bookEvent, :booking, :status)).to eq('active')
       expect(result.dig(:data, :bookEvent, :booking, :schedule, :scheduledFor)).to eq(event.schedules.last.scheduled_for.iso8601)
-      expect(result.dig(:data, :bookEvent, :notification)).to eq('You booked this event!')
+      expect(result.dig(:data, :bookEvent, :notification)).to eq('You booked this event')
     end
   end
 
@@ -97,7 +97,7 @@ RSpec.describe Mutations::BookingsRelated::AddAttendee, type: :mutation do
       context 'for fully occupied booking' do
         before { event.update(max_attendees: 1) }
         let!(:booking) { create(:booking, event: event, schedule: schedule) }
-        include_examples :fail, 'All places are already reserved'
+        include_examples :fail, 'All places are reserved'
       end
 
       context 'for wrong schedule' do
@@ -108,7 +108,7 @@ RSpec.describe Mutations::BookingsRelated::AddAttendee, type: :mutation do
       context 'with existing booking for the same schedule' do
         let!(:trip) { create(:trip, account: current_user.account) }
         let!(:booking) { create(:booking, event: event, schedule: schedule, trip: trip) }
-        include_examples :fail, 'You already booked this event'
+        include_examples :fail, 'You are already booked this event'
       end
     end
   end

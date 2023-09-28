@@ -4,19 +4,21 @@ module Mutations
   module EventsRelated
     class RescheduleEvent < BaseMutation
       field :event, Types::EventsRelated::EventType
+
       argument :event_id, ID, loads: Types::EventsRelated::EventType
 
       def resolve(event:)
         {
           event: Stopover::EventManagement::EventRescheduler.new(event, context[:current_user]).perform,
-          notification: 'Event rescheduled!'
+          notification: I18n.t('graphql.mutations.reschedule_event.notifications.success')
         }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
           event: nil,
-          errors: [e.message]
+          errors: [message]
         }
       end
 
@@ -25,9 +27,9 @@ module Mutations
       def authorized?(**inputs)
         event = inputs[:event]
 
-        return false, { errors: ['You are not authorized'] } unless current_firm
-        return false, { errors: ['Event is removed already'] } if event.removed?
-        return false, { errors: ['Event wasn\'t verified yet'] } if event.draft?
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
+        return false, { errors: [I18n.t('graphql.errors.event_removed')] } if event.removed?
+        return false, { errors: [I18n.t('graphql.errors.event_not_verified')] } if event.draft?
 
         super
       end
