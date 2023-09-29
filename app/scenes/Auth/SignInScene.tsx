@@ -9,12 +9,14 @@ import PhoneInput from "../../components/v2/PhoneInput";
 import Typography from "../../components/v2/Typography";
 import Button from "../../components/v2/Button";
 import SubmitButton from "../../components/shared/SubmitButton";
+import { useTranslation } from "react-i18next";
 
 // @ts-ignore
 if (typeof window !== "undefined") window.momentTimezones = momentTimezones;
 
 export const SignIn = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const [showCode, setShowCode] = useState(false);
   const [delay, setDelay] = useState<number | null>(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
@@ -79,7 +81,7 @@ export const SignIn = () => {
               }}
             >
               <Typography underline>
-                &lt; {showCode ? `Change ${typeField.value}` : "Back"}
+                &lt; {showCode ? t('scenes.signIn.changeLoginType', {type: t(`general.${typeField.value}`)}) : t('general.back')}
               </Typography>
             </Link>
             {showCode && (
@@ -88,7 +90,7 @@ export const SignIn = () => {
           </Grid>
 
           <Grid xs={12} container justifyContent="center">
-            <Typography level="h3">Sign In / Sign Up</Typography>
+            <Typography level="h3">{t('scenes.signIn.header')}</Typography>
           </Grid>
 
           <Grid xs={12}>
@@ -100,14 +102,15 @@ export const SignIn = () => {
                 <Grid>
                   <Input
                     {...codeField}
-                    label={`Enter Code from ${typeField.value}`}
+                    label={t('scenes.signIn.enterCode', {type: typeField.value})}
                     hint={
                       delay ? (
-                        `You can resend code in ${delay} seconds`
+                        t('scenes.signIn.youCanResendDelay', { seconds: delay })
                       ) : (
                         <Link onClick={handleSubmit(true, 0)}>
                           <Typography fontSize="sm" color="primary">
-                            Resend Code
+                            {t('scenes.signIn.resendCode')
+                            }
                           </Typography>
                         </Link>
                       )
@@ -123,21 +126,22 @@ export const SignIn = () => {
                       <Input
                         {...usernameField}
                         label="Enter email"
-                        placeholder="Enter your email"
+                        label={t('scenes.signIn.enterEmail')}
+                        placeholder={t('scenes.signIn.enterEmail')}
                       />
                     )}
                     {typeField.value === "phone" && (
                       <PhoneInput
                         {...usernameField}
-                        label="Enter phone number"
+                        label={t('scenes.signIn.enterPhone')}
+                        placeholder={t('scenes.signIn.enterPhone')}
                       />
                     )}
                   </Grid>
                   <Grid container justifyContent="flex-end">
                     <Link onClick={changeType}>
                       <Typography fontSize="sm" color="primary">
-                        Use{" "}
-                        {typeField.value === "email" ? "phone number" : "email"}
+                      {t('scenes.signIn.useType', {type: t(`general.${typeField.value === 'email' ? 'phone' : 'email'}`)})}
                       </Typography>
                     </Link>
                   </Grid>
@@ -146,7 +150,7 @@ export const SignIn = () => {
 
               <Grid container justifyContent="flex-end">
                 <SubmitButton submitting={form.formState.isSubmitting}>
-                  Sign in
+                  {t('scenes.signIn.signInAction')}
                 </SubmitButton>
               </Grid>
             </form>

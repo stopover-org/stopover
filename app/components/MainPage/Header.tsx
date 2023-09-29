@@ -5,6 +5,7 @@ import { useMediaQuery } from "@mui/material";
 import { graphql, useFragment, useMutation } from "react-relay";
 import { useRouter } from "next/router";
 import Menu from "@mui/icons-material/Menu";
+import { useTranslation } from "react-i18next";
 import Link from "../v2/Link";
 import { Header_CurrentUserFragment$key } from "../../artifacts/Header_CurrentUserFragment.graphql";
 import { Header_SignOutMutation } from "../../artifacts/Header_SignOutMutation.graphql";
@@ -18,6 +19,7 @@ interface HeaderProps {
 const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
   const router = useRouter();
   const theme = useTheme();
+  const { t } = useTranslation();
   const { open } = React.useContext(GlobalSidebarContext);
   const isSmallDisplay = useMediaQuery(theme.breakpoints.up("sm"));
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
@@ -96,7 +98,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
               lineHeight={`${imageSize.height}px`}
               paddingRight="10px"
             >
-              My Trips
+              {t("layout.header.myTrips")}
             </Link>
           )}
           {isSmallDisplay && !isAuthorized && (
@@ -108,7 +110,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
               lineHeight={`${imageSize.height}px`}
               paddingRight="10px"
             >
-              Log In
+              {t("layout.header.logIn")}
             </Link>
           )}
           {isAuthorized && showRegisterFirm && (
@@ -121,7 +123,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
                   lineHeight={`${imageSize.height}px`}
                   paddingRight="10px"
                 >
-                  My Firm
+                  {t("layout.header.myFirm")}
                 </Link>
               ) : (
                 <Link
@@ -131,7 +133,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
                   lineHeight={`${imageSize.height}px`}
                   paddingRight="10px"
                 >
-                  Register Firm
+                  {t("layout.header.registerFirm")}
                 </Link>
               )}
 
@@ -147,7 +149,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
                   onSignOut();
                 }}
               >
-                Log out
+                {t("layout.header.logOut")}
               </Link>
             </>
           )}

@@ -1,0 +1,22 @@
+{
+	"general": {
+		"back": "Back",
+		"email": "email",
+		"phone": "phone"
+	},
+	"layout": {
+		"header": {
+			"myTrips": "My Trips",
+			"myFirm": "My Firm",
+			"registerFirm": "Register Firm",
+			"logIn": "Log In",
+			"logOut": "Log Out"
+		}
+	},
+	"scenes": {
+		"signIn": {
+			"changeLoginType": "Change {{type}}",
+			"header": "Sign In / Sign Up"
+		}
+	}
+}
