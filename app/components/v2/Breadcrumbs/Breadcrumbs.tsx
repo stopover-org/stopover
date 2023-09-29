@@ -14,14 +14,16 @@ interface BreadcrumbsProps {
 }
 const Breadcrumbs = ({ items, padding = 2 }: BreadcrumbsProps) => (
   <Box padding={padding}>
-    <Stack flexDirection="row">
+    <Stack flexDirection="row" flexWrap="wrap">
       {items.map((item) =>
         typeof item === "string" ? (
-          <Typography key={item}>&nbsp;/&nbsp;{item}</Typography>
+          <Typography fontSize="sm" key={item}>
+            &nbsp;/&nbsp;{item}
+          </Typography>
         ) : (
-          <Typography key={item.title}>
+          <Typography key={item.title} fontSize="sm">
             &nbsp;/&nbsp;
-            <Link level="body-md" href={item.href}>
+            <Link level="body-sm" href={item.href}>
               {item.title}
             </Link>
           </Typography>

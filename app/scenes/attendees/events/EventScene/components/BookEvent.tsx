@@ -19,6 +19,7 @@ import useTimeFromDate from "../../../../../lib/hooks/useTimeFromDate";
 import Link from "../../../../../components/v2/Link";
 import { BookEvent_EventFragment$key } from "../../../../../artifacts/BookEvent_EventFragment.graphql";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
+import { useTranslation } from "react-i18next";
 
 interface BookEventProps {
   eventFragmentRef: BookEvent_EventFragment$key;
@@ -72,9 +73,11 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
     [dateField]
   );
 
+  const { t } = useTranslation()
+
   return (
     <Grid container>
-      <Grid xs={6}>
+      <Grid md={6} sm={12}>
         <DateCalendar
           availableDates={availableDates}
           highlightedDates={bookedDates}
@@ -89,17 +92,14 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
           }}
         />
       </Grid>
-      <Grid xs={6}>
-        <Box paddingBottom="10px">
+      <Grid md={6} sm={12}>
           <Input
-            label="Date of Event"
+            label={t('scenes.attendees.eventScene.chooseDate')}
             value={dateField.value?.format(dateFormat)}
             readOnly
           />
-        </Box>
-        <Box paddingBottom="10px">
           <Select
-            label="Choose Time"
+            label={t('scenes.attendees.eventScene.chooseTime')}
             onChange={(value: string) => {
               if (!value) return;
 
@@ -114,10 +114,8 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
               </Option>
             ))}
           </Select>
-        </Box>
-        <Box paddingBottom="10px">
           <Input
-            label="Attendees Count"
+            label={t('scenes.attendees.eventScene.chooseCount')}
             type="number"
             value={
               booking
@@ -133,8 +131,6 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
             }}
             readOnly={Boolean(booking)}
           />
-        </Box>
-        <Box paddingBottom="10px">
           <Typography textAlign="end" level="title-lg">
             {getCurrencyFormat(
               parseInt(attendeesCountField.value, 10) *
@@ -142,22 +138,19 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
               event.attendeePricePerUom?.currency?.name
             )}
           </Typography>
-        </Box>
-        <Box textAlign="end">
           {!booking && (
             <SubmitButton
               submitting={form.formState.isSubmitting}
               disabled={!dateField.value.isValid() || !isValidTime}
             >
-              Book Event
+              {t('scenes.attendees.eventScene.bookEvent')}
             </SubmitButton>
           )}
           {booking && (
             <Link href={`/trips/${booking.trip.id}`} underline={false}>
-              <Button>My Trips</Button>
+              <Button>{t('layout.header.myTrips')}</Button>
             </Link>
           )}
-        </Box>
       </Grid>
     </Grid>
   );

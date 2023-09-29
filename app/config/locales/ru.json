@@ -2,7 +2,9 @@
 	"general": {
 		"back": "Назад",
 		"email": "email",
-		"phone": "телефон"
+		"phone": "телефон",
+		"total": "всего",
+		"attendee": "участник"
 	},
 	"datepicker": {
 		"selectDate": "Выберите дату",
@@ -58,6 +60,12 @@
 			"signInAction": "Вход"
 		},
 		"attendees": {
+			"eventScene": {
+				"bookEvent": "Забронировать",
+				"chooseDate": "Выберите дату",
+				"chooseTime": "Выберите время",
+				"chooseCount": "Сколько человек"
+			},
 			"tripScene": {
 				"bookingInfo": "Информация о бронировании",
 				"attendeesCount": "{{count}} участник(-ов)",

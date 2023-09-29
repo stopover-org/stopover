@@ -2,7 +2,9 @@
 	"general": {
 		"back": "Back",
 		"email": "email",
-		"phone": "phone"
+		"phone": "phone",
+		"total": "total",
+		"attendee": "attendee"
 	},
 	"datepicker": {
 		"selectDate": "Select Date",
@@ -58,6 +60,12 @@
 			"signInAction": "Sign In"
 		},
 		"attendees": {
+			"eventScene": {
+				"bookEvent": "Book Event",
+				"chooseDate": "Choose Date",
+				"chooseTime": "Choose Time",
+				"chooseCount": "How many Attendees"
+			},
 			"tripScene": {
 				"bookingInfo": "Booking Info",
 				"attendeesCount": "{{count}} attendee(-s)",

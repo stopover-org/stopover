@@ -5,12 +5,14 @@ import { EventTitle_EventFragment$key } from "../../../../../artifacts/EventTitl
 import Rating from "../../../../../components/v2/Rating/Rating";
 import Tag from "../../../../../components/v2/Tag/Tag";
 import Typography from "../../../../../components/v2/Typography";
+import { useTranslation } from "react-i18next";
 
 interface TitleProps {
   eventFragmentRef: EventTitle_EventFragment$key;
 }
 
 const EventTitle = ({ eventFragmentRef }: TitleProps) => {
+  const { t } = useTranslation()
   const event = useFragment(
     graphql`
       fragment EventTitle_EventFragment on Event {
@@ -33,10 +35,10 @@ const EventTitle = ({ eventFragmentRef }: TitleProps) => {
         <Stack flexDirection="row" alignItems="center">
           <Rating
             rating={event.averageRating}
-            label={`(${event.averageRating || 0} of 5)`}
+            label={t('event.ratingOf', { val: event.averageRating || 0, max: 5})}
           />
           {event.tags.map((tag) => (
-            <Tag key={tag.id} href={`/events?tag=${tag.id}`} primary>
+            <Tag key={tag.id} href={`/events?tags=${tag.id}`} primary>
               {tag.title}
             </Tag>
           ))}
