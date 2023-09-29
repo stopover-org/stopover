@@ -12,18 +12,20 @@ import "react-phone-input-2/lib/style.css";
 import "@fontsource/public-sans";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import moment from "moment";
 import { getClientEnvironment } from "../lib/clientEnvironment";
 import { theme } from "../lib/theme";
 import ApiKeysProvider from "../components/ApiKeysProvider";
 import englishTranslations from "../config/locales/en.json";
 import russianTranslations from "../config/locales/ru.json";
+import "moment/locale/ru";
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
   createClientEnvironment: () => getClientEnvironment()!,
 });
 
-console.log(russianTranslations);
+moment.locale("ru");
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next

@@ -5,6 +5,7 @@ import moment from "moment";
 import { Moment } from "moment/moment";
 import { useRouter } from "next/router";
 import { stringify } from "qs";
+import { useTranslation } from "react-i18next";
 import Typography from "../../../../../components/v2/Typography";
 import Rating from "../../../../../components/v2/Rating/Rating";
 import Link from "../../../../../components/v2/Link";
@@ -22,6 +23,7 @@ interface Props {
 
 const EventCardCompact = ({ eventFragmentRef }: Props) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const event = useFragment<EventCardWide_EventFragment$key>(
     graphql`
       fragment EventCardWide_EventFragment on Event {
@@ -160,18 +162,11 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
           </Box>
           <Rating
             rating={event.averageRating}
-            label={`(${event.averageRating || 0} of 5)`}
+            label={t('event.ratingOf', {val: event.averageRating | 0, max: 5})}
           />
-          <Stack flexDirection="row" paddingTop="10px">
-            {event.tags.slice(0, 2).map((tag) => (
-              <Tag key={tag.id} href={`/events?tag=${tag.id}`} primary>
-                {tag.title}
-              </Tag>
-            ))}
-          </Stack>
-          <br />
-          <br />
-          <Stack flexDirection="row" justifyContent="flex-end">
+          <Stack flexDirection="row" 
+          alignItems="center"
+          justifyContent="flex-end">
             <Typography fontSize="lg" paddingRight="10px">
               {getCurrencyFormat(
                 event?.attendeePricePerUom?.cents,
@@ -182,6 +177,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
               value={date}
               onChange={setDate}
               eventFragmentRef={event}
+              sx={{ width: '150px'}}
             />
             {date?.isValid() && !booking && (
               <SubmitButton
@@ -189,12 +185,12 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
                 size="sm"
                 onClick={() => bookEvent(event.id, date.toDate())}
               >
-                Book
+                {t('event.book')}
               </SubmitButton>
             )}
             {booking && (
               <Link href={`/trips/${booking.trip.id}`} underline={false}>
-                <Button size="sm">Trip</Button>
+                <Button size="sm">{t('event.trip')}</Button>
               </Link>
             )}
           </Stack>

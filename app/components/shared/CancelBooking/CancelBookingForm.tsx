@@ -1,6 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 import { CancelBookingForm_BookingFragment$key } from "../../../artifacts/CancelBookingForm_BookingFragment.graphql";
 import { useCancelBookingForm } from "./useCancelBookingForm";
 import SubmitButton from "../SubmitButton";
@@ -14,6 +15,7 @@ const CancelBookingForm = ({
   bookingFragmentRef,
   onSuccess,
 }: CancelBookingFormProps) => {
+  const { t } = useTranslation();
   const booking = useFragment<CancelBookingForm_BookingFragment$key>(
     graphql`
       fragment CancelBookingForm_BookingFragment on Booking {
@@ -43,7 +45,7 @@ const CancelBookingForm = ({
         size="sm"
         submitting={form.formState.isSubmitting}
       >
-        Cancel This Booking
+        {t("scenes.attendees.tripScene.cancelBookingModal.confirm")}
       </SubmitButton>
     </form>
   );

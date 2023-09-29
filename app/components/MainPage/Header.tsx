@@ -21,7 +21,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const { open } = React.useContext(GlobalSidebarContext);
-  const isSmallDisplay = useMediaQuery(theme.breakpoints.up("sm"));
+  const isSmallDisplay = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
   const currentUser = useFragment(
     graphql`
@@ -94,21 +94,21 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
             <Link
               href="/trips"
               textAlign="right"
-              level="body-md"
+              level={isSmallDisplay ? "body-sm" : "body-md"}
               lineHeight={`${imageSize.height}px`}
-              paddingRight="10px"
+              paddingRight={isSmallDisplay ? "3px" : "10px"}
             >
               {t("layout.header.myTrips")}
             </Link>
           )}
-          {isSmallDisplay && !isAuthorized && (
+          {!isSmallDisplay && !isAuthorized && (
             <Link
               href="/auth/sign_in"
               textAlign="right"
-              level="body-md"
+              level={isSmallDisplay ? "body-sm" : "body-md"}
               fontSize="lg"
               lineHeight={`${imageSize.height}px`}
-              paddingRight="10px"
+              paddingRight={isSmallDisplay ? "3px" : "10px"}
             >
               {t("layout.header.logIn")}
             </Link>
@@ -119,9 +119,9 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
                 <Link
                   href="/my-firm/dashboard"
                   textAlign="right"
-                  level="body-md"
+                  level={isSmallDisplay ? "body-sm" : "body-md"}
                   lineHeight={`${imageSize.height}px`}
-                  paddingRight="10px"
+                  paddingRight={isSmallDisplay ? "3px" : "10px"}
                 >
                   {t("layout.header.myFirm")}
                 </Link>
@@ -129,9 +129,9 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
                 <Link
                   href="/firms/new"
                   textAlign="right"
-                  level="body-md"
+                  level={isSmallDisplay ? "body-sm" : "body-md"}
                   lineHeight={`${imageSize.height}px`}
-                  paddingRight="10px"
+                  paddingRight={isSmallDisplay ? "3px" : "10px"}
                 >
                   {t("layout.header.registerFirm")}
                 </Link>
@@ -140,9 +140,9 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
               <Link
                 href="?#sign-out"
                 textAlign="right"
-                level="body-md"
+                level={isSmallDisplay ? "body-sm" : "body-md"}
                 lineHeight={`${imageSize.height}px`}
-                paddingRight="20px"
+                paddingRight={isSmallDisplay ? "5px" : "20px"}
                 onClick={(e) => {
                   e.preventDefault();
 

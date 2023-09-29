@@ -1,6 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { Box, List, ListItem, ListItemContent, Stack } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import { Checkout_BookingFragment$key } from "../../../artifacts/Checkout_BookingFragment.graphql";
 import Typography from "../../v2/Typography";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
@@ -59,6 +60,8 @@ const Checkout = ({ bookingFragmentRef }: CheckoutProps) => {
     `,
   });
 
+  const { t } = useTranslation();
+
   return (
     <Box>
       <Typography level="title-lg">Summary</Typography>
@@ -74,7 +77,7 @@ const Checkout = ({ bookingFragmentRef }: CheckoutProps) => {
                   )}
                 </Typography>
                 <Typography>
-                  <StatusTag status={payment.status} />
+                  <StatusTag status={t(`statuses.${payment.status}`)} />
                 </Typography>
               </Stack>
             </ListItemContent>

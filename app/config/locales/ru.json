@@ -4,16 +4,48 @@
 		"email": "email",
 		"phone": "телефон"
 	},
+	"datepicker": {
+		"selectDate": "Выберите дату",
+		"selectTime": "Выберите время"
+	},
 	"layout": {
 		"header": {
 			"myTrips": "Путешествия",
-			"myFirm": "Моя Компания",
+			"myFirm": "Моя Фирма",
 			"registerFirm": "Зарегистрировать Компанию",
 			"logIn": "Вход",
 			"logOut": "Выход"
 		}
 	},
+	"event": {
+		"book": "Забронировать",
+		"trip": "Путешествие",
+		"ratingOf": "{{val}} из {{max}}"
+	},
+	"attendee": {
+		"firstName": "Имя",
+		"lastName": "Фамилия",
+		"email": "Email",
+		"phone": "Телефон"
+	},
+	"statuses": {
+		"active": "Активно",
+		"past": "Прошло",
+		"paid": "Оплачено",
+		"cancelled": "Отменено",
+		"future": "Грядет",
+		"successful": "Успешно",
+		"pending": "Обрабатывается",
+		"processing": "Обрабатывается"
+	},
+	"paymentTypes": {
+		"stripe": "Онлайн",
+		"cash": "Наличными"
+	},
 	"scenes": {
+		"verifyBooking": {
+			"toTrip": "Обратно к путешествию"
+		},
 		"signIn": {
 			"changeLoginType": "Изменить {{type}}",
 			"header": "Вход / Регистрация",
@@ -24,6 +56,40 @@
 			"enterPhone": "Введите телефон",
 			"useType": "Использвоать {{type}}",
 			"signInAction": "Вход"
+		},
+		"attendees": {
+			"tripScene": {
+				"bookingInfo": "Информация о бронировании",
+				"attendeesCount": "{{count}} участник(-ов)",
+				"alreadyPaid": "Уже оплачено:",
+				"bookignOptionsSubheader": "Дополнительные опции",
+				"builtIn": "В подарок",
+				"cancelBooking": "Отменить бронирование",
+				"changeDate": "Изменить",
+				"noAvailablePaymentMethod": "Нет доступных способов оплаты. Пока что.",
+				"payDeposit": "Оплатить депозит {{amount}}",
+				"payOnline": "Оплатить онлайн {{amount}}",
+				"cancelBookingModal": {
+					"title": "Отмена бронирования",
+					"refundAmount": "Вам вернется:",
+					"penaltyAmount": "Штраф:",
+					"close": "Закрыть",
+					"confirm": "Отменить бронирование"
+				}
+			},
+			"eventsScene": {
+				"sidebar": {
+					"city": "Город",
+					"startDate": "Начало",
+					"endDate": "Конец",
+					"startDatePlaceholder": "Когда начинаем?",
+					"endDatePlaceholder": "Когда заканчиваем?",
+					"priceRance": "Цена",
+					"minPrice": "Мин. цена",
+					"maxPrice": "Макс. цена",
+					"categoriesSubheader": "Категории"
+				}
+			}
 		}
 	}
 }

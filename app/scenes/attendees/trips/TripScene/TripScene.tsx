@@ -6,12 +6,14 @@ import Typography from "../../../../components/v2/Typography";
 import Tag from "../../../../components/v2/Tag";
 import { TripScene_TripFragment$key } from "../../../../artifacts/TripScene_TripFragment.graphql";
 import DateBookingsSection from "./components/DateBookingsSection";
+import { useTranslation } from "react-i18next";
 
 interface TripSceneProps {
   tripFragmentRef: TripScene_TripFragment$key;
 }
 
 const TripScene = ({ tripFragmentRef }: TripSceneProps) => {
+  const { t } = useTranslation()
   const trip = useFragment(
     graphql`
       fragment TripScene_TripFragment on Trip {
@@ -58,7 +60,7 @@ const TripScene = ({ tripFragmentRef }: TripSceneProps) => {
             primary
             sx={{ height: "1.5em", display: "inline-block" }}
           >
-            {trip.status}
+            {t(`statuses.${trip.status}`)}
           </Tag>
         </Typography>
       </Grid>

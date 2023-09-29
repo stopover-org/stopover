@@ -34,6 +34,20 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
         },
       },
     },
+    JoyDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: "0",
+        },
+      },
+    },
+    JoyDialogContent: {
+      styleOverrides: {
+        root: {
+          padding: "0",
+        },
+      },
+    },
   },
   fontFamily: {
     body: "'Roboto'",

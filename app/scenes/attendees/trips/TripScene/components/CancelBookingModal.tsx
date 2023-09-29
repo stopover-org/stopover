@@ -1,6 +1,6 @@
-import { Box, Divider, Modal, ModalDialog, Stack } from "@mui/joy";
-import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import React from "react";
+import { Box, Divider, Modal, ModalDialog, Stack, DialogTitle, DialogContent, DialogActions } from "@mui/joy";
+import {  } from "@mui/material";
+import React, { useTransition } from "react";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
 import CancelBookingForm from "../../../../../components/shared/CancelBooking/CancelBookingForm";
@@ -8,6 +8,7 @@ import Button from "../../../../../components/v2/Button";
 import { CancelBookingModal_BookingFragment$key } from "../../../../../artifacts/CancelBookingModal_BookingFragment.graphql";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Typography from "../../../../../components/v2/Typography";
+import { useTranslation } from "react-i18next";
 
 interface CancelBookingModalProps {
   open: boolean;
@@ -20,6 +21,7 @@ const CancelBookingModal = ({
   onClose,
   bookingFragmentRef,
 }: CancelBookingModalProps) => {
+  const { t } = useTranslation()
   const booking = useFragment(
     graphql`
       fragment CancelBookingModal_BookingFragment on Booking {
@@ -47,8 +49,7 @@ const CancelBookingModal = ({
       <ModalDialog variant="outlined" role="alertdialog">
         <DialogTitle>
           <Stack flexDirection="row" alignItems="center">
-            <WarningRoundedIcon />
-            &nbsp; Booking cancellation
+            <WarningRoundedIcon /> {t('scenes.attendees.tripScene.cancelBookingModal.title')}
           </Stack>
         </DialogTitle>
         <Divider />
@@ -63,14 +64,14 @@ const CancelBookingModal = ({
                 </Box>
                 <Divider />
                 <Box>
-                  Refund Amount:{" "}
+                   {t('scenes.attendees.tripScene.cancelBookingModal.refundAmount')}:{" "}
                   {getCurrencyFormat(
                     booking.possibleRefundAmount?.cents,
                     booking.possibleRefundAmount?.currency?.name
                   )}
                 </Box>
                 <Box>
-                  Penalty:{" "}
+                  {t('scenes.attendees.tripScene.cancelBookingModal.penaltyAmount')}:{" "}
                   {getCurrencyFormat(
                     booking.possiblePenaltyAmount?.cents,
                     booking.possiblePenaltyAmount?.currency?.name
@@ -84,7 +85,7 @@ const CancelBookingModal = ({
                 onSuccess={onClose}
               />
               <Button variant="plain" color="neutral" onClick={() => onClose()}>
-                Cancel
+                {t('scenes.attendees.tripScene.cancelBookingModal.close')}
               </Button>
             </DialogActions>
           </>

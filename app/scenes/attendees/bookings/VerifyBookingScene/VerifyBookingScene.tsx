@@ -15,6 +15,7 @@ import BookingSummary from "../../../../components/shared/BookingSummary";
 import Checkout from "../../../../components/shared/Checkout";
 import useSubscription from "../../../../lib/hooks/useSubscription";
 import Link from "../../../../components/v2/Link";
+import { useTranslation } from "react-i18next";
 
 interface VerifyBookingSceneProps {
   bookingFragmentRef: VerifyBookingScene_BookingFragment$key;
@@ -109,12 +110,13 @@ const VerifyBookingScene = ({
       }
     `,
   });
+  const { t } = useTranslation()
 
   return (
     <Grid container spacing={2} sx={{ flexGrow: 1 }} justifyContent="center">
-      <Grid xs={4}>
-        <Link href={`/trips/${booking.trip.id}`}>To the trip</Link>
-        <Card variant="outlined" sx={{ width: "100%" }}>
+      <Grid md={12} lg={4}>
+        <Link href={`/trips/${booking.trip.id}`} sx={{paddingLeft: '10px'}}>{t('scenes.verifyBooking.toTrip')}</Link>
+        <Card variant="outlined">
           <CardOverflow>
             <AspectRatio ratio="2">
               <img src={booking.event.images?.[0]} loading="lazy" alt="" />

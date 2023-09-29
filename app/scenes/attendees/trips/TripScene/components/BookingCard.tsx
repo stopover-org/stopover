@@ -19,12 +19,14 @@ import BookingEditForm from "./BookingEditForm";
 import Tag from "../../../../../components/v2/Tag/Tag";
 import { BookingCard_BookingFragment$key } from "../../../../../artifacts/BookingCard_BookingFragment.graphql";
 import BookingSummary from "../../../../../components/shared/BookingSummary";
+import { useTranslation } from "react-i18next";
 
 interface BookingCardProps {
   bookingFragmentRef: BookingCard_BookingFragment$key;
 }
 
 const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
+  const { t } = useTranslation()
   const booking = useFragment(
     graphql`
       fragment BookingCard_BookingFragment on Booking {
@@ -130,17 +132,17 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
           >
             {isPast && (
               <Tag link={false} underline={false} primary>
-                Past
+              {t('statuses.past')}
               </Tag>
             )}
             {isPaid && (
               <Tag link={false} underline={false} color="primary">
-                Paid
+              {t('statuses.paid')}
               </Tag>
             )}
             {isCancelled && (
               <Tag link={false} underline={false} color="danger">
-                Cancelled
+              {t('statuses.cancelled')}
               </Tag>
             )}
           </Box>
@@ -206,7 +208,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
             },
           }}
         >
-          Booking Info&nbsp;
+          {t('scenes.attendees.tripScene.bookingInfo')}&nbsp;
           <KeyboardArrowDownIcon
             sx={{
               transform: isFormOpened ? "rotate(180deg)" : "unset",
