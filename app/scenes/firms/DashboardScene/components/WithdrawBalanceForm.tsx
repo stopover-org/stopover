@@ -3,6 +3,7 @@ import { graphql, useFragment } from "react-relay";
 import SubmitButton from "../../../../components/shared/SubmitButton";
 import { useWithdrawBalanceForm } from "../useWithdrawBalanceForm";
 import { WithdrawBalanceForm_BalanceFragment$key } from "../../../../artifacts/WithdrawBalanceForm_BalanceFragment.graphql";
+import { useTranslation } from "react-i18next";
 
 const WithdrawBalanceForm = ({
   balanceFragmentRef,
@@ -34,12 +35,14 @@ const WithdrawBalanceForm = ({
     [balance]
   );
 
+  const { t } = useTranslation()
+
   if (balance.totalAmount.cents <= 0 || !activeStripeConnect) return null;
 
   return (
     <form onSubmit={form.handleSubmit()}>
-      <SubmitButton size="lg" submitting={form.formState.isSubmitting}>
-        Withdraw
+      <SubmitButton size="sm" submitting={form.formState.isSubmitting}>
+        {t('scenes.dashboardScene.withdraw')}
       </SubmitButton>
     </form>
   );

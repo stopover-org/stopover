@@ -7,6 +7,7 @@ import Typography from "../../../../components/v2/Typography/Typography";
 import Section from "../../../../components/v2/Section";
 import Link from "../../../../components/v2/Link";
 import BookingsFirmTable from "../../../../components/shared/tables/BookingsFirmTable/BookingsFirmTable";
+import { useTranslation } from "react-i18next";
 
 interface BookingSectionProps {
   firmFragmentRef: BookingsSection_FirmFragment$key;
@@ -21,18 +22,20 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
     firmFragmentRef
   );
 
+  const { t } = useTranslation()
+
   return (
     <Section>
       <Grid xs={12}>
-        <Typography level="h3">Bookings</Typography>
+        <Typography level="h3">{t('models.booking.plural')}</Typography>
       </Grid>
       <Grid xs={12}>
-        <BookingsFirmTable firmFragmentRef={firm} />;
+        <BookingsFirmTable firmFragmentRef={firm} />
       </Grid>
 
       <Grid xs={12}>
         <Link href="/my-firm/bookings" fontSize="sm">
-          All Bookings
+          {t('general.all')} {t('models.booking.plural')}
         </Link>
       </Grid>
     </Section>

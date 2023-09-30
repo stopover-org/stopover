@@ -23,6 +23,12 @@ export default {
         paymentType: "Доступные способы оплаты",
         margin: "Маржа",
       },
+      enums: {
+        paymentTypes: {
+          stripe: "Online",
+          cash: "Наличными",
+        },
+      },
     },
   },
 };

@@ -2,6 +2,7 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { Tooltip } from "@mui/joy";
 import CheckIcon from "@mui/icons-material/Check";
+import { useTranslation } from "react-i18next";
 import { useVerifyStripeConnectForm } from "./useVerifyStripeConnectForm";
 import { VerifyStripeConnect_StripeConnect$key } from "../../../artifacts/VerifyStripeConnect_StripeConnect.graphql";
 import SubmitButton from "../SubmitButton";
@@ -21,11 +22,12 @@ const VerifyStripeConnect = ({
     `,
     stripeConnectRef
   );
+  const { t } = useTranslation();
   const form = useVerifyStripeConnectForm(stripeConnect);
   return (
     <form onSubmit={form.handleSubmit()}>
       <SubmitButton submitting={form.formState.isSubmitting} icon size="sm">
-        <Tooltip title="Verify Stripe Connect">
+        <Tooltip title={t("forms.verifyStripeConnect.tooltip")}>
           <CheckIcon />
         </Tooltip>
       </SubmitButton>

@@ -66,7 +66,7 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
         <Select {...paymentMethodField} placeholder="Select Payment Method">
           {booking.event.firm.paymentTypes.map((paymentType) => (
             <Option key={paymentType} value={paymentType}>
-              {capitalize(t(`paymentTypes.${paymentType}`))}
+              {capitalize(t(`models.firm.enums.paymentTypes.${paymentType}`))}
             </Option>
           ))}
         </Select>

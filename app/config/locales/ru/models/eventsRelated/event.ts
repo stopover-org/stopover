@@ -1,10 +1,10 @@
 export default {
   models: {
     event: {
-      singular: "Мероприятия",
-      plural: "Мероприятие",
+      singular: "Мероприятие",
+      plural: "Мероприятия",
       attributes: {
-        attendedPricePerUom: "Они заплатят за участника",
+        attendeePricePerUom: "Они заплатят за участника",
         averageRating: "Рейтинг",
         city: "Город",
         country: "Страна",

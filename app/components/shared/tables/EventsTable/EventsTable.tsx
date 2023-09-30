@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { graphql, usePaginationFragment } from "react-relay";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 import Table from "../../../v2/Table/Table";
 import Link from "../../../v2/Link/Link";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
@@ -22,10 +23,11 @@ const TagColor = ({ status }: { status: string }) => {
     danger: ["removed"],
     status,
   });
+  const { t } = useTranslation();
 
   return (
     <Tag link={false} color={color}>
-      {status}
+      {t(`statuses.${status}`)}
     </Tag>
   );
 };
@@ -82,6 +84,7 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
     `,
     firmFragmentRef
   );
+  const { t } = useTranslation();
   const [currentPage, setCurrentPage] = React.useState(1);
   const pagedEvents = usePagedEdges(events, currentPage, 30);
   const data = useMemo(
@@ -128,17 +131,53 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
 
   const headers = React.useMemo(
     () => [
-      { key: "title", width: 300, label: "Title" },
-      { key: "organizerPrice", width: 100, label: "You get" },
-      { key: "attendeePrice", width: 100, label: "Attendee pay" },
-      { key: "recurringDaysWithTime", width: 300, label: "Recurring Dates" },
-      { key: "singleDaysWithTime", width: 300, label: "Specific dates" },
-      { key: "durationTime", width: 100, label: "Duration Time" },
-      { key: "status", width: 100, label: "Status" },
-      { key: "endDate", width: 100, label: "End Date" },
-      { key: "minAttendees", width: 100, label: "Minimal Attendees" },
-      { key: "maxAttendees", width: 100, label: "Maximum Attendees" },
-      { key: "requiresCheckIn", width: 100, label: "Require Check In" },
+      { key: "title", width: 300, label: t("models.event.attributes.title") },
+      {
+        key: "organizerPrice",
+        width: 100,
+        label: t("models.event.attributes.organizerPricePerUom"),
+      },
+      {
+        key: "attendeePrice",
+        width: 100,
+        label: t("models.event.attributes.attendeePricePerUom"),
+      },
+      {
+        key: "recurringDaysWithTime",
+        width: 300,
+        label: t("models.event.attributes.recurringDaysWithTime"),
+      },
+      {
+        key: "singleDaysWithTime",
+        width: 300,
+        label: t("models.event.attributes.singleDaysWithTime"),
+      },
+      {
+        key: "durationTime",
+        width: 100,
+        label: t("models.event.attributes.durationTime"),
+      },
+      { key: "status", width: 100, label: t("models.event.attributes.status") },
+      {
+        key: "endDate",
+        width: 100,
+        label: t("models.event.attributes.endDate"),
+      },
+      {
+        key: "minAttendees",
+        width: 100,
+        label: t("models.event.attributes.minAttendees"),
+      },
+      {
+        key: "maxAttendees",
+        width: 100,
+        label: t("models.event.attributes.maxAttendees"),
+      },
+      {
+        key: "requiresCheckIn",
+        width: 100,
+        label: t("models.event.attributes.requiresCheckIn"),
+      },
     ],
     []
   );

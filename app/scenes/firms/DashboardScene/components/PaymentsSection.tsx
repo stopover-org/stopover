@@ -12,6 +12,7 @@ import {
   usePaymentsColumns,
   usePaymentsHeaders,
 } from "../../../../components/shared/tables/columns/payments";
+import { useTranslation } from "react-i18next";
 
 interface PaymentSectionProps {
   firmFragmentRef: PaymentsSection_FirmFragment$key;
@@ -72,11 +73,12 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
     }))
   );
   const headers = usePaymentsHeaders();
+  const { t } = useTranslation()
 
   return (
     <Section>
       <Grid xs={12}>
-        <Typography level="h3">Payments</Typography>
+        <Typography level="h3">{t('models.payment.plural')}</Typography>
       </Grid>
 
       <Grid xs={12}>
@@ -89,7 +91,7 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
 
       <Grid xs={12}>
         <Link href="/my-firm/payments" fontSize="sm">
-          All Payments
+          {t('general.all')} {t('models.payment.plural')}
         </Link>
       </Grid>
     </Section>

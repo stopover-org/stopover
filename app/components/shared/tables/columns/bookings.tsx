@@ -2,6 +2,7 @@ import React from "react";
 import moment from "moment";
 import UnfoldMoreDoubleIcon from "@mui/icons-material/UnfoldMoreDouble";
 import { IconButton } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import Link from "../../../v2/Link/Link";
 import { getHumanDateTime } from "../../../../lib/utils/dates";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
@@ -11,35 +12,40 @@ import Table from "../../../v2/Table/Table";
 import Typography from "../../../v2/Typography";
 
 export function useBookingsHeaders() {
+  const { t } = useTranslation();
   return React.useMemo(
     () => [
       {
-        label: "ID",
+        label: t("models.booking.attributes.id"),
         width: 150,
         key: "id",
       },
-      { label: "Status", width: 100, key: "status" },
       {
-        label: "Booked For",
+        label: t("models.booking.attributes.status"),
+        width: 100,
+        key: "status",
+      },
+      {
+        label: t("models.booking.attributes.bookedFor"),
         width: 150,
         key: "bookedFor",
       },
       {
-        label: "You Get",
+        label: t("models.booking.attributes.organizerTotalPrice"),
         width: 100,
         key: "organizerPrice",
       },
       {
-        label: "Attendee Pay",
+        label: t("models.booking.attributes.attendeeTotalPrice"),
         width: 100,
         key: "attendeePrice",
       },
       {
-        label: "Already Paid",
+        label: t("models.booking.attributes.alreadyPaidPrice"),
         width: 100,
         key: "alreadyPaid",
       },
-      { label: "", width: 100, key: "expand" },
+      { label: t("general.additional"), width: 100, key: "expand" },
     ],
     []
   );
@@ -50,10 +56,11 @@ const TagColor = ({ status }: { status: string }) => {
     danger: ["cancelled"],
     status,
   });
+  const { t } = useTranslation();
 
   return (
     <Tag link={false} color={color}>
-      {status}
+      {t(`statuses.${status}`)}
     </Tag>
   );
 };
@@ -61,23 +68,30 @@ const TagColor = ({ status }: { status: string }) => {
 export function useBookingsColumns(
   bookings: ReadonlyArray<Record<string, any>>
 ) {
+  const { t } = useTranslation();
   const attendeesHeaders = React.useMemo(
     () => [
-      { label: "ID", width: 50, key: "id" },
-      { label: "First Name", key: "firstName" },
-      { label: "Last Name", key: "lastName" },
-      { label: "Email", key: "email" },
-      { label: "Phone", key: "phone" },
+      { label: t("general.id"), width: 50, key: "id" },
+      { label: t("models.attendee.attributes.firstName"), key: "firstName" },
+      { label: t("models.attendee.attributes.lastName"), key: "lastName" },
+      { label: t("models.attendee.attributes.email"), key: "email" },
+      { label: t("models.attendee.attributes.phone"), key: "phone" },
     ],
     []
   );
 
   const bookingOptionsHeaders = React.useMemo(
     () => [
-      { label: "ID", width: 50, key: "id" },
-      { label: "Title", key: "title" },
-      { label: "You get", key: "organizerPrice" },
-      { label: "Attendee pay", key: "attendeePrice" },
+      { label: t("general.id"), width: 50, key: "id" },
+      { label: t("models.eventOption.attributes.title"), key: "title" },
+      {
+        label: t("models.bookingOption.attributes.organizerPrice"),
+        key: "organizerPrice",
+      },
+      {
+        label: t("models.bookingOption.attributes.attendeePrice"),
+        key: "attendeePrice",
+      },
     ],
     []
   );
@@ -87,10 +101,10 @@ export function useBookingsColumns(
         const attendeesData = booking.attendees.map(
           (attendee: any, index: number) => ({
             id: index + 1,
-            firstName: attendee.firstName?.trim() || "N/A",
-            lastName: attendee.lastName?.trim() || "N/A",
-            email: attendee.email?.trim() || "N/A",
-            phone: attendee.phone?.trim() || "N/A",
+            firstName: attendee.firstName?.trim() || t("general.noData"),
+            lastName: attendee.lastName?.trim() || t("general.noData"),
+            email: attendee.email?.trim() || t("general.noData"),
+            phone: attendee.phone?.trim() || t("general.noData"),
           })
         );
 

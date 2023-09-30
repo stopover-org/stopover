@@ -10,6 +10,7 @@ import Tag from "../../../../components/v2/Tag/Tag";
 import VerifyFirm from "../../../../components/shared/VerifyFirm";
 import { FirmSection_CurrentUserFragment$key } from "../../../../artifacts/FirmSection_CurrentUserFragment.graphql";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
+import { useTranslation } from "react-i18next";
 
 interface FirmSectionProps {
   firmFragmentRef: FirmSection_FirmFragment$key;
@@ -20,6 +21,7 @@ const FirmSection = ({
   firmFragmentRef,
   currentUserFragmentRef,
 }: FirmSectionProps) => {
+  const { t } = useTranslation()
   const firm = useFragment(
     graphql`
       fragment FirmSection_FirmFragment on Firm {
@@ -59,15 +61,15 @@ const FirmSection = ({
         <Typography level="h3" sx={{ display: "inline" }}>
           {firm.title.toUpperCase()}
         </Typography>
-        <Tag href="#" color={tagColor}>
-          {firm.status}
+        <Tag link={false} color={tagColor}>
+          {t(`statuses.${firm.status?.toLowerCase()}`)}
         </Tag>
       </Grid>
       <Grid xs={2}>
         <Stack direction="row" justifyContent="flex-end">
           <Link href="/my-firm" underline={false} sx={{ marginRight: "10px" }}>
             <Button size="sm" variant="outlined">
-              View
+              {t('scenes.dashboardScene.view')}
             </Button>
           </Link>
           <Link
@@ -75,7 +77,9 @@ const FirmSection = ({
             underline={false}
             sx={{ marginRight: "10px" }}
           >
-            <Button size="sm">Edit</Button>
+            <Button size="sm">
+              {t('scenes.dashboardScene.edit')}
+              </Button>
           </Link>
           {currentUser.serviceUser && firm.status === "pending" && (
             <VerifyFirm />

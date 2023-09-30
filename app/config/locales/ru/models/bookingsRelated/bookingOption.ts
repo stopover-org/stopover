@@ -4,7 +4,7 @@ export default {
       singular: "Опция",
       plural: "Опции",
       attributes: {
-        attendeePrice: "Они заплатите",
+        attendeePrice: "Они заплатят",
         organizerPrice: "Вы получите",
         builtIn: "В подарок",
         status: "Статус",

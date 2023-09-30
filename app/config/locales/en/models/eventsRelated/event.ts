@@ -4,7 +4,7 @@ export default {
       singular: "Event",
       plural: "Events",
       attributes: {
-        attendedPricePerUom: "They pay per attendee",
+        attendeePricePerUom: "They pay per attendee",
         averageRating: "Average rating",
         bookingCancellationOptions: "Booking cancellation options",
         city: "City",

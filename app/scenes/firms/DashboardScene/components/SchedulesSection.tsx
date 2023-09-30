@@ -10,7 +10,8 @@ import {
   useSchedulesColumns,
   useSchedulesHeaders,
 } from "../../../../components/shared/tables/columns/schedules";
-import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
+import { useTranslation } from "react-i18next";
+import useEdges from "../../../../lib/hooks/useEdges";
 
 interface ScheduleSectionProps {
   firmFragmentRef: SchedulesSection_FirmFragment$key;
@@ -30,6 +31,11 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
             node {
               scheduledFor
               status
+              bookings {
+                attendees {
+                  id
+                }
+              }
               event {
                 id
                 title
@@ -41,14 +47,15 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
     `,
     firmFragmentRef
   );
-  const schedules = usePagedEdges(data.schedules, 1, 10);
-  const schedulesData = useSchedulesColumns(schedules as Record<string, any>[]);
+  const { t } = useTranslation()
+  const schedules = useEdges(data.schedules);
+  const schedulesData = useSchedulesColumns(schedules);
   const schedulesHeaders = useSchedulesHeaders();
 
   return (
     <Section>
       <Grid xs={12}>
-        <Typography level="h3">Schedules</Typography>
+        <Typography level="h3">{t('models.schedule.plural')}</Typography>
       </Grid>
 
       <Grid xs={12}>
@@ -60,7 +67,7 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
       </Grid>
 
       <Grid xs={12}>
-        <Link href="/my-firm/schedules">All Schedules</Link>
+        <Link href="/my-firm/schedules">{t('general.all')} {t('models.schedule.plural')}</Link>
       </Grid>
     </Section>
   );

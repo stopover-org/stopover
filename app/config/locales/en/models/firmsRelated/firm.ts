@@ -23,6 +23,12 @@ export default {
         paymentType: "Available Payment types",
         margin: "Margin",
       },
+      enums: {
+        paymentTypes: {
+          stripe: "Online",
+          cash: "Cash",
+        },
+      },
     },
   },
 };

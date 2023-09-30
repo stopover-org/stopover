@@ -1,5 +1,7 @@
 import { merge } from "lodash";
 import translations from "./models";
+import scenesTranslations from "./scenes";
+import formsTranslations from "./forms";
 
 const translation = {
   general: {
@@ -8,6 +10,11 @@ const translation = {
     phone: "phone",
     total: "total",
     attendee: "attendee",
+    actions: "Actions",
+    all: "All",
+    additional: "Additional",
+    id: "ID",
+    noData: "Not available",
   },
   datepicker: {
     selectDate: "Select Date",
@@ -35,10 +42,11 @@ const translation = {
     successful: "Successful",
     pending: "Pending",
     processing: "Processing",
-  },
-  paymentTypes: {
-    stripe: "Online",
-    cash: "Cash",
+    inactive: "Not active",
+    removed: "Removed",
+    published: "Published",
+    unpublished: "Not Published",
+    draft: "Draft",
   },
   scenes: {
     verifyBooking: {
@@ -93,4 +101,9 @@ const translation = {
   },
 };
 
-export default merge(translations, translation);
+export default merge(
+  translations,
+  formsTranslations,
+  scenesTranslations,
+  translation
+);
