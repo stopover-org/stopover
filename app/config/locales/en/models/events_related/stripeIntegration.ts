@@ -1,8 +1,8 @@
 export default {
   models: {
     stripeIntegration: {
-      single: "",
-      plural: "",
+      singular: "Stripe Integration",
+      plural: "Stripe Integrations",
       attributes: {
         id: "ID",
         stripeableType: "Linked model",

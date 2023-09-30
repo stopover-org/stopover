@@ -1,8 +1,8 @@
 export default {
   models: {
     account: {
-      single: "",
-      plural: "",
+      singular: "Account",
+      plural: "Accounts",
       attributes: {
         id: "ID",
         status: "Status",
@@ -18,8 +18,6 @@ export default {
         primaryEmail: "Primary Email",
         verifiedAt: "Verified at",
         interests: "Primary Categories",
-        firm: "Firm",
-        trips: "Trips",
       },
     },
   },

@@ -1,8 +1,8 @@
 export default {
   models: {
     refund: {
-      single: "",
-      plural: "",
+      singular: "Возврат",
+      plural: "Возвраты",
       attributes: {
         id: "ID",
         status: "Статус",
@@ -10,7 +10,6 @@ export default {
         penaltyAmount: "Сумма штрафа",
         updatedAt: "Дата обновления",
         createdAt: "Дата создания",
-        booking: "Бронирование",
       },
     },
   },

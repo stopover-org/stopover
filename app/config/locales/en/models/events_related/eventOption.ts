@@ -1,8 +1,8 @@
 export default {
   models: {
     eventOption: {
-      single: "",
-      plural: "",
+      singular: "Base Option",
+      plural: "Available Options",
       attributes: {
         attendeePrice: "They pay",
         builtIn: "Free",
@@ -12,7 +12,6 @@ export default {
         organizerPrice: "You get",
         title: "Title",
         status: "Status",
-        event: "Event",
       },
     },
   },

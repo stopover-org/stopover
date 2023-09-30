@@ -1,14 +1,12 @@
 export default {
   models: {
     attendeeOption: {
-      single: "",
-      plural: "",
+      singular: "Options",
+      plural: "Option",
       attributes: {
         attendeePrice: "They pay",
         organizerPrice: "You get",
-        attendee: "Attendee",
         builtIn: "Free",
-        eventOption: "Base option",
         status: "Status",
       },
     },

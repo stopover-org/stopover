@@ -1,8 +1,8 @@
 export default {
   models: {
     interest: {
-      single: "",
-      plural: "",
+      singular: "Category",
+      plural: "Categories",
       attributes: {
         id: "ID",
         title: "Title",

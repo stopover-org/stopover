@@ -1,8 +1,8 @@
 export default {
   models: {
     firm: {
-      single: "",
-      plural: "",
+      singular: "Firm",
+      plural: "Firms",
       attributes: {
         id: "ID",
         city: "City",
@@ -21,14 +21,7 @@ export default {
         website: "Website",
         image: "Logo",
         paymentType: "Available Payment types",
-        balance: "Balance",
-        payments: "Payments",
-        bookings: "Bookings",
-        schedules: "Timetable",
-        events: "Events",
-        stripeConnects: "Stripe Connects",
         margin: "Margin",
-        accounts: "Accounts",
       },
     },
   },

@@ -1,8 +1,8 @@
 export default {
   models: {
     trip: {
-      single: "",
-      plural: "",
+      singular: "Trip",
+      plural: "Trips",
       attributes: {
         bookings: "Bookings",
         startDate: "Start date",
@@ -11,7 +11,6 @@ export default {
         status: "Status",
         images: "Images",
         canCancel: "Can be canceled?",
-        account: "Account",
         attendeesCount: "Estimated attendees count",
       },
     },

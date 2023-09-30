@@ -1,8 +1,8 @@
 export default {
   models: {
     bookingCancellationOption: {
-      single: "",
-      plural: "",
+      singular: "Booking Cancellation Option",
+      plural: "Booking Cancellation Options",
       attributes: {
         id: "ID",
         penaltyPrice: "Penalty price",

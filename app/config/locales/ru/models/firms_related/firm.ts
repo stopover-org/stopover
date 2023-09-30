@@ -1,8 +1,8 @@
 export default {
   models: {
     firm: {
-      single: "",
-      plural: "",
+      singular: "Компании",
+      plural: "Фирма",
       attributes: {
         id: "ID",
         city: "Город",
@@ -21,14 +21,7 @@ export default {
         website: "Сайт",
         image: "Логотип",
         paymentType: "Доступные способы оплаты",
-        balance: "Баланс",
-        payments: "Платежи",
-        bookings: "Бронирования",
-        schedules: "Расписание",
-        events: "Мероприятия",
-        stripeConnects: "Stripe Connects",
         margin: "Маржа",
-        accounts: "Аккаунты",
       },
     },
   },

@@ -1,12 +1,11 @@
 export default {
   models: {
     event: {
-      single: "",
-      plural: "",
+      singular: "Event",
+      plural: "Events",
       attributes: {
         attendedPricePerUom: "They pay per attendee",
         averageRating: "Average rating",
-        bookings: "Bookings",
         bookingCancellationOptions: "Booking cancellation options",
         city: "City",
         country: "Country",
@@ -15,7 +14,6 @@ export default {
         eventOptions: "Event options",
         eventType: "Type of event",
         externalId: "Ext. ID",
-        firm: "Firm",
         fullAddress: "Full address",
         houseNumber: "House number",
         id: "ID",
@@ -35,15 +33,11 @@ export default {
         requiresCheckIn: "Require Check In",
         requiresContract: "Require signing contract",
         requiresPassport: "Require ID",
-        schedules: "Timetable",
         singleDaysWithTime: "Dates",
         status: "Status",
         street: "Street",
-        tags: "Tags",
         title: "Title",
-        unit: "Unit",
         endDate: "Event will be ended",
-        stripeIntegrations: "Stripe Integrations",
       },
     },
   },

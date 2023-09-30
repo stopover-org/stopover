@@ -1,8 +1,8 @@
 export default {
   models: {
     achievement: {
-      single: "",
-      plural: "",
+      singular: "Achievement",
+      plural: "Achievements",
       attributes: {
         // TODO Add translations
       },

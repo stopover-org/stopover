@@ -1,8 +1,8 @@
 export default {
   models: {
     stripeIntegration: {
-      single: "",
-      plural: "",
+      singular: "Stripe Интеграция",
+      plural: "Stripe Интеграции",
       attributes: {
         id: "ID",
         stripeableType: "Связанная модель",

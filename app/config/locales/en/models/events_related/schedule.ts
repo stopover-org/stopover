@@ -1,14 +1,12 @@
 export default {
   models: {
     schedule: {
-      single: "",
-      plural: "",
+      singular: "Date of event",
+      plural: "Timetable",
       attributes: {
         id: "ID",
         scheduledFor: "Date",
         status: "Status",
-        event: "Event",
-        bookings: "Bookings",
       },
     },
   },

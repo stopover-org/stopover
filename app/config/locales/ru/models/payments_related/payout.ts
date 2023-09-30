@@ -1,8 +1,8 @@
 export default {
   models: {
     payout: {
-      single: "",
-      plural: "",
+      singular: "Выплата",
+      plural: "Выплаты",
       attributes: {
         id: "ID",
         status: "Статус",

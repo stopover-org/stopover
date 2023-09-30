@@ -1,8 +1,8 @@
 export default {
   models: {
     unit: {
-      single: "",
-      plural: "",
+      singular: "Тип билета",
+      plural: "Типы билетов",
       attributes: {
         id: "ID",
         name: "Название",

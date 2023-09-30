@@ -1,12 +1,9 @@
 export default {
   models: {
     attendee: {
-      single: "",
-      plural: "",
+      singular: "Attendee",
+      plural: "Attendees",
       attributes: {
-        booking: "Booking",
-        attendeeOptions: "Options",
-        eventOptions: "Available options",
         firstName: "First name",
         lastName: "Last name",
         phone: "Phone",

@@ -1,8 +1,8 @@
 export default {
   models: {
     bookingCancellationOption: {
-      single: "",
-      plural: "",
+      singular: "Условия отмены бронирования",
+      plural: "Условия отмены бронирования",
       attributes: {
         id: "ID",
         penaltyPrice: "Сумма штрафа",

@@ -1,12 +1,9 @@
 export default {
   models: {
     attendee: {
-      single: "",
-      plural: "",
+      singular: "Участник",
+      plural: "Участники",
       attributes: {
-        booking: "Бронирование",
-        attendeeOptions: "Опции участника",
-        eventOptions: "Доступные опции",
         firstName: "Имя",
         lastName: "Фамилия",
         phone: "Телефон",

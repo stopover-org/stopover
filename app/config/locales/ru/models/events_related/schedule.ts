@@ -1,14 +1,12 @@
 export default {
   models: {
     schedule: {
-      single: "",
-      plural: "",
+      singular: "Дата проведения",
+      plural: "Расписание",
       attributes: {
         id: "ID",
         scheduledFor: "Дата",
         status: "Статус",
-        event: "Мероприятие",
-        bookings: "Бронирования",
       },
     },
   },

@@ -1,14 +1,13 @@
 export default {
   models: {
     user: {
-      single: "",
-      plural: "",
+      singular: "User",
+      plural: "Users",
       attributes: {
         id: "ID",
         email: "Email",
         phone: "Phone",
         status: "Status",
-        account: "Account",
         serviceUser: "Service User",
       },
     },
