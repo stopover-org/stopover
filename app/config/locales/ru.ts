@@ -1,4 +1,4 @@
-{
+export default {
 	"general": {
 		"back": "Назад",
 		"email": "email",

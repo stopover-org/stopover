@@ -16,8 +16,8 @@ import moment from "moment";
 import { getClientEnvironment } from "../lib/clientEnvironment";
 import { theme } from "../lib/theme";
 import ApiKeysProvider from "../components/ApiKeysProvider";
-import englishTranslations from "../config/locales/en.json";
-import russianTranslations from "../config/locales/ru.json";
+import englishTranslations from "../config/locales/en";
+import russianTranslations from "../config/locales/ru";
 import "moment/locale/ru";
 
 const clientEnv = getClientEnvironment();

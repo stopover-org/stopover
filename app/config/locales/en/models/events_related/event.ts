@@ -1,0 +1,48 @@
+export default {
+	models: {
+		event: {
+			attributes: {
+				attendedPricePerUom: 'They pay per attendee',
+				averageRating: 'Average rating',
+				bookings: 'Bookings',
+				bookingCancellationOptions: 'Booking cancellation options',
+				city: 'City',
+				country: 'Country',
+				description: 'Description',
+				durationTime: 'Duration',
+				eventOptions: 'Event options',
+				eventType: 'Type of event',
+				externalId: 'Ext. ID',
+				firm: 'Firm',
+				fullAddress: 'Full address',
+				houseNumber: 'House number',
+				id: 'ID',
+				images: 'Images',
+				interests: 'Categories',
+				landmarks: 'Attractions nearby',
+				latitude: 'Latitude',
+				longitude: 'Longitude',
+				maxAttendees: 'Max attendees',
+				minAttendees: 'Min attendees',
+				myBookings: 'My bookings',
+				organizerPricePerUom: 'You get per attendee',
+				depositAmount: 'Deposit amount',
+				ratingsCount: 'Count of ratings',
+				recurringDaysWithTime: 'Repeating dates',
+				region: 'Region',
+				requiresCheckIn: 'Require Check In',
+				requiresContract: 'Require signing contract',
+				requiresPassport: 'Require ID',
+				schedules: 'Timetable',
+				singleDaysWithTime: 'Dates',
+				status: 'Status',
+				street: 'Street',
+				tags: 'Tags',
+				title: 'Title',
+				unit: 'Unit',
+				endDate: 'Event will be ended',
+				stripeIntegrations: 'Stripe Integrations',
+			}
+		}
+	}
+}
