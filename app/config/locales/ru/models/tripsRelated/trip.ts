@@ -1,8 +1,8 @@
 export default {
   models: {
     trip: {
-      single: "",
-      plural: "",
+      singular: "Путешествие",
+      plural: "Путешествия",
       attributes: {
         bookings: "Бронирование",
         startDate: "Дата начала",

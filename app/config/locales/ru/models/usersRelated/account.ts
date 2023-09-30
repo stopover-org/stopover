@@ -1,8 +1,8 @@
 export default {
   models: {
     account: {
-      single: "",
-      plural: "",
+      singular: "Аккаунт",
+      plural: "Аккаунты",
       attributes: {
         id: "ID",
         status: "Статус",

@@ -24,14 +24,7 @@ const translation = {
   },
   event: {
     book: "Book",
-    trip: "Trip",
     ratingOf: "{{val}} of {{max}}",
-  },
-  attendee: {
-    firstName: "First Name",
-    lastName: "Last Name",
-    email: "Email",
-    phone: "Phone",
   },
   statuses: {
     active: "Active",
@@ -65,18 +58,13 @@ const translation = {
     attendees: {
       eventScene: {
         bookEvent: "Book Event",
-        chooseDate: "Choose Date",
-        chooseTime: "Choose Time",
         chooseCount: "How many Attendees",
       },
       tripScene: {
         bookingInfo: "Booking Info",
         attendeesCount: "{{count}} attendee(-s)",
-        alreadyPaid: "Already paid:",
         bookignOptionsSubheader: "Additional Options",
-        builtIn: "Build In",
         cancelBooking: "Cancel Booking",
-        changeDate: "Change",
         noAvailablePaymentMethod: "There is no available payment methods. Yet.",
         payDeposit: "Pay Depsot {{amount}}",
         payOnline: "Pay Online {{amount}}",

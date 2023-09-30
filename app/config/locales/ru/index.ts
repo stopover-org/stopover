@@ -24,14 +24,7 @@ const translation = {
   },
   event: {
     book: "Забронировать",
-    trip: "Путешествие",
     ratingOf: "{{val}} из {{max}}",
-  },
-  attendee: {
-    firstName: "Имя",
-    lastName: "Фамилия",
-    email: "Email",
-    phone: "Телефон",
   },
   statuses: {
     active: "Активно",
@@ -65,18 +58,13 @@ const translation = {
     attendees: {
       eventScene: {
         bookEvent: "Забронировать",
-        chooseDate: "Выберите дату",
-        chooseTime: "Выберите время",
         chooseCount: "Сколько человек",
       },
       tripScene: {
         bookingInfo: "Информация о бронировании",
         attendeesCount: "{{count}} участник(-ов)",
-        alreadyPaid: "Уже оплачено:",
         bookignOptionsSubheader: "Дополнительные опции",
-        builtIn: "В подарок",
         cancelBooking: "Отменить бронирование",
-        changeDate: "Изменить",
         noAvailablePaymentMethod: "Нет доступных способов оплаты. Пока что.",
         payDeposit: "Оплатить депозит {{amount}}",
         payOnline: "Оплатить онлайн {{amount}}",

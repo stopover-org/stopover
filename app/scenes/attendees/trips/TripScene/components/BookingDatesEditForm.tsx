@@ -91,7 +91,7 @@ const BookingDatesEditForm = ({
               submitting={form.formState.isSubmitting}
               disabled={disabled}
             >
-              {t('scenes.attendees.tripScene.changeDate')}
+              {t('datepicker.selectDate')}
             </SubmitButton>
           </Box>
         )}

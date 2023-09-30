@@ -6,7 +6,7 @@ export default {
       attributes: {
         attendeePrice: "Они заплатят",
         organizerPrice: "Вы получите",
-        builtIn: "Бесплатно",
+        builtIn: "В подарок",
         status: "Статус",
       },
     },

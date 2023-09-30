@@ -1,5 +1,5 @@
 export default {
-  model: {
+  models: {
     event: {
       singular: "Мероприятия",
       plural: "Мероприятие",

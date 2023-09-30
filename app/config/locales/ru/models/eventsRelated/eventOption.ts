@@ -5,7 +5,7 @@ export default {
       plural: "Доступные опции",
       attributes: {
         attendeePrice: "Они заплатят",
-        builtIn: "Бесплатно",
+        builtIn: "В подарок",
         description: "Описание",
         forAttendee: "Применимо к участникам",
         id: "ID",

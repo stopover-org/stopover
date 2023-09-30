@@ -56,32 +56,32 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
         <Grid container>
           <Grid xs={6}>
             <Input
-              label={t('attendee.firstName')}
-              placeholder={t('attendee.firstName')}
+              label={t('models.attendee.attributes.firstName')}
+              placeholder={t('models.attendee.attributes.firstName')}
               readOnly={disabled}
               {...form.useFormField("firstName")}
             />
           </Grid>
           <Grid xs={6}>
             <Input
-              label={t('attendee.lastName')}
-              placeholder={t('attendee.lastName')}
+              label={t('models.attendee.attributes.lastName')}
+              placeholder={t('models.attendee.attributes.lastName')}
               readOnly={disabled}
               {...form.useFormField("lastName")}
             />
           </Grid>
           <Grid xs={12}>
             <Input
-              label={t('attendee.email')}
-              placeholder={t('attendee.email')}
+              label={t('models.attendee.attributes.email')}
+              placeholder={t('models.attendee.attributes.email')}
               readOnly={disabled}
               {...form.useFormField("email")}
             />
           </Grid>
           <Grid xs={12}>
             <Input
-              label={t('attendee.phone')}
-              placeholder={t('attendee.phone')}
+              label={t('models.attendee.attributes.phone')}
+              placeholder={t('models.attendee.attributes.phone')}
               readOnly={disabled}
               {...form.useFormField("phone")}
             />

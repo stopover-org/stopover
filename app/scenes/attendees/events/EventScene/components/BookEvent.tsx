@@ -94,12 +94,12 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
       </Grid>
       <Grid md={6} sm={12}>
           <Input
-            label={t('scenes.attendees.eventScene.chooseDate')}
+            label={t('datepicker.selectDate')}
             value={dateField.value?.format(dateFormat)}
             readOnly
           />
           <Select
-            label={t('scenes.attendees.eventScene.chooseTime')}
+            label={t('datepicker.selectTime')}
             onChange={(value: string) => {
               if (!value) return;
 

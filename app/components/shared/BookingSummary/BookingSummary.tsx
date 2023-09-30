@@ -77,7 +77,7 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
             },
           })}
         >
-          {t("scenes.attendees.tripScene.alreadyPaid")}{" "}
+          {t("models.booking.attributes.alreadyPaidPrice")}{" "}
           {getCurrencyFormat(
             booking.alreadyPaidPrice.cents,
             booking.alreadyPaidPrice.currency.name

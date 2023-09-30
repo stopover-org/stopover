@@ -88,7 +88,7 @@ const BookingOptionsEditForm = ({
           <>
             <Grid xs={12}>
               <Typography>
-                {t('scenes.attendees.tripScene.builtIn')}
+                {t('models.bookingOption.attributes.builtIn')}
               </Typography>
               {builtInOptions.map((option) => (
                 <EventOptionEditForm
