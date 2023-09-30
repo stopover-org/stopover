@@ -81,7 +81,7 @@ export const SignIn = () => {
               }}
             >
               <Typography underline>
-                &lt; {showCode ? t('scenes.signIn.changeLoginType', {type: t(`general.${typeField.value}`)}) : t('general.back')}
+                &lt; {showCode ? t('scenes.signInScene.changeLoginType', {type: t(`general.${typeField.value}`)}) : t('general.back')}
               </Typography>
             </Link>
             {showCode && (
@@ -90,7 +90,7 @@ export const SignIn = () => {
           </Grid>
 
           <Grid xs={12} container justifyContent="center">
-            <Typography level="h3">{t('scenes.signIn.header')}</Typography>
+            <Typography level="h3">{t('scenes.signInScene.header')}</Typography>
           </Grid>
 
           <Grid xs={12}>
@@ -102,14 +102,14 @@ export const SignIn = () => {
                 <Grid>
                   <Input
                     {...codeField}
-                    label={t('scenes.signIn.enterCode', {type: typeField.value})}
+                    label={t('scenes.signInScene.enterCode', {type: typeField.value})}
                     hint={
                       delay ? (
-                        t('scenes.signIn.youCanResendDelay', { seconds: delay })
+                        t('scenes.signInScene.youCanResendDelay', { seconds: delay })
                       ) : (
                         <Link onClick={handleSubmit(true, 0)}>
                           <Typography fontSize="sm" color="primary">
-                            {t('scenes.signIn.resendCode')
+                            {t('scenes.signInScene.resendCode')
                             }
                           </Typography>
                         </Link>
@@ -126,22 +126,22 @@ export const SignIn = () => {
                       <Input
                         {...usernameField}
                         label="Enter email"
-                        label={t('scenes.signIn.enterEmail')}
-                        placeholder={t('scenes.signIn.enterEmail')}
+                        label={t('scenes.signInScene.enterEmail')}
+                        placeholder={t('scenes.signInScene.enterEmail')}
                       />
                     )}
                     {typeField.value === "phone" && (
                       <PhoneInput
                         {...usernameField}
-                        label={t('scenes.signIn.enterPhone')}
-                        placeholder={t('scenes.signIn.enterPhone')}
+                        label={t('scenes.signInScene.enterPhone')}
+                        placeholder={t('scenes.signInScene.enterPhone')}
                       />
                     )}
                   </Grid>
                   <Grid container justifyContent="flex-end">
                     <Link onClick={changeType}>
                       <Typography fontSize="sm" color="primary">
-                      {t('scenes.signIn.useType', {type: t(`general.${typeField.value === 'email' ? 'phone' : 'email'}`)})}
+                      {t('scenes.signInScene.useType', {type: t(`general.${typeField.value === 'email' ? 'phone' : 'email'}`)})}
                       </Typography>
                     </Link>
                   </Grid>
@@ -150,7 +150,7 @@ export const SignIn = () => {
 
               <Grid container justifyContent="flex-end">
                 <SubmitButton submitting={form.formState.isSubmitting}>
-                  {t('scenes.signIn.signInAction')}
+                  {t('scenes.signInScene.signInAction')}
                 </SubmitButton>
               </Grid>
             </form>

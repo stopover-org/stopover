@@ -80,6 +80,9 @@ const translation = {
         bookEvent: "Забронировать",
         chooseCount: "Сколько человек",
       },
+      tripsScene: {
+        cancelTrip: "Отменить все путешествие",
+      },
       tripScene: {
         bookingInfo: "Информация о бронировании",
         attendeesCount: "{{count}} участник(-ов)",

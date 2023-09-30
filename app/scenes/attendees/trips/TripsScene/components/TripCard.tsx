@@ -1,5 +1,5 @@
 import React from "react";
-import { AspectRatio, Box, Card, CardOverflow, Grid, Stack } from "@mui/joy";
+import { AspectRatio, Box, Card, CardOverflow, Grid, Stack, Tooltip } from "@mui/joy";
 import { graphql, useFragment, useMutation } from "react-relay";
 import moment from "moment";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -7,6 +7,7 @@ import IconButton from "@mui/joy/IconButton";
 import Link from "../../../../../components/v2/Link/Link";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import { TripCard_TripFragment$key } from "../../../../../artifacts/TripCard_TripFragment.graphql";
+import { useTranslation } from "react-i18next";
 
 interface TripCardProps {
   tripFragmentRef: TripCard_TripFragment$key;
@@ -45,6 +46,7 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
 
   const onCancelTrip = () =>
     cancelTrip({ variables: { input: { tripId: trip.id } } });
+  const { t } = useTranslation()
 
   return (
     <Grid width="420px" padding="10px">
@@ -63,6 +65,7 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
         <Stack paddingLeft="10px" width="100%" sx={{ position: "relative" }}>
           {trip.canCancel && (
             <Box>
+            <Tooltip title={t('scenes.attendees.tripsScene.cancelTrip')}>
               <IconButton
                 variant="outlined"
                 color="danger"
@@ -72,6 +75,7 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
               >
                 <DeleteOutlineIcon />
               </IconButton>
+              </Tooltip>
             </Box>
           )}
           <Link href={`/trips/${trip.id}`}>
@@ -107,7 +111,7 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
             <Grid container xs={12}>
               <Grid xs={6}>
                 <Typography level="body-sm">
-                  {trip.attendeesCount} attendee(-s)
+                {t('scenes.attendees.tripScene.attendeesCount', { count: trip.attendeesCount })}
                 </Typography>
               </Grid>
               <Grid xs={6}>

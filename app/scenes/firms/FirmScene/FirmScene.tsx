@@ -62,7 +62,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
 
   return (
     <Box>
-      <Breadcrumbs items={["My Firm"]} />
+      <Breadcrumbs items={[t('layout.header.myFirm')]} />
       <Grid container spacing={2} xs={12} md={12} lg={8}>
         <Fieldset>
           <Grid xs={12}>

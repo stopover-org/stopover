@@ -23,6 +23,8 @@ en:
 
     mutations:
       sign_in:
+        errors: 
+          confirmation_code_incorrect: 'Confirmation code is incorrect'
         notifications:
           success: 'You successfully signed in'
           confirmation_code_sent: 'Confirmation code was sent'
