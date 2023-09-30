@@ -25,22 +25,27 @@ export function useStripeConnectsHeaders(currentUserFragmentRef: any) {
     () => [
       {
         label: t("models.stripeConnect.attributes.status"),
+        width: 100,
         key: "status",
       },
       {
         label: t("models.stripeConnect.attributes.activatedAt"),
+        width: 150,
         key: "activatedAt",
       },
       {
         label: t("models.stripeConnect.attributes.createdAt"),
+        width: 150,
         key: "createdAt",
       },
       {
         label: t("models.stripeConnect.attributes.updatedAt"),
+        width: 150,
         key: "updatedAt",
       },
       currentUser?.serviceUser && {
         label: t("general.actions"),
+        width: 100,
         key: "actions",
       },
     ],

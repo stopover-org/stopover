@@ -15,6 +15,8 @@ const translation = {
     additional: "Additional",
     id: "ID",
     noData: "Not available",
+    save: "Save",
+    edit: "Edit",
   },
   datepicker: {
     selectDate: "Select Date",
@@ -24,6 +26,7 @@ const translation = {
     header: {
       myTrips: "My Trips",
       myFirm: "My Firm",
+      addNewEvent: "Add new event",
       registerFirm: "Register Firm",
       logIn: "Log In",
       logOut: "Log Out",
@@ -47,6 +50,15 @@ const translation = {
     published: "Published",
     unpublished: "Not Published",
     draft: "Draft",
+  },
+  address: {
+    title: "Address",
+    fullAddress: "Full address",
+    country: "Country",
+    region: "Region",
+    city: "City",
+    street: "Street",
+    houseNumber: "House number",
   },
   scenes: {
     verifyBooking: {

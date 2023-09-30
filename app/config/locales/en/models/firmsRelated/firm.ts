@@ -22,6 +22,8 @@ export default {
         image: "Logo",
         paymentType: "Available Payment types",
         margin: "Margin",
+        primaryPhone: "Phone for notifications",
+        primaryEmail: "Email for notifications",
       },
       enums: {
         paymentTypes: {

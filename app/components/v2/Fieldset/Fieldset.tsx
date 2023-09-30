@@ -17,7 +17,9 @@ const Fieldset = ({ children, ...props }: IFieldsetProps) => (
   <Grid xs={12} sx={{ zIndex: "unset" }} {...props}>
     <Card sx={{ margin: "20px" }} variant="outlined">
       <CardContent sx={{ zIndex: "unset" }}>
-        <Grid container>{children}</Grid>
+        <Grid container spacing={1}>
+          {children}
+        </Grid>
       </CardContent>
     </Card>
   </Grid>

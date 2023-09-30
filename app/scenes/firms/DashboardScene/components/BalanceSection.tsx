@@ -68,10 +68,10 @@ const { t } = useTranslation()
         <Grid xs={12}>
           <Typography level="h3">{t('models.balance.singular')}</Typography>
         </Grid>
-        <Grid xs={3}>
+        <Grid md={3} sm={12}>
           <Typography level="h4">{t('scenes.dashboardScene.total')}:</Typography>
         </Grid>
-        <Grid xs={4}>
+        <Grid sm={12} md={4} >
           <Typography level="h4">
             {getCurrencyFormat(
               firm.balance?.totalAmount?.cents,
@@ -86,7 +86,7 @@ const { t } = useTranslation()
             )}
           </Typography>
         </Grid>
-        <Grid xs={4}>
+        <Grid md={4} sm={12}>
           <WithdrawBalanceForm balanceFragmentRef={firm.balance!} />
         </Grid>
 

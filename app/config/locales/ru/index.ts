@@ -15,6 +15,8 @@ const translation = {
     additional: "Дополнительно",
     id: "ID",
     noData: "Нет данных",
+    save: "Сохранить",
+    edit: "Редактировать",
   },
   datepicker: {
     selectDate: "Выберите дату",
@@ -24,6 +26,7 @@ const translation = {
     header: {
       myTrips: "Путешествия",
       myFirm: "Моя Фирма",
+      addNewEvent: "Добавить новое мероприятие",
       registerFirm: "Зарегистрировать Компанию",
       logIn: "Вход",
       logOut: "Выход",
@@ -47,6 +50,15 @@ const translation = {
     published: "Опубликовано",
     unpublished: "Не опубликовано",
     draft: "Черновик",
+  },
+  address: {
+    title: "Адрес",
+    fullAddress: "Полный адрес",
+    country: "Страна",
+    region: "Регион",
+    city: "Город",
+    street: "Улица",
+    houseNumber: "Номер дома",
   },
   scenes: {
     verifyBooking: {

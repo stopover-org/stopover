@@ -22,6 +22,8 @@ export default {
         image: "Логотип",
         paymentType: "Доступные способы оплаты",
         margin: "Маржа",
+        primaryPhone: "Телефон для уведомлений",
+        primaryEmail: "Email для уведомлений",
       },
       enums: {
         paymentTypes: {

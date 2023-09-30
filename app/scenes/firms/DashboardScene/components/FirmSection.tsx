@@ -1,4 +1,4 @@
-import { Grid, Stack } from "@mui/joy";
+import { Grid, Stack, useTheme } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import Section from "../../../../components/v2/Section";
@@ -11,6 +11,7 @@ import VerifyFirm from "../../../../components/shared/VerifyFirm";
 import { FirmSection_CurrentUserFragment$key } from "../../../../artifacts/FirmSection_CurrentUserFragment.graphql";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import { useTranslation } from "react-i18next";
+import { useMediaQuery } from "@mui/material";
 
 interface FirmSectionProps {
   firmFragmentRef: FirmSection_FirmFragment$key;
@@ -38,6 +39,8 @@ const FirmSection = ({
     `,
     firmFragmentRef
   );
+  const theme = useTheme()
+  const isMobileView = useMediaQuery(theme.breakpoints.down('md'))
 
   const currentUser = useFragment(
     graphql`
@@ -57,7 +60,7 @@ const FirmSection = ({
 
   return (
     <Section>
-      <Grid xs={10}>
+      <Grid md={10} sm={12}>
         <Typography level="h3" sx={{ display: "inline" }}>
           {firm.title.toUpperCase()}
         </Typography>
@@ -65,7 +68,7 @@ const FirmSection = ({
           {t(`statuses.${firm.status?.toLowerCase()}`)}
         </Tag>
       </Grid>
-      <Grid xs={2}>
+      <Grid md={2} sm={12} sx={{ paddingTop: isMobileView && '10px', paddingBottom: isMobileView && '10px' }}>
         <Stack direction="row" justifyContent="flex-end">
           <Link href="/my-firm" underline={false} sx={{ marginRight: "10px" }}>
             <Button size="sm" variant="outlined">
