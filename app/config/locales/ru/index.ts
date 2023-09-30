@@ -1,4 +1,7 @@
-export default {
+import { merge } from "lodash";
+import translations from "./models";
+
+const translation = {
   general: {
     back: "Назад",
     email: "email",
@@ -101,3 +104,5 @@ export default {
     },
   },
 };
+
+export default merge(translations, translation);
