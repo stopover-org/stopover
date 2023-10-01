@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment/moment";
+import { useTranslation } from "react-i18next";
 import Link from "../../../v2/Link";
 import { getHumanDateTime } from "../../../../lib/utils/dates";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
@@ -12,43 +13,45 @@ const TagColor = ({ status }: { status: string }) => {
     danger: ["canceled"],
     status,
   });
+  const { t } = useTranslation();
 
   return (
     <Tag link={false} color={color}>
-      {status}
+      {t(`statuses.${status}`)}
     </Tag>
   );
 };
 export function useRefundsHeaders() {
+  const { t } = useTranslation();
   return React.useMemo(
     () => [
       {
-        label: "Event Title",
+        label: t("models.event.singular"),
         width: 300,
         key: "event",
       },
       {
-        label: "Booking",
+        label: t("models.booking.singular"),
         width: 150,
         key: "booking",
       },
       {
-        label: "Creation Date",
+        label: t("models.refund.attributes.createdAt"),
         width: 100,
         key: "creationDate",
       },
       {
-        label: "Amount",
+        label: t("models.refund.attributes.totalAmount"),
         width: 100,
         key: "amount",
       },
       {
-        label: "Penalty",
+        label: t("models.refund.attributes.penaltyAmount"),
         width: 100,
         key: "penalty",
       },
       {
-        label: "Status",
+        label: t("models.refund.attributes.status"),
         width: 100,
         key: "status",
       },

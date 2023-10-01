@@ -64,7 +64,8 @@ class BookingOption < ApplicationRecord
   before_validation :adjust_stripe_integration, on: :create
 
   # SCOPES =====================================================================
-  #
+  default_scope { in_order_of(:status, %w[available not_available]).order(created_at: :desc) }
+
   # DELEGATIONS ==============================================================
 
   def adjust_prices

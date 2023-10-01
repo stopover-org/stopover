@@ -1,5 +1,4 @@
-import { Box, Divider, Modal, ModalDialog, Stack } from "@mui/joy";
-import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { Box, Divider, Modal, ModalDialog, Stack, DialogActions, DialogContent, DialogTitle } from "@mui/joy";
 import React from "react";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
@@ -8,6 +7,7 @@ import Button from "../../../../../components/v2/Button";
 import { RefundBookingModal_BookingFragment$key } from "../../../../../artifacts/RefundBookingModal_BookingFragment.graphql";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Typography from "../../../../../components/v2/Typography";
+import { useTranslation } from "react-i18next";
 
 interface RefundBookingModalProps {
   open: boolean;
@@ -41,6 +41,7 @@ const RefundBookingModal = ({
     `,
     bookingFragmentRef
   );
+  const { t } = useTranslation()
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -48,7 +49,7 @@ const RefundBookingModal = ({
         <DialogTitle>
           <Stack flexDirection="row" alignItems="center">
             <WarningRoundedIcon />
-            &nbsp; Booking refund
+            &nbsp; {t('forms.refundBooking.modal.header')}
           </Stack>
         </DialogTitle>
         <Divider />
@@ -61,20 +62,18 @@ const RefundBookingModal = ({
                     {booking.cancellationTerms}
                   </Typography>
                 </Box>
-                <Divider />
+                <Divider sx={{margin: 1}} />
                 <Box>
-                  Refund Amount:{" "}
-                  {getCurrencyFormat(
+                  {t('forms.refundBooking.modal.refundExplanation', { amount: getCurrencyFormat(
                     booking.possibleRefundAmount?.cents,
                     booking.possibleRefundAmount?.currency?.name
-                  )}
+                  )})}
                 </Box>
                 <Box>
-                  Penalty:{" "}
-                  {getCurrencyFormat(
+                  {t('forms.refundBooking.modal.penaltyExplanation', { amount: getCurrencyFormat(
                     booking.possiblePenaltyAmount?.cents,
                     booking.possiblePenaltyAmount?.currency?.name
-                  )}
+                  )})}
                 </Box>
               </Stack>
             </DialogContent>
@@ -84,7 +83,7 @@ const RefundBookingModal = ({
                 onSuccess={onClose}
               />
               <Button variant="plain" color="neutral" onClick={() => onClose()}>
-                Cancel
+                {t('general.cancel')}
               </Button>
             </DialogActions>
           </>

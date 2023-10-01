@@ -127,6 +127,7 @@ class Firm < ApplicationRecord
   after_create :create_balance
 
   # SCOPES ================================================================
+  default_scope { in_order_of(:status, %w[pending active removed]) }
 
   # DELEGATION ============================================================
 

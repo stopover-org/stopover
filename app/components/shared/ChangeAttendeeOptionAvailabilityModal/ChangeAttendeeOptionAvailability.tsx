@@ -1,6 +1,6 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { Tooltip } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import { useChangeAttendeeOptionAvailabilityForm } from "./useChangeAttendeeOptionAvailabilityForm";
 import { ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key } from "../../../artifacts/ChangeAttendeeOptionAvailability_AttendeeOptionFragment.graphql";
 import SubmitButton from "../SubmitButton";
@@ -29,7 +29,11 @@ const ChangeAttendeeOptionAvailability = ({
     attendeeOption,
     onSuccess
   );
-  const text = attendeeOption.status === "available" ? "Remove" : "Add";
+  const { t } = useTranslation();
+  const text =
+    attendeeOption.status === "available"
+      ? t("forms.changeOptionAvailability.actions.remove")
+      : t("forms.changeOptionAvailability.actions.add");
   return (
     <form onSubmit={form.handleSubmit()}>
       <SubmitButton
@@ -37,9 +41,7 @@ const ChangeAttendeeOptionAvailability = ({
         size="sm"
         color={attendeeOption.status === "available" ? "danger" : "success"}
       >
-        <Tooltip title="Change Availability">
-          <div>{text}</div>
-        </Tooltip>
+        <div>{text}</div>
       </SubmitButton>
     </form>
   );

@@ -59,6 +59,7 @@ class Payout < ApplicationRecord
   # CALLBACKS =============================================================
 
   # SCOPES ================================================================
+  default_scope { in_order_of(:status, %w[pending processing successful canceled]).order(created_at: :desc) }
 
   # DELEGATION ============================================================
 

@@ -54,7 +54,8 @@ class Schedule < ApplicationRecord
   # CALLBACKS ================================================================
   #
   # SCOPES =====================================================================
-  #
+  default_scope { in_order_of(:status, %w[active disabled]).order(created_at: :desc) }
+
   # DELEGATIONS ==============================================================
 
   private

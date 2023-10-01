@@ -70,8 +70,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
   );
 
   const disabled = React.useMemo(
-    () =>
-      booking.status !== "active" ||
+    () => booking.status !== "active" ||
       moment(booking.bookedFor).isBefore(new Date())
     [booking.status, booking.bookedFor, leftToPay]
   );

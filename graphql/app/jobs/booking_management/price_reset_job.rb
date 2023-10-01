@@ -2,7 +2,7 @@
 
 module BookingManagement
   class PriceResetJob < ApplicationJob
-    queue_as :default
+    queue_as :critical
 
     def perform(booking_id)
       booking = Booking.find(booking_id)

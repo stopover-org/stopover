@@ -1,6 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 import SubmitButton from "../SubmitButton";
 import { useRefundBookingForm } from "./useRefundBookingForm";
 import { RefundBookingForm_BookingFragment$key } from "../../../artifacts/RefundBookingForm_BookingFragment.graphql";
@@ -34,6 +35,7 @@ const RefundBookingForm = ({
       moment(booking.schedule.scheduledFor).isBefore(new Date()),
     [booking.status]
   );
+  const { t } = useTranslation();
   if (disabled) return null;
   return (
     <form onSubmit={form.handleSubmit()}>
@@ -43,7 +45,7 @@ const RefundBookingForm = ({
         size="sm"
         submitting={form.formState.isSubmitting}
       >
-        Refund This Booking
+        {t("forms.refundBooking.action")}
       </SubmitButton>
     </form>
   );

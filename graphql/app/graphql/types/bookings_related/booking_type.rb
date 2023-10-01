@@ -28,6 +28,10 @@ module Types
         argument :filters, Types::Filters::AttendeesFilter, required: false
       end
 
+      def refunds
+        object.refunds.where(refund_id: nil)
+      end
+
       def booked_for
         object.schedule.scheduled_for
       end

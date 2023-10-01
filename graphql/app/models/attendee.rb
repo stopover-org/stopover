@@ -66,6 +66,9 @@ class Attendee < ApplicationRecord
 
     event :remove do
       transitions from: %i[registered not_registered], to: :removed
+      after_commit do
+        attendee_options.destroy_all
+      end
     end
   end
 
@@ -78,6 +81,7 @@ class Attendee < ApplicationRecord
   # ATTACHMENTS ===========================================================
 
   # RICH_TEXT =============================================================
+  default_scope { in_order_of(:status, %w[registered not_registered removed]).order(created_at: :desc) }
 
   # VALIDATIONS ===========================================================
 

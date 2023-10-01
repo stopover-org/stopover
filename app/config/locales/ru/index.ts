@@ -17,6 +17,8 @@ const translation = {
     noData: "Нет данных",
     save: "Сохранить",
     edit: "Редактировать",
+    cancel: "Закрыть",
+    available: "Доступные",
   },
   datepicker: {
     selectDate: "Выберите дату",
@@ -50,6 +52,10 @@ const translation = {
     published: "Опубликовано",
     unpublished: "Не опубликовано",
     draft: "Черновик",
+    registered: "Зарегистрировано",
+    not_registered: "Не зарегистрировано",
+    available: "Доступно для заказа",
+    not_available: "Не доступно для заказа",
   },
   address: {
     title: "Адрес",
@@ -63,17 +69,6 @@ const translation = {
   scenes: {
     verifyBooking: {
       toTrip: "Обратно к путешествию",
-    },
-    signIn: {
-      changeLoginType: "Изменить {{type}}",
-      header: "Вход / Регистрация",
-      enterCode: "Введите код из {{type}}",
-      youCanResendDelay: "Вы можете повторно отправить код через {{seconds}}",
-      resendCode: "Отправить код повторно",
-      enterEmail: "Введите Email",
-      enterPhone: "Введите телефон",
-      useType: "Использвоать {{type}}",
-      signInAction: "Вход",
     },
     attendees: {
       eventScene: {

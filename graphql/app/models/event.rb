@@ -151,6 +151,7 @@ class Event < ApplicationRecord
   after_commit :sync_stripe
 
   # SCOPES =====================================================================
+  default_scope { in_order_of(:status, %w[draft published unpublished removed]).order(created_at: :desc) }
   scope :by_city, ->(city) { where(city: city) }
 
   # DELEGATIONS ==============================================================

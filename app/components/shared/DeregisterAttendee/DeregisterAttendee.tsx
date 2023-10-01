@@ -2,6 +2,7 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import PersonAddDisabledIcon from "@mui/icons-material/PersonAddDisabled";
 import { Tooltip } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import { useDeregisterAttendeeForm } from "./useDeregisterAttendeeForm";
 import { DeregisterAttendee_AttendeeFragment$key } from "../../../artifacts/DeregisterAttendee_AttendeeFragment.graphql";
 import SubmitButton from "../SubmitButton";
@@ -20,10 +21,11 @@ const DeregisterAttendee = ({ attendeeFragmentRef }: RegisterAttendeeProps) => {
     attendeeFragmentRef
   );
   const form = useDeregisterAttendeeForm(attendee);
+  const { t } = useTranslation();
   return (
     <form onSubmit={form.handleSubmit()}>
       <SubmitButton submitting={form.formState.isSubmitting} icon size="sm">
-        <Tooltip title="Deregister attendee">
+        <Tooltip title={t("forms.deregisterAttendee.tooltip")}>
           <PersonAddDisabledIcon />
         </Tooltip>
       </SubmitButton>

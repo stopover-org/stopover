@@ -17,6 +17,8 @@ const translation = {
     noData: "Not available",
     save: "Save",
     edit: "Edit",
+    cancel: "Закрыть",
+    available: "Доступные",
   },
   datepicker: {
     selectDate: "Select Date",
@@ -50,6 +52,10 @@ const translation = {
     published: "Published",
     unpublished: "Not Published",
     draft: "Draft",
+    registered: "Registered",
+    not_registered: "Not registered",
+    available: "Available",
+    not_available: "Not available",
   },
   address: {
     title: "Address",

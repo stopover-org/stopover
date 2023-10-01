@@ -3,7 +3,7 @@
 module Types
   class RatingType < Types::ModelObject
     field :rating_value, Integer
-    field :account, AccountType
-    field :event, EventType
+    field :account, Types::UsersRelated::AccountType
+    field :event, Types::EventsRelated::EventType
   end
 end
