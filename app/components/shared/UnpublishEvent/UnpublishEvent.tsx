@@ -1,8 +1,10 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { useUnpublishEventForm } from "./useUnpublishEventForm";
+import { Box } from "@mui/joy";
+import { useTranslation } from "react-i18next";
+import Button from "../../v2/Button";
+import UnpublishEventModal from "./UnpublishEventModal";
 import { UnpublishEvent_EventFragment$key } from "../../../artifacts/UnpublishEvent_EventFragment.graphql";
-import SubmitButton from "../SubmitButton";
 
 interface PublishEventProps {
   eventFragmentRef: UnpublishEvent_EventFragment$key;
@@ -12,18 +14,26 @@ const UnpublishEvent = ({ eventFragmentRef }: PublishEventProps) => {
   const event = useFragment(
     graphql`
       fragment UnpublishEvent_EventFragment on Event {
-        ...useUnpublishEventForm_EventFragment
+        ...UnpublishEventModal_EventFragment
       }
     `,
     eventFragmentRef
   );
-  const form = useUnpublishEventForm(event);
+  const [modalOpened, setModalOpened] = React.useState<boolean>(false);
+  const { t } = useTranslation();
   return (
-    <form onSubmit={form.handleSubmit()}>
-      <SubmitButton size="sm" submitting={form.formState.isSubmitting}>
-        Unpublish
-      </SubmitButton>
-    </form>
+    <>
+      <Box>
+        <Button size="sm" onClick={() => setModalOpened(true)}>
+          {t("forms.unpublishEvent.action")}
+        </Button>
+      </Box>
+      <UnpublishEventModal
+        eventFragmentRef={event}
+        open={modalOpened}
+        onClose={() => setModalOpened(false)}
+      />
+    </>
   );
 };
 

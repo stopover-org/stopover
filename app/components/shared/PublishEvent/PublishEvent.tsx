@@ -1,8 +1,10 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { usePublishEventForm } from "./usePublishEventForm";
+import { Box } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import { PublishEvent_EventFragment$key } from "../../../artifacts/PublishEvent_EventFragment.graphql";
-import SubmitButton from "../SubmitButton";
+import Button from "../../v2/Button";
+import PublishEventModal from "./PublishEventModal";
 
 interface PublishEventProps {
   eventFragmentRef: PublishEvent_EventFragment$key;
@@ -12,18 +14,26 @@ const PublishEvent = ({ eventFragmentRef }: PublishEventProps) => {
   const event = useFragment(
     graphql`
       fragment PublishEvent_EventFragment on Event {
-        ...usePublishEventForm_EventFragment
+        ...PublishEventModal_EventFragment
       }
     `,
     eventFragmentRef
   );
-  const form = usePublishEventForm(event);
+  const { t } = useTranslation();
+  const [modalOpened, setModalOpened] = React.useState<boolean>(false);
   return (
-    <form onSubmit={form.handleSubmit()}>
-      <SubmitButton size="sm" submitting={form.formState.isSubmitting}>
-        Publish
-      </SubmitButton>
-    </form>
+    <>
+      <Box>
+        <Button size="sm" onClick={() => setModalOpened(true)}>
+          {t("forms.publishEvent.action")}
+        </Button>
+      </Box>
+      <PublishEventModal
+        eventFragmentRef={event}
+        open={modalOpened}
+        onClose={() => setModalOpened(false)}
+      />
+    </>
   );
 };
 

@@ -10,6 +10,8 @@ import registerAttendee from "./registerAttendee";
 import deregisterAttendee from "./deregisterAttendee";
 import removeAttendee from "./removeAttendee";
 import rescheduleEvent from "./rescheduleEvent";
+import publishEvent from "./publishEvent";
+import unpublishEvent from "./unpublishEvent";
 
 export default merge(
   verifyStripeConnect,
@@ -22,5 +24,7 @@ export default merge(
   registerAttendee,
   deregisterAttendee,
   removeAttendee,
-  rescheduleEvent
+  rescheduleEvent,
+  publishEvent,
+  unpublishEvent
 );

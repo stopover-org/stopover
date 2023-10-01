@@ -72,10 +72,10 @@ const GeneralInformation = ({
   );
 
   return (
-    <TabPanel value={index} size="sm" sx={{ paddingTop: "20px" }}>
+    <TabPanel value={index} size="sm" sx={{ paddingTop: "20px", minWidth: '600px' }}>
       <Sheet>
         <Section>
-          <Grid container xs={12}>
+          <Grid container xs={12} spacing={2}>
             <Grid xs={2} >
               <Typography level='title-lg'>
                 Title
@@ -123,8 +123,9 @@ const GeneralInformation = ({
 
             {event.firm.paymentTypes.includes("cash") && (
               <>
-                <Grid xs={2} >
-              <Typography level='title-lg'>For Cash Payment requires deposit</Typography></Grid>
+                <Grid xs={2}>
+                  <Typography level='title-lg'>Deposit (cash only)</Typography>
+                </Grid>
                 <Grid xs={10} >
                   {getCurrencyFormat(
                     event.depositAmount?.cents,
