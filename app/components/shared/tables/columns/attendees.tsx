@@ -165,13 +165,14 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
                 ) || t("general.noData"),
               builtIn: <Checkbox label="" checked={builtIn} readOnly />,
               status: <OptionTagColor status={status} />,
-              actions: att.status !== "removed" && (
-                <ChangeAttendeeOptionAvailabilityModal
-                  optionFragmentRef={
-                    opt as ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key
-                  }
-                />
-              ),
+              actions: att.status !== "removed" &&
+                booking.status !== "cancelled" && (
+                  <ChangeAttendeeOptionAvailabilityModal
+                    optionFragmentRef={
+                      opt as ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key
+                    }
+                  />
+                ),
             };
           }
         );

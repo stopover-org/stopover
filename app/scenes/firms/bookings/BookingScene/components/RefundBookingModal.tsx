@@ -47,9 +47,8 @@ const RefundBookingModal = ({
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">
         <DialogTitle>
-          <Stack flexDirection="row" alignItems="center">
-            <WarningRoundedIcon />
-            &nbsp; {t('forms.refundBooking.modal.header')}
+          <Stack flexDirection="row" alignItems="center" useFlexGap spacing={1}>
+            <WarningRoundedIcon color='warning' />{t('forms.refundBooking.modal.header')}
           </Stack>
         </DialogTitle>
         <Divider />

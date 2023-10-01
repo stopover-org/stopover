@@ -95,7 +95,7 @@ const EventScene = ({
 
   return (
     <Grid container spacing={2} sm={12} md={12}>
-      <Grid lg={10} sm={12}>
+      <Grid lg={8} sm={12}>
         <Typography level="h3" sx={{ display: "inline" }}>
           {event.title}
         </Typography>
@@ -103,7 +103,7 @@ const EventScene = ({
           {event.status}
         </Tag>
       </Grid>
-      <Grid lg={2} sm={12}>
+      <Grid lg={4} sm={12}>
         <Stack
           direction="row"
           justifyContent={{ lg: "flex-end", sm: "flex-start" }}
@@ -115,7 +115,7 @@ const EventScene = ({
             href={`/my-firm/events/${event.id}/edit`}
             underline={false}
           >
-            <Button size="sm">{t('general.edit')}</Button>
+            <Button size="sm" variant='plain'>{t('general.edit')}</Button>
           </Link>
           {currentUser.serviceUser &&
             event.status === "published" &&

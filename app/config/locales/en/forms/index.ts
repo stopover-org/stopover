@@ -9,6 +9,7 @@ import changeOptionAvailability from "./changeOptionAvailability";
 import registerAttendee from "./registerAttendee";
 import deregisterAttendee from "./deregisterAttendee";
 import removeAttendee from "./removeAttendee";
+import rescheduleEvent from "./rescheduleEvent";
 
 export default merge(
   verifyStripeConnect,
@@ -20,5 +21,6 @@ export default merge(
   changeOptionAvailability,
   registerAttendee,
   deregisterAttendee,
-  removeAttendee
+  removeAttendee,
+  rescheduleEvent
 );

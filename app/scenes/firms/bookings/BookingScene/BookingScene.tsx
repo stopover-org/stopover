@@ -205,7 +205,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
                   color="danger"
                   onClick={() => setRefundModal(true)}
                 >
-                  {t('scenes.bookingScene.refundBooking')}
+                  {t('scenes.firms.bookings.bookingScene.refundBooking')}
                 </Button>
               </Box>
             )}
