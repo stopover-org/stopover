@@ -5,7 +5,7 @@ module Workers
     def perform
       Booking.where.not(status: :cancelled)
              .joins(:schedule)
-             .where('schedule.scheduled_for > ?', Time.current)
+             .where('schedules.scheduled_for > ?', Time.current)
              .each do |booking|
         booking.reload
         booking.refund_diff if booking.refundable?

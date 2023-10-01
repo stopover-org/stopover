@@ -70,7 +70,7 @@ RSpec.describe Mutations::BookingsRelated::AddAttendee, type: :mutation do
     end
 
     context 'for already booked event for different schedule' do
-      let!(:booking) { create(:booking, schedule: event.schedules.unscoped.last, event: event) }
+      let!(:booking) { create(:booking, schedule: event.schedules.second_to_last, event: event) }
       it 'check bookings' do
         expect(event.bookings.count).to eq(1)
         expect(booking.schedule).not_to eq(schedule)

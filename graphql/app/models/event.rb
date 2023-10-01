@@ -57,7 +57,7 @@ class Event < ApplicationRecord
 
   # MODULES ===============================================================
   include AASM
-  searchkick callbacks: :async
+  searchkick
 
   # MONETIZE =====================================================================
   monetize :attendee_price_per_uom_cents
