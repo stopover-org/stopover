@@ -4,7 +4,7 @@ class RemoveEventJob < ApplicationJob
   queue_as :default
   def perform(event_id:)
     event = Event.find(event_id)
-    event.remove!
+    event.remove! unless event.removed?
     Schedule.where(event_id: event.id)
             .where('schedules.scheduled_for > ?', Time.current)
             .where.not(id: event.schedules.joins(:bookings))
