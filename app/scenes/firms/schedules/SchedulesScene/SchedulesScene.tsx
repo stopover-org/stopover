@@ -80,7 +80,9 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
                     id
                     eventOption {
                       title
+                      builtIn
                     }
+                    status
                     organizerPrice {
                       cents
                       currency {

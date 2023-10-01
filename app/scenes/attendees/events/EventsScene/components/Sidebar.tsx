@@ -115,7 +115,7 @@ const Sidebar = ({
         <Input
           onChange={(value) => setCity(value)}
           value={city}
-          label={t('scenes.attendees.eventsScene.sidebar.city')}
+          label={t('scenes.attendees.events.eventsScene.sidebar.city')}
           endDecorator={<EditIcon />}
         />
       </Grid>
@@ -132,26 +132,26 @@ const Sidebar = ({
         minDate={edgeFiltersValues.startDate}
         disablePast
         startInputProps={{
-          label: t('scenes.attendees.eventsScene.sidebar.startDate'),
-          placeholder: t('scenes.attendees.eventsScene.sidebar.startDatePlaceholder'),
+          label: t('scenes.attendees.events.eventsScene.sidebar.startDate'),
+          placeholder: t('scenes.attendees.events.eventsScene.sidebar.startDatePlaceholder'),
           size: "sm",
         }}
         endInputProps={{
-          label: t('scenes.attendees.eventsScene.sidebar.endDate'),
-          placeholder: t('scenes.attendees.eventsScene.sidebar.endDatePlaceholder'),
+          label: t('scenes.attendees.events.eventsScene.sidebar.endDate'),
+          placeholder: t('scenes.attendees.events.eventsScene.sidebar.endDatePlaceholder'),
           size: "sm",
         }}
       />
       <Grid xs={12}>
         <SliderRange
-          getAriaLabel={() => t('scenes.attendees.eventsScene.sidebar.priceRance')}
+          getAriaLabel={() => t('scenes.attendees.events.eventsScene.sidebar.priceRance')}
           value={priceRange}
           onChange={(value) => setPriceRange(value)}
           max={edgeFiltersValues.maxPrice.cents}
           min={edgeFiltersValues.minPrice.cents}
           valueLabelDisplay="auto"
           size="lg"
-          label={t('scenes.attendees.eventsScene.sidebar.priceRance')}
+          label={t('scenes.attendees.events.eventsScene.sidebar.priceRance')}
         />
       </Grid>
       <Grid xs={12} container sx={{paddingBottom: '10px'}}>
@@ -165,7 +165,7 @@ const Sidebar = ({
               if (Number.isNaN(newValue)) newValue = 0;
               setPriceRange([newValue, priceRange[1]]);
             }}
-            label={t('scenes.attendees.eventsScene.sidebar.minPrice')}
+            label={t('scenes.attendees.events.eventsScene.sidebar.minPrice')}
           />
         </Grid>
         <Grid xs={6}>
@@ -178,7 +178,7 @@ const Sidebar = ({
               if (Number.isNaN(newValue)) newValue = 0;
               setPriceRange([priceRange[0], newValue]);
             }}
-            label={t('scenes.attendees.eventsScene.sidebar.maxPrice')}
+            label={t('scenes.attendees.events.eventsScene.sidebar.maxPrice')}
           />
         </Grid>
       </Grid>

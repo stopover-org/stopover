@@ -66,49 +66,6 @@ const translation = {
     street: "Улица",
     houseNumber: "Номер дома",
   },
-  scenes: {
-    verifyBooking: {
-      toTrip: "Обратно к путешествию",
-    },
-    attendees: {
-      eventScene: {
-        bookEvent: "Забронировать",
-        chooseCount: "Сколько человек",
-      },
-      tripsScene: {
-        cancelTrip: "Отменить все путешествие",
-      },
-      tripScene: {
-        bookingInfo: "Информация о бронировании",
-        attendeesCount: "{{count}} участник(-ов)",
-        bookignOptionsSubheader: "Дополнительные опции",
-        cancelBooking: "Отменить бронирование",
-        noAvailablePaymentMethod: "Нет доступных способов оплаты. Пока что.",
-        payDeposit: "Оплатить депозит {{amount}}",
-        payOnline: "Оплатить онлайн {{amount}}",
-        cancelBookingModal: {
-          title: "Отмена бронирования",
-          refundAmount: "Вам вернется:",
-          penaltyAmount: "Штраф:",
-          close: "Закрыть",
-          confirm: "Отменить бронирование",
-        },
-      },
-      eventsScene: {
-        sidebar: {
-          city: "Город",
-          startDate: "Начало",
-          endDate: "Конец",
-          startDatePlaceholder: "Когда начинаем?",
-          endDatePlaceholder: "Когда заканчиваем?",
-          priceRance: "Цена",
-          minPrice: "Мин. цена",
-          maxPrice: "Макс. цена",
-          categoriesSubheader: "Категории",
-        },
-      },
-    },
-  },
 };
 
 export default merge(

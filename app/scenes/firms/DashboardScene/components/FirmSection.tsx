@@ -72,7 +72,7 @@ const FirmSection = ({
         <Stack direction="row" justifyContent="flex-end">
           <Link href="/my-firm" underline={false} sx={{ marginRight: "10px" }}>
             <Button size="sm" variant="outlined">
-              {t('scenes.dashboardScene.view')}
+              {t('scenes.firms.dashboardScene.view')}
             </Button>
           </Link>
           <Link
@@ -81,7 +81,7 @@ const FirmSection = ({
             sx={{ marginRight: "10px" }}
           >
             <Button size="sm">
-              {t('scenes.dashboardScene.edit')}
+              {t('general.edit')}
               </Button>
           </Link>
           {currentUser.serviceUser && firm.status === "pending" && (

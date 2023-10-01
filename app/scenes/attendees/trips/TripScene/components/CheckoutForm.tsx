@@ -57,7 +57,7 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
   );
 
   if (booking.event.firm.paymentTypes.length === 0) {
-    return <Typography>{t('scenes.attendees.tripScene.noAvailablePaymentMethod')}</Typography>;
+    return <Typography>{t('scenes.attendees.trips.tripScene.noAvailablePaymentMethod')}</Typography>;
   }
 
   return (
@@ -77,11 +77,11 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
         disabled={disabled}
       >
         {paymentMethodField.value === "cash"
-          ? t(`scenes.attendees.tripScene.payDeposit`, { amount: getCurrencyFormat(
+          ? t(`scenes.attendees.trips.tripScene.payDeposit`, { amount: getCurrencyFormat(
               booking.leftToPayDepositPrice?.cents,
               booking.leftToPayDepositPrice?.currency.name
             )})
-          : t(`scenes.attendees.tripScene.payOnline`, { amount: getCurrencyFormat(
+          : t(`scenes.attendees.trips.tripScene.payOnline`, { amount: getCurrencyFormat(
               booking.leftToPayPrice?.cents,
               booking.leftToPayPrice?.currency.name
             )})

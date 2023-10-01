@@ -1,7 +1,11 @@
 export default {
   scenes: {
-    bookingScene: {
-      refundBooking: "Refund this booking",
+    firms: {
+      bookings: {
+        bookingScene: {
+          refundBooking: "Refund this booking",
+        },
+      },
     },
   },
 };

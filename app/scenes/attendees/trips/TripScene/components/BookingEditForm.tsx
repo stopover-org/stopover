@@ -106,7 +106,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
             {cancellable && (
               <Grid xs={12}>
                 <Button size="sm" color="danger" onClick={() => setModal(true)}>
-                  {t('scenes.attendees.tripScene.cancelBooking')}
+                  {t('scenes.attendees.trips.tripScene.cancelBooking')}
                 </Button>
               </Grid>
             )}

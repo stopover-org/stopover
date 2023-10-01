@@ -48,7 +48,7 @@ const CancelBookingModal = ({
       <ModalDialog variant="outlined" role="alertdialog">
         <DialogTitle>
           <Stack flexDirection="row" alignItems="center">
-            <WarningRoundedIcon /> {t('scenes.attendees.tripScene.cancelBookingModal.title')}
+            <WarningRoundedIcon /> {t('scenes.attendees.trips.tripScene.cancelBookingModal.title')}
           </Stack>
         </DialogTitle>
         <Divider />
@@ -63,14 +63,14 @@ const CancelBookingModal = ({
                 </Box>
                 <Divider />
                 <Box>
-                   {t('scenes.attendees.tripScene.cancelBookingModal.refundAmount')}:{" "}
+                   {t('scenes.attendees.trips.tripScene.cancelBookingModal.refundAmount')}:{" "}
                   {getCurrencyFormat(
                     booking.possibleRefundAmount?.cents,
                     booking.possibleRefundAmount?.currency?.name
                   )}
                 </Box>
                 <Box>
-                  {t('scenes.attendees.tripScene.cancelBookingModal.penaltyAmount')}:{" "}
+                  {t('scenes.attendees.trips.tripScene.cancelBookingModal.penaltyAmount')}:{" "}
                   {getCurrencyFormat(
                     booking.possiblePenaltyAmount?.cents,
                     booking.possiblePenaltyAmount?.currency?.name
@@ -84,7 +84,7 @@ const CancelBookingModal = ({
                 onSuccess={onClose}
               />
               <Button variant="plain" color="neutral" onClick={() => onClose()}>
-                {t('scenes.attendees.tripScene.cancelBookingModal.close')}
+                {t('scenes.attendees.trips.tripScene.cancelBookingModal.close')}
               </Button>
             </DialogActions>
           </>

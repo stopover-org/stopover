@@ -1,4 +1,4 @@
-import { Grid, Tab, TabList, Tabs, Box, Stack } from "@mui/joy";
+import { Grid, Tab, TabList, Tabs, Box, Stack, Divider, Chip } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { EventScene_FirmEventFragment$key } from "../../../../artifacts/EventScene_FirmEventFragment.graphql";
@@ -19,6 +19,7 @@ import RemoveEvent from "../../../../components/shared/RemoveEvent";
 import RescheduleEvent from "../../../../components/shared/RescheduleEvent";
 import SyncStripe from "../../../../components/shared/SyncStripe";
 import StripeIntegrationsInformation from "./components/StripeIntegrationsInformation";
+import { useTranslation } from "react-i18next";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -90,6 +91,8 @@ const EventScene = ({
     status: event.status,
   });
 
+  const { t } = useTranslation()
+
   return (
     <Grid container spacing={2} sm={12} md={12}>
       <Grid lg={10} sm={12}>
@@ -110,7 +113,7 @@ const EventScene = ({
             underline={false}
             sx={{ marginRight: "10px" }}
           >
-            <Button size="sm">Edit</Button>
+            <Button size="sm">{t('general.edit')}</Button>
           </Link>
           {currentUser.serviceUser &&
             event.status === "published" &&
@@ -153,24 +156,39 @@ const EventScene = ({
               General Information
             </Tab>
             <Tab variant={tab === 1 ? "outlined" : "plain"}>
-              Event Options ({event.eventOptions.length})
+              Event Options 
+              <Chip
+                size="sm"
+                variant="soft"
+              >
+                {event.eventOptions.length}
+              </Chip>
             </Tab>
             <Tab variant={tab === 2 ? "outlined" : "plain"}>
-              Schedules ({event.schedules.nodes.length})
+              Schedules 
+              <Chip
+                size="sm"
+                variant="soft"
+              >{event.schedules.nodes.length}</Chip>
             </Tab>
             <Tab variant={tab === 3 ? "outlined" : "plain"}>
-              Bookings ({event.bookings.nodes.length})
+              Bookings 
+              <Chip
+                size="sm"
+                variant="soft"
+              >{event.bookings.nodes.length}</Chip>
             </Tab>
             {currentUser?.serviceUser && (
-              <Tab variant={tab === 4 ? "outlined" : "plain"}>
-                Str. Int. ({event.stripeIntegrations.nodes.length})
-                <Tag
-                  link={false}
-                  color="neutral"
-                  level='body-xs'
-                >
-                  Service User
-                </Tag>
+              <Tab variant={tab === 4 ? "outlined" : "plain"} sx={{ display: 'block' }}>
+                Str. Int. 
+              <Chip
+                size="sm"
+                variant="soft"
+              >{event.stripeIntegrations.nodes.length}</Chip>
+                <br />
+                <Typography fontSize='xs'>
+                  {t('models.user.attributes.serviceUser')}
+                </Typography>
               </Tab>
             )}
           </TabList>

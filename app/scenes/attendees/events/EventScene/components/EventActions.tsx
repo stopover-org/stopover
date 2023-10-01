@@ -113,7 +113,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
               submitting={form.formState.isSubmitting}
               disabled={!dateField.value.isValid() || !isValidTime}
             >
-              {t('scenes.attendees.eventScene.bookEvent')}
+              {t('scenes.attendees.events.eventScene.bookEvent')}
             </SubmitButton>
           )}
           {booking && (

@@ -10,6 +10,7 @@ import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Tag from "../../../v2/Tag/Tag";
 import Table from "../../../v2/Table/Table";
 import Typography from "../../../v2/Typography";
+import Checkbox from "../../../v2/Checkbox";
 
 export function useBookingsHeaders() {
   const { t } = useTranslation();
@@ -92,6 +93,14 @@ export function useBookingsColumns(
         label: t("models.bookingOption.attributes.attendeePrice"),
         key: "attendeePrice",
       },
+      {
+        label: t("models.eventOption.attributes.builtIn"),
+        key: "builtIn",
+      },
+      {
+        label: t("models.bookingOption.attributes.status"),
+        key: "status",
+      },
     ],
     []
   );
@@ -113,13 +122,17 @@ export function useBookingsColumns(
             id: index + 1,
             title: opt.eventOption.title,
             organizerPrice: getCurrencyFormat(
-              opt.organizerPrice.cents,
+              opt.eventOption.builtIn ? 0 : opt.organizerPrice.cents,
               opt.organizerPrice.currency.name
             ),
             attendeePrice: getCurrencyFormat(
-              opt.attendeePrice.cents,
+              opt.eventOption.builtIn ? 0 : opt.attendeePrice.cents,
               opt.attendeePrice.currency.name
             ),
+            builtIn: (
+              <Checkbox label="" checked={opt.eventOption.builtIn} readOnly />
+            ),
+            status: <TagColor status={opt.status} />,
           })
         );
         return {

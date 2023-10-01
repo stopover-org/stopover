@@ -208,7 +208,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
             },
           }}
         >
-          {t('scenes.attendees.tripScene.bookingInfo')}&nbsp;
+          {t('scenes.attendees.trips.tripScene.bookingInfo')}&nbsp;
           <KeyboardArrowDownIcon
             sx={{
               transform: isFormOpened ? "rotate(180deg)" : "unset",

@@ -72,7 +72,7 @@ const BookingOptionsEditForm = ({
       <form>
         <Grid xs={12}>
           <Typography>
-            {t('scenes.attendees.tripScene.bookignOptionsSubheader')}
+            {t('scenes.attendees.trips.tripScene.bookignOptionsSubheader')}
           </Typography>
         </Grid>
         {commonOptions.length > 0 && (

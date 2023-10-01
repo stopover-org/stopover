@@ -67,7 +67,6 @@ type Attendee implements Node {
 type AttendeeOption implements Node {
   attendee: Attendee!
   attendeePrice: Money!
-  builtIn: Boolean!
   eventOption: EventOption!
   id: ID!
   organizerPrice: Money!
@@ -234,7 +233,6 @@ type BookingEdge {
 type BookingOption implements Node {
   attendeePrice: Money!
   booking: Booking!
-  builtIn: Boolean!
   eventOption: EventOption!
   id: ID!
   organizerPrice: Money!

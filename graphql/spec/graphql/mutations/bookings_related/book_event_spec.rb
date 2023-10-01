@@ -46,7 +46,7 @@ RSpec.describe Mutations::BookingsRelated::AddAttendee, type: :mutation do
     it 'successful' do
       result = nil
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Booking.count }.by(1)
-      booking = Booking.last
+      booking = Booking.unscoped.last
       expect(booking.attendees.count).to eq(1)
       expect(result.dig(:data, :bookEvent, :booking, :id)).to eq(GraphqlSchema.id_from_object(booking))
       expect(result.dig(:data, :bookEvent, :booking, :status)).to eq('active')
@@ -70,7 +70,7 @@ RSpec.describe Mutations::BookingsRelated::AddAttendee, type: :mutation do
     end
 
     context 'for already booked event for different schedule' do
-      let!(:booking) { create(:booking, schedule: event.schedules.first, event: event) }
+      let!(:booking) { create(:booking, schedule: event.schedules.unscoped.last, event: event) }
       it 'check bookings' do
         expect(event.bookings.count).to eq(1)
         expect(booking.schedule).not_to eq(schedule)

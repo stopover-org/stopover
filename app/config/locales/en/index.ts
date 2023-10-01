@@ -66,49 +66,6 @@ const translation = {
     street: "Street",
     houseNumber: "House number",
   },
-  scenes: {
-    verifyBooking: {
-      toTrip: "To The Trip",
-    },
-    attendees: {
-      eventScene: {
-        bookEvent: "Book Event",
-        chooseCount: "How many Attendees",
-      },
-      tripsScene: {
-        cancelTrip: "Cancel entire trip",
-      },
-      tripScene: {
-        bookingInfo: "Booking Info",
-        attendeesCount: "{{count}} attendee(-s)",
-        bookignOptionsSubheader: "Additional Options",
-        cancelBooking: "Cancel Booking",
-        noAvailablePaymentMethod: "There is no available payment methods. Yet.",
-        payDeposit: "Pay Depsot {{amount}}",
-        payOnline: "Pay Online {{amount}}",
-        cancelBookingModal: {
-          title: "Booking cancellation",
-          refundAmount: "Refund amount:",
-          penaltyAmount: "Penalty:",
-          close: "Close",
-          confirm: "Cancel this booking",
-        },
-      },
-      eventsScene: {
-        sidebar: {
-          city: "City",
-          startDate: "Start Date",
-          endDate: "End Date",
-          startDatePlaceholder: "Enter Start Date",
-          endDatePlaceholder: "Enter End Date",
-          priceRance: "Price range",
-          minPrice: "Min Price",
-          maxPrice: "Max Price",
-          categoriesSubheader: "Categories",
-        },
-      },
-    },
-  },
 };
 
 export default merge(

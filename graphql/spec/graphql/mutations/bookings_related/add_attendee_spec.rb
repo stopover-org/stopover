@@ -39,8 +39,8 @@ RSpec.describe Mutations::BookingsRelated::AddAttendee, type: :mutation do
       booking.reload
 
       expect(result.dig(:data, :addAttendee, :booking, :attendees).size).to eq(2)
-      expect(result.dig(:data, :addAttendee, :booking, :attendees, 1, :status)).to eq('not_registered')
-      expect(result.dig(:data, :addAttendee, :booking, :attendees, 1, :id)).to eq(GraphqlSchema.id_from_object(booking.attendees.last))
+      expect(result.dig(:data, :addAttendee, :booking, :attendees, 0, :status)).to eq('not_registered')
+      expect(result.dig(:data, :addAttendee, :booking, :attendees, 0, :id)).to eq(GraphqlSchema.id_from_object(booking.attendees.last))
       expect(result.dig(:data, :addAttendee, :errors)).to be_nil
       expect(result.dig(:data, :addAttendee, :notification)).to eq('Attendee added')
     end

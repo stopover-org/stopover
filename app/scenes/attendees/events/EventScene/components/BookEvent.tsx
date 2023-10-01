@@ -115,7 +115,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
             ))}
           </Select>
           <Input
-            label={t('scenes.attendees.eventScene.chooseCount')}
+            label={t('scenes.attendees.events.eventScene.chooseCount')}
             type="number"
             value={
               booking
@@ -143,7 +143,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
               submitting={form.formState.isSubmitting}
               disabled={!dateField.value.isValid() || !isValidTime}
             >
-              {t('scenes.attendees.eventScene.bookEvent')}
+              {t('scenes.attendees.events.eventScene.bookEvent')}
             </SubmitButton>
           )}
           {booking && (

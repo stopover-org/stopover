@@ -98,7 +98,7 @@ class Booking < ApplicationRecord
   after_commit :refund_diff, if: :refundable?
 
   # SCOPES ================================================================
-  default_scope { in_order_of(:status, %w[paid active cancelled]).order(created_at: :desc) }
+  default_scope { in_order_of(:status, %w[paid active cancelled]).includes(:schedule).order('schedules.scheduled_for ASC') }
 
   # DELEGATION ============================================================
 

@@ -47,7 +47,7 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
             },
           })}
         >
-          {t("scenes.attendees.tripScene.attendeesCount", {
+          {t("scenes.attendees.trips.tripScene.attendeesCount", {
             count: booking.attendees.length,
           })}
         </Typography>

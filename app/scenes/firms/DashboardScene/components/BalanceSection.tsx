@@ -69,7 +69,7 @@ const { t } = useTranslation()
           <Typography level="h3">{t('models.balance.singular')}</Typography>
         </Grid>
         <Grid md={3} sm={12}>
-          <Typography level="h4">{t('scenes.dashboardScene.total')}:</Typography>
+          <Typography level="h4">{t('scenes.firms.dashboardScene.total')}:</Typography>
         </Grid>
         <Grid sm={12} md={4} >
           <Typography level="h4">
@@ -100,7 +100,7 @@ const { t } = useTranslation()
         </Grid>
 
         <Grid xs={12}>
-          <Typography level="h4">{t('scenes.dashboardScene.payoutSettings')}</Typography>
+          <Typography level="h4">{t('scenes.firms.dashboardScene.payoutSettings')}</Typography>
         </Grid>
         {firm.paymentTypes.includes("stripe") && !activeStripeConnect && (
           <Grid xs={12}>
@@ -109,7 +109,7 @@ const { t } = useTranslation()
         )}
 
         <Grid xs={12}>
-          <Typography level="h4">{t('scenes.dashboardScene.connectedStripeAccounts')}</Typography>
+          <Typography level="h4">{t('scenes.firms.dashboardScene.connectedStripeAccounts')}</Typography>
         </Grid>
         <Grid xs={12}>
           <StripeConnectsTable

@@ -42,7 +42,7 @@ const WithdrawBalanceForm = ({
   return (
     <form onSubmit={form.handleSubmit()}>
       <SubmitButton size="sm" submitting={form.formState.isSubmitting}>
-        {t('scenes.dashboardScene.withdraw')}
+        {t('scenes.firms.dashboardScene.withdraw')}
       </SubmitButton>
     </form>
   );

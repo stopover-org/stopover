@@ -115,7 +115,7 @@ const VerifyBookingScene = ({
   return (
     <Grid container spacing={2} sx={{ flexGrow: 1 }} justifyContent="center">
       <Grid md={12} lg={4}>
-        <Link href={`/trips/${booking.trip.id}`} sx={{paddingLeft: '10px'}}>{t('scenes.verifyBooking.toTrip')}</Link>
+        <Link href={`/trips/${booking.trip.id}`} sx={{paddingLeft: '10px'}}>{t('scenes.attendees.bookings.verifyBooking.toTrip')}</Link>
         <Card variant="outlined">
           <CardOverflow>
             <AspectRatio ratio="2">

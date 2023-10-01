@@ -45,7 +45,7 @@ const CancelBookingForm = ({
         size="sm"
         submitting={form.formState.isSubmitting}
       >
-        {t("scenes.attendees.tripScene.cancelBookingModal.confirm")}
+        {t("scenes.attendees.trips.tripScene.cancelBookingModal.confirm")}
       </SubmitButton>
     </form>
   );

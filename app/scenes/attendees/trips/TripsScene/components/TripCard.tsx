@@ -65,7 +65,7 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
         <Stack paddingLeft="10px" width="100%" sx={{ position: "relative" }}>
           {trip.canCancel && (
             <Box>
-            <Tooltip title={t('scenes.attendees.tripsScene.cancelTrip')}>
+            <Tooltip title={t('scenes.attendees.trips.tripsScene.cancelTrip')}>
               <IconButton
                 variant="outlined"
                 color="danger"
@@ -111,7 +111,7 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
             <Grid container xs={12}>
               <Grid xs={6}>
                 <Typography level="body-sm">
-                {t('scenes.attendees.tripScene.attendeesCount', { count: trip.attendeesCount })}
+                {t('scenes.attendees.trips.tripScene.attendeesCount', { count: trip.attendeesCount })}
                 </Typography>
               </Grid>
               <Grid xs={6}>

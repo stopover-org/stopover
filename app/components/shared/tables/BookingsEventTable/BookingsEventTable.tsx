@@ -1,10 +1,10 @@
 import { graphql, usePaginationFragment } from "react-relay";
 import React from "react";
 import Table from "../../../v2/Table/Table";
-import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
 import { BookingsEventTableBookingsPaginationQuery } from "../../../../artifacts/BookingsEventTableBookingsPaginationQuery.graphql";
 import { BookingsEventTable_BookingsPaginationFragment$key } from "../../../../artifacts/BookingsEventTable_BookingsPaginationFragment.graphql";
+import useEdges from "../../../../lib/hooks/useEdges";
 
 interface BookingsEventTableProps {
   eventFragmentRef: BookingsEventTable_BookingsPaginationFragment$key;
@@ -88,7 +88,7 @@ const BookingsEventTable = ({
     eventFragmentRef
   );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const pagedBookings = usePagedEdges(paginatedBookings, currentPage, 30);
+  const pagedBookings = useEdges(paginatedBookings);
   const actualBookings = useBookingsColumns(pagedBookings);
   const headers = useBookingsHeaders();
 
