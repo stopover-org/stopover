@@ -42,6 +42,10 @@ ru:
       cancel_booking:
         notifications:
           success: 'Бронирование отменено'
+        terms:
+          cancellation_not_paid: 'Бронирование будет отменено без возврата средств'
+          cancellation_with_penalty: 'При отмене бронирования штраф составит %{penalty}. Размер возврата составит %{refund}'
+          cancellation_without_penalty: 'Бронирование будет полностью возвращено пользователям'
       change_attendee_option_availability:
         notifications:
           available: 'Опция теперь доступна'

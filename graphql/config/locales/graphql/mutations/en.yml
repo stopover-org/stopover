@@ -41,6 +41,10 @@ en:
       cancel_booking:
         notifications:
           success: 'Booking cancelled'
+        terms:
+          cancellation_not_paid: 'Booking will be cancelled without refunds'
+          cancellation_with_penalty: 'Cancellation will result %{penalty} penalty. %{refund} will be refunded'
+          cancellation_without_penalty: 'Booking will be fully refunded'
       change_attendee_option_availability:
         notifications:
           available: 'Attendee Option is available from now'

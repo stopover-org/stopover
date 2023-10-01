@@ -194,7 +194,6 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
                 {t("models.attendeeOption.plural")} (
                 {t("models.attendee.singular")})
               </Typography>
-              ,
               <Table
                 hoverRow={false}
                 headers={attendeeOptionsHeaders}

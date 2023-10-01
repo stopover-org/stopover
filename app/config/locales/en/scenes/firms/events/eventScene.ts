@@ -7,6 +7,10 @@ export default {
             generalInformation: "General Information",
             stripeIntegrations: "Stripe. Int.",
           },
+          schedulesInformation: {
+            chooseScheduleAction: "",
+            chosenScheduleAction: "",
+          },
         },
       },
     },
