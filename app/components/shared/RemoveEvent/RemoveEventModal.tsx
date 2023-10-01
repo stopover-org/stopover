@@ -7,49 +7,49 @@ import {
   ModalDialog,
   Stack,
 } from "@mui/joy";
-import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
-import React from "react";
 import { useTranslation } from "react-i18next";
+import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
+import React from "react";
 import Button from "../../v2/Button";
-import SubmitButton from "../SubmitButton/SubmitButton";
-import { useUnpublishEventForm } from "./useUnpublishEventForm";
-import { UnpublishEventModal_EventFragment$key } from "../../../artifacts/UnpublishEventModal_EventFragment.graphql";
+import SubmitButton from "../SubmitButton";
+import { useRemoveEventForm } from "./useRemoveEventForm";
+import { RemoveEventModal_EventFragment$key } from "../../../artifacts/RemoveEventModal_EventFragment.graphql";
 
-interface PublishEventModalProps {
-  eventFragmentRef: UnpublishEventModal_EventFragment$key;
+interface RescheduleEventModalProps {
   open: boolean;
   onClose: () => void;
+  eventFragmentRef: RemoveEventModal_EventFragment$key;
 }
 
-const UnpuhlishEventModal = ({
-  eventFragmentRef,
+const RescheduleEventModal = ({
   open,
   onClose,
-}: PublishEventModalProps) => {
+  eventFragmentRef,
+}: RescheduleEventModalProps) => {
   const { t } = useTranslation();
   const event = useFragment(
     graphql`
-      fragment UnpublishEventModal_EventFragment on Event {
-        ...useUnpublishEventForm_EventFragment
+      fragment RemoveEventModal_EventFragment on Event {
+        ...useRemoveEventForm_EventFragment
       }
     `,
     eventFragmentRef
   );
-  const form = useUnpublishEventForm(event);
+  const form = useRemoveEventForm(event);
   return (
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">
         <Stack flexDirection="row" alignItems="center" useFlexGap spacing={1}>
           <WarningRoundedIcon color="warning" />
-          {t("forms.publishEvent.modal.header")}
+          {t("forms.removeEvent.modal.header")}
         </Stack>
         <Divider />
         {event && (
           <>
             <DialogContent>
               <Stack>
-                <Box>{t("forms.unpublishEvent.modal.explanation")}</Box>
+                <Box>{t("forms.removeEvent.modal.explanation")}</Box>
               </Stack>
             </DialogContent>
             <DialogActions>
@@ -57,8 +57,9 @@ const UnpuhlishEventModal = ({
                 <SubmitButton
                   size="sm"
                   submitting={form.formState.isSubmitting}
+                  color="danger"
                 >
-                  {t("forms.unpublishEvent.action")}
+                  {t("forms.removeEvent.action")}
                 </SubmitButton>
               </form>
               <Button variant="plain" color="neutral" onClick={() => onClose()}>
@@ -72,4 +73,4 @@ const UnpuhlishEventModal = ({
   );
 };
 
-export default React.memo(UnpuhlishEventModal);
+export default React.memo(RescheduleEventModal);

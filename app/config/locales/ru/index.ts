@@ -19,6 +19,8 @@ const translation = {
     edit: "Редактировать",
     cancel: "Закрыть",
     available: "Доступные",
+    yes: "Да",
+    no: "Нет",
   },
   datepicker: {
     selectDate: "Выберите дату",

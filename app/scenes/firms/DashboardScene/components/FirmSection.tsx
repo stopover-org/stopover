@@ -68,7 +68,7 @@ const FirmSection = ({
           {t(`statuses.${firm.status?.toLowerCase()}`)}
         </Tag>
       </Grid>
-      <Grid md={2} sm={12} sx={{ paddingTop: isMobileView && '10px', paddingBottom: isMobileView && '10px' }}>
+      <Grid md={2} sm={12} sx={{ paddingTop: isMobileView ? '10px' : 0, paddingBottom: isMobileView ? '10px' : 0 }}>
         <Stack direction="row" justifyContent="flex-end">
           <Link href="/my-firm" underline={false} sx={{ marginRight: "10px" }}>
             <Button size="sm" variant="outlined">

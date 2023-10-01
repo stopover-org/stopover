@@ -17,8 +17,10 @@ const translation = {
     noData: "Not available",
     save: "Save",
     edit: "Edit",
-    cancel: "Закрыть",
-    available: "Доступные",
+    cancel: "Close",
+    available: "Available",
+    yes: "Yes",
+    no: "No",
   },
   datepicker: {
     selectDate: "Select Date",

@@ -8,7 +8,6 @@ import Link from "../../components/v1/Link";
 import Input from "../../components/v2/Input";
 import PhoneInput from "../../components/v2/PhoneInput";
 import Typography from "../../components/v2/Typography";
-import Button from "../../components/v2/Button";
 import SubmitButton from "../../components/shared/SubmitButton";
 
 // @ts-ignore
@@ -125,7 +124,6 @@ export const SignIn = () => {
                     {typeField.value === "email" && (
                       <Input
                         {...usernameField}
-                        label="Enter email"
                         label={t('scenes.signInScene.enterEmail')}
                         placeholder={t('scenes.signInScene.enterEmail')}
                       />

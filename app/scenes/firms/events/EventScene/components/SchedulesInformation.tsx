@@ -43,6 +43,7 @@ const SchedulesInformation = ({
                 scheduledFor
                 status
                 event {
+                  title
                   id
                 }
                 bookings {

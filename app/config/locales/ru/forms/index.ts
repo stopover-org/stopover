@@ -12,6 +12,8 @@ import removeAttendee from "./removeAttendee";
 import rescheduleEvent from "./rescheduleEvent";
 import publishEvent from "./publishEvent";
 import unpublishEvent from "./unpublishEvent";
+import removeEvent from "./removeEvent";
+import verifyEvent from "./verifyEvent";
 
 export default merge(
   verifyStripeConnect,
@@ -26,5 +28,7 @@ export default merge(
   removeAttendee,
   rescheduleEvent,
   publishEvent,
-  unpublishEvent
+  unpublishEvent,
+  removeEvent,
+  verifyEvent
 );

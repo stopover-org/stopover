@@ -42,6 +42,7 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
                 scheduledFor
                 status
                 event {
+                  title
                   id
                 }
                 bookings {
@@ -123,7 +124,7 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
 
   return (
     <Grid xs={12} container>
-      <Grid xs={4}>
+      <Grid md={4} sm={12}>
         <Typography level="h4">All Schedules</Typography>
         <Table
           data={schedulesData}
@@ -155,11 +156,11 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
           }}
         />
       </Grid>
-      <Grid xs={8}>
+      <Grid md={8} sm={12}>
         {schedule ? (
           <>
             <Typography level="h4">
-              Bookings for {getHumanDateTime(moment(schedule.scheduledFor))}
+              Bookings for {schedule.event.title} on {getHumanDateTime(moment(schedule.scheduledFor))}
             </Typography>
             <Table
               data={bookingsData}

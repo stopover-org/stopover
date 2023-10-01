@@ -25,7 +25,7 @@ export function useSchedulesHeaders() {
     () => [
       {
         label: t("models.event.singular"),
-        width: 100,
+        width: 300,
         key: "eventId",
       },
       {
@@ -70,8 +70,12 @@ export function useSchedulesColumns(
         ),
         status: <TagColor status={scheduleRow.status} />,
         eventId: (
-          <Link href={`/my-firm/events/${scheduleRow.event?.id}`} primary>
-            {scheduleRow.event?.id}
+          <Link
+            href={`/my-firm/events/${scheduleRow.event?.id}`}
+            primary
+            fontSize="sm"
+          >
+            {scheduleRow.event?.title}
           </Link>
         ),
       })),

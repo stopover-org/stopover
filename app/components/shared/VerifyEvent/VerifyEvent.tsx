@@ -1,8 +1,10 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import { useVerifyEvent } from "./useVerifyEvent";
+import { useTranslation } from "react-i18next";
+import { Box } from "@mui/joy";
 import { VerifyEventInformation_EventFragment$key } from "../../../artifacts/VerifyEventInformation_EventFragment.graphql";
-import SubmitButton from "../SubmitButton";
+import Button from "../../v2/Button";
+import VerifyEventModal from "./VerifyEventModal";
 
 interface VerifyEventProps {
   eventFragmentRef: VerifyEventInformation_EventFragment$key;
@@ -12,23 +14,27 @@ const VerifyEvent = ({ eventFragmentRef }: VerifyEventProps) => {
   const event = useFragment(
     graphql`
       fragment VerifyEventInformation_EventFragment on Event {
-        ...useVerifyEvent_EventFragment
+        ...VerifyEventModal_EventFragment
       }
     `,
     eventFragmentRef
   );
-  const form = useVerifyEvent(event);
+  const [modalOpened, setModalOpened] = React.useState<boolean>(false);
+  const { t } = useTranslation();
 
   return (
-    <form onSubmit={form.handleSubmit()}>
-      <SubmitButton
-        size="sm"
-        submitting={form.formState.isSubmitting}
-        color="neutral"
-      >
-        Verify
-      </SubmitButton>
-    </form>
+    <>
+      <Box>
+        <Button size="sm" onClick={() => setModalOpened(true)}>
+          {t("forms.verifyEvent.action")}
+        </Button>
+      </Box>
+      <VerifyEventModal
+        eventFragmentRef={event}
+        open={modalOpened}
+        onClose={() => setModalOpened(false)}
+      />
+    </>
   );
 };
 

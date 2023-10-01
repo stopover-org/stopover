@@ -7,11 +7,11 @@ import Link from "../../../v2/Link/Link";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import Tag from "../../../v2/Tag/Tag";
 import { dateTimeFormat } from "../../../../lib/utils/dates";
-import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Checkbox from "../../../v2/Checkbox";
 import { EventsTableFirmFragment } from "../../../../artifacts/EventsTableFirmFragment.graphql";
 import { EventsTable_FirmFragment$key } from "../../../../artifacts/EventsTable_FirmFragment.graphql";
+import useEdges from "../../../../lib/hooks/useEdges";
 
 interface EventsTableProps {
   firmFragmentRef: any;
@@ -86,7 +86,7 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
   );
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = React.useState(1);
-  const pagedEvents = usePagedEdges(events, currentPage, 30);
+  const pagedEvents = useEdges(events);
   const data = useMemo(
     () =>
       pagedEvents.map((event) => ({

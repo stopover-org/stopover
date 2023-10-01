@@ -1,8 +1,10 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { useRemoveEventForm } from "./useRemoveEventForm";
+import { Box } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import { RemoveEvent_EventFragment$key } from "../../../artifacts/RemoveEvent_EventFragment.graphql";
-import SubmitButton from "../SubmitButton";
+import Button from "../../v2/Button";
+import RemoveEventModal from "./RemoveEventModal";
 
 interface PublishEventProps {
   eventFragmentRef: RemoveEvent_EventFragment$key;
@@ -12,22 +14,26 @@ const RemoveEvent = ({ eventFragmentRef }: PublishEventProps) => {
   const event = useFragment(
     graphql`
       fragment RemoveEvent_EventFragment on Event {
-        ...useRemoveEventForm_EventFragment
+        ...RemoveEventModal_EventFragment
       }
     `,
     eventFragmentRef
   );
-  const form = useRemoveEventForm(event);
+  const { t } = useTranslation();
+  const [modalOpened, setModalOpened] = React.useState<boolean>(false);
   return (
-    <form onSubmit={form.handleSubmit()}>
-      <SubmitButton
-        size="sm"
-        submitting={form.formState.isSubmitting}
-        color="danger"
-      >
-        Remove
-      </SubmitButton>
-    </form>
+    <>
+      <Box>
+        <Button size="sm" color="danger" onClick={() => setModalOpened(true)}>
+          {t("forms.removeEvent.action")}
+        </Button>
+      </Box>
+      <RemoveEventModal
+        eventFragmentRef={event}
+        open={modalOpened}
+        onClose={() => setModalOpened(false)}
+      />
+    </>
   );
 };
 
