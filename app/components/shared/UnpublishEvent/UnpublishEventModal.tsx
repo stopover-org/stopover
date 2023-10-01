@@ -16,7 +16,7 @@ import SubmitButton from "../SubmitButton/SubmitButton";
 import { useUnpublishEventForm } from "./useUnpublishEventForm";
 import { UnpublishEventModal_EventFragment$key } from "../../../artifacts/UnpublishEventModal_EventFragment.graphql";
 
-interface PublishEventModalProps {
+interface UnpublishEventModalProps {
   eventFragmentRef: UnpublishEventModal_EventFragment$key;
   open: boolean;
   onClose: () => void;
@@ -26,7 +26,7 @@ const UnpuhlishEventModal = ({
   eventFragmentRef,
   open,
   onClose,
-}: PublishEventModalProps) => {
+}: UnpublishEventModalProps) => {
   const { t } = useTranslation();
   const event = useFragment(
     graphql`

@@ -16,17 +16,17 @@ import SubmitButton from "../SubmitButton";
 import { useRemoveEventForm } from "./useRemoveEventForm";
 import { RemoveEventModal_EventFragment$key } from "../../../artifacts/RemoveEventModal_EventFragment.graphql";
 
-interface RescheduleEventModalProps {
+interface RemoveEventModalProps {
   open: boolean;
   onClose: () => void;
   eventFragmentRef: RemoveEventModal_EventFragment$key;
 }
 
-const RescheduleEventModal = ({
+const RemoveEventModal = ({
   open,
   onClose,
   eventFragmentRef,
-}: RescheduleEventModalProps) => {
+}: RemoveEventModalProps) => {
   const { t } = useTranslation();
   const event = useFragment(
     graphql`
@@ -73,4 +73,4 @@ const RescheduleEventModal = ({
   );
 };
 
-export default React.memo(RescheduleEventModal);
+export default React.memo(RemoveEventModal);
