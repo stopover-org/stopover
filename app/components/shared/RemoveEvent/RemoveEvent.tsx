@@ -22,7 +22,6 @@ const RemoveEvent = ({ eventFragmentRef }: PublishEventProps) => {
     <form onSubmit={form.handleSubmit()}>
       <SubmitButton
         size="sm"
-        sx={{ marginRight: "10px" }}
         submitting={form.formState.isSubmitting}
         color="danger"
       >

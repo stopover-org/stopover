@@ -1,4 +1,4 @@
-import { Grid, Tab, TabList, Tabs, Box, Stack, Divider, Chip } from "@mui/joy";
+import { Grid, Tab, TabList, Tabs, Box, Stack, Chip } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { EventScene_FirmEventFragment$key } from "../../../../artifacts/EventScene_FirmEventFragment.graphql";
@@ -107,11 +107,13 @@ const EventScene = ({
         <Stack
           direction="row"
           justifyContent={{ lg: "flex-end", sm: "flex-start" }}
+          flexWrap={'wrap'}
+          useFlexGap
+          spacing={1}
         >
           <Link
             href={`/my-firm/events/${event.id}/edit`}
             underline={false}
-            sx={{ marginRight: "10px" }}
           >
             <Button size="sm">{t('general.edit')}</Button>
           </Link>
@@ -149,7 +151,7 @@ const EventScene = ({
           defaultValue={0}
           sx={{ width: "100%", paddingTop: "10px" }}
           onChange={(_, value) => setTab(value as number)}
-           orientation='vertical'
+          orientation='vertical'
         >
           <TabList variant="plain" sx={{minWidth: '175px'}}>
             <Tab variant={tab === 0 ? "outlined" : "plain"}>

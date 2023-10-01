@@ -1,5 +1,5 @@
 import React from "react";
-import { AspectRatio, Box, Card, CardOverflow, Grid, Stack, Tooltip } from "@mui/joy";
+import { AspectRatio, Box, Card, CardOverflow, Grid, Stack, Tooltip, useTheme } from "@mui/joy";
 import { graphql, useFragment, useMutation } from "react-relay";
 import moment from "moment";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -8,6 +8,7 @@ import Link from "../../../../../components/v2/Link/Link";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import { TripCard_TripFragment$key } from "../../../../../artifacts/TripCard_TripFragment.graphql";
 import { useTranslation } from "react-i18next";
+import { useMediaQuery } from "@mui/material";
 
 interface TripCardProps {
   tripFragmentRef: TripCard_TripFragment$key;
@@ -47,11 +48,18 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
   const onCancelTrip = () =>
     cancelTrip({ variables: { input: { tripId: trip.id } } });
   const { t } = useTranslation()
+  const theme = useTheme()
+  const isMobileView = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
-    <Grid width="420px" padding="10px">
-      <Card variant="outlined" sx={{ width: "400px" }} orientation="horizontal">
-        <CardOverflow>
+    <Grid padding="10px">
+      <Card variant="outlined" orientation="horizontal"
+            sx={{
+              width: isMobileView ? 'unset' : '420px',
+              minHeight: "130px",
+              maxHeight: "130px"
+            }}>
+        {!isMobileView && <CardOverflow>
           <AspectRatio
             minHeight="130px"
             maxHeight="130px"
@@ -61,7 +69,7 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
           >
             <img src={trip.images[0]} loading="lazy" alt="" />
           </AspectRatio>
-        </CardOverflow>
+        </CardOverflow> }
         <Stack paddingLeft="10px" width="100%" sx={{ position: "relative" }}>
           {trip.canCancel && (
             <Box>
@@ -84,7 +92,6 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
                 fontSize: "md",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
-                width: "200px",
                 display: "inline-block",
                 overflow: "hidden",
               }}

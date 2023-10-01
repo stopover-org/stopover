@@ -20,11 +20,7 @@ const UnpublishEvent = ({ eventFragmentRef }: PublishEventProps) => {
   const form = useUnpublishEventForm(event);
   return (
     <form onSubmit={form.handleSubmit()}>
-      <SubmitButton
-        size="sm"
-        sx={{ marginRight: "10px" }}
-        submitting={form.formState.isSubmitting}
-      >
+      <SubmitButton size="sm" submitting={form.formState.isSubmitting}>
         Unpublish
       </SubmitButton>
     </form>

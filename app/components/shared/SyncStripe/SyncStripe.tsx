@@ -22,7 +22,6 @@ const SyncStripe = ({ eventFragmentRef }: SyncStripeProps) => {
     <form onSubmit={form.handleSubmit()}>
       <SubmitButton
         size="sm"
-        sx={{ marginRight: "10px" }}
         color="neutral"
         submitting={form.formState.isSubmitting}
       >

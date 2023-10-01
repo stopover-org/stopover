@@ -20,11 +20,7 @@ const PublishEvent = ({ eventFragmentRef }: PublishEventProps) => {
   const form = usePublishEventForm(event);
   return (
     <form onSubmit={form.handleSubmit()}>
-      <SubmitButton
-        size="sm"
-        sx={{ marginRight: "10px" }}
-        submitting={form.formState.isSubmitting}
-      >
+      <SubmitButton size="sm" submitting={form.formState.isSubmitting}>
         Publish
       </SubmitButton>
     </form>

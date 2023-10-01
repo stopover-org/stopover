@@ -20,11 +20,7 @@ const RescheduleEvent = ({ eventFragmentRef }: PublishEventProps) => {
   const form = useRescheduleEventForm(event);
   return (
     <form onSubmit={form.handleSubmit()}>
-      <SubmitButton
-        size="sm"
-        sx={{ marginRight: "10px" }}
-        submitting={form.formState.isSubmitting}
-      >
+      <SubmitButton size="sm" submitting={form.formState.isSubmitting}>
         Reschedule
       </SubmitButton>
     </form>
