@@ -39,7 +39,7 @@ const PublishEventModal = ({
     `,
     eventFragmentRef
   );
-  const form = usePublishEventForm(event);
+  const form = usePublishEventForm(event, onClose);
   return (
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">

@@ -36,7 +36,7 @@ const RemoveEventModal = ({
     `,
     eventFragmentRef
   );
-  const form = useRemoveEventForm(event);
+  const form = useRemoveEventForm(event, onClose);
   return (
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">

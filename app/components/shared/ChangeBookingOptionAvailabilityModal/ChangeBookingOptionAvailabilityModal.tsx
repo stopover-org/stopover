@@ -112,7 +112,9 @@ const ChangeBookingOptionAvailabilityModal = ({
                           }
                         )}
                   </Box>
-                  <Box>If it was paid, then this option will be refunded</Box>
+                  <Box>
+                    {t("forms.changeOptionAvailability.modal.explanation")}
+                  </Box>
                 </>
               )}
             </Stack>

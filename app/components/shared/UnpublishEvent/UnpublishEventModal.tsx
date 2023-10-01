@@ -36,7 +36,7 @@ const UnpuhlishEventModal = ({
     `,
     eventFragmentRef
   );
-  const form = useUnpublishEventForm(event);
+  const form = useUnpublishEventForm(event, onClose);
   return (
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">

@@ -24,7 +24,7 @@ const VerifyEvent = ({ eventFragmentRef, open, onClose }: VerifyEventProps) => {
     `,
     eventFragmentRef
   );
-  const form = useVerifyEvent(event);
+  const form = useVerifyEvent(event, onClose);
   return (
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">

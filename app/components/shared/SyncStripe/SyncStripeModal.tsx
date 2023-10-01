@@ -28,7 +28,7 @@ const SyncStripeModal = ({
     `,
     eventFragmentRef
   );
-  const form = useSyncStripeForm(event);
+  const form = useSyncStripeForm(event, onClose);
   return (
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">

@@ -39,7 +39,7 @@ const RescheduleEventModal = ({
     `,
     eventFragmentRef
   );
-  const form = useRescheduleEventForm(event);
+  const form = useRescheduleEventForm(event, onClose);
   return (
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">
