@@ -134,7 +134,7 @@ const EventScene = ({
           {event.title}
         </Typography>
         <Tag color={tagColor} link={false}>
-          {event.status}
+          {t(`statuses.${event.status}`)}
         </Tag>
       </Grid>
       <Grid lg={4} sm={12}>
@@ -171,22 +171,22 @@ const EventScene = ({
         >
           <TabList variant="plain" sx={{ minWidth: "175px" }}>
             <Tab variant={tab === 0 ? "outlined" : "plain"}>
-              General Information
+              {t('scenes.firms.events.eventScene.tabs.generalInformation')}
             </Tab>
             <Tab variant={tab === 1 ? "outlined" : "plain"}>
-              Event Options
+              {t('models.eventOption.plural')}
               <Chip size="sm" variant="soft">
                 {event.eventOptions.length}
               </Chip>
             </Tab>
             <Tab variant={tab === 2 ? "outlined" : "plain"}>
-              Schedules
+              {t('models.schedule.plural')}
               <Chip size="sm" variant="soft">
                 {event.schedules.nodes.length}
               </Chip>
             </Tab>
             <Tab variant={tab === 3 ? "outlined" : "plain"}>
-              Bookings
+              {t('models.booking.plural')}
               <Chip size="sm" variant="soft">
                 {event.bookings.nodes.length}
               </Chip>
@@ -196,7 +196,7 @@ const EventScene = ({
                 variant={tab === 4 ? "outlined" : "plain"}
                 sx={{ display: "block" }}
               >
-                Str. Int.
+              {t('scenes.firms.events.eventScene.tabs.stripeIntegrations')}
                 <Chip size="sm" variant="soft">
                   {event.stripeIntegrations.nodes.length}
                 </Chip>

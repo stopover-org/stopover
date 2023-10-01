@@ -39,6 +39,21 @@ export default {
         title: "Title",
         endDate: "Event will be ended",
       },
+      enums: {
+        eventType: {
+          excursion: "Excursion",
+          tour: "Tour",
+          in_town: "City event",
+          out_of_town: "Country event",
+          active_holiday: "Weekend event",
+          music: "Music event",
+          workshop: "Workshop",
+          business_breakfast: "Business breakfast/lunch",
+          meetup: "Meetup",
+          sport_activity: "Sport event",
+          gastronomic: "Gastronomic event",
+        },
+      },
     },
   },
 };

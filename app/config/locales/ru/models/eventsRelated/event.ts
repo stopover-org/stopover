@@ -35,6 +35,21 @@ export default {
         title: "Название",
         endDate: "Дата окончания проведения",
       },
+      enums: {
+        eventType: {
+          excursion: "Экскурсия",
+          tour: "Тур",
+          in_town: "Городское мероприятие",
+          out_of_town: "Загородное мероприятие",
+          active_holiday: "Мероприятие выходного дня",
+          music: "Музыкальное мероприятие",
+          workshop: "Воркшоп",
+          business_breakfast: "Бизнес завтрка/ланч",
+          meetup: "Митап",
+          sport_activity: "Спортивное мероприятие",
+          gastronomic: "Гастрономическое мероприятие",
+        },
+      },
     },
   },
 };

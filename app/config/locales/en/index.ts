@@ -67,6 +67,8 @@ const translation = {
     city: "City",
     street: "Street",
     houseNumber: "House number",
+    latitude: "Latitude",
+    longitude: "Longitude",
   },
 };
 

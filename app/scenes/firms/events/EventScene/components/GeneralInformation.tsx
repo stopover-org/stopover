@@ -1,5 +1,13 @@
 import React from "react";
-import { Card, Divider, Grid, Sheet, Stack, TabPanel, Typography } from "@mui/joy";
+import {
+  Card,
+  Divider,
+  Grid,
+  Sheet,
+  Stack,
+  TabPanel,
+  Typography,
+} from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import moment from "moment/moment";
 import { GeneralInformation_EventFragment$key } from "../../../../../artifacts/GeneralInformation_EventFragment.graphql";
@@ -10,6 +18,7 @@ import Checkbox from "../../../../../components/v2/Checkbox";
 import ImagesPreview from "../../../../../components/shared/ImagesPreview";
 import CancellationsSection from "./CancellationsSection";
 import Section from "../../../../../components/v2/Section";
+import { useTranslation } from "react-i18next";
 
 interface GeneralInformationProps {
   eventFragmentRef: GeneralInformation_EventFragment$key;
@@ -71,50 +80,56 @@ const GeneralInformation = ({
     eventFragmentRef
   );
 
+  const { t } = useTranslation()
+
   return (
-    <TabPanel value={index} size="sm" sx={{ paddingTop: "20px", minWidth: '600px' }}>
+    <TabPanel
+      value={index}
+      size="sm"
+      sx={{ paddingTop: "20px", minWidth: "600px" }}
+    >
       <Sheet>
         <Section>
           <Grid container xs={12} spacing={2}>
-            <Grid xs={2} >
-              <Typography level='title-lg'>
-                Title
-              </Typography>
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.title')}</Typography>
             </Grid>
-            <Grid xs={10} >{event.title}</Grid>
+            <Grid xs={10}>{event.title}</Grid>
 
-            <Grid xs={12} >
+            <Grid xs={12}>
               <Stack direction="row">
                 <ImagesPreview images={event.images as string[]} readonly />
               </Stack>
             </Grid>
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>Description
-              </Typography></Grid>
-            <Grid xs={10} >{event.description}</Grid>
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.description')}</Typography>
+            </Grid>
+            <Grid xs={10}>{event.description}</Grid>
 
             <Grid xs={12} p={5}>
               <Divider />
             </Grid>
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>Event Type
-              </Typography></Grid>
-            <Grid xs={10} >{event.eventType}</Grid>
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.eventType')}</Typography>
+            </Grid>
+            <Grid xs={10}>{t(`models.event.enums.eventType.${event.eventType}`)}</Grid>
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>You get</Typography></Grid>
-            <Grid xs={10} >
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.organizerPricePerUom')}</Typography>
+            </Grid>
+            <Grid xs={10}>
               {getCurrencyFormat(
                 event.organizerPricePerUom?.cents,
                 event.organizerPricePerUom?.currency.name
               )}
             </Grid>
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>They pay</Typography></Grid>
-            <Grid xs={10} >
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.attendeePricePerUom')}</Typography>
+            </Grid>
+            <Grid xs={10}>
               {getCurrencyFormat(
                 event.attendeePricePerUom?.cents,
                 event.attendeePricePerUom?.currency.name
@@ -122,22 +137,23 @@ const GeneralInformation = ({
             </Grid>
 
             {event.firm.paymentTypes.includes("cash") && (
-              <>
-                <Grid xs={2}>
-                  <Typography level='title-lg'>Deposit (cash only)</Typography>
-                </Grid>
-                <Grid xs={10} >
-                  {getCurrencyFormat(
-                    event.depositAmount?.cents,
-                    event.depositAmount?.currency.name
-                  )}
-                </Grid>
-              </>
+              <Grid xs={2}>
+                <Typography level="title-lg">{t('models.event.attributes.depositAmount')}</Typography>
+              </Grid>
+            )}
+            {event.firm.paymentTypes.includes("cash") && (
+              <Grid xs={10}>
+                {getCurrencyFormat(
+                  event.depositAmount?.cents,
+                  event.depositAmount?.currency.name
+                )}
+              </Grid>
             )}
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>Recurring Dates</Typography></Grid>
-            <Grid xs={10} >
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.recurringDaysWithTime')}</Typography>
+            </Grid>
+            <Grid xs={10}>
               {event.recurringDaysWithTime.map((date, index) => (
                 <Tag
                   link={false}
@@ -149,9 +165,10 @@ const GeneralInformation = ({
               ))}
             </Grid>
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>Single Dates</Typography></Grid>
-            <Grid xs={10} >
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.singleDaysWithTime')}</Typography>
+            </Grid>
+            <Grid xs={10}>
               {event.singleDaysWithTime.map((date) => (
                 <Tag
                   link={false}
@@ -163,31 +180,34 @@ const GeneralInformation = ({
               ))}
             </Grid>
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>Duration Time</Typography></Grid>
-            <Grid xs={10} >{event.durationTime}</Grid>
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.durationTime')}</Typography>
+            </Grid>
+            <Grid xs={10}>{event.durationTime}</Grid>
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>Address</Typography></Grid>
-            <Grid xs={10} >
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('address.title')}</Typography>
+            </Grid>
+            <Grid xs={10}>
               {event.fullAddress}
               <br />
-              Country: {event.country}
+              {t('address.country')}: {event.country}
               <br />
-              Region: {event.region}
+              {t('address.region')}: {event.region}
               <br />
-              City: {event.city}
+              {t('address.city')}: {event.city}
               <br />
-              Street: {event.street}
+              {t('address.street')}: {event.street}
               <br />
-              House Number: {event.houseNumber}
+              {t('address.houseNumber')}: {event.houseNumber}
               <br />
-              Lat/Lng: {event.latitude || "N/A"} / {event.longitude || "N/A"}
+              {t('address.latitude')}/{t('address.longitude')}: {event.latitude || t('general.noData')} / {event.longitude || t('general.noData')}
             </Grid>
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>Require Check In</Typography></Grid>
-            <Grid xs={10} >
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.requiresCheckIn')}</Typography>
+            </Grid>
+            <Grid xs={10}>
               <Checkbox
                 checked={Boolean(event.requiresCheckIn)}
                 color="primary"
@@ -196,9 +216,10 @@ const GeneralInformation = ({
               />
             </Grid>
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>Require Passport</Typography></Grid>
-            <Grid xs={10} >
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.requiresPassport')}</Typography>
+            </Grid>
+            <Grid xs={10}>
               <Checkbox
                 checked={Boolean(event.requiresPassport)}
                 color="primary"
@@ -207,9 +228,10 @@ const GeneralInformation = ({
               />
             </Grid>
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>Require Contract signing</Typography></Grid>
-            <Grid xs={10} >
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.requiresContract')}</Typography>
+            </Grid>
+            <Grid xs={10}>
               <Checkbox
                 checked={Boolean(event.requiresContract)}
                 color="primary"
@@ -218,16 +240,17 @@ const GeneralInformation = ({
               />
             </Grid>
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>Max / Min Attendees</Typography></Grid>
-            <Grid xs={10} >
-              {event.maxAttendees || "N/A"} / {event.minAttendees || "N/A"}
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.minAttendees')} - {t('models.event.attributes.maxAttendees')}</Typography>
+            </Grid>
+            <Grid xs={10}>
+              {event.minAttendees || t('general.noData')} - {event.maxAttendees || t('general.noData')}
             </Grid>
 
-            <Grid xs={2} >
-              <Typography level='title-lg'>End Date</Typography>
-              </Grid>
-            <Grid xs={10} >
+            <Grid xs={2}>
+              <Typography level="title-lg">{t('models.event.attributes.endDate')}</Typography>
+            </Grid>
+            <Grid xs={10}>
               {event.endDate ? moment(event.endDate).format(dateFormat) : "N/A"}
             </Grid>
           </Grid>

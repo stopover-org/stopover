@@ -10,6 +10,13 @@ export default {
         description: "Description",
         status: "Status",
       },
+      terms: {
+        withPenalty:
+          "Cancellation up to {{deadline}} hours prior to event will resul {{penalty}} penalty",
+        withoutPenalty:
+          "Cancellation prior to {{deadline}} hours prior to event will result {{penalty}} penalty",
+        withoutCancellationTerms: "Booking cancellation is free",
+      },
     },
   },
 };
