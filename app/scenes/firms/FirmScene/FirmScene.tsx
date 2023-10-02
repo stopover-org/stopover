@@ -203,7 +203,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
               {firm.status !== "removed" && (
                 <Link href="/my-firm/edit" underline={false}>
                   <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
-                    Edit
+                    {t('general.edit')}
                   </Button>
                 </Link>
               )}
