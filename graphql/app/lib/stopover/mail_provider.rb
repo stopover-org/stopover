@@ -8,7 +8,7 @@ module Stopover
     DEFAULT_SENDER = 'mikhail@dorokhovich.ru'
 
     def self.prepare_content(file:, locals: {})
-      ApplicationController.render(file, locals: locals)
+      ApplicationController.render(file, locals: locals, layout: 'layouts/mailer')
     end
 
     def self.deliver(from:, to:, subject:, content:, type: 'text/html')
