@@ -173,7 +173,7 @@ const SchedulesInformation = ({
             </>
           ) : (
             <Typography level="h4">
-              Choose schedule to view Bookings for this schedule
+              {t('scenes.firms.events.eventScene.schedulesInformation.chooseScheduleAction')}
             </Typography>
           )}
         </Grid>

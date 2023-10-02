@@ -1,6 +1,7 @@
 import { Grid, Stack } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import Fieldset from "../../v2/Fieldset/Fieldset";
 import Button from "../../v2/Button/Button";
 import useFormContext from "../../../lib/hooks/useFormContext";
@@ -61,6 +62,7 @@ const EditEventForm = ({
     ],
     []
   );
+  const { t } = useTranslation();
 
   return (
     <Grid container spacing={2} md={10} sm={12}>
@@ -73,17 +75,17 @@ const EditEventForm = ({
           {currentStep === steps.length - 1 ? (
             <Stack direction="row" justifyContent="space-between">
               <Button onClick={onPrevStep} variant="outlined" type="button">
-                Previous
+                {t("general.previous")}
               </Button>
               <SubmitButton submitting={form.formState.isSubmitting}>
-                Submit
+                {t("general.save")}
               </SubmitButton>
             </Stack>
           ) : (
             <Stack direction="row" justifyContent="space-between">
               {currentStep !== 0 && (
                 <Button onClick={onPrevStep} variant="outlined" type="button">
-                  Previous
+                  {t("general.previous")}
                 </Button>
               )}
               <SubmitButton
@@ -100,7 +102,7 @@ const EditEventForm = ({
                 }}
                 submitting={false}
               >
-                Next
+                {t("general.next")}
               </SubmitButton>
             </Stack>
           )}

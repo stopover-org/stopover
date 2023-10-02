@@ -9,7 +9,7 @@ export default {
           },
           schedulesInformation: {
             chooseScheduleAction:
-              "Выборите дату для просмотра доступных бронирований",
+              "Выбeрите дату для просмотра доступных бронирований",
             chosenScheduleAction: "Доступные бронирования на дату {{date}}",
           },
         },

@@ -16,6 +16,7 @@ import {
 } from "../../../../components/shared/tables/columns/schedules";
 import useEdges from "../../../../lib/hooks/useEdges";
 import { SchedulesSceneFirmFragment } from "../../../../artifacts/SchedulesSceneFirmFragment.graphql";
+import { useTranslation } from "react-i18next";
 
 interface SchedulesSceneProps {
   firmFragmentRef: SchedulesScene_FirmFragment$key;
@@ -121,11 +122,12 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
     (schedule ? schedule.bookings : []) as any[]
   );
   const bookingsHeaders = useBookingsHeaders();
+  const { t } = useTranslation()
 
   return (
     <Grid xs={12} container>
       <Grid md={4} sm={12}>
-        <Typography level="h4">All Schedules</Typography>
+        <Typography level="h4">{t('models.schedule.plural')}</Typography>
         <Table
           data={schedulesData}
           headers={schedulesHeaders}
@@ -160,7 +162,7 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
         {schedule ? (
           <>
             <Typography level="h4">
-              Bookings for {schedule.event.title} on {getHumanDateTime(moment(schedule.scheduledFor))}
+              {t('scenes.firms.events.eventScene.schedulesInformation.chosenScheduleAction', { date: getHumanDateTime(moment(schedule.scheduledFor)) })} {schedule.event.title}
             </Typography>
             <Table
               data={bookingsData}
@@ -170,7 +172,7 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
           </>
         ) : (
           <Typography level="h4">
-            Choose schedule to view Bookings for this schedule
+              {t('scenes.firms.events.eventScene.schedulesInformation.chooseScheduleAction')}
           </Typography>
         )}
       </Grid>

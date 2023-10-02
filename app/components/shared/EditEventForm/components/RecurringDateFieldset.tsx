@@ -9,6 +9,7 @@ import {
 } from "@mui/joy";
 import React from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { useTranslation } from "react-i18next";
 import Fieldset from "../../../v2/Fieldset/Fieldset";
 import Typography from "../../../v2/Typography/Typography";
 import Select from "../../../v2/Select/Select";
@@ -73,6 +74,7 @@ const RecurringDateFieldset = () => {
     },
     [recurringDatesField.value, recurringDatesField.onChange]
   );
+  const { t } = useTranslation();
 
   return (
     <>
@@ -80,39 +82,39 @@ const RecurringDateFieldset = () => {
         <Grid xs={12} container>
           <Grid xs={6}>
             <Typography level="title-lg">
-              Event will take (duration time)
+              {t("models.event.attributes.durationTime")}
             </Typography>
           </Grid>
         </Grid>
         <Grid xs={12} container>
           <Grid xs={2}>
             <Select
-              label="Hours"
+              label={t("general.hours")}
               onChange={(value) => {
-                onDurationTimeChange(value as string, "h");
+                onDurationTimeChange(value as string, t("general.hourShort"));
               }}
               value={parseInt(durationTimeField.value.split(" ")[0], 10)}
               error={durationTimeField.error}
             >
               {hours.map((hour) => (
                 <Option key={hour} value={hour}>
-                  {hour.toString()} hours
+                  {hour.toString()} {t("general.hourShort")}
                 </Option>
               ))}
             </Select>
           </Grid>
           <Grid xs={2}>
             <Select
-              label="Minutes"
+              label={t("general.minutes")}
               onChange={(value) => {
-                onDurationTimeChange(value as string, "m");
+                onDurationTimeChange(value as string, t("general.minuteShort"));
               }}
               value={parseInt(durationTimeField.value.split(" ")[1], 10)}
               error={durationTimeField.error}
             >
               {minutes.map((minute) => (
                 <Option key={minute} value={minute}>
-                  {minute.toString()} minutes
+                  {minute.toString()} {t("general.minuteShort")}
                 </Option>
               ))}
             </Select>
@@ -123,7 +125,7 @@ const RecurringDateFieldset = () => {
       <Fieldset>
         <Grid xs={12} container>
           <Button size="sm" onClick={addHandler}>
-            Add new recurring date
+            {t("forms.editEvent.addNewRecurringDate")}
           </Button>
         </Grid>
 
@@ -132,7 +134,7 @@ const RecurringDateFieldset = () => {
             <Grid xs={12} container key={index}>
               <Grid xs={4}>
                 <FormControl>
-                  <FormLabel>Recurring event starts at</FormLabel>
+                  <FormLabel>{t("forms.editEvent.recurringStartAt")}</FormLabel>
                   <Stack
                     direction="row"
                     alignItems="flex-start"
@@ -157,7 +159,7 @@ const RecurringDateFieldset = () => {
                           onDateChange<string>(d as string, index, "day");
                         }}
                       >
-                        {d}
+                        {t(`weekdays.${d.toLowerCase()}`)}
                       </Typography>
                     ))}
                   </Stack>
@@ -165,14 +167,14 @@ const RecurringDateFieldset = () => {
                 {!!form.formState.errors?.recurringDates?.[index]?.day && (
                   <FormHelperText>
                     <Typography color="danger" fontSize="sm">
-                      Required
+                      {t("general.required")}
                     </Typography>
                   </FormHelperText>
                 )}
               </Grid>
               <Grid xs={2}>
                 <Select
-                  label="Time (hour)"
+                  label={t("general.hours")}
                   onChange={(value) => {
                     onDateChange<number>(value as number, index, "hour");
                   }}
@@ -181,7 +183,7 @@ const RecurringDateFieldset = () => {
                 >
                   {hours.map((h) => (
                     <Option key={h} value={h}>
-                      {h.toString().padStart(2, "0")} h
+                      {h.toString().padStart(2, "0")} {t("general.hourShort")}
                     </Option>
                   ))}
                 </Select>
@@ -198,7 +200,7 @@ const RecurringDateFieldset = () => {
               </Grid>
               <Grid xs={2}>
                 <Select
-                  label="Time (minute)"
+                  label={t("general.minutes")}
                   onChange={(value) => {
                     onDateChange<number>(value as number, index, "minute");
                   }}
@@ -207,7 +209,7 @@ const RecurringDateFieldset = () => {
                 >
                   {minutes.map((m) => (
                     <Option key={m} value={m}>
-                      {m.toString().padStart(2, "0")} m
+                      {m.toString().padStart(2, "0")} {t("general.minuteShort")}
                     </Option>
                   ))}
                 </Select>

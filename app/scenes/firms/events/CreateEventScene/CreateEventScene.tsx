@@ -8,6 +8,7 @@ import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
 import { useSteps } from "../../../../lib/hooks/useSteps";
 import EditEventForm from "../../../../components/shared/EditEventForm";
 import { CreateEventScene_FirmFragment$key } from "../../../../artifacts/CreateEventScene_FirmFragment.graphql";
+import { useTranslation } from "react-i18next";
 
 interface CreateEventSceneProps {
   firmFragmentRef: CreateEventScene_FirmFragment$key;
@@ -23,17 +24,20 @@ const CreateEventScene = ({ firmFragmentRef }: CreateEventSceneProps) => {
     firmFragmentRef
   );
   const form = useCreateEventForm();
+
+  const { t } = useTranslation()
+
   const { steps, currentStep, setNextStep, setPreviousStep } = useSteps([
-    "Event Data",
-    "Dates",
-    "Event Options",
-    "Payment Settings",
+    t('forms.editEvent.steps.eventData'),
+    t('forms.editEvent.steps.dates'),
+    t('forms.editEvent.steps.eventOptions'),
+    t('forms.editEvent.steps.paymentSettings'),
   ]);
 
   return (
     <>
       <Breadcrumbs
-        items={[{ title: "My Firm", href: "/my-firm" }, "New Event"]}
+        items={[{ title: t('layout.header.myFirm'), href: "/my-firm" }, t('forms.editEvent.newEvent')]}
       />
       <Grid xs={12} container>
         <Grid xs={4}>

@@ -8,8 +8,8 @@ export default {
             stripeIntegrations: "Stripe. Int.",
           },
           schedulesInformation: {
-            chooseScheduleAction: "",
-            chosenScheduleAction: "",
+            chooseScheduleAction: "Select date for vieweing bookings",
+            chosenScheduleAction: "Available booking on {{date}}",
           },
         },
       },

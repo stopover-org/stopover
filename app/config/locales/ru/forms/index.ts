@@ -16,6 +16,7 @@ import removeEvent from "./removeEvent";
 import verifyEvent from "./verifyEvent";
 import syncStripe from "./syncStripe";
 import removeFirm from "./removeFirm";
+import editEvent from "./editEvent";
 
 export default merge(
   verifyStripeConnect,
@@ -34,5 +35,6 @@ export default merge(
   removeEvent,
   verifyEvent,
   syncStripe,
-  removeFirm
+  removeFirm,
+  editEvent
 );
