@@ -31,6 +31,7 @@ const Trip = ({
 }: RelayProps<Props, Id_TripsQuery>) => {
   const data = usePreloadedQuery<Id_TripsQuery>(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
+
   return (
     <Layout currentUserFragment={data.currentUser!}>
       <TripScene tripFragmentRef={data.currentUser?.account?.trip!} />

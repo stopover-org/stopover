@@ -6,9 +6,15 @@ interface ImagesPreviewProps {
   images: string[];
   readonly?: boolean;
   onChange?: (images: string[]) => void;
+  width?: string | number;
 }
 
-const ImagesPreview = ({ images, readonly, onChange }: ImagesPreviewProps) => (
+const ImagesPreview = ({
+  images,
+  width = 300,
+  readonly,
+  onChange,
+}: ImagesPreviewProps) => (
   <>
     {images.map((image, index) => (
       <AspectRatio
@@ -16,7 +22,7 @@ const ImagesPreview = ({ images, readonly, onChange }: ImagesPreviewProps) => (
         variant="outlined"
         ratio="4/3"
         sx={{
-          width: 300,
+          width: { width },
           bgcolor: "background.level2",
           borderRadius: "md",
           position: "relative",
@@ -37,7 +43,7 @@ const ImagesPreview = ({ images, readonly, onChange }: ImagesPreviewProps) => (
               backgroundColor: "white",
               width: "30px",
               height: "30px",
-              padding: "5px",
+              padding: "3px",
               cursor: "pointer",
             }}
             onClick={() => {

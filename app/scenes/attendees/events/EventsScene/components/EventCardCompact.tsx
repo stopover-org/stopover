@@ -4,6 +4,7 @@ import { graphql, useFragment, useMutation } from "react-relay";
 import moment, { Moment } from "moment";
 import { useRouter } from "next/router";
 import { stringify } from "qs";
+import { useTranslation } from "react-i18next";
 import Typography from "../../../../../components/v2/Typography";
 import Rating from "../../../../../components/v2/Rating/Rating";
 import Link from "../../../../../components/v2/Link";
@@ -21,6 +22,7 @@ interface Props {
 
 const EventCardCompact = ({ eventFragmentRef }: Props) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const event = useFragment(
     graphql`
       fragment EventCardCompacts_EventFragment on Event {
@@ -165,7 +167,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
         </Box>
         <Rating
           rating={event.averageRating}
-          label={`(${event.averageRating || 0} of 5)`}
+          label={t('event.ratingOf', {val: event.averageRating | 0, max: 5})}
         />
         <Stack
           flexDirection="row"
@@ -190,12 +192,12 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
               size="sm"
               onClick={() => bookEvent(event.id, date.toDate())}
             >
-              Book
+              {t('event.book')}
             </SubmitButton>
           )}
           {booking && (
             <Link href={`/trips/${booking.trip.id}`} underline={false}>
-              <Button size="sm">Trip</Button>
+              <Button size="sm">{t('models.trip.singular')}</Button>
             </Link>
           )}
         </Stack>

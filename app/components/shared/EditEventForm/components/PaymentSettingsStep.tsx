@@ -1,6 +1,7 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { FormLabel, Grid } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import { PaymentSettingsStep_FirmFragment$key } from "../../../../artifacts/PaymentSettingsStep_FirmFragment.graphql";
 import Fieldset from "../../../v2/Fieldset";
 import Input from "../../../v2/Input/Input";
@@ -29,17 +30,20 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
   );
   const depositAmountField = form.useFormField<number>("depositAmountCents");
   const requiresDepositField = form.useFormField("requiresDeposit");
+  const { t } = useTranslation();
   return (
     <>
       <Fieldset>
         <Grid xs={12}>
-          <Typography level="title-lg">Price</Typography>
+          <Typography level="title-lg">
+            {t("forms.editEvent.priceRequirements")}
+          </Typography>
         </Grid>
         <Grid lg={3} md={12} sm={12}>
           <Input
-            placeholder="Amount"
+            placeholder={t("models.event.attributes.organizerPricePerUom")}
             startDecorator="$"
-            label="You get"
+            label={t("models.event.attributes.organizerPricePerUom")}
             sx={{ maxWidth: 300 }}
             type="number"
             {...organizerPriceField}
@@ -48,13 +52,13 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
         </Grid>
         <Grid lg={3} md={12} sm={12}>
           <Input
-            placeholder="Amount"
+            placeholder={t("models.event.attributes.attendeePricePerUom")}
             startDecorator="$"
-            label="They Pay"
+            label={t("models.event.attributes.attendeePricePerUom")}
             sx={{ maxWidth: 300 }}
             type="number"
             value={(organizerPriceField.value * (1 + firm.margin)).toString()}
-            hint="Computed Value"
+            hint={t("forms.editEvent.computedValue")}
             readOnly
           />
         </Grid>
@@ -64,7 +68,7 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
             <>
               <Grid xs={12}>
                 <Checkbox
-                  label="Requires Deposit"
+                  label={t("models.event.attributes.depositAmount")}
                   checked={Boolean(requiresDepositField.value)}
                   onChange={() =>
                     requiresDepositField.onChange(!requiresDepositField.value)
@@ -72,17 +76,17 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
                   sx={{ paddingTop: "5px", paddingBottom: "5px" }}
                 />
                 <FormLabel>
-                  Deposit will be used only if attendee will pay by cash
+                  {t("forms.editEvent.depositExplanation")}
                   <br />
-                  Deposit will be paid via Stripe
+                  {t("forms.editEvent.depositPaymentTypeExplanation")}
                 </FormLabel>
               </Grid>
               {requiresDepositField.value && (
                 <Grid xs={12}>
                   <Input
-                    placeholder="Amount"
+                    placeholder={t("models.event.attributes.depositAmount")}
                     startDecorator="$"
-                    label="Requied Deposit"
+                    label={t("models.event.attributes.depositAmount")}
                     sx={{ width: 300 }}
                     type="number"
                     {...depositAmountField}

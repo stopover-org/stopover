@@ -156,7 +156,7 @@ RSpec.describe Event, type: :model do
       it 'for the next single day' do
         expect(event.schedules.count).to eq(0)
 
-        event.update_columns(single_days_with_time: [Time.zone.now.to_datetime.at_beginning_of_day + 4.days + 9.hours])
+        event.update_columns(single_days_with_time: [Time.zone.now.at_beginning_of_day + 4.days + 9.hours])
         subject
 
         expect(event.schedules.count).to eq(1)
@@ -173,8 +173,8 @@ RSpec.describe Event, type: :model do
         subject
 
         expect(event.schedules.count).to eq(2)
-        expect(event.schedules.order(scheduled_for: :desc).last.scheduled_for).to eq(Time.zone.now.to_datetime.at_beginning_of_day + 4.days + 9.hours)
-        expect(event.schedules.order(scheduled_for: :desc).first.scheduled_for).to eq(Time.zone.now.to_datetime.at_beginning_of_day + 4.days + 18.hours)
+        expect(event.schedules.unscoped.order(scheduled_for: :desc).last.scheduled_for).to eq(Time.zone.now.at_beginning_of_day + 4.days + 9.hours)
+        expect(event.schedules.unscoped.order(scheduled_for: :desc).first.scheduled_for).to eq(Time.zone.now.at_beginning_of_day + 4.days + 18.hours)
       end
 
       it 'for the next single day and few recurring days' do

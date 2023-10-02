@@ -1,5 +1,6 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useRemoveAttendeeForm } from "./useRemoveAttendeeForm";
 import { RemoveAttendee_AttendeeFragment$key } from "../../../artifacts/RemoveAttendee_AttendeeFragment.graphql";
 import SubmitButton from "../SubmitButton";
@@ -21,6 +22,7 @@ const RemoveAttendee = ({
     `,
     attendeeFragmentRef
   );
+  const { t } = useTranslation();
   const form = useRemoveAttendeeForm(attendee, onSuccess);
   return (
     <form onSubmit={form.handleSubmit()}>
@@ -29,7 +31,7 @@ const RemoveAttendee = ({
         size="sm"
         color="danger"
       >
-        Remove Attendee
+        {t("forms.removeAttendee.action")}
       </SubmitButton>
     </form>
   );

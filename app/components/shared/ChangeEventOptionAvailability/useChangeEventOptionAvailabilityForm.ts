@@ -29,7 +29,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useChangeEventOptionAvailabilityForm(
-  optionFragmentRef: useChangeEventOptionAvailabilityForm_EventOption$key
+  optionFragmentRef: useChangeEventOptionAvailabilityForm_EventOption$key,
+  onComplete?: () => void
 ) {
   return useMutationForm(
     graphql`
@@ -51,6 +52,7 @@ export function useChangeEventOptionAvailabilityForm(
     {
       defaultValues: useDefaultValues(optionFragmentRef),
       resolver: yupResolver(validationSchema),
+      onCompleted: onComplete,
     }
   );
 }

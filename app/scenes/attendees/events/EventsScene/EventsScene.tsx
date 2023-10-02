@@ -4,6 +4,7 @@ import { useMediaQuery } from "@mui/material";
 import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import { useRouter } from "next/router";
 import { stringify } from "qs";
+import { useTranslation } from "react-i18next";
 import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
 import { EventsScene_EventsPaginationFragment$key } from "../../../../artifacts/EventsScene_EventsPaginationFragment.graphql";
@@ -32,6 +33,7 @@ const ContentWrapper = styled(Grid)(({ theme }) => ({
 
 const EventsScene = ({ eventsFragmentRef }: Props) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const theme = useTheme();
   const { opened, close, open } = React.useContext(GlobalSidebarContext);
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
@@ -243,22 +245,21 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
             onChange={(args) => {
               setFilters(args);
             }}
+            sidebar
           />
           <Grid xs={12}>
             <Box
               sx={{
                 display: 'flex',
-                position: 'absolute',
+                position: 'sticky',
                 bottom: '0',
-                borderTop: '1px solid',
-                borderColor: 'divider',
                 gap: 1,
                 p: 1.5,
                 pb: 2,
                 width: '90%'
               }}
             >
-              <Link href='/trips'>My Trips</Link>
+              <Link href='/trips'>{t('layout.header.myTrips')}</Link>
             </Box>
           </Grid>
         </Grid>

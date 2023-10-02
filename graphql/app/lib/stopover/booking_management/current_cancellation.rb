@@ -13,13 +13,15 @@ module Stopover
       end
 
       def terms
-        return 'Booking will be cancelled without refunds' if @booking.already_paid_price.zero?
+        return I18n.t('graphql.mutations.cancel_booking.terms.cancellation_not_paid') if @booking.already_paid_price.zero?
 
         cancellation_option = current_cancellation_option
         if cancellation_option
-          "Cancellation will result #{cancellation_option.penalty_price.format} penalty. #{(@booking.already_paid_price - cancellation_option.penalty_price).format} will be refunded"
+          I18n.t('graphql.mutations.cancel_booking.terms.cancellation_with_penalty',
+                 penalty: cancellation_option.penalty_price.format,
+                 refund: (@booking.already_paid_price - cancellation_option.penalty_price).format)
         else
-          'Booking will be fully refunded'
+          I18n.t('graphql.mutations.cancel_booking.terms.cancellation_without_penalty')
         end
       end
 

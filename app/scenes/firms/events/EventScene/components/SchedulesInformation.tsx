@@ -16,6 +16,7 @@ import {
   useBookingsHeaders,
 } from "../../../../../components/shared/tables/columns/bookings";
 import useEdges from "../../../../../lib/hooks/useEdges";
+import { useTranslation } from "react-i18next";
 
 interface SchedulesInformationProps {
   eventFragmentRef: SchedulesInformation_EventFragment$key;
@@ -43,6 +44,7 @@ const SchedulesInformation = ({
                 scheduledFor
                 status
                 event {
+                  title
                   id
                 }
                 bookings {
@@ -51,6 +53,25 @@ const SchedulesInformation = ({
                   event {
                     id
                     title
+                  }
+                  bookingOptions {
+                    status
+                    eventOption {
+                      title
+                      builtIn
+                    }
+                    attendeePrice {
+                      cents
+                      currency {
+                        name
+                      }
+                    }
+                    organizerPrice {
+                      cents
+                      currency {
+                        name
+                      }
+                    }
                   }
                   attendeeTotalPrice {
                     cents
@@ -101,12 +122,13 @@ const SchedulesInformation = ({
     (schedule ? schedule.bookings : []) as any[]
   );
   const bookingsHeaders = useBookingsHeaders();
+  const { t } = useTranslation()
 
   return (
     <TabPanel value={index} size="sm" sx={{ paddingTop: "20px" }}>
       <Grid xs={12} container>
         <Grid md={6} lg={4} sm={12}>
-          <Typography level="h4">All Schedules</Typography>
+          <Typography level="h4">{t('general.all')} {t('models.schedule.plural')}</Typography>
           <Table
             data={schedulesData}
             headers={schedulesHeaders}
@@ -141,7 +163,7 @@ const SchedulesInformation = ({
           {schedule ? (
             <>
               <Typography level="h4">
-                Bookings for {getHumanDateTime(moment(schedule.scheduledFor))}
+                {t('scenes.firms.events.eventScene.schedulesInformation.chosenScheduleAction', { date: getHumanDateTime(moment(schedule.scheduledFor)) })}
               </Typography>
               <Table
                 data={bookingsData}
@@ -151,7 +173,7 @@ const SchedulesInformation = ({
             </>
           ) : (
             <Typography level="h4">
-              Choose schedule to view Bookings for this schedule
+              {t('scenes.firms.events.eventScene.schedulesInformation.chooseScheduleAction')}
             </Typography>
           )}
         </Grid>

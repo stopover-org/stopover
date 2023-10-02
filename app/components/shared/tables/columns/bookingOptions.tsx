@@ -1,5 +1,6 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import { bookingOptions_BookingFragmentRef$key } from "../../../../artifacts/bookingOptions_BookingFragmentRef.graphql";
 import ChangeBookingOptionAvailability from "../../ChangeBookingOptionAvailabilityModal";
@@ -8,30 +9,35 @@ import Checkbox from "../../../v2/Checkbox";
 import { ChangeBookingOptionAvailabilityModal_BookingOptionFragment$key } from "../../../../artifacts/ChangeBookingOptionAvailabilityModal_BookingOptionFragment.graphql";
 
 export function useBookingOptionsHeaders() {
+  const { t } = useTranslation();
   return React.useMemo(
     () => [
       {
-        label: "Option Name",
-        width: 100,
+        label: t("models.eventOption.attributes.title"),
+        width: 200,
         key: "title",
       },
       {
-        label: "You Get",
+        label: t("models.bookingOption.attributes.organizerPrice"),
         width: 100,
         key: "organizerPrice",
       },
       {
-        label: "Attendee Pay",
+        label: t("models.bookingOption.attributes.attendeePrice"),
         width: 100,
         key: "attendeePrice",
       },
       {
-        label: "Built In",
+        label: t("models.bookingOption.attributes.builtIn"),
         width: 100,
         key: "builtIn",
       },
-      { label: "Status", width: 100, key: "status" },
-      { label: "", width: 100, key: "actions" },
+      {
+        label: t("models.bookingOption.attributes.status"),
+        width: 175,
+        key: "status",
+      },
+      { label: t("general.actions"), width: 100, key: "actions" },
     ],
     []
   );

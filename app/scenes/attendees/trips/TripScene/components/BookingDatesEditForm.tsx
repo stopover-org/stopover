@@ -12,6 +12,7 @@ import useUniqueMomentDates from "../../../../../lib/hooks/useUniqueMomentDates"
 import useTimeFromDate from "../../../../../lib/hooks/useTimeFromDate";
 import Button from "../../../../../components/v2/Button/Button";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
+import { useTranslation } from "react-i18next";
 
 interface BookingDatesEditFormProps {
   bookingFragmentRef: BookingDatesEditForm_BookingFragment$key;
@@ -33,6 +34,7 @@ const BookingDatesEditForm = ({
     `,
     bookingFragmentRef
   );
+  const {t } = useTranslation()
   const form = useBookingDatesEditForm(booking);
   const dateField = form.useFormField<Moment>("date");
   const timeField = form.useFormField("time");
@@ -48,8 +50,8 @@ const BookingDatesEditForm = ({
   );
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Stack flexDirection="row" justifyContent="flex-start">
-        <Box paddingRight="10px">
+      <Stack flexDirection="row" justifyContent="flex-start" alignItems={'flex-start'}>
+        {!disabled && <Box paddingRight="10px">
           <ButtonDatePicker
             onChange={(date) => {
               if (!date) return;
@@ -64,7 +66,8 @@ const BookingDatesEditForm = ({
             {getDate(dateField.value)}
           </ButtonDatePicker>
         </Box>
-        <Box paddingRight="10px">
+      }
+        {!disabled && availableTimes.length > 0 && <Box paddingRight="10px">
           {" "}
           <Select
             onChange={(value: string) => {
@@ -73,7 +76,7 @@ const BookingDatesEditForm = ({
               timeField.onChange(value);
             }}
             value={timeField.value}
-            placeholder="Select time"
+            placeholder={t('datepicker.selectTime')}
           >
             {availableTimes.map((time) => (
               <Option key={time.unix()} value={time.format(timeFormat)}>
@@ -81,14 +84,14 @@ const BookingDatesEditForm = ({
               </Option>
             ))}
           </Select>
-        </Box>
+        </Box>}
         {!disabled && (
           <Box>
             <SubmitButton
               submitting={form.formState.isSubmitting}
               disabled={disabled}
             >
-              Change Dates
+              {t('datepicker.selectDate')}
             </SubmitButton>
           </Box>
         )}

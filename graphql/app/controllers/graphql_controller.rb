@@ -18,6 +18,7 @@ class GraphqlController < ApplicationController
       current_user: @current_user || nil,
       cookies: cookies
     }
+    I18n.locale = cookies['i18next'] if cookies['i18next']
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     status_code = result&.dig('errors', 0, 'extensions', 'statusCode') || 200
     cookies.encrypted[Stopover::AuthorizationSupport::COOKIE_KEY] = context[:current_user]&.access_token

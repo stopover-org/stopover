@@ -29,7 +29,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useRescheduleEventForm(
-  eventFragmentRef: useRescheduleEventForm_EventFragment$key
+  eventFragmentRef: useRescheduleEventForm_EventFragment$key,
+  onComplete?: () => void
 ) {
   return useMutationForm(
     graphql`
@@ -50,6 +51,7 @@ export function useRescheduleEventForm(
     {
       defaultValues: useDefaultValues(eventFragmentRef),
       resolver: yupResolver(validationSchema),
+      onCompleted: onComplete,
     }
   );
 }

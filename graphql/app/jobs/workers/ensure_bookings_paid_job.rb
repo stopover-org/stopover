@@ -2,10 +2,12 @@
 
 module Workers
   class EnsureBookingsPaidJob < ApplicationJob
-    queue_as :default
-
     def perform
-      Booking.where.not(status: :cancelled).each do |booking|
+      Booking.where.not(status: :cancelled)
+             .joins(:schedule)
+             .where('schedules.scheduled_for > ?', Time.current)
+             .each do |booking|
+        booking.reload
         booking.refund_diff if booking.refundable?
         booking.partially_pay! if booking.partially_paid?
         booking.pay! if booking.left_to_pay_price.zero? && !booking.paid?

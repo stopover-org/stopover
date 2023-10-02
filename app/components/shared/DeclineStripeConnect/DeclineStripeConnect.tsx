@@ -3,6 +3,7 @@ import React from "react";
 import { Tooltip } from "@mui/joy";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useTranslation } from "react-i18next";
 import { useDeclineStripeConnectForm } from "./useDeclineStripeConnectForm";
 import { DeclineStripeConnect_StripeConnect$key } from "../../../artifacts/DeclineStripeConnect_StripeConnect.graphql";
 import SubmitButton from "../SubmitButton";
@@ -24,6 +25,7 @@ const DeclineStripeConnect = ({
     `,
     stripeConnectRef
   );
+  const { t } = useTranslation();
   const form = useDeclineStripeConnectForm(stripeConnect, force);
   return (
     <form onSubmit={form.handleSubmit()}>
@@ -33,7 +35,13 @@ const DeclineStripeConnect = ({
         size="sm"
         color="danger"
       >
-        <Tooltip title={`${force ? "Remove" : "Decline"} Stripe Connect`}>
+        <Tooltip
+          title={
+            force
+              ? t("forms.removeStripeConnect.tooltip")
+              : t("forms.declineStripeConnect.tooltip")
+          }
+        >
           {force ? <DeleteIcon /> : <CloseIcon />}
         </Tooltip>
       </SubmitButton>

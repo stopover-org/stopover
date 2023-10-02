@@ -6,6 +6,7 @@ import { Moment } from "moment/moment";
 import { useRouter } from "next/router";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import { Sidebar_EventFiltersFragment$key } from "../../../../../artifacts/Sidebar_EventFiltersFragment.graphql";
 import { Sidebar_InterestsFragment$key } from "../../../../../artifacts/Sidebar_InterestsFragment.graphql";
 import DateRangePicker from "../../../../../components/v2/DateRangePicker/DateRangePicker";
@@ -18,14 +19,17 @@ interface Props {
   eventFiltersFragment: Sidebar_EventFiltersFragment$key;
   interestsQueryFragmentRef: Sidebar_InterestsFragment$key;
   onChange: (args: Record<string, any>) => void;
+  sidebar?: boolean
 }
 
 const Sidebar = ({
   eventFiltersFragment,
   interestsQueryFragmentRef,
   onChange,
+  sidebar,
 }: Props) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const theme = useTheme()
   const isSmallDisplay = useMediaQuery(theme.breakpoints.up("sm"));
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
@@ -97,7 +101,7 @@ const Sidebar = ({
   }, [filters, ref]);
 
   return (
-    <Grid container flexDirection="column">
+    <Grid container flexDirection="column" sx={{ marginBottom: sidebar ? "10px" : 0 }}>
       {!isMediumDisplay && <Grid xs={12}>
         <Link href="/">
           <Image
@@ -111,7 +115,7 @@ const Sidebar = ({
         <Input
           onChange={(value) => setCity(value)}
           value={city}
-          label="City"
+          label={t('scenes.attendees.events.eventsScene.sidebar.city')}
           endDecorator={<EditIcon />}
         />
       </Grid>
@@ -128,29 +132,29 @@ const Sidebar = ({
         minDate={edgeFiltersValues.startDate}
         disablePast
         startInputProps={{
-          label: "Start Date",
-          placeholder: "Enter Start of your trip",
+          label: t('scenes.attendees.events.eventsScene.sidebar.startDate'),
+          placeholder: t('scenes.attendees.events.eventsScene.sidebar.startDatePlaceholder'),
           size: "sm",
         }}
         endInputProps={{
-          label: "End Date",
-          placeholder: "Enter End of your trip",
+          label: t('scenes.attendees.events.eventsScene.sidebar.endDate'),
+          placeholder: t('scenes.attendees.events.eventsScene.sidebar.endDatePlaceholder'),
           size: "sm",
         }}
       />
       <Grid xs={12}>
         <SliderRange
-          getAriaLabel={() => "Price range"}
+          getAriaLabel={() => t('scenes.attendees.events.eventsScene.sidebar.priceRance')}
           value={priceRange}
           onChange={(value) => setPriceRange(value)}
           max={edgeFiltersValues.maxPrice.cents}
           min={edgeFiltersValues.minPrice.cents}
           valueLabelDisplay="auto"
           size="lg"
-          label="Price range"
+          label={t('scenes.attendees.events.eventsScene.sidebar.priceRance')}
         />
       </Grid>
-      <Grid xs={12} container>
+      <Grid xs={12} container sx={{paddingBottom: '10px'}}>
         <Grid xs={6}>
           <Input
             size="sm"
@@ -161,7 +165,7 @@ const Sidebar = ({
               if (Number.isNaN(newValue)) newValue = 0;
               setPriceRange([newValue, priceRange[1]]);
             }}
-            label="Min Price"
+            label={t('scenes.attendees.events.eventsScene.sidebar.minPrice')}
           />
         </Grid>
         <Grid xs={6}>
@@ -174,7 +178,7 @@ const Sidebar = ({
               if (Number.isNaN(newValue)) newValue = 0;
               setPriceRange([priceRange[0], newValue]);
             }}
-            label="Max Price"
+            label={t('scenes.attendees.events.eventsScene.sidebar.maxPrice')}
           />
         </Grid>
       </Grid>

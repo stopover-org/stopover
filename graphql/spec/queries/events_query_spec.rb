@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe EventsQuery, type: :query do
-  travel_to DateTime.new(2022, 1, 1, 0, 0)
   let!(:now)          { Time.zone.now.at_beginning_of_day }
   let!(:past_date)    { now - 2.days }
   let!(:future_2_day) { now + 2.days }
@@ -35,6 +34,7 @@ RSpec.describe EventsQuery, type: :query do
            organizer_price_per_uom: Money.new(130_000, :usd),
            single_days_with_time: [future_8_day],
            schedules: [build(:schedule, scheduled_for: future_8_day)])
+    Event.searchkick_index.refresh
 
     # drop existing tags for test purposes
     Tag.all.delete_all
@@ -44,6 +44,8 @@ RSpec.describe EventsQuery, type: :query do
     create(:tag, title: 'tour'.titleize)
     Event.offset(1).first(2).each { |event| event.tags << Tag.first }
     Event.offset(1).last(2).each { |event| event.tags << Tag.last }
+
+    Event.reindex
   end
 
   describe 'initialization' do
@@ -63,7 +65,7 @@ RSpec.describe EventsQuery, type: :query do
       subject { query.all }
 
       it 'should include one event' do
-        expect(subject.all.count).to eq(1)
+        expect(subject.count).to eq(1)
 
         event = subject.last
         expect(event.attendee_price_per_uom).to eq(Money.new(143, :usd))

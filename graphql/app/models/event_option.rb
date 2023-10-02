@@ -61,7 +61,8 @@ class EventOption < ApplicationRecord
   after_commit :sync_stripe
 
   # SCOPES =====================================================================
-  #
+  default_scope { in_order_of(:status, %w[available not_available]).order(created_at: :desc) }
+
   # DELEGATIONS ==============================================================
 
   def current_stripe_integration

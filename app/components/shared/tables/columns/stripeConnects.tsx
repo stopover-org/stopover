@@ -2,6 +2,7 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { Stack } from "@mui/joy";
 import moment from "moment/moment";
+import { useTranslation } from "react-i18next";
 import { stripeConnects_FirmFragment$key } from "../../../../artifacts/stripeConnects_FirmFragment.graphql";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Tag from "../../../v2/Tag/Tag";
@@ -18,32 +19,40 @@ export function useStripeConnectsHeaders(currentUserFragmentRef: any) {
     `,
     currentUserFragmentRef
   );
+  const { t } = useTranslation();
+
   return React.useMemo(
     () => [
       {
-        label: "Status",
+        label: t("models.stripeConnect.attributes.status"),
+        width: 100,
         key: "status",
       },
       {
-        label: "Activated At",
+        label: t("models.stripeConnect.attributes.activatedAt"),
+        width: 150,
         key: "activatedAt",
       },
       {
-        label: "Created At",
+        label: t("models.stripeConnect.attributes.createdAt"),
+        width: 150,
         key: "createdAt",
       },
       {
-        label: "Updated At",
+        label: t("models.stripeConnect.attributes.updatedAt"),
+        width: 150,
         key: "updatedAt",
       },
       currentUser?.serviceUser && {
-        label: "Actions",
+        label: t("general.actions"),
+        width: 100,
         key: "actions",
       },
     ],
     [currentUser]
   );
 }
+
 const StatusTag = ({ status }: { status: string }) => {
   const color = useStatusColor({
     danger: ["removed", "inactive"],
@@ -51,10 +60,11 @@ const StatusTag = ({ status }: { status: string }) => {
     neutral: ["pending"],
     status,
   });
+  const { t } = useTranslation();
 
   return (
     <Tag link={false} color={color}>
-      {status}
+      {t(`statuses.${status}`)}
     </Tag>
   );
 };
@@ -91,6 +101,7 @@ export function useStripeConnectsColumns(
     `,
     currentUserFragmentRef
   );
+  const { t } = useTranslation();
 
   return React.useMemo(() => {
     const activeStripeAccount = firm.stripeConnects.find(
@@ -100,7 +111,7 @@ export function useStripeConnectsColumns(
       status: <StatusTag status={stripeConnect.status} />,
       activatedAt: stripeConnect.activatedAt
         ? getHumanDateTime(moment(stripeConnect.activatedAt))
-        : "Not Activated",
+        : t("statuses.inactive"),
       createdAt: getHumanDateTime(moment(stripeConnect.createdAt)),
       updatedAt: getHumanDateTime(moment(stripeConnect.updatedAt)),
       actions: currentUser?.account?.firm?.id && (

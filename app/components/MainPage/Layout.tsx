@@ -1,6 +1,8 @@
 import React from "react";
 import { Sheet } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
+import { useCookies } from "react-cookie";
 import Footer from "./Footer";
 import Header from "./Header";
 import { Layout_CurrentUserFragment$key } from "../../artifacts/Layout_CurrentUserFragment.graphql";
@@ -35,6 +37,11 @@ const Layout = ({
     `,
     currentUserFragment
   );
+  const { i18n } = useTranslation();
+  const [value] = useCookies();
+  React.useEffect(() => {
+    i18n.changeLanguage(value.i18next || "ru");
+  }, []);
 
   return (
     <GlobalSidebarProvider>

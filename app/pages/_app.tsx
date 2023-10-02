@@ -7,16 +7,37 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import React from "react";
 import { Toaster } from "sonner";
-import { getClientEnvironment } from "../lib/clientEnvironment";
 import "rc-slider/assets/index.css";
 import "react-phone-input-2/lib/style.css";
 import "@fontsource/public-sans";
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import { getClientEnvironment } from "../lib/clientEnvironment";
 import { theme } from "../lib/theme";
 import ApiKeysProvider from "../components/ApiKeysProvider";
+import englishTranslations from "../config/locales/en";
+import russianTranslations from "../config/locales/ru";
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
   createClientEnvironment: () => getClientEnvironment()!,
+});
+
+i18n.use(initReactI18next).init({
+  resources: {
+    en: {
+      translation: englishTranslations,
+    },
+    ru: {
+      translation: russianTranslations,
+    },
+  },
+  lng: "en",
+  fallbackLng: "en",
+
+  interpolation: {
+    escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+  },
 });
 
 const MyApp = ({ Component, pageProps }: AppProps) => {

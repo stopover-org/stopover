@@ -1,6 +1,7 @@
 import { FormLabel, Grid, IconButton, Stack } from "@mui/joy";
 import React from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { useTranslation } from "react-i18next";
 import useFormContext from "../../../../lib/hooks/useFormContext";
 import Fieldset from "../../../v2/Fieldset";
 import Typography from "../../../v2/Typography";
@@ -8,6 +9,7 @@ import Input from "../../../v2/Input/Input";
 import TextArea from "../../../v2/TextArea";
 import Button from "../../../v2/Button/Button";
 import { UpdateEventFields } from "../../../../scenes/firms/events/EditEventScene/useUpdateEventForm";
+import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 
 const BookingCancellationOptionsFieldset = () => {
   const form = useFormContext<UpdateEventFields>();
@@ -51,6 +53,7 @@ const BookingCancellationOptionsFieldset = () => {
     },
     [bookingCancellationOptionsField]
   );
+  const { t } = useTranslation();
 
   return (
     <Fieldset>
@@ -60,19 +63,23 @@ const BookingCancellationOptionsFieldset = () => {
         </Grid>
         <Grid xs={4}>
           <Button size="sm" onClick={addBookingCancellationOption}>
-            Add new Event Option
+            {t("forms.editEvent.addCancellationOption")}
           </Button>
         </Grid>
         <FormLabel>
-          If you skip this values, then booking can be cancelled at any time
+          {t("forms.editEvent.ifYouSkipCancellationOptionHint")}
         </FormLabel>
         {bookingCancellationOptionsField.value.map((opt, index) => (
           <Grid xs={12} container>
             <Grid xs={3}>
               <Input
-                placeholder="Amount"
+                placeholder={t(
+                  "models.bookingCancellationOption.attributes.penaltyPrice"
+                )}
                 startDecorator="$"
-                label="Penalty"
+                label={t(
+                  "models.bookingCancellationOption.attributes.penaltyPrice"
+                )}
                 type="number"
                 onChange={(value) =>
                   onBookingCancellationOptionChange(
@@ -90,9 +97,13 @@ const BookingCancellationOptionsFieldset = () => {
             </Grid>
             <Grid xs={3}>
               <Input
-                placeholder="Deadline"
+                placeholder={t(
+                  "models.bookingCancellationOption.attributes.deadline"
+                )}
                 endDecorator="hours"
-                label="Deadline for this Option"
+                label={t(
+                  "models.bookingCancellationOption.attributes.deadline"
+                )}
                 type="number"
                 onChange={(value) =>
                   onBookingCancellationOptionChange(value, index, "deadline")
@@ -106,8 +117,12 @@ const BookingCancellationOptionsFieldset = () => {
             </Grid>
             <Grid xs={5}>
               <TextArea
-                placeholder="Description"
-                label="Description"
+                placeholder={t(
+                  "models.bookingCancellationOption.attributes.description"
+                )}
+                label={t(
+                  "models.bookingCancellationOption.attributes.description"
+                )}
                 onChange={(value) =>
                   onBookingCancellationOptionChange(value, index, "description")
                 }
@@ -136,6 +151,14 @@ const BookingCancellationOptionsFieldset = () => {
                     <DeleteForeverIcon />
                   </IconButton>
                 </Stack>
+              </Grid>
+            )}
+            {opt.deadline && (
+              <Grid xs={12}>
+                {t("models.bookingCancellationOption.terms.withPenalty", {
+                  deadline: parseInt(opt.deadline.toString(), 10),
+                  penalty: getCurrencyFormat(opt.penaltyPriceCents, "usd"),
+                })}
               </Grid>
             )}
           </Grid>

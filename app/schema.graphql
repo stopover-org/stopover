@@ -8,7 +8,8 @@ type Account implements Node {
   latitude: Float
   longitude: Float
   name: String!
-  phone: [String!]
+  phones: [String!]
+  primaryEmail: String!
   primaryPhone: String!
   region: String
   status: String!
@@ -66,7 +67,6 @@ type Attendee implements Node {
 type AttendeeOption implements Node {
   attendee: Attendee!
   attendeePrice: Money!
-  builtIn: Boolean!
   eventOption: EventOption!
   id: ID!
   organizerPrice: Money!
@@ -233,7 +233,6 @@ type BookingEdge {
 type BookingOption implements Node {
   attendeePrice: Money!
   booking: Booking!
-  builtIn: Boolean!
   eventOption: EventOption!
   id: ID!
   organizerPrice: Money!

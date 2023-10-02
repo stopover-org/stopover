@@ -2,12 +2,12 @@ import React, { useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import * as momentTimezones from "moment-timezone/data/packed/latest.json";
 import { Card, Grid } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import { useSignInForm } from "./useSignInForm";
 import Link from "../../components/v1/Link";
 import Input from "../../components/v2/Input";
 import PhoneInput from "../../components/v2/PhoneInput";
 import Typography from "../../components/v2/Typography";
-import Button from "../../components/v2/Button";
 import SubmitButton from "../../components/shared/SubmitButton";
 
 // @ts-ignore
@@ -15,6 +15,7 @@ if (typeof window !== "undefined") window.momentTimezones = momentTimezones;
 
 export const SignIn = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const [showCode, setShowCode] = useState(false);
   const [delay, setDelay] = useState<number | null>(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
@@ -79,7 +80,7 @@ export const SignIn = () => {
               }}
             >
               <Typography underline>
-                &lt; {showCode ? `Change ${typeField.value}` : "Back"}
+                &lt; {showCode ? t('scenes.signInScene.changeLoginType', {type: t(`general.${typeField.value}`)}) : t('general.back')}
               </Typography>
             </Link>
             {showCode && (
@@ -88,7 +89,7 @@ export const SignIn = () => {
           </Grid>
 
           <Grid xs={12} container justifyContent="center">
-            <Typography level="h3">Sign In / Sign Up</Typography>
+            <Typography level="h3">{t('scenes.signInScene.header')}</Typography>
           </Grid>
 
           <Grid xs={12}>
@@ -100,14 +101,15 @@ export const SignIn = () => {
                 <Grid>
                   <Input
                     {...codeField}
-                    label={`Enter Code from ${typeField.value}`}
+                    label={t('scenes.signInScene.enterCode', {type: typeField.value})}
                     hint={
                       delay ? (
-                        `You can resend code in ${delay} seconds`
+                        t('scenes.signInScene.youCanResendDelay', { seconds: delay })
                       ) : (
                         <Link onClick={handleSubmit(true, 0)}>
                           <Typography fontSize="sm" color="primary">
-                            Resend Code
+                            {t('scenes.signInScene.resendCode')
+                            }
                           </Typography>
                         </Link>
                       )
@@ -122,22 +124,22 @@ export const SignIn = () => {
                     {typeField.value === "email" && (
                       <Input
                         {...usernameField}
-                        label="Enter email"
-                        placeholder="Enter your email"
+                        label={t('scenes.signInScene.enterEmail')}
+                        placeholder={t('scenes.signInScene.enterEmail')}
                       />
                     )}
                     {typeField.value === "phone" && (
                       <PhoneInput
                         {...usernameField}
-                        label="Enter phone number"
+                        label={t('scenes.signInScene.enterPhone')}
+                        placeholder={t('scenes.signInScene.enterPhone')}
                       />
                     )}
                   </Grid>
                   <Grid container justifyContent="flex-end">
                     <Link onClick={changeType}>
                       <Typography fontSize="sm" color="primary">
-                        Use{" "}
-                        {typeField.value === "email" ? "phone number" : "email"}
+                      {t('scenes.signInScene.useType', {type: t(`general.${typeField.value === 'email' ? 'phone' : 'email'}`)})}
                       </Typography>
                     </Link>
                   </Grid>
@@ -146,7 +148,7 @@ export const SignIn = () => {
 
               <Grid container justifyContent="flex-end">
                 <SubmitButton submitting={form.formState.isSubmitting}>
-                  Sign in
+                  {t('scenes.signInScene.signInAction')}
                 </SubmitButton>
               </Grid>
             </form>

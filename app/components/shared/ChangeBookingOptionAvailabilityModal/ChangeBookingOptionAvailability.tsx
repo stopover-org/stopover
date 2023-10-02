@@ -1,6 +1,6 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { Tooltip } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import { useChangeBookingOptionAvailabilityForm } from "./useChangeBookingOptionAvailabilityForm";
 import { ChangeBookingOptionAvailability_BookingOptionFragment$key } from "../../../artifacts/ChangeBookingOptionAvailability_BookingOptionFragment.graphql";
 import SubmitButton from "../SubmitButton";
@@ -25,7 +25,11 @@ const ChangeBookingOptionAvailability = ({
       optionFragmentRef
     );
   const form = useChangeBookingOptionAvailabilityForm(bookingOption, onSuccess);
-  const text = bookingOption.status === "available" ? "Remove" : "Add";
+  const { t } = useTranslation();
+  const text =
+    bookingOption.status === "available"
+      ? t("forms.changeOptionAvailability.actions.remove")
+      : t("forms.changeOptionAvailability.actions.add");
   return (
     <form onSubmit={form.handleSubmit()}>
       <SubmitButton
@@ -33,9 +37,7 @@ const ChangeBookingOptionAvailability = ({
         size="sm"
         color={bookingOption.status === "available" ? "danger" : "success"}
       >
-        <Tooltip title="Change Availability">
-          <div>{text}</div>
-        </Tooltip>
+        <div>{text}</div>
       </SubmitButton>
     </form>
   );

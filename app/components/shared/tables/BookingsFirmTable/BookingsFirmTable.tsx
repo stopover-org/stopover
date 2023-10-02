@@ -66,7 +66,9 @@ const BookingsFirmTable = ({
               bookingOptions {
                 eventOption {
                   title
+                  builtIn
                 }
+                status
                 organizerPrice {
                   cents
                   currency {

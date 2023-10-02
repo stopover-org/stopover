@@ -1,5 +1,5 @@
-import { Box, Divider, Modal, ModalDialog, Stack } from "@mui/joy";
-import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { Box, Divider, Modal, ModalDialog, Stack, DialogActions, DialogContent, DialogTitle } from "@mui/joy";
+import {  } from "@mui/material";
 import React from "react";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
@@ -7,6 +7,7 @@ import Button from "../../../../../components/v2/Button";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import AddAttendee from "../../../../../components/shared/AddAttendee";
 import { AddAttendeeModal_BookingFragment$key } from "../../../../../artifacts/AddAttendeeModal_BookingFragment.graphql";
+import { useTranslation } from "react-i18next";
 
 interface AddAttendeeModalProps {
   bookingFragmentRef: AddAttendeeModal_BookingFragment$key;
@@ -30,29 +31,29 @@ const AddAttendeeModal = ({ bookingFragmentRef }: AddAttendeeModalProps) => {
     bookingFragmentRef
   );
   const [modal, setModal] = React.useState(false);
+  const { t } = useTranslation()
 
   return (
     <>
       <Button size="sm" color="neutral" onClick={() => setModal(true)}>
-        Add Attendee
+        {t('forms.addAttendee.action')}
       </Button>
       <Modal open={modal} onClose={() => setModal(false)}>
         <ModalDialog variant="outlined" role="alertdialog">
           <DialogTitle>
             <Stack flexDirection="row" alignItems="center">
               <WarningRoundedIcon />
-              &nbsp; Booking changes confirmation
+              &nbsp; {t('forms.addAttendee.modal.header')}
             </Stack>
           </DialogTitle>
           <Divider />
           <DialogContent>
             <Stack>
               <Box>
-                The price for the booking will be increased to{" "}
-                {getCurrencyFormat(
+                {t('forms.addAttendee.modal.explanation', { price: getCurrencyFormat(
                   booking.event.attendeePricePerUom?.cents,
                   booking.event.attendeePricePerUom?.currency?.name
-                )}
+                )})}
               </Box>
             </Stack>
           </DialogContent>
@@ -62,7 +63,7 @@ const AddAttendeeModal = ({ bookingFragmentRef }: AddAttendeeModalProps) => {
               onSuccess={() => setModal(false)}
             />
             <Button size="sm" color="neutral" onClick={() => setModal(false)}>
-              Cancel
+              {t('general.cancel')}
             </Button>
           </DialogActions>
         </ModalDialog>

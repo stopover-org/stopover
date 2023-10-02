@@ -5,6 +5,7 @@ import { useMediaQuery } from "@mui/material";
 import { graphql, useFragment, useMutation } from "react-relay";
 import { useRouter } from "next/router";
 import Menu from "@mui/icons-material/Menu";
+import { useTranslation } from "react-i18next";
 import Link from "../v2/Link";
 import { Header_CurrentUserFragment$key } from "../../artifacts/Header_CurrentUserFragment.graphql";
 import { Header_SignOutMutation } from "../../artifacts/Header_SignOutMutation.graphql";
@@ -18,8 +19,9 @@ interface HeaderProps {
 const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
   const router = useRouter();
   const theme = useTheme();
+  const { t } = useTranslation();
   const { open } = React.useContext(GlobalSidebarContext);
-  const isSmallDisplay = useMediaQuery(theme.breakpoints.up("sm"));
+  const isSmallDisplay = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
   const currentUser = useFragment(
     graphql`
@@ -92,23 +94,23 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
             <Link
               href="/trips"
               textAlign="right"
-              level="body-md"
+              level={isSmallDisplay ? "body-sm" : "body-md"}
               lineHeight={`${imageSize.height}px`}
-              paddingRight="10px"
+              paddingRight={isSmallDisplay ? "3px" : "10px"}
             >
-              My Trips
+              {t("layout.header.myTrips")}
             </Link>
           )}
-          {isSmallDisplay && !isAuthorized && (
+          {!isSmallDisplay && !isAuthorized && (
             <Link
               href="/auth/sign_in"
               textAlign="right"
-              level="body-md"
+              level={isSmallDisplay ? "body-sm" : "body-md"}
               fontSize="lg"
               lineHeight={`${imageSize.height}px`}
-              paddingRight="10px"
+              paddingRight={isSmallDisplay ? "3px" : "10px"}
             >
-              Log In
+              {t("layout.header.logIn")}
             </Link>
           )}
           {isAuthorized && showRegisterFirm && (
@@ -117,37 +119,37 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
                 <Link
                   href="/my-firm/dashboard"
                   textAlign="right"
-                  level="body-md"
+                  level={isSmallDisplay ? "body-sm" : "body-md"}
                   lineHeight={`${imageSize.height}px`}
-                  paddingRight="10px"
+                  paddingRight={isSmallDisplay ? "3px" : "10px"}
                 >
-                  My Firm
+                  {t("layout.header.myFirm")}
                 </Link>
               ) : (
                 <Link
                   href="/firms/new"
                   textAlign="right"
-                  level="body-md"
+                  level={isSmallDisplay ? "body-sm" : "body-md"}
                   lineHeight={`${imageSize.height}px`}
-                  paddingRight="10px"
+                  paddingRight={isSmallDisplay ? "3px" : "10px"}
                 >
-                  Register Firm
+                  {t("layout.header.registerFirm")}
                 </Link>
               )}
 
               <Link
                 href="?#sign-out"
                 textAlign="right"
-                level="body-md"
+                level={isSmallDisplay ? "body-sm" : "body-md"}
                 lineHeight={`${imageSize.height}px`}
-                paddingRight="20px"
+                paddingRight={isSmallDisplay ? "5px" : "20px"}
                 onClick={(e) => {
                   e.preventDefault();
 
                   onSignOut();
                 }}
               >
-                Log out
+                {t("layout.header.logOut")}
               </Link>
             </>
           )}

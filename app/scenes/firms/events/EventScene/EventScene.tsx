@@ -1,6 +1,7 @@
-import { Grid, Tab, TabList, Tabs, Box, Stack } from "@mui/joy";
+import { Grid, Tab, TabList, Tabs, Box, Stack, Chip } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import { EventScene_FirmEventFragment$key } from "../../../../artifacts/EventScene_FirmEventFragment.graphql";
 import GeneralInformation from "./components/GeneralInformation";
 import Typography from "../../../../components/v2/Typography";
@@ -89,54 +90,74 @@ const EventScene = ({
     neutral: ["draft"],
     status: event.status,
   });
+  const { t } = useTranslation();
+  const canEdit = React.useMemo(() => event.status !== "removed", [event]);
+  const canReschedule = React.useMemo(
+    () =>
+      currentUser.serviceUser &&
+      event.status === "published" &&
+      event.firm.status === "active",
+    [event, currentUser]
+  );
+
+  const canPublish = React.useMemo(
+    () => event.status === "unpublished" && event.firm.status === "active",
+    [event]
+  );
+
+  const canArchive = React.useMemo(
+    () => event.status === "published" && event.firm.status === "active" && event.firm.paymentTypes.length > 0,
+    [event]
+  );
+  const canRemove = React.useMemo(() => event.status !== "removed", [event]);
+  const canVerify = React.useMemo(
+    () =>
+      currentUser.serviceUser &&
+      event.status === "draft" &&
+      event.firm.status === "active",
+    [event, currentUser]
+  );
+
+  const canSync = React.useMemo(
+    () =>
+      currentUser.serviceUser &&
+      ["published", "unpublished"].includes(event.status) &&
+      event.firm.status === "active" &&
+      event.firm.paymentTypes.includes("stripe"),
+    [event, currentUser]
+  );
 
   return (
     <Grid container spacing={2} sm={12} md={12}>
-      <Grid lg={10} sm={12}>
+      <Grid lg={8} sm={12}>
         <Typography level="h3" sx={{ display: "inline" }}>
           {event.title}
         </Typography>
         <Tag color={tagColor} link={false}>
-          {event.status}
+          {t(`statuses.${event.status}`)}
         </Tag>
       </Grid>
-      <Grid lg={2} sm={12}>
+      <Grid lg={4} sm={12}>
         <Stack
           direction="row"
           justifyContent={{ lg: "flex-end", sm: "flex-start" }}
+          flexWrap="wrap"
+          useFlexGap
+          spacing={1}
         >
-          <Link
-            href={`/my-firm/events/${event.id}/edit`}
-            underline={false}
-            sx={{ marginRight: "10px" }}
-          >
-            <Button size="sm">Edit</Button>
-          </Link>
-          {currentUser.serviceUser &&
-            event.status === "published" &&
-            event.firm.status === "active" && (
-              <RescheduleEvent eventFragmentRef={event} />
-            )}
-          {event.status === "unpublished" && event.firm.status === "active" && (
-            <PublishEvent eventFragmentRef={event} />
+          {canEdit && (
+            <Link href={`/my-firm/events/${event.id}/edit`} underline={false}>
+              <Button size="sm" variant="plain">
+                {t("general.edit")}
+              </Button>
+            </Link>
           )}
-          {event.status === "published" && event.firm.status === "active" && (
-            <UnpublishEvent eventFragmentRef={event} />
-          )}
-          {event.status !== "removed" && (
-            <RemoveEvent eventFragmentRef={event} />
-          )}
-          {currentUser.serviceUser &&
-            event.status === "draft" &&
-            event.firm.status === "active" && (
-              <VerifyEvent eventFragmentRef={event} />
-            )}
-          {currentUser.serviceUser &&
-            ["published", "unpublished"].includes(event.status) &&
-            event.firm.status === "active" &&
-            event.firm.paymentTypes.includes("stripe") && (
-              <SyncStripe eventFragmentRef={event} />
-            )}
+          {canReschedule && <RescheduleEvent eventFragmentRef={event} />}
+          {canPublish && <PublishEvent eventFragmentRef={event} />}
+          {canArchive && <UnpublishEvent eventFragmentRef={event} />}
+          {canRemove && <RemoveEvent eventFragmentRef={event} />}
+          {canVerify && <VerifyEvent eventFragmentRef={event} />}
+          {canSync && <SyncStripe eventFragmentRef={event} />}
         </Stack>
       </Grid>
       <Grid xs={12}>
@@ -146,42 +167,57 @@ const EventScene = ({
           defaultValue={0}
           sx={{ width: "100%", paddingTop: "10px" }}
           onChange={(_, value) => setTab(value as number)}
-           orientation='vertical'
+          orientation="vertical"
         >
-          <TabList variant="plain" sx={{minWidth: '175px'}}>
+          <TabList variant="plain" sx={{ minWidth: "175px" }}>
             <Tab variant={tab === 0 ? "outlined" : "plain"}>
-              General Information
+              {t('scenes.firms.events.eventScene.tabs.generalInformation')}
             </Tab>
             <Tab variant={tab === 1 ? "outlined" : "plain"}>
-              Event Options ({event.eventOptions.length})
+              {t('models.eventOption.plural')}
+              <Chip size="sm" variant="soft">
+                {event.eventOptions.length}
+              </Chip>
             </Tab>
             <Tab variant={tab === 2 ? "outlined" : "plain"}>
-              Schedules ({event.schedules.nodes.length})
+              {t('models.schedule.plural')}
+              <Chip size="sm" variant="soft">
+                {event.schedules.nodes.length}
+              </Chip>
             </Tab>
             <Tab variant={tab === 3 ? "outlined" : "plain"}>
-              Bookings ({event.bookings.nodes.length})
+              {t('models.booking.plural')}
+              <Chip size="sm" variant="soft">
+                {event.bookings.nodes.length}
+              </Chip>
             </Tab>
             {currentUser?.serviceUser && (
-              <Tab variant={tab === 4 ? "outlined" : "plain"}>
-                Str. Int. ({event.stripeIntegrations.nodes.length})
-                <Tag
-                  link={false}
-                  color="neutral"
-                  level='body-xs'
-                >
-                  Service User
-                </Tag>
+              <Tab
+                variant={tab === 4 ? "outlined" : "plain"}
+                sx={{ display: "block" }}
+              >
+              {t('scenes.firms.events.eventScene.tabs.stripeIntegrations')}
+                <Chip size="sm" variant="soft">
+                  {event.stripeIntegrations.nodes.length}
+                </Chip>
+                <br />
+                <Typography fontSize="xs">
+                  {t("models.user.attributes.serviceUser")}
+                </Typography>
               </Tab>
             )}
           </TabList>
-          <Box sx={{width: 'calc(100% - 175px)'}}>
+          <Box sx={{ width: "calc(100% - 175px)" }}>
             <GeneralInformation index={0} eventFragmentRef={event} />
             <EventOptionsInformation index={1} eventFragmentRef={event} />
             <SchedulesInformation index={2} eventFragmentRef={event} />
             <BookingsInformation index={3} eventFragmentRef={event} />
 
             {currentUser?.serviceUser && (
-              <StripeIntegrationsInformation index={4} eventFragmentRef={event} />
+              <StripeIntegrationsInformation
+                index={4}
+                eventFragmentRef={event}
+              />
             )}
           </Box>
         </Tabs>

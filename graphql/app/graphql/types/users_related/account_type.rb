@@ -14,8 +14,9 @@ module Types
       field :full_address,  String
       field :longitude,     Float
       field :latitude,      Float
-      field :phone,         [String]
+      field :phones,        [String]
       field :primary_phone, String, null: false
+      field :primary_email, String, null: false
       field :verified_at,   String
       field :interests, [Types::EventsRelated::InterestType]
       field :firm,      Types::FirmsRelated::FirmType

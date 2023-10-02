@@ -79,6 +79,7 @@ class AttendeeOption < ApplicationRecord
   before_validation :adjust_event_option_info
 
   # SCOPES ================================================================
+  default_scope { in_order_of(:status, %w[available not_available]).order(created_at: :desc) }
 
   # DELEGATION ============================================================
   def validate_option_type

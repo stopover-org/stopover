@@ -2,21 +2,20 @@ import React from "react";
 import Button from "../../../../components/v2/Button";
 import { useRemoveFirm } from "../useRemoveFirm";
 import SubmitButton from "../../../../components/shared/SubmitButton";
+import RemoveFirmModal from "./RemoveFirmModal";
+import { useTranslation } from "react-i18next";
 
 const RemoveFirm = () => {
-  const form = useRemoveFirm();
+  const [modalOpened, setModalOpened] = React.useState<boolean>(false)
+  const { t } = useTranslation()
 
   return (
-    <form onSubmit={form.handleSubmit()}>
-      <SubmitButton
-        color="danger"
-        size="sm"
-        variant="outlined"
-        submitting={form.formState.isSubmitting}
-      >
-        Delete
-      </SubmitButton>
-    </form>
+    <>
+      <Button onClick={() => setModalOpened(true)} color='danger' variant="plain">
+        {t('forms.removeFirm.action')}
+      </Button>
+      <RemoveFirmModal open={modalOpened} onClose={() => setModalOpened(false)} />
+    </>
   );
 };
 export default React.memo(RemoveFirm);

@@ -75,6 +75,7 @@ class Payment < ApplicationRecord
   before_validation :adjust_firm
 
   # SCOPES ================================================================
+  default_scope { in_order_of(:status, %w[pending processing successful canceled]).order(created_at: :desc) }
 
   # DELEGATION ============================================================
 

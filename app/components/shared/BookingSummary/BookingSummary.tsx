@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import Typography from "../../v2/Typography/Typography";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import { BookingSummary_BookingFragment$key } from "../../../artifacts/BookingSummary_BookingFragment.graphql";
@@ -10,6 +11,7 @@ interface BookingSummaryProps {
 }
 
 const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
+  const { t } = useTranslation();
   const booking = useFragment(
     graphql`
       fragment BookingSummary_BookingFragment on Booking {
@@ -45,7 +47,9 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
             },
           })}
         >
-          {booking.attendees.length} attendee(-s)
+          {t("scenes.attendees.trips.tripScene.attendeesCount", {
+            count: booking.attendees.length,
+          })}
         </Typography>
       </Grid>
       <Grid xs={6}>
@@ -73,7 +77,7 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
             },
           })}
         >
-          Already paid:{" "}
+          {t("models.booking.attributes.alreadyPaidPrice")}{" "}
           {getCurrencyFormat(
             booking.alreadyPaidPrice.cents,
             booking.alreadyPaidPrice.currency.name

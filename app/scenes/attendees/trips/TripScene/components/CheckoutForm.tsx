@@ -11,27 +11,35 @@ import { timeFormat } from "../../../../../lib/utils/dates";
 import { capitalize } from "../../../../../lib/utils/capitalize";
 import Typography from "../../../../../components/v2/Typography";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
+import { useTranslation } from "react-i18next";
 
 interface CheckoutFormProps {
   bookingFragmentRef: CheckoutForm_BookingFragmentRef$key;
 }
 
 const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
+  const { t } = useTranslation()
   const booking = useFragment<CheckoutForm_BookingFragmentRef$key>(
     graphql`
       fragment CheckoutForm_BookingFragmentRef on Booking {
         status
         bookedFor
         paymentType
+        leftToPayPrice {
+          cents
+          currency {
+            name
+          }
+        }
+        leftToPayDepositPrice {
+          cents
+          currency {
+            name
+          }
+        }
         event {
           firm {
             paymentTypes
-          }
-          depositAmount {
-            cents
-            currency {
-              name
-            }
           }
         }
         ...useCheckoutForm_BookingFragment
@@ -49,16 +57,16 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
   );
 
   if (booking.event.firm.paymentTypes.length === 0) {
-    return <Typography>There is no available payment methods. Yet</Typography>;
+    return <Typography>{t('scenes.attendees.trips.tripScene.noAvailablePaymentMethod')}</Typography>;
   }
 
   return (
     <form onSubmit={form.handleSubmit()}>
-      {!booking.paymentType && (
+      {!booking.paymentType && booking.event.firm.paymentTypes.length !== 1 && (
         <Select {...paymentMethodField} placeholder="Select Payment Method">
           {booking.event.firm.paymentTypes.map((paymentType) => (
             <Option key={paymentType} value={paymentType}>
-              {capitalize(paymentType)}
+              {capitalize(t(`models.firm.enums.paymentTypes.${paymentType}`))}
             </Option>
           ))}
         </Select>
@@ -69,11 +77,15 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
         disabled={disabled}
       >
         {paymentMethodField.value === "cash"
-          ? `Pay Deposit ${getCurrencyFormat(
-              booking.event.depositAmount?.cents,
-              booking.event.depositAmount?.currency.name
-            )}`
-          : "Pay Now"}
+          ? t(`scenes.attendees.trips.tripScene.payDeposit`, { amount: getCurrencyFormat(
+              booking.leftToPayDepositPrice?.cents,
+              booking.leftToPayDepositPrice?.currency.name
+            )})
+          : t(`scenes.attendees.trips.tripScene.payOnline`, { amount: getCurrencyFormat(
+              booking.leftToPayPrice?.cents,
+              booking.leftToPayPrice?.currency.name
+            )})
+        }
       </SubmitButton>
     </form>
   );

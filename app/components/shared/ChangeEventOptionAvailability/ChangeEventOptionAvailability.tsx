@@ -1,10 +1,10 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { Tooltip } from "@mui/joy";
+import { Box, IconButton, Tooltip } from "@mui/joy";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
-import { useChangeEventOptionAvailabilityForm } from "./useChangeEventOptionAvailabilityForm";
+import { useTranslation } from "react-i18next";
 import { ChangeEventOptionAvailability_EventOptionFragment$key } from "../../../artifacts/ChangeEventOptionAvailability_EventOptionFragment.graphql";
-import SubmitButton from "../SubmitButton";
+import ChangeEventOptionAvailabilityModal from "./ChangeEventOptionAvailabilityModal";
 
 interface RegisterAttendeeProps {
   optionFragmentRef: ChangeEventOptionAvailability_EventOptionFragment$key;
@@ -17,25 +17,32 @@ const ChangeEventOptionAvailability = ({
     useFragment<ChangeEventOptionAvailability_EventOptionFragment$key>(
       graphql`
         fragment ChangeEventOptionAvailability_EventOptionFragment on EventOption {
-          ...useChangeEventOptionAvailabilityForm_EventOption
+          ...ChangeEventOptionAvailabilityModal_EventOptionFragment
         }
       `,
       optionFragmentRef
     );
-  const form = useChangeEventOptionAvailabilityForm(eventOption);
+  const { t } = useTranslation();
+  const [modalOpened, setModalOpened] = React.useState<boolean>(false);
   return (
-    <form onSubmit={form.handleSubmit()}>
-      <SubmitButton
-        submitting={form.formState.isSubmitting}
-        icon
-        size="sm"
-        color="danger"
-      >
-        <Tooltip title="Change Availability">
-          <DoNotDisturbIcon />
-        </Tooltip>
-      </SubmitButton>
-    </form>
+    <>
+      <Box>
+        <IconButton
+          size="sm"
+          color="danger"
+          onClick={() => setModalOpened(true)}
+        >
+          <Tooltip title={t("forms.changeOptionAvailability.tooltip")}>
+            <DoNotDisturbIcon />
+          </Tooltip>
+        </IconButton>
+      </Box>
+      <ChangeEventOptionAvailabilityModal
+        eventOptionFragmentRef={eventOption}
+        open={modalOpened}
+        onClose={() => setModalOpened(false)}
+      />
+    </>
   );
 };
 

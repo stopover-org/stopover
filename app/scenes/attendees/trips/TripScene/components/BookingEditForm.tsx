@@ -1,7 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import moment from "moment";
-import { Divider, Grid } from "@mui/joy";
+import { Divider, Grid, useTheme } from "@mui/joy";
 import AttendeeEditForm from "./AttendeeEditForm";
 import { BookingEditForm_BookingFragment$key } from "../../../../../artifacts/BookingEditForm_BookingFragment.graphql";
 import BookingOptionsEditForm from "./BookingOptionsEditForm";
@@ -10,12 +10,17 @@ import CheckoutForm from "./CheckoutForm";
 import Button from "../../../../../components/v2/Button";
 import CancelBookingModal from "./CancelBookingModal";
 import useSubscription from "../../../../../lib/hooks/useSubscription";
+import { useMediaQuery } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 interface BookingEditFormProps {
   bookingFragmentRef: BookingEditForm_BookingFragment$key;
 }
 
 const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { t } = useTranslation()
   const booking = useFragment(
     graphql`
       fragment BookingEditForm_BookingFragment on Booking {
@@ -65,13 +70,13 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
   );
 
   const disabled = React.useMemo(
-    () =>
-      booking.status === "cancelled" ||
-      moment(booking.bookedFor).isBefore(new Date()) ||
-      !leftToPay,
+    () => booking.status !== "active" ||
+      moment(booking.bookedFor).isBefore(new Date()),
     [booking.status, booking.bookedFor, leftToPay]
   );
-console.log(booking.status, booking.bookedFor, moment(booking.bookedFor).isBefore(new Date()), leftToPay, disabled)
+
+  const cancellable = React.useMemo(() => booking.status !== 'cancelled' && 
+      moment(booking.bookedFor).isAfter(new Date()), [booking.status, booking.bookedFor])
 
   return (
     <>
@@ -84,28 +89,33 @@ console.log(booking.status, booking.bookedFor, moment(booking.bookedFor).isBefor
             />
           ))}
           <Divider />
-          <Grid md={12} sx={{lg: {display: 'none'}}}>
+          {isMobile && <Grid md={12}>
             <BookingOptionsEditForm bookingFragmentRef={booking} />
-            {!disabled && <CheckoutForm bookingFragmentRef={booking} />}
-          </Grid>
+            </Grid>
+          }
           <>
             <Grid xs={12}>
               <BookingDatesEditForm bookingFragmentRef={booking} />
             </Grid>
 
-            {booking.status !== "cancelled" && (
+          {isMobile && <Grid md={12}>
+            {!disabled && <CheckoutForm bookingFragmentRef={booking} />}
+            </Grid>
+          }
+
+            {cancellable && (
               <Grid xs={12}>
                 <Button size="sm" color="danger" onClick={() => setModal(true)}>
-                  Cancel Booking
+                  {t('scenes.attendees.trips.tripScene.cancelBooking')}
                 </Button>
               </Grid>
             )}
           </>
         </Grid>
-        <Grid lg={5} sx={{md: {display: 'none'}}}>
+        {!isMobile && <Grid lg={5}>
           <BookingOptionsEditForm bookingFragmentRef={booking} />
           {!disabled && <CheckoutForm bookingFragmentRef={booking} />}
-        </Grid>
+        </Grid>}
       </Grid>
       <CancelBookingModal
         open={modal}

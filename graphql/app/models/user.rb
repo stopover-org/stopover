@@ -98,7 +98,7 @@ class User < ApplicationRecord
   def activate!(code:)
     return if temporary?
 
-    raise StandardError, 'Confirmation code is incorrect' if code != confirmation_code || confirmation_code.nil?
+    raise StandardError, I18n.t('graphql.mutations.sign_in.errors.confirmation_code_incorrect') if code != confirmation_code || confirmation_code.nil?
 
     self.confirmation_code = nil
     self.last_try = Time.zone.now

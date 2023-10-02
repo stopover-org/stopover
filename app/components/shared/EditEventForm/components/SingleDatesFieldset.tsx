@@ -2,6 +2,7 @@ import React from "react";
 import { FormHelperText, Grid, IconButton, Option, Stack } from "@mui/joy";
 import moment, { Moment } from "moment";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { useTranslation } from "react-i18next";
 import Fieldset from "../../../v2/Fieldset";
 import useFormContext from "../../../../lib/hooks/useFormContext";
 import { CreateEventFields } from "../../../../scenes/firms/events/CreateEventScene/useCreateEventForm";
@@ -39,20 +40,21 @@ const SingleDatesFieldset = () => {
       },
       ...singleDates.value.slice(index + 1),
     ]);
+  const { t } = useTranslation();
 
   return (
     <Fieldset>
       <Grid xs={12} container>
         <Grid xs={12}>
           <Button size="sm" onClick={addSingleDate}>
-            Add new date
+            {t("forms.editEvent.addNewSingleDate")}
           </Button>
         </Grid>
         {singleDates.value.map(({ date, hour, minute }, index) => (
           <React.Fragment key={index}>
             <Grid xs={4}>
               <DatePicker
-                label="One time event starts at"
+                label={t("forms.editEvent.onetimeStartAt")}
                 value={date}
                 onChange={(newDate) =>
                   changeSingleDate(newDate as Moment, index, "date")
@@ -69,7 +71,7 @@ const SingleDatesFieldset = () => {
             </Grid>
             <Grid xs={2}>
               <Select
-                label="Time (hour)"
+                label={t("general.hours")}
                 onChange={(value) => {
                   changeSingleDate(value as number, index, "hour");
                 }}
@@ -78,7 +80,7 @@ const SingleDatesFieldset = () => {
               >
                 {hours.map((h) => (
                   <Option key={h} value={h}>
-                    {h.toString().padStart(2, "0")} h
+                    {h.toString().padStart(2, "0")} {t("general.hourShort")}
                   </Option>
                 ))}
               </Select>
@@ -95,7 +97,7 @@ const SingleDatesFieldset = () => {
             </Grid>
             <Grid xs={2}>
               <Select
-                label="Time (minute)"
+                label={t("general.minutes")}
                 onChange={(value) => {
                   changeSingleDate(value as number, index, "minute");
                 }}
@@ -104,7 +106,7 @@ const SingleDatesFieldset = () => {
               >
                 {minutes.map((m) => (
                   <Option key={m} value={m}>
-                    {m.toString().padStart(2, "0")} m
+                    {m.toString().padStart(2, "0")} {t("general.minuteShort")}
                   </Option>
                 ))}
               </Select>

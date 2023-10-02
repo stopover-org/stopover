@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, IconButton, Stack } from "@mui/joy";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { useTranslation } from "react-i18next";
 import useFormContext from "../../../../lib/hooks/useFormContext";
 import Button from "../../../v2/Button/Button";
 import Fieldset from "../../../v2/Fieldset";
@@ -51,12 +52,13 @@ const EventOptionsFieldset = () => {
       ]),
     [eventOptionsField]
   );
+  const { t } = useTranslation();
   return (
     <Fieldset>
       <Grid xs={12} container>
         <Grid xs={12}>
           <Button size="sm" onClick={addEventOption}>
-            Add new Event Option
+            {t("forms.editEvent.addNewOption")}
           </Button>
         </Grid>
         {eventOptionsField.value.map((eventOption, index) => (
@@ -64,21 +66,21 @@ const EventOptionsFieldset = () => {
             <Grid xs={4}>
               <Input
                 value={eventOption.title}
-                label="Event Option Title"
+                label={t("models.eventOption.attributes.title")}
                 onChange={(value) => onEventOptionChange(value, index, "title")}
                 error={form.formState.errors?.eventOptions?.[index]?.title}
               />
             </Grid>
             <Grid xs={4}>
               <Input
-                placeholder="Amount"
+                placeholder={t("models.eventOption.attributes.organizerPrice")}
                 startDecorator="$"
                 value={eventOption.organizerPriceCents.toString()}
                 onChange={(value) =>
                   onEventOptionChange(value, index, "organizerPriceCents")
                 }
                 type="number"
-                label="Organizer Price"
+                label={t("models.eventOption.attributes.organizerPrice")}
                 error={
                   form.formState.errors?.eventOptions?.[index]
                     ?.organizerPriceCents
@@ -109,7 +111,7 @@ const EventOptionsFieldset = () => {
             <Grid xs={4}>
               <Checkbox
                 checked={eventOption.builtIn}
-                label="Built In"
+                label={t("models.eventOption.attributes.builtIn")}
                 onChange={() =>
                   onEventOptionChange(!eventOption.builtIn, index, "builtIn")
                 }
@@ -118,7 +120,7 @@ const EventOptionsFieldset = () => {
             <Grid xs={4}>
               <Checkbox
                 checked={eventOption.forAttendee}
-                label="Will be applied for every attendee"
+                label={t("models.eventOption.attributes.forAttendee")}
                 onChange={() =>
                   onEventOptionChange(
                     !eventOption.forAttendee,

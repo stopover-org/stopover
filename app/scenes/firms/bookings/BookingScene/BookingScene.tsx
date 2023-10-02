@@ -25,6 +25,7 @@ import Button from "../../../../components/v2/Button";
 import AddAttendeeModal from "./components/AddAttendeeModal";
 import useSubscription from "../../../../lib/hooks/useSubscription";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
+import { useTranslation } from "react-i18next";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
@@ -162,6 +163,8 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
     }))
   );
 
+  const { t } = useTranslation()
+
   return (
     <>
       <Grid container>
@@ -169,8 +172,8 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           <Breadcrumbs
             padding={0}
             items={[
-              { title: "My Firm", href: "/my-firm" },
-              "Bookings",
+              { title: t('layout.header.myFirm'), href: "/my-firm" },
+              t('models.booking.plural'),
               getHumanDateTime(moment(booking.bookedFor!))!,
               booking.id,
             ]}
@@ -185,11 +188,11 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
                   {booking.event.title}
                 </Link>
                 <Tag color={tagColor} link={false}>
-                  {booking.status} booking
+                  {t(`statuses.${booking.status}`)} {t('models.booking.singular').toLowerCase()}
                 </Tag>
-                <Tag color='primary' link={false}>
-                  {booking.paymentType}
-                </Tag>
+                {booking.paymentType && <Tag color='primary' link={false}>
+                  {t(`models.firm.enums.paymentTypes.${booking.paymentType}`)} {t('models.payment.singular').toLowerCase()}
+                </Tag>}
               </Typography>
               <Typography>
                 {getHumanDateTime(moment(booking.bookedFor!))}
@@ -202,7 +205,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
                   color="danger"
                   onClick={() => setRefundModal(true)}
                 >
-                  Refund this booking
+                  {t('scenes.firms.bookings.bookingScene.refundBooking')}
                 </Button>
               </Box>
             )}
@@ -211,13 +214,13 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
 
         <Grid xs={4}>
           <Typography level='body-lg'>
-            You get: {getCurrencyFormat(
+            {t('models.booking.attributes.organizerTotalPrice')}: {getCurrencyFormat(
               booking.organizerTotalPrice.cents,
               booking.organizerTotalPrice.currency.name
             )}
           </Typography>
           <Typography level='body-lg'>
-            They pay: {getCurrencyFormat(
+            {t('models.booking.attributes.attendeeTotalPrice')}: {getCurrencyFormat(
               booking.attendeeTotalPrice.cents,
               booking.attendeeTotalPrice.currency.name
             )}
@@ -226,19 +229,19 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
 
         <Grid xs={4}>
           <Typography level='body-lg'>
-            Already paid: {getCurrencyFormat(
+            {t('models.booking.attributes.alreadyPaidPrice')}: {getCurrencyFormat(
               booking.alreadyPaidPrice.cents,
               booking.alreadyPaidPrice.currency.name
             )}
           </Typography>
           {booking.paymentType === 'stripe' && <Typography level='body-lg'>
-            Left to pay: {getCurrencyFormat(
+            {t('models.booking.attributes.leftToPayPrice')}: {getCurrencyFormat(
               booking.leftToPayPrice.cents,
               booking.leftToPayPrice.currency.name
             )}
           </Typography>}
           {booking.paymentType === 'cash' && <Typography level='body-lg'>
-            Left to pay: {getCurrencyFormat(
+            {t('models.booking.attributes.leftToPayDeposit')}: {getCurrencyFormat(
               booking.leftToPayDepositPrice.cents,
               booking.leftToPayDepositPrice.currency.name
             )}
@@ -250,26 +253,33 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
         </Grid>
 
         <Grid lg={8} md={12}>
-          <Typography level="title-lg">Attendees</Typography>
+          <Typography level="title-lg" pb={1} >{t('models.attendee.plural')}</Typography>
           <AttendeesTable bookingFragmentRef={booking} />
-          <br />
           {booking.status !== "cancelled" && (
             <AddAttendeeModal bookingFragmentRef={booking} />
           )}
         </Grid>
         
         <Grid lg={4} md={12}>
-          <Typography level="title-lg">Booking Options</Typography>
+          <Typography level="title-lg" pb={1}>{t('models.bookingOption.plural')}</Typography>
           <EventOptionsTable bookingFragmentRef={booking} />
         </Grid>
-        
-        <Grid xs={12}>
-          <Typography level="title-lg">Payments</Typography>
-          <Table headers={paymentsHeaders} data={paymentsData} />
+
+        <Grid xs={12} padding={5}>
+          <Divider />
         </Grid>
         
         <Grid xs={12}>
-          <Typography level="title-lg">Refunds</Typography>
+          <Typography level="title-lg" pb={1}>{t('models.payment.plural')}</Typography>
+          <Table headers={paymentsHeaders} data={paymentsData} />
+        </Grid>
+
+        <Grid xs={12} padding={5}>
+          <Divider />
+        </Grid>
+        
+        <Grid xs={12}>
+          <Typography level="title-lg" pb={1}>{t('models.refund.plural')}</Typography>
           <Table headers={refundsHeaders} data={refundsData} />
         </Grid>
       </Grid>

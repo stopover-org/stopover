@@ -1,5 +1,6 @@
 import React from "react";
 import { Autocomplete, Grid } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import Fieldset from "../../v2/Fieldset/Fieldset";
 import Input from "../../v2/Input/Input";
 import FileUploader from "../../v2/FileUploader/FileUploader";
@@ -17,17 +18,21 @@ const EditFirmForm = () => {
   const form = useFormContext();
   const paymentTypesField = form.useFormField("paymentTypes");
   const imageField = form.useFormField("image");
+  const { t } = useTranslation();
 
   return (
     <Grid container spacing={2} lg={8} md={12} sm={12}>
       <Fieldset>
         <Grid md={6} sm={12}>
-          <Input {...form.useFormField("title")} label="Title" />
+          <Input
+            {...form.useFormField("title")}
+            label={t("models.firm.attributes.title")}
+          />
         </Grid>
         <Grid md={6} sm={12}>
           <Input
             {...form.useFormField("contactPerson")}
-            label="Contact Person"
+            label={t("models.firm.attributes.contactPerson")}
           />
         </Grid>
         <Grid xs={12}>
@@ -41,13 +46,15 @@ const EditFirmForm = () => {
 
       <Fieldset>
         <Grid xs={12}>
-          <Typography level="title-lg">Contact Information</Typography>
+          <Typography level="title-lg">
+            {t("forms.editFirm.paymentInformation")}
+          </Typography>
         </Grid>
         <Grid xs={12}>
           <Autocomplete
             disableClearable
             multiple
-            placeholder="Available Payment Types"
+            placeholder={t("models.firm.attributes.paymentType")}
             options={["Cash", "Stripe"].map((v) => ({
               label: capitalize(v),
               value: v.toLowerCase(),
@@ -79,33 +86,46 @@ const EditFirmForm = () => {
 
       <Fieldset>
         <Grid xs={12}>
-          <Typography level="title-lg">Contact Information</Typography>
+          <Typography level="title-lg">
+            {t("forms.editFirm.contactInformation")}
+          </Typography>
         </Grid>
         <Grid md={6} sm={12}>
-          <Input {...form.useFormField("primaryEmail")} label="Primary Email" />
+          <Input
+            {...form.useFormField("primaryEmail")}
+            label={t("models.firm.attributes.primaryEmail")}
+          />
         </Grid>
         <Grid md={6} sm={12}>
           <PhoneInput
             {...form.useFormField("primaryPhone")}
-            label="Primary Phone"
+            label={t("models.firm.attributes.primaryPhone")}
           />
         </Grid>
         <Grid xs={12}>
-          <ChipsInput {...form.useFormField("contacts")} label="Contacts" />
+          <ChipsInput
+            {...form.useFormField("contacts")}
+            label={t("models.firm.attributes.contacts")}
+          />
         </Grid>
         <Grid xs={12}>
-          <Input {...form.useFormField("website")} label="Website" />
+          <Input
+            {...form.useFormField("website")}
+            label={t("models.firm.attributes.website")}
+          />
         </Grid>
       </Fieldset>
 
       <Fieldset>
         <Grid xs={12}>
-          <Typography level="title-lg">Description</Typography>
+          <Typography level="title-lg">
+            {t("models.firm.attributes.description")}
+          </Typography>
         </Grid>
         <Grid xs={12}>
           <TextArea
             {...form.useFormField("description")}
-            label="Description"
+            label={t("models.firm.attributes.description")}
             minRows={5}
           />
         </Grid>
@@ -114,7 +134,7 @@ const EditFirmForm = () => {
       <Fieldset>
         <Grid xs={12}>
           <SubmitButton submitting={form.formState.isSubmitting}>
-            Submit
+            {t("general.save")}
           </SubmitButton>
         </Grid>
       </Fieldset>

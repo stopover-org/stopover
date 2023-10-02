@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 import { getHumanDateTime } from "../../../../lib/utils/dates";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Tag from "../../../v2/Tag/Tag";
@@ -10,38 +11,40 @@ const TagColor = ({ status }: { status: string }) => {
     danger: ["disabled"],
     status,
   });
+  const { t } = useTranslation();
 
   return (
     <Tag link={false} color={color}>
-      {status}
+      {t(`statuses.${status}`)}
     </Tag>
   );
 };
 export function useSchedulesHeaders() {
+  const { t } = useTranslation();
   return React.useMemo(
     () => [
       {
-        label: "Event",
-        width: 100,
+        label: t("models.event.singular"),
+        width: 300,
         key: "eventId",
       },
       {
-        label: "Date",
+        label: t("models.schedule.attributes.scheduledFor"),
         width: 150,
         key: "date",
       },
       {
-        label: "Attendees",
+        label: t("models.attendee.plural"),
         width: 50,
         key: "attendees",
       },
       {
-        label: "Bookings",
+        label: t("models.booking.plural"),
         width: 50,
         key: "bookings",
       },
       {
-        label: "Status",
+        label: t("models.schedule.attributes.status"),
         width: 100,
         key: "status",
       },
@@ -67,8 +70,12 @@ export function useSchedulesColumns(
         ),
         status: <TagColor status={scheduleRow.status} />,
         eventId: (
-          <Link href={`/my-firm/events/${scheduleRow.event?.id}`} primary>
-            {scheduleRow.event?.id}
+          <Link
+            href={`/my-firm/events/${scheduleRow.event?.id}`}
+            primary
+            fontSize="sm"
+          >
+            {scheduleRow.event?.title}
           </Link>
         ),
       })),

@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import Fieldset from "../../v2/Fieldset/Fieldset";
 import Typography from "../../v2/Typography/Typography";
 import AddressAutocomplete from "../../v2/AddressAutocomplete/AddressAutocomplete";
@@ -54,10 +55,12 @@ const AddressFieldset = () => {
     });
   }, [fullAddress]);
 
+  const { t } = useTranslation();
+
   return (
     <Fieldset>
       <Grid xs={12}>
-        <Typography level="title-lg">Address</Typography>
+        <Typography level="title-lg">{t("address.title")}</Typography>
       </Grid>
       <Grid xs={12}>
         <AddressAutocomplete
@@ -68,7 +71,7 @@ const AddressFieldset = () => {
 
             setFullAddressCode(placeId);
           }}
-          label="Full Address"
+          label={t("address.fullAddress")}
           error={fullAddressField.error}
         />
       </Grid>
@@ -81,7 +84,7 @@ const AddressFieldset = () => {
 
             setCountryCode(placeId);
           }}
-          label="Country"
+          label={t("address.country")}
           error={countryField.error}
         />
       </Grid>
@@ -94,7 +97,7 @@ const AddressFieldset = () => {
           ]}
           countries={gMapCountryCode ? [gMapCountryCode] : undefined}
           {...regionField}
-          label="Region"
+          label={t("address.region")}
         />
       </Grid>
       <Grid md={6} sm={12}>
@@ -102,7 +105,7 @@ const AddressFieldset = () => {
           types={["locality", "administrative_area_level_3"]}
           countries={gMapCountryCode ? [gMapCountryCode] : undefined}
           {...cityField}
-          label="City"
+          label={t("address.city")}
         />
       </Grid>
       <Grid md={6} sm={12}>
@@ -110,11 +113,11 @@ const AddressFieldset = () => {
           types={["address"]}
           countries={gMapCountryCode ? [gMapCountryCode] : undefined}
           {...streetField}
-          label="Street"
+          label={t("address.street")}
         />
       </Grid>
       <Grid md={6} sm={12}>
-        <Input {...houseNumberField} label="House Number" />
+        <Input {...houseNumberField} label={t("address.houseNumber")} />
       </Grid>
     </Fieldset>
   );

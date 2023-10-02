@@ -29,7 +29,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export function usePublishEventForm(
-  eventFragmentRef: usePublishEventForm_EventFragment$key
+  eventFragmentRef: usePublishEventForm_EventFragment$key,
+  onComplete?: () => void
 ) {
   return useMutationForm(
     graphql`
@@ -50,6 +51,7 @@ export function usePublishEventForm(
     {
       defaultValues: useDefaultValues(eventFragmentRef),
       resolver: yupResolver(validationSchema),
+      onCompleted: onComplete,
     }
   );
 }

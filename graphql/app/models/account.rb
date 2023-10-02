@@ -80,6 +80,7 @@ class Account < ApplicationRecord
   before_validation :adjust_user_info
 
   # SCOPES ================================================================
+  default_scope { in_order_of(:status, %w[verified initial]) }
 
   # DELEGATION ============================================================
 

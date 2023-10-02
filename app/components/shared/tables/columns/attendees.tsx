@@ -2,6 +2,7 @@ import React from "react";
 import { Box, IconButton, Stack } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import UnfoldMoreDoubleIcon from "@mui/icons-material/UnfoldMoreDouble";
+import { useTranslation } from "react-i18next";
 import RegisterAttendee from "../../RegisterAttendee";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
 import { attendees_BookingFragment$key } from "../../../../artifacts/attendees_BookingFragment.graphql";
@@ -17,15 +18,32 @@ import Checkbox from "../../../v2/Checkbox";
 import { ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key } from "../../../../artifacts/ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment.graphql";
 
 export function useAttendeesHeaders() {
+  const { t } = useTranslation();
   return React.useMemo(
     () => [
-      { label: "", width: 50, key: "index" },
-      { label: "Full Name", width: 150, key: "fullName" },
-      { label: "Phone", width: 150, key: "phone" },
-      { label: "Email", width: 150, key: "email" },
-      { label: "Status", width: 150, key: "status" },
-      { label: "Selected Options", width: 150, key: "expand" },
-      { label: "Actions", width: 100, key: "actions" },
+      { label: t("general.id"), width: 50, key: "index" },
+      {
+        label: t("models.attendee.attributes.fullName"),
+        width: 150,
+        key: "fullName",
+      },
+      {
+        label: t("models.attendee.attributes.phone"),
+        width: 150,
+        key: "phone",
+      },
+      {
+        label: t("models.attendee.attributes.email"),
+        width: 150,
+        key: "email",
+      },
+      {
+        label: t("models.attendee.attributes.status"),
+        width: 150,
+        key: "status",
+      },
+      { label: t("models.attendeeOption.plural"), width: 150, key: "expand" },
+      { label: t("general.actions"), width: 100, key: "actions" },
     ],
     []
   );
@@ -38,10 +56,11 @@ const TagColor = ({ status }: { status: string }) => {
     primary: ["registered"],
     status,
   });
+  const { t } = useTranslation();
 
   return (
     <Tag link={false} color={color}>
-      {status}
+      {t(`statuses.${status}`)}
     </Tag>
   );
 };
@@ -87,16 +106,36 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
     `,
     bookingFragmentRef
   );
-
+  const { t } = useTranslation();
   const attendeeOptionsHeaders = React.useMemo(
     () => [
-      { label: "ID", width: 50, key: "id" },
-      { label: "Title", width: 100, key: "title" },
-      { label: "You get", width: 100, key: "organizerPrice" },
-      { label: "Attendee pay", width: 100, key: "attendeePrice" },
-      { label: "Status", width: 100, key: "status" },
-      { label: "Built In", width: 100, key: "builtIn" },
-      { label: "", width: 100, key: "actions" },
+      { label: t("general.id"), width: 50, key: "id" },
+      {
+        label: t("models.eventOption.attributes.title"),
+        width: 100,
+        key: "title",
+      },
+      {
+        label: t("models.attendeeOption.attributes.organizerPrice"),
+        width: 100,
+        key: "organizerPrice",
+      },
+      {
+        label: t("models.attendeeOption.attributes.attendeePrice"),
+        width: 100,
+        key: "attendeePrice",
+      },
+      {
+        label: t("models.attendeeOption.attributes.status"),
+        width: 100,
+        key: "status",
+      },
+      {
+        label: t("models.attendeeOption.attributes.builtIn"),
+        width: 100,
+        key: "builtIn",
+      },
+      { label: t("general.actions"), width: 100, key: "actions" },
     ],
     []
   );
@@ -113,34 +152,36 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
             } = opt;
             return {
               id: i + 1,
-              title: title || "N/A",
+              title: title || t("general.noData"),
               organizerPrice:
                 getCurrencyFormat(
                   builtIn ? 0 : organizerPrice?.cents,
                   organizerPrice?.currency?.name
-                ) || "N/A",
+                ) || t("general.noData"),
               attendeePrice:
                 getCurrencyFormat(
                   builtIn ? 0 : attendeePrice?.cents,
                   attendeePrice?.currency?.name
-                ) || "N/A",
+                ) || t("general.noData"),
               builtIn: <Checkbox label="" checked={builtIn} readOnly />,
               status: <OptionTagColor status={status} />,
-              actions: (
-                <ChangeAttendeeOptionAvailabilityModal
-                  optionFragmentRef={
-                    opt as ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key
-                  }
-                />
-              ),
+              actions: att.status !== "removed" &&
+                booking.status !== "cancelled" && (
+                  <ChangeAttendeeOptionAvailabilityModal
+                    optionFragmentRef={
+                      opt as ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key
+                    }
+                  />
+                ),
             };
           }
         );
         return {
           index: index + 1,
-          fullName: att.fullName?.trim() === "" ? "N/A" : att.fullName,
-          phone: att.phone || "N/A",
-          email: att.email || "N/A",
+          fullName:
+            att.fullName?.trim() === "" ? t("general.noData") : att.fullName,
+          phone: att.phone || t("general.noData"),
+          email: att.email || t("general.noData"),
           status: <TagColor status={att.status} />,
           expand: (
             <IconButton size="sm">
@@ -149,7 +190,10 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
           ),
           tables: [
             <Box sx={{ marginLeft: "50px" }}>
-              <Typography level="title-md">Attendee Options</Typography>,
+              <Typography level="title-md">
+                {t("models.attendeeOption.plural")} (
+                {t("models.attendee.singular")})
+              </Typography>
               <Table
                 hoverRow={false}
                 headers={attendeeOptionsHeaders}
@@ -157,25 +201,25 @@ export function useAttendeesColumns(bookingFragmentRef: any) {
               />
             </Box>,
           ],
-          actions: (
-            <Stack direction="row" justifyContent="flex-end">
-              {booking.event.requiresCheckIn &&
-                att.status === "not_registered" &&
-                booking.status !== "cancelled" && (
-                  <RegisterAttendee attendeeFragmentRef={att} />
-                )}
-              {booking.event.requiresCheckIn &&
-                att.status === "registered" &&
-                booking.status !== "cancelled" && (
-                  <DeregisterAttendee attendeeFragmentRef={att} />
-                )}
-              {att.status !== "removed" &&
-                booking.status !== "cancelled" &&
-                booking.attendees.length > 1 && (
-                  <RemoveAttendee attendeeFragmentRef={att} />
-                )}
-            </Stack>
-          ),
+          actions:
+            att.status !== "removed" ? (
+              <Stack direction="row" justifyContent="flex-end">
+                {booking.event.requiresCheckIn &&
+                  att.status === "not_registered" &&
+                  booking.status !== "cancelled" && (
+                    <RegisterAttendee attendeeFragmentRef={att} />
+                  )}
+                {booking.event.requiresCheckIn &&
+                  att.status === "registered" &&
+                  booking.status !== "cancelled" && (
+                    <DeregisterAttendee attendeeFragmentRef={att} />
+                  )}
+                {booking.status !== "cancelled" &&
+                  booking.attendees.length > 1 && (
+                    <RemoveAttendee attendeeFragmentRef={att} />
+                  )}
+              </Stack>
+            ) : null,
         };
       }),
     [booking]

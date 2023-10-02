@@ -14,6 +14,8 @@ import useUniqueMomentDates from "../../../../../lib/hooks/useUniqueMomentDates"
 import Link from "../../../../../components/v2/Link";
 import { EventActions_EventFragment$key } from "../../../../../artifacts/EventActions_EventFragment.graphql";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
+import { useTranslation } from "react-i18next";
+import { capitalize } from "../../../../../lib/utils/capitalize";
 
 interface EventActionsProps {
   eventFragmentRef: EventActions_EventFragment$key;
@@ -68,6 +70,8 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
     [dateField]
   );
 
+  const { t } = useTranslation()
+
   return availableDates.length > 0 ? (
     <>
       <Stack flexDirection="row" justifyContent="flex-end">
@@ -94,7 +98,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
               dateField.onChange(setTime(dateField.value, value));
             }}
             value={selectedTime}
-            placeholder="Select time"
+            placeholder={t('datepicker.selectTime')}
           >
             {availableTimes.map((time) => (
               <Option key={time.unix()} value={time.format(timeFormat)}>
@@ -103,18 +107,18 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             ))}
           </Select>
         </Box>
-        <Box>
+        <Box sx={{width: '100px'}}>
           {!booking && (
             <SubmitButton
               submitting={form.formState.isSubmitting}
               disabled={!dateField.value.isValid() || !isValidTime}
             >
-              Book Event
+              {t('scenes.attendees.events.eventScene.bookEvent')}
             </SubmitButton>
           )}
           {booking && (
             <Link href={`/trips/${booking.trip.id}`} underline={false}>
-              <Button>My Trips</Button>
+              <Button>{t('layout.header.myTrips')}</Button>
             </Link>
           )}
         </Box>
@@ -125,9 +129,9 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             event.attendeePricePerUom?.cents,
             event.attendeePricePerUom?.currency?.name
           )}{" "}
-          x {attendeesCountField.value} attendee
+          x {attendeesCountField.value} {t('general.attendee')}
           <br />
-          Total:{" "}
+          {capitalize(t('general.total'))}:{" "}
           {getCurrencyFormat(
             attendeesCountField.value * (event.attendeePricePerUom?.cents || 0),
             event.attendeePricePerUom?.currency?.name

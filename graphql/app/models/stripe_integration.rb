@@ -58,7 +58,7 @@ class StripeIntegration < ApplicationRecord
   # CALLBACKS ================================================================
   #
   # SCOPES =====================================================================
-  default_scope { order(version: :desc) }
+  default_scope { in_order_of(:status, %w[active removed]).order(version: :desc) }
 
   # DELEGATIONS ==============================================================
 

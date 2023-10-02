@@ -29,7 +29,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useSyncStripeForm(
-  eventFragmentRef: useSyncStripeForm_EventFragment$key
+  eventFragmentRef: useSyncStripeForm_EventFragment$key,
+  onSuccess?: () => void
 ) {
   return useMutationForm(
     graphql`
@@ -49,6 +50,7 @@ export function useSyncStripeForm(
     {
       defaultValues: useDefaultValues(eventFragmentRef),
       resolver: yupResolver(validationSchema),
+      onCompleted: onSuccess,
     }
   );
 }

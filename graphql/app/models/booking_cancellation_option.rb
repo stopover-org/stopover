@@ -72,7 +72,7 @@ class BookingCancellationOption < ApplicationRecord
   # CALLBACKS =============================================================
 
   # SCOPES ================================================================
-  default_scope { order(deadline: :desc) }
+  default_scope { in_order_of(:status, %w[active inactive removed]).order(deadline: :desc) }
 
   # DELEGATION ============================================================
 end

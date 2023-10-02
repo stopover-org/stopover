@@ -9,6 +9,7 @@ import { capitalize } from "../../../../lib/utils/capitalize";
 import ConnectStripeForm from "./ConnectStripeForm";
 import StripeConnectsTable from "../../../../components/shared/tables/StripeConnectsTable";
 import WithdrawBalanceForm from "./WithdrawBalanceForm";
+import { useTranslation } from "react-i18next";
 
 interface BalanceSectionProps {
   firmFragmentRef: BalanceSection_FirmFragment$key;
@@ -58,16 +59,19 @@ const BalanceSection = ({
   const activeStripeConnect = firm.stripeConnects.find(
     ({ status }) => status === "active" || status === "pending"
   );
+
+const { t } = useTranslation()
+
   return (
     <Section>
       <Grid container spacing={2} padding={2}>
         <Grid xs={12}>
-          <Typography level="h3">Balance</Typography>
+          <Typography level="h3">{t('models.balance.singular')}</Typography>
         </Grid>
-        <Grid xs={3}>
-          <Typography level="h4">Total:</Typography>
+        <Grid md={3} sm={12}>
+          <Typography level="h4">{t('scenes.firms.dashboardScene.total')}:</Typography>
         </Grid>
-        <Grid xs={4}>
+        <Grid sm={12} md={4} >
           <Typography level="h4">
             {getCurrencyFormat(
               firm.balance?.totalAmount?.cents,
@@ -75,28 +79,28 @@ const BalanceSection = ({
             )}
           </Typography>
           <Typography level="body-md">
-            Processing:&nbsp;
+            {capitalize(t('statuses.processing'))}:&nbsp;
             {getCurrencyFormat(
               firm.balance?.processingPayments?.cents,
               firm.balance?.processingPayments?.currency?.name
             )}
           </Typography>
         </Grid>
-        <Grid xs={4}>
+        <Grid md={4} sm={12}>
           <WithdrawBalanceForm balanceFragmentRef={firm.balance!} />
         </Grid>
 
         <Grid xs={12}>
-          <Typography level="h4">Available Payments</Typography>
+          <Typography level="h4">{t('models.firm.attributes.paymentType')}</Typography>
         </Grid>
         <Grid xs={12}>
           {firm.paymentTypes.map((type) => (
-            <Chip key={type} sx={{ marginRight: "5px" }}>{capitalize(type)}</Chip>
+            <Chip key={type} sx={{ marginRight: "5px" }}>{capitalize(t(`models.firm.enums.paymentTypes.${type.toLowerCase()}`))}</Chip>
           ))}
         </Grid>
 
         <Grid xs={12}>
-          <Typography level="h4">Payout Settings</Typography>
+          <Typography level="h4">{t('scenes.firms.dashboardScene.payoutSettings')}</Typography>
         </Grid>
         {firm.paymentTypes.includes("stripe") && !activeStripeConnect && (
           <Grid xs={12}>
@@ -105,7 +109,7 @@ const BalanceSection = ({
         )}
 
         <Grid xs={12}>
-          <Typography level="h4">Connected Stripe Accounts</Typography>
+          <Typography level="h4">{t('scenes.firms.dashboardScene.connectedStripeAccounts')}</Typography>
         </Grid>
         <Grid xs={12}>
           <StripeConnectsTable

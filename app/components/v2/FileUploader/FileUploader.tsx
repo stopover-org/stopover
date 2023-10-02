@@ -1,6 +1,7 @@
 import React from "react";
 import { PickerOverlay } from "filestack-react";
 import { PickerOptions } from "filestack-js";
+import { useTranslation } from "react-i18next";
 import Button from "../Button";
 import { useApiKey } from "../../../lib/hooks/useApiKey";
 
@@ -14,10 +15,15 @@ interface FileUploaderProps extends BaseFileUploaderProps {}
 const FileUploader = ({ onChange, pickerOptions }: FileUploaderProps) => {
   const filestackApiKey = useApiKey("filestack")!;
   const [opened, setOpened] = React.useState(false);
+  const { t } = useTranslation();
   return (
     <>
-      <Button onClick={() => setOpened(!opened)} sx={{ marginBottom: "20px" }}>
-        Attach Image
+      <Button
+        size="sm"
+        onClick={() => setOpened(!opened)}
+        sx={{ marginBottom: "20px" }}
+      >
+        {t("forms.editFirm.attachImage")}
       </Button>
       {opened && (
         <PickerOverlay

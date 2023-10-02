@@ -6,13 +6,17 @@ import {
   ModalDialog,
   Stack,
   Tooltip,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/joy";
-import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import {} from "@mui/material";
 import React from "react";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
+import { useTranslation } from "react-i18next";
 import Button from "../../v2/Button";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import ChangeAttendeeOptionAvailability from "./ChangeAttendeeOptionAvailability";
@@ -46,6 +50,7 @@ const ChangeAttendeeOptionAvailabilityModal = ({
       optionFragmentRef
     );
   const [modal, setModal] = React.useState(false);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -54,7 +59,7 @@ const ChangeAttendeeOptionAvailabilityModal = ({
         color={attendeeOption.status === "available" ? "danger" : "success"}
         onClick={() => setModal(true)}
       >
-        <Tooltip title="Change Availability">
+        <Tooltip title={t("forms.changeOptionAvailability.tooltip")}>
           {attendeeOption.status === "available" ? (
             <DoNotDisturbIcon />
           ) : (
@@ -67,7 +72,7 @@ const ChangeAttendeeOptionAvailabilityModal = ({
           <DialogTitle>
             <Stack flexDirection="row" alignItems="center">
               <WarningRoundedIcon />
-              &nbsp; Booking changes confirmation
+              &nbsp; {t("forms.changeOptionAvailability.modal.header")}
             </Stack>
           </DialogTitle>
           <Divider />
@@ -75,37 +80,61 @@ const ChangeAttendeeOptionAvailabilityModal = ({
             <Stack>
               {attendeeOption.eventOption.builtIn ? (
                 <Box>
-                  {attendeeOption.eventOption.title} will be{" "}
                   {attendeeOption.status === "available"
-                    ? "remove from"
-                    : "added to"}{" "}
-                  this booking
+                    ? t(
+                        "forms.changeOptionAvailability.modal.toUnavailable.builtInExplanation",
+                        { title: attendeeOption.eventOption.title }
+                      )
+                    : t(
+                        "forms.changeOptionAvailability.modal.toAvailable.builtInExplanation",
+                        { title: attendeeOption.eventOption.title }
+                      )}
                 </Box>
               ) : (
                 <>
                   <Box>
-                    The price for the booking will be{" "}
                     {attendeeOption.status === "available"
-                      ? "decreased for"
-                      : "increased to"}{" "}
-                    {getCurrencyFormat(
-                      attendeeOption.attendeePrice?.cents,
-                      attendeeOption.attendeePrice?.currency?.name
-                    )}
+                      ? t(
+                          "forms.changeOptionAvailability.modal.toUnavailable.commonExplanation",
+                          {
+                            amount: getCurrencyFormat(
+                              attendeeOption.attendeePrice?.cents,
+                              attendeeOption.attendeePrice?.currency?.name
+                            ),
+                          }
+                        )
+                      : t(
+                          "forms.changeOptionAvailability.modal.toAvailable.commonExplanation",
+                          {
+                            amount: getCurrencyFormat(
+                              attendeeOption.attendeePrice?.cents,
+                              attendeeOption.attendeePrice?.currency?.name
+                            ),
+                          }
+                        )}
                   </Box>
-                  <Box>If it was paid, then this option will be refunded</Box>
+                  {attendeeOption.status === "available" && (
+                    <Box>
+                      {t("forms.changeOptionAvailability.modal.explanation")}
+                    </Box>
+                  )}
                 </>
               )}
             </Stack>
           </DialogContent>
           <DialogActions>
+            <Button
+              size="sm"
+              color="neutral"
+              onClick={() => setModal(false)}
+              sx={{ marginRight: "10px" }}
+            >
+              {t("general.cancel")}
+            </Button>
             <ChangeAttendeeOptionAvailability
               optionFragmentRef={attendeeOption}
               onSuccess={() => setModal(false)}
             />
-            <Button size="sm" color="neutral" onClick={() => setModal(false)}>
-              Cancel
-            </Button>
           </DialogActions>
         </ModalDialog>
       </Modal>

@@ -1,5 +1,6 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import { stripeIntegrations_EventFragment$key } from "../../../../artifacts/stripeIntegrations_EventFragment.graphql";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
 import Tag from "../../../v2/Tag/Tag";
@@ -10,22 +11,44 @@ const StatusTag = ({ status }: { status: string }) => {
     primary: ["active"],
     status,
   });
+  const { t } = useTranslation();
 
   return (
     <Tag link={false} color={color}>
-      {status}
+      {t(`statuses.${status}`)}
     </Tag>
   );
 };
 
 export function useStripeIntegrationsHeaders() {
+  const { t } = useTranslation();
   return React.useMemo(
     () => [
-      { key: "status", width: 100, label: "Status" },
-      { key: "belongsTo", width: 150, label: "Belongs To" },
-      { key: "priceId", width: 300, label: "Price Id in Stripe" },
-      { key: "productId", width: 300, label: "Product Id in Stripe" },
-      { key: "version", width: 100, label: "Integration Version" },
+      {
+        key: "status",
+        width: 100,
+        label: t("models.stripeIntegration.attributes.status"),
+      },
+      {
+        key: "belongsTo",
+        width: 150,
+        label: t("models.stripeIntegration.attributes.stripeableType"),
+      },
+      {
+        key: "priceId",
+        width: 300,
+        label: t("models.stripeIntegration.attributes.priceId"),
+      },
+      {
+        key: "productId",
+        width: 300,
+        label: t("models.stripeIntegration.attributes.productId"),
+      },
+      {
+        key: "version",
+        width: 100,
+        label: t("models.stripeIntegration.attributes.version"),
+      },
     ],
     []
   );

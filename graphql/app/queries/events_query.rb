@@ -9,11 +9,11 @@ class EventsQuery
 
   def initialize(
     params = {},
-    after: 1,
+    after: 0,
     limit: PER_PAGE
   )
     @params = params
-    @conditions = { dates: { gt: Time.current } }
+    @conditions = { dates: { gte: Time.current } }
     @offset = after
     @limit = limit
   end

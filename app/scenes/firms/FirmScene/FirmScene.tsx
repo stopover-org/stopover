@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import { AspectRatio, Box, Chip, Grid, Stack } from "@mui/joy";
+import { AspectRatio, Box, Chip, Divider, Grid, Stack, useTheme } from "@mui/joy";
 import Typography from "../../../components/v2/Typography";
 import Button from "../../../components/v2/Button";
 import Breadcrumbs from "../../../components/v2/Breadcrumbs";
@@ -11,6 +11,9 @@ import { FirmScene_FirmFragment$key } from "../../../artifacts/FirmScene_FirmFra
 import Fieldset from "../../../components/v2/Fieldset";
 import useStatusColor from "../../../lib/hooks/useStatusColor";
 import { capitalize } from "../../../lib/utils/capitalize";
+import ImagesPreview from "../../../components/shared/ImagesPreview";
+import { useMediaQuery } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 interface FirmSceneProps {
   firmFragmentRef: FirmScene_FirmFragment$key;
@@ -52,115 +55,118 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
     status: firm.status,
   });
 
+  const { t } = useTranslation()
+  const theme = useTheme()
+  const isMobileView = useMediaQuery(theme.breakpoints.down('md'))
+  const textAlign = React.useMemo(() => isMobileView ? 'end' : 'start', [isMobileView])
+
   return (
     <Box>
-      <Breadcrumbs items={["My Firm"]} />
-      <Grid container spacing={2} sm={12} md={12} lg={8}>
+      <Breadcrumbs items={[t('layout.header.myFirm')]} />
+      <Grid container spacing={2} xs={12} md={12} lg={8}>
         <Fieldset>
           <Grid xs={12}>
             <Typography level="h3" sx={{ display: "inline" }}>
               {firm.title}
             </Typography>
-            <Tag href="#" color={tagColor}>
+            <Tag link={false} color={tagColor}>
               {firm.status}
             </Tag>
+            <Divider sx={{ margin: '5px' }} />
           </Grid>
-          <Grid xs={2}>
-            <Typography>Contact Person:</Typography>
+          <Grid md={2} xs={12}>
+            <Typography level='title-lg'>{t('models.firm.attributes.contactPerson')}:&nbsp;</Typography>
           </Grid>
-          <Grid xs={4}>
+          <Grid md={4} xs={12}>
             <Typography>{firm.contactPerson}</Typography>
           </Grid>
-          <Grid xs={6}>
+          <Grid xs={12}>
             {firm.image && (
-              <AspectRatio
-                variant="outlined"
-                ratio="4/3"
-                sx={{
-                  bgcolor: "background.level2",
-                  borderRadius: "md",
-                  position: "relative",
-                }}
-              >
-                <img alt="Logo Preview" src={firm.image} />
-              </AspectRatio>
+              <ImagesPreview
+                images={[firm.image]}
+                width={250}
+                readonly
+              />
             )}
           </Grid>
         </Fieldset>
 
         <Fieldset>
           <Grid xs={12}>
-            <Typography level="h3">Address</Typography>
+            <Typography level="h3">{t('address.title')}</Typography>
+            <Divider sx={{ margin: '5px' }} />
           </Grid>
-          <Grid xs={2}>
-            <Typography>Country:</Typography>
+          <Grid md={2} xs={12}>
+            <Typography level='title-lg'>{t('address.country')}:&nbsp;</Typography>
           </Grid>
-          <Grid xs={4}>
-            <Typography>{firm.country}</Typography>
+          <Grid md={4} xs={12}>
+            <Typography textAlign={textAlign}>{firm.country}</Typography>
           </Grid>
-          <Grid xs={2}>
-            <Typography>Region:</Typography>
+          <Grid md={2} xs={12}>
+            <Typography level='title-lg'>{t('address.region')}:&nbsp;</Typography>
           </Grid>
-          <Grid xs={4}>
-            <Typography>{firm.region}</Typography>
+          <Grid md={4} xs={12}>
+            <Typography textAlign={textAlign}>{firm.region}</Typography>
           </Grid>
-          <Grid xs={2}>
-            <Typography>City:</Typography>
+          <Grid md={2} xs={12}>
+            <Typography level='title-lg'>{t('address.city')}:&nbsp;</Typography>
           </Grid>
-          <Grid xs={4}>
-            <Typography>{firm.city}</Typography>
+          <Grid md={4} xs={12}>
+            <Typography textAlign={textAlign}>{firm.city}</Typography>
           </Grid>
-          <Grid xs={2}>
-            <Typography>Street:</Typography>
+          <Grid md={2} xs={12}>
+            <Typography level='title-lg'>{t('address.street')}:&nbsp;</Typography>
           </Grid>
-          <Grid xs={4}>
-            <Typography>{firm.street}</Typography>
+          <Grid md={4} xs={12}>
+            <Typography textAlign={textAlign}>{firm.street}</Typography>
           </Grid>
-          <Grid xs={2}>
-            <Typography>House Number:</Typography>
+          <Grid md={2} xs={12}>
+            <Typography level='title-lg'>{t('address.houseNumber')}:&nbsp;</Typography>
           </Grid>
-          <Grid xs={4}>
-            <Typography>{firm.houseNumber}</Typography>
+          <Grid md={4} xs={12}>
+            <Typography textAlign={textAlign}>{firm.houseNumber}</Typography>
           </Grid>
-          <Grid xs={2}>
-            <Typography>Full Address:</Typography>
+          <Grid md={2} xs={12}>
+            <Typography level='title-lg'>{t('address.fullAddress')}:&nbsp;</Typography>
           </Grid>
-          <Grid xs={4}>
-            <Typography>{firm.fullAddress}</Typography>
+          <Grid md={4} xs={12}>
+            <Typography textAlign={textAlign}>{firm.fullAddress}</Typography>
           </Grid>
         </Fieldset>
 
         <Fieldset>
           <Grid xs={12}>
-            <Typography level="h4">Payment Information</Typography>
+            <Typography level="h3">{t('forms.editFirm.paymentInformation')}</Typography>
+            <Divider sx={{ margin: '5px' }} />
           </Grid>
-          <Grid xs={6}>
+          <Grid md={6} xs={12}>
             {firm.paymentTypes.map((type) => (
-              <Chip sx={{ marginRight: "5px" }}>{capitalize(type)}</Chip>
+              <Chip sx={{ marginRight: "5px" }}>{capitalize(t(`models.firm.enums.paymentTypes.${type}`))}</Chip>
             ))}
           </Grid>
         </Fieldset>
 
         <Fieldset>
           <Grid xs={12}>
-            <Typography level="h3">Contact Information</Typography>
+            <Typography level="h3">{t('forms.editFirm.contactInformation')}</Typography>
+            <Divider sx={{ margin: '5px' }} />
           </Grid>
-          <Grid xs={2}>
-            <Typography>Primary Email:</Typography>
+          <Grid md={2} xs={12}>
+            <Typography level='title-lg'>{t('models.firm.attributes.primaryEmail')}:&nbsp;</Typography>
           </Grid>
-          <Grid xs={4}>
-            <Typography>{firm.primaryEmail}</Typography>
+          <Grid md={4} xs={12}>
+            <Typography textAlign={textAlign}>{firm.primaryEmail}</Typography>
           </Grid>
-          <Grid xs={2}>
-            <Typography>Primary Phone:</Typography>
+          <Grid md={2} xs={12}>
+            <Typography level='title-lg'>{t('models.firm.attributes.primaryPhone')}:&nbsp;</Typography>
           </Grid>
-          <Grid xs={4}>
-            <Typography>{firm.primaryPhone}</Typography>
+          <Grid md={4} xs={12}>
+            <Typography textAlign={textAlign}>{firm.primaryPhone}</Typography>
           </Grid>
-          <Grid xs={2}>
-            <Typography>Contacts:</Typography>
+          <Grid md={2} xs={12}>
+            <Typography level='title-lg'>{t('models.firm.attributes.contacts')}:</Typography>
           </Grid>
-          <Grid xs={10}>
+          <Grid md={10} xs={12}>
             <Stack flexDirection="row" flexWrap="wrap">
               {chips.map((chip: string, index: number) => (
                 <Chip
@@ -174,16 +180,17 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
               ))}
             </Stack>
           </Grid>
-          <Grid xs={2}>
-            <Typography>Website:</Typography>
+          <Grid md={2} xs={12}>
+            <Typography level='title-lg'>{t('models.firm.attributes.website')}:&nbsp;</Typography>
           </Grid>
-          <Grid xs={4}>
-            <Typography>{firm.website}</Typography>
+          <Grid md={4} xs={12}>
+            <Typography textAlign={textAlign}>{firm.website}</Typography>
           </Grid>
         </Fieldset>
         <Fieldset>
           <Grid xs={12}>
-            <Typography level="h3">Description</Typography>
+            <Typography level='title-lg'>{t('models.firm.attributes.description')}&nbsp;</Typography>
+            <Divider sx={{ margin: '5px' }} />
           </Grid>
           <Grid xs={12}>
             <Typography>{firm.description}</Typography>
@@ -196,7 +203,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
               {firm.status !== "removed" && (
                 <Link href="/my-firm/edit" underline={false}>
                   <Button color="primary" size="sm" sx={{ marginRight: 1 }}>
-                    Edit
+                    {t('general.edit')}
                   </Button>
                 </Link>
               )}

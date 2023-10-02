@@ -6,12 +6,15 @@ import {
   ModalDialog,
   Stack,
   Tooltip,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/joy";
-import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import React from "react";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useTranslation } from "react-i18next";
 import RemoveAttendee from "./RemoveAttendee";
 import { RemoveAttendeeModal_BookingFragment$key } from "../../../artifacts/RemoveAttendeeModal_BookingFragment.graphql";
 import Button from "../../v2/Button";
@@ -43,11 +46,12 @@ const AddAttendeeModal = ({
     attendeeFragmentRef
   );
   const [modal, setModal] = React.useState(false);
+  const { t } = useTranslation();
 
   return (
     <>
       <IconButton size="sm" color="danger" onClick={() => setModal(true)}>
-        <Tooltip title="Remove this attendee and refund it">
+        <Tooltip title={t("forms.removeAttendee.tooltip")}>
           <DeleteIcon />
         </Tooltip>
       </IconButton>
@@ -56,25 +60,26 @@ const AddAttendeeModal = ({
           <DialogTitle>
             <Stack flexDirection="row" alignItems="center">
               <WarningRoundedIcon />
-              &nbsp; Booking changes confirmation
+              &nbsp; {t("forms.removeAttendee.modal.header")}
             </Stack>
           </DialogTitle>
           <Divider />
           <DialogContent>
             <Stack>
               <Box>
-                The price for the booking will be decreased to{" "}
-                {getCurrencyFormat(
-                  attendee.booking.event.attendeePricePerUom?.cents,
-                  attendee.booking.event.attendeePricePerUom?.currency?.name
-                )}
-                .
+                {t("forms.removeAttendee.modal.priceExplanation", {
+                  amount: getCurrencyFormat(
+                    attendee.booking.event.attendeePricePerUom?.cents,
+                    attendee.booking.event.attendeePricePerUom?.currency?.name
+                  ),
+                })}
               </Box>
-              <Box>If it was paid, then this attendee will be refunded</Box>
-              <Divider />
               <Box>
-                All attendee options that was added or paid will be removed and
-                refunded.
+                {t("forms.removeAttendee.modal.attendeeRefundExplanation")}
+              </Box>
+              <Divider sx={{ margin: 1 }} />
+              <Box>
+                {t("forms.removeAttendee.modal.optionsRefundExplanation")}
               </Box>
             </Stack>
           </DialogContent>
@@ -84,7 +89,7 @@ const AddAttendeeModal = ({
               onSuccess={() => setModal(false)}
             />
             <Button size="sm" color="neutral" onClick={() => setModal(false)}>
-              Cancel
+              {t("general.cancel")}
             </Button>
           </DialogActions>
         </ModalDialog>

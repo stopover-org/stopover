@@ -6,13 +6,16 @@ import {
   ModalDialog,
   Stack,
   Tooltip,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/joy";
-import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import React from "react";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
+import { useTranslation } from "react-i18next";
 import Button from "../../v2/Button";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import ChangeBookingOptionAvailability from "./ChangeBookingOptionAvailability";
@@ -46,6 +49,7 @@ const ChangeBookingOptionAvailabilityModal = ({
       optionFragmentRef
     );
   const [modal, setModal] = React.useState(false);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -54,7 +58,7 @@ const ChangeBookingOptionAvailabilityModal = ({
         color={bookingOption.status === "available" ? "danger" : "success"}
         onClick={() => setModal(true)}
       >
-        <Tooltip title="Change Availability">
+        <Tooltip title={t("forms.changeOptionAvailability.tooltip")}>
           {bookingOption.status === "available" ? (
             <DoNotDisturbIcon />
           ) : (
@@ -67,7 +71,7 @@ const ChangeBookingOptionAvailabilityModal = ({
           <DialogTitle>
             <Stack flexDirection="row" alignItems="center">
               <WarningRoundedIcon />
-              &nbsp; Booking changes confirmation
+              &nbsp; {t("forms.changeOptionAvailability.modal.header")}
             </Stack>
           </DialogTitle>
           <Divider />
@@ -75,37 +79,54 @@ const ChangeBookingOptionAvailabilityModal = ({
             <Stack>
               {bookingOption.eventOption.builtIn ? (
                 <Box>
-                  {bookingOption.eventOption.title} will be{" "}
                   {bookingOption.status === "available"
-                    ? "remove from"
-                    : "added to"}{" "}
-                  this booking
+                    ? t(
+                        "forms.changeOptionAvailability.modal.toUnavailable.builtInExplanation",
+                        { title: bookingOption.eventOption.title }
+                      )
+                    : t(
+                        "forms.changeOptionAvailability.modal.toAvailable.builtInExplanation",
+                        { title: bookingOption.eventOption.title }
+                      )}
                 </Box>
               ) : (
                 <>
                   <Box>
-                    The price for the booking will be{" "}
                     {bookingOption.status === "available"
-                      ? "decreased for"
-                      : "increased to"}{" "}
-                    {getCurrencyFormat(
-                      bookingOption.attendeePrice?.cents,
-                      bookingOption.attendeePrice?.currency?.name
-                    )}
+                      ? t(
+                          "forms.changeOptionAvailability.modal.toUnavailable.commonExplanation",
+                          {
+                            amount: getCurrencyFormat(
+                              bookingOption.attendeePrice?.cents,
+                              bookingOption.attendeePrice?.currency?.name
+                            ),
+                          }
+                        )
+                      : t(
+                          "forms.changeOptionAvailability.modal.toAvailable.commonExplanation",
+                          {
+                            amount: getCurrencyFormat(
+                              bookingOption.attendeePrice?.cents,
+                              bookingOption.attendeePrice?.currency?.name
+                            ),
+                          }
+                        )}
                   </Box>
-                  <Box>If it was paid, then this option will be refunded</Box>
+                  <Box>
+                    {t("forms.changeOptionAvailability.modal.explanation")}
+                  </Box>
                 </>
               )}
             </Stack>
           </DialogContent>
           <DialogActions>
+            <Button size="sm" color="neutral" onClick={() => setModal(false)}>
+              {t("general.cancel")}
+            </Button>
             <ChangeBookingOptionAvailability
               optionFragmentRef={bookingOption}
               onSuccess={() => setModal(false)}
             />
-            <Button size="sm" color="neutral" onClick={() => setModal(false)}>
-              Cancel
-            </Button>
           </DialogActions>
         </ModalDialog>
       </Modal>

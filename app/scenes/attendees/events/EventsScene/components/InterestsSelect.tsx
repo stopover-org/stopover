@@ -7,6 +7,7 @@ import {
   ListItem,
   ListItemDecorator,
 } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import { stringify } from "qs";
 import { InterestsSelect_InterestsFragment$key } from "../../../../../artifacts/InterestsSelect_InterestsFragment.graphql";
@@ -18,6 +19,7 @@ interface InterestsSelectProps {
 
 const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { interests } = useFragment<InterestsSelect_InterestsFragment$key>(
     graphql`
       fragment InterestsSelect_InterestsFragment on Query {
@@ -58,7 +60,7 @@ const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
 
   return (
     <>
-      <Typography fontSize="lg">Categories</Typography>
+      <Typography fontSize="lg">{t('scenes.attendees.events.eventsScene.sidebar.categoriesSubheader')}</Typography>
       <List sx={{ height: "500px", overflow: "auto" }}>
         {interests?.map((interest, index) => (
           <React.Fragment key={interest.id}>

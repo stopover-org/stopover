@@ -10,7 +10,7 @@ module Types
       field :link,    String
 
       def link
-        "/interests/#{object.id}"
+        "/events?interests[]=#{object.slug}"
       end
 
       def preview
