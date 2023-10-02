@@ -88,6 +88,11 @@ const translation = {
     latitude: "Широта",
     longitude: "Долгота",
   },
+  languages: {
+    action: "🌐 Выберите язык",
+    russian: "🇷🇺 Русский",
+    english: "🇺🇸 English",
+  },
 };
 
 export default merge(

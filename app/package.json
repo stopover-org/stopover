@@ -45,6 +45,7 @@
     "graphql-ruby-client": "^1.11.9",
     "husky": "^8.0.1",
     "i18next": "^23.5.1",
+    "i18next-browser-languagedetector": "^7.1.0",
     "libphonenumber-js": "^1.10.37",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",

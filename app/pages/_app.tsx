@@ -12,42 +12,33 @@ import "react-phone-input-2/lib/style.css";
 import "@fontsource/public-sans";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import moment from "moment";
 import { getClientEnvironment } from "../lib/clientEnvironment";
 import { theme } from "../lib/theme";
 import ApiKeysProvider from "../components/ApiKeysProvider";
 import englishTranslations from "../config/locales/en";
 import russianTranslations from "../config/locales/ru";
-import "moment/locale/ru";
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
   createClientEnvironment: () => getClientEnvironment()!,
 });
 
-moment.locale("ru");
-
-i18n
-  .use(initReactI18next) // passes i18n down to react-i18next
-  .init({
-    // the translations
-    // (tip move them in a JSON file and import them,
-    // or even better, manage them via a UI: https://react.i18next.com/guides/multiple-translation-files#manage-your-translations-with-a-management-gui)
-    resources: {
-      en: {
-        translation: englishTranslations,
-      },
-      ru: {
-        translation: russianTranslations,
-      },
+i18n.use(initReactI18next).init({
+  resources: {
+    en: {
+      translation: englishTranslations,
     },
-    lng: "ru", // if you're using a language detector, do not define the lng option
-    fallbackLng: "en",
-
-    interpolation: {
-      escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+    ru: {
+      translation: russianTranslations,
     },
-  });
+  },
+  lng: "en",
+  fallbackLng: "en",
+
+  interpolation: {
+    escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+  },
+});
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const relayProps = getRelayProps(pageProps, initialPreloadedQuery);
