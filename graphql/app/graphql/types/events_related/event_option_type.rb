@@ -14,7 +14,7 @@ module Types
       field :event,           Types::EventsRelated::EventType, null: false
 
       def title
-        if current_firm == object.firm
+        if current_firm == object.event.firm
           object.title
         else
           object.translate(:title)

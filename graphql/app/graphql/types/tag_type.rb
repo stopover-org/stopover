@@ -11,11 +11,7 @@ module Types
     end
 
     def title
-      if current_firm == object.firm
-        object.title
-      else
-        object.translate(:title)
-      end
+      object.translate(:title)
     end
   end
 end

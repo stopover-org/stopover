@@ -57,7 +57,7 @@ module Types
 
       def description
         if current_firm == object.firm
-          object.title
+          object.description
         else
           object.translate(:description)
         end

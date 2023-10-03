@@ -10,19 +10,11 @@ module Types
       field :link,    String
 
       def title
-        if current_firm == object.firm
-          object.title
-        else
-          object.translate(:title)
-        end
+        object.translate(:title)
       end
 
       def description
-        if current_firm == object.firm
-          object.title
-        else
-          object.translate(:description)
-        end
+        object.translate(:description)
       end
 
       def link

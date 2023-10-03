@@ -51,7 +51,8 @@ class Tag < ApplicationRecord
   # RICH_TEXT =============================================================
 
   # VALIDATIONS ===========================================================
-  validates :title, :language, presence: true, uniqueness: { case_sensitive: false }
+  validates :title, presence: true, uniqueness: { case_sensitive: false }
+  validates :language, presence: true
 
   # CALLBACKS =============================================================
 
