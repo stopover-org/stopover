@@ -8,11 +8,11 @@ module Stopover
       end
 
       def translate
-        translation = Deepl.translate(@dynamic_translations.source,
-                                      @dynamic_translations.source_language,
-                                      @dynamic_translations.target_language)
+        translation = DeepL.translate(@dynamic_translation.source,
+                                      @dynamic_translation.translatable.language,
+                                      @dynamic_translation.target_language)
 
-        @dynamic_translations.update!(translation: translation.text)
+        @dynamic_translation.update!(translation: translation.text)
       end
     end
   end

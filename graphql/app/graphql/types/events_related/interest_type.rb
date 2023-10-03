@@ -9,6 +9,22 @@ module Types
       field :preview, String
       field :link,    String
 
+      def title
+        if current_firm == object.firm
+          object.title
+        else
+          object.translate(:title)
+        end
+      end
+
+      def description
+        if current_firm == object.firm
+          object.title
+        else
+          object.translate(:description)
+        end
+      end
+
       def link
         "/events?interests[]=#{object.slug}"
       end

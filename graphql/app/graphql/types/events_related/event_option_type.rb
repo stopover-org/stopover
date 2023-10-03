@@ -12,6 +12,14 @@ module Types
       field :title,           String, null: false
       field :status,          Types::Statuses::EventOptionStatusEnum, null: false
       field :event,           Types::EventsRelated::EventType, null: false
+
+      def title
+        if current_firm == object.firm
+          object.title
+        else
+          object.translate(:title)
+        end
+      end
     end
   end
 end

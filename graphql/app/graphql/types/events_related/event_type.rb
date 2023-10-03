@@ -47,6 +47,22 @@ module Types
       field :end_date,  Types::DateTimeType
       field :stripe_integrations, Types::EventsRelated::StripeIntegrationType.connection_type, null: false, require_service_user: true
 
+      def title
+        if current_firm == object.firm
+          object.title
+        else
+          object.translate(:title)
+        end
+      end
+
+      def description
+        if current_firm == object.firm
+          object.title
+        else
+          object.translate(:description)
+        end
+      end
+
       def images
         object.images.map do |img|
           Rails.application.routes.url_helpers.rails_blob_url(img)

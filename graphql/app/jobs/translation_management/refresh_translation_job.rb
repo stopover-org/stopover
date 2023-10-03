@@ -7,7 +7,7 @@ module TranslationManagement
     def perform(dynamic_translation_id:)
       translation = DynamicTranslation.find(dynamic_translation_id)
 
-      Stopover::TranslationManagement::TranslationManager.new(translation).translate
+      Stopover::TranslationManagement::TranslationManager.new(dynamic_translation: translation).translate
     end
   end
 end

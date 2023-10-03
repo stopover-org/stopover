@@ -9,5 +9,13 @@ module Types
     def link
       "/tags/#{object.id}"
     end
+
+    def title
+      if current_firm == object.firm
+        object.title
+      else
+        object.translate(:title)
+      end
+    end
   end
 end

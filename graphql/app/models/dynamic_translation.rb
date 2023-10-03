@@ -24,6 +24,7 @@ class DynamicTranslation < ApplicationRecord
   # MONETIZE ==============================================================
 
   # BELONGS_TO ASSOCIATIONS ===============================================
+  belongs_to :translatable, polymorphic: true
 
   # HAS_ONE ASSOCIATIONS ==================================================
 

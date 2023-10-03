@@ -11,5 +11,17 @@ module Types
     def relay_id
       object.id
     end
+
+    def current_user
+      context[:current_user]
+    end
+
+    def current_account
+      context[:current_user]&.account
+    end
+
+    def current_firm
+      current_account&.current_firm
+    end
   end
 end
