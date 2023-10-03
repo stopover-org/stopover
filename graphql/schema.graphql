@@ -430,6 +430,7 @@ input CreateEventInput {
   houseNumber: String
   images: [String!]
   interestIds: [ID!]
+  language: String
   latitude: Float
   longitude: Float
   maxAttendees: Int

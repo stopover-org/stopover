@@ -9,6 +9,14 @@ module Types
       field :preview, String
       field :link,    String
 
+      def title
+        object.translate(:title)
+      end
+
+      def description
+        object.translate(:description)
+      end
+
       def link
         "/events?interests[]=#{object.slug}"
       end

@@ -9,5 +9,9 @@ module Types
     def link
       "/tags/#{object.id}"
     end
+
+    def title
+      object.translate(:title)
+    end
   end
 end

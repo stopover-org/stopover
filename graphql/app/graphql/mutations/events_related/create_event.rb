@@ -19,6 +19,7 @@ module Mutations
       argument :single_dates,     [String]
       argument :duration_time,    String
       argument :end_date,         Types::DateTimeType, required: false
+      argument :language,         String, required: false
 
       # Address Fields
       argument :house_number, String, required: false

@@ -9,6 +9,7 @@
 #  built_in              :boolean          default(FALSE)
 #  description           :text
 #  for_attendee          :boolean          default(FALSE)
+#  language              :string           default("en")
 #  organizer_price_cents :decimal(, )      default(0.0)
 #  status                :string           default("available")
 #  title                 :string
@@ -22,48 +23,63 @@
 #
 class EventOption < ApplicationRecord
   GRAPHQL_TYPE = Types::EventsRelated::EventOptionType
+  TRANSLATABLE_FIELDS = %i[title description].freeze
+  AVAILABLE_LANGUAGES = %i[en ru].freeze
 
   # MODULES ===============================================================
+  include Mixins::Translatable
   include Mixins::OptionStatuses
 
-  # MONETIZE =====================================================================
+  # MONETIZE ==============================================================
   monetize :attendee_price_cents
   monetize :organizer_price_cents
 
-  # ATTACHMENTS ===========================================================
-  #
-  # HAS_ONE ASSOCIATIONS =========================================================
-  #
-  # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :booking_options
-  has_many :attendee_options
-  has_many :stripe_integrations, as: :stripeable
-
-  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :attendees, through: :attendee_options
-  has_many :bookings, through: :booking_options
-
-  # BELONGS_TO ASSOCIATIONS =======================================================
+  # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :event
 
-  # AASM STATES ================================================================
+  # HAS_ONE ASSOCIATIONS ==================================================
 
-  # ENUMS =======================================================================
-  #
-  # VALIDATIONS ================================================================
-  validates :organizer_price_cents, presence: true
-  validates :attendee_price_cents, presence: true
-  validates :title, presence: true
+  # HAS_ONE THROUGH ASSOCIATIONS ==========================================
 
-  # CALLBACKS ================================================================
+  # HAS_MANY ASSOCIATIONS =================================================
+  has_many :booking_options,  dependent: :nullify
+  has_many :attendee_options, dependent: :nullify
+  has_many :stripe_integrations,  as: :stripeable,    dependent: :destroy
+  has_many :dynamic_translations, as: :translatable,  dependent: :destroy
+
+  # HAS_MANY THROUGH ASSOCIATIONS =========================================
+  has_many :attendees,  through: :attendee_options
+  has_many :bookings,   through: :booking_options
+
+  # AASM STATES ===========================================================
+
+  # ENUMS =================================================================
+
+  # SECURE TOKEN ==========================================================
+
+  # SECURE PASSWORD =======================================================
+
+  # ATTACHMENTS ===========================================================
+
+  # RICH_TEXT =============================================================
+
+  # VALIDATIONS ===========================================================
+  validates :organizer_price_cents,
+            :attendee_price_cents,
+            :title,
+            :language,
+            :status,
+            presence: true
+
+  # CALLBACKS =============================================================
   before_validation :adjust_prices
   after_commit :update_total
   after_commit :sync_stripe
 
-  # SCOPES =====================================================================
+  # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[available not_available]).order(created_at: :desc) }
 
-  # DELEGATIONS ==============================================================
+  # DELEGATION ============================================================
 
   def current_stripe_integration
     stripe_integrations.active
@@ -77,6 +93,7 @@ class EventOption < ApplicationRecord
   end
 
   def adjust_prices
+    return if !organizer_price || !event
     self.attendee_price = (organizer_price * (1 + (event.firm.margin / 100.0))).round(
       2, BigDecimal::ROUND_UP
     )

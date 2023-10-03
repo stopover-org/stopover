@@ -214,6 +214,7 @@ export function useCreateEventForm() {
           deadline: opt.deadline,
           description: opt.description,
         })),
+        language: 'en'
       },
     }),
     {

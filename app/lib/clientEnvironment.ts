@@ -4,7 +4,7 @@ import { Environment, Network, RecordSource, Store } from "relay-runtime";
 import { createRelaySubscriptionHandler } from "graphql-ruby-client";
 import { fetchGraphQLRaw } from "./fetchGraphQL";
 
-function createClientNetworkWs(wsHandler: any) {
+export function createClientNetworkWs(wsHandler: any) {
   return Network.create(async (params, variables) => {
     const response = await fetchGraphQLRaw(params.text!, variables);
     const json = await response.text();
@@ -12,20 +12,25 @@ function createClientNetworkWs(wsHandler: any) {
   }, wsHandler);
 }
 
+export function createWsHandler() {
+  // eslint-disable-next-line global-require
+  const { createConsumer } = require("@rails/actioncable");
+  let url = process.env.GRAPHQL_API_URL || "http://localhost:8080";
+  url = `${url.replace(/https?/, "ws")}/cable`;
+  return createRelaySubscriptionHandler({
+    cable: createConsumer(url),
+  });
+}
+
 export function getClientEnvironment() {
   if (typeof window === "undefined") return null;
 
-  // eslint-disable-next-line global-require
-  const { createConsumer } = require("@rails/actioncable");
-  const wsHandler = createRelaySubscriptionHandler({
-    cable: createConsumer("ws://localhost:8080/cable"),
-  });
   const w = window as any;
 
   if (w.relayEnvironment) return w.relayEnvironment as Environment;
 
   w.relayEnvironment = new Environment({
-    network: createClientNetworkWs(wsHandler),
+    network: createClientNetworkWs(createWsHandler()),
     store: new Store(new RecordSource(getRelaySerializedState()?.records), {
       gcReleaseBufferSize: 50, // Unneeded query cache to keep in memory
       queryCacheExpirationTime: 24 * 60 * 60 * 1000, // Expiration time in milliseconds for query cache

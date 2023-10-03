@@ -6,6 +6,7 @@
 #
 #  id         :bigint           not null, primary key
 #  active     :boolean          default(TRUE)
+#  language   :string           default("en")
 #  slug       :string           not null
 #  title      :string           not null
 #  created_at :datetime         not null
@@ -18,8 +19,11 @@
 #
 class Interest < ApplicationRecord
   GRAPHQL_TYPE = Types::EventsRelated::InterestType
+  TRANSLATABLE_FIELDS = [:title].freeze
+  AVAILABLE_LANGUAGES = %i[en ru].freeze
 
   # MODULES ===============================================================
+  include Mixins::Translatable
   searchkick callbacks: :async
 
   # MONETIZE ==============================================================
@@ -31,12 +35,13 @@ class Interest < ApplicationRecord
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
 
   # HAS_MANY ASSOCIATIONS =================================================
-  has_many :account_interests, dependent: :destroy
-  has_many :event_interests, dependent: :destroy
+  has_many :account_interests,  dependent: :destroy
+  has_many :event_interests,    dependent: :destroy
+  has_many :dynamic_translations, as: :translatable, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :accounts, through: :account_interests
-  has_many :events, through: :event_interests
+  has_many :events,   through: :event_interests
 
   # AASM STATES ===========================================================
 
@@ -52,7 +57,7 @@ class Interest < ApplicationRecord
   # RICH_TEXT =============================================================
 
   # VALIDATIONS ===========================================================
-  validates :title, :slug, presence: true
+  validates :title, :language, :active, presence: true
   validates :slug, uniqueness: { case_sensitive: false }
 
   # CALLBACKS =============================================================
@@ -73,9 +78,9 @@ class Interest < ApplicationRecord
   end
 
   def set_slug
-    return unless slug
-    parameterized_title = title.parameterize
-    self.slug = parameterized_title if Interest.where(slug: parameterized_title).empty
+    return if slug
+    parameterized_title = title&.parameterize || SecureRandom.uuid
+    self.slug = parameterized_title if Interest.where(slug: parameterized_title).empty?
     self.slug = SecureRandom.hex unless slug
   end
 end

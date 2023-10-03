@@ -9,13 +9,14 @@
 #  city                          :string
 #  country                       :string
 #  deposit_amount_cents          :decimal(, )      default(0.0), not null
-#  description                   :text             not null
+#  description                   :string           default(""), not null
 #  duration_time                 :string
 #  end_date                      :datetime
 #  event_type                    :string           not null
 #  full_address                  :string
 #  house_number                  :string
 #  landmark                      :string
+#  language                      :string           default("en")
 #  latitude                      :float
 #  longitude                     :float
 #  max_attendees                 :integer

@@ -9,13 +9,14 @@
 #  city                          :string
 #  country                       :string
 #  deposit_amount_cents          :decimal(, )      default(0.0), not null
-#  description                   :text             not null
+#  description                   :string           default(""), not null
 #  duration_time                 :string
 #  end_date                      :datetime
 #  event_type                    :string           not null
 #  full_address                  :string
 #  house_number                  :string
 #  landmark                      :string
+#  language                      :string           default("en")
 #  latitude                      :float
 #  longitude                     :float
 #  max_attendees                 :integer
@@ -53,6 +54,129 @@ require 'rails_helper'
 
 RSpec.describe Event, type: :model do
   before { travel_to Time.zone.local(2022, 1, 1, 0, 0, 0) }
+  describe 'model setup' do
+    subject { create(:event) }
+    it 'constants' do
+      expect(Event::GRAPHQL_TYPE).to eq(Types::EventsRelated::EventType)
+    end
+
+    it 'relations' do
+      should have_many(:event_achievements).dependent(:destroy)
+      should have_many(:event_interests).dependent(:destroy)
+      should have_many(:event_tags).dependent(:destroy)
+      should have_many(:event_options).dependent(:destroy)
+      should have_many(:bookings).dependent(:destroy)
+      should have_many(:ratings).dependent(:destroy)
+      should have_many(:schedules).dependent(:destroy)
+      should have_many(:attendees).dependent(:nullify)
+      should have_many(:attendee_options).dependent(:nullify)
+      should have_many(:booking_cancellation_options).dependent(:destroy)
+      should have_many(:stripe_integrations).dependent(:destroy)
+      should have_many(:dynamic_translations).dependent(:destroy)
+
+      should have_many(:achievements).through(:event_achievements)
+      should have_many(:interests).through(:event_interests)
+      should have_many(:tags).through(:event_tags)
+
+      should belong_to(:unit).optional(true)
+      should belong_to(:firm).optional(false)
+    end
+
+    it 'attachments' do
+      should have_many_attached(:images)
+    end
+
+    it 'delegates' do
+      should delegate_method(:count).to(:ratings).with_prefix
+      should delegate_method(:margin).to(:firm)
+    end
+
+    it 'enum' do
+      should define_enum_for(:event_type).with_values(
+        excursion: 'excursion',
+        tour: 'tour',
+        in_town: 'in_town',
+        out_of_town: 'out_of_town',
+        active_holiday: 'active_holiday',
+        music: 'music',
+        workshop: 'workshop',
+        business_breakfast: 'business_breakfast',
+        meetup: 'meetup',
+        sport_activity: 'sport_activity',
+        gastronomic: 'gastronomic'
+      ).backed_by_column_of_type(:string)
+    end
+
+    context 'validations' do
+      before do
+        allow(subject).to receive(:draft?).and_return(false)
+      end
+
+      it 'check' do
+        should validate_presence_of(:title)
+        should validate_presence_of(:description)
+        should validate_presence_of(:event_type)
+        should validate_presence_of(:city)
+        should validate_presence_of(:country)
+        should validate_presence_of(:full_address)
+        should validate_presence_of(:duration_time)
+        should validate_presence_of(:language)
+        should validate_presence_of(:status)
+        should validate_length_of(:title).is_at_most(100)
+        should validate_uniqueness_of(:ref_number).scoped_to(:firm_id).allow_blank
+      end
+    end
+
+    it 'monetize' do
+      expect(Event.monetized_attributes).to eq({  'attendee_price_per_uom' => 'attendee_price_per_uom_cents',
+                                                  'deposit_amount' => 'deposit_amount_cents',
+                                                  'organizer_price_per_uom' => 'organizer_price_per_uom_cents' })
+    end
+
+    context 'callbacks' do
+      let(:event) { Event.new }
+      it 'draft' do
+        allow(event).to receive(:set_prices)
+        allow(event).to receive(:adjust_prices)
+        allow(event).to receive(:sync_stripe)
+
+        event.status = 'draft'
+        event.save
+      end
+
+      it 'published' do
+        allow(event).to receive(:set_prices)
+        allow(event).to receive(:adjust_prices)
+        allow(event).to receive(:sync_stripe)
+
+        event.status = 'published'
+        event.save
+      end
+
+      it 'unpublished' do
+        allow(event).to receive(:set_prices)
+        allow(event).to receive(:adjust_prices)
+        allow(event).to receive(:sync_stripe)
+
+        event.status = 'unpublished'
+        event.save
+      end
+
+      it 'removed' do
+        allow(event).to receive(:set_prices)
+        allow(event).to receive(:adjust_prices)
+        allow(event).to receive(:sync_stripe)
+
+        event.status = 'removed'
+        event.save
+
+        expect(event).not_to have_received(:set_prices)
+        expect(event).not_to have_received(:adjust_prices)
+        expect(event).not_to have_received(:sync_stripe)
+      end
+    end
+  end
+
   describe 'active event' do
     context 'with recurrent dates' do
       let!(:event) { create(:recurring_event, recurring_days_with_time: ['Monday 11:30']) }
