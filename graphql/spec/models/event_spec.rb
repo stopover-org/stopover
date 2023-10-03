@@ -9,7 +9,7 @@
 #  city                          :string
 #  country                       :string
 #  deposit_amount_cents          :decimal(, )      default(0.0), not null
-#  description                   :string           default(""), not null
+#  description                   :text             not null
 #  duration_time                 :string
 #  end_date                      :datetime
 #  event_type                    :string           not null

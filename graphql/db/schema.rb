@@ -248,7 +248,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_111826) do
 
   create_table "events", force: :cascade do |t|
     t.string "title", null: false
-    t.string "description", default: "", null: false
+    t.text "description", null: false
     t.string "event_type", null: false
     t.decimal "organizer_price_per_uom_cents", default: "0.0"
     t.decimal "attendee_price_per_uom_cents", default: "0.0"
