@@ -1,0 +1,13 @@
+# frozen_string_literal: true
+
+module TranslationManagement
+  class RefreshTranslationJob < ApplicationJob
+    queue_as :default
+
+    def perform(dynamic_translation_id:)
+      translation = DynamicTranslation.find(dynamic_translation_id)
+
+      Stopover::TranslationManagement::TranslationManager.new(translation).translate
+    end
+  end
+end

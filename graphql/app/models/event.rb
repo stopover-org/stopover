@@ -9,13 +9,14 @@
 #  city                          :string
 #  country                       :string
 #  deposit_amount_cents          :decimal(, )      default(0.0), not null
-#  description                   :text             not null
+#  description                   :string           default(""), not null
 #  duration_time                 :string
 #  end_date                      :datetime
 #  event_type                    :string           not null
 #  full_address                  :string
 #  house_number                  :string
 #  landmark                      :string
+#  language                      :string           default("en")
 #  latitude                      :float
 #  longitude                     :float
 #  max_attendees                 :integer
@@ -54,8 +55,11 @@ require 'date'
 
 class Event < ApplicationRecord
   GRAPHQL_TYPE = Types::EventsRelated::EventType
+  TRANSLATABLE_FIELDS = %i[title description].freeze
+  AVAILABLE_LANGUAGES = %i[en ru].freeze
 
   # MODULES ===============================================================
+  include Mixins::Translatable
   include AASM
   searchkick
 
@@ -71,16 +75,17 @@ class Event < ApplicationRecord
   #
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :event_achievements, dependent: :destroy
-  has_many :event_interests, dependent: :destroy
-  has_many :event_tags, dependent: :destroy
-  has_many :event_options, dependent: :destroy
-  has_many :bookings, dependent: :destroy
-  has_many :ratings, dependent: :destroy
-  has_many :schedules, dependent: :destroy
+  has_many :event_interests,    dependent: :destroy
+  has_many :event_tags,         dependent: :destroy
+  has_many :event_options,      dependent: :destroy
+  has_many :bookings,           dependent: :destroy
+  has_many :ratings,            dependent: :destroy
+  has_many :schedules,          dependent: :destroy
+  has_many :attendees,          dependent: :nullify
+  has_many :attendee_options,   dependent: :nullify
   has_many :booking_cancellation_options, dependent: :destroy
-  has_many :stripe_integrations, as: :stripeable
-  has_many :attendees, dependent: :nullify
-  has_many :attendee_options, dependent: :nullify
+  has_many :stripe_integrations,  as: :stripeable,    dependent: :destroy
+  has_many :dynamic_translations, as: :translatable,  dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :achievements, through: :event_achievements
@@ -132,31 +137,31 @@ class Event < ApplicationRecord
             length: { maximum: 100 }, unless: :draft?
 
   validates :title,
-            :description,
-            :event_type,
-            :organizer_price_per_uom,
-            :attendee_price_per_uom,
+            :description, presence: true
+  validates :event_type,
             :city,
             :country,
             :full_address,
             :duration_time,
+            :language,
+            :status,
             presence: true, unless: :draft?
   validates :ref_number,
             uniqueness: { scope: :firm_id },
             allow_blank: true
 
   # CALLBACKS ================================================================
-  before_validation :set_prices
+  before_validation :set_prices,    unless: :removed?
   before_validation :adjust_prices, unless: :removed?
-  after_commit :sync_stripe
+  after_commit      :sync_stripe,   unless: :removed?
 
   # SCOPES =====================================================================
   default_scope { in_order_of(:status, %w[draft published unpublished removed]).order(created_at: :desc) }
   scope :by_city, ->(city) { where(city: city) }
 
   # DELEGATIONS ==============================================================
-  delegate :count, to: :ratings, prefix: true
-  delegate :margin, to: :firm
+  delegate :count, to: :ratings, prefix: true, allow_nil: true
+  delegate :margin, to: :firm, allow_nil: true
 
   def can_be_scheduled_for?(date)
     return false if date.past?
@@ -166,7 +171,7 @@ class Event < ApplicationRecord
   end
 
   def adjust_prices
-    self.attendee_price_per_uom = (organizer_price_per_uom * (1 + (margin / 100.0)))
+    self.attendee_price_per_uom = margin ? (organizer_price_per_uom * (1 + (margin / 100.0))) : organizer_price_per_uom
     self.deposit_amount         = attendee_price_per_uom if deposit_amount > attendee_price_per_uom
   end
 

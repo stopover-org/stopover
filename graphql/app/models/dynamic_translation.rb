@@ -2,26 +2,24 @@
 
 # == Schema Information
 #
-# Table name: achievements
+# Table name: dynamic_translations
 #
-#  id         :bigint           not null, primary key
-#  active     :boolean          default(TRUE)
-#  language   :string           default("en")
-#  title      :string           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                :bigint           not null, primary key
+#  source            :string           not null
+#  source_field      :string           not null
+#  target_language   :string           not null
+#  translatable_type :string
+#  translation       :string           default(""), not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  translatable_id   :bigint
 #
 # Indexes
 #
-#  index_achievements_on_title  (title) UNIQUE
+#  index_dynamic_translations_on_translatable  (translatable_type,translatable_id)
 #
-class Achievement < ApplicationRecord
-  GRAPHQL_TYPE = Types::FirmsRelated::AchievementType
-  TRANSLATABLE_FIELDS = [:title].freeze
-  AVAILABLE_LANGUAGES = %i[en ru].freeze
-
+class DynamicTranslation < ApplicationRecord
   # MODULES ===============================================================
-  include Mixins::Translatable
 
   # MONETIZE ==============================================================
 
@@ -32,11 +30,8 @@ class Achievement < ApplicationRecord
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
 
   # HAS_MANY ASSOCIATIONS =================================================
-  has_many :event_achievements,   dependent: :destroy
-  has_many :dynamic_translations, as: :translatable, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
-  has_many :events, through: :event_achievements
 
   # AASM STATES ===========================================================
 
@@ -51,11 +46,14 @@ class Achievement < ApplicationRecord
   # RICH_TEXT =============================================================
 
   # VALIDATIONS ===========================================================
-  validates :title, :language, presence: true
 
   # CALLBACKS =============================================================
 
   # SCOPES ================================================================
 
   # DELEGATION ============================================================
+
+  def refresh
+    TranslationManagement::RefreshTranslationJob.perform_later(dynamic_translation_id: id)
+  end
 end

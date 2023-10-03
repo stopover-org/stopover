@@ -5,6 +5,7 @@
 # Table name: tags
 #
 #  id         :bigint           not null, primary key
+#  language   :string           default("en")
 #  title      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -15,31 +16,46 @@
 #
 class Tag < ApplicationRecord
   GRAPHQL_TYPE = Types::TagType
+  TRANSLATABLE_FIELDS = [:title].freeze
+  AVAILABLE_LANGUAGES = %i[en ru].freeze
 
   # MODULES ===============================================================
-  #
-  # ATTACHMENTS ===========================================================
-  #
-  # HAS_ONE ASSOCIATIONS ==========================================================
-  #
-  # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :event_tags, dependent: :destroy
+  include Mixins::Translatable
+  searchkick callbacks: :async
 
-  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  # MONETIZE ==============================================================
+
+  # BELONGS_TO ASSOCIATIONS ===============================================
+
+  # HAS_ONE ASSOCIATIONS ==================================================
+
+  # HAS_ONE THROUGH ASSOCIATIONS ==========================================
+
+  # HAS_MANY ASSOCIATIONS =================================================
+  has_many :event_tags,           dependent: :destroy
+  has_many :dynamic_translations, as: :translatable, dependent: :destroy
+
+  # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :events, through: :event_tags
 
-  # BELONGS_TO ASSOCIATIONS =======================================================
-  #
-  # AASM STATES ================================================================
-  #
-  # ENUMS =======================================================================
-  #
-  # VALIDATIONS ================================================================
-  validates :title, presence: true, uniqueness: { case_sensitive: false }
+  # AASM STATES ===========================================================
 
-  # CALLBACKS ================================================================
-  #
-  # SCOPES =====================================================================
-  #
-  # DELEGATIONS ==============================================================
+  # ENUMS =================================================================
+
+  # SECURE TOKEN ==========================================================
+
+  # SECURE PASSWORD =======================================================
+
+  # ATTACHMENTS ===========================================================
+
+  # RICH_TEXT =============================================================
+
+  # VALIDATIONS ===========================================================
+  validates :title, :language, presence: true, uniqueness: { case_sensitive: false }
+
+  # CALLBACKS =============================================================
+
+  # SCOPES ================================================================
+
+  # DELEGATION ============================================================
 end

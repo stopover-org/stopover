@@ -9,6 +9,7 @@
 #  built_in              :boolean          default(FALSE)
 #  description           :text
 #  for_attendee          :boolean          default(FALSE)
+#  language              :string           default("en")
 #  organizer_price_cents :decimal(, )      default(0.0)
 #  status                :string           default("available")
 #  title                 :string

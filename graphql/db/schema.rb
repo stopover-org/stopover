@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_16_223714) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_03_111826) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -62,6 +62,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_16_223714) do
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "language", default: "en"
     t.index ["title"], name: "index_achievements_on_title", unique: true
   end
 
@@ -191,6 +192,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_16_223714) do
     t.index ["key"], name: "index_configurations_on_key"
   end
 
+  create_table "dynamic_translations", force: :cascade do |t|
+    t.string "source", null: false
+    t.string "source_field", null: false
+    t.string "target_language", null: false
+    t.string "translatable_type"
+    t.bigint "translatable_id"
+    t.string "translation", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["translatable_type", "translatable_id"], name: "index_dynamic_translations_on_translatable"
+  end
+
   create_table "event_achievements", force: :cascade do |t|
     t.bigint "event_id"
     t.bigint "achievement_id"
@@ -220,6 +233,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_16_223714) do
     t.text "description"
     t.boolean "for_attendee", default: false
     t.string "status", default: "available"
+    t.string "language", default: "en"
     t.index ["event_id"], name: "index_event_options_on_event_id"
   end
 
@@ -234,7 +248,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_16_223714) do
 
   create_table "events", force: :cascade do |t|
     t.string "title", null: false
-    t.text "description", null: false
+    t.string "description", default: "", null: false
     t.string "event_type", null: false
     t.decimal "organizer_price_per_uom_cents", default: "0.0"
     t.decimal "attendee_price_per_uom_cents", default: "0.0"
@@ -264,6 +278,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_16_223714) do
     t.integer "min_attendees", default: 0
     t.bigint "firm_id"
     t.datetime "end_date"
+    t.string "language", default: "en"
     t.index ["event_type"], name: "index_events_on_event_type"
     t.index ["firm_id"], name: "index_events_on_firm_id"
     t.index ["ref_number", "firm_id"], name: "index_events_on_ref_number_and_firm_id", unique: true
@@ -302,6 +317,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_16_223714) do
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "language", default: "en"
     t.index ["slug"], name: "index_interests_on_slug", unique: true
     t.index ["title"], name: "index_interests_on_title", unique: true
   end
@@ -435,6 +451,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_16_223714) do
     t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "language", default: "en"
     t.index ["title"], name: "index_tags_on_title", unique: true
   end
 
