@@ -199,7 +199,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
 
         <Fieldset>
           <Grid xs={12}>
-            <Stack flexDirection="row" justifyContent="flex-start">
+            <Stack flexDirection={{sm: 'column', md: "row"}} justifyContent="flex-start" spacing={1} useFlexGap>
               {firm.status !== "removed" && (
                 <Link href="/my-firm/edit" underline={false}>
                   <Button color="primary" size="sm" sx={{ marginRight: 1 }}>

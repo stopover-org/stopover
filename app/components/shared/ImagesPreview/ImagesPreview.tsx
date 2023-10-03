@@ -22,7 +22,8 @@ const ImagesPreview = ({
         variant="outlined"
         ratio="4/3"
         sx={{
-          width: { width },
+          maxWidth: width || "250px",
+          width: "100%",
           bgcolor: "background.level2",
           borderRadius: "md",
           position: "relative",
@@ -31,7 +32,6 @@ const ImagesPreview = ({
         }}
       >
         <img alt="Logo Preview" src={image} />
-
         {!readonly && (
           <Box
             sx={{

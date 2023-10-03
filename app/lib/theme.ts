@@ -48,6 +48,13 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
         },
       },
     },
+    JoyDrawer: {
+      styleOverrides: {
+        root: {
+          maxWidth: "250px",
+        },
+      },
+    },
   },
   fontFamily: {
     body: "'Roboto'",

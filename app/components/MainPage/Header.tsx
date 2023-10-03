@@ -101,7 +101,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
               {t("layout.header.myTrips")}
             </Link>
           )}
-          {!isSmallDisplay && !isAuthorized && (
+          {!isAuthorized && (
             <Link
               href="/auth/sign_in"
               textAlign="right"
@@ -126,15 +126,17 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
                   {t("layout.header.myFirm")}
                 </Link>
               ) : (
-                <Link
-                  href="/firms/new"
-                  textAlign="right"
-                  level={isSmallDisplay ? "body-sm" : "body-md"}
-                  lineHeight={`${imageSize.height}px`}
-                  paddingRight={isSmallDisplay ? "3px" : "10px"}
-                >
-                  {t("layout.header.registerFirm")}
-                </Link>
+                !isSmallDisplay && (
+                  <Link
+                    href="/firms/new"
+                    textAlign="right"
+                    level={isSmallDisplay ? "body-sm" : "body-md"}
+                    lineHeight={`${imageSize.height}px`}
+                    paddingRight={isSmallDisplay ? "3px" : "10px"}
+                  >
+                    {t("layout.header.registerFirm")}
+                  </Link>
+                )
               )}
 
               <Link

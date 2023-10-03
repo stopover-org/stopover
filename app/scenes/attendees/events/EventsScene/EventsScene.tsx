@@ -161,7 +161,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           <SearchBar eventsAutocompleteFragmentRef={eventsAutocompleteQuery} />
         </Grid>
         {interestsSlug.length > 0 && (
-          <Grid xl={9} lg={12} xs={12}>
+          <Grid xl={9} lg={12} xs={12} spacing={2}>
             {interestsSlug.map((interest) => (
               <Chip
                 key={interest}
@@ -192,7 +192,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           </Grid>
         )}
         <React.Suspense>
-          <Grid xl={9} lg={12} xs={12} container>
+          <Grid xl={9} lg={12} xs={12} container spacing={2}>
             {events.map((event, index) => {
               if (index === 0) {
                 if (isVeryLargeDisplay || isLargeDisplay) {
@@ -247,6 +247,21 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
             }}
             sidebar
           />
+          <Grid xs={12}>
+            <Box
+              sx={{
+                display: 'flex',
+                position: 'sticky',
+                bottom: '0',
+                gap: 1,
+                p: 1.5,
+                pb: 2,
+                width: '90%'
+              }}
+            >
+              <Link href="/firms/new">{t('layout.header.registerFirm')}</Link>
+            </Box>
+          </Grid>
           <Grid xs={12}>
             <Box
               sx={{
