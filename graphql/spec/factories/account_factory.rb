@@ -10,6 +10,7 @@
 #  date_of_birth :datetime
 #  full_address  :string
 #  house_number  :string
+#  language      :string           default("en"), not null
 #  last_name     :string
 #  latitude      :float
 #  longitude     :float
