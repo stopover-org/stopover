@@ -16,7 +16,7 @@ module Stopover
       return if Rails.env.test?
 
       personalization = Personalization.new
-      personalization.add_bcc(SendGrid::Email.new(email: NOTIFICATION_EMAIL, name: 'Stopover Manager'))
+      personalization.add_bcc(SendGrid::Email.new(email: NOTIFICATION_EMAIL, name: 'Stopover Manager')) if to != NOTIFICATION_EMAIL
       personalization.add_to(SendGrid::Email.new(email: to))
 
       personalization.subject = subject

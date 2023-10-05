@@ -43,7 +43,7 @@ module Stopover
           end
 
           if args[:images].present?
-            @event.images.delete_all
+            @event.images.purge
             args[:images].each do |url|
               io_object = Stopover::FilesSupport.url_to_io(url)
               @event.images.attach(io_object)

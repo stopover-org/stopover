@@ -74,8 +74,8 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
 
   return availableDates.length > 0 ? (
     <>
-      <Stack flexDirection="row" justifyContent="flex-end">
-        <Box paddingRight="10px">
+      <Stack flexDirection={{ md: "row", sm: 'column' }} justifyContent="flex-end" alignItems={'flex-start'} spacing={1} useFlexGap>
+        <Box>
           <ButtonDatePicker
             onChange={(date) => {
               if (!date) return;
@@ -90,7 +90,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             {getDate(dateField.value)}
           </ButtonDatePicker>
         </Box>
-        <Box paddingRight="10px">
+        <Box>
           <Select
             onChange={(value: string) => {
               if (!value) return;
@@ -123,8 +123,8 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
           )}
         </Box>
       </Stack>
-      <Stack flexDirection="row" justifyContent="flex-end" paddingTop="10px">
-        <Typography textAlign="end">
+      <Stack flexDirection="row" justifyContent="flex-end" spacing={1} useFlexGap>
+        <Typography textAlign={{ md: "end", sm: 'start'}}>
           {getCurrencyFormat(
             event.attendeePricePerUom?.cents,
             event.attendeePricePerUom?.currency?.name
