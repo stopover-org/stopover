@@ -14,7 +14,7 @@ module Stopover
       image = URI.parse(url).open
       {
         io: image,
-          filename: filename
+        filename: filename
       }
     end
 

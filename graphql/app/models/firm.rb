@@ -131,6 +131,11 @@ class Firm < ApplicationRecord
 
   # DELEGATION ============================================================
 
+  def image_url
+    return nil if image.blank?
+    Rails.application.routes.url_helpers.rails_blob_url(image)
+  end
+
   def current_stripe_connect
     stripe_connects.active.last
   end

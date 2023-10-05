@@ -41,8 +41,7 @@ module Types
       end
 
       def image
-        return nil if object.image.blank?
-        Rails.application.routes.url_helpers.rails_blob_url(object.image)
+        object.image_url
       end
 
       def booking(**args)
