@@ -4,6 +4,7 @@ export default {
       attachImage: "Attach image(s)",
       contactInformation: "Contact Information",
       paymentInformation: "Payment Information",
+      createYourFirm: "Create your Firm",
     },
   },
 };

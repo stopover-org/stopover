@@ -38,13 +38,13 @@ const Footer = () => {
   return (
     <Sheet sx={{ minHeight: "100px" }}>
       <Grid container>
-        <Grid xs={4} padding={4} />
-        <Grid xs={4} padding={4} />
-        <Grid xs={4} padding={4}>
+        <Grid md={4} sm={12} padding={4} />
+        <Grid md={4} sm={12} padding={4} />
+        <Grid md={4} sm={12} padding={4}>
           <Select
             placeholder={t("languages.action")}
             name={i18n.language}
-            sx={{ width: 200 }}
+            sx={{ maxWidth: 200 }}
             onChange={setLanguage}
             value={cookies.i18next}
           >

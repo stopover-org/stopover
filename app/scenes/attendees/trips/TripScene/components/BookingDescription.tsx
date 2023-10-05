@@ -52,7 +52,9 @@ const BookingDescription = ({
         autoHeight={isMobileView}
         style={{
           width: "100%",
-          height: isMobileView ? undefined : descriptionHeight,
+          overflowY: 'scroll',
+          overflowX: 'auto',
+          height: '160px'
         }}
       >
         <Typography

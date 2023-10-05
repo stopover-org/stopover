@@ -1,5 +1,5 @@
 import React from "react";
-import { AspectRatio, Box, Card, CardOverflow, Grid, Stack } from "@mui/joy";
+import { AspectRatio, Box, Card, CardContent, CardOverflow, Grid, Stack } from "@mui/joy";
 import { graphql, useFragment, useMutation } from "react-relay";
 import moment, { Moment } from "moment";
 import { useRouter } from "next/router";
@@ -101,16 +101,14 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
 
   return (
     <Grid
-      sx={{ minWidth: "290px" }}
       width={{
         lg: "calc(33% - 20px)",
         md: "calc(50% - 20px)",
         sm: "calc(100% - 20px)",
-        width: "calc(100% - 20px)",
       }}
       padding="10px"
     >
-      <Card variant="outlined" sx={{ width: "100%", minWidth: "270px" }}>
+      <Card variant="outlined" sx={{ width: "100%" }}>
         <CardOverflow>
           <AspectRatio ratio="2">
             <img src={event.images[0]} loading="lazy" alt="" />
@@ -130,77 +128,80 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
             ))}
           </Box>
         </CardOverflow>
-        <Link href={`/events/${event.id}`}>
-          <Typography sx={{ fontSize: "xl" }}>{event.title}</Typography>
-        </Link>
-        <Box sx={{ paddingBottom: "5px" }}>
-          <Typography level="body-md" sx={{ fontSize: "md" }}>
-            {event.interests.map((interest) => {
-              const q = { ...router.query };
-              const rawInterests = (
-                Array.isArray(q["interests[]"])
-                  ? q["interests[]"]
-                  : [q["interests[]"]]
-              ).filter(Boolean) as string[];
+        <CardContent>
+          <Link href={`/events/${event.id}`}>
+            <Typography sx={{ fontSize: "xl" }}>{event.title}</Typography>
+          </Link>
+          <Box>
+            <Typography level="body-md" sx={{ fontSize: "md" }}>
+              {event.interests.map((interest) => {
+                const q = { ...router.query };
+                const rawInterests = (
+                  Array.isArray(q["interests[]"])
+                    ? q["interests[]"]
+                    : [q["interests[]"]]
+                ).filter(Boolean) as string[];
 
-              q.interests = [...rawInterests, interest.slug]
-                .filter((value, index, array) => array.indexOf(value) === index)
-                .filter(Boolean);
+                q.interests = [...rawInterests, interest.slug]
+                  .filter((value, index, array) => array.indexOf(value) === index)
+                  .filter(Boolean);
 
-              delete q["interests[]"];
+                delete q["interests[]"];
 
-              const url = `/events?${stringify(q, {
-                arrayFormat: "brackets",
-                encode: false,
-              })}`;
+                const url = `/events?${stringify(q, {
+                  arrayFormat: "brackets",
+                  encode: false,
+                })}`;
 
-              return (
-                <React.Fragment key={interest.id}>
-                  <Link primary href={url}>
-                    {interest.title}
-                  </Link>
-                  &nbsp;
-                </React.Fragment>
-              );
-            })}
-          </Typography>
-        </Box>
-        <Rating
-          rating={event.averageRating}
-          label={t('event.ratingOf', {val: event.averageRating | 0, max: 5})}
-        />
-        <Stack
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="flex-end"
-          sx={{ paddingTop: "5px" }}
-        >
-          <Typography fontSize="lg" paddingRight="10px">
-            {getCurrencyFormat(
-              event?.attendeePricePerUom?.cents,
-              event?.attendeePricePerUom?.currency?.name
-            )}
-          </Typography>
-          <DateAutocomplete
-            value={date}
-            onChange={setDate}
-            eventFragmentRef={event}
+                return (
+                  <React.Fragment key={interest.id}>
+                    <Link primary href={url}>
+                      {interest.title}
+                    </Link>
+                    &nbsp;
+                  </React.Fragment>
+                );
+              })}
+            </Typography>
+          </Box>
+          <Rating
+            rating={event.averageRating}
+            label={t('event.ratingOf', {val: event.averageRating | 0, max: 5})}
           />
-          {date?.isValid() && !booking && (
-            <SubmitButton
-              submitting={submitting}
-              size="sm"
-              onClick={() => bookEvent(event.id, date.toDate())}
-            >
-              {t('event.book')}
-            </SubmitButton>
-          )}
-          {booking && (
-            <Link href={`/trips/${booking.trip.id}`} underline={false}>
-              <Button size="sm">{t('models.trip.singular')}</Button>
-            </Link>
-          )}
-        </Stack>
+          <Stack
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="flex-end"
+            spacing={1}
+            useFlexGap
+          >
+            <Typography fontSize="lg">
+              {getCurrencyFormat(
+                event?.attendeePricePerUom?.cents,
+                event?.attendeePricePerUom?.currency?.name
+              )}
+            </Typography>
+            <DateAutocomplete
+              value={date}
+              onChange={setDate}
+              eventFragmentRef={event}
+            />
+            {date?.isValid() && !booking && (
+              <SubmitButton
+                submitting={submitting}
+                size="sm"
+                onClick={() => bookEvent(event.id, date.toDate())}
+              >
+                {t('event.book')}
+              </SubmitButton>
+            )}
+            {booking && (
+              <Link href={`/trips/${booking.trip.id}`} underline={false}>
+                <Button size="sm">{t('models.trip.singular')}</Button>
+              </Link>
+            )}
+          </Stack>
+        </CardContent>
       </Card>
     </Grid>
   );

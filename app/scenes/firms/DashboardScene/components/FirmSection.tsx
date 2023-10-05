@@ -6,7 +6,7 @@ import Typography from "../../../../components/v2/Typography";
 import { FirmSection_FirmFragment$key } from "../../../../artifacts/FirmSection_FirmFragment.graphql";
 import Button from "../../../../components/v2/Button";
 import Link from "../../../../components/v2/Link";
-import Tag from "../../../../components/v2/Tag/Tag";
+import Tag from "../../../../components/v2/Tag";
 import VerifyFirm from "../../../../components/shared/VerifyFirm";
 import { FirmSection_CurrentUserFragment$key } from "../../../../artifacts/FirmSection_CurrentUserFragment.graphql";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
@@ -68,9 +68,9 @@ const FirmSection = ({
           {t(`statuses.${firm.status?.toLowerCase()}`)}
         </Tag>
       </Grid>
-      <Grid md={2} sm={12} sx={{ paddingTop: isMobileView ? '10px' : 0, paddingBottom: isMobileView ? '10px' : 0 }}>
-        <Stack direction="row" justifyContent="flex-end">
-          <Link href="/my-firm" underline={false} sx={{ marginRight: "10px" }}>
+      <Grid md={2} sm={12}>
+        <Stack direction={{sm: 'column', md: "row"}} justifyContent="flex-end" spacing={1} useFlexGap>
+          <Link href="/my-firm" underline={false} sx={{paddingBottom: '5px'}}>
             <Button size="sm" variant="outlined">
               {t('scenes.firms.dashboardScene.view')}
             </Button>
@@ -78,7 +78,7 @@ const FirmSection = ({
           <Link
             href="/my-firm/edit"
             underline={false}
-            sx={{ marginRight: "10px" }}
+             sx={{paddingBottom: '5px'}}
           >
             <Button size="sm">
               {t('general.edit')}

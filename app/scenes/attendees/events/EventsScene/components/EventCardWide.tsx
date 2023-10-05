@@ -1,5 +1,5 @@
 import React from "react";
-import { AspectRatio, Box, Card, CardOverflow, Grid, Stack } from "@mui/joy";
+import { AspectRatio, Box, Card, CardContent, CardOverflow, Grid, Stack } from "@mui/joy";
 import { graphql, useFragment, useMutation } from "react-relay";
 import moment from "moment";
 import { Moment } from "moment/moment";
@@ -102,7 +102,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
 
   return (
     <Grid width="720px" padding="10px">
-      <Card variant="outlined" sx={{ width: "700px" }} orientation="horizontal">
+      <Card variant="outlined" sx={{ width: "800px" }} orientation="horizontal">
         <CardOverflow>
           <AspectRatio
             minHeight="200px"
@@ -122,11 +122,11 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
             }}
           />
         </CardOverflow>
-        <Stack paddingLeft="10px" width="100%">
+        <CardContent>
           <Link href={`/events/${event.id}`}>
             <Typography sx={{ fontSize: "xl" }}>{event.title}</Typography>
           </Link>
-          <Box sx={{ paddingBottom: "5px" }}>
+          <Box>
             <Typography level="body-md" sx={{ fontSize: "md" }}>
               {event.interests.map((interest) => {
                 const q = { ...router.query };
@@ -164,10 +164,14 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
             rating={event.averageRating}
             label={t('event.ratingOf', {val: event.averageRating | 0, max: 5})}
           />
-          <Stack flexDirection="row" 
-          alignItems="center"
-          justifyContent="flex-end">
-            <Typography fontSize="lg" paddingRight="10px">
+          <Stack
+            flexDirection="row" 
+            alignItems="center"
+            justifyContent="flex-end"
+            spacing={1}
+            useFlexGap
+          >
+            <Typography fontSize="lg">
               {getCurrencyFormat(
                 event?.attendeePricePerUom?.cents,
                 event?.attendeePricePerUom?.currency?.name
@@ -194,7 +198,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
               </Link>
             )}
           </Stack>
-        </Stack>
+        </CardContent>
       </Card>
     </Grid>
   );
