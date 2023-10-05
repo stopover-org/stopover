@@ -6,6 +6,7 @@ include SendGrid
 module Stopover
   class MailProvider
     DEFAULT_SENDER = 'no-reply@stopoverx.com'
+    NOTIFICATION_EMAIL = 'stopover@dorokhovich.ru'
 
     def self.prepare_content(file:, locals: {})
       ApplicationController.render(file, locals: locals, layout: 'layouts/mailer')
