@@ -10,6 +10,7 @@
 #  date_of_birth :datetime
 #  full_address  :string
 #  house_number  :string
+#  language      :string           default("en"), not null
 #  last_name     :string
 #  latitude      :float
 #  longitude     :float
@@ -63,6 +64,7 @@ RSpec.describe Account, type: :model do
         let(:account) { Account.new(user: create(:temporary_user)) }
         it 'validate name presence' do
           should_not validate_presence_of(:name)
+          should validate_presence_of(:language)
         end
       end
 
@@ -70,6 +72,7 @@ RSpec.describe Account, type: :model do
         let(:account) { Account.new(user: create(:active_user)) }
         it 'validate name presence' do
           should validate_presence_of(:name)
+          should validate_presence_of(:language)
         end
       end
 
@@ -77,6 +80,7 @@ RSpec.describe Account, type: :model do
         let(:account) { Account.new(user: create(:inactive_user)) }
         it 'validate name presence' do
           should validate_presence_of(:name)
+          should validate_presence_of(:language)
         end
       end
 
@@ -84,6 +88,7 @@ RSpec.describe Account, type: :model do
         let(:account) { Account.new(user: create(:user, status: 'disabled')) }
         it 'validate name presence' do
           should validate_presence_of(:name)
+          should validate_presence_of(:language)
         end
       end
     end

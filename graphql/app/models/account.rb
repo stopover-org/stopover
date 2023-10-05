@@ -10,6 +10,7 @@
 #  date_of_birth :datetime
 #  full_address  :string
 #  house_number  :string
+#  language      :string           default("en"), not null
 #  last_name     :string
 #  latitude      :float
 #  longitude     :float
@@ -75,6 +76,7 @@ class Account < ApplicationRecord
 
   # VALIDATIONS ===========================================================
   validates :name, presence: true, if: :should_have_name?
+  validates :language, presence: true
 
   # CALLBACKS =============================================================
   before_validation :adjust_user_info

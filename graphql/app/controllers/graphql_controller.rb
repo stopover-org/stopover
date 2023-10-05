@@ -18,7 +18,8 @@ class GraphqlController < ApplicationController
       current_user: @current_user || nil,
       cookies: cookies
     }
-    I18n.locale = cookies['i18next'] if cookies['i18next']
+    set_locale
+    update_user_locale
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     status_code = result&.dig('errors', 0, 'extensions', 'statusCode') || 200
     cookies.encrypted[Stopover::AuthorizationSupport::COOKIE_KEY] = context[:current_user]&.access_token
@@ -75,5 +76,13 @@ class GraphqlController < ApplicationController
     raise e unless Rails.env.development?
 
     handle_error_in_development(e)
+  end
+
+  def set_locale
+    I18n.locale = cookies['i18next'] if cookies['i18next']
+  end
+
+  def update_user_locale
+    @current_user.account.update!(language: I18n.locale) if @current_user&.account && (@current_user.account.language != I18n.locale)
   end
 end
