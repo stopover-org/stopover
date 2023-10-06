@@ -38,7 +38,7 @@ ru:
           success: 'Участник добавлен'
       book_event:
         notifications:
-          success: 'Вы забрбонировали мероприятие'
+          success: 'Вы забронировали мероприятие'
       cancel_booking:
         notifications:
           success: 'Бронирование отменено'

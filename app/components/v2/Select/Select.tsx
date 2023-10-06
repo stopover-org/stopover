@@ -42,16 +42,7 @@ const Select = React.forwardRef(
     return (
       <FormControl sx={{ padding: 0 }}>
         {label && <FormLabel>{label}</FormLabel>}
-        <JoySelect
-          ref={ref}
-          onChange={onChangeHandler}
-          {...props}
-          slotProps={{
-            listbox: {
-              disablePortal: false,
-            },
-          }}
-        >
+        <JoySelect ref={ref} onChange={onChangeHandler} {...props}>
           {children}
         </JoySelect>
         {hint && <FormHelperText>{hint}</FormHelperText>}
