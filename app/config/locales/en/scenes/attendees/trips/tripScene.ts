@@ -11,6 +11,8 @@ export default {
             "There is no available payment methods. Yet.",
           payDeposit: "Pay Depsot {{amount}}",
           payOnline: "Pay Online {{amount}}",
+          justCome:
+            "We registered you already. Deposit is not required if you want to pay in cash",
           cancelBookingModal: {
             title: "Booking cancellation",
             refundAmount: "Refund amount:",

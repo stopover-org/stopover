@@ -72,6 +72,9 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
         </Select>
       )}
       <br />
+      {booking.leftToPayDepositPrice.cents <= 0 && paymentMethodField.value === 'cash' 
+        ? <Typography>{t('scenes.attendees.trips.tripScene.justCome')}</Typography> 
+        : (
       <SubmitButton
         submitting={form.formState.isSubmitting}
         disabled={disabled}
@@ -87,6 +90,7 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
             )})
         }
       </SubmitButton>
+      )}
     </form>
   );
 };
