@@ -35,9 +35,7 @@ export default {
 } as ComponentMeta<typeof Gallery>;
 
 // onOpen and onClose was excluded from args but they will not be used
-const Preview = () => (
-  <Gallery images={imagesArray} width="600px" minHeight="350px" />
-);
+const Preview = () => <Gallery images={imagesArray} width="600px" />;
 
 export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 DesignPreview.parameters = {
