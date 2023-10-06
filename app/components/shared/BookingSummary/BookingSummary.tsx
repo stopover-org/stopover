@@ -36,7 +36,7 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
   );
 
   return (
-    <Grid container width="100%">
+    <Grid container width="100%" alignItems="center">
       <Grid xs={6}>
         <Typography
           level="body-md"
