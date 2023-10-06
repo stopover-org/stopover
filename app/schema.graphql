@@ -1465,6 +1465,7 @@ type Schedule implements Node {
   bookings: [Booking!]!
   event: Event!
   id: ID!
+  leftPlaces: Int
   scheduledFor: DateTime!
   status: String!
 }

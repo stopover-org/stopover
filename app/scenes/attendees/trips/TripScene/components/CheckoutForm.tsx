@@ -3,11 +3,9 @@ import React from "react";
 import moment from "moment/moment";
 import { Option } from "@mui/joy";
 import { CheckoutForm_BookingFragmentRef$key } from "../../../../../artifacts/CheckoutForm_BookingFragmentRef.graphql";
-import Button from "../../../../../components/v2/Button";
 import { useCheckoutForm } from "./useCheckoutForm";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
 import Select from "../../../../../components/v2/Select";
-import { timeFormat } from "../../../../../lib/utils/dates";
 import { capitalize } from "../../../../../lib/utils/capitalize";
 import Typography from "../../../../../components/v2/Typography";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
@@ -72,6 +70,9 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
         </Select>
       )}
       <br />
+      {booking.leftToPayDepositPrice.cents <= 0 && paymentMethodField.value === 'cash' 
+        ? <Typography>{t('scenes.attendees.trips.tripScene.justCome')}</Typography> 
+        : (
       <SubmitButton
         submitting={form.formState.isSubmitting}
         disabled={disabled}
@@ -87,6 +88,7 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
             )})
         }
       </SubmitButton>
+      )}
     </form>
   );
 };

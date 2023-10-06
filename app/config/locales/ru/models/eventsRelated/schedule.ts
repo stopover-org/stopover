@@ -7,6 +7,7 @@ export default {
         id: "ID",
         scheduledFor: "Дата",
         status: "Статус",
+        leftPlaces: "Осталось {{places}} мест для бронирования",
       },
     },
   },

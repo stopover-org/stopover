@@ -32,7 +32,7 @@ const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit()}>
-        <Grid container spacing={2} padding={2}>
+        <Grid container spacing={{ md: 2, sm: 1 }} padding={{ md: 2, sm: 1 }}>
           <Grid xs={12}>
             <Breadcrumbs eventFragmentRef={event} />
           </Grid>

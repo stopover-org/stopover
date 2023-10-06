@@ -2,7 +2,7 @@ import React from "react";
 import { Grid } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import Typography from "../../v2/Typography/Typography";
+import Typography from "../../v2/Typography";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import { BookingSummary_BookingFragment$key } from "../../../artifacts/BookingSummary_BookingFragment.graphql";
 
@@ -36,7 +36,7 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
   );
 
   return (
-    <Grid container width="100%">
+    <Grid container width="100%" alignItems="center">
       <Grid xs={6}>
         <Typography
           level="body-md"
@@ -72,6 +72,7 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
           textAlign="end"
           color="success"
           sx={(theme) => ({
+            whiteSpace: "unset",
             [theme.breakpoints.down("sm")]: {
               fontSize: "12px",
             },

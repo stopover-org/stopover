@@ -10,6 +10,8 @@ export default {
           noAvailablePaymentMethod: "Нет доступных способов оплаты. Пока что.",
           payDeposit: "Оплатить депозит {{amount}}",
           payOnline: "Оплатить онлайн {{amount}}",
+          justCome:
+            "Мы вас зарегистрировали на мероприятие. Предоплата не требуется если вы хотите оплатить на месте",
           cancelBookingModal: {
             title: "Отмена бронирования",
             refundAmount: "Вам вернется:",

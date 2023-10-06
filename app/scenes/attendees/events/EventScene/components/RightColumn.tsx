@@ -22,16 +22,14 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
     eventFragmentRef
   );
   return (
-    <Stack>
+    <Stack sx={{position: 'sticky', top: '0', right: '0'}}>
       <Box>
         <Typography level="h3" textAlign="end">
           {event.title}
         </Typography>
       </Box>
       <Box>
-        <Scrollbars style={{ width: "100%", height: "300px" }}>
-          <Typography textAlign="justify">{event.description}</Typography>
-        </Scrollbars>
+        <Typography textAlign="justify">{event.description}</Typography>
       </Box>
       <Box>
         <BookEvent eventFragmentRef={event} />

@@ -20,6 +20,7 @@ import RemoveEvent from "../../../../components/shared/RemoveEvent";
 import RescheduleEvent from "../../../../components/shared/RescheduleEvent";
 import SyncStripe from "../../../../components/shared/SyncStripe";
 import StripeIntegrationsInformation from "./components/StripeIntegrationsInformation";
+import LaunchIcon from '@mui/icons-material/Launch';
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -132,6 +133,9 @@ const EventScene = ({
       <Grid lg={8} sm={12}>
         <Typography level="h3" sx={{ display: "inline" }}>
           {event.title}
+          <Link href={`/events/${event.id}`} underline={false} target="_blank">
+            <LaunchIcon />
+          </Link>
         </Typography>
         <Tag color={tagColor} link={false}>
           {t(`statuses.${event.status}`)}

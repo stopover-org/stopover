@@ -6,7 +6,6 @@ import {
   Sheet,
   Stack,
   TabPanel,
-  Typography,
 } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import moment from "moment/moment";
@@ -19,6 +18,7 @@ import ImagesPreview from "../../../../../components/shared/ImagesPreview";
 import CancellationsSection from "./CancellationsSection";
 import Section from "../../../../../components/v2/Section";
 import { useTranslation } from "react-i18next";
+import Typography from "../../../../../components/v2/Typography/Typography";
 
 interface GeneralInformationProps {
   eventFragmentRef: GeneralInformation_EventFragment$key;
@@ -105,7 +105,9 @@ const GeneralInformation = ({
             <Grid xs={2}>
               <Typography level="title-lg">{t('models.event.attributes.description')}</Typography>
             </Grid>
-            <Grid xs={10}>{event.description}</Grid>
+            <Grid xs={10}>
+              <Typography>{event.description}</Typography>
+            </Grid>
 
             <Grid xs={12} p={5}>
               <Divider />

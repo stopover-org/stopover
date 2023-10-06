@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import { Box, Option, Stack } from "@mui/joy";
-import { Moment } from "moment";
+import { Box, Grid, Option, Stack } from "@mui/joy";
+import moment, { Moment } from "moment";
 import Button from "../../../../../components/v2/Button";
 import { getDate, setTime, timeFormat } from "../../../../../lib/utils/dates";
 import ButtonDatePicker from "../../../../../components/v2/ButtonDatePicker";
@@ -16,13 +16,14 @@ import { EventActions_EventFragment$key } from "../../../../../artifacts/EventAc
 import SubmitButton from "../../../../../components/shared/SubmitButton";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "../../../../../lib/utils/capitalize";
+import useSubscription from "../../../../../lib/hooks/useSubscription";
 
 interface EventActionsProps {
   eventFragmentRef: EventActions_EventFragment$key;
 }
 
 const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
-  const event = useFragment(
+  const event = useFragment<EventActions_EventFragment$key>(
     graphql`
       fragment EventActions_EventFragment on Event {
         id
@@ -43,10 +44,17 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             id
           }
         }
+        schedules {
+          nodes {
+            scheduledFor
+            leftPlaces
+          }
+        }
       }
     `,
     eventFragmentRef
   );
+
   const { useFormField, ...form } = useFormContext();
   const dateField = useFormField<Moment>("date");
   const attendeesCountField = useFormField<number>("attendeesCount");
@@ -70,12 +78,14 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
     [dateField]
   );
 
+  const schedule = event.schedules.nodes.find((sch) => moment(sch.scheduledFor).isSame(moment(dateField.value)))
+  
   const { t } = useTranslation()
 
   return availableDates.length > 0 ? (
     <>
-      <Stack flexDirection="row" justifyContent="flex-end">
-        <Box paddingRight="10px">
+      <Grid container spacing={1} justifyContent={'flex-end'}>
+        <Grid sm={12} md={4} xs={4}>
           <ButtonDatePicker
             onChange={(date) => {
               if (!date) return;
@@ -89,8 +99,8 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
           >
             {getDate(dateField.value)}
           </ButtonDatePicker>
-        </Box>
-        <Box paddingRight="10px">
+        </Grid>
+        <Grid sm={12} md={4} xs={4}>
           <Select
             onChange={(value: string) => {
               if (!value) return;
@@ -106,38 +116,42 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
               </Option>
             ))}
           </Select>
-        </Box>
-        <Box sx={{width: '100px'}}>
+        </Grid>
+        <Grid>
           {!booking && (
             <SubmitButton
               submitting={form.formState.isSubmitting}
               disabled={!dateField.value.isValid() || !isValidTime}
+              fullWidth
             >
               {t('scenes.attendees.events.eventScene.bookEvent')}
             </SubmitButton>
           )}
           {booking && (
             <Link href={`/trips/${booking.trip.id}`} underline={false}>
-              <Button>{t('layout.header.myTrips')}</Button>
+              <Button fullWidth>{t('layout.header.myTrips')}</Button>
             </Link>
           )}
-        </Box>
-      </Stack>
-      <Stack flexDirection="row" justifyContent="flex-end" paddingTop="10px">
-        <Typography textAlign="end">
-          {getCurrencyFormat(
-            event.attendeePricePerUom?.cents,
-            event.attendeePricePerUom?.currency?.name
-          )}{" "}
-          x {attendeesCountField.value} {t('general.attendee')}
-          <br />
-          {capitalize(t('general.total'))}:{" "}
-          {getCurrencyFormat(
-            attendeesCountField.value * (event.attendeePricePerUom?.cents || 0),
-            event.attendeePricePerUom?.currency?.name
-          )}
-        </Typography>
-      </Stack>
+        </Grid>
+        <Grid sm={12} md={12} xs={12}>
+          <Typography textAlign="end">
+            {getCurrencyFormat(
+              event.attendeePricePerUom?.cents,
+              event.attendeePricePerUom?.currency?.name
+            )}{" "}
+            x {attendeesCountField.value} {t('general.attendee')}
+            <br />
+            {capitalize(t('general.total'))}:{" "}
+            {getCurrencyFormat(
+              attendeesCountField.value * (event.attendeePricePerUom?.cents || 0),
+              event.attendeePricePerUom?.currency?.name
+            )}
+          </Typography>
+          {schedule?.leftPlaces && !booking && <Typography textAlign="end">
+            {t('models.schedule.attributes.leftPlaces', { places: schedule.leftPlaces })}
+          </Typography> }
+        </Grid>
+      </Grid>
     </>
   ) : null;
 };

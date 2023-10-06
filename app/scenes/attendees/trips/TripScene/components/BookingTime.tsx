@@ -57,17 +57,15 @@ const BookingTime = ({ bookingFragmentRef }: BookingTimeProps) => {
         }}
       >
         {moment(booking.bookedFor).format(timeFormat)}
-        {startEndDiffDate && (
-          <Box>
-            <Typography
-              sx={{
-                fontSize: "sm",
-              }}
-            >
-              {moment(booking.bookedFor).format(shortDayMonthFormat)}
-            </Typography>
-          </Box>
-        )}
+        <Box>
+          <Typography
+            sx={{
+              fontSize: "sm",
+            }}
+          >
+            {moment(booking.bookedFor).format(shortDayMonthFormat)}
+          </Typography>
+        </Box>
       </Typography>
       <Typography
         level="title-lg"

@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Grid, Option } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 import DateCalendar from "../../../../../components/v2/DateCalendar/DateCalendar";
 import {
   dateFormat,
@@ -26,11 +26,17 @@ interface BookEventProps {
 }
 
 const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
-  const event = useFragment(
+  const event = useFragment<BookEvent_EventFragment$key>(
     graphql`
       fragment BookEvent_EventFragment on Event {
         id
         availableDates
+        schedules {
+          nodes {
+            scheduledFor
+            leftPlaces
+          }
+        }
         myBookings {
           bookedFor
           trip {
@@ -73,6 +79,8 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
     [dateField]
   );
 
+  const schedule = event.schedules.nodes.find((sch) => moment(sch.scheduledFor).isSame(moment(dateField.value)))
+
   const { t } = useTranslation()
 
   return (
@@ -92,7 +100,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
           }}
         />
       </Grid>
-      <Grid md={6} sm={12}>
+      <Grid md={6} sm={12} xs={12}>
           <Input
             label={t('datepicker.selectDate')}
             value={dateField.value?.format(dateFormat)}
@@ -151,6 +159,9 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
               <Button>{t('layout.header.myTrips')}</Button>
             </Link>
           )}
+          {schedule?.leftPlaces && !booking && <Typography textAlign="start">
+            {t('models.schedule.attributes.leftPlaces', { places: schedule.leftPlaces })}
+          </Typography> }
       </Grid>
     </Grid>
   );

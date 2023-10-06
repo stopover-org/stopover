@@ -33,7 +33,7 @@ const Typography = React.forwardRef(
       children = <StrikeThroughStyle>{children}</StrikeThroughStyle>;
     }
     return (
-      <JoyTypography ref={ref} sx={sx} {...props}>
+      <JoyTypography ref={ref} sx={sx} whiteSpace="pre-wrap" {...props}>
         {children}
       </JoyTypography>
     );
