@@ -74,7 +74,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
   );
 
   const selectedTime = React.useMemo(
-    () => dateField.value.format(timeFormat),
+    () => dateField.value?.format(timeFormat),
     [dateField]
   );
 

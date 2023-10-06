@@ -23,34 +23,32 @@ const CreateFirmScene = () => {
         </form>
       </FormProvider>
       <Drawer open={opened} onClose={close}>
-        <React.Suspense>
+        <Grid xs={12}>
+          <Link href="/">
+            <Image
+              src="https://placehold.co/250x75"
+              width={300}
+              height={90}
+            />
+          </Link>
+        </Grid>
+        <Grid container padding='10px'>
           <Grid xs={12}>
-            <Link href="/">
-              <Image
-                src="https://placehold.co/250x75"
-                width={300}
-                height={90}
-              />
-            </Link>
+            <Box
+              sx={{
+                display: 'flex',
+                position: 'sticky',
+                bottom: '0',
+                gap: 1,
+                p: 1.5,
+                pb: 2,
+                width: '90%'
+              }}
+            >
+              <Link href='/trips'>{t('layout.header.myTrips')}</Link>
+            </Box>
           </Grid>
-          <Grid container padding='10px'>
-            <Grid xs={12}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  position: 'sticky',
-                  bottom: '0',
-                  gap: 1,
-                  p: 1.5,
-                  pb: 2,
-                  width: '90%'
-                }}
-              >
-                <Link href='/trips'>{t('layout.header.myTrips')}</Link>
-              </Box>
-            </Grid>
-          </Grid>
-        </React.Suspense>
+        </Grid>
       </Drawer>
     </>
   );

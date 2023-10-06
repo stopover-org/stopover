@@ -133,7 +133,7 @@ const EventScene = ({
       <Grid lg={8} sm={12}>
         <Typography level="h3" sx={{ display: "inline" }}>
           {event.title}
-          <Link href={`/events/${event.id}`} underline={false}>
+          <Link href={`/events/${event.id}`} underline={false} fontSize='12px'>
             <LaunchIcon />
           </Link>
         </Typography>

@@ -46,7 +46,6 @@ const Layout = ({
   return (
     <GlobalSidebarProvider>
       <Sheet>
-        <div id="gallery-portal" />
         <Header
           currentUserFragment={currentUser}
           showRegisterFirm={showRegisterFirm}

@@ -65,7 +65,7 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
     }
     requestRef.current = setTimeout(() => {
       refetch({ query }, { fetchPolicy: "store-and-network" });
-    }, 750);
+    }, 500);
   }, [query]);
 
   const options = React.useMemo(
@@ -108,20 +108,29 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
       }
       sx={{ borderRadius: "0", marginRight: "5px" }}
       groupBy={(option) => option.type}
-      onInputChange={(_, value) => {
-        const q = router.query;
-        if (value === "") {
-          delete q.query;
-        } else {
-          q.query = value;
+      onKeyUp={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        if (e.key === "Enter") {
+          const q = router.query;
+          if (query === "") {
+            delete q.query;
+          } else {
+            q.query = query;
+          }
+
+          const url = `/events?${stringify(q, {
+            arrayFormat: "brackets",
+            encode: false,
+          })}`;
+
+          router.push({ pathname: '/events', query: q }, undefined, { shallow: true });
         }
-
-        const url = `/events?${stringify(q, {
-          arrayFormat: "brackets",
-          encode: false,
-        })}`;
-
-        router.push(url);
+      }}
+      onInputChange={(e, value) => {
+        e.preventDefault()
+        e.stopPropagation()
 
         setQuery(value);
       }}
@@ -142,6 +151,7 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
         </AutocompleteOption>
       )}
       onChange={(evt, value) => {
+        console.log(value)
         if (value.link) {
           router.push(value.link as string);
         }

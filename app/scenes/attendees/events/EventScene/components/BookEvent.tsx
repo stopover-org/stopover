@@ -70,12 +70,12 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
   );
 
   const booking = React.useMemo(
-    () => event.myBookings.find((b) => dateField.value.isSame(b.bookedFor)),
+    () => event.myBookings.find((b) => dateField.value?.isSame(b.bookedFor)),
     [dateField.value, bookedDates]
   );
 
   const selectedTime = React.useMemo(
-    () => dateField.value.format(timeFormat),
+    () => dateField.value?.format(timeFormat),
     [dateField]
   );
 
@@ -149,7 +149,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
           {!booking && (
             <SubmitButton
               submitting={form.formState.isSubmitting}
-              disabled={!dateField.value.isValid() || !isValidTime}
+              disabled={!dateField.value?.isValid() || !isValidTime}
             >
               {t('scenes.attendees.events.eventScene.bookEvent')}
             </SubmitButton>
