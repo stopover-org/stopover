@@ -5,12 +5,13 @@ import { useTranslation } from "react-i18next";
 import { RemoveEvent_EventFragment$key } from "../../../artifacts/RemoveEvent_EventFragment.graphql";
 import Button from "../../v2/Button";
 import RemoveEventModal from "./RemoveEventModal";
+import { ButtonProps } from "../../v2/Button/Button";
 
-interface PublishEventProps {
+interface PublishEventProps extends ButtonProps {
   eventFragmentRef: RemoveEvent_EventFragment$key;
 }
 
-const RemoveEvent = ({ eventFragmentRef }: PublishEventProps) => {
+const RemoveEvent = ({ eventFragmentRef, ...props }: PublishEventProps) => {
   const event = useFragment(
     graphql`
       fragment RemoveEvent_EventFragment on Event {
@@ -24,7 +25,12 @@ const RemoveEvent = ({ eventFragmentRef }: PublishEventProps) => {
   return (
     <>
       <Box>
-        <Button size="sm" color="danger" onClick={() => setModalOpened(true)}>
+        <Button
+          size="sm"
+          color="danger"
+          onClick={() => setModalOpened(true)}
+          {...props}
+        >
           {t("forms.removeEvent.action")}
         </Button>
       </Box>

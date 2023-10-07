@@ -5,12 +5,13 @@ import { Box } from "@mui/joy";
 import { RescheduleEvent_EventFragment$key } from "../../../artifacts/RescheduleEvent_EventFragment.graphql";
 import Button from "../../v2/Button";
 import RescheduleEventModal from "./RescheduleEventModal";
+import { ButtonProps } from "../../v2/Button/Button";
 
-interface PublishEventProps {
+interface PublishEventProps extends ButtonProps {
   eventFragmentRef: RescheduleEvent_EventFragment$key;
 }
 
-const RescheduleEvent = ({ eventFragmentRef }: PublishEventProps) => {
+const RescheduleEvent = ({ eventFragmentRef, ...props }: PublishEventProps) => {
   const event = useFragment(
     graphql`
       fragment RescheduleEvent_EventFragment on Event {
@@ -24,7 +25,7 @@ const RescheduleEvent = ({ eventFragmentRef }: PublishEventProps) => {
   return (
     <>
       <Box>
-        <Button size="sm" onClick={() => setModalOpened(true)}>
+        <Button size="sm" onClick={() => setModalOpened(true)} {...props}>
           {t("forms.rescheduleEvent.action")}
         </Button>
       </Box>

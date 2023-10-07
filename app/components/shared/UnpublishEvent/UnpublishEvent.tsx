@@ -5,12 +5,13 @@ import { useTranslation } from "react-i18next";
 import Button from "../../v2/Button";
 import UnpublishEventModal from "./UnpublishEventModal";
 import { UnpublishEvent_EventFragment$key } from "../../../artifacts/UnpublishEvent_EventFragment.graphql";
+import { ButtonProps } from "../../v2/Button/Button";
 
-interface PublishEventProps {
+interface PublishEventProps extends ButtonProps {
   eventFragmentRef: UnpublishEvent_EventFragment$key;
 }
 
-const UnpublishEvent = ({ eventFragmentRef }: PublishEventProps) => {
+const UnpublishEvent = ({ eventFragmentRef, ...props }: PublishEventProps) => {
   const event = useFragment(
     graphql`
       fragment UnpublishEvent_EventFragment on Event {
@@ -24,7 +25,7 @@ const UnpublishEvent = ({ eventFragmentRef }: PublishEventProps) => {
   return (
     <>
       <Box>
-        <Button size="sm" onClick={() => setModalOpened(true)}>
+        <Button size="sm" onClick={() => setModalOpened(true)} {...props}>
           {t("forms.unpublishEvent.action")}
         </Button>
       </Box>

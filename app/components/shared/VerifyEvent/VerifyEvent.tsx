@@ -5,12 +5,13 @@ import { Box } from "@mui/joy";
 import { VerifyEventInformation_EventFragment$key } from "../../../artifacts/VerifyEventInformation_EventFragment.graphql";
 import Button from "../../v2/Button";
 import VerifyEventModal from "./VerifyEventModal";
+import { ButtonProps } from "../../v2/Button/Button";
 
-interface VerifyEventProps {
+interface VerifyEventProps extends ButtonProps {
   eventFragmentRef: VerifyEventInformation_EventFragment$key;
 }
 
-const VerifyEvent = ({ eventFragmentRef }: VerifyEventProps) => {
+const VerifyEvent = ({ eventFragmentRef, ...props }: VerifyEventProps) => {
   const event = useFragment(
     graphql`
       fragment VerifyEventInformation_EventFragment on Event {
@@ -25,7 +26,7 @@ const VerifyEvent = ({ eventFragmentRef }: VerifyEventProps) => {
   return (
     <>
       <Box>
-        <Button size="sm" onClick={() => setModalOpened(true)}>
+        <Button size="sm" onClick={() => setModalOpened(true)} {...props}>
           {t("forms.verifyEvent.action")}
         </Button>
       </Box>

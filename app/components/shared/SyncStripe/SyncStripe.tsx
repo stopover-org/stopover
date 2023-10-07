@@ -5,12 +5,13 @@ import { useTranslation } from "react-i18next";
 import { SyncStripe_EventFragment$key } from "../../../artifacts/SyncStripe_EventFragment.graphql";
 import Button from "../../v2/Button";
 import SyncStripeModal from "./SyncStripeModal";
+import { ButtonProps } from "../../v2/Button/Button";
 
-interface SyncStripeProps {
+interface SyncStripeProps extends ButtonProps {
   eventFragmentRef: SyncStripe_EventFragment$key;
 }
 
-const SyncStripe = ({ eventFragmentRef }: SyncStripeProps) => {
+const SyncStripe = ({ eventFragmentRef, ...props }: SyncStripeProps) => {
   const event = useFragment(
     graphql`
       fragment SyncStripe_EventFragment on Event {
@@ -24,7 +25,12 @@ const SyncStripe = ({ eventFragmentRef }: SyncStripeProps) => {
   return (
     <>
       <Box>
-        <Button size="sm" color="neutral" onClick={() => setModalOpened(true)}>
+        <Button
+          size="sm"
+          color="neutral"
+          onClick={() => setModalOpened(true)}
+          {...props}
+        >
           {t("forms.syncStripe.action")}
         </Button>
       </Box>
