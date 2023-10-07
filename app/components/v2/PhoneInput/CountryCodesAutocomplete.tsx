@@ -49,6 +49,9 @@ const CountryCodesAutocomplete = ({
         width,
         border: "none",
         transition: "width 0.1s ease",
+        boxShadow: "none",
+        margin: 0,
+        fontSize: "sm",
       }}
       getOptionLabel={(opt) => {
         const country = countryName.of(opt);
@@ -59,12 +62,12 @@ const CountryCodesAutocomplete = ({
         const callingCode = getCountryCallingCode(countryCode as CountryCode);
         return (
           <AutocompleteOption {...props}>
-            <ListItemDecorator>
+            <ListItemDecorator sx={{ fontSize: "lg" }}>
               {countryCodeEmoji(countryCode)}
             </ListItemDecorator>
-            <ListItemContent sx={{ fontSize: "sm" }}>
+            <ListItemContent sx={{ fontSize: "10px" }}>
               {countryName.of(countryCode)}
-              <Typography level="body-md">
+              <Typography level="body-sm">
                 ({countryCode}) +{callingCode}
               </Typography>
             </ListItemContent>
@@ -73,28 +76,6 @@ const CountryCodesAutocomplete = ({
       }}
     />
   );
-  // return (
-  //   <Select
-  //     variant="plain"
-  //     value={selectedCountry}
-  //     onChange={(_, val) => {
-  //       if (!val) return;
-  //       onChange(`+${countryPhoneCodes[val]}`);
-  //
-  //       onCountryChange(val);
-  //     }}
-  //     sx={{ "&:hover": { bgcolor: "transparent" } }}
-  //   >
-  //     {Object.keys(countryPhoneCodes)
-  //       .filter(Boolean)
-  //       .map((countryCode: string) => (
-  //         <Option key={countryCode} value={countryCode}>
-  //           {countryCodeEmoji(countryCode)}
-  //           (+{countryPhoneCodes[countryCode]})
-  //         </Option>
-  //       ))}
-  //   </Select>
-  // );
 };
 
 export default React.memo(CountryCodesAutocomplete);

@@ -58,14 +58,14 @@ const PhoneInput = React.forwardRef(
             selectedCountry={country}
             onChange={onChange}
             onCountryChange={setCountry}
-            width={focusedInput ? "100px" : "180px"}
+            width={focusedInput ? "100px" : "150px"}
           />
         }
         placeholder={inputPlaceholder}
         onChange={onChangeHandler}
         value={value ? formatIncompletePhoneNumber(value) : ""}
         label={label}
-        sx={{ paddingLeft: 0 }}
+        sx={{ padding: 0 }}
         onFocus={() => setFocusedInput(true)}
         onBlurCapture={() => setFocusedInput(false)}
         {...props}
