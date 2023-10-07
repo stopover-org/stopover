@@ -11,6 +11,8 @@ import {
 import Input from "../Input";
 import { getCountryFromOffset } from "../../../lib/utils/timezones";
 import CountryCodesAutocomplete from "./CountryCodesAutocomplete";
+import { useTheme } from "@mui/joy";
+import { useMediaQuery } from "@mui/material";
 
 export interface PhoneInputProps {
   onChange: (value: string) => void;
@@ -50,6 +52,8 @@ const PhoneInput = React.forwardRef(
     };
     const sample = getExampleNumber(country as CountryCode, examples);
     const inputPlaceholder = sample ? sample.number : "Choose country";
+    const theme = useTheme()
+    const isMobileView = useMediaQuery(theme.breakpoints.down('md'))
 
     return (
       <Input
@@ -58,7 +62,7 @@ const PhoneInput = React.forwardRef(
             selectedCountry={country}
             onChange={onChange}
             onCountryChange={setCountry}
-            width={focusedInput ? "100px" : "150px"}
+            width={focusedInput ? isMobileView ? '75px' : "100px" : "150px"}
           />
         }
         placeholder={inputPlaceholder}
