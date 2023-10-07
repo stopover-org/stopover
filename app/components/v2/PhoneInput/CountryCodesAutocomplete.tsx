@@ -3,6 +3,7 @@ import {
   AutocompleteOption,
   ListItemContent,
   ListItemDecorator,
+  useTheme,
 } from "@mui/joy";
 import countryCodeEmoji from "country-code-emoji";
 import React from "react";
@@ -11,6 +12,7 @@ import {
   getCountries,
   getCountryCallingCode,
 } from "libphonenumber-js";
+import { useMediaQuery } from "@mui/material";
 import Typography from "../Typography";
 
 interface CountryCodesAutocompleteProps {
@@ -38,6 +40,8 @@ const CountryCodesAutocomplete = ({
     [onChange, onCountryChange, selectedCountry]
   );
   const countryName = new Intl.DisplayNames(["en"], { type: "region" });
+  const theme = useTheme();
+  const isMobileView = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <Autocomplete
@@ -62,9 +66,11 @@ const CountryCodesAutocomplete = ({
         const callingCode = getCountryCallingCode(countryCode as CountryCode);
         return (
           <AutocompleteOption {...props}>
-            <ListItemDecorator sx={{ fontSize: "lg" }}>
-              {countryCodeEmoji(countryCode)}
-            </ListItemDecorator>
+            {!isMobileView && (
+              <ListItemDecorator sx={{ fontSize: "lg" }}>
+                {countryCodeEmoji(countryCode)}
+              </ListItemDecorator>
+            )}
             <ListItemContent sx={{ fontSize: "10px" }}>
               {countryName.of(countryCode)}
               <Typography level="body-sm">
