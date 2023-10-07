@@ -180,9 +180,9 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
                           (slug) => slug !== interest
                         );
 
-                        delete q["interests[]"];
+                        delete routerQuery["interests[]"];
 
-                        const url = `/events?${stringify(q, {
+                        const url = `/events?${stringify(routerQuery, {
                           arrayFormat: "brackets",
                           encode: false,
                         })}`;
