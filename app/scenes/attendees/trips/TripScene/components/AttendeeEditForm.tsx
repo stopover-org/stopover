@@ -8,6 +8,7 @@ import { AttendeeEditForm_AttendeeFragment$key } from "../../../../../artifacts/
 import EventOptionEditForm from "./EventOptionEditForm";
 import { useAttendeeEditForm } from "./useAttendeeEditForm";
 import { useTranslation } from "react-i18next";
+import Typography from "../../../../../components/v2/Typography";
 
 interface AttendeeEditFormProps {
   attendeeFragmentRef: AttendeeEditForm_AttendeeFragment$key;
@@ -53,22 +54,9 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
   return (
     <FormProvider {...form}>
       <form>
-        <Grid container>
-          <Grid xs={6}>
-            <Input
-              label={t('models.attendee.attributes.firstName')}
-              placeholder={t('models.attendee.attributes.firstName')}
-              readOnly={disabled}
-              {...form.useFormField("firstName")}
-            />
-          </Grid>
-          <Grid xs={6}>
-            <Input
-              label={t('models.attendee.attributes.lastName')}
-              placeholder={t('models.attendee.attributes.lastName')}
-              readOnly={disabled}
-              {...form.useFormField("lastName")}
-            />
+        <Grid container spacing={1}>
+          <Grid xs={12}>
+            <Typography fontSize={'title-lg'}>{t('models.attendee.singular')}</Typography>
           </Grid>
           <Grid xs={12}>
             <Input
@@ -76,14 +64,6 @@ const AttendeeEditForm = ({ attendeeFragmentRef }: AttendeeEditFormProps) => {
               placeholder={t('models.attendee.attributes.email')}
               readOnly={disabled}
               {...form.useFormField("email")}
-            />
-          </Grid>
-          <Grid xs={12}>
-            <Input
-              label={t('models.attendee.attributes.phone')}
-              placeholder={t('models.attendee.attributes.phone')}
-              readOnly={disabled}
-              {...form.useFormField("phone")}
             />
           </Grid>
           {attendee.eventOptions.map((option) => (
