@@ -41,7 +41,7 @@ module Types
       end
 
       def image
-        object.image_url
+        object.image.url
       end
 
       def booking(**args)

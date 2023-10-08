@@ -65,7 +65,7 @@ module Types
 
       def images
         object.images.map do |img|
-          Rails.application.routes.url_helpers.rails_blob_url(img)
+          img&.url
         end
       end
 

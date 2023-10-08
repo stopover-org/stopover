@@ -33,6 +33,11 @@ const Layout = ({
     graphql`
       fragment Layout_CurrentUserFragment on User {
         ...Header_CurrentUserFragment
+        account {
+          firm {
+            ...GlobalSidebarProvider_FirmFragment
+          }
+        }
       }
     `,
     currentUserFragment
@@ -44,9 +49,8 @@ const Layout = ({
   }, []);
 
   return (
-    <GlobalSidebarProvider>
+    <GlobalSidebarProvider firmFragmentRef={currentUser?.account?.firm}>
       <Sheet>
-        <div id="gallery-portal" />
         <Header
           currentUserFragment={currentUser}
           showRegisterFirm={showRegisterFirm}

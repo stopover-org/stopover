@@ -101,106 +101,108 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
   };
 
   return (
-    <Grid width="720px" padding="10px">
-      <Card variant="outlined" sx={{ width: "800px" }} orientation="horizontal">
-        <CardOverflow>
-          <AspectRatio
-            minHeight="200px"
-            maxHeight="500px"
-            ratio="2"
-            sx={{ width: "310px" }}
-            objectFit="cover"
-          >
-            <img src={event.images[0]} loading="lazy" alt="" />
-          </AspectRatio>
-          <Box
-            sx={{
-              position: "absolute",
-              zIndex: 2,
-              right: "1rem",
-              top: "1rem",
-            }}
-          />
-        </CardOverflow>
-        <CardContent>
-          <Link href={`/events/${event.id}`}>
-            <Typography sx={{ fontSize: "xl" }}>{event.title}</Typography>
-          </Link>
-          <Box>
-            <Typography level="body-md" sx={{ fontSize: "md" }}>
-              {event.interests.map((interest) => {
-                const q = { ...router.query };
-                const rawInterests = (
-                  Array.isArray(q["interests[]"])
-                    ? q["interests[]"]
-                    : [q["interests[]"]]
-                ).filter(Boolean) as string[];
-
-                q.interests = [...rawInterests, interest.slug]
-                  .filter(
-                    (value, index, array) => array.indexOf(value) === index
-                  )
-                  .filter(Boolean);
-
-                delete q["interests[]"];
-
-                const url = `/events?${stringify(q, {
-                  arrayFormat: "brackets",
-                  encode: false,
-                })}`;
-
-                return (
-                  <React.Fragment key={interest.id}>
-                    <Link primary href={url}>
-                      {interest.title}
-                    </Link>
-                    &nbsp;
-                  </React.Fragment>
-                );
-              })}
-            </Typography>
-          </Box>
-          <Rating
-            rating={event.averageRating}
-            label={t('event.ratingOf', {val: event.averageRating | 0, max: 5})}
-          />
-          <Stack
-            flexDirection="row" 
-            alignItems="center"
-            justifyContent="flex-end"
-            spacing={1}
-            useFlexGap
-          >
-            <Typography fontSize="lg">
-              {getCurrencyFormat(
-                event?.attendeePricePerUom?.cents,
-                event?.attendeePricePerUom?.currency?.name
-              )}
-            </Typography>
-            <DateAutocomplete
-              value={date}
-              onChange={setDate}
-              eventFragmentRef={event}
-              sx={{ width: '150px'}}
+    <React.Suspense>
+      <Grid width="720px" padding="10px">
+        <Card variant="outlined" sx={{ width: "800px" }} orientation="horizontal">
+          <CardOverflow>
+            <AspectRatio
+              minHeight="200px"
+              maxHeight="500px"
+              ratio="2"
+              sx={{ width: "310px" }}
+              objectFit="cover"
+            >
+              <img src={event.images[0]} loading="lazy" alt="" />
+            </AspectRatio>
+            <Box
+              sx={{
+                position: "absolute",
+                zIndex: 2,
+                right: "1rem",
+                top: "1rem",
+              }}
             />
-            {date?.isValid() && !booking && (
-              <SubmitButton
-                submitting={submitting}
-                size="sm"
-                onClick={() => bookEvent(event.id, date.toDate())}
-              >
-                {t('event.book')}
-              </SubmitButton>
-            )}
-            {booking && (
-              <Link href={`/trips/${booking.trip.id}`} underline={false}>
-                <Button size="sm">{t('models.trip.singular')}</Button>
-              </Link>
-            )}
-          </Stack>
-        </CardContent>
-      </Card>
-    </Grid>
+          </CardOverflow>
+          <CardContent>
+            <Link href={`/events/${event.id}`}>
+              <Typography sx={{ fontSize: "xl" }}>{event.title}</Typography>
+            </Link>
+            <Box>
+              <Typography level="body-md" sx={{ fontSize: "md" }}>
+                {event.interests.map((interest) => {
+                  const q = { ...router.query };
+                  const rawInterests = (
+                    Array.isArray(q["interests[]"])
+                      ? q["interests[]"]
+                      : [q["interests[]"]]
+                  ).filter(Boolean) as string[];
+
+                  q.interests = [...rawInterests, interest.slug]
+                    .filter(
+                      (value, index, array) => array.indexOf(value) === index
+                    )
+                    .filter(Boolean);
+
+                  delete q["interests[]"];
+
+                  const url = `/events?${stringify(q, {
+                    arrayFormat: "brackets",
+                    encode: false,
+                  })}`;
+
+                  return (
+                    <React.Fragment key={interest.id}>
+                      <Link primary href={url}>
+                        {interest.title}
+                      </Link>
+                      &nbsp;
+                    </React.Fragment>
+                  );
+                })}
+              </Typography>
+            </Box>
+            <Rating
+              rating={event.averageRating}
+              label={t('event.ratingOf', {val: event.averageRating | 0, max: 5})}
+            />
+            <Stack
+              flexDirection="row" 
+              alignItems="center"
+              justifyContent="flex-end"
+              spacing={1}
+              useFlexGap
+            >
+              <Typography fontSize="lg">
+                {getCurrencyFormat(
+                  event?.attendeePricePerUom?.cents,
+                  event?.attendeePricePerUom?.currency?.name
+                )}
+              </Typography>
+              <DateAutocomplete
+                value={date}
+                onChange={setDate}
+                eventFragmentRef={event}
+                sx={{ width: '150px'}}
+              />
+              {date?.isValid() && !booking && (
+                <SubmitButton
+                  submitting={submitting}
+                  size="sm"
+                  onClick={() => bookEvent(event.id, date.toDate())}
+                >
+                  {t('event.book')}
+                </SubmitButton>
+              )}
+              {booking && (
+                <Link href={`/trips/${booking.trip.id}`} underline={false}>
+                  <Button size="sm">{t('models.trip.singular')}</Button>
+                </Link>
+              )}
+            </Stack>
+          </CardContent>
+        </Card>
+      </Grid>
+    </React.Suspense>
   );
 };
 

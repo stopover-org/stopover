@@ -1,7 +1,20 @@
 import React from "react";
-import { Box, Chip, ChipDelete, Drawer, Grid, styled, useTheme } from "@mui/joy";
+import {
+  Box,
+  Chip,
+  ChipDelete,
+  Drawer,
+  Grid,
+  styled,
+  useTheme,
+} from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
-import { graphql, useFragment, usePaginationFragment } from "react-relay";
+import {
+  Disposable,
+  graphql,
+  useFragment,
+  usePaginationFragment,
+} from "react-relay";
 import { useRouter } from "next/router";
 import { stringify } from "qs";
 import { useTranslation } from "react-i18next";
@@ -15,8 +28,9 @@ import { EventsScene_EventsAutocompleteFragment$key } from "../../../../artifact
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { EventsScenePaginationQuery } from "../../../../artifacts/EventsScenePaginationQuery.graphql";
 import { EventsScene_InterestsFragment$key } from "../../../../artifacts/EventsScene_InterestsFragment.graphql";
-import { GlobalSidebarContext } from '../../../../components/GlobalSidebarProvider'
+import { GlobalSidebarContext } from "../../../../components/GlobalSidebarProvider";
 import Link from "../../../../components/v2/Link";
+import { useArrayValuesFromQuery } from "../../../../lib/hooks/useArrayValuesFromQuery";
 
 interface Props {
   eventsFragmentRef:
@@ -35,7 +49,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   const router = useRouter();
   const { t } = useTranslation();
   const theme = useTheme();
-  const { opened, close, open } = React.useContext(GlobalSidebarContext);
+  const { setContent } = React.useContext(GlobalSidebarContext);
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   const isLargeDisplay = useMediaQuery(theme.breakpoints.up("lg"));
   const isVeryLargeDisplay = useMediaQuery(theme.breakpoints.up("xl"));
@@ -89,15 +103,14 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     `,
     eventsFragmentRef as EventsScene_InterestsFragment$key
   );
-  const q = { ...router.query };
-  const interestsSlug = (
-    Array.isArray(q["interests[]"]) ? q["interests[]"] : [q["interests[]"]]
-  ).filter(Boolean) as string[];
+  const routerQuery = { ...router.query };
+  const interestsSlug = useArrayValuesFromQuery("interests[]");
   const { query } = router.query;
   const events = usePagedEdges(data.events, currentPage, 10);
   const [{ filters }, setFilters] = React.useState<any>({
     query,
   });
+  const queryRef = React.useRef<Disposable>();
 
   React.useEffect(() => {
     const startDate = filters?.startDate
@@ -108,7 +121,11 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       ? filters?.endDate.toISOString()
       : undefined;
 
-    refetch(
+    if (queryRef.current) {
+      queryRef.current.dispose();
+    }
+
+    queryRef.current = refetch(
       {
         filters: {
           ...filters,
@@ -119,31 +136,39 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         cursor: "0",
       },
       {
-        fetchPolicy: "store-and-network",
         onComplete: () => {
-          setCurrentPage(1);
+          if (currentPage !== 1) {
+            setCurrentPage(1);
+          }
         },
       }
     );
   }, [filters, router]);
 
+  React.useEffect(() => {
+    setContent(
+      <Sidebar
+        eventFiltersFragment={data?.eventFilters}
+        interestsQueryFragmentRef={interestsQuery}
+        onChange={(args) => {
+          setFilters(args);
+        }}
+      />
+    )
+  }, [data, interestsQuery, filters, setFilters])
+
   return (
-    <>
-    <Grid
-      container
-    >
+    <Grid container>
       {showSidebar && (
-        <React.Suspense>
-          <Grid xs={2} container width="250px" padding='10px'>
-            <Sidebar
-              eventFiltersFragment={data?.eventFilters}
-              interestsQueryFragmentRef={interestsQuery}
-              onChange={(args) => {
-                setFilters(args);
-              }}
-            />
-          </Grid>
-        </React.Suspense>
+        <Grid xs={2} container width="250px" padding="10px">
+          <Sidebar
+            eventFiltersFragment={data?.eventFilters}
+            interestsQueryFragmentRef={interestsQuery}
+            onChange={(args) => {
+              setFilters(args);
+            }}
+          />
+        </Grid>
       )}
 
       <ContentWrapper
@@ -170,13 +195,13 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
                 endDecorator={
                   <ChipDelete
                     onDelete={() => {
-                      q.interests = interestsSlug.filter(
+                      routerQuery.interests = interestsSlug.filter(
                         (slug) => slug !== interest
                       );
 
-                      delete q["interests[]"];
+                      delete routerQuery["interests[]"];
 
-                      const url = `/events?${stringify(q, {
+                      const url = `/events?${stringify(routerQuery, {
                         arrayFormat: "brackets",
                         encode: false,
                       })}`;
@@ -191,96 +216,47 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
             ))}
           </Grid>
         )}
-        <React.Suspense>
-          <Grid xl={9} lg={12} xs={12} container spacing={2}>
-            {events.map((event, index) => {
-              if (index === 0) {
-                if (isVeryLargeDisplay || isLargeDisplay) {
-                  return (
-                    <Grid key={event.id} xs={12} lg={12} xl={12} padding={0}>
-                      <EventCardWide eventFragmentRef={event} />
-                    </Grid>
-                  );
-                }
+        <Grid xl={9} lg={12} xs={12} container spacing={2}>
+          {events.map((event, index) => {
+            if (index === 0) {
+              if (isVeryLargeDisplay || isLargeDisplay) {
+                return (
+                  <Grid key={event.id} xs={12} lg={12} xl={12} padding={0}>
+                    <EventCardWide eventFragmentRef={event} />
+                  </Grid>
+                );
               }
-              return (
-                <EventCardCompact key={event.id} eventFragmentRef={event} />
-              );
-            })}
-            <Grid xs={12}>
-              <Pagination
-                showPrev={hasPrevious}
-                showNext={hasNext}
-                onPrev={() => {
-                  if (hasPrevious) {
-                    loadPrevious(10, {
-                      onComplete: () => setCurrentPage(currentPage - 1),
-                    });
-                    return;
-                  }
-                  setCurrentPage(currentPage - 1);
-                }}
-                onNext={() => {
-                  if (hasNext) {
-                    loadNext(10, {
-                      onComplete: () => setCurrentPage(currentPage + 1),
-                    });
-                    return;
-                  }
-                  setCurrentPage(currentPage + 1);
-                }}
-                currentPage={currentPage}
-              />
-            </Grid>
-          </Grid>
-        </React.Suspense>
-      </ContentWrapper>
-    </Grid>
-    <Drawer open={opened} onClose={close}>
-      <React.Suspense>
-        <Grid container padding='10px'>
-          <Sidebar
-            eventFiltersFragment={data?.eventFilters}
-            interestsQueryFragmentRef={interestsQuery}
-            onChange={(args) => {
-              setFilters(args);
-            }}
-            sidebar
-          />
+            }
+            return <EventCardCompact key={event.id} eventFragmentRef={event} />;
+          })}
           <Grid xs={12}>
-            <Box
-              sx={{
-                display: 'flex',
-                position: 'sticky',
-                bottom: '0',
-                gap: 1,
-                p: 1.5,
-                pb: 2,
-                width: '90%'
+            <Pagination
+              showPrev={hasPrevious}
+              showNext={hasNext}
+              onPrev={() => {
+                if (hasPrevious) {
+                  loadPrevious(10, {
+                    onComplete: () => setCurrentPage(currentPage - 1),
+                  });
+                  return;
+                }
+                setCurrentPage(currentPage - 1);
               }}
-            >
-              <Link href="/firms/new">{t('layout.header.registerFirm')}</Link>
-            </Box>
-          </Grid>
-          <Grid xs={12}>
-            <Box
-              sx={{
-                display: 'flex',
-                position: 'sticky',
-                bottom: '0',
-                gap: 1,
-                p: 1.5,
-                pb: 2,
-                width: '90%'
+              onNext={() => {
+                if (hasNext) {
+                  loadNext(10, {
+                    onComplete: () => setCurrentPage(currentPage + 1),
+                  });
+                  return;
+                }
+                setCurrentPage(currentPage + 1);
               }}
-            >
-              <Link href='/trips'>{t('layout.header.myTrips')}</Link>
-            </Box>
+              currentPage={currentPage}
+            />
           </Grid>
         </Grid>
-      </React.Suspense>
-    </Drawer>
-    </>
+      </ContentWrapper>
+    </Grid>
   );
 };
 

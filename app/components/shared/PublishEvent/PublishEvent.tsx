@@ -5,12 +5,13 @@ import { useTranslation } from "react-i18next";
 import { PublishEvent_EventFragment$key } from "../../../artifacts/PublishEvent_EventFragment.graphql";
 import Button from "../../v2/Button";
 import PublishEventModal from "./PublishEventModal";
+import { ButtonProps } from "../../v2/Button/Button";
 
-interface PublishEventProps {
+interface PublishEventProps extends ButtonProps {
   eventFragmentRef: PublishEvent_EventFragment$key;
 }
 
-const PublishEvent = ({ eventFragmentRef }: PublishEventProps) => {
+const PublishEvent = ({ eventFragmentRef, ...props }: PublishEventProps) => {
   const event = useFragment(
     graphql`
       fragment PublishEvent_EventFragment on Event {
@@ -24,7 +25,7 @@ const PublishEvent = ({ eventFragmentRef }: PublishEventProps) => {
   return (
     <>
       <Box>
-        <Button size="sm" onClick={() => setModalOpened(true)}>
+        <Button size="sm" onClick={() => setModalOpened(true)} {...props}>
           {t("forms.publishEvent.action")}
         </Button>
       </Box>

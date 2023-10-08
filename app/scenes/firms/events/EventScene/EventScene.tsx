@@ -1,4 +1,4 @@
-import { Grid, Tab, TabList, Tabs, Box, Stack, Chip } from "@mui/joy";
+import { Grid, Tab, TabList, Tabs, Box, Stack, Chip, Dropdown, MenuButton, IconButton, Menu, MenuItem } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
@@ -21,6 +21,7 @@ import RescheduleEvent from "../../../../components/shared/RescheduleEvent";
 import SyncStripe from "../../../../components/shared/SyncStripe";
 import StripeIntegrationsInformation from "./components/StripeIntegrationsInformation";
 import LaunchIcon from '@mui/icons-material/Launch';
+import { MoreVert } from "@mui/icons-material";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -133,7 +134,7 @@ const EventScene = ({
       <Grid lg={8} sm={12}>
         <Typography level="h3" sx={{ display: "inline" }}>
           {event.title}
-          <Link href={`/events/${event.id}`} underline={false} target="_blank">
+          <Link href={`/events/${event.id}`} underline={false} fontSize='12px'>
             <LaunchIcon />
           </Link>
         </Typography>
@@ -156,12 +157,46 @@ const EventScene = ({
               </Button>
             </Link>
           )}
-          {canReschedule && <RescheduleEvent eventFragmentRef={event} />}
-          {canPublish && <PublishEvent eventFragmentRef={event} />}
-          {canArchive && <UnpublishEvent eventFragmentRef={event} />}
-          {canRemove && <RemoveEvent eventFragmentRef={event} />}
-          {canVerify && <VerifyEvent eventFragmentRef={event} />}
-          {canSync && <SyncStripe eventFragmentRef={event} />}
+          <Dropdown>
+            <MenuButton
+              slots={{ root: IconButton }}
+              slotProps={{ root: { variant: 'solid', color: 'primary', size: 'sm' } }}
+            >
+              <MoreVert />
+            </MenuButton>
+            <Menu variant="plain" placement="bottom-end" onItemsChange={() => {}} disablePortal keepMounted>
+              {canReschedule && (
+                <MenuItem>
+                  <RescheduleEvent variant='plain' color='neutral' eventFragmentRef={event} />
+                </MenuItem>
+              )}
+              {canPublish && (
+                <MenuItem>
+                  <PublishEvent variant='plain' color='neutral' eventFragmentRef={event} />
+                </MenuItem>
+              )}
+              {canArchive && (
+                <MenuItem>
+                  <UnpublishEvent variant='plain' color='neutral' eventFragmentRef={event} />
+                </MenuItem>
+              )}
+              {canRemove && (
+                <MenuItem>
+                  <RemoveEvent variant='plain' color='neutral'  eventFragmentRef={event} />
+                </MenuItem>
+              )}
+              {canVerify && (
+                <MenuItem>
+                  <VerifyEvent variant='plain' color='neutral' eventFragmentRef={event} />
+                </MenuItem>
+              )}
+              {canSync && (
+                <MenuItem>
+                  <SyncStripe variant='plain' color='neutral' eventFragmentRef={event} />
+                </MenuItem>
+              )}
+            </Menu>
+          </Dropdown>
         </Stack>
       </Grid>
       <Grid xs={12}>
