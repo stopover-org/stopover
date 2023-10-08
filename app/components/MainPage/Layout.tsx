@@ -49,7 +49,7 @@ const Layout = ({
   }, []);
 
   return (
-    <GlobalSidebarProvider firmFragmentRef={currentUser?.account?.firm}>
+    <GlobalSidebarProvider firmFragmentRef={currentUser?.account?.firm!}>
       <Sheet>
         <Header
           currentUserFragment={currentUser}
