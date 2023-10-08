@@ -127,3 +127,5 @@ gem 'searchkick'
 gem 'sidekiq-cron'
 gem 'timecop', '~> 0.9.8'
 gem 'deepl-rb', require: 'deepl'
+
+gem 'aws-sdk-s3'

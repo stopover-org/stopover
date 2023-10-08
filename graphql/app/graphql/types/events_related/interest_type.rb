@@ -22,7 +22,7 @@ module Types
       end
 
       def preview
-        Rails.application.routes.url_helpers.rails_blob_url(object.preview) if object.preview.present?
+        object.preview&.url
       end
     end
   end

@@ -16,7 +16,7 @@ module Types
       def images
         object.bookings.map do |booking|
           booking.event.images.map do |img|
-            Rails.application.routes.url_helpers.rails_blob_url(img)
+            img&.url
           end
         end.flatten.uniq
       end
