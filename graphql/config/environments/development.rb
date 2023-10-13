@@ -73,6 +73,8 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   config.autoloader = :classic
+  config.hosts << 'localhost'
+  config.hosts << 'local.stopoverx.test'
   Rails.application.routes.default_url_options[:host] = 'localhost:8080'
   Rails.application.routes.default_url_options[:protocol] = 'http'
   Rails.application.config.active_job.queue_adapter = :sidekiq

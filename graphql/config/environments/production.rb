@@ -84,7 +84,7 @@ Rails.application.configure do
   # require "syslog/logger"
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
   #
-  Rails.application.routes.default_url_options[:host] = 'stopover.api.dorokhovich.ru'
+  Rails.application.routes.default_url_options[:host] = 'staging.stopoverx.com'
 
   if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger = ActiveSupport::Logger.new($stdout)
