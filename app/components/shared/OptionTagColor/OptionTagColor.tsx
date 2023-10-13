@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import useStatusColor from "../../../lib/hooks/useStatusColor";
-import Tag from "../../v2/Tag/Tag";
+import Tag from "../../v2/Tag";
 
 export default React.memo(({ status }: { status: string }) => {
   const color = useStatusColor({

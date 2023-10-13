@@ -1,6 +1,7 @@
 import { Grid } from "@mui/joy";
 import React from "react";
 import { graphql, usePaginationFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import Section from "../../../../components/v2/Section";
 import Typography from "../../../../components/v2/Typography/Typography";
 import { PaymentsSection_FirmFragment$key } from "../../../../artifacts/PaymentsSection_FirmFragment.graphql";
@@ -12,7 +13,6 @@ import {
   usePaymentsColumns,
   usePaymentsHeaders,
 } from "../../../../components/shared/tables/columns/payments";
-import { useTranslation } from "react-i18next";
 
 interface PaymentSectionProps {
   firmFragmentRef: PaymentsSection_FirmFragment$key;
@@ -73,12 +73,12 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
     }))
   );
   const headers = usePaymentsHeaders();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Section>
       <Grid xs={12}>
-        <Typography level="h3">{t('models.payment.plural')}</Typography>
+        <Typography level="h3">{t("models.payment.plural")}</Typography>
       </Grid>
 
       <Grid xs={12}>
@@ -91,7 +91,7 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
 
       <Grid xs={12}>
         <Link href="/my-firm/payments" fontSize="sm">
-          {t('general.all')} {t('models.payment.plural')}
+          {t("general.all")} {t("models.payment.plural")}
         </Link>
       </Grid>
     </Section>

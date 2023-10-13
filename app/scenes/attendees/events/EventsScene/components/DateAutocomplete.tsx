@@ -12,7 +12,7 @@ interface DateAutocompleteProps {
   value: Moment | null;
   onChange: (value: Moment) => void;
   eventFragmentRef: DateAutocomplete_Event$key;
-  sx?: Record<string, any>
+  sx?: Record<string, any>;
 }
 
 const DateAutocomplete = ({
@@ -50,7 +50,7 @@ const DateAutocomplete = ({
       value={{
         value,
         label: !value?.isValid()
-          ? t('datepicker.selectDate')
+          ? t("datepicker.selectDate")
           : value.format(dayMonthTimeFormat),
       }}
       onChange={(_, dt) => dt && onChange(moment(dt.value))}

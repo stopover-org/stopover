@@ -2,6 +2,7 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import moment from "moment/moment";
 import { Option } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import { CheckoutForm_BookingFragmentRef$key } from "../../../../../artifacts/CheckoutForm_BookingFragmentRef.graphql";
 import { useCheckoutForm } from "./useCheckoutForm";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
@@ -9,14 +10,13 @@ import Select from "../../../../../components/v2/Select";
 import { capitalize } from "../../../../../lib/utils/capitalize";
 import Typography from "../../../../../components/v2/Typography";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
-import { useTranslation } from "react-i18next";
 
 interface CheckoutFormProps {
   bookingFragmentRef: CheckoutForm_BookingFragmentRef$key;
 }
 
 const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const booking = useFragment<CheckoutForm_BookingFragmentRef$key>(
     graphql`
       fragment CheckoutForm_BookingFragmentRef on Booking {
@@ -55,7 +55,11 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
   );
 
   if (booking.event.firm.paymentTypes.length === 0) {
-    return <Typography>{t('scenes.attendees.trips.tripScene.noAvailablePaymentMethod')}</Typography>;
+    return (
+      <Typography>
+        {t("scenes.attendees.trips.tripScene.noAvailablePaymentMethod")}
+      </Typography>
+    );
   }
 
   return (
@@ -70,24 +74,30 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
         </Select>
       )}
       <br />
-      {booking.leftToPayDepositPrice.cents <= 0 && paymentMethodField.value === 'cash' 
-        ? <Typography>{t('scenes.attendees.trips.tripScene.justCome')}</Typography> 
-        : (
-      <SubmitButton
-        submitting={form.formState.isSubmitting}
-        disabled={disabled}
-      >
-        {paymentMethodField.value === "cash"
-          ? t(`scenes.attendees.trips.tripScene.payDeposit`, { amount: getCurrencyFormat(
-              booking.leftToPayDepositPrice?.cents,
-              booking.leftToPayDepositPrice?.currency.name
-            )})
-          : t(`scenes.attendees.trips.tripScene.payOnline`, { amount: getCurrencyFormat(
-              booking.leftToPayPrice?.cents,
-              booking.leftToPayPrice?.currency.name
-            )})
-        }
-      </SubmitButton>
+      {booking.leftToPayDepositPrice.cents <= 0 &&
+      paymentMethodField.value === "cash" ? (
+        <Typography>
+          {t("scenes.attendees.trips.tripScene.justCome")}
+        </Typography>
+      ) : (
+        <SubmitButton
+          submitting={form.formState.isSubmitting}
+          disabled={disabled}
+        >
+          {paymentMethodField.value === "cash"
+            ? t(`scenes.attendees.trips.tripScene.payDeposit`, {
+                amount: getCurrencyFormat(
+                  booking.leftToPayDepositPrice?.cents,
+                  booking.leftToPayDepositPrice?.currency.name
+                ),
+              })
+            : t(`scenes.attendees.trips.tripScene.payOnline`, {
+                amount: getCurrencyFormat(
+                  booking.leftToPayPrice?.cents,
+                  booking.leftToPayPrice?.currency.name
+                ),
+              })}
+        </SubmitButton>
       )}
     </form>
   );

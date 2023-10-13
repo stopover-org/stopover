@@ -9,7 +9,6 @@ interface RegisterAttendeeProps {
   optionFragmentRef: ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key;
   onSuccess: () => void;
 }
-
 const ChangeAttendeeOptionAvailability = ({
   optionFragmentRef,
   onSuccess,

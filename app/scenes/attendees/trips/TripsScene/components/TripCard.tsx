@@ -1,14 +1,23 @@
 import React from "react";
-import { AspectRatio, Box, Card, CardOverflow, Grid, Stack, Tooltip, useTheme } from "@mui/joy";
+import {
+  AspectRatio,
+  Box,
+  Card,
+  CardOverflow,
+  Grid,
+  Stack,
+  Tooltip,
+  useTheme,
+} from "@mui/joy";
 import { graphql, useFragment, useMutation } from "react-relay";
 import moment from "moment";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import IconButton from "@mui/joy/IconButton";
+import { useTranslation } from "react-i18next";
+import { useMediaQuery } from "@mui/material";
 import Link from "../../../../../components/v2/Link/Link";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import { TripCard_TripFragment$key } from "../../../../../artifacts/TripCard_TripFragment.graphql";
-import { useTranslation } from "react-i18next";
-import { useMediaQuery } from "@mui/material";
 
 interface TripCardProps {
   tripFragmentRef: TripCard_TripFragment$key;
@@ -47,34 +56,37 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
 
   const onCancelTrip = () =>
     cancelTrip({ variables: { input: { tripId: trip.id } } });
-  const { t } = useTranslation()
-  const theme = useTheme()
-  const isMobileView = useMediaQuery(theme.breakpoints.down('md'))
+  const { t } = useTranslation();
+  const theme = useTheme();
+  const isMobileView = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <Card variant="outlined" 
-          orientation="horizontal"
-          sx={{
-            width: isMobileView ? '250px' : '420px',
-            minHeight: "130px",
-            maxHeight: "130px"
-          }}
+    <Card
+      variant="outlined"
+      orientation="horizontal"
+      sx={{
+        width: isMobileView ? "250px" : "420px",
+        minHeight: "130px",
+        maxHeight: "130px",
+      }}
     >
-      {!isMobileView && <CardOverflow>
-        <AspectRatio
-          minHeight="130px"
-          maxHeight="130px"
-          ratio="2"
-          sx={{ width: "130px" }}
-          objectFit="cover"
-        >
-          <img src={trip.images[0]} loading="lazy" alt="" />
-        </AspectRatio>
-      </CardOverflow> }
+      {!isMobileView && (
+        <CardOverflow>
+          <AspectRatio
+            minHeight="130px"
+            maxHeight="130px"
+            ratio="2"
+            sx={{ width: "130px" }}
+            objectFit="cover"
+          >
+            <img src={trip.images[0]} loading="lazy" alt="" />
+          </AspectRatio>
+        </CardOverflow>
+      )}
       <Stack paddingLeft="10px" width="100%" sx={{ position: "relative" }}>
         {trip.canCancel && (
           <Box>
-            <Tooltip title={t('scenes.attendees.trips.tripsScene.cancelTrip')}>
+            <Tooltip title={t("scenes.attendees.trips.tripsScene.cancelTrip")}>
               <IconButton
                 variant="outlined"
                 color="danger"
@@ -86,7 +98,7 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
               </IconButton>
             </Tooltip>
           </Box>
-          )}
+        )}
         <Link href={`/trips/${trip.id}`}>
           <Typography
             sx={{
@@ -118,14 +130,13 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
           <Grid container xs={12}>
             <Grid xs={6}>
               <Typography level="body-sm">
-              {t('scenes.attendees.trips.tripScene.attendeesCount', { count: trip.attendeesCount })}
+                {t("scenes.attendees.trips.tripScene.attendeesCount", {
+                  count: trip.attendeesCount,
+                })}
               </Typography>
             </Grid>
             <Grid xs={6}>
-              <Typography
-                level="body-sm"
-                sx={{ textAlign: "end" }}
-              >
+              <Typography level="body-sm" sx={{ textAlign: "end" }}>
                 {trip.cities[0]}
               </Typography>
             </Grid>

@@ -60,7 +60,9 @@ const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
 
   return (
     <>
-      <Typography fontSize="lg">{t('scenes.attendees.events.eventsScene.sidebar.categoriesSubheader')}</Typography>
+      <Typography fontSize="lg">
+        {t("scenes.attendees.events.eventsScene.sidebar.categoriesSubheader")}
+      </Typography>
       <List sx={{ height: "500px", overflow: "auto" }}>
         {interests?.map((interest, index) => (
           <React.Fragment key={interest.id}>

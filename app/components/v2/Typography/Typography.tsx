@@ -21,6 +21,7 @@ interface BaseTypographyProps {
 export interface TypographyProps
   extends Omit<JoyTypographyProps, keyof BaseTypographyProps>,
     BaseTypographyProps {}
+
 const Typography = React.forwardRef(
   (
     { underline, strikeThrough, children, sx, ...props }: TypographyProps,

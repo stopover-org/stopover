@@ -2,12 +2,12 @@ import { graphql, useFragment } from "react-relay";
 import { Grid } from "@mui/joy";
 import React from "react";
 import { FormProvider } from "react-hook-form";
+import moment from "moment";
+import { useTranslation } from "react-i18next";
 import { BookingOptionsEditForm_BookingFragment$key } from "../../../../../artifacts/BookingOptionsEditForm_BookingFragment.graphql";
 import Typography from "../../../../../components/v2/Typography";
 import EventOptionEditForm from "./EventOptionEditForm";
 import { useBookingEditForm } from "./useBookingEditForm";
-import moment from "moment";
-import { useTranslation } from "react-i18next";
 
 interface BookingOptionsEditFormProps {
   bookingFragmentRef: BookingOptionsEditForm_BookingFragment$key;
@@ -16,7 +16,7 @@ interface BookingOptionsEditFormProps {
 const BookingOptionsEditForm = ({
   bookingFragmentRef,
 }: BookingOptionsEditFormProps) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const booking = useFragment<BookingOptionsEditForm_BookingFragment$key>(
     graphql`
       fragment BookingOptionsEditForm_BookingFragment on Booking {
@@ -61,44 +61,37 @@ const BookingOptionsEditForm = ({
       moment(booking.bookedFor).isBefore(new Date()),
     [booking.status, booking.bookedFor]
   );
-
-  const form = useBookingEditForm(
-    booking,
-    disabled
-  );
+  const form = useBookingEditForm(booking, disabled);
 
   return (
     <FormProvider {...form}>
       <form>
         <Grid xs={12}>
           <Typography>
-            {t('scenes.attendees.trips.tripScene.bookignOptionsSubheader')}
+            {t("scenes.attendees.trips.tripScene.bookignOptionsSubheader")}
           </Typography>
         </Grid>
-        {commonOptions.length > 0 && (
+        {commonOptions.length > 0 &&
           commonOptions.map((option) => (
             <EventOptionEditForm
               key={option.id}
               eventOptionFragmentRef={option}
               bookingFragmentRef={booking}
             />
-          ))
-        )}
+          ))}
         {builtInOptions.length > 0 && (
-          <>
-            <Grid xs={12}>
-              <Typography>
-                {t('models.bookingOption.attributes.builtIn')}
-              </Typography>
-              {builtInOptions.map((option) => (
-                <EventOptionEditForm
-                  key={option.id}
-                  eventOptionFragmentRef={option}
-                  bookingFragmentRef={booking}
-                />
-              ))}
-            </Grid>
-          </>
+          <Grid xs={12}>
+            <Typography>
+              {t("models.bookingOption.attributes.builtIn")}
+            </Typography>
+            {builtInOptions.map((option) => (
+              <EventOptionEditForm
+                key={option.id}
+                eventOptionFragmentRef={option}
+                bookingFragmentRef={booking}
+              />
+            ))}
+          </Grid>
         )}
       </form>
     </FormProvider>

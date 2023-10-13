@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Grid, Option } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import moment, { Moment } from "moment";
+import { useTranslation } from "react-i18next";
 import DateCalendar from "../../../../../components/v2/DateCalendar/DateCalendar";
 import {
   dateFormat,
@@ -19,7 +20,6 @@ import useTimeFromDate from "../../../../../lib/hooks/useTimeFromDate";
 import Link from "../../../../../components/v2/Link";
 import { BookEvent_EventFragment$key } from "../../../../../artifacts/BookEvent_EventFragment.graphql";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
-import { useTranslation } from "react-i18next";
 
 interface BookEventProps {
   eventFragmentRef: BookEvent_EventFragment$key;
@@ -79,9 +79,10 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
     [dateField]
   );
 
-  const schedule = event.schedules.nodes.find((sch) => moment(sch.scheduledFor).isSame(moment(dateField.value)))
-
-  const { t } = useTranslation()
+  const schedule = event.schedules.nodes.find((sch) =>
+    moment(sch.scheduledFor).isSame(moment(dateField.value))
+  );
+  const { t } = useTranslation();
 
   return (
     <Grid container>
@@ -101,67 +102,71 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
         />
       </Grid>
       <Grid md={6} sm={12} xs={12}>
-          <Input
-            label={t('datepicker.selectDate')}
-            value={dateField.value?.format(dateFormat)}
-            readOnly
-          />
-          <Select
-            label={t('datepicker.selectTime')}
-            onChange={(value: string) => {
-              if (!value) return;
+        <Input
+          label={t("datepicker.selectDate")}
+          value={dateField.value?.format(dateFormat)}
+          readOnly
+        />
+        <Select
+          label={t("datepicker.selectTime")}
+          onChange={(value: string) => {
+            if (!value) return;
 
-              dateField.onChange(setTime(dateField.value, value));
-            }}
-            value={selectedTime}
-            placeholder="Select time"
-          >
-            {availableTimes.map((time) => (
-              <Option key={time.unix()} value={time.format(timeFormat)}>
-                {time.format(timeFormat)}
-              </Option>
-            ))}
-          </Select>
-          <Input
-            label={t('scenes.attendees.events.eventScene.chooseCount')}
-            type="number"
-            value={
-              booking
-                ? booking.attendees.length.toString()
-                : attendeesCountField.value.toString()
+            dateField.onChange(setTime(dateField.value, value));
+          }}
+          value={selectedTime}
+          placeholder="Select time"
+        >
+          {availableTimes.map((time) => (
+            <Option key={time.unix()} value={time.format(timeFormat)}>
+              {time.format(timeFormat)}
+            </Option>
+          ))}
+        </Select>
+        <Input
+          label={t("scenes.attendees.events.eventScene.chooseCount")}
+          type="number"
+          value={
+            booking
+              ? booking.attendees.length.toString()
+              : attendeesCountField.value.toString()
+          }
+          onChange={(value) => {
+            if (parseInt(value, 10) > 0) {
+              attendeesCountField.onChange(value);
+            } else {
+              attendeesCountField.onChange(1);
             }
-            onChange={(value) => {
-              if (parseInt(value, 10) > 0) {
-                attendeesCountField.onChange(value);
-              } else {
-                attendeesCountField.onChange(1);
-              }
-            }}
-            readOnly={Boolean(booking)}
-          />
-          <Typography textAlign="end" level="title-lg">
-            {getCurrencyFormat(
-              parseInt(attendeesCountField.value, 10) *
-                (event.attendeePricePerUom?.cents || 0),
-              event.attendeePricePerUom?.currency?.name
-            )}
+          }}
+          readOnly={Boolean(booking)}
+        />
+        <Typography textAlign="end" level="title-lg">
+          {getCurrencyFormat(
+            parseInt(attendeesCountField.value, 10) *
+              (event.attendeePricePerUom?.cents || 0),
+            event.attendeePricePerUom?.currency?.name
+          )}
+        </Typography>
+        {!booking && (
+          <SubmitButton
+            submitting={form.formState.isSubmitting}
+            disabled={!dateField.value?.isValid() || !isValidTime}
+          >
+            {t("scenes.attendees.events.eventScene.bookEvent")}
+          </SubmitButton>
+        )}
+        {booking && (
+          <Link href={`/trips/${booking.trip.id}`} underline={false}>
+            <Button>{t("layout.header.myTrips")}</Button>
+          </Link>
+        )}
+        {schedule?.leftPlaces && !booking && (
+          <Typography textAlign="start">
+            {t("models.schedule.attributes.leftPlaces", {
+              places: schedule.leftPlaces,
+            })}
           </Typography>
-          {!booking && (
-            <SubmitButton
-              submitting={form.formState.isSubmitting}
-              disabled={!dateField.value?.isValid() || !isValidTime}
-            >
-              {t('scenes.attendees.events.eventScene.bookEvent')}
-            </SubmitButton>
-          )}
-          {booking && (
-            <Link href={`/trips/${booking.trip.id}`} underline={false}>
-              <Button>{t('layout.header.myTrips')}</Button>
-            </Link>
-          )}
-          {schedule?.leftPlaces && !booking && <Typography textAlign="start">
-            {t('models.schedule.attributes.leftPlaces', { places: schedule.leftPlaces })}
-          </Typography> }
+        )}
       </Grid>
     </Grid>
   );

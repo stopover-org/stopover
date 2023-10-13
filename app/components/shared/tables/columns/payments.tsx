@@ -21,6 +21,7 @@ const TagColor = ({ status }: { status: string }) => {
     </Tag>
   );
 };
+
 export function usePaymentsHeaders() {
   const { t } = useTranslation();
   return React.useMemo(

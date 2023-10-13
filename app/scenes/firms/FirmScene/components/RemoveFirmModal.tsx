@@ -20,10 +20,7 @@ interface RemoveFirmModalProps {
   onClose: () => void;
 }
 
-const RemoveFirmModal = ({
-  open,
-  onClose,
-}: RemoveFirmModalProps) => {
+const RemoveFirmModal = ({ open, onClose }: RemoveFirmModalProps) => {
   const { t } = useTranslation();
   const form = useRemoveFirm();
   return (
@@ -34,21 +31,21 @@ const RemoveFirmModal = ({
           {t("forms.removeFirm.modal.header")}
         </Stack>
         <Divider />
-          <DialogActions>
-            <form onSubmit={form.handleSubmit()}>
-              <SubmitButton
-                color="danger"
-                size="sm"
-                variant="plain"
-                submitting={form.formState.isSubmitting}
-              >
-                {t('forms.removeFirm.action')}
-              </SubmitButton>
-            </form>
-            <Button variant="plain" color="neutral" onClick={() => onClose()}>
-              {t("general.no")}
-            </Button>
-          </DialogActions>
+        <DialogActions>
+          <form onSubmit={form.handleSubmit()}>
+            <SubmitButton
+              color="danger"
+              size="sm"
+              variant="plain"
+              submitting={form.formState.isSubmitting}
+            >
+              {t("forms.removeFirm.action")}
+            </SubmitButton>
+          </form>
+          <Button variant="plain" color="neutral" onClick={() => onClose()}>
+            {t("general.no")}
+          </Button>
+        </DialogActions>
       </ModalDialog>
     </Modal>
   );

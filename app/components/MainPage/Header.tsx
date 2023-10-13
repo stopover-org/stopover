@@ -15,7 +15,6 @@ interface HeaderProps {
   currentUserFragment: Header_CurrentUserFragment$key;
   showRegisterFirm: boolean;
 }
-
 const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
   const router = useRouter();
   const theme = useTheme();

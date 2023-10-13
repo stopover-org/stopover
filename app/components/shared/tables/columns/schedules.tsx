@@ -19,6 +19,7 @@ const TagColor = ({ status }: { status: string }) => {
     </Tag>
   );
 };
+
 export function useSchedulesHeaders() {
   const { t } = useTranslation();
   return React.useMemo(

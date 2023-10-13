@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, CardContent, Grid, GridProps } from "@mui/joy";
+
 // component allows to divide content (fo forms use <Fieldset/>)
 interface IBaseSectionProps {
   children:

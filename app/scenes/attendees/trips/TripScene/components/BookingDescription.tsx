@@ -47,13 +47,13 @@ const BookingDescription = ({
   const isMobileView = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <Box sx={{ overflow: 'hidden' }}>
+    <Box sx={{ overflow: "hidden" }}>
       <Scrollbars
         autoHeight={isMobileView}
         style={{
           width: "100%",
-          overflow: 'hidden',
-          minHeight: '160px',
+          overflow: "hidden",
+          minHeight: "160px",
         }}
       >
         <Typography

@@ -1,7 +1,22 @@
-import { Grid, Tab, TabList, Tabs, Box, Stack, Chip, Dropdown, MenuButton, IconButton, Menu, MenuItem } from "@mui/joy";
+import {
+  Grid,
+  Tab,
+  TabList,
+  Tabs,
+  Box,
+  Stack,
+  Chip,
+  Dropdown,
+  MenuButton,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
+import LaunchIcon from "@mui/icons-material/Launch";
+import { MoreVert } from "@mui/icons-material";
 import { EventScene_FirmEventFragment$key } from "../../../../artifacts/EventScene_FirmEventFragment.graphql";
 import GeneralInformation from "./components/GeneralInformation";
 import Typography from "../../../../components/v2/Typography";
@@ -20,8 +35,6 @@ import RemoveEvent from "../../../../components/shared/RemoveEvent";
 import RescheduleEvent from "../../../../components/shared/RescheduleEvent";
 import SyncStripe from "../../../../components/shared/SyncStripe";
 import StripeIntegrationsInformation from "./components/StripeIntegrationsInformation";
-import LaunchIcon from '@mui/icons-material/Launch';
-import { MoreVert } from "@mui/icons-material";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -108,7 +121,10 @@ const EventScene = ({
   );
 
   const canArchive = React.useMemo(
-    () => event.status === "published" && event.firm.status === "active" && event.firm.paymentTypes.length > 0,
+    () =>
+      event.status === "published" &&
+      event.firm.status === "active" &&
+      event.firm.paymentTypes.length > 0,
     [event]
   );
   const canRemove = React.useMemo(() => event.status !== "removed", [event]);
@@ -134,7 +150,7 @@ const EventScene = ({
       <Grid lg={8} sm={12}>
         <Typography level="h3" sx={{ display: "inline" }}>
           {event.title}
-          <Link href={`/events/${event.id}`} underline={false} fontSize='12px'>
+          <Link href={`/events/${event.id}`} underline={false} fontSize="12px">
             <LaunchIcon />
           </Link>
         </Typography>
@@ -160,39 +176,71 @@ const EventScene = ({
           <Dropdown>
             <MenuButton
               slots={{ root: IconButton }}
-              slotProps={{ root: { variant: 'solid', color: 'primary', size: 'sm' } }}
+              slotProps={{
+                root: { variant: "solid", color: "primary", size: "sm" },
+              }}
             >
               <MoreVert />
             </MenuButton>
-            <Menu variant="plain" placement="bottom-end" onItemsChange={() => {}} disablePortal keepMounted>
+            <Menu
+              variant="plain"
+              placement="bottom-end"
+              onItemsChange={() => {}}
+              disablePortal
+              keepMounted
+            >
               {canReschedule && (
                 <MenuItem>
-                  <RescheduleEvent variant='plain' color='neutral' eventFragmentRef={event} />
+                  <RescheduleEvent
+                    variant="plain"
+                    color="neutral"
+                    eventFragmentRef={event}
+                  />
                 </MenuItem>
               )}
               {canPublish && (
                 <MenuItem>
-                  <PublishEvent variant='plain' color='neutral' eventFragmentRef={event} />
+                  <PublishEvent
+                    variant="plain"
+                    color="neutral"
+                    eventFragmentRef={event}
+                  />
                 </MenuItem>
               )}
               {canArchive && (
                 <MenuItem>
-                  <UnpublishEvent variant='plain' color='neutral' eventFragmentRef={event} />
+                  <UnpublishEvent
+                    variant="plain"
+                    color="neutral"
+                    eventFragmentRef={event}
+                  />
                 </MenuItem>
               )}
               {canRemove && (
                 <MenuItem>
-                  <RemoveEvent variant='plain' color='neutral'  eventFragmentRef={event} />
+                  <RemoveEvent
+                    variant="plain"
+                    color="neutral"
+                    eventFragmentRef={event}
+                  />
                 </MenuItem>
               )}
               {canVerify && (
                 <MenuItem>
-                  <VerifyEvent variant='plain' color='neutral' eventFragmentRef={event} />
+                  <VerifyEvent
+                    variant="plain"
+                    color="neutral"
+                    eventFragmentRef={event}
+                  />
                 </MenuItem>
               )}
               {canSync && (
                 <MenuItem>
-                  <SyncStripe variant='plain' color='neutral' eventFragmentRef={event} />
+                  <SyncStripe
+                    variant="plain"
+                    color="neutral"
+                    eventFragmentRef={event}
+                  />
                 </MenuItem>
               )}
             </Menu>
@@ -210,22 +258,22 @@ const EventScene = ({
         >
           <TabList variant="plain" sx={{ minWidth: "175px" }}>
             <Tab variant={tab === 0 ? "outlined" : "plain"}>
-              {t('scenes.firms.events.eventScene.tabs.generalInformation')}
+              {t("scenes.firms.events.eventScene.tabs.generalInformation")}
             </Tab>
             <Tab variant={tab === 1 ? "outlined" : "plain"}>
-              {t('models.eventOption.plural')}
+              {t("models.eventOption.plural")}
               <Chip size="sm" variant="soft">
                 {event.eventOptions.length}
               </Chip>
             </Tab>
             <Tab variant={tab === 2 ? "outlined" : "plain"}>
-              {t('models.schedule.plural')}
+              {t("models.schedule.plural")}
               <Chip size="sm" variant="soft">
                 {event.schedules.nodes.length}
               </Chip>
             </Tab>
             <Tab variant={tab === 3 ? "outlined" : "plain"}>
-              {t('models.booking.plural')}
+              {t("models.booking.plural")}
               <Chip size="sm" variant="soft">
                 {event.bookings.nodes.length}
               </Chip>
@@ -235,7 +283,7 @@ const EventScene = ({
                 variant={tab === 4 ? "outlined" : "plain"}
                 sx={{ display: "block" }}
               >
-              {t('scenes.firms.events.eventScene.tabs.stripeIntegrations')}
+                {t("scenes.firms.events.eventScene.tabs.stripeIntegrations")}
                 <Chip size="sm" variant="soft">
                   {event.stripeIntegrations.nodes.length}
                 </Chip>

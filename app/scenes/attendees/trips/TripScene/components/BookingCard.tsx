@@ -11,6 +11,7 @@ import {
 import { useMediaQuery } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import Link from "../../../../../components/v2/Link";
 import BookingTime from "./BookingTime";
@@ -19,14 +20,13 @@ import BookingEditForm from "./BookingEditForm";
 import Tag from "../../../../../components/v2/Tag/Tag";
 import { BookingCard_BookingFragment$key } from "../../../../../artifacts/BookingCard_BookingFragment.graphql";
 import BookingSummary from "../../../../../components/shared/BookingSummary";
-import { useTranslation } from "react-i18next";
 
 interface BookingCardProps {
   bookingFragmentRef: BookingCard_BookingFragment$key;
 }
 
 const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const booking = useFragment(
     graphql`
       fragment BookingCard_BookingFragment on Booking {
@@ -132,17 +132,17 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
           >
             {isPast && (
               <Tag link={false} underline={false} primary>
-              {t('statuses.past')}
+                {t("statuses.past")}
               </Tag>
             )}
             {isPaid && (
               <Tag link={false} underline={false} color="primary">
-              {t('statuses.paid')}
+                {t("statuses.paid")}
               </Tag>
             )}
             {isCancelled && (
               <Tag link={false} underline={false} color="danger">
-              {t('statuses.cancelled')}
+                {t("statuses.cancelled")}
               </Tag>
             )}
           </Box>
@@ -208,7 +208,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
             },
           }}
         >
-          {t('scenes.attendees.trips.tripScene.bookingInfo')}&nbsp;
+          {t("scenes.attendees.trips.tripScene.bookingInfo")}&nbsp;
           <KeyboardArrowDownIcon
             sx={{
               transform: isFormOpened ? "rotate(180deg)" : "unset",

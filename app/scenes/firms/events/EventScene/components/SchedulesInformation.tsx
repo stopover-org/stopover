@@ -2,6 +2,7 @@ import { graphql, usePaginationFragment } from "react-relay";
 import React from "react";
 import moment from "moment";
 import { Grid, TabPanel } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import { SchedulesInformation_EventFragment$key } from "../../../../../artifacts/SchedulesInformation_EventFragment.graphql";
 import { getHumanDateTime } from "../../../../../lib/utils/dates";
 import Table from "../../../../../components/v2/Table";
@@ -16,7 +17,6 @@ import {
   useBookingsHeaders,
 } from "../../../../../components/shared/tables/columns/bookings";
 import useEdges from "../../../../../lib/hooks/useEdges";
-import { useTranslation } from "react-i18next";
 
 interface SchedulesInformationProps {
   eventFragmentRef: SchedulesInformation_EventFragment$key;
@@ -122,13 +122,15 @@ const SchedulesInformation = ({
     (schedule ? schedule.bookings : []) as any[]
   );
   const bookingsHeaders = useBookingsHeaders();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <TabPanel value={index} size="sm" sx={{ paddingTop: "20px" }}>
       <Grid xs={12} container>
         <Grid md={6} lg={4} sm={12}>
-          <Typography level="h4">{t('general.all')} {t('models.schedule.plural')}</Typography>
+          <Typography level="h4">
+            {t("general.all")} {t("models.schedule.plural")}
+          </Typography>
           <Table
             data={schedulesData}
             headers={schedulesHeaders}
@@ -159,11 +161,14 @@ const SchedulesInformation = ({
             }}
           />
         </Grid>
-        <Grid md={6} lg={8} sx={{sm: { display: 'none'}}}>
+        <Grid md={6} lg={8} sx={{ sm: { display: "none" } }}>
           {schedule ? (
             <>
               <Typography level="h4">
-                {t('scenes.firms.events.eventScene.schedulesInformation.chosenScheduleAction', { date: getHumanDateTime(moment(schedule.scheduledFor)) })}
+                {t(
+                  "scenes.firms.events.eventScene.schedulesInformation.chosenScheduleAction",
+                  { date: getHumanDateTime(moment(schedule.scheduledFor)) }
+                )}
               </Typography>
               <Table
                 data={bookingsData}
@@ -173,7 +178,9 @@ const SchedulesInformation = ({
             </>
           ) : (
             <Typography level="h4">
-              {t('scenes.firms.events.eventScene.schedulesInformation.chooseScheduleAction')}
+              {t(
+                "scenes.firms.events.eventScene.schedulesInformation.chooseScheduleAction"
+              )}
             </Typography>
           )}
         </Grid>

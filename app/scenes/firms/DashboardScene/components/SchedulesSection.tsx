@@ -1,6 +1,7 @@
 import { Grid } from "@mui/joy";
 import React from "react";
 import { graphql, usePaginationFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import Section from "../../../../components/v2/Section";
 import { SchedulesSection_FirmFragment$key } from "../../../../artifacts/SchedulesSection_FirmFragment.graphql";
 import Typography from "../../../../components/v2/Typography/Typography";
@@ -10,7 +11,6 @@ import {
   useSchedulesColumns,
   useSchedulesHeaders,
 } from "../../../../components/shared/tables/columns/schedules";
-import { useTranslation } from "react-i18next";
 import useEdges from "../../../../lib/hooks/useEdges";
 
 interface ScheduleSectionProps {
@@ -47,7 +47,7 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
     `,
     firmFragmentRef
   );
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const schedules = useEdges(data.schedules);
   const schedulesData = useSchedulesColumns(schedules);
   const schedulesHeaders = useSchedulesHeaders();
@@ -55,7 +55,7 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
   return (
     <Section>
       <Grid xs={12}>
-        <Typography level="h3">{t('models.schedule.plural')}</Typography>
+        <Typography level="h3">{t("models.schedule.plural")}</Typography>
       </Grid>
 
       <Grid xs={12}>
@@ -67,7 +67,9 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
       </Grid>
 
       <Grid xs={12}>
-        <Link href="/my-firm/schedules">{t('general.all')} {t('models.schedule.plural')}</Link>
+        <Link href="/my-firm/schedules">
+          {t("general.all")} {t("models.schedule.plural")}
+        </Link>
       </Grid>
     </Section>
   );

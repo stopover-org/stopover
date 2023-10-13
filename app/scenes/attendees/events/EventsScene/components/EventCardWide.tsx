@@ -1,5 +1,13 @@
 import React from "react";
-import { AspectRatio, Box, Card, CardContent, CardOverflow, Grid, Stack } from "@mui/joy";
+import {
+  AspectRatio,
+  Box,
+  Card,
+  CardContent,
+  CardOverflow,
+  Grid,
+  Stack,
+} from "@mui/joy";
 import { graphql, useFragment, useMutation } from "react-relay";
 import moment from "moment";
 import { Moment } from "moment/moment";
@@ -103,7 +111,11 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
   return (
     <React.Suspense>
       <Grid width="720px" padding="10px">
-        <Card variant="outlined" sx={{ width: "800px" }} orientation="horizontal">
+        <Card
+          variant="outlined"
+          sx={{ width: "800px" }}
+          orientation="horizontal"
+        >
           <CardOverflow>
             <AspectRatio
               minHeight="200px"
@@ -163,10 +175,13 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
             </Box>
             <Rating
               rating={event.averageRating}
-              label={t('event.ratingOf', {val: event.averageRating | 0, max: 5})}
+              label={t("event.ratingOf", {
+                val: event.averageRating | 0,
+                max: 5,
+              })}
             />
             <Stack
-              flexDirection="row" 
+              flexDirection="row"
               alignItems="center"
               justifyContent="flex-end"
               spacing={1}
@@ -182,7 +197,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
                 value={date}
                 onChange={setDate}
                 eventFragmentRef={event}
-                sx={{ width: '150px'}}
+                sx={{ width: "150px" }}
               />
               {date?.isValid() && !booking && (
                 <SubmitButton
@@ -190,12 +205,12 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
                   size="sm"
                   onClick={() => bookEvent(event.id, date.toDate())}
                 >
-                  {t('event.book')}
+                  {t("event.book")}
                 </SubmitButton>
               )}
               {booking && (
                 <Link href={`/trips/${booking.trip.id}`} underline={false}>
-                  <Button size="sm">{t('models.trip.singular')}</Button>
+                  <Button size="sm">{t("models.trip.singular")}</Button>
                 </Link>
               )}
             </Stack>

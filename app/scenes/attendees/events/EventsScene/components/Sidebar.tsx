@@ -19,7 +19,7 @@ interface Props {
   eventFiltersFragment: Sidebar_EventFiltersFragment$key;
   interestsQueryFragmentRef: Sidebar_InterestsFragment$key;
   onChange: (args: Record<string, any>) => void;
-  sidebar?: boolean
+  sidebar?: boolean;
 }
 
 const Sidebar = ({
@@ -30,7 +30,7 @@ const Sidebar = ({
 }: Props) => {
   const router = useRouter();
   const { t } = useTranslation();
-  const theme = useTheme()
+  const theme = useTheme();
   const isSmallDisplay = useMediaQuery(theme.breakpoints.up("sm"));
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
   const edgeFiltersValues = useFragment<Sidebar_EventFiltersFragment$key>(
@@ -101,21 +101,23 @@ const Sidebar = ({
   }, [filters, ref]);
 
   return (
-    <Grid container flexDirection="column" sx={{ marginBottom: sidebar ? "10px" : 0 }}>
-      {!isMediumDisplay && <Grid xs={12}>
-        <Link href="/">
-          <Image
-            src="https://placehold.co/250x75"
-            width={300}
-            height={90}
-          />
-        </Link>
-      </Grid>}
+    <Grid
+      container
+      flexDirection="column"
+      sx={{ marginBottom: sidebar ? "10px" : 0 }}
+    >
+      {!isMediumDisplay && (
+        <Grid xs={12}>
+          <Link href="/">
+            <Image src="https://placehold.co/250x75" width={300} height={90} />
+          </Link>
+        </Grid>
+      )}
       <Grid xs={12}>
         <Input
           onChange={(value) => setCity(value)}
           value={city}
-          label={t('scenes.attendees.events.eventsScene.sidebar.city')}
+          label={t("scenes.attendees.events.eventsScene.sidebar.city")}
           endDecorator={<EditIcon />}
         />
       </Grid>
@@ -132,29 +134,35 @@ const Sidebar = ({
         minDate={edgeFiltersValues.startDate}
         disablePast
         startInputProps={{
-          label: t('scenes.attendees.events.eventsScene.sidebar.startDate'),
-          placeholder: t('scenes.attendees.events.eventsScene.sidebar.startDatePlaceholder'),
+          label: t("scenes.attendees.events.eventsScene.sidebar.startDate"),
+          placeholder: t(
+            "scenes.attendees.events.eventsScene.sidebar.startDatePlaceholder"
+          ),
           size: "sm",
         }}
         endInputProps={{
-          label: t('scenes.attendees.events.eventsScene.sidebar.endDate'),
-          placeholder: t('scenes.attendees.events.eventsScene.sidebar.endDatePlaceholder'),
+          label: t("scenes.attendees.events.eventsScene.sidebar.endDate"),
+          placeholder: t(
+            "scenes.attendees.events.eventsScene.sidebar.endDatePlaceholder"
+          ),
           size: "sm",
         }}
       />
       <Grid xs={12}>
         <SliderRange
-          getAriaLabel={() => t('scenes.attendees.events.eventsScene.sidebar.priceRance')}
+          getAriaLabel={() =>
+            t("scenes.attendees.events.eventsScene.sidebar.priceRance")
+          }
           value={priceRange}
           onChange={(value) => setPriceRange(value)}
           max={edgeFiltersValues.maxPrice.cents}
           min={edgeFiltersValues.minPrice.cents}
           valueLabelDisplay="auto"
           size="lg"
-          label={t('scenes.attendees.events.eventsScene.sidebar.priceRance')}
+          label={t("scenes.attendees.events.eventsScene.sidebar.priceRance")}
         />
       </Grid>
-      <Grid xs={12} container sx={{paddingBottom: '10px'}}>
+      <Grid xs={12} container sx={{ paddingBottom: "10px" }}>
         <Grid xs={6}>
           <Input
             size="sm"
@@ -165,7 +173,7 @@ const Sidebar = ({
               if (Number.isNaN(newValue)) newValue = 0;
               setPriceRange([newValue, priceRange[1]]);
             }}
-            label={t('scenes.attendees.events.eventsScene.sidebar.minPrice')}
+            label={t("scenes.attendees.events.eventsScene.sidebar.minPrice")}
           />
         </Grid>
         <Grid xs={6}>
@@ -178,7 +186,7 @@ const Sidebar = ({
               if (Number.isNaN(newValue)) newValue = 0;
               setPriceRange([priceRange[0], newValue]);
             }}
-            label={t('scenes.attendees.events.eventsScene.sidebar.maxPrice')}
+            label={t("scenes.attendees.events.eventsScene.sidebar.maxPrice")}
           />
         </Grid>
       </Grid>

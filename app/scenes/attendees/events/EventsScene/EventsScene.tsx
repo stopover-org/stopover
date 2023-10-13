@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Chip,
-  ChipDelete,
-  Drawer,
-  Grid,
-  styled,
-  useTheme,
-} from "@mui/joy";
+import { Chip, ChipDelete, Grid, styled, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
 import {
   Disposable,
@@ -29,7 +21,6 @@ import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { EventsScenePaginationQuery } from "../../../../artifacts/EventsScenePaginationQuery.graphql";
 import { EventsScene_InterestsFragment$key } from "../../../../artifacts/EventsScene_InterestsFragment.graphql";
 import { GlobalSidebarContext } from "../../../../components/GlobalSidebarProvider";
-import Link from "../../../../components/v2/Link";
 import { useArrayValuesFromQuery } from "../../../../lib/hooks/useArrayValuesFromQuery";
 
 interface Props {
@@ -154,8 +145,8 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           setFilters(args);
         }}
       />
-    )
-  }, [data, interestsQuery, filters, setFilters])
+    );
+  }, [data, interestsQuery, filters, setFilters]);
 
   return (
     <Grid container>

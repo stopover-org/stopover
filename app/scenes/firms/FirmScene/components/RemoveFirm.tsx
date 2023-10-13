@@ -1,20 +1,27 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import Button from "../../../../components/v2/Button";
 import { useRemoveFirm } from "../useRemoveFirm";
 import SubmitButton from "../../../../components/shared/SubmitButton";
 import RemoveFirmModal from "./RemoveFirmModal";
-import { useTranslation } from "react-i18next";
 
 const RemoveFirm = () => {
-  const [modalOpened, setModalOpened] = React.useState<boolean>(false)
-  const { t } = useTranslation()
+  const [modalOpened, setModalOpened] = React.useState<boolean>(false);
+  const { t } = useTranslation();
 
   return (
     <>
-      <Button onClick={() => setModalOpened(true)} color='danger' variant="plain">
-        {t('forms.removeFirm.action')}
+      <Button
+        onClick={() => setModalOpened(true)}
+        color="danger"
+        variant="plain"
+      >
+        {t("forms.removeFirm.action")}
       </Button>
-      <RemoveFirmModal open={modalOpened} onClose={() => setModalOpened(false)} />
+      <RemoveFirmModal
+        open={modalOpened}
+        onClose={() => setModalOpened(false)}
+      />
     </>
   );
 };

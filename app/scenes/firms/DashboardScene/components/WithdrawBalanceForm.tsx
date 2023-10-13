@@ -1,9 +1,9 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import SubmitButton from "../../../../components/shared/SubmitButton";
 import { useWithdrawBalanceForm } from "../useWithdrawBalanceForm";
 import { WithdrawBalanceForm_BalanceFragment$key } from "../../../../artifacts/WithdrawBalanceForm_BalanceFragment.graphql";
-import { useTranslation } from "react-i18next";
 
 const WithdrawBalanceForm = ({
   balanceFragmentRef,
@@ -34,15 +34,14 @@ const WithdrawBalanceForm = ({
         .find((status) => status === "active"),
     [balance]
   );
-
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   if (balance.totalAmount.cents <= 0 || !activeStripeConnect) return null;
 
   return (
     <form onSubmit={form.handleSubmit()}>
       <SubmitButton size="sm" submitting={form.formState.isSubmitting}>
-        {t('scenes.firms.dashboardScene.withdraw')}
+        {t("scenes.firms.dashboardScene.withdraw")}
       </SubmitButton>
     </form>
   );

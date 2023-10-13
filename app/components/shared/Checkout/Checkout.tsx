@@ -12,6 +12,7 @@ import useSubscription from "../../../lib/hooks/useSubscription";
 interface CheckoutProps {
   bookingFragmentRef: Checkout_BookingFragment$key;
 }
+
 const StatusTag = ({ status }: { status: string }) => {
   const color = useStatusColor({
     primary: ["processing"],

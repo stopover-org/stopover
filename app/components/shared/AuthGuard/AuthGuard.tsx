@@ -13,7 +13,6 @@ interface AuthGuardProps {
     | React.ReactNode[];
   accessible: boolean;
 }
-
 const AuthGuard = ({
   children,
   redirectTo,

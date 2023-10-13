@@ -12,6 +12,7 @@ interface BreadcrumbsProps {
   items: Array<string | IBreadcrumb>;
   padding?: number;
 }
+
 const Breadcrumbs = ({ items, padding = 2 }: BreadcrumbsProps) => (
   <Box padding={padding}>
     <Stack flexDirection="row" flexWrap="wrap">

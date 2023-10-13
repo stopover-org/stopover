@@ -3,6 +3,7 @@ import React from "react";
 import { Box, Option, Stack } from "@mui/joy";
 import { Moment } from "moment";
 import moment from "moment/moment";
+import { useTranslation } from "react-i18next";
 import { BookingDatesEditForm_BookingFragment$key } from "../../../../../artifacts/BookingDatesEditForm_BookingFragment.graphql";
 import { useBookingDatesEditForm } from "./useBookingDatesEditForm";
 import ButtonDatePicker from "../../../../../components/v2/ButtonDatePicker/ButtonDatePicker";
@@ -12,7 +13,6 @@ import useUniqueMomentDates from "../../../../../lib/hooks/useUniqueMomentDates"
 import useTimeFromDate from "../../../../../lib/hooks/useTimeFromDate";
 import Button from "../../../../../components/v2/Button/Button";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
-import { useTranslation } from "react-i18next";
 
 interface BookingDatesEditFormProps {
   bookingFragmentRef: BookingDatesEditForm_BookingFragment$key;
@@ -34,7 +34,7 @@ const BookingDatesEditForm = ({
     `,
     bookingFragmentRef
   );
-  const {t } = useTranslation()
+  const { t } = useTranslation();
   const form = useBookingDatesEditForm(booking);
   const dateField = form.useFormField<Moment>("date");
   const timeField = form.useFormField("time");
@@ -50,48 +50,55 @@ const BookingDatesEditForm = ({
   );
   return (
     <form onSubmit={form.handleSubmit()}>
-      <Stack flexDirection="row" justifyContent="flex-start" alignItems={'flex-start'}>
-        {!disabled && <Box paddingRight="10px">
-          <ButtonDatePicker
-            onChange={(date) => {
-              if (!date) return;
-              dateField.onChange(date.startOf("day"));
-            }}
-            variant="outlined"
-            datePickerProps={{
-              availableDates,
-            }}
-            disabled={disabled}
-          >
-            {getDate(dateField.value)}
-          </ButtonDatePicker>
-        </Box>
-      }
-        {!disabled && availableTimes.length > 0 && <Box paddingRight="10px">
-          {" "}
-          <Select
-            onChange={(value: string) => {
-              if (!value) return;
+      <Stack
+        flexDirection="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
+        {!disabled && (
+          <Box paddingRight="10px">
+            <ButtonDatePicker
+              onChange={(date) => {
+                if (!date) return;
+                dateField.onChange(date.startOf("day"));
+              }}
+              variant="outlined"
+              datePickerProps={{
+                availableDates,
+              }}
+              disabled={disabled}
+            >
+              {getDate(dateField.value)}
+            </ButtonDatePicker>
+          </Box>
+        )}
+        {!disabled && availableTimes.length > 0 && (
+          <Box paddingRight="10px">
+            {" "}
+            <Select
+              onChange={(value: string) => {
+                if (!value) return;
 
-              timeField.onChange(value);
-            }}
-            value={timeField.value}
-            placeholder={t('datepicker.selectTime')}
-          >
-            {availableTimes.map((time) => (
-              <Option key={time.unix()} value={time.format(timeFormat)}>
-                {time.format(timeFormat)}
-              </Option>
-            ))}
-          </Select>
-        </Box>}
+                timeField.onChange(value);
+              }}
+              value={timeField.value}
+              placeholder={t("datepicker.selectTime")}
+            >
+              {availableTimes.map((time) => (
+                <Option key={time.unix()} value={time.format(timeFormat)}>
+                  {time.format(timeFormat)}
+                </Option>
+              ))}
+            </Select>
+          </Box>
+        )}
         {!disabled && (
           <Box>
             <SubmitButton
               submitting={form.formState.isSubmitting}
               disabled={disabled}
             >
-              {t('datepicker.selectDate')}
+              {t("datepicker.selectDate")}
             </SubmitButton>
           </Box>
         )}

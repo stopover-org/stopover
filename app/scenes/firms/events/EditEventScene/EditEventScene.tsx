@@ -3,12 +3,12 @@ import React from "react";
 import { FormProvider } from "react-hook-form";
 import { Step, StepLabel, Stepper } from "@mui/material";
 import { graphql, useFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
 import { useSteps } from "../../../../lib/hooks/useSteps";
 import EditEventForm from "../../../../components/shared/EditEventForm";
 import { useUpdateEventForm } from "./useUpdateEventForm";
 import { EditEventScene_EventFragment$key } from "../../../../artifacts/EditEventScene_EventFragment.graphql";
-import { useTranslation } from "react-i18next";
 
 interface EditEventSceneProps {
   eventFragmentRef: EditEventScene_EventFragment$key;
@@ -29,21 +29,21 @@ const CreateEventScene = ({ eventFragmentRef }: EditEventSceneProps) => {
     eventFragmentRef
   );
   const form = useUpdateEventForm(event);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const { steps, currentStep, setNextStep, setPreviousStep } = useSteps([
-    t('forms.editEvent.steps.eventData'),
-    t('forms.editEvent.steps.dates'),
-    t('forms.editEvent.steps.eventOptions'),
-    t('forms.editEvent.steps.paymentSettings'),
+    t("forms.editEvent.steps.eventData"),
+    t("forms.editEvent.steps.dates"),
+    t("forms.editEvent.steps.eventOptions"),
+    t("forms.editEvent.steps.paymentSettings"),
   ]);
 
   return (
     <>
       <Breadcrumbs
         items={[
-          { title: t('layout.header.myFirm'), href: "/my-firm" },
+          { title: t("layout.header.myFirm"), href: "/my-firm" },
           { title: event.title, href: `/my-firm/events/${event.id}}` },
-          t('general.edit'),
+          t("general.edit"),
         ]}
       />
       <Grid xs={12} container>

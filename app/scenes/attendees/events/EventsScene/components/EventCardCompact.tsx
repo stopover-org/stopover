@@ -1,5 +1,13 @@
 import React from "react";
-import { AspectRatio, Box, Card, CardContent, CardOverflow, Grid, Stack } from "@mui/joy";
+import {
+  AspectRatio,
+  Box,
+  Card,
+  CardContent,
+  CardOverflow,
+  Grid,
+  Stack,
+} from "@mui/joy";
 import { graphql, useFragment, useMutation } from "react-relay";
 import moment, { Moment } from "moment";
 import { useRouter } from "next/router";
@@ -143,7 +151,9 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
                 ).filter(Boolean) as string[];
 
                 q.interests = [...rawInterests, interest.slug]
-                  .filter((value, index, array) => array.indexOf(value) === index)
+                  .filter(
+                    (value, index, array) => array.indexOf(value) === index
+                  )
                   .filter(Boolean);
 
                 delete q["interests[]"];
@@ -166,7 +176,10 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
           </Box>
           <Rating
             rating={event.averageRating}
-            label={t('event.ratingOf', {val: event.averageRating | 0, max: 5})}
+            label={t("event.ratingOf", {
+              val: event.averageRating | 0,
+              max: 5,
+            })}
           />
           <Stack
             flexDirection="row"
@@ -192,12 +205,12 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
                 size="sm"
                 onClick={() => bookEvent(event.id, date.toDate())}
               >
-                {t('event.book')}
+                {t("event.book")}
               </SubmitButton>
             )}
             {booking && (
               <Link href={`/trips/${booking.trip.id}`} underline={false}>
-                <Button size="sm">{t('models.trip.singular')}</Button>
+                <Button size="sm">{t("models.trip.singular")}</Button>
               </Link>
             )}
           </Stack>

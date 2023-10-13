@@ -1,6 +1,7 @@
 import { Chip, Grid } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import Section from "../../../../components/v2/Section";
 import { BalanceSection_FirmFragment$key } from "../../../../artifacts/BalanceSection_FirmFragment.graphql";
 import Typography from "../../../../components/v2/Typography";
@@ -9,7 +10,6 @@ import { capitalize } from "../../../../lib/utils/capitalize";
 import ConnectStripeForm from "./ConnectStripeForm";
 import StripeConnectsTable from "../../../../components/shared/tables/StripeConnectsTable";
 import WithdrawBalanceForm from "./WithdrawBalanceForm";
-import { useTranslation } from "react-i18next";
 
 interface BalanceSectionProps {
   firmFragmentRef: BalanceSection_FirmFragment$key;
@@ -59,19 +59,20 @@ const BalanceSection = ({
   const activeStripeConnect = firm.stripeConnects.find(
     ({ status }) => status === "active" || status === "pending"
   );
-
-const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Section>
       <Grid container spacing={2} padding={2}>
         <Grid xs={12}>
-          <Typography level="h3">{t('models.balance.singular')}</Typography>
+          <Typography level="h3">{t("models.balance.singular")}</Typography>
         </Grid>
         <Grid md={3} sm={12}>
-          <Typography level="h4">{t('scenes.firms.dashboardScene.total')}:</Typography>
+          <Typography level="h4">
+            {t("scenes.firms.dashboardScene.total")}:
+          </Typography>
         </Grid>
-        <Grid sm={12} md={4} >
+        <Grid sm={12} md={4}>
           <Typography level="h4">
             {getCurrencyFormat(
               firm.balance?.totalAmount?.cents,
@@ -79,7 +80,7 @@ const { t } = useTranslation()
             )}
           </Typography>
           <Typography level="body-md">
-            {capitalize(t('statuses.processing'))}:&nbsp;
+            {capitalize(t("statuses.processing"))}:&nbsp;
             {getCurrencyFormat(
               firm.balance?.processingPayments?.cents,
               firm.balance?.processingPayments?.currency?.name
@@ -91,16 +92,24 @@ const { t } = useTranslation()
         </Grid>
 
         <Grid xs={12}>
-          <Typography level="h4">{t('models.firm.attributes.paymentType')}</Typography>
+          <Typography level="h4">
+            {t("models.firm.attributes.paymentType")}
+          </Typography>
         </Grid>
         <Grid xs={12}>
           {firm.paymentTypes.map((type) => (
-            <Chip key={type} sx={{ marginRight: "5px" }}>{capitalize(t(`models.firm.enums.paymentTypes.${type.toLowerCase()}`))}</Chip>
+            <Chip key={type} sx={{ marginRight: "5px" }}>
+              {capitalize(
+                t(`models.firm.enums.paymentTypes.${type.toLowerCase()}`)
+              )}
+            </Chip>
           ))}
         </Grid>
 
         <Grid xs={12}>
-          <Typography level="h4">{t('scenes.firms.dashboardScene.payoutSettings')}</Typography>
+          <Typography level="h4">
+            {t("scenes.firms.dashboardScene.payoutSettings")}
+          </Typography>
         </Grid>
         {firm.paymentTypes.includes("stripe") && !activeStripeConnect && (
           <Grid xs={12}>
@@ -109,7 +118,9 @@ const { t } = useTranslation()
         )}
 
         <Grid xs={12}>
-          <Typography level="h4">{t('scenes.firms.dashboardScene.connectedStripeAccounts')}</Typography>
+          <Typography level="h4">
+            {t("scenes.firms.dashboardScene.connectedStripeAccounts")}
+          </Typography>
         </Grid>
         <Grid xs={12}>
           <StripeConnectsTable

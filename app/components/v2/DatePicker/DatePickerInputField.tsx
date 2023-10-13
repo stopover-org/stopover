@@ -15,6 +15,7 @@ interface BaseDatePickerInputFieldProps {
     event?: React.ChangeEvent<HTMLInputElement>
   ) => void;
 }
+
 export interface DatePickerInputFieldProps
   extends BaseDatePickerInputFieldProps,
     Omit<InputProps, keyof BaseDatePickerInputFieldProps> {}

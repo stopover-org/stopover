@@ -22,7 +22,7 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
     eventFragmentRef
   );
   return (
-    <Stack sx={{position: 'sticky', top: '0', right: '0'}}>
+    <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
       <Box>
         <Typography level="h3" textAlign="end">
           {event.title}

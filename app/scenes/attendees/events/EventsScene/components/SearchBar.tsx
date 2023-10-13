@@ -109,8 +109,9 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
       sx={{ borderRadius: "0", marginRight: "5px" }}
       groupBy={(option) => option.type}
       onKeyUp={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
+        e.preventDefault();
+
+        e.stopPropagation();
 
         if (e.key === "Enter") {
           const q = router.query;
@@ -125,12 +126,15 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
             encode: false,
           })}`;
 
-          router.push({ pathname: '/events', query: q }, undefined, { shallow: true });
+          router.push({ pathname: "/events", query: q }, undefined, {
+            shallow: true,
+          });
         }
       }}
       onInputChange={(e, value) => {
-        e.preventDefault()
-        e.stopPropagation()
+        e.preventDefault();
+
+        e.stopPropagation();
 
         setQuery(value);
       }}
@@ -151,7 +155,7 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
         </AutocompleteOption>
       )}
       onChange={(evt, value) => {
-        console.log(value)
+        console.log(value);
         if (value.link) {
           router.push(value.link as string);
         }

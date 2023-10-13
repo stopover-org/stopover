@@ -1,13 +1,22 @@
-import { Box, Divider, Modal, ModalDialog, Stack, DialogActions, DialogContent, DialogTitle } from "@mui/joy";
+import {
+  Box,
+  Divider,
+  Modal,
+  ModalDialog,
+  Stack,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/joy";
 import React from "react";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import RefundBookingForm from "../../../../../components/shared/RefundBooking/RefundBookingForm";
 import Button from "../../../../../components/v2/Button";
 import { RefundBookingModal_BookingFragment$key } from "../../../../../artifacts/RefundBookingModal_BookingFragment.graphql";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Typography from "../../../../../components/v2/Typography";
-import { useTranslation } from "react-i18next";
 
 interface RefundBookingModalProps {
   open: boolean;
@@ -41,14 +50,15 @@ const RefundBookingModal = ({
     `,
     bookingFragmentRef
   );
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">
         <DialogTitle>
           <Stack flexDirection="row" alignItems="center" useFlexGap spacing={1}>
-            <WarningRoundedIcon color='warning' />{t('forms.refundBooking.modal.header')}
+            <WarningRoundedIcon color="warning" />
+            {t("forms.refundBooking.modal.header")}
           </Stack>
         </DialogTitle>
         <Divider />
@@ -61,18 +71,22 @@ const RefundBookingModal = ({
                     {booking.cancellationTerms}
                   </Typography>
                 </Box>
-                <Divider sx={{margin: 1}} />
+                <Divider sx={{ margin: 1 }} />
                 <Box>
-                  {t('forms.refundBooking.modal.refundExplanation', { amount: getCurrencyFormat(
-                    booking.possibleRefundAmount?.cents,
-                    booking.possibleRefundAmount?.currency?.name
-                  )})}
+                  {t("forms.refundBooking.modal.refundExplanation", {
+                    amount: getCurrencyFormat(
+                      booking.possibleRefundAmount?.cents,
+                      booking.possibleRefundAmount?.currency?.name
+                    ),
+                  })}
                 </Box>
                 <Box>
-                  {t('forms.refundBooking.modal.penaltyExplanation', { amount: getCurrencyFormat(
-                    booking.possiblePenaltyAmount?.cents,
-                    booking.possiblePenaltyAmount?.currency?.name
-                  )})}
+                  {t("forms.refundBooking.modal.penaltyExplanation", {
+                    amount: getCurrencyFormat(
+                      booking.possiblePenaltyAmount?.cents,
+                      booking.possiblePenaltyAmount?.currency?.name
+                    ),
+                  })}
                 </Box>
               </Stack>
             </DialogContent>
@@ -82,7 +96,7 @@ const RefundBookingModal = ({
                 onSuccess={onClose}
               />
               <Button variant="plain" color="neutral" onClick={() => onClose()}>
-                {t('general.cancel')}
+                {t("general.cancel")}
               </Button>
             </DialogActions>
           </>
