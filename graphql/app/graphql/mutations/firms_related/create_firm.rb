@@ -26,6 +26,7 @@ module Mutations
 
       def resolve(**args)
         firm = Firm.new
+        args[:country] = ISO3166::Country.find_country_by_any_name(args[:country]).iso_short_name if args[:country]
         firm.assign_attributes(args.except(:image))
 
         firm.primary_email = context[:current_user].email if args[:primary_email].blank?
@@ -34,7 +35,7 @@ module Mutations
         firm.account_firms.build(account: context[:current_user].account)
         firm.save!
 
-        if args[:image]
+        if args[:image].present?
           io_object = Stopover::FilesSupport.url_to_io(args[:image])
           firm.image.attach(io_object)
         end
