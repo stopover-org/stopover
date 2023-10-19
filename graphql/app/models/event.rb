@@ -55,7 +55,7 @@ require 'date'
 
 class Event < ApplicationRecord
   GRAPHQL_TYPE = Types::EventsRelated::EventType
-  TRANSLATABLE_FIELDS = %i[title description].freeze
+  TRANSLATABLE_FIELDS = %i[title description duration_time].freeze
   AVAILABLE_LANGUAGES = %i[en ru].freeze
 
   # MODULES ===============================================================

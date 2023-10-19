@@ -63,6 +63,14 @@ module Types
         end
       end
 
+      def duration_time
+        if current_firm == object.firm
+          object.duration_time
+        else
+          object.translate(:duration_time)
+        end
+      end
+
       def images
         object.images.map do |img|
           img&.url

@@ -44,14 +44,15 @@ module Stopover
 
           if args[:images].present?
             @event.images.purge
+            images_to_attach = []
+
             args[:images].each do |url|
-              io_object = Stopover::FilesSupport.url_to_io(url)
-              @event.images.attach(io_object)
-              # when we can't fetch url
-              # we need to log this error
+              images_to_attach << Stopover::FilesSupport.url_to_io(url)
             rescue StandardError => e
               Sentry.capture_exception(e) if Rails.env.production?
             end
+
+            @event.images.attach(images_to_attach)
           end
 
           if args[:booking_cancellation_options].present?

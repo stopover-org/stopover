@@ -28,13 +28,12 @@ module Mutations
         firm = context[:current_user].account.current_firm
         firm.update!(args.except(:image))
 
-        if args[:image].present? && args[:image] != firm.image_url
+        firm.image.purge
+
+        if args[:image].present?
           io_object = Stopover::FilesSupport.url_to_io(args[:image])
 
-          firm.image.purge if firm.image.present?
           firm.image.attach(io_object)
-        elsif args[:image].nil? && firm.image.present?
-          firm.image.purge
         end
 
         { firm: firm,

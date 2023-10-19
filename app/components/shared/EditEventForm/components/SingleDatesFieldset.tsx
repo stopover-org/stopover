@@ -1,5 +1,5 @@
 import React from "react";
-import { FormHelperText, Grid, IconButton, Option, Stack } from "@mui/joy";
+import { FormHelperText, Grid, IconButton, Stack } from "@mui/joy";
 import moment, { Moment } from "moment";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useTranslation } from "react-i18next";
@@ -9,11 +9,9 @@ import { CreateEventFields } from "../../../../scenes/firms/events/CreateEventSc
 import DatePicker from "../../../v2/DatePicker/DatePicker";
 import Button from "../../../v2/Button/Button";
 import Typography from "../../../v2/Typography/Typography";
-import Select from "../../../v2/Select/Select";
+import TimeAutocomplete from "../../TimeAutocomplete";
 
 const SingleDatesFieldset = () => {
-  const minutes = React.useMemo(() => Array.from(Array(60).keys()), []);
-  const hours = React.useMemo(() => Array.from(Array(24).keys()), []);
   const form = useFormContext<CreateEventFields>();
   const singleDates =
     form.useFormField<CreateEventFields["singleDates"]>("singleDates");
@@ -30,16 +28,30 @@ const SingleDatesFieldset = () => {
   const changeSingleDate = (
     value: Moment | string | number | null,
     index: number,
-    field: string
-  ) =>
-    singleDates.onChange([
-      ...singleDates.value.slice(0, index),
-      {
-        ...singleDates.value[index],
-        [field]: value,
-      },
-      ...singleDates.value.slice(index + 1),
-    ]);
+    field?: string
+  ) => {
+    if (field === "date") {
+      singleDates.onChange([
+        ...singleDates.value.slice(0, index),
+        {
+          ...singleDates.value[index],
+          [field]: value,
+        },
+        ...singleDates.value.slice(index + 1),
+      ]);
+    } else {
+      const [hour, minute] = (value as string).split(":");
+      singleDates.onChange([
+        ...singleDates.value.slice(0, index),
+        {
+          ...singleDates.value[index],
+          hour,
+          minute,
+        },
+        ...singleDates.value.slice(index + 1),
+      ]);
+    }
+  };
   const { t } = useTranslation();
 
   return (
@@ -69,47 +81,12 @@ const SingleDatesFieldset = () => {
                 </FormHelperText>
               )}
             </Grid>
-            <Grid xs={2}>
-              <Select
-                label={t("general.hours")}
-                onChange={(value) => {
-                  changeSingleDate(value as number, index, "hour");
-                }}
-                value={hour}
-                error={form.formState.errors?.singleDates?.[index]?.hour}
-              >
-                {hours.map((h) => (
-                  <Option key={h} value={h}>
-                    {h.toString().padStart(2, "0")} {t("general.hourShort")}
-                  </Option>
-                ))}
-              </Select>
-            </Grid>
-            <Grid>
-              <Stack
-                direction="row"
-                alignItems="flex-start"
-                height="100%"
-                sx={{ paddingTop: "25px" }}
-              >
-                <Typography level="title-lg">&nbsp;:&nbsp;</Typography>
-              </Stack>
-            </Grid>
-            <Grid xs={2}>
-              <Select
-                label={t("general.minutes")}
-                onChange={(value) => {
-                  changeSingleDate(value as number, index, "minute");
-                }}
-                value={minute}
-                error={form.formState.errors?.singleDates?.[index]?.minute}
-              >
-                {minutes.map((m) => (
-                  <Option key={m} value={m}>
-                    {m.toString().padStart(2, "0")} {t("general.minuteShort")}
-                  </Option>
-                ))}
-              </Select>
+            <Grid xs={4} sx={{ paddingTop: "15px" }}>
+              <TimeAutocomplete
+                onDateChange={(value) => changeSingleDate(value, index)}
+                hour={hour?.toString()}
+                minute={minute?.toString()}
+              />
             </Grid>
             <Grid xs={1}>
               <Stack
