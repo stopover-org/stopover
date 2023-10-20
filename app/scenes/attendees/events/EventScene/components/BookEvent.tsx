@@ -115,7 +115,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
             dateField.onChange(setTime(dateField.value, value));
           }}
           value={selectedTime}
-          placeholder="Select time"
+          placeholder={t("datepicker.selectTime")}
         >
           {availableTimes.map((time) => (
             <Option key={time.unix()} value={time.format(timeFormat)}>

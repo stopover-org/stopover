@@ -7,6 +7,7 @@ import {
   formatIncompletePhoneNumber,
   getCountryCallingCode,
   getExampleNumber,
+  parsePhoneNumber,
 } from "libphonenumber-js";
 import { useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
@@ -35,8 +36,16 @@ const PhoneInput = React.forwardRef(
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     const [focusedInput, setFocusedInput] = React.useState(false);
+    const parsedPhoneNumber = React.useMemo(() => {
+      try {
+        return parsePhoneNumber(value);
+      } catch (error) {
+        return undefined;
+      }
+    }, [value]);
+
     const defaultCountry = React.useMemo(
-      () => getCountryFromOffset() || "RU",
+      () => parsedPhoneNumber?.country || getCountryFromOffset() || "RU",
       []
     );
     const [country, setCountry] = React.useState(defaultCountry);
