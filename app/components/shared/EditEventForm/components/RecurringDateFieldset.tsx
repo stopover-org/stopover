@@ -123,7 +123,7 @@ const RecurringDateFieldset = () => {
                         color="primary"
                         variant={day === d ? `solid` : `soft`}
                         onClick={() => {
-                          onDateChange<string>(d as string, index, "day");
+                          onDateChange(d as string, index, "day");
                         }}
                       >
                         {t(`weekdays.${d.toLowerCase()}`)}
