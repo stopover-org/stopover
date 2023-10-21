@@ -150,11 +150,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
                     : [q["interests[]"]]
                 ).filter(Boolean) as string[];
 
-                q.interests = [...rawInterests, interest.slug]
-                  .filter(
-                    (value, index, array) => array.indexOf(value) === index
-                  )
-                  .filter(Boolean);
+                q.interests = [interest.slug]
 
                 delete q["interests[]"];
 
