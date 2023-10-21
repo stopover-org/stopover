@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { graphql, useRefetchableFragment } from "react-relay";
 import { Autocomplete, AutocompleteOption, Chip } from "@mui/joy";
@@ -98,6 +98,27 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
     [data]
   );
 
+  const onQueryChange = (e?: React.SyntheticEvent<any, any>) => {
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+
+    const q = router.query;
+    if (query === "") {
+      delete q.query;
+    } else {
+      q.query = query;
+    }
+
+    const url = `/events?${stringify(q, {
+      arrayFormat: "brackets",
+      encode: false,
+    })}`;
+
+    router.push({ pathname: "/events", query: q }, undefined, { shallow: true });
+  }
+
   return (
     <Autocomplete
       disableClearable
@@ -108,32 +129,18 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
       }
       sx={{ borderRadius: "0", marginRight: "5px" }}
       groupBy={(option) => option.type}
+      onBlur={onQueryChange}
       onKeyUp={(e) => {
         e.preventDefault();
-
         e.stopPropagation();
 
         if (e.key === "Enter") {
-          const q = router.query;
-          if (query === "") {
-            delete q.query;
-          } else {
-            q.query = query;
-          }
-
-          const url = `/events?${stringify(q, {
-            arrayFormat: "brackets",
-            encode: false,
-          })}`;
-
-          router.push({ pathname: "/events", query: q }, undefined, {
-            shallow: true,
-          });
+          setQuery((e.target as HTMLInputElement).value)
+          onQueryChange()
         }
       }}
       onInputChange={(e, value) => {
         e.preventDefault();
-
         e.stopPropagation();
 
         setQuery(value);
@@ -155,7 +162,11 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
         </AutocompleteOption>
       )}
       onChange={(evt, value) => {
-        console.log(value);
+        if (typeof value === 'string') {
+          setQuery(value)
+          onQueryChange()
+        }
+
         if (value.link) {
           router.push(value.link as string);
         }
