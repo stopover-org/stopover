@@ -19,7 +19,6 @@ import Rating from "../../../../../components/v2/Rating/Rating";
 import Link from "../../../../../components/v2/Link";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Button from "../../../../../components/v2/Button";
-import Tag from "../../../../../components/v2/Tag";
 import { EventCardCompact_BookEventMutation } from "../../../../../artifacts/EventCardCompact_BookEventMutation.graphql";
 import { EventCardWide_EventFragment$key } from "../../../../../artifacts/EventCardWide_EventFragment.graphql";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
@@ -149,11 +148,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
                       : [q["interests[]"]]
                   ).filter(Boolean) as string[];
 
-                  q.interests = [...rawInterests, interest.slug]
-                    .filter(
-                      (value, index, array) => array.indexOf(value) === index
-                    )
-                    .filter(Boolean);
+                  q.interests = [interest.slug]
 
                   delete q["interests[]"];
 
@@ -164,7 +159,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
 
                   return (
                     <React.Fragment key={interest.id}>
-                      <Link primary href={url}>
+                      <Link primary href={url} prefetch>
                         {interest.title}
                       </Link>
                       &nbsp;
