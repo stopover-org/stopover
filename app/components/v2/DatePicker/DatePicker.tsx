@@ -49,7 +49,7 @@ const DatePicker = ({
   );
 
   return (
-    <FormControl>
+    <FormControl sx={{ padding: 0 }}>
       <JoyDatePicker
         {...props}
         slots={{

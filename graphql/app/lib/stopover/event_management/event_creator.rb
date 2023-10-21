@@ -34,10 +34,15 @@ module Stopover
                                                                              args[:single_dates])
 
           unless args[:images].empty?
-            args[:images].each do |base64_image|
-              io_object = Stopover::FilesSupport.url_to_io(base64_image)
-              event.images.attach(io_object)
+            images_to_attach = []
+
+            args[:images].each do |url|
+              images_to_attach << Stopover::FilesSupport.url_to_io(url)
+            rescue StandardError => e
+              Sentry.capture_exception(e) if Rails.env.production?
             end
+
+            @event.images.attach(images_to_attach)
           end
 
           if args[:booking_cancellation_options].present?

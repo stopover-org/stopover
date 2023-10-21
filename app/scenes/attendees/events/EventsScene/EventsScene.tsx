@@ -174,7 +174,9 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         }}
       >
         <Grid xl={9} lg={12} xs={12}>
-          <SearchBar eventsAutocompleteFragmentRef={eventsAutocompleteQuery} />
+          <React.Suspense>
+            <SearchBar eventsAutocompleteFragmentRef={eventsAutocompleteQuery} />
+          </React.Suspense>
         </Grid>
         {interestsSlug.length > 0 && (
           <Grid xl={9} lg={12} xs={12} spacing={2}>

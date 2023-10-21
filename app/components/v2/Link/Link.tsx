@@ -10,6 +10,8 @@ interface BaseLinkProps {
   disabled?: boolean;
   primary?: boolean;
   underline?: boolean;
+  prefetch?: boolean;
+  replace?: boolean;
 }
 
 export interface LinkProps
@@ -30,11 +32,13 @@ const Link = React.forwardRef(
       underline = true,
       sx,
       level,
+      prefetch = true,
+      replace = true,
       ...props
     }: LinkProps,
     ref: React.ForwardedRef<HTMLParagraphElement>
   ) => (
-    <NextLink passHref href={href}>
+    <NextLink passHref href={href} prefetch={prefetch} replace={replace}>
       <TypographyLink
         {...props}
         ref={ref}

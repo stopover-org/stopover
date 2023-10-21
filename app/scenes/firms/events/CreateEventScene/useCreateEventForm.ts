@@ -65,7 +65,7 @@ function useDefaultValues(): Partial<CreateEventFields> {
     () => ({
       bookingCancellationOptions: [],
       depositAmountCents: 0,
-      durationTime: "0h 0m",
+      durationTime: "",
       endDate: null,
       eventOptions: [],
       eventType: "excursion",

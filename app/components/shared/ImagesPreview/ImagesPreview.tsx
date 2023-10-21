@@ -21,6 +21,7 @@ const ImagesPreview = ({
         key={`${image}-${index}`}
         variant="outlined"
         ratio="4/3"
+        objectFit="contain"
         sx={{
           maxWidth: width || "250px",
           width: "100%",
