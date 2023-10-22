@@ -23,6 +23,7 @@ import { EventCardCompacts_EventFragment$key } from "../../../../../artifacts/Ev
 import SubmitButton from "../../../../../components/shared/SubmitButton/SubmitButton";
 import DateAutocomplete from "./DateAutocomplete";
 import Button from "../../../../../components/v2/Button/Button";
+import { useUpdateQuery } from "../../../../../lib/hooks/useQuery";
 
 interface Props {
   eventFragmentRef: EventCardCompacts_EventFragment$key;
@@ -107,6 +108,8 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
     });
   };
 
+  const changeInterest = useUpdateQuery('interests', [])
+
   return (
     <Grid
       width={{
@@ -143,27 +146,11 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
           <Box>
             <Typography level="body-md" sx={{ fontSize: "md" }}>
               {event.interests.map((interest) => {
-                const q = { ...router.query };
-                const rawInterests = (
-                  Array.isArray(q["interests[]"])
-                    ? q["interests[]"]
-                    : [q["interests[]"]]
-                ).filter(Boolean) as string[];
-
-                q.interests = [interest.slug]
-
-                delete q["interests[]"];
-
-                const url = `/events?${stringify(q, {
-                  arrayFormat: "brackets",
-                  encode: false,
-                })}`;
-
                 return (
                   <React.Fragment key={interest.id}>
-                    <Link primary href={url}>
+                    <Typography underline color='primary' onClick={() => changeInterest([interest.slug])}>
                       {interest.title}
-                    </Link>
+                    </Typography>
                     &nbsp;
                   </React.Fragment>
                 );

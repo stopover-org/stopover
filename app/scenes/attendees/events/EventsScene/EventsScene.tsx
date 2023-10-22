@@ -1,5 +1,5 @@
 import React from "react";
-import { Chip, ChipDelete, Grid, styled, useTheme } from "@mui/joy";
+import { Chip, ChipDelete, Grid, Stack, styled, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
 import {
   Disposable,
@@ -8,8 +8,6 @@ import {
   usePaginationFragment,
 } from "react-relay";
 import { useRouter } from "next/router";
-import { stringify } from "qs";
-import { useTranslation } from "react-i18next";
 import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
 import { EventsScene_EventsPaginationFragment$key } from "../../../../artifacts/EventsScene_EventsPaginationFragment.graphql";
@@ -21,7 +19,7 @@ import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { EventsScenePaginationQuery } from "../../../../artifacts/EventsScenePaginationQuery.graphql";
 import { EventsScene_InterestsFragment$key } from "../../../../artifacts/EventsScene_InterestsFragment.graphql";
 import { GlobalSidebarContext } from "../../../../components/GlobalSidebarProvider";
-import { useArrayValuesFromQuery } from "../../../../lib/hooks/useArrayValuesFromQuery";
+import { useQuery, useUpdateQuery } from "../../../../lib/hooks/useQuery";
 
 interface Props {
   eventsFragmentRef:
@@ -38,13 +36,13 @@ const ContentWrapper = styled(Grid)(({ theme }) => ({
 
 const EventsScene = ({ eventsFragmentRef }: Props) => {
   const router = useRouter();
-  const { t } = useTranslation();
   const theme = useTheme();
   const { setContent } = React.useContext(GlobalSidebarContext);
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   const isLargeDisplay = useMediaQuery(theme.breakpoints.up("lg"));
   const isVeryLargeDisplay = useMediaQuery(theme.breakpoints.up("xl"));
-  const [currentPage, setCurrentPage] = React.useState(1);
+  const currentPage = useQuery('currentPage', 1)
+  const updateCurrentPage = useUpdateQuery('currentPage', 1)
   const { data, hasPrevious, hasNext, loadPrevious, loadNext, refetch } =
     usePaginationFragment<
       EventsScenePaginationQuery,
@@ -94,9 +92,9 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     `,
     eventsFragmentRef as EventsScene_InterestsFragment$key
   );
-  const routerQuery = { ...router.query };
-  const interestsSlug = useArrayValuesFromQuery("interests[]");
-  const { query } = router.query;
+  const query = useQuery('query', '')
+  const interestsSlug = useQuery('interests', [])
+  const updateInterests = useUpdateQuery('interests', )
   const events = usePagedEdges(data.events, currentPage, 10);
   const [{ filters }, setFilters] = React.useState<any>({
     query,
@@ -129,12 +127,12 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       {
         onComplete: () => {
           if (currentPage !== 1) {
-            setCurrentPage(1);
+            updateCurrentPage(1);
           }
         },
       }
     );
-  }, [filters, router]);
+  }, [filters, interestsSlug]);
 
   React.useEffect(() => {
     setContent(
@@ -179,34 +177,27 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           </React.Suspense>
         </Grid>
         {interestsSlug.length > 0 && (
-          <Grid xl={9} lg={12} xs={12} spacing={2}>
-            {interestsSlug.map((interest) => (
-              <Chip
-                key={interest}
-                size="lg"
-                variant="outlined"
-                endDecorator={
-                  <ChipDelete
-                    onDelete={() => {
-                      routerQuery.interests = interestsSlug.filter(
-                        (slug) => slug !== interest
-                      );
-
-                      delete routerQuery["interests[]"];
-
-                      const url = `/events?${stringify(routerQuery, {
-                        arrayFormat: "brackets",
-                        encode: false,
-                      })}`;
-
-                      router.push(url);
-                    }}
-                  />
-                }
-              >
-                {interest}
-              </Chip>
-            ))}
+          <Grid xl={9} lg={12} xs={12} p={1}>
+            <Stack direction="row" useFlexGap spacing={2}>
+              {interestsSlug.map((interest: string) => (
+                <Chip
+                  key={interest}
+                  size="lg"
+                  variant="outlined"
+                  endDecorator={
+                    <ChipDelete
+                      onDelete={() => {
+                        updateInterests(interestsSlug.filter(
+                          (slug: string) => slug !== interest
+                        ))
+                      }}
+                    />
+                  }
+                >
+                  {interest}
+                </Chip>
+              ))}
+            </Stack>
           </Grid>
         )}
         <Grid xl={9} lg={12} xs={12} container spacing={2}>
@@ -229,20 +220,20 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
               onPrev={() => {
                 if (hasPrevious) {
                   loadPrevious(10, {
-                    onComplete: () => setCurrentPage(currentPage - 1),
+                    onComplete: () => updateCurrentPage(currentPage - 1),
                   });
                   return;
                 }
-                setCurrentPage(currentPage - 1);
+                updateCurrentPage(currentPage - 1);
               }}
               onNext={() => {
                 if (hasNext) {
                   loadNext(10, {
-                    onComplete: () => setCurrentPage(currentPage + 1),
+                    onComplete: () => updateCurrentPage(currentPage + 1),
                   });
                   return;
                 }
-                setCurrentPage(currentPage + 1);
+                updateCurrentPage(currentPage + 1);
               }}
               currentPage={currentPage}
             />

@@ -33,7 +33,7 @@ const Link = React.forwardRef(
       sx,
       level,
       prefetch = true,
-      replace = true,
+      replace = false,
       ...props
     }: LinkProps,
     ref: React.ForwardedRef<HTMLParagraphElement>
