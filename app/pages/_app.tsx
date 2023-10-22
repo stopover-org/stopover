@@ -17,6 +17,7 @@ import { theme } from "../lib/theme";
 import ApiKeysProvider from "../components/ApiKeysProvider";
 import englishTranslations from "../config/locales/en";
 import russianTranslations from "../config/locales/ru";
+import QueryProvider from "../components/QueryProvider";
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
@@ -45,16 +46,18 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const env = relayProps.preloadedQuery?.environment ?? clientEnv!;
 
   return (
-    <ApiKeysProvider>
-      <Toaster richColors />
-      <RelayEnvironmentProvider environment={env}>
-        <CssVarsProvider theme={theme}>
-          <LocalizationProvider dateAdapter={AdapterMoment}>
-            <Component {...pageProps} {...relayProps} />
-          </LocalizationProvider>
-        </CssVarsProvider>
-      </RelayEnvironmentProvider>
-    </ApiKeysProvider>
+    <QueryProvider>
+      <ApiKeysProvider>
+        <Toaster richColors />
+        <RelayEnvironmentProvider environment={env}>
+          <CssVarsProvider theme={theme}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <Component {...pageProps} {...relayProps} />
+            </LocalizationProvider>
+          </CssVarsProvider>
+        </RelayEnvironmentProvider>
+      </ApiKeysProvider>
+    </QueryProvider>
   );
 };
 

@@ -9,12 +9,16 @@ import Typography from "../../../../../components/v2/Typography/Typography";
 import { SearchBar_EventsAutocompleteFragment$key } from "../../../../../artifacts/SearchBar_EventsAutocompleteFragment.graphql";
 import { SearchBarAutocompleteQuery } from "../../../../../artifacts/SearchBarAutocompleteQuery.graphql";
 import Link from "../../../../../components/v2/Link/Link";
+import { useUpdateQuery, useQuery } from '../../../../../lib/hooks/useQuery'
 
 interface SearchBarProps {
   eventsAutocompleteFragmentRef: SearchBar_EventsAutocompleteFragment$key;
 }
 
 const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
+  const updateQuery = useUpdateQuery('query')
+  const updateInterest = useUpdateQuery('interests', [])
+  const query = useQuery('query', '')
   const router = useRouter();
   const [data, refetch] = useRefetchableFragment<
     SearchBarAutocompleteQuery,
@@ -53,9 +57,6 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
     eventsAutocompleteFragmentRef
   );
   const requestRef = React.useRef<NodeJS.Timeout | null>(null);
-  const [query, setQuery] = React.useState<string>(
-    typeof router?.query?.query === "string" ? router?.query?.query : ""
-  );
 
   React.useEffect(() => {
     if (requestRef.current) {
@@ -78,6 +79,7 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
               date: null,
               type: "Event",
               link: `/events/${event.id}`,
+              query: null,
             })),
             ...data.eventsAutocomplete.bookings.map((booking) => ({
               id: booking.id,
@@ -85,13 +87,15 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
               date: booking.bookedFor,
               type: "Booking",
               link: `/trips/${booking.trip.id}`,
+              query: null,
             })),
             ...data.eventsAutocomplete.interests.map((interest) => ({
               id: interest.id,
               title: interest.title,
               date: null,
               type: "Interest",
-              link: `/events?interests[]=${interest.slug}`,
+              query: interest.slug,
+              link: null,
             })),
           ]
         : [],
@@ -104,26 +108,14 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
       e.stopPropagation()
     }
 
-    const q = router.query;
-    if (query === "") {
-      delete q.query;
-    } else {
-      q.query = query;
-    }
-
-    const url = `/events?${stringify(q, {
-      arrayFormat: "brackets",
-      encode: false,
-    })}`;
-
-    router.push({ pathname: "/events", query: q }, undefined, { shallow: true });
+    updateQuery(query)
   }
 
   return (
     <Autocomplete
       disableClearable
       options={options}
-      size="sm"
+      size="lg"
       getOptionLabel={(option) =>
         typeof option === "string" ? option : option.title
       }
@@ -131,25 +123,22 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
       groupBy={(option) => option.type}
       onBlur={onQueryChange}
       onKeyUp={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
         if (e.key === "Enter") {
-          setQuery((e.target as HTMLInputElement).value)
-          onQueryChange()
+          updateQuery((e.target as HTMLInputElement).value)
         }
       }}
       onInputChange={(e, value) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        setQuery(value);
+        updateQuery(value);
       }}
       renderOption={(props, option) => (
         <AutocompleteOption {...props}>
-          <Link primary href={option.link}>
-            <Typography>{option.title}</Typography>
-          </Link>
+          {option.link ? (
+            <Link primary href={option.link}>
+              <Typography>{option.title}</Typography>
+            </Link>
+          ) : (
+            <Typography color='primary'>{option.title}</Typography>
+          )}
           &nbsp;
           <Chip size="sm" variant="outlined">
             {option.type}
@@ -163,12 +152,14 @@ const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
       )}
       onChange={(evt, value) => {
         if (typeof value === 'string') {
-          setQuery(value)
-          onQueryChange()
+          updateQuery(value)
+          return
         }
 
         if (value.link) {
-          router.push(value.link as string);
+          router.push(value.link);
+        } else if (value.type === 'interest' && value.query) {
+          updateInterest(value.query)
         }
       }}
       inputValue={query}

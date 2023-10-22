@@ -8,17 +8,17 @@ import {
   ListItemDecorator,
 } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
-import { stringify } from "qs";
 import { InterestsSelect_InterestsFragment$key } from "../../../../../artifacts/InterestsSelect_InterestsFragment.graphql";
 import Typography from "../../../../../components/v2/Typography";
+import { useQuery, useUpdateQuery } from "../../../../../lib/hooks/useQuery";
 
 interface InterestsSelectProps {
   queryFragmentRef: InterestsSelect_InterestsFragment$key;
 }
 
 const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
-  const router = useRouter();
+  const queryInterests = useQuery('interests', [])
+  const updateInterests = useUpdateQuery('interests', [])
   const { t } = useTranslation();
   const { interests } = useFragment<InterestsSelect_InterestsFragment$key>(
     graphql`
@@ -33,29 +33,16 @@ const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
     `,
     queryFragmentRef
   );
-  const q = { ...router.query };
-  const queryInterests = (
-    Array.isArray(q["interests[]"]) ? q["interests[]"] : [q["interests[]"]]
-  ).filter(Boolean) as string[];
 
   const onClick = React.useCallback(
     (slug: string) => () => {
       if (queryInterests.includes(slug)) {
-        q.interests = queryInterests.filter((s) => s !== slug);
+        updateInterests(queryInterests.filter((s) => s !== slug));
       } else {
-        q.interests = [...queryInterests, slug];
+        updateInterests([...queryInterests, slug]);
       }
-
-      delete q["interests[]"];
-
-      const url = `/events?${stringify(q, {
-        arrayFormat: "brackets",
-        encode: false,
-      })}`;
-
-      router.push(url);
     },
-    [router, queryInterests]
+    [queryInterests, updateInterests]
   );
 
   return (
@@ -75,6 +62,7 @@ const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
               variant={
                 queryInterests.includes(interest.slug) ? "soft" : "plain"
               }
+              sx={{ '&:hover': { cursor: 'pointer', backgroundColor: 'primary' } }}
             >
               <ListItemDecorator>
                 <Avatar size="sm" src={interest.preview || undefined} />

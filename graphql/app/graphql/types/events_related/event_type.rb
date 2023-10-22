@@ -81,6 +81,7 @@ module Types
         return [] unless context[:current_user]
         context[:current_user].account
                               .bookings
+                              .where.not(status: :cancelled)
                               .joins(:schedule)
                               .where('schedules.scheduled_for > ? AND bookings.event_id = ?', Time.zone.now, object.id)
                               .where(schedules: { status: :active })
