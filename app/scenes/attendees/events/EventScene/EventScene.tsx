@@ -24,15 +24,17 @@ const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
         ...LeftColumn_EventFragment
         ...RightColumn_EventFragment
         ...useBookEventForm_EventFragment
+        images
       }
     `,
     eventFragmentRef
   );
   const form = useBookEventForm(event);
+  const showLeftColumn = React.useMemo(() => event?.images?.length > 0, [event])
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit()}>
-        <Grid container spacing={{ md: 2, sm: 1 }} padding={{ md: 2, sm: 1 }}>
+        <Grid container spacing={{ md: 2, sm: 1 }} padding={{ md: 2, sm: 1 }} sx={{maxWidth: showLeftColumn ? 'unset' : '1440px', margin: showLeftColumn ? 'unset' : '0 auto'}}>
           <Grid xs={12}>
             <Breadcrumbs eventFragmentRef={event} />
           </Grid>
@@ -42,10 +44,10 @@ const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
           <Grid md={3} sm={12}>
             <EventActions eventFragmentRef={event} />
           </Grid>
-          <Grid md={7} sm={12}>
+          {showLeftColumn && <Grid md={7} sm={12}>
             <LeftColumn eventFragmentRef={event} />
-          </Grid>
-          <Grid md={5} sm={12}>
+          </Grid>}
+          <Grid md={showLeftColumn ? 5 : 12} sm={12}>
             <RightColumn eventFragmentRef={event} />
           </Grid>
         </Grid>
