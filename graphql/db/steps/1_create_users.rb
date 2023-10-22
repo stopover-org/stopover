@@ -1,10 +1,10 @@
 require 'roo'
 
-users_data = SeedsHelper.get_data('./db/users.xlsx')
+firms_data = SeedsHelper.get_data("./db/firms.xlsx")
 
-users_data.each do |user_data|
+firms_data.each do |firm_data|
   user = User.new
-  user.assign_attributes(**user_data.except(:firm_ref))
+  user.assign_attributes(email: firm_data[:primary_email])
   user.save!
   user.send_confirmation_code!(primary: 'email')
   user.activate!(code: user.confirmation_code)

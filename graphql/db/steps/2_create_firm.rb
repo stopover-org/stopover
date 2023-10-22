@@ -1,17 +1,28 @@
 require 'roo'
 
 firms_data = SeedsHelper.get_data('./db/firms.xlsx')
-users_data = SeedsHelper.get_data('./db/users.xlsx').select { |user| user[:firm_ref].present? }
+
+def find_and_attach(ref)
+  firm = Firm.find_by_ref_number(ref)
+  images_dir = "./db/images/firms"
+  image_path ="#{images_dir}/#{firm.ref_number}"
+  if File.exists?("#{image_path}.png")
+    firm.image.attach(io: File.open("#{image_path}.png"), filename: "#{firm.ref_number}.png")
+  elsif File.exists?("#{image_path}.jpg")
+    firm.image.attach(io: File.open("#{image_path}.jpg"), filename: "#{firm.ref_number}.jpg")
+  else
+    debugger
+  end
+end
 
 firms_data.each do |firm_data|
-  associated_users = users_data.select { |user_data| user_data[:firm_ref] == firm_data[:ref_number] }
+  associated_user = User.find_by_email(firm_data[:primary_email])
   firm = Firm.new
-  firm.assign_attributes(**firm_data)
-  associated_users.each do |user_data|
-    user = User.find_by(email: user_data[:email])
-    firm.account_firms.build(account: user.account)
-  end
+  country = ISO3166::Country.find_country_by_any_name(firm_data[:country]).iso_short_name
+  firm.assign_attributes(**firm_data.except(:country), country: country)
+  firm.account_firms.build(account: associated_user.account)
   firm.save!
+  find_and_attach(firm.ref_number)
 end
 
 ActiveRecord::Base.connection_pool.flush!
