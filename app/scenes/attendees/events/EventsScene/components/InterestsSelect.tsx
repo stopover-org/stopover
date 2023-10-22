@@ -37,7 +37,7 @@ const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
   const onClick = React.useCallback(
     (slug: string) => () => {
       if (queryInterests.includes(slug)) {
-        updateInterests(queryInterests.filter((s) => s !== slug));
+        updateInterests(queryInterests.filter((s: string) => s !== slug));
       } else {
         updateInterests([...queryInterests, slug]);
       }
