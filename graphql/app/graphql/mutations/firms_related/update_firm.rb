@@ -50,8 +50,24 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if current_user&.temporary?
         return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if current_user&.inactive?
         return false, { errors: [I18n.t('graphql.errors.general')] } unless current_firm
-
         super
+      end
+
+      private
+
+      def oncreate_notify
+        Notification.create!(
+          delivery_method: 'email',
+          to: current_firm.primary_email,
+          subject: '',
+          content: Stopover::MailProvider.prepare_content(
+            file: 'mailer/auth/',
+            locals: {
+              title: current_firm.title,
+              text: 'Data in your firm was changed'
+            }
+          )
+        )
       end
     end
   end

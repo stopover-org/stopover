@@ -28,6 +28,23 @@ module Mutations
 
         super
       end
+
+      private
+
+      def oncreate_notify
+        Notification.create!(
+          delivery_method: 'email',
+          to: 'info@glidequesttours.cz',
+          subject: '',
+          content: Stopover::MailProvider.prepare_content(
+            file: 'mailer/auth/firm_creation',
+            locals: {
+              title: 'my title',
+              text: 'stripe account created'
+            }
+          )
+        )
+      end
     end
   end
 end

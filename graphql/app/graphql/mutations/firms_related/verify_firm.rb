@@ -25,6 +25,23 @@ module Mutations
 
         super
       end
+
+      private
+
+      def oncreate_notify
+        Notification.create!(
+          delivery_method: 'email',
+          to: current_firm.primary_email,
+          subject: '',
+          content: Stopover::MailProvider.prepare_content(
+            file: 'mailer/auth/',
+            locals: {
+              title: current_firm.title,
+              text: 'Your firm was verified'
+            }
+          )
+        )
+      end
     end
   end
 end

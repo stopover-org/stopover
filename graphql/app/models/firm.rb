@@ -125,6 +125,7 @@ class Firm < ApplicationRecord
   # CALLBACKS =============================================================
   before_validation :transform_phone
   after_create :create_balance
+  after_create :send_email
 
   # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[pending active removed]) }
@@ -141,6 +142,20 @@ class Firm < ApplicationRecord
 
   def remove_callback
     RemoveFirmJob.perform_later(id)
+  end
+
+  def send_email
+    Notification.create!(
+      delivery_method: 'email',
+      to: primary_email,
+      subject: '',
+      content: Stopover::MailProvider.prepare_content(
+        file: 'mailer/auth/firm_creation',
+        locals: {
+          title: title
+        }
+      )
+    )
   end
 
   private
