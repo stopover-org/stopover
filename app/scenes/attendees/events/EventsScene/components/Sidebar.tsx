@@ -3,7 +3,6 @@ import { Divider, Grid, useTheme } from "@mui/joy";
 import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
 import { Moment } from "moment/moment";
-import { useRouter } from "next/router";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
@@ -14,6 +13,7 @@ import Input from "../../../../../components/v2/Input/Input";
 import Link from "../../../../../components/v2/Link";
 import SliderRange from "../../../../../components/v2/SliderRange/SliderRange";
 import InterestsSelect from "./InterestsSelect";
+import { useQuery } from "../../../../../lib/hooks/useQuery";
 
 interface Props {
   eventFiltersFragment: Sidebar_EventFiltersFragment$key;
@@ -28,10 +28,9 @@ const Sidebar = ({
   onChange,
   sidebar,
 }: Props) => {
-  const router = useRouter();
+  const query = useQuery('query', '')
   const { t } = useTranslation();
   const theme = useTheme();
-  const isSmallDisplay = useMediaQuery(theme.breakpoints.up("sm"));
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
   const edgeFiltersValues = useFragment<Sidebar_EventFiltersFragment$key>(
     graphql`
@@ -67,11 +66,6 @@ const Sidebar = ({
     edgeFiltersValues.maxPrice.cents,
   ]);
   const [city, setCity] = React.useState("");
-  const query = React.useMemo(
-    () =>
-      typeof router?.query?.query === "string" ? router?.query?.query : "",
-    [router.query?.query]
-  );
 
   const filters = React.useMemo(
     () => ({
