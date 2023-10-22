@@ -1,7 +1,4 @@
-with_images = ENV.fetch('without_images', 'false') == 'false'
-
-events_data = SeedsHelper.get_data('./db/events.xlsx')
-event_options_data = SeedsHelper.get_data('./db/event_options.xlsx')
+events_data = SeedsHelper.get_data('./db/events-prerelease.xlsx')
 
 events_data.each do |event_data|
   firm = Firm.find_by_ref_number(event_data[:firm_ref])
@@ -9,7 +6,7 @@ events_data.each do |event_data|
   Rails.logger.info(event_data[:firm_ref])
   event = Event.new
   recurring_days_with_time = if event_data[:recurring_days_with_time]
-                               event_data[:recurring_days_with_time].downcase.split(/,\s/)
+                               event_data[:recurring_days_with_time].split(/,\s/)
                              else
                                []
                              end
@@ -22,11 +19,12 @@ events_data.each do |event_data|
                           else
                             []
                           end
+  debugger unless firm && event_data[:event_type]
   next unless firm && event_data[:event_type]
   event.assign_attributes(
-    **event_data.except(:firm_ref, :single_days_with_time, :recurring_days_with_time),
+    **event_data.except(:firm_ref, :single_days_with_time, :recurring_days_with_time,),
+    ref_number: event_data[:ref_number] || event_data[:title].parameterize,
     firm: firm,
-    interests: Interest.last(4),
     country: firm&.country,
     region: firm&.region,
     city: firm&.city,
@@ -37,20 +35,10 @@ events_data.each do |event_data|
     single_days_with_time: single_days_with_time
   )
   event.save!
-
-  options = event_options_data
-  options.each do |option_data|
-    event_option = EventOption.new
-    event_option.assign_attributes(**option_data.except(:event_ref),
-                                   event: event)
-    event_option.save!
-  end
-
-  next unless with_images
-  3.times.each do
-    query = "Photorealistic art of #{event.interests.map(&:title).join(' and ')} #{event.tags.map(&:title).join(' ')} in #{event.country} #{event.city} #{event.street}. #{event.description}"
-    Rails.logger.debug { "Starting cover generating for #{event.title} with query: #{query}" }
-    AiCoverJob.perform_now(query, event.id)
-    Rails.logger.debug 'Cover was generated'
-  end
+  event.unpublish!
+  event.publish!
 end
+
+ScheduleAllEventsJob.perform_now
+
+

@@ -1,5 +1,3 @@
-require 'roo'
-
 firms_data = SeedsHelper.get_data('./db/firms.xlsx')
 
 def find_and_attach(ref)
@@ -10,8 +8,6 @@ def find_and_attach(ref)
     firm.image.attach(io: File.open("#{image_path}.png"), filename: "#{firm.ref_number}.png")
   elsif File.exists?("#{image_path}.jpg")
     firm.image.attach(io: File.open("#{image_path}.jpg"), filename: "#{firm.ref_number}.jpg")
-  else
-    debugger
   end
 end
 
@@ -23,6 +19,7 @@ firms_data.each do |firm_data|
   firm.account_firms.build(account: associated_user.account)
   firm.save!
   find_and_attach(firm.ref_number)
+  firm.activate!
 end
 
 ActiveRecord::Base.connection_pool.flush!

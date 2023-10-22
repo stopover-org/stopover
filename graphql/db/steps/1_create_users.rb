@@ -1,5 +1,3 @@
-require 'roo'
-
 firms_data = SeedsHelper.get_data("./db/firms.xlsx")
 
 firms_data.each do |firm_data|
