@@ -132,7 +132,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         },
       }
     );
-  }, [filters, interestsSlug]);
+  }, [filters, interestsSlug, currentPage]);
 
   React.useEffect(() => {
     setContent(

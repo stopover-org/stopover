@@ -848,6 +848,7 @@ type Firm implements Node {
     Returns the elements in the list that come before the specified cursor.
     """
     before: String
+    filters: EventsFilter
 
     """
     Returns the first _n_ elements from the list.
