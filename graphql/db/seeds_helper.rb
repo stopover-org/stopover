@@ -1,3 +1,5 @@
+require 'roo'
+
 class SeedsHelper
   def self.get_data(path)
     data = []

@@ -25,7 +25,8 @@ module Mutations
       argument :payment_types,  [String], required: false
 
       def resolve(**args)
-        firm = context[:current_user].account.current_firm
+        firm = context[:current_user].account.current_fir
+        args[:country] = ISO3166::Country.find_country_by_any_name(args[:country]).iso_short_name if args[:country]
         firm.update!(args.except(:image))
 
         firm.image.purge
