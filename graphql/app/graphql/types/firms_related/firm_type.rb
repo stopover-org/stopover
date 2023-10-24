@@ -27,7 +27,9 @@ module Types
       field :payments,  Types::PaymentsRelated::PaymentType.connection_type, null: false
       field :bookings,  Types::BookingsRelated::BookingType.connection_type, null: false
       field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false
-      field :events,    Types::EventsRelated::EventType.connection_type, null: false
+      field :events,    Types::EventsRelated::EventType.connection_type, null: false do
+        argument :filters, Types::Filters::EventsFilter, required: false
+      end
 
       field :stripe_connects, [Types::FirmsRelated::StripeConnectType], null: false, require_manager: true
       field :margin,          Integer, null: false, require_service_user: true
@@ -38,6 +40,10 @@ module Types
       end
       field :booking, Types::BookingsRelated::BookingType do
         argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
+      end
+
+      def events(**args)
+        Connections::SearchkickConnection.new(arguments: { query_type: ::EventsQuery, **(args[:filters] || {}) })
       end
 
       def image

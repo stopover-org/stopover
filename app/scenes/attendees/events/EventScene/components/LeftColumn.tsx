@@ -29,7 +29,7 @@ const LeftColumn = ({ eventFragmentRef }: LeftColumnProps) => {
     <Gallery
       images={images}
       width="100%"
-      numberInRow={isMobileView || images.length <= 4 ? 1 : 2}
+      numberInRow={isMobileView || images.length < 4 ? 1 : 2}
     />
   );
 };
