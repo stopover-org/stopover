@@ -273,7 +273,7 @@ class Event < ApplicationRecord
   def adjust_category
     unless interests.find_by(slug: event_type.humanize.parameterize)
       target_interest = Interest.find_by(slug: event_type.humanize.parameterize)
-      interests << target_interest
+      interests << target_interest if target_interest
     end
   end
 end
