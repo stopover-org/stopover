@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
-import { graphql, usePaginationFragment } from "react-relay";
+import { graphql, usePaginationFragment, Disposable } from "react-relay";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
+import { Grid } from "@mui/joy";
 import Table from "../../../v2/Table/Table";
 import Link from "../../../v2/Link/Link";
 import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
@@ -12,6 +13,7 @@ import Checkbox from "../../../v2/Checkbox";
 import { EventsTableFirmFragment } from "../../../../artifacts/EventsTableFirmFragment.graphql";
 import { EventsTable_FirmFragment$key } from "../../../../artifacts/EventsTable_FirmFragment.graphql";
 import useEdges from "../../../../lib/hooks/useEdges";
+import Input from "../../../v2/Input";
 
 interface EventsTableProps {
   firmFragmentRef: any;
@@ -39,6 +41,7 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
     hasNext,
     loadPrevious,
     loadNext,
+    refetch,
   } = usePaginationFragment<
     EventsTableFirmFragment,
     EventsTable_FirmFragment$key
@@ -49,8 +52,9 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 30 }
         cursor: { type: "String", defaultValue: "" }
+        filters: { type: "EventsFilter", defaultValue: {} }
       ) {
-        events(first: $count, after: $cursor)
+        events(first: $count, after: $cursor, filters: $filters)
           @connection(key: "EventsTable_query_events") {
           edges {
             node {
@@ -86,6 +90,7 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
   );
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [value, setValue] = React.useState("");
   const pagedEvents = useEdges(events);
   const data = useMemo(
     () =>
@@ -103,20 +108,27 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
           event.attendeePricePerUom?.cents,
           event.attendeePricePerUom?.currency.name
         ),
-        recurringDaysWithTime: event.recurringDaysWithTime.map((date) => (
-          <Tag link={false} sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}>
-            {date}
-          </Tag>
-        )),
-        singleDaysWithTime: event.singleDaysWithTime.map((date) => (
-          <>
+        recurringDaysWithTime: event.recurringDaysWithTime.map(
+          (date, index) => (
             <Tag
+              key={`${index}-${date}`}
+              link={false}
+              sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+            >
+              {date}
+            </Tag>
+          )
+        ),
+        singleDaysWithTime: event.singleDaysWithTime.map((date, index) => (
+          <React.Fragment key={`${index}-${date}`}>
+            <Tag
+              key={`${index}-${date}`}
               link={false}
               sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
             >
               {moment(date).format(dateTimeFormat)}
             </Tag>{" "}
-          </>
+          </React.Fragment>
         )),
         status: <TagColor status={event.status} />,
         durationTime: event.durationTime,
@@ -181,35 +193,73 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
     ],
     []
   );
+  const queryRef = React.useRef<Disposable>();
+
+  React.useEffect(() => {
+    if (queryRef.current) {
+      queryRef.current.dispose();
+    }
+
+    queryRef.current = refetch(
+      {
+        filters: {
+          query: value,
+        },
+        cursor: "0",
+      },
+      {
+        onComplete: () => {
+          if (currentPage !== 1) {
+            setCurrentPage(1);
+          }
+        },
+      }
+    );
+  }, [value, currentPage, setCurrentPage]);
+
   return (
-    <Table
-      data={data}
-      headers={headers}
-      aria-label="events table"
-      withPagination={withPagination}
-      paginationProps={{
-        rowsPerPage: 30,
-        colSpan: headers.length,
-        setPage: setCurrentPage,
-        page: currentPage,
-        hasPrevious,
-        hasNext,
-        onNextPage: () => {
-          if (hasNext) {
-            loadNext(30, {
-              onComplete: () => setCurrentPage(currentPage + 1),
-            });
-          }
-        },
-        onPrevPage: () => {
-          if (hasPrevious) {
-            loadPrevious(30, {
-              onComplete: () => setCurrentPage(currentPage - 1),
-            });
-          }
-        },
-      }}
-    />
+    <Grid container spacing={2}>
+      <Grid xs={3}>
+        <Input
+          value={value}
+          onChange={(val) => {
+            setValue(val);
+          }}
+          label="Search event"
+          size="sm"
+        />
+      </Grid>
+      <Grid xs={12}>
+        <Table
+          data={data}
+          headers={headers}
+          aria-label="events table"
+          withPagination={withPagination}
+          paginationProps={{
+            rowsPerPage: 30,
+            colSpan: headers.length,
+            setPage: setCurrentPage,
+            page: currentPage,
+            hasPrevious,
+            hasNext,
+            onNextPage: () => {
+              if (hasNext) {
+                loadNext(30, {
+                  onComplete: () => setCurrentPage(currentPage + 1),
+                });
+              }
+            },
+            onPrevPage: () => {
+              if (hasPrevious) {
+                loadPrevious(30, {
+                  onComplete: () => setCurrentPage(currentPage - 1),
+                });
+              }
+            },
+          }}
+        />
+      </Grid>
+    </Grid>
   );
 };
 
