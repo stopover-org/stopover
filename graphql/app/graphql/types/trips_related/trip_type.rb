@@ -22,7 +22,8 @@ module Types
       end
 
       def attendees_count
-        object.bookings.map { |b| b.attendees.count }.max || 0
+        return object.bookings.map { |b| b.attendees.where.not(status: :removed).count }.max || 0 if object.cancelled?
+        object.bookings.where.not(status: :cancelled).map { |b| b.attendees.where.not(status: :removed).count }.max || 0
       end
     end
   end

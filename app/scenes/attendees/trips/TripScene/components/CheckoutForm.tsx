@@ -1,15 +1,15 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import moment from "moment/moment";
-import { Option } from "@mui/joy";
+import { Autocomplete, Grid, Stack } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import { CheckoutForm_BookingFragmentRef$key } from "../../../../../artifacts/CheckoutForm_BookingFragmentRef.graphql";
 import { useCheckoutForm } from "./useCheckoutForm";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
-import Select from "../../../../../components/v2/Select";
 import { capitalize } from "../../../../../lib/utils/capitalize";
 import Typography from "../../../../../components/v2/Typography";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
+import { useBookingPayable } from "../../../../../lib/hooks/useBookingStates";
 
 interface CheckoutFormProps {
   bookingFragmentRef: CheckoutForm_BookingFragmentRef$key;
@@ -41,18 +41,14 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
           }
         }
         ...useCheckoutForm_BookingFragment
+        ...useBookingStates_PayableBookingFragment
       }
     `,
     bookingFragmentRef
   );
   const form = useCheckoutForm(booking);
   const paymentMethodField = form.useFormField("paymentMethod");
-  const disabled = React.useMemo(
-    () =>
-      booking.status !== "active" ||
-      moment(booking.bookedFor).isBefore(new Date()),
-    [booking.status, booking.bookedFor]
-  );
+  const disabled = !useBookingPayable(booking)
 
   if (booking.event.firm.paymentTypes.length === 0) {
     return (
@@ -64,41 +60,58 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
 
   return (
     <form onSubmit={form.handleSubmit()}>
-      {!booking.paymentType && booking.event.firm.paymentTypes.length !== 1 && (
-        <Select {...paymentMethodField} placeholder="Select Payment Method">
-          {booking.event.firm.paymentTypes.map((paymentType) => (
-            <Option key={paymentType} value={paymentType}>
-              {capitalize(t(`models.firm.enums.paymentTypes.${paymentType}`))}
-            </Option>
-          ))}
-        </Select>
-      )}
-      <br />
       {booking.leftToPayDepositPrice.cents <= 0 &&
-      paymentMethodField.value === "cash" ? (
-        <Typography>
-          {t("scenes.attendees.trips.tripScene.justCome")}
-        </Typography>
-      ) : (
-        <SubmitButton
-          submitting={form.formState.isSubmitting}
-          disabled={disabled}
-        >
-          {paymentMethodField.value === "cash"
-            ? t(`scenes.attendees.trips.tripScene.payDeposit`, {
-                amount: getCurrencyFormat(
-                  booking.leftToPayDepositPrice?.cents,
-                  booking.leftToPayDepositPrice?.currency.name
-                ),
-              })
-            : t(`scenes.attendees.trips.tripScene.payOnline`, {
-                amount: getCurrencyFormat(
-                  booking.leftToPayPrice?.cents,
-                  booking.leftToPayPrice?.currency.name
-                ),
-              })}
-        </SubmitButton>
-      )}
+        booking.paymentType === 'cash' ? (
+          <Typography>
+            {t("scenes.attendees.trips.tripScene.justCome")}
+          </Typography>
+        ) : (
+          <Grid container alignItems="center" spacing={2}>
+            {!booking.paymentType && 
+              <Grid>
+                <Autocomplete
+                  disableClearable
+                  placeholder={t("models.firm.attributes.paymentType")}
+                  options={booking.event.firm.paymentTypes.map((v) => ({
+                    label: capitalize(t(`models.firm.enums.paymentTypes.${v}`)),
+                    value: v.toLowerCase(),
+                  }))}
+                  onChange={(event, { value }) => paymentMethodField.onChange(value)}
+                  getOptionLabel={(option) => option.label}
+                  value={{
+                    label: capitalize(t(`models.firm.enums.paymentTypes.${paymentMethodField.value}`)),
+                    value: paymentMethodField.value.toLowerCase(),
+                  }}
+                  sx={{ marginRight: "10px" }}
+                  size="md"
+                  disabled={disabled}
+                />
+              </Grid>
+            }
+            <Grid>
+              <SubmitButton
+                submitting={form.formState.isSubmitting}
+                disabled={disabled}
+                size="md"
+              >
+                {paymentMethodField.value === "cash"
+                  ? t(`scenes.attendees.trips.tripScene.payDeposit`, {
+                      amount: getCurrencyFormat(
+                        booking.leftToPayDepositPrice?.cents,
+                        booking.leftToPayDepositPrice?.currency.name
+                      ),
+                    })
+                  : t(`scenes.attendees.trips.tripScene.payOnline`, {
+                      amount: getCurrencyFormat(
+                        booking.leftToPayPrice?.cents,
+                        booking.leftToPayPrice?.currency.name
+                      ),
+                    })}
+              </SubmitButton>
+            </Grid>
+          </Grid>
+        )
+      }
     </form>
   );
 };

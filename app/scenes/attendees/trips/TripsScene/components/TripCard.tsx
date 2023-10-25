@@ -85,7 +85,7 @@ const TripCard = ({ tripFragmentRef, danger }: TripCardProps) => {
           </AspectRatio>
         </CardOverflow>
       )}
-      <Stack paddingLeft={isMobileView ? 0 : "10px"} width="100%" sx={{ position: "relative" }} spacing={2} useFlexGap>
+      <Stack paddingLeft={isMobileView ? 0 : "10px"} width="100%" sx={{ position: "relative" }} spacing={1} useFlexGap>
         {trip.canCancel && (
           <Box>
             <Tooltip title={t("scenes.attendees.trips.tripsScene.cancelTrip")}>

@@ -23,6 +23,9 @@ module Mutations
         end
 
         attendee.update!(**args.except(:event_options))
+
+        attendee.booking.payments.processing.destroy_all
+
         {
           attendee: attendee,
           notification: I18n.t('graphql.mutations.update_attendee.notifications.success')

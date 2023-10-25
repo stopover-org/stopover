@@ -32,7 +32,7 @@ module Stopover
     def self.generate_session_full_amount(booking:, payment:)
       attendee_options = {}
 
-      booking.attendees.map do |att|
+      booking.attendees.where.not(status: :removed).map do |att|
         att.attendee_options.each do |opt|
           stripe_integration = opt.stripe_integration
 
@@ -78,7 +78,7 @@ module Stopover
                      [
                        {
                          price: booking.stripe_integration.price_id,
-                         quantity: booking.attendees.count
+                         quantity: booking.attendees.where.not(status: :removed).count
                        },
                        *booking_options,
                        *attendee_options.values

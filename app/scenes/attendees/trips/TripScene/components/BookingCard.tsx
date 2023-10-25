@@ -6,6 +6,7 @@ import {
   Card,
   CardOverflow,
   Divider,
+  Grid,
   Stack,
   useTheme,
 } from "@mui/joy";
@@ -25,6 +26,7 @@ import EditAttendeesModal from "./EditAttendeesModal";
 import EditBookingModal from "./EditBookingModal";
 import CancelBookingModal from "./CancelBookingModal";
 import { useBookingCancellable } from "../../../../../lib/hooks/useBookingStates";
+import CheckoutForm from "./CheckoutForm";
 
 interface BookingCardProps {
   bookingFragmentRef: BookingCard_BookingFragment$key;
@@ -64,6 +66,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
         ...BookingEditForm_BookingFragment
         ...EditBookingModal_BookingFragment
         ...CancelBookingModal_BookingFragment
+        ...CheckoutForm_BookingFragmentRef
         ...useBookingStates_CancellableBookingFragment
       }
     `,
@@ -208,51 +211,60 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
           </CardOverflow>
         </Stack>
       </Card>
-      <Box width='100%' pl="10px">
-        <Typography
-          alignItems="flex-end"
-          color="primary"
-          onClick={() => setEditBookingOpened(true)}
-          sx={{
-            "&:hover": {
-              cursor: "pointer",
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          Изменить бронирование
-        </Typography>
-      </Box>
-      <Box width='100%' pl="10px">
-        <Typography
-          alignItems="flex-end"
-          color="primary"
-          onClick={() => setEditAttendeesOpened(true)}
-          sx={{
-            "&:hover": {
-              cursor: "pointer",
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          Настроить участников
-        </Typography>
-      </Box>
-      {cancellable && <Box width='100%' pl="10px">
-        <Typography
-          alignItems="flex-end"
-          color="danger"
-          onClick={() => setCancelBookingOpened(true)}
-          sx={{
-            "&:hover": {
-              cursor: "pointer",
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          Отменить бронирование
-        </Typography>
-      </Box>}
+      <Grid container spacing={2}>
+        <Grid xs={12} sm={12} md={9} lg={9}>
+          <CheckoutForm bookingFragmentRef={booking} />
+        </Grid>
+        <Grid xs={12} sm={12} md={3} lg={3}>
+          <Box width='100%' pl="10px">
+            <Typography
+              alignItems="flex-end"
+              color="primary"
+              onClick={() => setEditAttendeesOpened(true)}
+              sx={{
+                "&:hover": {
+                  cursor: "pointer",
+                  textDecoration: 'underline',
+                },
+              }}
+            >
+              Настроить участников
+            </Typography>
+          </Box>
+          <Box width='100%' pl="10px">
+            <Typography
+              fontSize="12px"
+              alignItems="flex-end"
+              color="primary"
+              onClick={() => setEditBookingOpened(true)}
+              sx={{
+                "&:hover": {
+                  cursor: "pointer",
+                  textDecoration: 'underline',
+                },
+              }}
+            >
+              Изменить бронирование
+            </Typography>
+          </Box>
+          {cancellable && <Box width='100%' pl="10px">
+            <Typography
+              fontSize="12px"
+              alignItems="flex-end"
+              color="danger"
+              onClick={() => setCancelBookingOpened(true)}
+              sx={{
+                "&:hover": {
+                  cursor: "pointer",
+                  textDecoration: 'underline',
+                },
+              }}
+            >
+              Отменить бронирование
+            </Typography>
+          </Box>}
+        </Grid>
+      </Grid>
       <Divider sx={{ margin: '20px' }} />
       <EditAttendeesModal
         bookingFragmentRef={booking}

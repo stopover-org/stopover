@@ -4,6 +4,7 @@ import { graphql, useFragment } from "react-relay";
 import { useBookingStates_ReasonBookingFragment$key } from "../../artifacts/useBookingStates_ReasonBookingFragment.graphql";
 import { useBookingStates_BookingFragment$key } from "../../artifacts/useBookingStates_BookingFragment.graphql";
 import { useBookingStates_CancellableBookingFragment$key } from "../../artifacts/useBookingStates_CancellableBookingFragment.graphql";
+import { useBookingStates_PayableBookingFragment$key } from "../../artifacts/useBookingStates_PayableBookingFragment.graphql";
 
 export function useBookingDisabled(
   bookingFragmentRef: useBookingStates_BookingFragment$key
@@ -76,6 +77,27 @@ export function useBookingCancellable(
     () =>
       booking.status !== "cancelled" &&
       moment(booking.bookedFor).isAfter(new Date()),
+    [booking.status, booking.bookedFor]
+  );
+}
+
+export function useBookingPayable(
+  bookingFragmentRef: useBookingStates_PayableBookingFragment$key
+) {
+  const booking = useFragment(
+    graphql`
+      fragment useBookingStates_PayableBookingFragment on Booking {
+        status
+        bookedFor
+      }
+    `,
+    bookingFragmentRef
+  );
+
+  return React.useMemo(
+    () =>
+      booking.status === "active" &&
+      !moment(booking.bookedFor).isBefore(new Date()),
     [booking.status, booking.bookedFor]
   );
 }
