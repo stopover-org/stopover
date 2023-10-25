@@ -12,7 +12,7 @@ module Mutations
       field :booking, Types::BookingsRelated::BookingType
       def resolve(booking:, **args)
         Stopover::BookingManagement::BookingUpdater.new(booking, current_user).perform(**args)
-
+        notify
         {
           booking: booking.reload,
           notification: I18n.t('graphql.mutations.update_booking.notifications.success')
@@ -38,6 +38,23 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.general')] } if inputs[:event_options]&.select { |opt| opt.for_attendee }&.any?
 
         super
+      end
+
+      private
+
+      def notify
+        Notification.create!(
+          delivery_method: 'email',
+          to: current_firm.primary_email,
+          subject: 'Booking changed',
+          content: Stopover::MailProvider.prepare_content(
+            file: 'mailer/auth/',
+            locals: {
+              title: current_firm.title,
+              text: 'Your booking changed'
+            }
+          )
+        )
       end
     end
   end

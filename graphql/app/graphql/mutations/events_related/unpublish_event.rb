@@ -35,6 +35,21 @@ module Mutations
 
         super
       end
+
+      def notify
+        Notification.create!(
+          delivery_method: 'email',
+          to: current_firm.primary_email,
+          subject: '',
+          content: Stopover::MailProvider.prepare_content(
+            file: 'mailer/auth/',
+            locals: {
+              title: current_firm.title,
+              text: ''
+            }
+          )
+        )
+      end
     end
   end
 end

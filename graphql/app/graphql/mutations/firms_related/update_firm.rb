@@ -35,7 +35,7 @@ module Mutations
 
           firm.image.attach(io_object)
         end
-
+        notify
         { firm: firm,
           notification: I18n.t('graphql.mutations.update_firm.notifications.success') }
       rescue StandardError => e
@@ -55,11 +55,11 @@ module Mutations
 
       private
 
-      def oncreate_notify
+      def notify
         Notification.create!(
           delivery_method: 'email',
           to: current_firm.primary_email,
-          subject: '',
+          subject: 'Firm update',
           content: Stopover::MailProvider.prepare_content(
             file: 'mailer/auth/',
             locals: {

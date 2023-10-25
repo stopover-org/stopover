@@ -23,6 +23,7 @@ module Mutations
         end
 
         attendee.update!(**args.except(:event_options))
+        notify
         {
           attendee: attendee,
           notification: I18n.t('graphql.mutations.update_attendee.notifications.success')
@@ -48,6 +49,23 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.general')] } if inputs[:event_options]&.reject { |opt| opt.for_attendee }&.any?
 
         super
+      end
+
+      private
+
+      def notify
+        Notification.create!(
+          delivery_method: 'email',
+          to: current_firm.primary_email,
+          subject: 'Attendee update',
+          content: Stopover::MailProvider.prepare_content(
+            file: 'mailer/auth/',
+            locals: {
+              title: current_firm.title,
+              text: 'Information about attendee was updated'
+            }
+          )
+        )
       end
     end
   end

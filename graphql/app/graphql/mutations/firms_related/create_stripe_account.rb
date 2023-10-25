@@ -7,6 +7,7 @@ module Mutations
       def resolve
         stripe_connect = context[:current_user].account.current_firm.stripe_connects.create!
         account_link = Stopover::StripeAccountService.create_stripe_account(context[:current_user], stripe_connect)
+        notify
         {
           setup_account_url: account_link[:account_link],
           notification: I18n.t('graphql.mutations.create_stripe_account.notifications.redirection')
@@ -31,15 +32,15 @@ module Mutations
 
       private
 
-      def oncreate_notify
+      def notify
         Notification.create!(
           delivery_method: 'email',
-          to: 'info@glidequesttours.cz',
-          subject: '',
+          to: current_firm.primary_email,
+          subject: 'Stripe account',
           content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/firm_creation',
+            file: 'mailer/auth/',
             locals: {
-              title: 'my title',
+              title: current_firm.title,
               text: 'stripe account created'
             }
           )

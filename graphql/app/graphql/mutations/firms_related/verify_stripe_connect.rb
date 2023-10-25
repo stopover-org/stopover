@@ -9,7 +9,7 @@ module Mutations
 
       def resolve(stripe_connect:)
         stripe_connect.activate!
-
+        notify
         { stripe_connect: stripe_connect,
           notification: I18n.t('graphql.mutations.verify_stripe_connect.notifications.success') }
       rescue StandardError => e
@@ -33,11 +33,11 @@ module Mutations
 
       private
 
-      def oncreate_notify
+      def notify
         Notification.create!(
           delivery_method: 'email',
           to: current_firm.primary_email,
-          subject: '',
+          subject: 'Stripe connection',
           content: Stopover::MailProvider.prepare_content(
             file: 'mailer/auth/',
             locals: {

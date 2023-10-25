@@ -7,6 +7,7 @@ module Mutations
 
       def resolve(**_args)
         current_firm.activate!
+        notify
         {
           firm: current_firm,
           notification: I18n.t('graphql.mutations.verify_firm.notifications.success')
@@ -28,11 +29,11 @@ module Mutations
 
       private
 
-      def oncreate_notify
+      def notify
         Notification.create!(
           delivery_method: 'email',
           to: current_firm.primary_email,
-          subject: '',
+          subject: 'Firm verification',
           content: Stopover::MailProvider.prepare_content(
             file: 'mailer/auth/',
             locals: {

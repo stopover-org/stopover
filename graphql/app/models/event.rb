@@ -153,7 +153,8 @@ class Event < ApplicationRecord
   # CALLBACKS ================================================================
   before_validation :set_prices,    unless: :removed?
   before_validation :adjust_prices, unless: :removed?
-  after_commit      :sync_stripe,   unless: :removed?
+  after_create      :notify
+  after_commit      :sync_stripe, unless: :removed?
 
   # SCOPES =====================================================================
   default_scope { in_order_of(:status, %w[draft published unpublished removed]).order(created_at: :desc) }
@@ -242,6 +243,21 @@ class Event < ApplicationRecord
 
   def should_index?
     published?
+  end
+
+  def notify
+    Notification.create!(
+      delivery_method: 'email',
+      to: primary_email,
+      subject: 'Stopover event',
+      content: Stopover::MailProvider.prepare_content(
+        file: 'mailer/auth/',
+        locals: {
+          title: title,
+          text: "You've created event"
+        }
+      )
+    )
   end
 
   private

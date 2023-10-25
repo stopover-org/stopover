@@ -8,6 +8,7 @@ module Mutations
       def resolve(**_args)
         firm = context[:current_user].account.current_firm
         firm.remove!
+        notify
         {
           firm: firm.reload,
           notification: I18n.t('graphql.mutations.remove_firm.notifications.success')
@@ -29,16 +30,16 @@ module Mutations
 
       private
 
-      def oncreate_notify
+      def notify
         Notification.create!(
           delivery_method: 'email',
           to: current_firm.primary_email,
-          subject: '',
+          subject: 'Remove firm',
           content: Stopover::MailProvider.prepare_content(
             file: 'mailer/auth/',
             locals: {
               title: current_firm.title,
-              text: 'your firm was deleted'
+              text: 'Your firm was removed'
             }
           )
         )

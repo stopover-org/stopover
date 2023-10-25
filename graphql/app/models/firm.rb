@@ -125,7 +125,7 @@ class Firm < ApplicationRecord
   # CALLBACKS =============================================================
   before_validation :transform_phone
   after_create :create_balance
-  after_create :send_email
+  after_create :notify
 
   # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[pending active removed]) }
@@ -144,15 +144,16 @@ class Firm < ApplicationRecord
     RemoveFirmJob.perform_later(id)
   end
 
-  def send_email
+  def notify
     Notification.create!(
       delivery_method: 'email',
       to: primary_email,
-      subject: '',
+      subject: 'Stopover firm',
       content: Stopover::MailProvider.prepare_content(
         file: 'mailer/auth/firm_creation',
         locals: {
-          title: title
+          title: title,
+          text: "You've created firm"
         }
       )
     )
