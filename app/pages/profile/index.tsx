@@ -33,8 +33,6 @@ const Profile = ({
   const data = usePreloadedQuery(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
 
-  console.log(data);
-
   return (
     <Layout currentUserFragment={data.currentUser}>
       <AttendeeSidebar>

@@ -109,6 +109,7 @@ const TripCard = ({ tripFragmentRef, danger }: TripCardProps) => {
               whiteSpace: "nowrap",
               display: "inline-block",
               overflow: "hidden",
+              maxWidth: '150px'
             }}
           >
             {trip.cities.join(", ")}

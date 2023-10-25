@@ -11,7 +11,6 @@ import { getDate, setTime, timeFormat } from "../../../../../lib/utils/dates";
 import Select from "../../../../../components/v2/Select/Select";
 import useUniqueMomentDates from "../../../../../lib/hooks/useUniqueMomentDates";
 import useTimeFromDate from "../../../../../lib/hooks/useTimeFromDate";
-import Button from "../../../../../components/v2/Button/Button";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
 
 interface BookingDatesEditFormProps {

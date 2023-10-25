@@ -14,9 +14,13 @@ import { useBookingDisabled } from "../../../lib/hooks/useBookingStates";
 
 interface BookingSummaryProps {
   bookingFragmentRef: BookingSummary_BookingFragment$key;
+  readonly?: boolean;
 }
 
-const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
+const BookingSummary = ({
+  bookingFragmentRef,
+  readonly = false,
+}: BookingSummaryProps) => {
   const { t } = useTranslation();
   const booking = useFragment(
     graphql`
@@ -63,28 +67,30 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
               },
             })}
           >
-            {t("models.attendee.plural")}
+            {t("models.attendee.plural")}:
           </Typography>
           <ButtonGroup
             sx={{
               "--ButtonGroup-separatorColor": "none !important",
             }}
           >
-            <form
-              onSubmit={removeAttendeeForm.handleSubmit()}
-              style={{ padding: 0, margin: 0, border: 0 }}
-            >
-              <Tooltip title="Удалить участника">
-                <SubmitButton
-                  size="lg"
-                  disabled={disabled || booking.activeAttendees.length === 1}
-                  sx={{ padding: 0, margin: 0, border: 0 }}
-                  submitting={removeAttendeeForm.formState.isSubmitting}
-                >
-                  <RemoveIcon />
-                </SubmitButton>
-              </Tooltip>
-            </form>
+            {!readonly && (
+              <form
+                onSubmit={removeAttendeeForm.handleSubmit()}
+                style={{ padding: 0, margin: 0, border: 0 }}
+              >
+                <Tooltip title="Удалить участника">
+                  <SubmitButton
+                    size="lg"
+                    disabled={disabled || booking.activeAttendees.length === 1}
+                    sx={{ padding: 0, margin: 0, border: 0 }}
+                    submitting={removeAttendeeForm.formState.isSubmitting}
+                  >
+                    <RemoveIcon />
+                  </SubmitButton>
+                </Tooltip>
+              </form>
+            )}
             <IconButton
               size="lg"
               disabled={disabled}
@@ -92,21 +98,23 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
             >
               {booking.activeAttendees.length}
             </IconButton>
-            <form
-              onSubmit={addAttendeeForm.handleSubmit()}
-              style={{ padding: 0, margin: 0, border: 0 }}
-            >
-              <Tooltip title="Добавить участника">
-                <SubmitButton
-                  size="lg"
-                  disabled={disabled}
-                  sx={{ padding: 0, margin: 0, border: 0 }}
-                  submitting={addAttendeeForm.formState.isSubmitting}
-                >
-                  <AddIcon />
-                </SubmitButton>
-              </Tooltip>
-            </form>
+            {!readonly && (
+              <form
+                onSubmit={addAttendeeForm.handleSubmit()}
+                style={{ padding: 0, margin: 0, border: 0 }}
+              >
+                <Tooltip title="Добавить участника">
+                  <SubmitButton
+                    size="lg"
+                    disabled={disabled}
+                    sx={{ padding: 0, margin: 0, border: 0 }}
+                    submitting={addAttendeeForm.formState.isSubmitting}
+                  >
+                    <AddIcon />
+                  </SubmitButton>
+                </Tooltip>
+              </form>
+            )}
           </ButtonGroup>
         </Stack>
       </Grid>

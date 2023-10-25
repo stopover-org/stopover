@@ -11,8 +11,8 @@ type Account implements Node {
   longitude: Float
   name: String!
   phones: [String!]
-  primaryEmail: String!
-  primaryPhone: String!
+  primaryEmail: String
+  primaryPhone: String
   region: String
   status: String!
   street: String
@@ -1791,7 +1791,7 @@ input UpdateAccountInput {
   """
   clientMutationId: String
   country: String!
-  dateOfBirth: DateTime!
+  dateOfBirth: DateTime
   name: String!
   primaryEmail: String!
   primaryPhone: String!

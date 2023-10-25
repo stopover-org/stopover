@@ -15,8 +15,8 @@ module Types
       field :longitude,     Float
       field :latitude,      Float
       field :phones,        [String]
-      field :primary_phone, String, null: false
-      field :primary_email, String, null: false
+      field :primary_phone, String
+      field :primary_email, String
       field :date_of_birth, Types::DateTimeType
       field :verified_at,   String
       field :interests,     [Types::EventsRelated::InterestType]

@@ -39,13 +39,13 @@ function useDefaultValues(
 
   return React.useMemo(
     () => ({
-      primaryEmail: account.primaryEmail,
-      primaryPhone: account.primaryPhone,
-      name: account.name,
-      country: account.country,
-      city: account.city,
-      region: account.region,
-      dateOfBirth: account.dateOfBirth,
+      primaryEmail: account.primaryEmail || "",
+      primaryPhone: account.primaryPhone || "",
+      name: account.name || "",
+      country: account.country || "",
+      city: account.city || "",
+      region: account.region || "",
+      dateOfBirth: account.dateOfBirth || null,
     }),
     [account]
   );
@@ -73,8 +73,9 @@ export function useEditProfileForm(
       ) {
         updateAccount(input: $input) {
           account {
-            id
+            ...ProfileScene_AccountFragment
           }
+          errors
         }
       }
     `,
@@ -82,6 +83,7 @@ export function useEditProfileForm(
     {
       defaultValues: useDefaultValues(accountFragmentRef),
       resolver: yupResolver(validationSchema),
+      autosave: true,
     }
   );
 }

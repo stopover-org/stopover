@@ -11,7 +11,7 @@ module Mutations
       argument :country,       String
       argument :city,          String
       argument :region,        String
-      argument :date_of_birth, Types::DateTimeType
+      argument :date_of_birth, Types::DateTimeType, required: false
 
       def resolve(**args)
         current_account.assign_attributes(args)

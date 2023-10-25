@@ -181,7 +181,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
                   sx={(theme) => ({
                     fontSize: "22px",
                     whiteSpace: "nowrap",
-                    maxWidth: "400px",
+                    maxWidth: "380px",
                     display: "block",
                     overflow: "hidden",
                     [theme.breakpoints.down("md")]: {
@@ -189,7 +189,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
                     },
                   })}
                 >
-                  {booking.event.title}
+                  {booking.event.title}{booking.event.title}{booking.event.title}{booking.event.title}{booking.event.title}{booking.event.title}
                 </Typography>
               </Link>
               <BookingTime bookingFragmentRef={booking} />

@@ -60,8 +60,7 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
 
   return (
     <form onSubmit={form.handleSubmit()}>
-      {booking.leftToPayDepositPrice.cents <= 0 &&
-        booking.paymentType === 'cash' ? (
+      {booking.leftToPayDepositPrice.cents <= 0 && booking.paymentType ? (
           <Typography>
             {t("scenes.attendees.trips.tripScene.justCome")}
           </Typography>
