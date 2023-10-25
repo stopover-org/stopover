@@ -43,7 +43,7 @@ module Types
       end
 
       def events(**args)
-        Connections::SearchkickConnection.new(arguments: { query_type: ::EventsQuery, **(args[:filters] || {}) })
+        Connections::SearchkickConnection.new(arguments: { query_type: ::EventsQuery, **(args[:filters] || {}), backend: true })
       end
 
       def image

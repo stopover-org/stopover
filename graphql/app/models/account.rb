@@ -11,7 +11,6 @@
 #  full_address  :string
 #  house_number  :string
 #  language      :string           default("en"), not null
-#  last_name     :string
 #  latitude      :float
 #  longitude     :float
 #  name          :string
@@ -25,10 +24,12 @@
 #  verified_at   :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  firm_id       :bigint
 #  user_id       :bigint
 #
 # Indexes
 #
+#  index_accounts_on_firm_id  (firm_id)
 #  index_accounts_on_user_id  (user_id) UNIQUE
 #
 class Account < ApplicationRecord
@@ -45,6 +46,7 @@ class Account < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==================================================
 
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
+  belongs_to :firm, optional: true
 
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :account_interests,  dependent: :destroy
@@ -91,7 +93,7 @@ class Account < ApplicationRecord
   end
 
   def current_firm
-    firms.where(status: %i[active pending]).last
+    firm
   end
 
   private
@@ -103,6 +105,7 @@ class Account < ApplicationRecord
   def adjust_user_info
     self.primary_phone = user.phone if user&.phone
     self.primary_email = user.email if user&.email
+    self.name = user.email || user.phone if name.nil?
     phones.concat([user.phone]) if user&.phone && phones&.exclude?(user&.phone)
     phones.concat([primary_phone]) if primary_phone && phones&.exclude?(primary_phone)
   end

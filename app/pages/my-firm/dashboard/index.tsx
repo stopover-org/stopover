@@ -16,6 +16,7 @@ const Query = graphql`
       ...Layout_CurrentUserFragment
       ...DashboardScene_CurrentUserFragment
       account {
+        ...SidebarContent_AccountFragment
         firm {
           ...DashboardScene_FirmFragment
           id
@@ -37,12 +38,15 @@ const Index = ({
 
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={currentUser!}>
-      <AuthGuard accessible={Boolean(currentUser?.account?.firm?.id)}>
-        <SidebarContent sx={{ paddingLeft: "10px" }}>
+    <Layout currentUserFragment={currentUser}>
+      <AuthGuard accessible={Boolean(currentUser.account.firm?.id)}>
+        <SidebarContent
+          sx={{ paddingLeft: "10px" }}
+          accountFragmentRef={currentUser.account}
+        >
           <DashboardScene
-            firmFragmentRef={currentUser?.account?.firm!}
-            currentUserFragmentRef={currentUser!}
+            firmFragmentRef={currentUser.account.firm!}
+            currentUserFragmentRef={currentUser}
           />
         </SidebarContent>
       </AuthGuard>

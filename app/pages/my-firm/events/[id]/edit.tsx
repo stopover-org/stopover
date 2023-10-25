@@ -16,6 +16,7 @@ const Query = graphql`
     currentUser {
       ...Layout_CurrentUserFragment
       account {
+        ...SidebarContent_AccountFragment
         firm {
           event(id: $id) {
             id
@@ -43,12 +44,10 @@ const Edit = ({
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={currentUser!}>
-      <AuthGuard accessible={Boolean(currentUser?.account?.firm?.event?.id)}>
-        <SidebarContent>
-          <EditEventScene
-            eventFragmentRef={currentUser!.account?.firm?.event!}
-          />
+    <Layout currentUserFragment={currentUser}>
+      <AuthGuard accessible={Boolean(currentUser.account.firm?.event?.id)}>
+        <SidebarContent accountFragmentRef={currentUser.account}>
+          <EditEventScene eventFragmentRef={currentUser.account.firm?.event!} />
         </SidebarContent>
       </AuthGuard>
     </Layout>

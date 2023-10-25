@@ -11,7 +11,6 @@
 #  full_address  :string
 #  house_number  :string
 #  language      :string           default("en"), not null
-#  last_name     :string
 #  latitude      :float
 #  longitude     :float
 #  name          :string
@@ -25,10 +24,12 @@
 #  verified_at   :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  firm_id       :bigint
 #  user_id       :bigint
 #
 # Indexes
 #
+#  index_accounts_on_firm_id  (firm_id)
 #  index_accounts_on_user_id  (user_id) UNIQUE
 #
 FactoryBot.define do

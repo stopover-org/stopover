@@ -74,20 +74,6 @@ const VerifyBookingScene = ({
             }
           }
         }
-        attendees(filters: { status: [registered, not_registered] }) {
-          fullName
-          attendeeOptions {
-            eventOption {
-              title
-              attendeePrice {
-                cents
-                currency {
-                  name
-                }
-              }
-            }
-          }
-        }
         ...BookingSummary_BookingFragment
         ...Checkout_BookingFragment
       }

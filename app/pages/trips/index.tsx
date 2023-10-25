@@ -9,6 +9,7 @@ import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 import { trips_Query } from "../../artifacts/trips_Query.graphql";
+import AttendeeSidebar from "../../components/shared/AttendeeSidebar";
 
 const Query = graphql`
   query trips_Query {
@@ -29,8 +30,10 @@ const Trips = ({ preloadedQuery, apiKeys }: RelayProps<Props, trips_Query>) => {
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={data.currentUser!}>
-      <TripsScene accountFragmentRef={data.currentUser?.account!} />
+    <Layout currentUserFragment={data.currentUser}>
+      <AttendeeSidebar>
+        <TripsScene accountFragmentRef={data.currentUser.account} />
+      </AttendeeSidebar>
     </Layout>
   );
 };

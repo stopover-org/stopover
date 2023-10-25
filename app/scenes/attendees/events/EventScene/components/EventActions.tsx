@@ -42,6 +42,9 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
           trip {
             id
           }
+          attendees {
+            id
+          }
         }
         schedules {
           nodes {
@@ -83,7 +86,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
 
   return availableDates.length > 0 ? (
     <Grid container spacing={1} justifyContent="flex-end">
-      <Grid sm={12} md={4} xs={4}>
+      <Grid sm={12} md={5} xs={4}>
         <ButtonDatePicker
           onChange={(date) => {
             if (!date) return;
@@ -98,7 +101,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
           {getDate(dateField.value)}
         </ButtonDatePicker>
       </Grid>
-      <Grid sm={12} md={4} xs={4}>
+      <Grid sm={12} md={6} xs={4}>
         <Select
           onChange={(value: string) => {
             if (!value) return;
@@ -127,7 +130,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
         )}
         {booking && (
           <Link href={`/trips/${booking.trip.id}`} underline={false}>
-            <Button fullWidth>{t("layout.header.myTrips")}</Button>
+            <Button fullWidth>{t('scenes.attendees.events.eventScene.details')}</Button>
           </Link>
         )}
       </Grid>
@@ -137,11 +140,11 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             event.attendeePricePerUom?.cents,
             event.attendeePricePerUom?.currency?.name
           )}{" "}
-          x {attendeesCountField.value} {t("general.attendee")}
+          x {booking ? booking.attendees.length : attendeesCountField.value} {t("general.attendee")}
           <br />
           {capitalize(t("general.total"))}:{" "}
           {getCurrencyFormat(
-            attendeesCountField.value * (event.attendeePricePerUom?.cents || 0),
+            (booking ? booking.attendees.length : attendeesCountField.value) * (event.attendeePricePerUom?.cents || 0),
             event.attendeePricePerUom?.currency?.name
           )}
         </Typography>

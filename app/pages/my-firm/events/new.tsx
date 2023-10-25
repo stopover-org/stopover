@@ -16,6 +16,7 @@ const Query = graphql`
     currentUser {
       ...Layout_CurrentUserFragment
       account {
+        ...SidebarContent_AccountFragment
         firm {
           id
           ...CreateEventScene_FirmFragment
@@ -40,13 +41,13 @@ const New = ({
 
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={currentUser!}>
+    <Layout currentUserFragment={currentUser}>
       <AuthGuard
-        accessible={Boolean(currentUser?.account?.firm?.id)}
+        accessible={Boolean(currentUser.account.firm?.id)}
         redirectTo="/firms/new"
       >
-        <SidebarContent>
-          <CreateEventScene firmFragmentRef={currentUser?.account?.firm!} />
+        <SidebarContent accountFragmentRef={currentUser.account}>
+          <CreateEventScene firmFragmentRef={currentUser.account.firm!} />
         </SidebarContent>
       </AuthGuard>
     </Layout>

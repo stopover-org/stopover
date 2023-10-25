@@ -27,8 +27,6 @@ export function useUpdateQuery(key: string, defaultValue?: any) {
       if (value) {
         setKey(key, value || defaultValue);
       } else {
-        console.log(key);
-
         deleteKey(key);
       }
     },

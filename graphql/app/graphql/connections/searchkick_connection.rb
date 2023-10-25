@@ -3,8 +3,8 @@
 module Connections
   class SearchkickConnection < GraphQL::Pagination::Connection
     def initialize(**args)
-      arguments = args[:arguments]
-      @query_type = arguments[:query_type]
+      @arguments = args[:arguments]
+      @query_type = @arguments[:query_type]
       per_page = @query_type::PER_PAGE
       super([], default_page_size: per_page, max_page_size: per_page, **args)
     end
@@ -36,7 +36,7 @@ module Connections
     end
 
     def query
-      @query ||= @query_type.new(arguments.except(:query_type), after: after_value)
+      @query ||= @query_type.new(@arguments.except(:query_type), after: after_value)
     end
 
     def after_value

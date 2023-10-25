@@ -54,9 +54,12 @@ const BookingDatesEditForm = ({
         flexDirection="row"
         justifyContent="flex-start"
         alignItems="flex-start"
+        flexWrap={'wrap'}
+        spacing={2}
+        useFlexGap
       >
         {!disabled && (
-          <Box paddingRight="10px">
+          <Box>
             <ButtonDatePicker
               onChange={(date) => {
                 if (!date) return;
@@ -73,8 +76,7 @@ const BookingDatesEditForm = ({
           </Box>
         )}
         {!disabled && availableTimes.length > 0 && (
-          <Box paddingRight="10px">
-            {" "}
+          <Box>
             <Select
               onChange={(value: string) => {
                 if (!value) return;
@@ -98,7 +100,7 @@ const BookingDatesEditForm = ({
               submitting={form.formState.isSubmitting}
               disabled={disabled}
             >
-              {t("datepicker.selectDate")}
+              {t("general.save")}
             </SubmitButton>
           </Box>
         )}

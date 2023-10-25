@@ -23,9 +23,10 @@ interface TableBodyProps extends BaseTableBodyProps {}
 const TableBody = ({ data, keys, onRowClick }: TableBodyProps) => {
   const ids = useIds(data);
   const [expanded, setExpanded] = React.useState<number[]>([]);
+  if (!data) return null;
   return (
     <tbody>
-      {data.map((row, index) => (
+      {data?.map((row, index) => (
         <React.Fragment key={`row-${ids[index]}-${index}`}>
           <tr
             onClick={() => onRowClick(index)}
@@ -70,7 +71,7 @@ const TableBody = ({ data, keys, onRowClick }: TableBodyProps) => {
           )}
         </React.Fragment>
       ))}
-      {data.length === 0 && (
+      {data?.length === 0 && (
         <tr>
           <td style={{ textAlign: "center" }} colSpan={keys.length}>
             <Typography fontSize="sm">There is no data</Typography>

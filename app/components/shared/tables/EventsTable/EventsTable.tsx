@@ -18,6 +18,7 @@ import Input from "../../../v2/Input";
 interface EventsTableProps {
   firmFragmentRef: any;
   withPagination?: boolean;
+  withSearchBar?: boolean;
 }
 
 const TagColor = ({ status }: { status: string }) => {
@@ -34,7 +35,11 @@ const TagColor = ({ status }: { status: string }) => {
   );
 };
 
-const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
+const EventsTable = ({
+  firmFragmentRef,
+  withPagination,
+  withSearchBar = false,
+}: EventsTableProps) => {
   const {
     data: { events },
     hasPrevious,
@@ -215,20 +220,22 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
         },
       }
     );
-  }, [value, currentPage, setCurrentPage]);
+  }, [value, setCurrentPage]);
 
   return (
     <Grid container spacing={2}>
-      <Grid xs={3}>
-        <Input
-          value={value}
-          onChange={(val) => {
-            setValue(val);
-          }}
-          label="Search event"
-          size="sm"
-        />
-      </Grid>
+      {withSearchBar && (
+        <Grid xs={3}>
+          <Input
+            value={value}
+            onChange={(val) => {
+              setValue(val);
+            }}
+            label="Search event"
+            size="sm"
+          />
+        </Grid>
+      )}
       <Grid xs={12}>
         <Table
           data={data}

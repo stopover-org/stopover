@@ -1,16 +1,11 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import moment from "moment";
 import { Divider, Grid, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import AttendeeEditForm from "./AttendeeEditForm";
 import { BookingEditForm_BookingFragment$key } from "../../../../../artifacts/BookingEditForm_BookingFragment.graphql";
 import BookingOptionsEditForm from "./BookingOptionsEditForm";
 import BookingDatesEditForm from "./BookingDatesEditForm";
-import CheckoutForm from "./CheckoutForm";
-import Button from "../../../../../components/v2/Button";
-import CancelBookingModal from "./CancelBookingModal";
 import useSubscription from "../../../../../lib/hooks/useSubscription";
 
 interface BookingEditFormProps {
@@ -34,14 +29,13 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
         leftToPayPrice {
           cents
         }
-        attendees(filters: { status: [registered, not_registered] }) {
-          id
-          ...AttendeeEditForm_AttendeeFragment
+        eventOptions {
+          status
         }
         ...BookingDatesEditForm_BookingFragment
         ...BookingOptionsEditForm_BookingFragment
         ...CheckoutForm_BookingFragmentRef
-        ...CancelBookingModal_BookingFragment
+        ...useBookingStates_CancellableBookingFragment
       }
     `,
     bookingFragmentRef
@@ -60,78 +54,24 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
     `,
   });
 
-  const [modal, setModal] = React.useState(false);
-  const leftToPay = React.useMemo(
-    () =>
-      booking.paymentType === "stripe"
-        ? booking.leftToPayPrice.cents
-        : booking.leftToPayDepositPrice.cents,
-    [booking]
-  );
-
-  const disabled = React.useMemo(
-    () =>
-      booking.status !== "active" ||
-      moment(booking.bookedFor).isBefore(new Date()),
-    [booking.status, booking.bookedFor, leftToPay]
-  );
-
-  const cancellable = React.useMemo(
-    () =>
-      booking.status !== "cancelled" &&
-      moment(booking.bookedFor).isAfter(new Date()),
-    [booking.status, booking.bookedFor]
-  );
+  const eventOptions = React.useMemo(() => booking.eventOptions.filter(({ status }) => status === 'available'), [booking])
 
   return (
-    <>
-      <Grid container spacing={2}>
-        <Grid lg={7} md={12}>
-          {booking.attendees.map((attendee) => (
-            <AttendeeEditForm
-              key={attendee.id}
-              attendeeFragmentRef={attendee}
-            />
-          ))}
-          <Divider />
-          {isMobile && (
-            <Grid md={12}>
-              <BookingOptionsEditForm bookingFragmentRef={booking} />
-            </Grid>
-          )}
-          <>
-            <Grid xs={12}>
-              <BookingDatesEditForm bookingFragmentRef={booking} />
-            </Grid>
-
-            {isMobile && (
-              <Grid md={12}>
-                {!disabled && <CheckoutForm bookingFragmentRef={booking} />}
-              </Grid>
-            )}
-
-            {cancellable && (
-              <Grid xs={12}>
-                <Button size="sm" color="danger" onClick={() => setModal(true)}>
-                  {t("scenes.attendees.trips.tripScene.cancelBooking")}
-                </Button>
-              </Grid>
-            )}
-          </>
-        </Grid>
-        {!isMobile && (
-          <Grid lg={5}>
+    <Grid container spacing={0}>
+      <Grid lg={12} md={12}>
+        {eventOptions.length > 0 && <>
+          <Grid xs={12}>
             <BookingOptionsEditForm bookingFragmentRef={booking} />
-            {!disabled && <CheckoutForm bookingFragmentRef={booking} />}
           </Grid>
-        )}
+          <Grid xs={12}>
+            <Divider sx={{ margin: 2}} />
+          </Grid>
+        </>}
+        <Grid xs={12} paddingTop={1}>
+          <BookingDatesEditForm bookingFragmentRef={booking} />
+        </Grid>
       </Grid>
-      <CancelBookingModal
-        open={modal}
-        onClose={() => setModal(false)}
-        bookingFragmentRef={booking}
-      />
-    </>
+    </Grid>
   );
 };
 

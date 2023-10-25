@@ -11,6 +11,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Tooltip,
 } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
@@ -22,7 +23,7 @@ import GeneralInformation from "./components/GeneralInformation";
 import Typography from "../../../../components/v2/Typography";
 import EventOptionsInformation from "./components/EventOptionsInformation";
 import SchedulesInformation from "./components/SchedulesInformation";
-import Tag from "../../../../components/v2/Tag/Tag";
+import Tag from "../../../../components/v2/Tag";
 import { EventScene_CurrentUserFragment$key } from "../../../../artifacts/EventScene_CurrentUserFragment.graphql";
 import VerifyEvent from "../../../../components/shared/VerifyEvent";
 import useStatusColor from "../../../../lib/hooks/useStatusColor";
@@ -150,7 +151,7 @@ const EventScene = ({
       <Grid lg={8} sm={12}>
         <Typography level="h3" sx={{ display: "inline" }}>
           {event.title}
-          <Link href={`/events/${event.id}`} underline={false} fontSize="12px">
+          <Link href={`/events/${event.id}`} underline={false} fontSize="12px" sx={{padding: '0 5px'}} target='_blank' primary>
             <LaunchIcon />
           </Link>
         </Typography>
@@ -174,14 +175,16 @@ const EventScene = ({
             </Link>
           )}
           <Dropdown>
-            <MenuButton
-              slots={{ root: IconButton }}
-              slotProps={{
-                root: { variant: "solid", color: "primary", size: "sm" },
-              }}
-            >
-              <MoreVert />
-            </MenuButton>
+            <Tooltip title='Дополнительные действия'>
+              <MenuButton
+                slots={{ root: IconButton }}
+                slotProps={{
+                  root: { variant: "solid", color: "primary", size: "sm" },
+                }}
+              >
+                <MoreVert />
+              </MenuButton>
+            </Tooltip>
             <Menu
               variant="plain"
               placement="bottom-end"
@@ -278,7 +281,7 @@ const EventScene = ({
                 {event.bookings.nodes.length}
               </Chip>
             </Tab>
-            {currentUser?.serviceUser && (
+            {currentUser.serviceUser && (
               <Tab
                 variant={tab === 4 ? "outlined" : "plain"}
                 sx={{ display: "block" }}
@@ -300,7 +303,7 @@ const EventScene = ({
             <SchedulesInformation index={2} eventFragmentRef={event} />
             <BookingsInformation index={3} eventFragmentRef={event} />
 
-            {currentUser?.serviceUser && (
+            {currentUser.serviceUser && (
               <StripeIntegrationsInformation
                 index={4}
                 eventFragmentRef={event}

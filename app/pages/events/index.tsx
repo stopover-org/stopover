@@ -33,7 +33,7 @@ const Events = ({
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={data.currentUser!}>
+    <Layout currentUserFragment={data.currentUser}>
       <EventsScene eventsFragmentRef={data} />
     </Layout>
   );

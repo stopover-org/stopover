@@ -10,10 +10,11 @@ class EventsQuery
   def initialize(
     params = {},
     after: 0,
-    limit: PER_PAGE
+    limit: PER_PAGE,
+    backend: false
   )
     @params = params
-    @conditions = { dates: { gte: Time.current } }
+    @conditions = { dates: { gte: Time.current }, status: backend ? Event.aasm.state_machine.states.map(&:name) : [:published] }
     @offset = after
     @limit = limit
   end

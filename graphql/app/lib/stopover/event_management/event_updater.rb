@@ -43,10 +43,19 @@ module Stopover
           end
 
           if args[:images].present?
-            @event.images.purge
+            images_to_remove = @event.images
+                                     .select do |image|
+              args[:images].map { |img| URI.parse(img).path }
+                           .exclude?(URI.parse(image.url).path)
+            end
+            images_to_remove.each do |image|
+              image.purge
+            end
             images_to_attach = []
 
             args[:images].each do |url|
+              next if @event.images.select { |image| URI.parse(url).path == URI.parse(image.url).path }.any?
+
               images_to_attach << Stopover::FilesSupport.url_to_io(url)
             rescue StandardError => e
               Sentry.capture_exception(e) if Rails.env.production?

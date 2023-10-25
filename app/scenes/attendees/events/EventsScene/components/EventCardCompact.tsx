@@ -193,7 +193,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
             )}
             {booking && (
               <Link href={`/trips/${booking.trip.id}`} underline={false}>
-                <Button size="sm">{t("models.trip.singular")}</Button>
+                <Button size="sm">{t('scenes.attendees.events.eventsScene.details')}</Button>
               </Link>
             )}
           </Stack>

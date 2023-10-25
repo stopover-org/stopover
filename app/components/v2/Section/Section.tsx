@@ -1,5 +1,12 @@
 import React from "react";
-import { Card, CardContent, Grid, GridProps } from "@mui/joy";
+import {
+  Card,
+  CardContent,
+  ColorPaletteProp,
+  Grid,
+  GridProps,
+  VariantProp,
+} from "@mui/joy";
 
 // component allows to divide content (fo forms use <Fieldset/>)
 interface IBaseSectionProps {
@@ -8,15 +15,17 @@ interface IBaseSectionProps {
     | React.ReactElement[]
     | React.ReactNode
     | React.ReactNode[];
+  variant?: VariantProp;
+  color?: ColorPaletteProp;
 }
 
 interface ISectionProps
   extends Omit<GridProps, keyof IBaseSectionProps>,
     IBaseSectionProps {}
 
-const Section = ({ children, ...props }: ISectionProps) => (
+const Section = ({ children, color, variant, ...props }: ISectionProps) => (
   <Grid xs={12} {...props}>
-    <Card variant="outlined">
+    <Card variant={variant || "outlined"} color={color}>
       <CardContent>
         <Grid container spacing={1}>
           {children}

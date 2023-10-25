@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  ModalClose,
 } from "@mui/joy";
 import React, { useTransition } from "react";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
@@ -54,10 +55,11 @@ const CancelBookingModal = ({
 
   return (
     <Modal open={open} onClose={onClose}>
-      <ModalDialog variant="outlined" role="alertdialog">
-        <DialogTitle>
-          <Stack flexDirection="row" alignItems="center">
-            <WarningRoundedIcon />{" "}
+      <ModalDialog variant="outlined" role="alertdialog" sx={{ width: { xs: '100%', sm: '100%', md: 'unset', lg: 'unset' } }}>
+        <ModalClose />
+        <DialogTitle sx={{marginRight: '30px'}}>
+          <Stack flexDirection="row" alignItems="center" spacing={2} useFlexGap>
+            <WarningRoundedIcon />
             {t("scenes.attendees.trips.tripScene.cancelBookingModal.title")}
           </Stack>
         </DialogTitle>
@@ -65,7 +67,7 @@ const CancelBookingModal = ({
         {booking && (
           <>
             <DialogContent>
-              <Stack>
+              <Stack spacing={2} useFlexGap>
                 <Box>
                   <Typography level="h4">
                     {booking.cancellationTerms}

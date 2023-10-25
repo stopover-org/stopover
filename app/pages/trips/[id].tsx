@@ -33,8 +33,8 @@ const Trip = ({
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={data.currentUser!}>
-      <TripScene tripFragmentRef={data.currentUser?.account?.trip!} />
+    <Layout currentUserFragment={data.currentUser}>
+      <TripScene tripFragmentRef={data.currentUser.account.trip!} />
     </Layout>
   );
 };

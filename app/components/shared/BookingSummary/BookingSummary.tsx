@@ -1,10 +1,16 @@
 import React from "react";
-import { Grid } from "@mui/joy";
+import { ButtonGroup, Grid, IconButton, Stack, Tooltip } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import Typography from "../../v2/Typography";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import { BookingSummary_BookingFragment$key } from "../../../artifacts/BookingSummary_BookingFragment.graphql";
+import { useAddAttendeeForm } from "../AddAttendee/useAddAttendeeForm";
+import SubmitButton from "../SubmitButton";
+import { useRemoveAttendeeForm } from "../RemoveAttendeeModal/useRemoveAttendeeForm";
+import { useBookingDisabled } from "../../../lib/hooks/useBookingStates";
 
 interface BookingSummaryProps {
   bookingFragmentRef: BookingSummary_BookingFragment$key;
@@ -15,6 +21,7 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
   const booking = useFragment(
     graphql`
       fragment BookingSummary_BookingFragment on Booking {
+        ...useBookingStates_BookingFragment
         leftToPayPrice {
           cents
           currency {
@@ -27,30 +34,81 @@ const BookingSummary = ({ bookingFragmentRef }: BookingSummaryProps) => {
             name
           }
         }
-        attendees(filters: { status: [registered, not_registered] }) {
+
+        activeAttendees: attendees(
+          filters: { status: [registered, not_registered] }
+        ) {
           id
+          ...useRemoveAttendeeForm_AttendeeFragment
         }
+        ...useAddAttendeeForm_BookingFragment
       }
     `,
     bookingFragmentRef
   );
+  const addAttendeeForm = useAddAttendeeForm(booking);
+  const removeAttendeeForm = useRemoveAttendeeForm(booking.activeAttendees[0]);
+  const disabled = useBookingDisabled(booking);
 
   return (
     <Grid container width="100%" alignItems="center">
       <Grid xs={6}>
-        <Typography
-          level="body-md"
-          sx={(theme) => ({
-            fontSize: "22px",
-            [theme.breakpoints.down("sm")]: {
-              fontSize: "16px",
-            },
-          })}
-        >
-          {t("scenes.attendees.trips.tripScene.attendeesCount", {
-            count: booking.attendees.length,
-          })}
-        </Typography>
+        <Stack direction="row" alignItems="center" spacing={1} useFlexGap>
+          <Typography
+            level="body-md"
+            sx={(theme) => ({
+              fontSize: "22px",
+              [theme.breakpoints.down("sm")]: {
+                fontSize: "16px",
+              },
+            })}
+          >
+            {t("models.attendee.plural")}
+          </Typography>
+          <ButtonGroup
+            sx={{
+              "--ButtonGroup-separatorColor": "none !important",
+            }}
+          >
+            <form
+              onSubmit={removeAttendeeForm.handleSubmit()}
+              style={{ padding: 0, margin: 0, border: 0 }}
+            >
+              <Tooltip title="Удалить участника">
+                <SubmitButton
+                  size="lg"
+                  disabled={disabled || booking.activeAttendees.length === 1}
+                  sx={{ padding: 0, margin: 0, border: 0 }}
+                  submitting={removeAttendeeForm.formState.isSubmitting}
+                >
+                  <RemoveIcon />
+                </SubmitButton>
+              </Tooltip>
+            </form>
+            <IconButton
+              size="lg"
+              disabled={disabled}
+              sx={{ padding: 0, margin: 0, border: 0 }}
+            >
+              {booking.activeAttendees.length}
+            </IconButton>
+            <form
+              onSubmit={addAttendeeForm.handleSubmit()}
+              style={{ padding: 0, margin: 0, border: 0 }}
+            >
+              <Tooltip title="Добавить участника">
+                <SubmitButton
+                  size="lg"
+                  disabled={disabled}
+                  sx={{ padding: 0, margin: 0, border: 0 }}
+                  submitting={addAttendeeForm.formState.isSubmitting}
+                >
+                  <AddIcon />
+                </SubmitButton>
+              </Tooltip>
+            </form>
+          </ButtonGroup>
+        </Stack>
       </Grid>
       <Grid xs={6}>
         <Typography

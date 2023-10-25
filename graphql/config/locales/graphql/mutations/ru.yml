@@ -23,6 +23,9 @@ ru:
       insufficient_funds: 'Недостаточно средств'
 
     mutations:
+      set_current_firm:
+        notifications:
+          success: 'Фирма была изменена'
       sign_in:
         errors: 
           confirmation_code_incorrect: 'Код подтверждения неверен'

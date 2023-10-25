@@ -31,7 +31,7 @@ const Event = ({ preloadedQuery, apiKeys }: RelayProps<Props, Id_Query>) => {
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={currentUser!}>
+    <Layout currentUserFragment={currentUser}>
       <EventScene eventFragmentRef={event!} />
     </Layout>
   );

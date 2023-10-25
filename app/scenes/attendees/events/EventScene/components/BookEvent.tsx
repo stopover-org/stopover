@@ -20,6 +20,7 @@ import useTimeFromDate from "../../../../../lib/hooks/useTimeFromDate";
 import Link from "../../../../../components/v2/Link";
 import { BookEvent_EventFragment$key } from "../../../../../artifacts/BookEvent_EventFragment.graphql";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
+import { capitalize } from "../../../../../lib/utils/capitalize";
 
 interface BookEventProps {
   eventFragmentRef: BookEvent_EventFragment$key;
@@ -140,13 +141,20 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
           }}
           readOnly={Boolean(booking)}
         />
-        <Typography textAlign="end" level="title-lg">
+        <Typography textAlign="end" level="title-sm">
           {getCurrencyFormat(
-            parseInt(attendeesCountField.value, 10) *
-              (event.attendeePricePerUom?.cents || 0),
+            event.attendeePricePerUom?.cents,
+            event.attendeePricePerUom?.currency?.name
+          )}{" "}
+          x {booking ? booking.attendees.length : attendeesCountField.value} {t("general.attendee")}
+          <br />
+          {capitalize(t("general.total"))}:{" "}
+          {getCurrencyFormat(
+            (booking ? booking.attendees.length : attendeesCountField.value) * (event.attendeePricePerUom?.cents || 0),
             event.attendeePricePerUom?.currency?.name
           )}
         </Typography>
+        <br />
         {!booking && (
           <SubmitButton
             submitting={form.formState.isSubmitting}
@@ -157,7 +165,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
         )}
         {booking && (
           <Link href={`/trips/${booking.trip.id}`} underline={false}>
-            <Button>{t("layout.header.myTrips")}</Button>
+            <Button fullWidth>{t('scenes.attendees.events.eventScene.details')}</Button>
           </Link>
         )}
         {schedule?.leftPlaces && !booking && (

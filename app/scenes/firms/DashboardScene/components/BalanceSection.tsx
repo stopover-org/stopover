@@ -56,7 +56,7 @@ const BalanceSection = ({
     currentUserFragmentRef
   );
 
-  const activeStripeConnect = firm.stripeConnects.find(
+  const activeStripeConnect = firm?.stripeConnects?.find(
     ({ status }) => status === "active" || status === "pending"
   );
   const { t } = useTranslation();
@@ -97,7 +97,7 @@ const BalanceSection = ({
           </Typography>
         </Grid>
         <Grid xs={12}>
-          {firm.paymentTypes.map((type) => (
+          {firm?.paymentTypes?.map((type) => (
             <Chip key={type} sx={{ marginRight: "5px" }}>
               {capitalize(
                 t(`models.firm.enums.paymentTypes.${type.toLowerCase()}`)
@@ -111,7 +111,7 @@ const BalanceSection = ({
             {t("scenes.firms.dashboardScene.payoutSettings")}
           </Typography>
         </Grid>
-        {firm.paymentTypes.includes("stripe") && !activeStripeConnect && (
+        {firm?.paymentTypes?.includes("stripe") && !activeStripeConnect && (
           <Grid xs={12}>
             <ConnectStripeForm />
           </Grid>

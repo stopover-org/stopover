@@ -14,9 +14,7 @@ const Query = graphql`
   query signIn_Query {
     currentUser {
       ...Layout_CurrentUserFragment
-      account {
-        id
-      }
+      status
     }
   }
 `;
@@ -36,8 +34,8 @@ const SignIn = ({
 
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={currentUser!}>
-      <AuthGuard accessible={!currentUser?.account?.id} redirectTo="/">
+    <Layout currentUserFragment={currentUser}>
+      <AuthGuard accessible={currentUser.status === "temporary"} redirectTo="/">
         <SignInScene />
       </AuthGuard>
     </Layout>

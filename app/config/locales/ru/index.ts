@@ -30,6 +30,7 @@ const translation = {
     minutes: "Минуты",
     minuteShort: "мин.",
     required: "Обязательно",
+    details: "Детали",
   },
   weekdays: {
     monday: "Понедельник",
@@ -41,6 +42,7 @@ const translation = {
     sunday: "Воскресенье",
   },
   datepicker: {
+    changeDate: "Изменить дату",
     selectDate: "Выберите дату",
     selectTime: "Выберите время",
   },

@@ -5,6 +5,7 @@ import {
   Box,
   Card,
   CardOverflow,
+  Divider,
   Stack,
   useTheme,
 } from "@mui/joy";
@@ -20,6 +21,10 @@ import BookingEditForm from "./BookingEditForm";
 import Tag from "../../../../../components/v2/Tag/Tag";
 import { BookingCard_BookingFragment$key } from "../../../../../artifacts/BookingCard_BookingFragment.graphql";
 import BookingSummary from "../../../../../components/shared/BookingSummary";
+import EditAttendeesModal from "./EditAttendeesModal";
+import EditBookingModal from "./EditBookingModal";
+import CancelBookingModal from "./CancelBookingModal";
+import { useBookingCancellable } from "../../../../../lib/hooks/useBookingStates";
 
 interface BookingCardProps {
   bookingFragmentRef: BookingCard_BookingFragment$key;
@@ -45,9 +50,6 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
             name
           }
         }
-        attendees(filters: { status: [registered, not_registered] }) {
-          id
-        }
         event {
           id
           images
@@ -55,10 +57,14 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
           description
           durationTime
         }
+        ...EditAttendeesModal_BookingFragment
         ...BookingTime_BookingFragment
         ...BookingSummary_BookingFragment
         ...BookingDescription_BookingFragment
         ...BookingEditForm_BookingFragment
+        ...EditBookingModal_BookingFragment
+        ...CancelBookingModal_BookingFragment
+        ...useBookingStates_CancellableBookingFragment
       }
     `,
     bookingFragmentRef
@@ -88,10 +94,16 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
     [booking.status]
   );
 
+  const [editAttendeesOpened, setEditAttendeesOpened] = React.useState<boolean>(false)
+  const [editBookingOpened, setEditBookingOpened] = React.useState<boolean>(false)
+  const [cancelBookingOpened, setCancelBookingOpened] = React.useState<boolean>(false)
+  const cancellable = useBookingCancellable(booking)
+
+
   return (
-    <Box
+    <Stack
+      direction={'column'}
       sx={(theme) => ({
-        padding: "10px",
         width: "880px",
         [theme.breakpoints.down("md")]: {
           paddingLeft: "0",
@@ -102,7 +114,6 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
       <Card
         variant="outlined"
         sx={(theme) => ({
-          width: "880px",
           [theme.breakpoints.down("md")]: { width: "100%" },
         })}
         orientation={isMobileView ? "vertical" : "horizontal"}
@@ -194,32 +205,71 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
             })}
           >
             <BookingSummary bookingFragmentRef={booking} />
-          </CardOverflow>{" "}
+          </CardOverflow>
         </Stack>
       </Card>
-      <Box width="100%">
+      <Box width='100%' pl="10px">
         <Typography
           alignItems="flex-end"
           color="primary"
-          onClick={onShowBookingInfo}
+          onClick={() => setEditBookingOpened(true)}
           sx={{
             "&:hover": {
               cursor: "pointer",
+              textDecoration: 'underline',
             },
           }}
         >
-          {t("scenes.attendees.trips.tripScene.bookingInfo")}&nbsp;
-          <KeyboardArrowDownIcon
-            sx={{
-              transform: isFormOpened ? "rotate(180deg)" : "unset",
-              lineHeight: "1.5em",
-              verticalAlign: "middle",
-            }}
-          />
+          Изменить бронирование
         </Typography>
-        {isFormOpened && <BookingEditForm bookingFragmentRef={booking} />}
       </Box>
-    </Box>
+      <Box width='100%' pl="10px">
+        <Typography
+          alignItems="flex-end"
+          color="primary"
+          onClick={() => setEditAttendeesOpened(true)}
+          sx={{
+            "&:hover": {
+              cursor: "pointer",
+              textDecoration: 'underline',
+            },
+          }}
+        >
+          Настроить участников
+        </Typography>
+      </Box>
+      {cancellable && <Box width='100%' pl="10px">
+        <Typography
+          alignItems="flex-end"
+          color="danger"
+          onClick={() => setCancelBookingOpened(true)}
+          sx={{
+            "&:hover": {
+              cursor: "pointer",
+              textDecoration: 'underline',
+            },
+          }}
+        >
+          Отменить бронирование
+        </Typography>
+      </Box>}
+      <Divider sx={{ margin: '20px' }} />
+      <EditAttendeesModal
+        bookingFragmentRef={booking}
+        opened={editAttendeesOpened}
+        onClose={() => setEditAttendeesOpened(false)}
+      />
+      <EditBookingModal
+        bookingFragmentRef={booking}
+        opened={editBookingOpened}
+        onClose={() => setEditBookingOpened(false)}
+      />
+      {cancellable && <CancelBookingModal
+        open={cancelBookingOpened}
+        onClose={() => setCancelBookingOpened(false)}
+        bookingFragmentRef={booking}
+      />}
+    </Stack>
   );
 };
 

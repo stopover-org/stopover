@@ -42,9 +42,9 @@ const Event = ({
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={currentUser!}>
+    <Layout currentUserFragment={currentUser}>
       <AuthGuard
-        accessible={Boolean(currentUser?.account?.id === booking?.account?.id)}
+        accessible={Boolean(currentUser.account.id === booking?.account?.id)}
         redirectTo="/trips"
       >
         <VerifyBookingScene bookingFragmentRef={booking!} />

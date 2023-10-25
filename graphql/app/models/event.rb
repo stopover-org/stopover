@@ -237,12 +237,9 @@ class Event < ApplicationRecord
       organizer: firm&.title,
       tags: tags.map(&:title),
       interests: interests.map(&:slug),
-      price: attendee_price_per_uom.cents
+      price: attendee_price_per_uom.cents,
+      status: status
     }
-  end
-
-  def should_index?
-    published?
   end
 
   private

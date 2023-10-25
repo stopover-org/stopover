@@ -17,7 +17,7 @@ const EventsScene = ({ firmFragmentRef }: EventsSceneProps) => {
     firmFragmentRef
   );
 
-  return <EventsTable firmFragmentRef={firm} withPagination />;
+  return <EventsTable withSearchBar firmFragmentRef={firm} withPagination />;
 };
 
 export default React.memo(EventsScene);

@@ -1,6 +1,6 @@
 import React from "react";
 import NextLink from "next/link";
-import { styled } from "@mui/joy";
+import { Tooltip, styled } from "@mui/joy";
 import Typography from "../Typography";
 import { TypographyProps } from "../Typography/Typography";
 
@@ -12,6 +12,7 @@ interface BaseLinkProps {
   underline?: boolean;
   prefetch?: boolean;
   replace?: boolean;
+  target?: string;
 }
 
 export interface LinkProps
@@ -34,25 +35,49 @@ const Link = React.forwardRef(
       level,
       prefetch = true,
       replace = false,
+      target,
       ...props
     }: LinkProps,
     ref: React.ForwardedRef<HTMLParagraphElement>
-  ) => (
-    <NextLink passHref href={href} prefetch={prefetch} replace={replace}>
-      <TypographyLink
-        {...props}
-        ref={ref}
-        color={primary ? "primary" : color}
-        level={level || "body-md"}
-        sx={{
-          textDecoration: underline ? "underline" : "unset",
-          ...sx,
-        }}
-      >
-        <a href={href}>{children}</a>
-      </TypographyLink>
-    </NextLink>
-  )
+  ) => {
+    if (target === "_blank") {
+      return (
+        <Tooltip title="Открыть в новой вкладке">
+          <TypographyLink
+            {...props}
+            ref={ref}
+            color={primary ? "primary" : color}
+            level={level || "body-md"}
+            sx={{
+              textDecoration: underline ? "underline" : "unset",
+              ...sx,
+            }}
+          >
+            <a href={href} target={target}>
+              {children}
+            </a>
+          </TypographyLink>
+        </Tooltip>
+      );
+    }
+
+    return (
+      <NextLink passHref href={href} prefetch={prefetch} replace={replace}>
+        <TypographyLink
+          {...props}
+          ref={ref}
+          color={primary ? "primary" : color}
+          level={level || "body-md"}
+          sx={{
+            textDecoration: underline ? "underline" : "unset",
+            ...sx,
+          }}
+        >
+          <a href={href}>{children}</a>
+        </TypographyLink>
+      </NextLink>
+    );
+  }
 );
 
 export default React.memo(Link);
