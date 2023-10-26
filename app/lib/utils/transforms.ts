@@ -1,6 +1,7 @@
 import moment from "moment/moment";
 
 export function numberTransform(value: any) {
+  console.log(value);
   return Number.isNaN(value) ? undefined : value;
 }
 

@@ -3,6 +3,7 @@ export default {
     attendees: {
       trips: {
         tripScene: {
+          confirmBooking: "Подтвердить участие",
           bookingInfo: "Информация о бронировании",
           attendeesCount: "{{count}} участник(-ов)",
           bookignOptionsSubheader: "Дополнительные опции",
@@ -24,12 +25,12 @@ export default {
           editAttendeeModal: {
             title: "Участники",
             callSupport:
-              "Для внесения изменений связитесь с нашей службой поддержки",
+              "Для внесения изменений свяжитесь с нашей службой поддержки",
           },
           editBookingModal: {
             title: "Изменение бронирования",
             callSupport:
-              "Для внесения изменений связитесь с нашей службой поддержки",
+              "Для внесения изменений свяжитесь с нашей службой поддержки",
           },
         },
       },

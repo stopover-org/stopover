@@ -7,6 +7,7 @@ import { BookingEditForm_BookingFragment$key } from "../../../../../artifacts/Bo
 import BookingOptionsEditForm from "./BookingOptionsEditForm";
 import BookingDatesEditForm from "./BookingDatesEditForm";
 import useSubscription from "../../../../../lib/hooks/useSubscription";
+import { useBookingDisabled } from "../../../../../lib/hooks/useBookingStates";
 
 interface BookingEditFormProps {
   bookingFragmentRef: BookingEditForm_BookingFragment$key;
@@ -32,6 +33,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
         eventOptions {
           status
         }
+        ...useBookingStates_BookingFragment
         ...BookingDatesEditForm_BookingFragment
         ...BookingOptionsEditForm_BookingFragment
         ...CheckoutForm_BookingFragmentRef
@@ -53,6 +55,7 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
       }
     `,
   });
+  const disabled = useBookingDisabled(booking)
 
   const eventOptions = React.useMemo(() => booking.eventOptions.filter(({ status }) => status === 'available'), [booking])
 
@@ -63,13 +66,13 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
           <Grid xs={12}>
             <BookingOptionsEditForm bookingFragmentRef={booking} />
           </Grid>
-          <Grid xs={12}>
+          {!disabled && <Grid xs={12}>
             <Divider sx={{ margin: 2}} />
-          </Grid>
+          </Grid>}
         </>}
-        <Grid xs={12} paddingTop={1}>
+        {!disabled && <Grid xs={12} paddingTop={1}>
           <BookingDatesEditForm bookingFragmentRef={booking} />
-        </Grid>
+        </Grid>}
       </Grid>
     </Grid>
   );

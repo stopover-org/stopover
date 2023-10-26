@@ -50,6 +50,26 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
   const paymentMethodField = form.useFormField("paymentMethod");
   const disabled = !useBookingPayable(booking)
 
+  const depositAmount = React.useMemo(() => {
+    if (booking.leftToPayDepositPrice.cents === 0) {
+      return t('scenes.attendees.trips.tripScene.confirmBooking')
+    }
+    return t(`scenes.attendees.trips.tripScene.payDeposit`, {
+      amount: getCurrencyFormat(
+        booking.leftToPayDepositPrice?.cents,
+        booking.leftToPayDepositPrice?.currency.name
+      ),
+    })
+  }, [booking])
+  const fullAmount = React.useMemo(() => {
+    return t(`scenes.attendees.trips.tripScene.payOnline`, {
+      amount: getCurrencyFormat(
+        booking.leftToPayPrice?.cents,
+        booking.leftToPayPrice?.currency.name
+      ),
+    })
+  }, [booking])
+
   if (booking.event.firm.paymentTypes.length === 0) {
     return (
       <Typography>
@@ -94,18 +114,8 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
                 size="md"
               >
                 {paymentMethodField.value === "cash"
-                  ? t(`scenes.attendees.trips.tripScene.payDeposit`, {
-                      amount: getCurrencyFormat(
-                        booking.leftToPayDepositPrice?.cents,
-                        booking.leftToPayDepositPrice?.currency.name
-                      ),
-                    })
-                  : t(`scenes.attendees.trips.tripScene.payOnline`, {
-                      amount: getCurrencyFormat(
-                        booking.leftToPayPrice?.cents,
-                        booking.leftToPayPrice?.currency.name
-                      ),
-                    })}
+                  ? depositAmount
+                  : fullAmount}
               </SubmitButton>
             </Grid>
           </Grid>

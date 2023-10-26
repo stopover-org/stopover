@@ -34,11 +34,11 @@ const EditBookingModal = ({ opened, onClose, bookingFragmentRef }: EditBookingMo
         <DialogTitle sx={{marginRight: '30px'}}>
           <Stack flexDirection="row" alignItems="center" spacing={2} useFlexGap>
             <WarningRoundedIcon />
-            {t("scenes.attendees.trips.tripScene.editBookingModal.header")}
+            {t("scenes.attendees.trips.tripScene.editBookingModal.title")}
           </Stack>
         </DialogTitle>
         <Divider />
-        <DialogContent>
+        <DialogContent sx={{ overflow: 'hidden' }}>
           {disabled && (
             <>
               <Sheet color='warning' variant='soft'>

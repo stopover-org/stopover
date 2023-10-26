@@ -66,6 +66,7 @@ const translation = {
     active: "Активно",
     past: "Прошло",
     paid: "Оплачено",
+    canceled: "Отменено",
     cancelled: "Отменено",
     future: "Грядет",
     successful: "Успешно",

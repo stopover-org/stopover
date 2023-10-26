@@ -238,7 +238,7 @@ const EventsTable = ({
             autoFocus
             label={t("general.search")}
             size="sm"
-            hint={`Total: ${events.total}`}
+            hint={`Total: ${events?.total}`}
           />
         </Grid>
       )}

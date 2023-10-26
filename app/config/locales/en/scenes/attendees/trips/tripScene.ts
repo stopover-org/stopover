@@ -3,6 +3,7 @@ export default {
     attendees: {
       trips: {
         tripScene: {
+          confirmBooking: "Confirm participation",
           bookingInfo: "Booking Info",
           attendeesCount: "{{count}} attendee(-s)",
           bookignOptionsSubheader: "Additional Options",

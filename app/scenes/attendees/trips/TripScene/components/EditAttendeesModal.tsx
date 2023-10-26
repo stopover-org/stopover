@@ -21,6 +21,7 @@ const EditAttendeesModal = ({ opened, onClose, bookingFragmentRef }: EditAttende
 			...useBookingStates_BookingFragment
       ...useBookingStates_ReasonBookingFragment
       attendees(filters: { status: [registered, not_registered] }) {
+        id
         ...AttendeeEditForm_AttendeeFragment
 			}
       ...AddAttendee_BookingFragment
@@ -40,11 +41,11 @@ const EditAttendeesModal = ({ opened, onClose, bookingFragmentRef }: EditAttende
         <DialogTitle sx={{marginRight: '30px'}}>
           <Stack flexDirection="row" alignItems="center" spacing={2} useFlexGap>
             <WarningRoundedIcon />
-            {t("scenes.attendees.trips.tripScene.editAttendeeModal.header")}
+            {t("scenes.attendees.trips.tripScene.editAttendeeModal.title")}
           </Stack>
         </DialogTitle>
         <Divider />
-        <DialogContent>
+        <DialogContent sx={{ overflow: 'hidden' }}>
           {disabled && (
             <>
               <Sheet color='warning' variant='soft'>
@@ -57,19 +58,9 @@ const EditAttendeesModal = ({ opened, onClose, bookingFragmentRef }: EditAttende
             </>
           )}
           {booking.attendees.map((attendee, index) => (
-            <AttendeeEditForm index={index} attendeeFragmentRef={attendee} disabled={disabled} />
+            <AttendeeEditForm key={attendee.id} index={index} attendeeFragmentRef={attendee} disabled={disabled} />
           ))}
         </DialogContent>
-        <DialogActions>
-          <Button
-            size="sm"
-            color="neutral"
-            onClick={onClose}
-            sx={{ marginRight: "10px" }}
-          >
-            {t("general.cancel")}
-          </Button>
-        </DialogActions>
       </ModalDialog>
   	</Modal>
   )

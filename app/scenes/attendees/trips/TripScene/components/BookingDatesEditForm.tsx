@@ -1,6 +1,6 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { Box, Option, Stack } from "@mui/joy";
+import { Autocomplete, Box, Option, Stack } from "@mui/joy";
 import { Moment } from "moment";
 import moment from "moment/moment";
 import { useTranslation } from "react-i18next";
@@ -76,21 +76,20 @@ const BookingDatesEditForm = ({
         )}
         {!disabled && availableTimes.length > 0 && (
           <Box>
-            <Select
-              onChange={(value: string) => {
+            <Autocomplete
+              disableClearable
+              value={{ value: timeField.value, label: timeField.value }}
+              options={availableTimes.map((time: Moment) => ({
+                label: time.format(timeFormat),
+                value: time.format(timeFormat)
+              }))}
+              onChange={(event, { value }) => {
                 if (!value) return;
 
-                timeField.onChange(value);
+                dateField.onChange(setTime(dateField.value, value));
               }}
-              value={timeField.value}
-              placeholder={t("datepicker.selectTime")}
-            >
-              {availableTimes.map((time) => (
-                <Option key={time.unix()} value={time.format(timeFormat)}>
-                  {time.format(timeFormat)}
-                </Option>
-              ))}
-            </Select>
+              sx={{ margin: 0, maxWidth: '125px' }}
+            />
           </Box>
         )}
         {!disabled && (

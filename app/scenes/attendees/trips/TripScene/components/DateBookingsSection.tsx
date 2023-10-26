@@ -6,6 +6,7 @@ import Typography from "../../../../../components/v2/Typography/Typography";
 import { dayMonthFormat } from "../../../../../lib/utils/dates";
 import BookingCard from "./BookingCard";
 import { DateBookingsSection_TripFragment$key } from "../../../../../artifacts/DateBookingsSection_TripFragment.graphql";
+import { useRouter } from "next/router";
 
 interface DateBookingsSectionProps {
   tripFragmentRef: DateBookingsSection_TripFragment$key;
@@ -34,6 +35,11 @@ const DateBookingsSection = ({
       trip.bookings.filter((booking) => date.isSame(booking.bookedFor, "day")),
     [trip, date]
   );
+
+  React.useEffect(() => {
+    window.document.getElementById(window.document.location.hash.replace('#', ''))?.scrollIntoView()
+  }, [])
+  
   return (
     <Grid xs={12}>
       <Typography level="h3">{date.format(dayMonthFormat)}</Typography>

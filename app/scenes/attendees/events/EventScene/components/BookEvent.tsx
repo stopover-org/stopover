@@ -1,5 +1,5 @@
 import React from "react";
-import { Autocomplete, Box, ButtonGroup, FormControl, FormLabel, Grid, IconButton, Option, Stack, Tooltip } from "@mui/joy";
+import { Autocomplete, Box, ButtonGroup, FormControl, FormLabel, Grid, IconButton, Option, Stack, Tooltip, useTheme } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import moment, { Moment } from "moment";
 import { useTranslation } from "react-i18next";
@@ -23,6 +23,8 @@ import SubmitButton from "../../../../../components/shared/SubmitButton";
 import { capitalize } from "../../../../../lib/utils/capitalize";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useMediaQuery } from "@mui/material";
+import { isMobile } from "filestack-js";
 
 interface BookEventProps {
   eventFragmentRef: BookEvent_EventFragment$key;
@@ -87,33 +89,30 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
     moment(sch.scheduledFor).isSame(moment(dateField.value))
   );
   const { t } = useTranslation();
+  const theme = useTheme()
+  const isMobileView = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
-    <Grid container>
-      <Grid md={6} sm={12}>
-        <DateCalendar
-          availableDates={availableDates}
-          highlightedDates={bookedDates}
-          value={dateField.value}
-          disablePast
-          sx={{
-            maxWidth: "100%",
-          }}
-          onChange={(date) => {
-            if (!date) return;
-            dateField.onChange(date.startOf("day"));
-          }}
-        />
-      </Grid>
-      <Grid md={6} sm={12} xs={12}>
-        <Stack spacing={2} useFlexGap alignItems={'flex-end'}>
-          <Stack direction={'row'} spacing={2} useFlexGap justifyContent={'flex-end'}>
-            <Input
-              label={t("datepicker.selectDate")}
-              value={dateField.value?.format(dateFormat)}
-              readOnly
-            />
-            <FormControl sx={{margin: 0}}>
+    <Grid container justifyContent={isMobileView ? 'center' : 'flex-end'}>
+      <Grid md={12} sm={12}>
+        <Stack spacing={1} useFlexGap alignItems={isMobileView ? 'center' : 'flex-end'}>
+          <DateCalendar
+            availableDates={availableDates}
+            highlightedDates={bookedDates}
+            value={dateField.value}
+            disablePast
+            sx={{
+              maxWidth: "100%",
+              margin: isMobileView ? '0 autp' : 'unset',
+              padding: 0
+            }}
+            onChange={(date) => {
+              if (!date) return;
+              dateField.onChange(date.startOf("day"));
+            }}
+          />
+          <Stack direction={'row'} spacing={1} useFlexGap justifyContent={'flex-end'}>
+            <FormControl sx={{ margin: 0, width: '100%' }} >
               <FormLabel>{t('datepicker.selectTime')}</FormLabel>
               <Autocomplete
                 disableClearable
@@ -127,7 +126,8 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
 
                   dateField.onChange(setTime(dateField.value, value));
                 }}
-                sx={{margin: 0}}
+                sx={{ margin: 0, maxWidth: '125px' }}
+                size={'sm'}
               />
             </FormControl>
             <FormControl sx={{margin: 0}}>
@@ -135,18 +135,23 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
               <ButtonGroup>
                 <Tooltip title={t('forms.removeAttendee.action')}>
                   <IconButton
-                    disabled={attendeesCountField.value.length === 1}
+                    disabled={attendeesCountField.value.length === 1 || !!booking}
                     onClick={() => attendeesCountField.onChange(attendeesCountField.value - 1)}
+                    size={'sm'}
                   >
                     <RemoveIcon />
                   </IconButton>
                 </Tooltip>
-                <IconButton>
+                <IconButton
+                  size={'sm'}
+                >
                   {attendeesCountField.value}
                 </IconButton>
                 <Tooltip title={t('forms.addAttendee.action')}>
                   <IconButton
+                    disabled={!!booking}
                     onClick={() => attendeesCountField.onChange(attendeesCountField.value + 1)}
+                    size={'sm'}
                   >
                     <AddIcon />
                   </IconButton>

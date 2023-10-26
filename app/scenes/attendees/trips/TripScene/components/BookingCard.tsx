@@ -120,6 +120,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
           [theme.breakpoints.down("md")]: { width: "100%" },
         })}
         orientation={isMobileView ? "vertical" : "horizontal"}
+        id={booking.id}
       >
         <CardOverflow>
           <AspectRatio
