@@ -189,7 +189,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
                     },
                   })}
                 >
-                  {booking.event.title}{booking.event.title}{booking.event.title}{booking.event.title}{booking.event.title}{booking.event.title}
+                  {booking.event.title}
                 </Typography>
               </Link>
               <BookingTime bookingFragmentRef={booking} />
@@ -228,7 +228,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
                 },
               }}
             >
-              Настроить участников
+              {t('scenes.attendees.trips.tripScene.adjustAttendees')}
             </Typography>
           </Box>
           <Box width='100%' pl="10px">
@@ -244,7 +244,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
                 },
               }}
             >
-              Изменить бронирование
+              {t('scenes.attendees.trips.tripScene.changeBooking')}
             </Typography>
           </Box>
           {cancellable && <Box width='100%' pl="10px">
@@ -260,7 +260,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
                 },
               }}
             >
-              Отменить бронирование
+              {t('scenes.attendees.trips.tripScene.cancelBooking')}
             </Typography>
           </Box>}
         </Grid>

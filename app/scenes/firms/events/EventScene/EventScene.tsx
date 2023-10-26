@@ -175,7 +175,7 @@ const EventScene = ({
             </Link>
           )}
           <Dropdown>
-            <Tooltip title='Дополнительные действия'>
+            <Tooltip title={t('general.additional')}>
               <MenuButton
                 slots={{ root: IconButton }}
                 slotProps={{

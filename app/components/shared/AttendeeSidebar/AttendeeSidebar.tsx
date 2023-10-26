@@ -27,8 +27,8 @@ const AttendeeSidebar = ({ children, sx }: AttendeeSidebarProps) => {
   const { t } = useTranslation();
   const items = React.useMemo(
     () => [
-      { title: "Настройки Профиля", href: "/profile" },
-      { title: "Путешествия", href: "/trips" },
+      { title: t("layout.header.myProfile"), href: "/profile" },
+      { title: t("layout.header.myTrips"), href: "/trips" },
     ],
     []
   );

@@ -2,7 +2,7 @@ export default {
   forms: {
     removeAttendee: {
       tooltip: "Удалить участника и возвратить деньги за него",
-      action: "Удалить",
+      action: "Удалить участника",
       modal: {
         header: "Подтверждение изменения бронирования",
         priceExplanation:

@@ -29,7 +29,7 @@ module Mutations
         args[:country] = ISO3166::Country.find_country_by_any_name(args[:country]).iso_short_name if args[:country]
         firm.update!(args.except(:image))
 
-        firm.image.purge
+        firm.image.purge if args[:image].nil?
 
         if args[:image].present?
           io_object = Stopover::FilesSupport.url_to_io(args[:image])

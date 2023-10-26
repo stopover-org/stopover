@@ -41,6 +41,11 @@ module Types
       field :booking, Types::BookingsRelated::BookingType do
         argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
       end
+      field :events_count, Integer, null:
+
+      def events_count
+        object.events.count
+      end
 
       def events(**args)
         Connections::SearchkickConnection.new(arguments: { query_type: ::EventsQuery, **(args[:filters] || {}), backend: true })

@@ -4,6 +4,7 @@ import {
   FormLabel,
   Input as JoyInput,
   InputProps as JoyInputProps,
+  Tooltip,
   Typography,
 } from "@mui/joy";
 import React from "react";
@@ -16,6 +17,8 @@ interface BaseInputProps {
   onChange?: (value: string, event?: React.ChangeEvent<any>) => void;
   value?: string;
   placeholder?: string;
+  tooltip?: string;
+  tooltipMark?: string;
 }
 
 export interface InputProps
@@ -24,7 +27,16 @@ export interface InputProps
 
 const Input = React.forwardRef(
   (
-    { label, hint, error, onChange, value, ...props }: InputProps,
+    {
+      label,
+      hint,
+      error,
+      onChange,
+      value,
+      tooltip,
+      tooltipMark = "?",
+      ...props
+    }: InputProps,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref: React.Ref<HTMLDivElement>
   ) => {
@@ -45,6 +57,24 @@ const Input = React.forwardRef(
           onChange={onChangeHandler}
           value={value}
           error={Boolean(error)}
+          endDecorator={
+            tooltip && (
+              <Tooltip title={tooltip} sx={{ width: "300px" }}>
+                <Typography
+                  fontSize="10px"
+                  variant="soft"
+                  color="primary"
+                  borderRadius="7px"
+                  textAlign="center"
+                  width="1.5em"
+                  height="1.5em"
+                  sx={{ cursor: "pointer" }}
+                >
+                  {tooltipMark}
+                </Typography>
+              </Tooltip>
+            )
+          }
           {...props}
           fullWidth
         />

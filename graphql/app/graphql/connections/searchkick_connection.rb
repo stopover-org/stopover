@@ -43,5 +43,7 @@ module Connections
       raw_cursor = context&.query&.provided_variables ? context.query.provided_variables['cursor'] : nil
       raw_cursor.to_i || @first_value || 0
     end
+
+    delegate :total, to: :query
   end
 end

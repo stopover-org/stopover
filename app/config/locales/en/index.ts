@@ -31,6 +31,7 @@ const translation = {
     minuteShort: "m.",
     required: "Required",
     details: "Details",
+    search: "Search",
   },
   weekdays: {
     monday: "Monday",
@@ -54,6 +55,7 @@ const translation = {
       registerFirm: "Register Firm",
       logIn: "Log In",
       logOut: "Log Out",
+      myProfile: "My Profile",
     },
   },
   event: {
@@ -94,6 +96,11 @@ const translation = {
     action: "🌐 Choose language",
     russian: "🇷🇺 Русский",
     english: "🇺🇸 English",
+  },
+  components: {
+    link: {
+      _blank: "Will be opened in new tab",
+    },
   },
 };
 

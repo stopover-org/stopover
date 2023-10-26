@@ -216,6 +216,7 @@ type BookingConnection {
   Information to aid in pagination.
   """
   pageInfo: PageInfo!
+  total: Int
 }
 
 """
@@ -722,6 +723,7 @@ type EventConnection {
   Information to aid in pagination.
   """
   pageInfo: PageInfo!
+  total: Int
 }
 
 """
@@ -802,6 +804,7 @@ type EventsAutocomplete {
 input EventsFilter {
   city: String
   endDate: DateTime
+  firmId: ID
   interests: [String!]
   maxPrice: Int
   minPrice: Int
@@ -863,6 +866,7 @@ type Firm implements Node {
     """
     last: Int
   ): EventConnection!
+  eventsCount: Int
   fullAddress: String
   houseNumber: String
   id: ID!
@@ -1207,6 +1211,7 @@ type PaymentConnection {
   Information to aid in pagination.
   """
   pageInfo: PageInfo!
+  total: Int
 }
 
 """
@@ -1505,6 +1510,7 @@ type ScheduleConnection {
   Information to aid in pagination.
   """
   pageInfo: PageInfo!
+  total: Int
 }
 
 """
@@ -1673,6 +1679,7 @@ type StripeIntegrationConnection {
   Information to aid in pagination.
   """
   pageInfo: PageInfo!
+  total: Int
 }
 
 """

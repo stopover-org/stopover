@@ -238,7 +238,8 @@ class Event < ApplicationRecord
       tags: tags.map(&:title),
       interests: interests.map(&:slug),
       price: attendee_price_per_uom.cents,
-      status: status
+      status: status,
+      firm_id: firm.id
     }
   end
 

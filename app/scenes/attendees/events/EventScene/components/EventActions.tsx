@@ -129,7 +129,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
           </SubmitButton>
         )}
         {booking && (
-          <Link href={`/trips/${booking.trip.id}`} underline={false}>
+          <Link href={`/trips/${booking.trip.id}#${booking.id}`} underline={false}>
             <Button fullWidth>{t('scenes.attendees.events.eventScene.details')}</Button>
           </Link>
         )}

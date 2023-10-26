@@ -40,7 +40,7 @@ const EditAttendeesModal = ({ opened, onClose, bookingFragmentRef }: EditAttende
         <DialogTitle sx={{marginRight: '30px'}}>
           <Stack flexDirection="row" alignItems="center" spacing={2} useFlexGap>
             <WarningRoundedIcon />
-            {t("forms.changeOptionAvailability.modal.header")}
+            {t("scenes.attendees.trips.tripScene.editAttendeeModal.header")}
           </Stack>
         </DialogTitle>
         <Divider />
@@ -51,7 +51,7 @@ const EditAttendeesModal = ({ opened, onClose, bookingFragmentRef }: EditAttende
                 <Box p={2}>
                   {reason}
                   <br />
-                  Для внесения изменений свяжитесь со службой поддержки
+                  {t("scenes.attendees.trips.tripScene.editAttendeeModal.callSupport")}
                 </Box>
               </Sheet>
             </>

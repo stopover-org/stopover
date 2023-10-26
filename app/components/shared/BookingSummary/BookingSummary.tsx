@@ -79,7 +79,7 @@ const BookingSummary = ({
                 onSubmit={removeAttendeeForm.handleSubmit()}
                 style={{ padding: 0, margin: 0, border: 0 }}
               >
-                <Tooltip title="Удалить участника">
+                <Tooltip title={t("forms.removeAttendee.action")}>
                   <SubmitButton
                     size="lg"
                     disabled={disabled || booking.activeAttendees.length === 1}
@@ -103,7 +103,7 @@ const BookingSummary = ({
                 onSubmit={addAttendeeForm.handleSubmit()}
                 style={{ padding: 0, margin: 0, border: 0 }}
               >
-                <Tooltip title="Добавить участника">
+                <Tooltip title={t("forms.addAttendee.action")}>
                   <SubmitButton
                     size="lg"
                     disabled={disabled}

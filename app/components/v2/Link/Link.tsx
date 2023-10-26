@@ -1,6 +1,7 @@
 import React from "react";
 import NextLink from "next/link";
 import { Tooltip, styled } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import Typography from "../Typography";
 import { TypographyProps } from "../Typography/Typography";
 
@@ -40,9 +41,10 @@ const Link = React.forwardRef(
     }: LinkProps,
     ref: React.ForwardedRef<HTMLParagraphElement>
   ) => {
+    const { t } = useTranslation();
     if (target === "_blank") {
       return (
-        <Tooltip title="Открыть в новой вкладке">
+        <Tooltip title={t("components.link._blank")}>
           <TypographyLink
             {...props}
             ref={ref}
