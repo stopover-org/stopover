@@ -41,6 +41,10 @@ export function useAddAttendeeForm(
           booking {
             ...BookingScene_FirmBookingFragment
             ...BookingSummary_BookingFragment
+            attendees {
+              ...AttendeeEditForm_AttendeeFragment
+              ...useAttendeeEditForm_AttendeeFragment
+            }
           }
           notification
           errors

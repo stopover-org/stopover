@@ -10,6 +10,7 @@ import { capitalize } from "../../../../../lib/utils/capitalize";
 import Typography from "../../../../../components/v2/Typography";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import { useBookingPayable } from "../../../../../lib/hooks/useBookingStates";
+import QRModal from "./QRModal";
 
 interface CheckoutFormProps {
   bookingFragmentRef: CheckoutForm_BookingFragmentRef$key;
@@ -42,6 +43,7 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
         }
         ...useCheckoutForm_BookingFragment
         ...useBookingStates_PayableBookingFragment
+        ...QRModal_FragmentReference
       }
     `,
     bookingFragmentRef
@@ -70,6 +72,28 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
     })
   }, [booking])
 
+  const paid = React.useMemo(() => {
+    if (booking.paymentType === 'cash') {
+      return booking.leftToPayDepositPrice.cents <= 0
+    } else if (booking.paymentType === 'stripe') {
+      return booking.leftToPayPrice.cents <= 0
+    }
+    return false
+  }, [booking])
+
+  const leftToPayLater = React.useMemo(() => {
+    if (booking.paymentType === 'cash') {
+      return getCurrencyFormat(
+        booking.leftToPayPrice?.cents,
+        booking.leftToPayPrice?.currency.name
+      )
+    }
+
+    return false
+  }, [booking])
+
+  const [opened, setOpened] = React.useState(false)
+
   if (booking.event.firm.paymentTypes.length === 0) {
     return (
       <Typography>
@@ -79,49 +103,64 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
   }
 
   return (
-    <form onSubmit={form.handleSubmit()}>
-      {booking.leftToPayDepositPrice.cents <= 0 && booking.paymentType ? (
-          <Typography>
-            {t("scenes.attendees.trips.tripScene.justCome")}
-          </Typography>
-        ) : (
-          <Grid container alignItems="center" spacing={2}>
-            {!booking.paymentType && 
-              <Grid>
-                <Autocomplete
-                  disableClearable
-                  placeholder={t("models.firm.attributes.paymentType")}
-                  options={booking.event.firm.paymentTypes.map((v) => ({
-                    label: capitalize(t(`models.firm.enums.paymentTypes.${v}`)),
-                    value: v.toLowerCase(),
-                  }))}
-                  onChange={(event, { value }) => paymentMethodField.onChange(value)}
-                  getOptionLabel={(option) => option.label}
-                  value={{
-                    label: capitalize(t(`models.firm.enums.paymentTypes.${paymentMethodField.value}`)),
-                    value: paymentMethodField.value.toLowerCase(),
-                  }}
-                  sx={{ marginRight: "10px" }}
-                  size="md"
-                  disabled={disabled}
-                />
-              </Grid>
-            }
-            <Grid>
-              <SubmitButton
-                submitting={form.formState.isSubmitting}
-                disabled={disabled}
-                size="md"
+    <>
+      <form onSubmit={form.handleSubmit()}>
+        {paid ? (
+            <>
+              <Typography>
+                {t("scenes.attendees.trips.tripScene.justCome")}
+              </Typography>
+              <Typography>
+                {leftToPayLater && t('scenes.attendees.trips.tripScene.leftToPayLater', { leftToPayLater })}
+              </Typography>
+              <Typography
+                sx={{ cursor: 'pointer', textDecoration: 'underline' }}
+                color='primary'
+                onClick={() => setOpened(true)}
               >
-                {paymentMethodField.value === "cash"
-                  ? depositAmount
-                  : fullAmount}
-              </SubmitButton>
+                {t("scenes.attendees.trips.tripScene.showQrCode.action")}
+              </Typography>
+            </>
+          ) : (
+            <Grid container alignItems="center" spacing={2}>
+              {!booking.paymentType && 
+                <Grid>
+                  <Autocomplete
+                    disableClearable
+                    placeholder={t("models.firm.attributes.paymentType")}
+                    options={booking.event.firm.paymentTypes.map((v) => ({
+                      label: capitalize(t(`models.firm.enums.paymentTypes.${v}`)),
+                      value: v.toLowerCase(),
+                    }))}
+                    onChange={(event, { value }) => paymentMethodField.onChange(value)}
+                    getOptionLabel={(option) => option.label}
+                    value={{
+                      label: capitalize(t(`models.firm.enums.paymentTypes.${paymentMethodField.value}`)),
+                      value: paymentMethodField.value.toLowerCase(),
+                    }}
+                    sx={{ marginRight: "10px" }}
+                    size="md"
+                    disabled={disabled}
+                  />
+                </Grid>
+              }
+              <Grid>
+                <SubmitButton
+                  submitting={form.formState.isSubmitting}
+                  disabled={disabled}
+                  size="md"
+                >
+                  {paymentMethodField.value === "cash"
+                    ? depositAmount
+                    : fullAmount}
+                </SubmitButton>
+              </Grid>
             </Grid>
-          </Grid>
-        )
-      }
-    </form>
+          )
+        }
+      </form>
+      <QRModal bookingFragmentRef={booking} opened={opened} onClose={() => setOpened(false)} />
+    </>
   );
 };
 

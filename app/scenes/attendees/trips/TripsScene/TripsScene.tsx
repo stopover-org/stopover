@@ -126,19 +126,6 @@ const TripsScene = ({ accountFragmentRef }: TripsSceneProps) => {
           </Stack>
         </Grid>
       </Section>
-
-      <Section color={'danger'} variant='soft'>
-        <Grid xs={12}>
-          <Typography level="h3" color='danger'>{t('scenes.attendees.trips.tripsScene.cancelled')}</Typography>
-        </Grid>
-        <Grid xs={12}>
-          <Stack>
-            {cancelledTrips.map((trip) => (
-              <TripCard key={trip.id} tripFragmentRef={trip} danger />
-            ))}
-          </Stack>
-        </Grid>
-      </Section>
     </Grid>
   );
 };

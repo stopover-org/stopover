@@ -49,7 +49,7 @@ export function useBookingDisabledReason(
   const { t } = useTranslation();
 
   return React.useMemo(() => {
-    if (booking.status !== "active") {
+    if (booking.status === "cancelled") {
       return t("models.booking.reasons.inactive");
     }
     if (moment(booking.bookedFor).isBefore(new Date())) {

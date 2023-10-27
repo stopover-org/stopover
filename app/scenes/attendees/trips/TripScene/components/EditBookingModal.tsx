@@ -38,7 +38,7 @@ const EditBookingModal = ({ opened, onClose, bookingFragmentRef }: EditBookingMo
           </Stack>
         </DialogTitle>
         <Divider />
-        <DialogContent sx={{ overflow: 'hidden' }}>
+        <DialogContent sx={{ overflowX: 'hidden' }}>
           {disabled && (
             <>
               <Sheet color='warning' variant='soft'>

@@ -102,24 +102,35 @@ const TripCard = ({ tripFragmentRef, danger }: TripCardProps) => {
           </Box>
         )}
         <Link href={`/trips/${trip.id}`}>
-          <Typography
-            sx={{
-              fontSize: "md",
+          <Tooltip title={`${trip.cities.join(", ")}`}>
+            <Typography
+              sx={{
+                fontSize: "md",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                display: "inline-block",
+                overflow: "hidden",
+                maxWidth: '150px'
+              }}
+            >
+              {trip.cities.join(", ")}
+            </Typography>
+          </Tooltip>
+        </Link>
+        <Box>
+          <Tooltip title={`${moment(trip.startDate).calendar()} - ${moment(trip.endDate).calendar()}`}>
+            <Typography level="body-md" sx={{ 
+              fontSize: "sm",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
               display: "inline-block",
               overflow: "hidden",
-              maxWidth: '150px'
-            }}
-          >
-            {trip.cities.join(", ")}
-          </Typography>
-        </Link>
-        <Box>
-          <Typography level="body-md" sx={{ fontSize: "sm" }}>
-            {moment(trip.startDate).calendar()} -{" "}
-            {moment(trip.endDate).calendar()}
-          </Typography>
+              maxWidth: '230px'
+            }}>
+              {moment(trip.startDate).calendar()} -{" "}
+              {moment(trip.endDate).calendar()}
+            </Typography>
+          </Tooltip>
         </Box>
         <Box>
           <Stack direction='row' justifyContent={'space-between'}>

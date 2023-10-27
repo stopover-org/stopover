@@ -42,6 +42,8 @@ export function useRemoveAttendeeForm(
             ...BookingSummary_BookingFragment
             ...BookingScene_FirmBookingFragment
             ...attendees_BookingFragment
+            ...useBookingEditForm_BookingFragment
+            ...BookingEditForm_BookingFragment
           }
           notification
           errors

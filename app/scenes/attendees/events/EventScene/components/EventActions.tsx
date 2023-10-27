@@ -144,7 +144,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             event.attendeePricePerUom?.currency?.name
           )}
         </Typography>
-        {schedule?.leftPlaces > 0 && !booking && (
+        {schedule?.leftPlaces && schedule?.leftPlaces > 0 && !booking && (
           <Typography textAlign="end">
             {t("models.schedule.attributes.leftPlaces", {
               places: schedule.leftPlaces,

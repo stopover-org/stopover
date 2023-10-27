@@ -45,7 +45,7 @@ const EditAttendeesModal = ({ opened, onClose, bookingFragmentRef }: EditAttende
           </Stack>
         </DialogTitle>
         <Divider />
-        <DialogContent sx={{ overflow: 'hidden' }}>
+        <DialogContent sx={{ overflowX: 'hidden' }}>
           {disabled && (
             <>
               <Sheet color='warning' variant='soft'>
