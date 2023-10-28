@@ -60,7 +60,7 @@ module Mutations
         Notification.create!(
           delivery_method: 'email',
           to: current_firm.primary_email,
-          subject: 'Firm update',
+          subject: 'Your firm updated',
           content: Stopover::MailProvider.prepare_content(
             file: 'mailer/auth/',
             locals: {

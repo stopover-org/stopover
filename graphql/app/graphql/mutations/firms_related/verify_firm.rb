@@ -33,7 +33,7 @@ module Mutations
         Notification.create!(
           delivery_method: 'email',
           to: current_firm.primary_email,
-          subject: 'Firm verification',
+          subject: 'Your firm verified',
           content: Stopover::MailProvider.prepare_content(
             file: 'mailer/auth/',
             locals: {

@@ -154,7 +154,8 @@ class Event < ApplicationRecord
   before_validation :set_prices,      unless: :removed?
   before_validation :adjust_prices,   unless: :removed?
   before_validation :adjust_category, unless: :removed?
-  after_commit      :sync_stripe,     unless: :removed?
+  after_create      :notify
+  after_commit      :sync_stripe, unless: :removed?
 
   # SCOPES =====================================================================
   default_scope { in_order_of(:status, %w[draft published unpublished removed]).order(created_at: :desc) }
