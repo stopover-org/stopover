@@ -15,9 +15,8 @@ const Query = graphql`
     currentUser {
       ...Layout_CurrentUserFragment
     }
-    ...EventsScene_EventsPaginationFragment
-    ...EventsScene_EventsAutocompleteFragment
     ...EventsScene_InterestsFragment
+    ...EventsScene_EventsPaginationFragment
   }
 `;
 

@@ -1,25 +1,28 @@
 import React, { ChangeEvent } from "react";
 import { Search as SearchIcon } from "@mui/icons-material";
-import { graphql, useRefetchableFragment } from "react-relay";
+import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay";
 import { Autocomplete, AutocompleteOption, Chip } from "@mui/joy";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { stringify } from "qs";
 import Typography from "../../../../../components/v2/Typography/Typography";
-import { SearchBar_EventsAutocompleteFragment$key } from "../../../../../artifacts/SearchBar_EventsAutocompleteFragment.graphql";
-import { SearchBarAutocompleteQuery } from "../../../../../artifacts/SearchBarAutocompleteQuery.graphql";
 import Link from "../../../../../components/v2/Link/Link";
 import { useUpdateQuery, useQuery } from '../../../../../lib/hooks/useQuery'
+import { SearchBar_EventsAutocompleteFragment$key } from "../../../../../artifacts/SearchBar_EventsAutocompleteFragment.graphql";
+import { SearchBarAutocompleteQuery } from "../../../../../artifacts/SearchBarAutocompleteQuery.graphql";
+import { SearchBar_AutocompleteQuery } from "../../../../../artifacts/SearchBar_AutocompleteQuery.graphql";
 
-interface SearchBarProps {
-  eventsAutocompleteFragmentRef: SearchBar_EventsAutocompleteFragment$key;
-}
+interface SearchBarProps {}
 
-const SearchBar = ({ eventsAutocompleteFragmentRef }: SearchBarProps) => {
+const SearchBar = (props: SearchBarProps) => {
   const updateQuery = useUpdateQuery('query')
   const updateInterest = useUpdateQuery('interests', [])
   const query = useQuery('query', '')
   const router = useRouter();
+  const eventsAutocompleteFragmentRef = useLazyLoadQuery<SearchBar_AutocompleteQuery>(graphql`
+    query SearchBar_AutocompleteQuery {
+      ...SearchBar_EventsAutocompleteFragment
+    }
+  `, {})
   const [data, refetch] = useRefetchableFragment<
     SearchBarAutocompleteQuery,
     SearchBar_EventsAutocompleteFragment$key

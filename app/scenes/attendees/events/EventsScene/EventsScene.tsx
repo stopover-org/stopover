@@ -24,7 +24,6 @@ import { useQuery, useUpdateQuery } from "../../../../lib/hooks/useQuery";
 interface Props {
   eventsFragmentRef:
     | EventsScene_EventsPaginationFragment$key
-    | EventsScene_EventsAutocompleteFragment$key
     | EventsScene_InterestsFragment$key;
 }
 
@@ -72,16 +71,6 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         }
       `,
       eventsFragmentRef as EventsScene_EventsPaginationFragment$key
-    );
-
-  const eventsAutocompleteQuery =
-    useFragment<EventsScene_EventsAutocompleteFragment$key>(
-      graphql`
-        fragment EventsScene_EventsAutocompleteFragment on Query {
-          ...SearchBar_EventsAutocompleteFragment
-        }
-      `,
-      eventsFragmentRef as EventsScene_EventsAutocompleteFragment$key
     );
 
   const interestsQuery = useFragment<EventsScene_InterestsFragment$key>(
@@ -172,7 +161,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         }}
       >
         <Grid xl={9} lg={12} xs={12}>
-          <SearchBar eventsAutocompleteFragmentRef={eventsAutocompleteQuery} />
+          <SearchBar />
         </Grid>
         {interestsSlug.length > 0 && (
           <Grid xl={9} lg={12} xs={12} p={1}>

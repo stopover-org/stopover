@@ -93,9 +93,9 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
   const isMobileView = useMediaQuery(theme.breakpoints.down('md'))
 
   return (
-    <Grid container justifyContent={isMobileView ? 'center' : 'flex-end'}>
+    <Grid container justifyContent={'center'}>
       <Grid md={12} sm={12}>
-        <Stack spacing={1} useFlexGap alignItems={isMobileView ? 'center' : 'flex-end'}>
+        <Stack spacing={1} useFlexGap alignItems={'center'}>
           <DateCalendar
             availableDates={availableDates}
             highlightedDates={bookedDates}
@@ -159,7 +159,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
               </ButtonGroup>
             </FormControl>
           </Stack>
-          <Typography textAlign="end" level="title-sm">
+          <Typography textAlign="end" level="title-sm" width="240px">
             {getCurrencyFormat(
               event.attendeePricePerUom?.cents,
               event.attendeePricePerUom?.currency?.name

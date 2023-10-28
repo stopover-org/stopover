@@ -11,8 +11,6 @@ interface BaseLinkProps {
   disabled?: boolean;
   primary?: boolean;
   underline?: boolean;
-  prefetch?: boolean;
-  replace?: boolean;
   target?: string;
 }
 
@@ -34,8 +32,6 @@ const Link = React.forwardRef(
       underline = true,
       sx,
       level,
-      prefetch = true,
-      replace = false,
       target,
       ...props
     }: LinkProps,
@@ -64,7 +60,7 @@ const Link = React.forwardRef(
     }
 
     return (
-      <NextLink passHref href={href} prefetch={prefetch} replace={replace}>
+      <NextLink href={href}>
         <TypographyLink
           {...props}
           ref={ref}
@@ -75,7 +71,7 @@ const Link = React.forwardRef(
             ...sx,
           }}
         >
-          <a href={href}>{children}</a>
+          {children}
         </TypographyLink>
       </NextLink>
     );
