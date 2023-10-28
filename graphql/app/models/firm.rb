@@ -150,7 +150,7 @@ class Firm < ApplicationRecord
       to: primary_email,
       subject: 'Stopover firm',
       content: Stopover::MailProvider.prepare_content(
-        file: 'mailer/auth/firm_creation',
+        file: 'mailer/auth/firm_related',
         locals: {
           title: title,
           text: "You've created firm"

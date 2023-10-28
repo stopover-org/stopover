@@ -47,12 +47,12 @@ module Mutations
       def notify
         Notification.create!(
           delivery_method: 'email',
-          to: current_firm.primary_email,
+          to: booking.firm.primary_email,
           subject: 'Booked event',
           content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/',
+            file: 'mailer/auth/booking_related',
             locals: {
-              title: current_firm.title,
+              title: booking.event.title,
               text: 'You booked event'
             }
           )

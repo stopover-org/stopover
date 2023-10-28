@@ -37,13 +37,13 @@ module Mutations
       def notify
         Notification.create!(
           delivery_method: 'email',
-          to: current_firm.primary_email,
-          subject: '',
+          to: event.firm.primary_email,
+          subject: 'Event reschedule',
           content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/',
+            file: 'mailer/auth/event_related',
             locals: {
-              title: current_firm.title,
-              text: ''
+              title: event.title,
+              text: 'Your event was rescheduled'
             }
           )
         )

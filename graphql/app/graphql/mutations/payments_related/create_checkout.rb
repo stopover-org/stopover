@@ -48,7 +48,6 @@ module Mutations
         end
 
         checkout = Stopover::StripeCheckoutService.generate_stripe_checkout_session(booking, args[:payment_type])
-
         {
           url: checkout[:url],
           booking: booking,
@@ -81,6 +80,21 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.general')] } unless booking.firm.payment_types.include?('stripe')
 
         super
+      end
+
+      def notify
+        Notification.create!(
+          delivery_method: 'email',
+          to: Stopover::MailProvider::NOTIFICATION_EMAIL,
+          subject: 'Checkout created',
+          content: Stopover::MailProvider.prepare_content(
+            file: 'mailer/auth/',
+            locals: {
+              title: booking.event.title,
+              text: 'Checkout created'
+            }
+          )
+        )
       end
     end
   end

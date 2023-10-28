@@ -35,6 +35,21 @@ module Mutations
 
         super
       end
+
+      def notify
+        Notification.create!(
+          delivery_method: 'email',
+          to: Stopover::MailProvider::NOTIFICATION_EMAIL,
+          subject: 'Balance withdraw',
+          content: Stopover::MailProvider.prepare_content(
+            file: 'mailer/auth/',
+            locals: {
+              title: booking.event.title,
+              text: 'Balance withdraw'
+            }
+          )
+        )
+      end
     end
   end
 end

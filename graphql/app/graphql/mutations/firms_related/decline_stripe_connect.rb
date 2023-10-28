@@ -43,7 +43,7 @@ module Mutations
           to: current_firm.primary_email,
           subject: 'Stripe account',
           content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/',
+            file: 'mailer/auth/firm_related',
             locals: {
               title: current_firm.title,
               text: 'Your stripe connect was removed'

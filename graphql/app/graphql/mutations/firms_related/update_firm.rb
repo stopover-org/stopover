@@ -62,7 +62,7 @@ module Mutations
           to: current_firm.primary_email,
           subject: 'Your firm updated',
           content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/',
+            file: 'mailer/auth/firm_related',
             locals: {
               title: current_firm.title,
               text: 'Data in your firm was changed'
