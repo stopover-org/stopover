@@ -3,10 +3,13 @@ import { Sheet } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
 import { useCookies } from "react-cookie";
+// @ts-ignore
+import Chatra from "@chatra/chatra";
 import Footer from "./Footer";
 import Header from "./Header";
 import { Layout_CurrentUserFragment$key } from "../../artifacts/Layout_CurrentUserFragment.graphql";
 import GlobalSidebarProvider from "../GlobalSidebarProvider";
+import { useApiKey } from "../../lib/hooks/useApiKey";
 
 type LayoutProps = {
   children:
@@ -56,6 +59,16 @@ const Layout = ({
   React.useEffect(() => {
     i18n.changeLanguage(value.i18next || "ru");
   }, []);
+
+  const chatraApiKey = useApiKey("chatraApiKey");
+
+  React.useEffect(() => {
+    const config = {
+      ID: chatraApiKey,
+    };
+
+    Chatra("init", config);
+  }, [chatraApiKey]);
 
   if (CSN) {
     return null;

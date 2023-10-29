@@ -17,6 +17,7 @@
   "dependencies": {
     "@anycable/web": "^0.7.2",
     "@babel/runtime": "^7.20.13",
+    "@chatra/chatra": "^1.0.3",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@faker-js/faker": "^8.0.2",

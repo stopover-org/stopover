@@ -6,6 +6,7 @@ import Document, {
   NextScript,
 } from "next/document";
 import { createRelayDocument, RelayDocument } from "relay-nextjs/document";
+import React from "react";
 
 type DocumentProps = {
   relayDocument: RelayDocument;
