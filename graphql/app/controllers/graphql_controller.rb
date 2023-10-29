@@ -68,9 +68,6 @@ class GraphqlController < ApplicationController
   rescue StandardError => e
     Sentry.capture_exception(e) if Rails.env.production?
     cookies.delete Stopover::AuthorizationSupport::COOKIE_KEY if e.is_a?(JWT::VerificationError) || e.is_a?(ActiveRecord::RecordNotFound)
-    raise e unless Rails.env.development?
-
-    handle_error_in_development(e)
   end
 
   def set_locale
