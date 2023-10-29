@@ -16,6 +16,7 @@ const Query = graphql`
     currentUser {
       ...Layout_CurrentUserFragment
       account {
+        ...SidebarContent_AccountFragment
         firm {
           event(id: $id) {
             id
@@ -34,6 +35,7 @@ interface Props {
 const Edit = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, edit_FirmEventQuery>) => {
   const { currentUser } = usePreloadedQuery<edit_FirmEventQuery>(
     Query,
@@ -43,12 +45,10 @@ const Edit = ({
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={currentUser!}>
-      <AuthGuard accessible={Boolean(currentUser?.account?.firm?.event?.id)}>
-        <SidebarContent>
-          <EditEventScene
-            eventFragmentRef={currentUser!.account?.firm?.event!}
-          />
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
+      <AuthGuard accessible={Boolean(currentUser.account.firm?.event?.id)}>
+        <SidebarContent accountFragmentRef={currentUser.account}>
+          <EditEventScene eventFragmentRef={currentUser.account.firm?.event!} />
         </SidebarContent>
       </AuthGuard>
     </Layout>

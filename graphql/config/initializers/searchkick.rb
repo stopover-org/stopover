@@ -1,4 +1,4 @@
-ENV['OPENSEARCH_URL'] = Rails.application.credentials.opensearch_url
+ENV['OPENSEARCH_URL'] = Rails.application.credentials.opensearch_url || 'http://localhost:9200'
 
 if Rails.env.production?
   Searchkick.aws_credentials = {

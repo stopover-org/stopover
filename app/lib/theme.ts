@@ -30,7 +30,7 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
     JoyAutocomplete: {
       styleOverrides: {
         root: {
-          margin: "5px",
+          margin: "0px",
         },
       },
     },

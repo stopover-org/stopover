@@ -5,6 +5,7 @@ export default {
         eventScene: {
           bookEvent: "Забронировать",
           chooseCount: "Сколько человек",
+          details: "Посмотреть детали",
         },
       },
     },

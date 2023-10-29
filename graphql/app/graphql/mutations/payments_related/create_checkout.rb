@@ -11,6 +11,15 @@ module Mutations
       argument :booking_id, ID, loads: Types::BookingsRelated::BookingType
 
       def resolve(booking:, **args)
+        if args[:payment_type] == 'deposit' && booking.left_to_pay_deposit_price.zero?
+          booking.update(payment_type: 'cash')
+          return {
+            url: nil,
+            booking: booking,
+            payment: nil
+          }
+        end
+
         payments = booking.payments.processing
         raise GraphQL::ExecutionError, 'multiple payments in process' if payments.count > 1
 

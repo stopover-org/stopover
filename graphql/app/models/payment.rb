@@ -44,7 +44,6 @@ class Payment < ApplicationRecord
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :payment_connections, dependent: :destroy
   has_many :refunds, dependent: :nullify
-  has_many :payouts, dependent: :nullify
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :stripe_integrations, through: :payment_connections

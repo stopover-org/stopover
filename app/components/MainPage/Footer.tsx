@@ -2,13 +2,7 @@ import { Grid, Option, Sheet } from "@mui/joy";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useCookies } from "react-cookie";
-import { Environment, RecordSource, Store } from "relay-runtime";
-import { getRelaySerializedState } from "relay-nextjs";
 import Select from "../v2/Select";
-import {
-  createClientNetworkWs,
-  createWsHandler,
-} from "../../lib/clientEnvironment";
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
@@ -21,15 +15,6 @@ const Footer = () => {
       setCookie("i18next", language);
 
       const w = window as any;
-
-      w.relayEnvironment = new Environment({
-        network: createClientNetworkWs(createWsHandler()),
-        store: new Store(new RecordSource(getRelaySerializedState()?.records), {
-          gcReleaseBufferSize: 50, // Unneeded query cache to keep in memory
-          queryCacheExpirationTime: 24 * 60 * 60 * 1000, // Expiration time in milliseconds for query cache
-        }),
-        isServer: false,
-      });
 
       w.location.reload();
     },

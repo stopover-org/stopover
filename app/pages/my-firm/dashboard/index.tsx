@@ -16,6 +16,7 @@ const Query = graphql`
       ...Layout_CurrentUserFragment
       ...DashboardScene_CurrentUserFragment
       account {
+        ...SidebarContent_AccountFragment
         firm {
           ...DashboardScene_FirmFragment
           id
@@ -32,17 +33,21 @@ interface Props {
 const Index = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, dashboard_DashboardQuery>) => {
   const { currentUser } = usePreloadedQuery(Query, preloadedQuery);
 
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={currentUser!}>
-      <AuthGuard accessible={Boolean(currentUser?.account?.firm?.id)}>
-        <SidebarContent sx={{ paddingLeft: "10px" }}>
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
+      <AuthGuard accessible={Boolean(currentUser.account.firm?.id)}>
+        <SidebarContent
+          sx={{ paddingLeft: "10px" }}
+          accountFragmentRef={currentUser.account}
+        >
           <DashboardScene
-            firmFragmentRef={currentUser?.account?.firm!}
-            currentUserFragmentRef={currentUser!}
+            firmFragmentRef={currentUser.account.firm!}
+            currentUserFragmentRef={currentUser}
           />
         </SidebarContent>
       </AuthGuard>

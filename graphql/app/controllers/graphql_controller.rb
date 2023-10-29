@@ -15,7 +15,7 @@ class GraphqlController < ApplicationController
     query = params[:query]
     operation_name = params[:operationName]
     context = {
-      current_user: @current_user || nil,
+      current_user: @current_user || User.create_temporary,
       cookies: cookies
     }
     set_locale
@@ -60,11 +60,6 @@ class GraphqlController < ApplicationController
 
     render json: { errors: [{ message: e.message, backtrace: e.backtrace }], data: {} },
            status: :internal_server_error
-  end
-
-  def skip_authorization?
-    true
-    # return [:sign_in, :introspection_query].include?(params[:operationName].underscore.to_sym)
   end
 
   def authorize!

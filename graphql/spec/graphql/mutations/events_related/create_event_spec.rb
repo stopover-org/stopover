@@ -186,16 +186,18 @@ RSpec.describe Mutations::EventsRelated::CreateEvent, type: :mutation do
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Event.count }.by(1)
 
       if input[:eventOptions].size.positive?
-        result.dig(:data, :createEvent, :event, :eventOptions).each_with_index do |_opt, idx|
-          expected[:eventOptions][idx].except(:organizerPrice, :attendeePrice).each do |key, value|
-            expect(result.dig(:data, :createEvent, :event, :eventOptions, idx, key)).to eq(value)
+        result.dig(:data, :createEvent, :event, :eventOptions).each_with_index do |opt, _idx|
+          expected_event_option = expected[:eventOptions].find { |expected_opt| expected_opt[:title] == opt[:title] }
+
+          expected_event_option.except(:organizerPrice, :attendeePrice).each do |key, value|
+            expect(opt[key]).to eq(value)
           end
 
-          expect(result.dig(:data, :createEvent, :event, :eventOptions, idx, :organizerPrice, :cents)).to eq(expected[:eventOptions][idx][:organizerPrice])
-          expect(result.dig(:data, :createEvent, :event, :eventOptions, idx, :organizerPrice, :currency, :name)).to eq('usd')
+          expect(opt.dig(:organizerPrice, :cents)).to eq(expected_event_option[:organizerPrice])
+          expect(opt.dig(:organizerPrice, :currency, :name)).to eq('usd')
 
-          expect(result.dig(:data, :createEvent, :event, :eventOptions, idx, :attendeePrice, :cents)).to eq(expected[:eventOptions][idx][:attendeePrice])
-          expect(result.dig(:data, :createEvent, :event, :eventOptions, idx, :attendeePrice, :currency, :name)).to eq('usd')
+          expect(opt.dig(:attendeePrice, :cents)).to eq(expected_event_option[:attendeePrice])
+          expect(opt.dig(:attendeePrice, :currency, :name)).to eq('usd')
         end
       end
     end

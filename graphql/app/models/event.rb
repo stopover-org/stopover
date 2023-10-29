@@ -155,7 +155,7 @@ class Event < ApplicationRecord
   before_validation :adjust_prices,   unless: :removed?
   before_validation :adjust_category, unless: :removed?
   after_create      :notify
-  after_commit      :sync_stripe, unless: :removed?
+  after_commit :sync_stripe, unless: :removed?
 
   # SCOPES =====================================================================
   default_scope { in_order_of(:status, %w[draft published unpublished removed]).order(created_at: :desc) }
@@ -238,12 +238,10 @@ class Event < ApplicationRecord
       organizer: firm&.title,
       tags: tags.map(&:title),
       interests: interests.map(&:slug),
-      price: attendee_price_per_uom.cents
+      price: attendee_price_per_uom.cents,
+      status: status,
+      firm_id: firm.id
     }
-  end
-
-  def should_index?
-    published?
   end
 
   def notify
@@ -272,6 +270,7 @@ class Event < ApplicationRecord
   end
 
   def adjust_category
+    return if event_type.nil?
     unless interests.find_by(slug: event_type.humanize.parameterize)
       target_interest = Interest.find_by(slug: event_type.humanize.parameterize)
       interests << target_interest if target_interest

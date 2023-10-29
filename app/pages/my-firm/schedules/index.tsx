@@ -16,6 +16,7 @@ const Query = graphql`
     currentUser {
       ...Layout_CurrentUserFragment
       account {
+        ...SidebarContent_AccountFragment
         firm {
           id
           ...SchedulesScene_FirmFragment
@@ -32,6 +33,7 @@ interface Props {
 const Schedules = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, schedules_FirmSchedulesQuery>) => {
   const { currentUser } = usePreloadedQuery<schedules_FirmSchedulesQuery>(
     Query,
@@ -40,13 +42,13 @@ const Schedules = ({
 
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={currentUser!}>
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
       <AuthGuard
-        accessible={Boolean(currentUser?.account?.firm?.id)}
+        accessible={Boolean(currentUser.account.firm?.id)}
         redirectTo="/firms/new"
       >
-        <SidebarContent>
-          <SchedulesScene firmFragmentRef={currentUser?.account?.firm!} />
+        <SidebarContent accountFragmentRef={currentUser.account}>
+          <SchedulesScene firmFragmentRef={currentUser.account.firm!} />
         </SidebarContent>
       </AuthGuard>
     </Layout>

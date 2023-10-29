@@ -8,5 +8,7 @@ module Types
     edges_nullable(false)
     edge_nullable(false)
     node_nullable(false)
+
+    field :total, Integer
   end
 end

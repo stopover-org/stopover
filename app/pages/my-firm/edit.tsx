@@ -16,6 +16,7 @@ const Query = graphql`
     currentUser {
       ...Layout_CurrentUserFragment
       account {
+        ...SidebarContent_AccountFragment
         firm {
           ...EditFirmScene_FirmFragment
           id
@@ -32,6 +33,7 @@ interface Props {
 const Edit = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, editFirm_FirmQuery>) => {
   const { currentUser } = usePreloadedQuery<editFirm_FirmQuery>(
     Query,
@@ -40,13 +42,13 @@ const Edit = ({
 
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={currentUser!}>
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
       <AuthGuard
-        accessible={Boolean(currentUser?.account?.firm?.id)}
+        accessible={Boolean(currentUser.account.firm?.id)}
         redirectTo="/firms/new"
       >
-        <SidebarContent>
-          <EditFirmScene firmFragmentRef={currentUser?.account?.firm!} />
+        <SidebarContent accountFragmentRef={currentUser.account}>
+          <EditFirmScene firmFragmentRef={currentUser.account.firm!} />
         </SidebarContent>
       </AuthGuard>
     </Layout>

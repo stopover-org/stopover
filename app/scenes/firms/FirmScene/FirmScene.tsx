@@ -152,7 +152,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
             <Divider sx={{ margin: "5px" }} />
           </Grid>
           <Grid md={6} xs={12}>
-            {firm.paymentTypes.map((type) => (
+            {firm?.paymentTypes?.map((type) => (
               <Chip sx={{ marginRight: "5px" }}>
                 {capitalize(t(`models.firm.enums.paymentTypes.${type}`))}
               </Chip>

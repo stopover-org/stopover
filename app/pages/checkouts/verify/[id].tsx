@@ -37,14 +37,15 @@ interface Props {
 const Event = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, Id_VerifyCheckoutQuery>) => {
   const { currentUser, booking } = usePreloadedQuery(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={currentUser!}>
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
       <AuthGuard
-        accessible={Boolean(currentUser?.account?.id === booking?.account?.id)}
+        accessible={Boolean(currentUser.account.id === booking?.account?.id)}
         redirectTo="/trips"
       >
         <VerifyBookingScene bookingFragmentRef={booking!} />

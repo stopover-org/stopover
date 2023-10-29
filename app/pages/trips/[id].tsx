@@ -28,13 +28,14 @@ interface Props {
 const Trip = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, Id_TripsQuery>) => {
   const data = usePreloadedQuery<Id_TripsQuery>(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={data.currentUser!}>
-      <TripScene tripFragmentRef={data.currentUser?.account?.trip!} />
+    <Layout currentUserFragment={data.currentUser} CSN={CSN}>
+      <TripScene tripFragmentRef={data.currentUser.account.trip!} />
     </Layout>
   );
 };

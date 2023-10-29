@@ -21,9 +21,10 @@ import { TripCard_TripFragment$key } from "../../../../../artifacts/TripCard_Tri
 
 interface TripCardProps {
   tripFragmentRef: TripCard_TripFragment$key;
+  danger?: boolean
 }
 
-const TripCard = ({ tripFragmentRef }: TripCardProps) => {
+const TripCard = ({ tripFragmentRef, danger }: TripCardProps) => {
   const trip = useFragment(
     graphql`
       fragment TripCard_TripFragment on Trip {
@@ -65,16 +66,17 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
       variant="outlined"
       orientation="horizontal"
       sx={{
-        width: isMobileView ? "250px" : "420px",
-        minHeight: "130px",
-        maxHeight: "130px",
+        width: isMobileView ? "unset" : "420px",
+        maxHeight: isMobileView ? 'unset' : '130px',
+        minHeight: isMobileView ? 'unset' : '130px',
       }}
+      color={danger ? 'danger' : undefined}
     >
       {!isMobileView && (
         <CardOverflow>
           <AspectRatio
-            minHeight="130px"
-            maxHeight="130px"
+            minHeight="128px"
+            maxHeight="128px"
             ratio="2"
             sx={{ width: "130px" }}
             objectFit="cover"
@@ -83,7 +85,7 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
           </AspectRatio>
         </CardOverflow>
       )}
-      <Stack paddingLeft="10px" width="100%" sx={{ position: "relative" }}>
+      <Stack paddingLeft={isMobileView ? 0 : "10px"} width="100%" sx={{ position: "relative" }} spacing={1} useFlexGap>
         {trip.canCancel && (
           <Box>
             <Tooltip title={t("scenes.attendees.trips.tripsScene.cancelTrip")}>
@@ -100,48 +102,48 @@ const TripCard = ({ tripFragmentRef }: TripCardProps) => {
           </Box>
         )}
         <Link href={`/trips/${trip.id}`}>
-          <Typography
-            sx={{
-              fontSize: "md",
+          <Tooltip title={`${trip.cities.join(", ")}`}>
+            <Typography
+              sx={{
+                fontSize: "md",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                display: "inline-block",
+                overflow: "hidden",
+                maxWidth: '150px'
+              }}
+            >
+              {trip.cities.join(", ")}
+            </Typography>
+          </Tooltip>
+        </Link>
+        <Box>
+          <Tooltip title={`${moment(trip.startDate).calendar()} - ${moment(trip.endDate).calendar()}`}>
+            <Typography level="body-md" sx={{ 
+              fontSize: "sm",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
               display: "inline-block",
               overflow: "hidden",
-            }}
-          >
-            {trip.cities.join(", ")}
-          </Typography>
-        </Link>
-        <Box>
-          <Typography level="body-md" sx={{ fontSize: "sm" }}>
-            {moment(trip.startDate).calendar()} -{" "}
-            {moment(trip.endDate).calendar()}
-          </Typography>
+              maxWidth: '230px'
+            }}>
+              {moment(trip.startDate).calendar()} -{" "}
+              {moment(trip.endDate).calendar()}
+            </Typography>
+          </Tooltip>
         </Box>
-
-        <CardOverflow
-          sx={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            width: "100%",
-          }}
-        >
-          <Grid container xs={12}>
-            <Grid xs={6}>
-              <Typography level="body-sm">
-                {t("scenes.attendees.trips.tripScene.attendeesCount", {
-                  count: trip.attendeesCount,
-                })}
-              </Typography>
-            </Grid>
-            <Grid xs={6}>
-              <Typography level="body-sm" sx={{ textAlign: "end" }}>
-                {trip.cities[0]}
-              </Typography>
-            </Grid>
-          </Grid>
-        </CardOverflow>
+        <Box>
+          <Stack direction='row' justifyContent={'space-between'}>
+            <Typography level="body-sm">
+              {t("scenes.attendees.trips.tripScene.attendeesCount", {
+                count: trip.attendeesCount,
+              })}
+            </Typography>
+            <Typography level="body-sm" sx={{ textAlign: "end" }}>
+              {trip.cities[0]}
+            </Typography>
+          </Stack>
+        </Box>
       </Stack>
     </Card>
   );

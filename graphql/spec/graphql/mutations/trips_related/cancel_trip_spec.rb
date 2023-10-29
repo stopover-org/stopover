@@ -40,9 +40,13 @@ RSpec.describe Mutations::TripsRelated::CancelTrip, type: :mutation do
       result = nil
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Booking.count }.by(0)
 
+      trip = booking.trip
+      trip.bookings.each do |booking|
+        expect(booking.status).to eq('cancelled')
+      end
+
       expect(result.dig(:data, :cancelTrip, :trip, :id)).to eq(GraphqlSchema.id_from_object(booking.trip))
       expect(result.dig(:data, :cancelTrip, :trip, :status)).to eq('cancelled')
-      expect(result.dig(:data, :cancelTrip, :trip, :bookings, 0, :status)).to eq('cancelled')
       expect(result.dig(:data, :cancelTrip, :notification)).to eq('Trip cancelled!')
     end
   end
@@ -54,9 +58,13 @@ RSpec.describe Mutations::TripsRelated::CancelTrip, type: :mutation do
 
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Refund.count }.by(2)
 
+      trip = booking.trip
+      trip.bookings.each do |booking|
+        expect(booking.status).to eq('cancelled')
+      end
+
       expect(result.dig(:data, :cancelTrip, :trip, :id)).to eq(GraphqlSchema.id_from_object(booking.trip))
       expect(result.dig(:data, :cancelTrip, :trip, :status)).to eq('cancelled')
-      expect(result.dig(:data, :cancelTrip, :trip, :bookings, 0, :status)).to eq('cancelled')
       expect(result.dig(:data, :cancelTrip, :notification)).to eq('Trip cancelled!')
 
       expect(booking.already_paid_price).to eq(Money.new(0))

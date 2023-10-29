@@ -47,7 +47,7 @@ export function useWithdrawBalanceForm(
         }
       }
     `,
-    () => ({ input: { amountCents: balance.totalAmount.cents } }),
+    () => ({ input: { amountCents: balance?.totalAmount?.cents } }),
     {
       defaultValues: useDefaultValues(),
       resolver: yupResolver(validationSchema),

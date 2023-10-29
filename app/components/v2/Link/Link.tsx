@@ -1,17 +1,17 @@
 import React from "react";
 import NextLink from "next/link";
-import { styled } from "@mui/joy";
+import { Tooltip, styled } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import Typography from "../Typography";
 import { TypographyProps } from "../Typography/Typography";
 
 interface BaseLinkProps {
   children: React.ReactNode;
-  href: string;
+  href: string | object;
   disabled?: boolean;
   primary?: boolean;
   underline?: boolean;
-  prefetch?: boolean;
-  replace?: boolean;
+  target?: string;
 }
 
 export interface LinkProps
@@ -32,27 +32,51 @@ const Link = React.forwardRef(
       underline = true,
       sx,
       level,
-      prefetch = true,
-      replace = false,
+      target,
       ...props
     }: LinkProps,
     ref: React.ForwardedRef<HTMLParagraphElement>
-  ) => (
-    <NextLink passHref href={href} prefetch={prefetch} replace={replace}>
-      <TypographyLink
-        {...props}
-        ref={ref}
-        color={primary ? "primary" : color}
-        level={level || "body-md"}
-        sx={{
-          textDecoration: underline ? "underline" : "unset",
-          ...sx,
-        }}
-      >
-        <a href={href}>{children}</a>
-      </TypographyLink>
-    </NextLink>
-  )
+  ) => {
+    const { t } = useTranslation();
+    if (target === "_blank" && typeof href === "string") {
+      return (
+        <Tooltip title={t("components.link._blank")}>
+          <TypographyLink
+            {...props}
+            ref={ref}
+            color={primary ? "primary" : color}
+            level={level || "body-md"}
+            sx={{
+              textDecoration: underline ? "underline" : "unset",
+              ...sx,
+            }}
+          >
+            <a href={href} target={target}>
+              {children}
+            </a>
+          </TypographyLink>
+        </Tooltip>
+      );
+    }
+
+    return (
+      <NextLink href={href}>
+        <TypographyLink
+          {...props}
+          ref={ref}
+          color={primary ? "primary" : color}
+          level={level || "body-md"}
+          sx={{
+            textDecoration: underline ? "underline" : "unset",
+            cursor: "pointer",
+            ...sx,
+          }}
+        >
+          {children}
+        </TypographyLink>
+      </NextLink>
+    );
+  }
 );
 
 export default React.memo(Link);

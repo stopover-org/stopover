@@ -11,7 +11,7 @@ export default {
       addNewSingleDate: "Добавить еще одну дату",
       addNewOption: "Добавить еще одну опцию",
       priceRequirements: "Настроки цены",
-      computedValue: "Расчитвается автоматически",
+      computedValue: "Расчитывается автоматически",
       depositExplanation:
         "Депозит будет использоваться только для оплаты наличными",
       depositPaymentTypeExplanation: "Депозит может быть оплачен только онлайн",

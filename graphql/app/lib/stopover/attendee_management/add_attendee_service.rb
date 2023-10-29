@@ -12,6 +12,7 @@ module Stopover
         return if @booking.cancelled?
 
         @booking.attendees.create!
+        @booking.payments.processing.destroy_all
         ::BookingManagement::PriceResetJob.perform_later(@booking.id)
 
         @booking

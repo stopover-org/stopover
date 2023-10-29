@@ -2,7 +2,7 @@ export default {
   forms: {
     removeAttendee: {
       tooltip: "Remove this attendee and refund it",
-      action: "Remove",
+      action: "Remove attendee",
       modal: {
         header: "Booking changes confirmation",
         priceExplanation:

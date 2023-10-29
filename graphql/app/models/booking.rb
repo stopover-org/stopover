@@ -79,6 +79,10 @@ class Booking < ApplicationRecord
   end
 
   # ENUMS =================================================================
+  enum payment_type: {
+    cash: 'cash',
+    stripe: 'stripe'
+  }
 
   # SECURE TOKEN ==========================================================
 

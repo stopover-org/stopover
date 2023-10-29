@@ -134,7 +134,10 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
   context 'permission' do
     context 'with existing firm' do
       let(:firm) { create(:firm) }
-      before { firm.account_firms << current_user.account.account_firms.build }
+      before do
+        firm.account_firms << current_user.account.account_firms.build
+        current_user.account.update!(firm: firm)
+      end
       it 'fails' do
         result = nil
         expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)

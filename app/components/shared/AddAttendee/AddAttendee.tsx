@@ -7,10 +7,13 @@ import SubmitButton from "../SubmitButton";
 
 interface AddAttendeeProps {
   bookingFragmentRef: AddAttendee_BookingFragment$key;
-  onSuccess: () => void;
+  onSuccess?: () => void;
 }
 
-const AddAttendee = ({ bookingFragmentRef, onSuccess }: AddAttendeeProps) => {
+const AddAttendee = ({
+  bookingFragmentRef,
+  onSuccess = () => {},
+}: AddAttendeeProps) => {
   const booking = useFragment(
     graphql`
       fragment AddAttendee_BookingFragment on Booking {

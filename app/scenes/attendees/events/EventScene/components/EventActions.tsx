@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import { Grid, Option } from "@mui/joy";
+import { Autocomplete, FormControl, Grid, Option, Stack } from "@mui/joy";
 import moment, { Moment } from "moment";
 import { useTranslation } from "react-i18next";
 import Button from "../../../../../components/v2/Button";
@@ -40,6 +40,9 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
           id
           bookedFor
           trip {
+            id
+          }
+          attendees {
             id
           }
         }
@@ -82,54 +85,50 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
   const { t } = useTranslation();
 
   return availableDates.length > 0 ? (
-    <Grid container spacing={1} justifyContent="flex-end">
-      <Grid sm={12} md={4} xs={4}>
-        <ButtonDatePicker
-          onChange={(date) => {
-            if (!date) return;
-            dateField.onChange(date.startOf("day"));
-          }}
-          variant="outlined"
-          datePickerProps={{
-            availableDates,
-            highlightedDates: bookedDates,
-          }}
-        >
-          {getDate(dateField.value)}
-        </ButtonDatePicker>
-      </Grid>
-      <Grid sm={12} md={4} xs={4}>
-        <Select
-          onChange={(value: string) => {
-            if (!value) return;
-
-            dateField.onChange(setTime(dateField.value, value));
-          }}
-          value={selectedTime}
-          placeholder={t("datepicker.selectTime")}
-        >
-          {availableTimes.map((time) => (
-            <Option key={time.unix()} value={time.format(timeFormat)}>
-              {time.format(timeFormat)}
-            </Option>
-          ))}
-        </Select>
-      </Grid>
-      <Grid>
-        {!booking && (
-          <SubmitButton
-            submitting={form.formState.isSubmitting}
-            disabled={!dateField.value.isValid() || !isValidTime}
-            fullWidth
+    <Grid container spacing={1}>
+      <Grid sm={12} md={12}>
+        <Stack direction={'row'} spacing={1} useFlexGap justifyContent={'flex-end'}>
+          <ButtonDatePicker
+            onChange={(date) => {
+              if (!date) return;
+              dateField.onChange(date.startOf("day"));
+            }}
+            variant="outlined"
+            datePickerProps={{
+              availableDates,
+              highlightedDates: bookedDates,
+            }}
           >
-            {t("scenes.attendees.events.eventScene.bookEvent")}
-          </SubmitButton>
-        )}
-        {booking && (
-          <Link href={`/trips/${booking.trip.id}`} underline={false}>
-            <Button fullWidth>{t("layout.header.myTrips")}</Button>
-          </Link>
-        )}
+            {getDate(dateField.value)}
+          </ButtonDatePicker>
+          <Autocomplete
+            disableClearable
+            value={{ value: selectedTime, label: selectedTime }}
+            options={availableTimes.map((time: Moment) => ({
+              label: time.format(timeFormat),
+              value: time.format(timeFormat)
+            }))}
+            onChange={(event, { value }) => {
+              if (!value) return;
+
+              dateField.onChange(setTime(dateField.value, value));
+            }}
+            sx={{maxWidth: '125px'}}
+          />
+          {!booking && (
+            <SubmitButton
+              submitting={form.formState.isSubmitting}
+              disabled={!dateField.value.isValid() || !isValidTime}
+            >
+              {t("scenes.attendees.events.eventScene.bookEvent")}
+            </SubmitButton>
+          )}
+          {booking && (
+            <Link href={`/trips/${booking.trip.id}#${booking.id}`} underline={false}>
+              <Button>{t('scenes.attendees.events.eventScene.details')}</Button>
+            </Link>
+          )}
+        </Stack>
       </Grid>
       <Grid sm={12} md={12} xs={12}>
         <Typography textAlign="end">
@@ -137,15 +136,15 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             event.attendeePricePerUom?.cents,
             event.attendeePricePerUom?.currency?.name
           )}{" "}
-          x {attendeesCountField.value} {t("general.attendee")}
+          x {booking ? booking.attendees.length : attendeesCountField.value} {t("general.attendee")}
           <br />
           {capitalize(t("general.total"))}:{" "}
           {getCurrencyFormat(
-            attendeesCountField.value * (event.attendeePricePerUom?.cents || 0),
+            (booking ? booking.attendees.length : attendeesCountField.value) * (event.attendeePricePerUom?.cents || 0),
             event.attendeePricePerUom?.currency?.name
           )}
         </Typography>
-        {schedule?.leftPlaces && !booking && (
+        {schedule?.leftPlaces && schedule?.leftPlaces > 0 && !booking && (
           <Typography textAlign="end">
             {t("models.schedule.attributes.leftPlaces", {
               places: schedule.leftPlaces,

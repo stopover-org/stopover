@@ -65,7 +65,9 @@ const Checkout = ({ bookingFragmentRef }: CheckoutProps) => {
 
   return (
     <Box>
-      <Typography level="title-lg">Summary</Typography>
+      <Typography level="title-lg">
+        {t("scenes.attendees.bookings.verifyBookingScene.summary")}
+      </Typography>
       <List>
         {booking.payments.map((payment) => (
           <ListItem key={payment.id}>

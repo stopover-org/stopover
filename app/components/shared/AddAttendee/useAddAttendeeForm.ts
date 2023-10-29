@@ -30,7 +30,7 @@ const validationSchema = Yup.object().shape({
 
 export function useAddAttendeeForm(
   bookingFragmentRef: useAddAttendeeForm_BookingFragment$key,
-  onSuccess: () => void
+  onSuccess: () => void = () => {}
 ) {
   return useMutationForm(
     graphql`
@@ -40,6 +40,11 @@ export function useAddAttendeeForm(
         addAttendee(input: $input) {
           booking {
             ...BookingScene_FirmBookingFragment
+            ...BookingSummary_BookingFragment
+            attendees {
+              ...AttendeeEditForm_AttendeeFragment
+              ...useAttendeeEditForm_AttendeeFragment
+            }
           }
           notification
           errors

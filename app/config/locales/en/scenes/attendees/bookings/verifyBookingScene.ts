@@ -4,6 +4,7 @@ export default {
       bookings: {
         verifyBookingScene: {
           toTrip: "To The Trip",
+          summary: "Payments",
         },
       },
     },

@@ -70,6 +70,13 @@ class User < ApplicationRecord
   #
   # DELEGATIONS ==============================================================
 
+  def self.create_temporary
+    user = create(status: :temporary, session_password: SecureRandom.hex(50))
+    Account.create!(user: user)
+
+    user
+  end
+
   def send_confirmation_code!(primary:)
     return if temporary?
 
@@ -100,19 +107,24 @@ class User < ApplicationRecord
 
     raise StandardError, I18n.t('graphql.mutations.sign_in.errors.confirmation_code_incorrect') if code != confirmation_code || confirmation_code.nil?
 
+    unless active?
+      if account
+        account.update(name: phone || email,
+                       primary_phone: phone,
+                       phones: phone.present? ? [phone] : [],
+                       user: self)
+      else
+        self.account = Account.create(name: phone || email,
+                                      primary_phone: phone,
+                                      phones: phone.present? ? [phone] : [],
+                                      user: self)
+      end
+    end
+
     self.confirmation_code = nil
     self.last_try = Time.zone.now
     self.confirmed_at = Time.zone.now
     self.status = :active
-
-    unless account
-      account = Account.new
-      account.assign_attributes(name: phone || email,
-                                primary_phone: phone,
-                                phones: phone.present? ? [phone] : [],
-                                user: self)
-      account.save!
-    end
 
     self.session_password = SecureRandom.hex(50)
 

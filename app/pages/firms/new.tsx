@@ -32,21 +32,26 @@ interface Props {
 const NewFirm = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, new_NewFirmQuery>) => {
   const { currentUser } = usePreloadedQuery<new_NewFirmQuery>(
     Query,
     preloadedQuery
   );
-  const currentFirmId = currentUser?.account?.firm?.id;
+  const currentFirmId = currentUser.account.firm?.id;
 
   useUpdateApiKeys(apiKeys);
 
   return (
     <AuthGuard
-      accessible={Boolean(currentUser?.account?.id) && !currentFirmId}
-      redirectTo={currentUser?.account?.id ? "/my-firm" : "/auth/sign_in"}
+      accessible={Boolean(currentUser.account.id) && !currentFirmId}
+      redirectTo={currentUser.account.id ? "/my-firm" : "/auth/sign_in"}
     >
-      <Layout currentUserFragment={currentUser!} showRegisterFirm={false}>
+      <Layout
+        currentUserFragment={currentUser}
+        showRegisterFirm={false}
+        CSN={CSN}
+      >
         <CreateFirmScene />
       </Layout>
     </AuthGuard>

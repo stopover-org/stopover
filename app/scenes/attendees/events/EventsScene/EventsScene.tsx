@@ -14,7 +14,6 @@ import { EventsScene_EventsPaginationFragment$key } from "../../../../artifacts/
 import EventCardCompact from "./components/EventCardCompact";
 import EventCardWide from "./components/EventCardWide";
 import Pagination from "./components/Pagination";
-import { EventsScene_EventsAutocompleteFragment$key } from "../../../../artifacts/EventsScene_EventsAutocompleteFragment.graphql";
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { EventsScenePaginationQuery } from "../../../../artifacts/EventsScenePaginationQuery.graphql";
 import { EventsScene_InterestsFragment$key } from "../../../../artifacts/EventsScene_InterestsFragment.graphql";
@@ -24,7 +23,6 @@ import { useQuery, useUpdateQuery } from "../../../../lib/hooks/useQuery";
 interface Props {
   eventsFragmentRef:
     | EventsScene_EventsPaginationFragment$key
-    | EventsScene_EventsAutocompleteFragment$key
     | EventsScene_InterestsFragment$key;
 }
 
@@ -74,16 +72,6 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       eventsFragmentRef as EventsScene_EventsPaginationFragment$key
     );
 
-  const eventsAutocompleteQuery =
-    useFragment<EventsScene_EventsAutocompleteFragment$key>(
-      graphql`
-        fragment EventsScene_EventsAutocompleteFragment on Query {
-          ...SearchBar_EventsAutocompleteFragment
-        }
-      `,
-      eventsFragmentRef as EventsScene_EventsAutocompleteFragment$key
-    );
-
   const interestsQuery = useFragment<EventsScene_InterestsFragment$key>(
     graphql`
       fragment EventsScene_InterestsFragment on Query {
@@ -99,6 +87,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   const [{ filters }, setFilters] = React.useState<any>({
     query,
   });
+  
   const queryRef = React.useRef<Disposable>();
 
   React.useEffect(() => {
@@ -132,7 +121,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         },
       }
     );
-  }, [filters, interestsSlug, currentPage]);
+  }, [filters, interestsSlug]);
 
   React.useEffect(() => {
     setContent(
@@ -172,7 +161,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         }}
       >
         <Grid xl={9} lg={12} xs={12}>
-          <SearchBar eventsAutocompleteFragmentRef={eventsAutocompleteQuery} />
+          <SearchBar />
         </Grid>
         {interestsSlug.length > 0 && (
           <Grid xl={9} lg={12} xs={12} p={1}>

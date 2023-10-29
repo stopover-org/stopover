@@ -7,12 +7,12 @@ import SubmitButton from "../SubmitButton";
 
 interface RegisterAttendeeProps {
   attendeeFragmentRef: RemoveAttendee_AttendeeFragment$key;
-  onSuccess: () => void;
+  onSuccess?: () => void;
 }
 
 const RemoveAttendee = ({
   attendeeFragmentRef,
-  onSuccess,
+  onSuccess = () => {},
 }: RegisterAttendeeProps) => {
   const attendee = useFragment<RemoveAttendee_AttendeeFragment$key>(
     graphql`

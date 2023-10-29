@@ -10,16 +10,18 @@ class EventsQuery
   def initialize(
     params = {},
     after: 0,
-    limit: PER_PAGE
+    limit: PER_PAGE,
+    backend: false
   )
+    @backend = backend
     @params = params
-    @conditions = { dates: { gte: Time.current } }
+    @conditions = { dates: { gte: Time.current }, status: backend ? Event.aasm.state_machine.states.map(&:name) : [:published] }
     @offset = after
     @limit = limit
   end
 
   def execute(offset: 0, limit: @limit)
-    if query
+    if query && !@backend
       Event.search(query, where: conditions, offset: offset, limit: limit)
     else
       Event.search(where: conditions, offset: offset, limit: limit)
@@ -39,6 +41,9 @@ class EventsQuery
     @conditions[:price] = { gte: @params[:min_price], lte: @params[:max_price] } if @params[:min_price].present? && @params[:max_price].present?
     @conditions[:city] = @params[:city] if @params[:city].present? && !@params[:city].empty?
     @conditions[:interests] = @params[:interests] if @params[:interests]&.any?
+    @conditions[:firm_id] = @params[:firm].id if @params[:firm].present?
+
+    @conditions[:title] = query if @backend && query
 
     @conditions
   end

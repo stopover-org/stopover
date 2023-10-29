@@ -19,6 +19,9 @@ module Mutations
     end
 
     def current_firm
+      return nil unless context[:current_user]&.account&.current_firm
+      return nil if context[:current_user]&.account&.current_firm&.removed?
+
       context[:current_user]&.account&.current_firm
     end
 

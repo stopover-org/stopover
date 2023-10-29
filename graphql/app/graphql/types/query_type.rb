@@ -6,7 +6,7 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-    field :current_user, Types::UsersRelated::UserType
+    field :current_user, Types::UsersRelated::UserType, null: false
 
     field :interests, [Types::EventsRelated::InterestType] do
       argument :filters, Types::Filters::InterestsFilter, required: false

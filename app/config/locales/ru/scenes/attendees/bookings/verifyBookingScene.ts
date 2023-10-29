@@ -4,6 +4,7 @@ export default {
       bookings: {
         verifyBookingScene: {
           toTrip: "Обратно к путешествию",
+          summary: "Платежи",
         },
       },
     },

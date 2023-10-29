@@ -14,6 +14,7 @@ export default {
             maxPrice: "Max Price",
             categoriesSubheader: "Categories",
           },
+          details: "Booking",
         },
       },
     },

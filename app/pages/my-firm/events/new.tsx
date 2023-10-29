@@ -16,6 +16,7 @@ const Query = graphql`
     currentUser {
       ...Layout_CurrentUserFragment
       account {
+        ...SidebarContent_AccountFragment
         firm {
           id
           ...CreateEventScene_FirmFragment
@@ -32,6 +33,7 @@ interface Props {
 const New = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, new_FirmEventsNewQuery>) => {
   const { currentUser } = usePreloadedQuery<new_FirmEventsNewQuery>(
     Query,
@@ -40,13 +42,13 @@ const New = ({
 
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={currentUser!}>
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
       <AuthGuard
-        accessible={Boolean(currentUser?.account?.firm?.id)}
+        accessible={Boolean(currentUser.account.firm?.id)}
         redirectTo="/firms/new"
       >
-        <SidebarContent>
-          <CreateEventScene firmFragmentRef={currentUser?.account?.firm!} />
+        <SidebarContent accountFragmentRef={currentUser.account}>
+          <CreateEventScene firmFragmentRef={currentUser.account.firm!} />
         </SidebarContent>
       </AuthGuard>
     </Layout>

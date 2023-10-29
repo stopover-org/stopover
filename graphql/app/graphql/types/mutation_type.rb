@@ -17,12 +17,14 @@ module Types
     field :change_event_option_availability, mutation: Mutations::EventsRelated::ChangeEventOptionAvailability, require_manager: true
 
     field :create_firm,               mutation: Mutations::FirmsRelated::CreateFirm
-    field :update_firm,               mutation: Mutations::FirmsRelated::UpdateFirm, require_manager: true
-    field :remove_firm,               mutation: Mutations::FirmsRelated::RemoveFirm, require_manager: true
-    field :verify_firm,               mutation: Mutations::FirmsRelated::VerifyFirm, require_service_user: true
+    field :set_current_firm,          mutation: Mutations::FirmsRelated::SetCurrentFirm,  require_service_user: true
+    field :update_firm,               mutation: Mutations::FirmsRelated::UpdateFirm,      require_manager: true
+    field :remove_firm,               mutation: Mutations::FirmsRelated::RemoveFirm,      require_manager: true
+    field :verify_firm,               mutation: Mutations::FirmsRelated::VerifyFirm,      require_service_user: true
 
     field :sign_in,                   mutation: Mutations::AuthRelated::SignIn
     field :sign_out,                  mutation: Mutations::AuthRelated::SignOut
+    field :update_account,            mutation: Mutations::AuthRelated::UpdateAccount
 
     field :cancel_trip,               mutation: Mutations::TripsRelated::CancelTrip
 
@@ -38,6 +40,6 @@ module Types
 
     field :create_checkout,           mutation: Mutations::PaymentsRelated::CreateCheckout
     field :create_stripe_account,     mutation: Mutations::FirmsRelated::CreateStripeAccount, require_manager: true
-    field :withdraw_balance,          mutation: Mutations::PaymentsRelated::WithdrawBalance, require_manager: true
+    field :withdraw_balance,          mutation: Mutations::PaymentsRelated::WithdrawBalance,  require_manager: true
   end
 end

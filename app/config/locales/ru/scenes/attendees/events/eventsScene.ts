@@ -14,6 +14,7 @@ export default {
             maxPrice: "Макс. цена",
             categoriesSubheader: "Категории",
           },
+          details: "Бронь",
         },
       },
     },

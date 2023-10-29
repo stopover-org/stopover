@@ -43,7 +43,7 @@ export function useStripeConnectsHeaders(currentUserFragmentRef: any) {
         width: 150,
         key: "updatedAt",
       },
-      currentUser?.serviceUser && {
+      currentUser.serviceUser && {
         label: t("general.actions"),
         width: 100,
         key: "actions",
@@ -104,17 +104,17 @@ export function useStripeConnectsColumns(
   const { t } = useTranslation();
 
   return React.useMemo(() => {
-    const activeStripeAccount = firm.stripeConnects.find(
+    const activeStripeAccount = firm?.stripeConnects?.find(
       (stripeConnect) => stripeConnect.status === "active"
     );
-    return firm.stripeConnects.map((stripeConnect) => ({
+    return firm?.stripeConnects?.map((stripeConnect) => ({
       status: <StatusTag status={stripeConnect.status} />,
       activatedAt: stripeConnect.activatedAt
         ? getHumanDateTime(moment(stripeConnect.activatedAt))
         : t("statuses.inactive"),
       createdAt: getHumanDateTime(moment(stripeConnect.createdAt)),
       updatedAt: getHumanDateTime(moment(stripeConnect.updatedAt)),
-      actions: currentUser?.account?.firm?.id && (
+      actions: currentUser.account.firm?.id && (
         <Stack direction="row">
           {!activeStripeAccount &&
             ["inactive", "pending"].includes(stripeConnect.status) && (

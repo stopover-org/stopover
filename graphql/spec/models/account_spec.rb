@@ -11,7 +11,6 @@
 #  full_address  :string
 #  house_number  :string
 #  language      :string           default("en"), not null
-#  last_name     :string
 #  latitude      :float
 #  longitude     :float
 #  name          :string
@@ -25,10 +24,12 @@
 #  verified_at   :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  firm_id       :bigint
 #  user_id       :bigint
 #
 # Indexes
 #
+#  index_accounts_on_firm_id  (firm_id)
 #  index_accounts_on_user_id  (user_id) UNIQUE
 #
 require 'rails_helper'
@@ -63,7 +64,6 @@ RSpec.describe Account, type: :model do
       context 'for temporary user' do
         let(:account) { Account.new(user: create(:temporary_user)) }
         it 'validate name presence' do
-          should_not validate_presence_of(:name)
           should validate_presence_of(:language)
         end
       end
@@ -71,7 +71,6 @@ RSpec.describe Account, type: :model do
       context 'for active user' do
         let(:account) { Account.new(user: create(:active_user)) }
         it 'validate name presence' do
-          should validate_presence_of(:name)
           should validate_presence_of(:language)
         end
       end
@@ -79,7 +78,6 @@ RSpec.describe Account, type: :model do
       context 'for inactive user' do
         let(:account) { Account.new(user: create(:inactive_user)) }
         it 'validate name presence' do
-          should validate_presence_of(:name)
           should validate_presence_of(:language)
         end
       end
@@ -87,7 +85,6 @@ RSpec.describe Account, type: :model do
       context 'for disabled user' do
         let(:account) { Account.new(user: create(:user, status: 'disabled')) }
         it 'validate name presence' do
-          should validate_presence_of(:name)
           should validate_presence_of(:language)
         end
       end

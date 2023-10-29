@@ -164,6 +164,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           travel_to(default_time) do
             user = User.last
             input[:code] = user.confirmation_code
+
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last

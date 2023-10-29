@@ -14,9 +14,7 @@ const Query = graphql`
   query signIn_Query {
     currentUser {
       ...Layout_CurrentUserFragment
-      account {
-        id
-      }
+      status
     }
   }
 `;
@@ -28,6 +26,7 @@ interface Props {
 const SignIn = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, signIn_Query>) => {
   const { currentUser } = usePreloadedQuery<signIn_Query>(
     Query,
@@ -36,8 +35,8 @@ const SignIn = ({
 
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={currentUser!}>
-      <AuthGuard accessible={!currentUser?.account?.id} redirectTo="/">
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
+      <AuthGuard accessible={currentUser.status === "temporary"} redirectTo="/">
         <SignInScene />
       </AuthGuard>
     </Layout>

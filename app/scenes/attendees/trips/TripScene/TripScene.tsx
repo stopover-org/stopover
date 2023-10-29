@@ -54,14 +54,6 @@ const TripScene = ({ tripFragmentRef }: TripSceneProps) => {
       <Grid xs={12}>
         <Typography level="h2">
           {trip.cities.join(", ")}
-          &nbsp;
-          <Tag
-            href="#"
-            primary
-            sx={{ height: "1.5em", display: "inline-block" }}
-          >
-            {t(`statuses.${trip.status}`)}
-          </Tag>
         </Typography>
       </Grid>
       <Grid xs={12}>

@@ -85,21 +85,6 @@ const GlobalSidebarProvider = ({
             </Box>
           </Grid>
         )}
-        <Grid xs={12}>
-          <Box
-            sx={{
-              display: "flex",
-              position: "sticky",
-              bottom: "0",
-              gap: 1,
-              p: 1.5,
-              pb: 2,
-              width: "90%",
-            }}
-          >
-            <Link href="/trips">{t("layout.header.myTrips")}</Link>
-          </Box>
-        </Grid>
       </Drawer>
     </GlobalSidebarContext.Provider>
   );

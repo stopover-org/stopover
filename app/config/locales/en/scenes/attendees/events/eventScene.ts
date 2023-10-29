@@ -5,6 +5,7 @@ export default {
         eventScene: {
           bookEvent: "Book Event",
           chooseCount: "How many Attendees",
+          details: "Booking details",
         },
       },
     },
