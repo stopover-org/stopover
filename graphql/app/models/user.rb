@@ -108,10 +108,17 @@ class User < ApplicationRecord
     raise StandardError, I18n.t('graphql.mutations.sign_in.errors.confirmation_code_incorrect') if code != confirmation_code || confirmation_code.nil?
 
     unless active?
-      account.update(name: phone || email,
-                     primary_phone: phone,
-                     phones: phone.present? ? [phone] : [],
-                     user: self)
+      if account
+        account.update(name: phone || email,
+                       primary_phone: phone,
+                       phones: phone.present? ? [phone] : [],
+                       user: self)
+      else
+        self.account = Account.create(name: phone || email,
+                                      primary_phone: phone,
+                                      phones: phone.present? ? [phone] : [],
+                                      user: self)
+      end
     end
 
     self.confirmation_code = nil

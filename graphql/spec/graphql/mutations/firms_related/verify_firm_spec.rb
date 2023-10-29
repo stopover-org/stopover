@@ -21,6 +21,10 @@ RSpec.describe Mutations::FirmsRelated::VerifyFirm, type: :mutation do
   let(:current_user) { create(:service_user, with_account: true) }
   let!(:firm_account) { current_user&.account&.account_firms&.create(firm: current_firm) }
 
+  before do
+    current_user.account.update!(firm: current_firm) if current_user&.account
+  end
+
   let(:input) { {} }
 
   subject do

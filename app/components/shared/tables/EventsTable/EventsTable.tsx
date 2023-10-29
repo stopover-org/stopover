@@ -96,7 +96,6 @@ const EventsTable = ({
     firmFragmentRef
   );
   const { t } = useTranslation();
-  console.log(events);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [value, setValue] = React.useState("");
   const pagedEvents = useEdges(events);

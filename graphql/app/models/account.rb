@@ -77,11 +77,10 @@ class Account < ApplicationRecord
   # RICH_TEXT =============================================================
 
   # VALIDATIONS ===========================================================
-  validates :name, presence: true, if: :should_have_name?
   validates :language, presence: true
 
   # CALLBACKS =============================================================
-  before_validation :adjust_user_info
+  before_validation :adjust_user_info, unless: :temporary_user?
 
   # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[verified initial]) }
@@ -98,14 +97,13 @@ class Account < ApplicationRecord
 
   private
 
-  def should_have_name?
-    !user&.temporary?
+  def temporary_user?
+    user&.temporary?
   end
 
   def adjust_user_info
     self.primary_phone = user.phone if user&.phone
     self.primary_email = user.email if user&.email
-    self.name = user.email || user.phone if name.nil?
     phones.concat([user.phone]) if user&.phone && phones&.exclude?(user&.phone)
     phones.concat([primary_phone]) if primary_phone && phones&.exclude?(primary_phone)
   end

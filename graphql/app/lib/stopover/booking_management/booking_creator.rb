@@ -5,7 +5,7 @@ module Stopover
     class BookingCreator
       def initialize(user = nil)
         @user = user || User.create_temporary
-        @account = @user.account
+        @account = @user.account || Account.create(user: @user)
         @current_trip_service = Stopover::CurrentTripService.new(user: @user)
       end
 

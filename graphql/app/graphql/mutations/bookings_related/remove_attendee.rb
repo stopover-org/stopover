@@ -31,6 +31,7 @@ module Mutations
       def authorized?(**inputs)
         attendee = inputs[:attendee]
 
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !owner?(attendee) && !manager?(attendee)
         return false, { errors: [I18n.t('graphql.errors.attendee_removed')] } if attendee.removed?
         return false, { errors: [I18n.t('graphql.errors.event_past')] } if attendee.booking.past?
         return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if attendee.booking.cancelled?

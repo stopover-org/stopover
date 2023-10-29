@@ -47,7 +47,12 @@ FactoryBot.define do
     end
 
     before(:create) do |firm, evaluator|
-      firm.account_firms << evaluator.accounts.map { |account| firm.account_firms.build(account: account) } unless evaluator.skip_accounts
+      unless evaluator.skip_accounts
+        evaluator.accounts.map do |account|
+          firm.account_firms << firm.account_firms.build(account: account)
+          account.update!(firm: firm)
+        end
+      end
     end
   end
 end

@@ -57,58 +57,64 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
   );
   const form = useCheckoutForm(booking);
   const paymentMethodField = form.useFormField("paymentMethod");
-  const disabled = !useBookingPayable(booking)
-
+  const disabled = !useBookingPayable(booking);
   const depositAmount = React.useMemo(() => {
     if (booking.leftToPayDepositPrice.cents === 0) {
-      return t('scenes.attendees.trips.tripScene.confirmBooking')
+      return t("scenes.attendees.trips.tripScene.confirmBooking");
     }
     return t(`scenes.attendees.trips.tripScene.payDeposit`, {
       amount: getCurrencyFormat(
         booking.leftToPayDepositPrice?.cents,
         booking.leftToPayDepositPrice?.currency.name
       ),
-    })
-  }, [booking])
-  const fullAmount = React.useMemo(() => {
-    return t(`scenes.attendees.trips.tripScene.payOnline`, {
-      amount: getCurrencyFormat(
-        booking.leftToPayPrice?.cents,
-        booking.leftToPayPrice?.currency.name
-      ),
-    })
-  }, [booking])
+    });
+  }, [booking]);
+
+  const fullAmount = React.useMemo(
+    () =>
+      t(`scenes.attendees.trips.tripScene.payOnline`, {
+        amount: getCurrencyFormat(
+          booking.leftToPayPrice?.cents,
+          booking.leftToPayPrice?.currency.name
+        ),
+      }),
+    [booking]
+  );
 
   const paid = React.useMemo(() => {
-    if (booking.paymentType === 'cash') {
-      return booking.leftToPayDepositPrice.cents <= 0
-    } else if (booking.paymentType === 'stripe') {
-      return booking.leftToPayPrice.cents <= 0
+    if (booking.paymentType === "cash") {
+      return booking.leftToPayDepositPrice.cents <= 0;
     }
-    return false
-  }, [booking])
+    if (booking.paymentType === "stripe") {
+      return booking.leftToPayPrice.cents <= 0;
+    }
+    return false;
+  }, [booking]);
 
   const leftToPayLater = React.useMemo(() => {
-    if (booking.paymentType === 'cash') {
+    if (booking.paymentType === "cash") {
       return getCurrencyFormat(
         booking.leftToPayPrice?.cents,
         booking.leftToPayPrice?.currency.name
-      )
+      );
     }
 
-    return false
-  }, [booking])
-
-  const [opened, setOpened] = React.useState(false)
-
-  const notAuthorized = React.useMemo(() => booking.account.user.status === 'temporary', [booking])
+    return false;
+  }, [booking]);
+  const [opened, setOpened] = React.useState(false);
+  const notAuthorized = React.useMemo(
+    () =>
+      booking.account.user.status === "temporary" ||
+      booking.account.user.status === "inactive",
+    [booking]
+  );
 
   if (notAuthorized) {
     return (
-      <Link href="/auth/sign_in" color='primary'>
-        {t('scenes.attendees.trips.tripScene.requireSignIn')}
+      <Link href="/auth/sign_in" color="primary">
+        {t("scenes.attendees.trips.tripScene.requireSignIn")}
       </Link>
-    )
+    );
   }
 
   if (booking.event.firm.paymentTypes.length === 0) {
@@ -123,60 +129,72 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
     <>
       <form onSubmit={form.handleSubmit()}>
         {paid ? (
-            <>
-              <Typography>
-                {t("scenes.attendees.trips.tripScene.justCome")}
-              </Typography>
-              <Typography>
-                {leftToPayLater && t('scenes.attendees.trips.tripScene.leftToPayLater', { leftToPayLater })}
-              </Typography>
-              <Typography
-                sx={{ cursor: 'pointer', textDecoration: 'underline' }}
-                color='primary'
-                onClick={() => setOpened(true)}
-              >
-                {t("scenes.attendees.trips.tripScene.showQrCode.action")}
-              </Typography>
-            </>
-          ) : (
-            <Grid container alignItems="center" spacing={2}>
-              {!booking.paymentType && 
-                <Grid>
-                  <Autocomplete
-                    disableClearable
-                    placeholder={t("models.firm.attributes.paymentType")}
-                    options={booking.event.firm.paymentTypes.map((v) => ({
-                      label: capitalize(t(`models.firm.enums.paymentTypes.${v}`)),
-                      value: v.toLowerCase(),
-                    }))}
-                    onChange={(event, { value }) => paymentMethodField.onChange(value)}
-                    getOptionLabel={(option) => option.label}
-                    value={{
-                      label: capitalize(t(`models.firm.enums.paymentTypes.${paymentMethodField.value}`)),
-                      value: paymentMethodField.value.toLowerCase(),
-                    }}
-                    sx={{ marginRight: "10px" }}
-                    size="md"
-                    disabled={disabled}
-                  />
-                </Grid>
-              }
+          <>
+            <Typography>
+              {t("scenes.attendees.trips.tripScene.justCome")}
+            </Typography>
+            <Typography>
+              {leftToPayLater &&
+                t("scenes.attendees.trips.tripScene.leftToPayLater", {
+                  leftToPayLater,
+                })}
+            </Typography>
+            <Typography
+              sx={{ cursor: "pointer", textDecoration: "underline" }}
+              color="primary"
+              onClick={() => setOpened(true)}
+            >
+              {t("scenes.attendees.trips.tripScene.showQrCode.action")}
+            </Typography>
+          </>
+        ) : (
+          <Grid container alignItems="center" spacing={2}>
+            {!booking.paymentType && (
               <Grid>
-                <SubmitButton
-                  submitting={form.formState.isSubmitting}
-                  disabled={disabled}
+                <Autocomplete
+                  disableClearable
+                  placeholder={t("models.firm.attributes.paymentType")}
+                  options={booking.event.firm.paymentTypes.map((v) => ({
+                    label: capitalize(t(`models.firm.enums.paymentTypes.${v}`)),
+                    value: v.toLowerCase(),
+                  }))}
+                  onChange={(event, { value }) =>
+                    paymentMethodField.onChange(value)
+                  }
+                  getOptionLabel={(option) => option.label}
+                  value={{
+                    label: capitalize(
+                      t(
+                        `models.firm.enums.paymentTypes.${paymentMethodField.value}`
+                      )
+                    ),
+                    value: paymentMethodField.value.toLowerCase(),
+                  }}
+                  sx={{ marginRight: "10px" }}
                   size="md"
-                >
-                  {paymentMethodField.value === "cash"
-                    ? depositAmount
-                    : fullAmount}
-                </SubmitButton>
+                  disabled={disabled}
+                />
               </Grid>
+            )}
+            <Grid>
+              <SubmitButton
+                submitting={form.formState.isSubmitting}
+                disabled={disabled}
+                size="md"
+              >
+                {paymentMethodField.value === "cash"
+                  ? depositAmount
+                  : fullAmount}
+              </SubmitButton>
             </Grid>
-          )
-        }
+          </Grid>
+        )}
       </form>
-      <QRModal bookingFragmentRef={booking} opened={opened} onClose={() => setOpened(false)} />
+      <QRModal
+        bookingFragmentRef={booking}
+        opened={opened}
+        onClose={() => setOpened(false)}
+      />
     </>
   );
 };
