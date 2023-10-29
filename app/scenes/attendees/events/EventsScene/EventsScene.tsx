@@ -88,6 +88,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   const [{ filters }, setFilters] = React.useState<any>({
     query,
   });
+  
   const queryRef = React.useRef<Disposable>();
 
   React.useEffect(() => {
@@ -121,7 +122,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         },
       }
     );
-  }, [filters, interestsSlug, currentPage]);
+  }, [filters, interestsSlug]);
 
   React.useEffect(() => {
     setContent(

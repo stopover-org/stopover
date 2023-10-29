@@ -16,17 +16,25 @@ type LayoutProps = {
     | React.ReactNode[];
   currentUserFragment: Layout_CurrentUserFragment$key;
   showRegisterFirm?: boolean;
+  CSN?: boolean;
 };
 
 const Layout = ({
   children,
   currentUserFragment,
   showRegisterFirm = true,
+  CSN = false,
 }: LayoutProps) => {
   const [isSSR, setIsSSR] = React.useState(true);
 
   React.useEffect(() => {
     setIsSSR(false);
+  }, []);
+
+  React.useEffect(() => {
+    if (CSN) {
+      window.location.reload();
+    }
   }, []);
 
   const currentUser = useFragment(
@@ -44,6 +52,7 @@ const Layout = ({
   );
   const { i18n } = useTranslation();
   const [value] = useCookies();
+
   React.useEffect(() => {
     i18n.changeLanguage(value.i18next || "ru");
   }, []);
@@ -55,7 +64,7 @@ const Layout = ({
           currentUserFragment={currentUser}
           showRegisterFirm={showRegisterFirm}
         />
-        {!isSSR ? children : null}
+        {!isSSR && !CSN ? children : null}
         <Footer />
       </Sheet>
     </GlobalSidebarProvider>

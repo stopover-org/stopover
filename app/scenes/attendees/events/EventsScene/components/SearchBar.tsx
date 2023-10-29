@@ -17,12 +17,15 @@ const SearchBar = (props: SearchBarProps) => {
   const updateQuery = useUpdateQuery('query')
   const updateInterest = useUpdateQuery('interests', [])
   const query = useQuery('query', '')
+  const [internalQuery, setInternalQuery] = React.useState('')
   const router = useRouter();
+
   const eventsAutocompleteFragmentRef = useLazyLoadQuery<SearchBar_AutocompleteQuery>(graphql`
     query SearchBar_AutocompleteQuery {
       ...SearchBar_EventsAutocompleteFragment
     }
   `, {})
+
   const [data, refetch] = useRefetchableFragment<
     SearchBarAutocompleteQuery,
     SearchBar_EventsAutocompleteFragment$key
@@ -59,7 +62,12 @@ const SearchBar = (props: SearchBarProps) => {
     `,
     eventsAutocompleteFragmentRef
   );
+
   const requestRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  React.useEffect(() => {
+    setInternalQuery(query)
+  }, [query])
 
   React.useEffect(() => {
     if (requestRef.current) {
@@ -67,10 +75,11 @@ const SearchBar = (props: SearchBarProps) => {
 
       requestRef.current = null;
     }
+
     requestRef.current = setTimeout(() => {
-      refetch({ query }, { fetchPolicy: "store-and-network" });
+      refetch({ query: internalQuery }, { fetchPolicy: "store-and-network" });
     }, 500);
-  }, [query]);
+  }, [internalQuery]);
 
   const options = React.useMemo(
     () =>
@@ -111,7 +120,7 @@ const SearchBar = (props: SearchBarProps) => {
       e.stopPropagation()
     }
 
-    updateQuery(query)
+    updateQuery(internalQuery)
   }
 
   return (
@@ -127,14 +136,14 @@ const SearchBar = (props: SearchBarProps) => {
       onBlur={onQueryChange}
       onKeyUp={(e) => {
         if (e.key === "Enter") {
-          updateQuery((e.target as HTMLInputElement).value)
+          updateQuery(internalQuery)
         }
       }}
       onInputChange={(e, value) => {
-        updateQuery(value);
+        setInternalQuery(value);
       }}
       renderOption={(props, option) => (
-        <AutocompleteOption {...props}>
+        <AutocompleteOption {...props} key={option.id}>
           {option.link ? (
             <Link primary href={option.link}>
               <Typography>{option.title}</Typography>
@@ -155,7 +164,7 @@ const SearchBar = (props: SearchBarProps) => {
       )}
       onChange={(evt, value) => {
         if (typeof value === 'string') {
-          updateQuery(value)
+          setInternalQuery(value)
           return
         }
 
@@ -165,7 +174,7 @@ const SearchBar = (props: SearchBarProps) => {
           updateInterest(value.query)
         }
       }}
-      inputValue={query}
+      inputValue={internalQuery}
       endDecorator={<SearchIcon />}
       freeSolo
     />

@@ -1,4 +1,3 @@
-import { getRelaySerializedState } from "relay-nextjs";
 import { withHydrateDatetime } from "relay-nextjs/date";
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
 import { createRelaySubscriptionHandler } from "graphql-ruby-client";
@@ -31,7 +30,7 @@ export function getClientEnvironment() {
 
   w.relayEnvironment = new Environment({
     network: createClientNetworkWs(createWsHandler()),
-    store: new Store(new RecordSource(getRelaySerializedState()?.records)),
+    store: new Store(new RecordSource()),
     isServer: false,
   });
 
