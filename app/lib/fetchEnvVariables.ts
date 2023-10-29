@@ -3,6 +3,7 @@ import { IApiKeys } from "../components/ApiKeysProvider";
 export const envVariables: { [key: string]: string } = {
   googleMaps: "GOOGLE_MAPS_API_KEY",
   filestack: "FILESTACK_API_KEY",
+  chatraApiKey: "CHATRA_API_KEY",
 };
 
 export function fetchEnvVariables() {
