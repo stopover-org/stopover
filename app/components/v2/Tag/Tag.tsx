@@ -23,9 +23,14 @@ const Tag = React.forwardRef(
           ref={ref}
           variant="solid"
           level="body-xs"
+          fontSize="body-xs"
           {...props}
           href={href!}
-          sx={{ margin: "0 4px", display: "inline-block", ...props.sx }}
+          sx={{
+            margin: "0 4px",
+            display: "inline-block",
+            ...props.sx,
+          }}
           underline={underline}
         >
           {children}
@@ -37,6 +42,7 @@ const Tag = React.forwardRef(
         ref={ref}
         variant="solid"
         level="body-xs"
+        fontSize="body-xs"
         {...props}
         sx={{
           margin: "0 4px",

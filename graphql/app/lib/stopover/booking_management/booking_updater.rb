@@ -21,6 +21,8 @@ module Stopover
           end
         end
 
+        @booking.payments.processing.destroy_all
+
         GraphqlSchema.subscriptions.trigger(:booking_changed, { bookingId: @booking.id }, { booking: @booking.reload })
       end
     end

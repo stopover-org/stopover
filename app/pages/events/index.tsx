@@ -15,9 +15,8 @@ const Query = graphql`
     currentUser {
       ...Layout_CurrentUserFragment
     }
-    ...EventsScene_EventsPaginationFragment
-    ...EventsScene_EventsAutocompleteFragment
     ...EventsScene_InterestsFragment
+    ...EventsScene_EventsPaginationFragment
   }
 `;
 
@@ -28,12 +27,13 @@ interface Props {
 const Events = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, events_Query>) => {
   const data = usePreloadedQuery(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={data.currentUser!}>
+    <Layout currentUserFragment={data.currentUser} CSN={CSN}>
       <EventsScene eventsFragmentRef={data} />
     </Layout>
   );

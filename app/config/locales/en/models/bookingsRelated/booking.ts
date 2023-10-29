@@ -17,6 +17,11 @@ export default {
         possiblePenaltyAmount: "Possible penalty",
         cancellationTerms: "Booking cancellation terms",
       },
+      reasons: {
+        inactive: "Booking is not active",
+        past: "Event past",
+        paid: "Booking was partially or fully paid",
+      },
     },
   },
 };

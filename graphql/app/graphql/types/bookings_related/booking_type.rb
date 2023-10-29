@@ -24,7 +24,7 @@ module Types
       field :refunds,                   [Types::PaymentsRelated::RefundType],         null: false, require_manager: true
       field :cancellation_terms,        String,                                       null: false
 
-      field :attendees,                 [Types::BookingsRelated::AttendeeType], null: false do
+      field :attendees, [Types::BookingsRelated::AttendeeType], null: false do
         argument :filters, Types::Filters::AttendeesFilter, required: false
       end
 

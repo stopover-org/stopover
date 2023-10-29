@@ -50,7 +50,6 @@ module Stopover
             },
             email: firm.primary_email,
             first_name: user.account.name,
-            last_name: user.account.last_name,
             phone: firm.primary_phone
           }
         )

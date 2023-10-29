@@ -30,6 +30,8 @@ const translation = {
     minutes: "Минуты",
     minuteShort: "мин.",
     required: "Обязательно",
+    details: "Детали",
+    search: "Поиск",
   },
   weekdays: {
     monday: "Понедельник",
@@ -41,6 +43,7 @@ const translation = {
     sunday: "Воскресенье",
   },
   datepicker: {
+    changeDate: "Изменить дату",
     selectDate: "Выберите дату",
     selectTime: "Выберите время",
   },
@@ -52,6 +55,7 @@ const translation = {
       registerFirm: "Зарегистрировать Компанию",
       logIn: "Вход",
       logOut: "Выход",
+      myProfile: "Мой профиль",
     },
   },
   event: {
@@ -62,6 +66,7 @@ const translation = {
     active: "Активно",
     past: "Прошло",
     paid: "Оплачено",
+    canceled: "Отменено",
     cancelled: "Отменено",
     future: "Грядет",
     successful: "Успешно",
@@ -92,6 +97,11 @@ const translation = {
     action: "🌐 Выберите язык",
     russian: "🇷🇺 Русский",
     english: "🇺🇸 English",
+  },
+  components: {
+    link: {
+      _blank: "Будет открыто в новой вкладке",
+    },
   },
 };
 

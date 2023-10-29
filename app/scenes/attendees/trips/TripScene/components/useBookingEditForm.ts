@@ -56,6 +56,7 @@ export function useBookingEditForm(
         updateBooking(input: $input) {
           booking {
             ...BookingEditForm_BookingFragment
+            ...useBookingEditForm_BookingFragment
             id
             bookingOptions {
               id

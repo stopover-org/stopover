@@ -3,7 +3,7 @@
 class TripsQuery
   def initialize(
     params = {},
-    relations = Trip.all,
+    relations = Trip.where.not(status: :cancelled),
     current_user = nil
   )
     @relations = relations

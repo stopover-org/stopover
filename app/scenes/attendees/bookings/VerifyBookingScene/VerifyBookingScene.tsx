@@ -74,20 +74,6 @@ const VerifyBookingScene = ({
             }
           }
         }
-        attendees(filters: { status: [registered, not_registered] }) {
-          fullName
-          attendeeOptions {
-            eventOption {
-              title
-              attendeePrice {
-                cents
-                currency {
-                  name
-                }
-              }
-            }
-          }
-        }
         ...BookingSummary_BookingFragment
         ...Checkout_BookingFragment
       }
@@ -127,7 +113,7 @@ const VerifyBookingScene = ({
           <CardContent>
             <Typography level="title-lg">{booking.event.title}</Typography>
             <Typography>{booking.event.fullAddress}</Typography>
-            <BookingSummary bookingFragmentRef={booking} />
+            <BookingSummary bookingFragmentRef={booking} readonly />
             <Checkout bookingFragmentRef={booking} />
           </CardContent>
           <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>

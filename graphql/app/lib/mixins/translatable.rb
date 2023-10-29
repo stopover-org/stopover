@@ -9,7 +9,7 @@ module Mixins
     end
 
     def adjust_translations
-      return if Rails&.env&.developement?
+      return if Rails&.env
 
       self.class::TRANSLATABLE_FIELDS.each do |field|
         self.class::AVAILABLE_LANGUAGES.each do |language|

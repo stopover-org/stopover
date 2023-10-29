@@ -39,6 +39,7 @@ const DateAutocomplete = ({
 
   return (
     <Autocomplete
+      isOptionEqualToValue={() => true}
       disableClearable
       options={event.availableDates.map((dt) => ({
         value: moment(dt),

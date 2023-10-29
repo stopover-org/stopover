@@ -1,7 +1,6 @@
 import { graphql, useFragment } from "react-relay";
 import { Box, Stack } from "@mui/joy";
 import React from "react";
-import Scrollbars from "react-custom-scrollbars-2";
 import Typography from "../../../../../components/v2/Typography";
 import { RightColumn_EventFragment$key } from "../../../../../artifacts/RightColumn_EventFragment.graphql";
 import BookEvent from "./BookEvent";
@@ -23,11 +22,6 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
   );
   return (
     <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
-      <Box>
-        <Typography level="h3" textAlign="end">
-          {event.title}
-        </Typography>
-      </Box>
       <Box>
         <Typography textAlign="justify">{event.description}</Typography>
       </Box>

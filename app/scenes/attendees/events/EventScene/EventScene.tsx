@@ -7,7 +7,6 @@ import { useBookEventForm } from "./useBookEventForm";
 import EventTitle from "./components/EventTitle";
 import LeftColumn from "./components/LeftColumn";
 import RightColumn from "./components/RightColumn";
-import EventActions from "./components/EventActions";
 import { EventScene_EventFragment$key } from "../../../../artifacts/EventScene_EventFragment.graphql";
 
 interface EventSceneProps {
@@ -38,11 +37,8 @@ const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
           <Grid xs={12}>
             <Breadcrumbs eventFragmentRef={event} />
           </Grid>
-          <Grid md={9} sm={12}>
+          <Grid md={12} sm={12}>
             <EventTitle eventFragmentRef={event} />
-          </Grid>
-          <Grid md={3} sm={12}>
-            <EventActions eventFragmentRef={event} />
           </Grid>
           {showLeftColumn && <Grid md={7} sm={12}>
             <LeftColumn eventFragmentRef={event} />

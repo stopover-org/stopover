@@ -42,6 +42,7 @@ const ButtonDatePicker = ({
 
             setOpened(false);
           }}
+          onClose={() => setOpened(false)}
           {...datePickerProps}
           slots={{
             field: () => null,

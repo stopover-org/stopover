@@ -40,7 +40,7 @@ const Select = React.forwardRef(
       onChange(value, event);
     };
     return (
-      <FormControl sx={{ padding: 0 }}>
+      <FormControl>
         {label && <FormLabel>{label}</FormLabel>}
         <JoySelect ref={ref} onChange={onChangeHandler} {...props}>
           {children}

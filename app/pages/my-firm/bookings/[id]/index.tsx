@@ -15,6 +15,7 @@ const Query = graphql`
     currentUser {
       ...Layout_CurrentUserFragment
       account {
+        ...SidebarContent_AccountFragment
         firm {
           booking(id: $id) {
             id
@@ -33,6 +34,7 @@ interface Props {
 const Index = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, Id_FirmBookingQuery>) => {
   const { currentUser } = usePreloadedQuery<Id_FirmBookingQuery>(
     Query,
@@ -42,14 +44,14 @@ const Index = ({
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={currentUser!}>
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
       <AuthGuard
-        accessible={Boolean(currentUser?.account?.firm?.booking?.id)}
+        accessible={Boolean(currentUser.account.firm?.booking?.id)}
         redirectTo="/my-firm/events"
       >
-        <SidebarContent>
+        <SidebarContent accountFragmentRef={currentUser.account}>
           <BookingScene
-            bookingFragmentRef={currentUser?.account?.firm?.booking!}
+            bookingFragmentRef={currentUser.account.firm?.booking!}
           />
         </SidebarContent>
       </AuthGuard>

@@ -29,14 +29,14 @@ const WithdrawBalanceForm = ({
   const form = useWithdrawBalanceForm(balance);
   const activeStripeConnect = React.useMemo(
     () =>
-      balance.firm.stripeConnects
+      balance?.firm?.stripeConnects
         .map((stripeConnect) => stripeConnect.status)
         .find((status) => status === "active"),
     [balance]
   );
   const { t } = useTranslation();
 
-  if (balance.totalAmount.cents <= 0 || !activeStripeConnect) return null;
+  if (balance?.totalAmount?.cents <= 0 || !activeStripeConnect) return null;
 
   return (
     <form onSubmit={form.handleSubmit()}>

@@ -11,7 +11,6 @@
 #  full_address  :string
 #  house_number  :string
 #  language      :string           default("en"), not null
-#  last_name     :string
 #  latitude      :float
 #  longitude     :float
 #  name          :string
@@ -25,10 +24,12 @@
 #  verified_at   :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  firm_id       :bigint
 #  user_id       :bigint
 #
 # Indexes
 #
+#  index_accounts_on_firm_id  (firm_id)
 #  index_accounts_on_user_id  (user_id) UNIQUE
 #
 class Account < ApplicationRecord
@@ -45,6 +46,7 @@ class Account < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==================================================
 
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
+  belongs_to :firm, optional: true
 
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :account_interests,  dependent: :destroy
@@ -75,11 +77,10 @@ class Account < ApplicationRecord
   # RICH_TEXT =============================================================
 
   # VALIDATIONS ===========================================================
-  validates :name, presence: true, if: :should_have_name?
   validates :language, presence: true
 
   # CALLBACKS =============================================================
-  before_validation :adjust_user_info
+  before_validation :adjust_user_info, unless: :temporary_user?
 
   # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[verified initial]) }
@@ -91,13 +92,13 @@ class Account < ApplicationRecord
   end
 
   def current_firm
-    firms.where(status: %i[active pending]).last
+    firm
   end
 
   private
 
-  def should_have_name?
-    !user&.temporary?
+  def temporary_user?
+    user&.temporary?
   end
 
   def adjust_user_info

@@ -49,13 +49,10 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
             name
           }
         }
-        tags {
-          id
-          title
-        }
         availableDates
         averageRating
         myBookings {
+          id
           bookedFor
           trip {
             id
@@ -124,20 +121,6 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
           <AspectRatio ratio="2">
             <img src={event.images[0]} loading="lazy" alt="" />
           </AspectRatio>
-          <Box
-            sx={{
-              position: "absolute",
-              zIndex: 2,
-              right: "1rem",
-              top: "1rem",
-            }}
-          >
-            {event.tags.slice(0, 2).map((tag) => (
-              <Tag key={tag.id} href={`/events?tag=${tag.id}`} primary>
-                {tag.title}
-              </Tag>
-            ))}
-          </Box>
         </CardOverflow>
         <CardContent>
           <Link href={`/events/${event.id}`}>
@@ -192,8 +175,8 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
               </SubmitButton>
             )}
             {booking && (
-              <Link href={`/trips/${booking.trip.id}`} underline={false}>
-                <Button size="sm">{t("models.trip.singular")}</Button>
+              <Link href={`/trips/${booking.trip.id}#${booking.id}`} underline={false}>
+                <Button size="sm">{t('scenes.attendees.events.eventsScene.details')}</Button>
               </Link>
             )}
           </Stack>

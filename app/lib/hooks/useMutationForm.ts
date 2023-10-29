@@ -51,8 +51,8 @@ function useMutationForm<
   );
 
   const {
-    isDirty,
     isLoading,
+    isDirty,
     isSubmitted,
     isSubmitSuccessful,
     isValidating,
@@ -132,7 +132,7 @@ function useMutationForm<
         ref: field.ref,
         value: form.watch(name) as ValueType,
         onChange: (value: PathValue<FieldsType, Path<FieldsType>>) => {
-          form.setValue(name, value);
+          form.setValue(name, value, { shouldDirty: true, shouldTouch: true });
         },
         error: form.formState.errors?.[name] as FieldError,
       }),
@@ -142,6 +142,10 @@ function useMutationForm<
 
   const requestRef = React.useRef<null | NodeJS.Timer>(null);
   const handleSubmit = (...rest: any) => form.handleSubmit(onSubmit(...rest));
+  const values = React.useMemo(
+    () => JSON.stringify(form.getValues()),
+    [form.getValues()]
+  );
 
   React.useEffect(() => {
     if (autosave || isSubmitting) return;
@@ -151,17 +155,18 @@ function useMutationForm<
   }, [defaultValues]);
 
   React.useEffect(() => {
-    if (autosave && !isSubmitting) {
+    if (autosave && isDirty) {
       if (requestRef.current) {
         return;
       }
+
       requestRef.current = setTimeout(() => {
         requestRef.current = null;
 
         mutate(form.getValues());
       }, autosaveTimeout);
     }
-  }, [JSON.stringify(form.getValues()), autosave]);
+  }, [isDirty, values, autosave]);
 
   return React.useMemo(
     () => ({
@@ -182,7 +187,7 @@ function useMutationForm<
       handleSubmit,
       useFormField,
     }),
-    [form.formState]
+    [form]
   );
 }
 

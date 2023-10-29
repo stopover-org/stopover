@@ -25,11 +25,11 @@ module Mutations
       argument :payment_types,  [String], required: false
 
       def resolve(**args)
-        firm = context[:current_user].account.current_fir
+        firm = context[:current_user].account.current_firm
         args[:country] = ISO3166::Country.find_country_by_any_name(args[:country]).iso_short_name if args[:country]
         firm.update!(args.except(:image))
 
-        firm.image.purge
+        firm.image.purge if args[:image].nil?
 
         if args[:image].present?
           io_object = Stopover::FilesSupport.url_to_io(args[:image])

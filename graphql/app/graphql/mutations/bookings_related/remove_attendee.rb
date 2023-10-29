@@ -4,6 +4,7 @@ module Mutations
   module BookingsRelated
     class RemoveAttendee < BaseMutation
       field :attendee, Types::BookingsRelated::AttendeeType
+      field :booking,  Types::BookingsRelated::BookingType
 
       argument :attendee_id, ID, loads: Types::BookingsRelated::AttendeeType
       def resolve(attendee:, **_args)
@@ -11,6 +12,7 @@ module Mutations
 
         {
           attendee: attendee.reload,
+          booking: attendee.booking,
           notification: I18n.t('graphql.mutations.remove_attendee.notifications.success')
         }
       rescue StandardError => e
@@ -19,7 +21,8 @@ module Mutations
 
         {
           errors: [message],
-          attendee: nil
+          attendee: nil,
+          booking: nil
         }
       end
 
@@ -28,8 +31,7 @@ module Mutations
       def authorized?(**inputs)
         attendee = inputs[:attendee]
 
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless manager?(attendee)
-
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !owner?(attendee) && !manager?(attendee)
         return false, { errors: [I18n.t('graphql.errors.attendee_removed')] } if attendee.removed?
         return false, { errors: [I18n.t('graphql.errors.event_past')] } if attendee.booking.past?
         return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if attendee.booking.cancelled?

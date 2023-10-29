@@ -110,11 +110,6 @@ RSpec.describe Mutations::BookingsRelated::RemoveAttendee, type: :mutation do
         include_examples :fail, 'Booking cancelled'
       end
 
-      context 'as booking attendee' do
-        let(:current_user) { attendee.booking.user }
-        include_examples :fail, 'You are not authorized'
-      end
-
       context 'as manager of another company' do
         let!(:current_user) { create(:firm).accounts.last.user }
         include_examples :fail, 'You are not authorized'

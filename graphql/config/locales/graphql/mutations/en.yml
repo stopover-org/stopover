@@ -22,6 +22,9 @@ en:
       insufficient_funds: 'Insufficient funds'
 
     mutations:
+      set_current_firm:
+        notifications:
+          success: 'Firm was changed'
       sign_in:
         errors: 
           confirmation_code_incorrect: 'Confirmation code is incorrect'

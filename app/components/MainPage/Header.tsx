@@ -56,7 +56,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
   }, [signOut, router]);
 
   const isAuthorized = React.useMemo(
-    () => currentUser && currentUser?.status !== "temporary",
+    () => currentUser.status !== "temporary",
     [currentUser]
   );
 

@@ -1,6 +1,6 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { Box, Option, Stack } from "@mui/joy";
+import { Autocomplete, Box, Option, Stack } from "@mui/joy";
 import { Moment } from "moment";
 import moment from "moment/moment";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,6 @@ import { getDate, setTime, timeFormat } from "../../../../../lib/utils/dates";
 import Select from "../../../../../components/v2/Select/Select";
 import useUniqueMomentDates from "../../../../../lib/hooks/useUniqueMomentDates";
 import useTimeFromDate from "../../../../../lib/hooks/useTimeFromDate";
-import Button from "../../../../../components/v2/Button/Button";
 import SubmitButton from "../../../../../components/shared/SubmitButton";
 
 interface BookingDatesEditFormProps {
@@ -54,9 +53,12 @@ const BookingDatesEditForm = ({
         flexDirection="row"
         justifyContent="flex-start"
         alignItems="flex-start"
+        flexWrap={'wrap'}
+        spacing={2}
+        useFlexGap
       >
         {!disabled && (
-          <Box paddingRight="10px">
+          <Box>
             <ButtonDatePicker
               onChange={(date) => {
                 if (!date) return;
@@ -73,23 +75,21 @@ const BookingDatesEditForm = ({
           </Box>
         )}
         {!disabled && availableTimes.length > 0 && (
-          <Box paddingRight="10px">
-            {" "}
-            <Select
-              onChange={(value: string) => {
+          <Box>
+            <Autocomplete
+              disableClearable
+              value={{ value: timeField.value, label: timeField.value }}
+              options={availableTimes.map((time: Moment) => ({
+                label: time.format(timeFormat),
+                value: time.format(timeFormat)
+              }))}
+              onChange={(event, { value }) => {
                 if (!value) return;
 
-                timeField.onChange(value);
+                dateField.onChange(setTime(dateField.value, value));
               }}
-              value={timeField.value}
-              placeholder={t("datepicker.selectTime")}
-            >
-              {availableTimes.map((time) => (
-                <Option key={time.unix()} value={time.format(timeFormat)}>
-                  {time.format(timeFormat)}
-                </Option>
-              ))}
-            </Select>
+              sx={{ margin: 0, maxWidth: '125px' }}
+            />
           </Box>
         )}
         {!disabled && (
@@ -98,7 +98,7 @@ const BookingDatesEditForm = ({
               submitting={form.formState.isSubmitting}
               disabled={disabled}
             >
-              {t("datepicker.selectDate")}
+              {t("general.save")}
             </SubmitButton>
           </Box>
         )}

@@ -34,11 +34,13 @@ module Mutations
 
       def authorized?(**inputs)
         schedules = inputs[:event].schedules.active.where(scheduled_for: inputs[:booked_for])
+        potential_attendees_count = inputs[:attendees_count] + Attendee.where(booking_id: schedules.first.booking_ids).count if schedules.any?
+        already_booked = current_account ? current_account.bookings.where.not(status: :cancelled).where(schedule_id: schedules.ids).any? : false
 
         return false, { errors: [I18n.t('graphql.errors.event_past')] } if inputs[:booked_for].past?
         return false, { errors: [I18n.t('graphql.errors.general')] } if schedules.empty?
-        return false, { errors: [I18n.t('graphql.errors.already_booked')] } if current_account && current_account.bookings.where.not(status: :cancelled).where(schedule_id: schedules.ids).any?
-        return false, { errors: [I18n.t('graphql.errors.all_places_reserved')] } if inputs[:event].max_attendees && Attendee.where(booking_id: schedules.first.booking_ids).count >= inputs[:event].max_attendees
+        return false, { errors: [I18n.t('graphql.errors.already_booked')] } if already_booked
+        return false, { errors: [I18n.t('graphql.errors.all_places_reserved')] } if inputs[:event].max_attendees && potential_attendees_count > inputs[:event].max_attendees
 
         super
       end

@@ -18,6 +18,7 @@ import Input from "../../../v2/Input";
 interface EventsTableProps {
   firmFragmentRef: any;
   withPagination?: boolean;
+  withSearchBar?: boolean;
 }
 
 const TagColor = ({ status }: { status: string }) => {
@@ -34,9 +35,13 @@ const TagColor = ({ status }: { status: string }) => {
   );
 };
 
-const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
+const EventsTable = ({
+  firmFragmentRef,
+  withPagination,
+  withSearchBar = false,
+}: EventsTableProps) => {
   const {
-    data: { events },
+    data: { events, id },
     hasPrevious,
     hasNext,
     loadPrevious,
@@ -54,8 +59,10 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
         cursor: { type: "String", defaultValue: "" }
         filters: { type: "EventsFilter", defaultValue: {} }
       ) {
+        id
         events(first: $count, after: $cursor, filters: $filters)
           @connection(key: "EventsTable_query_events") {
+          total
           edges {
             node {
               id
@@ -204,6 +211,7 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
       {
         filters: {
           query: value,
+          firmId: id,
         },
         cursor: "0",
       },
@@ -215,49 +223,54 @@ const EventsTable = ({ firmFragmentRef, withPagination }: EventsTableProps) => {
         },
       }
     );
-  }, [value, currentPage, setCurrentPage]);
+  }, [value, setCurrentPage]);
 
   return (
     <Grid container spacing={2}>
-      <Grid xs={3}>
-        <Input
-          value={value}
-          onChange={(val) => {
-            setValue(val);
-          }}
-          label="Search event"
-          size="sm"
-        />
-      </Grid>
+      {withSearchBar && (
+        <Grid xs={3}>
+          <Input
+            value={value}
+            onChange={(val) => {
+              setValue(val);
+            }}
+            autoFocus
+            label={t("general.search")}
+            size="sm"
+            hint={`Total: ${events?.total}`}
+          />
+        </Grid>
+      )}
       <Grid xs={12}>
-        <Table
-          data={data}
-          headers={headers}
-          aria-label="events table"
-          withPagination={withPagination}
-          paginationProps={{
-            rowsPerPage: 30,
-            colSpan: headers.length,
-            setPage: setCurrentPage,
-            page: currentPage,
-            hasPrevious,
-            hasNext,
-            onNextPage: () => {
-              if (hasNext) {
-                loadNext(30, {
-                  onComplete: () => setCurrentPage(currentPage + 1),
-                });
-              }
-            },
-            onPrevPage: () => {
-              if (hasPrevious) {
-                loadPrevious(30, {
-                  onComplete: () => setCurrentPage(currentPage - 1),
-                });
-              }
-            },
-          }}
-        />
+        <React.Suspense>
+          <Table
+            data={data}
+            headers={headers}
+            withPagination={withPagination}
+            paginationProps={{
+              rowsPerPage: 30,
+              colSpan: headers.length,
+              setPage: setCurrentPage,
+              page: currentPage,
+              hasPrevious,
+              hasNext,
+              onNextPage: () => {
+                if (hasNext) {
+                  loadNext(30, {
+                    onComplete: () => setCurrentPage(currentPage + 1),
+                  });
+                }
+              },
+              onPrevPage: () => {
+                if (hasPrevious) {
+                  loadPrevious(30, {
+                    onComplete: () => setCurrentPage(currentPage - 1),
+                  });
+                }
+              },
+            }}
+          />
+        </React.Suspense>
       </Grid>
     </Grid>
   );

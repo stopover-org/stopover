@@ -8,6 +8,8 @@ module Stopover
       end
 
       def translate
+        disabled = true
+        return if disabled
         translation = DeepL.translate(@dynamic_translation.source,
                                       @dynamic_translation.translatable.language,
                                       @dynamic_translation.target_language)

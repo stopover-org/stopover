@@ -17,6 +17,11 @@ export default {
         possiblePenaltyAmount: "Возможный штраф",
         cancellationTerms: "Условия возврата",
       },
+      reasons: {
+        inactive: "Бронь не активна",
+        past: "Мероприятие прошло",
+        paid: "Бронь была полностью или частично оплачена",
+      },
     },
   },
 };

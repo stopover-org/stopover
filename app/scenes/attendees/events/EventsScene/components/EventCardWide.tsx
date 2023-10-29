@@ -49,13 +49,10 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
             name
           }
         }
-        tags {
-          id
-          title
-        }
         availableDates
         averageRating
         myBookings {
+          id
           bookedFor
           trip {
             id
@@ -191,8 +188,8 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
                 </SubmitButton>
               )}
               {booking && (
-                <Link href={`/trips/${booking.trip.id}`} underline={false}>
-                  <Button size="sm">{t("models.trip.singular")}</Button>
+                <Link href={`/trips/${booking.trip.id}#${booking.id}`} underline={false}>
+                  <Button size="sm" fullWidth>{t('scenes.attendees.events.eventsScene.details')}</Button>
                 </Link>
               )}
             </Stack>
