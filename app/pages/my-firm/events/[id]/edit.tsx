@@ -35,6 +35,7 @@ interface Props {
 const Edit = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, edit_FirmEventQuery>) => {
   const { currentUser } = usePreloadedQuery<edit_FirmEventQuery>(
     Query,
@@ -44,7 +45,7 @@ const Edit = ({
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={currentUser}>
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
       <AuthGuard accessible={Boolean(currentUser.account.firm?.event?.id)}>
         <SidebarContent accountFragmentRef={currentUser.account}>
           <EditEventScene eventFragmentRef={currentUser.account.firm?.event!} />

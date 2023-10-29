@@ -29,12 +29,13 @@ interface Props {
 const Profile = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, profile_Query>) => {
   const data = usePreloadedQuery(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={data.currentUser}>
+    <Layout currentUserFragment={data.currentUser} CSN={CSN}>
       <AttendeeSidebar>
         <ProfileScene accountFragmentRef={data.currentUser.account} />
       </AttendeeSidebar>

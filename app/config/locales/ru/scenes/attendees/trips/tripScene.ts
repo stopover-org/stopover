@@ -14,6 +14,7 @@ export default {
           payDeposit: "Оплатить депозит {{amount}}",
           payOnline: "Оплатить онлайн {{amount}}",
           justCome: "Мы вас зарегистрировали на мероприятие.",
+          requireSignIn: "Для продолжения необходимо зарегистрироваться",
           leftToPayLater:
             "На месте вам нужно будет доплатить {{leftToPayLater}} наличными",
           cancelBookingModal: {

@@ -25,12 +25,16 @@ const Query = graphql`
 interface Props {
   apiKeys: IApiKeys;
 }
-const Trips = ({ preloadedQuery, apiKeys }: RelayProps<Props, trips_Query>) => {
+const Trips = ({
+  preloadedQuery,
+  apiKeys,
+  CSN,
+}: RelayProps<Props, trips_Query>) => {
   const data = usePreloadedQuery(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={data.currentUser}>
+    <Layout currentUserFragment={data.currentUser} CSN={CSN}>
       <AttendeeSidebar>
         <TripsScene accountFragmentRef={data.currentUser.account} />
       </AttendeeSidebar>

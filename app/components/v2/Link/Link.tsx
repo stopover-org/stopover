@@ -7,7 +7,7 @@ import { TypographyProps } from "../Typography/Typography";
 
 interface BaseLinkProps {
   children: React.ReactNode;
-  href: string;
+  href: string | object;
   disabled?: boolean;
   primary?: boolean;
   underline?: boolean;
@@ -38,7 +38,7 @@ const Link = React.forwardRef(
     ref: React.ForwardedRef<HTMLParagraphElement>
   ) => {
     const { t } = useTranslation();
-    if (target === "_blank") {
+    if (target === "_blank" && typeof href === "string") {
       return (
         <Tooltip title={t("components.link._blank")}>
           <TypographyLink
@@ -68,6 +68,7 @@ const Link = React.forwardRef(
           level={level || "body-md"}
           sx={{
             textDecoration: underline ? "underline" : "unset",
+            cursor: "pointer",
             ...sx,
           }}
         >

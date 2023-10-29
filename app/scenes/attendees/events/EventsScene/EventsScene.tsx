@@ -14,7 +14,6 @@ import { EventsScene_EventsPaginationFragment$key } from "../../../../artifacts/
 import EventCardCompact from "./components/EventCardCompact";
 import EventCardWide from "./components/EventCardWide";
 import Pagination from "./components/Pagination";
-import { EventsScene_EventsAutocompleteFragment$key } from "../../../../artifacts/EventsScene_EventsAutocompleteFragment.graphql";
 import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { EventsScenePaginationQuery } from "../../../../artifacts/EventsScenePaginationQuery.graphql";
 import { EventsScene_InterestsFragment$key } from "../../../../artifacts/EventsScene_InterestsFragment.graphql";

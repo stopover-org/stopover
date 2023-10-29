@@ -26,12 +26,16 @@ interface Props {
   apiKeys: IApiKeys;
 }
 
-const Event = ({ preloadedQuery, apiKeys }: RelayProps<Props, Id_Query>) => {
+const Event = ({
+  preloadedQuery,
+  apiKeys,
+  CSN,
+}: RelayProps<Props, Id_Query>) => {
   const { event, currentUser } = usePreloadedQuery(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={currentUser}>
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
       <EventScene eventFragmentRef={event!} />
     </Layout>
   );

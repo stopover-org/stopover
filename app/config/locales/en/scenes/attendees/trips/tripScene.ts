@@ -15,6 +15,7 @@ export default {
           payDeposit: "Pay Depsot {{amount}}",
           payOnline: "Pay Online {{amount}}",
           justCome: "We registered you already.",
+          requireSignIn: "You need to sign in to continue",
           leftToPayLater:
             "When you will come you will need to pay {{leftToPayLater}} in cash",
           cancelBookingModal: {

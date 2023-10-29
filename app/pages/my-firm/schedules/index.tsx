@@ -33,6 +33,7 @@ interface Props {
 const Schedules = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, schedules_FirmSchedulesQuery>) => {
   const { currentUser } = usePreloadedQuery<schedules_FirmSchedulesQuery>(
     Query,
@@ -41,7 +42,7 @@ const Schedules = ({
 
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={currentUser}>
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
       <AuthGuard
         accessible={Boolean(currentUser.account.firm?.id)}
         redirectTo="/firms/new"

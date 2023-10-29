@@ -57,6 +57,10 @@ const Layout = ({
     i18n.changeLanguage(value.i18next || "ru");
   }, []);
 
+  if (CSN) {
+    return null;
+  }
+
   return (
     <GlobalSidebarProvider firmFragmentRef={currentUser.account.firm!}>
       <Sheet>
@@ -64,7 +68,7 @@ const Layout = ({
           currentUserFragment={currentUser}
           showRegisterFirm={showRegisterFirm}
         />
-        {!isSSR && !CSN ? children : null}
+        {!isSSR ? children : null}
         <Footer />
       </Sheet>
     </GlobalSidebarProvider>

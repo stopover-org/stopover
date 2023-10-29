@@ -26,6 +26,7 @@ interface Props {
 const SignIn = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, signIn_Query>) => {
   const { currentUser } = usePreloadedQuery<signIn_Query>(
     Query,
@@ -34,7 +35,7 @@ const SignIn = ({
 
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={currentUser}>
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
       <AuthGuard accessible={currentUser.status === "temporary"} redirectTo="/">
         <SignInScene />
       </AuthGuard>

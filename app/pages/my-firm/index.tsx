@@ -33,6 +33,7 @@ interface Props {
 const Index = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, myFirm_FirmQuery>) => {
   const { currentUser } = usePreloadedQuery<myFirm_FirmQuery>(
     Query,
@@ -42,7 +43,7 @@ const Index = ({
   useUpdateApiKeys(apiKeys);
 
   return (
-    <Layout currentUserFragment={currentUser}>
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
       <AuthGuard
         accessible={Boolean(currentUser.account.firm?.id)}
         redirectTo="/firms/new"

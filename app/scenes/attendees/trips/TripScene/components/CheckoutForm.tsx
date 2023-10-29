@@ -11,6 +11,8 @@ import Typography from "../../../../../components/v2/Typography";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import { useBookingPayable } from "../../../../../lib/hooks/useBookingStates";
 import QRModal from "./QRModal";
+import Button from "../../../../../components/v2/Button";
+import Link from "../../../../../components/v2/Link";
 
 interface CheckoutFormProps {
   bookingFragmentRef: CheckoutForm_BookingFragmentRef$key;
@@ -24,6 +26,11 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
         status
         bookedFor
         paymentType
+        account {
+          user {
+            status
+          }
+        }
         leftToPayPrice {
           cents
           currency {
@@ -93,6 +100,16 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
   }, [booking])
 
   const [opened, setOpened] = React.useState(false)
+
+  const notAuthorized = React.useMemo(() => booking.account.user.status === 'temporary', [booking])
+
+  if (notAuthorized) {
+    return (
+      <Link href="/auth/sign_in" color='primary'>
+        {t('scenes.attendees.trips.tripScene.requireSignIn')}
+      </Link>
+    )
+  }
 
   if (booking.event.firm.paymentTypes.length === 0) {
     return (

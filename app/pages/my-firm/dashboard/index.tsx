@@ -33,12 +33,13 @@ interface Props {
 const Index = ({
   preloadedQuery,
   apiKeys,
+  CSN,
 }: RelayProps<Props, dashboard_DashboardQuery>) => {
   const { currentUser } = usePreloadedQuery(Query, preloadedQuery);
 
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={currentUser}>
+    <Layout currentUserFragment={currentUser} CSN={CSN}>
       <AuthGuard accessible={Boolean(currentUser.account.firm?.id)}>
         <SidebarContent
           sx={{ paddingLeft: "10px" }}
