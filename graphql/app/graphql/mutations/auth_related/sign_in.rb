@@ -22,7 +22,7 @@ module Mutations
         when 'phone'
           if current_user
             existing_user = User.find_by(phone: username.gsub(/[\s()\-]/, ''))
-            user = existing_user | current_user
+            user = existing_user || current_user
             user.update!(phone: username.gsub(/[\s()\-]/, ''))
           else
             user = User.find_or_create_by!(phone: username.gsub(/[\s()\-]/, ''))

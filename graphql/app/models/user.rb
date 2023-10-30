@@ -120,7 +120,7 @@ class User < ApplicationRecord
     end
 
     self.confirmation_code = nil
-    self.last_try = Time.zone.now
+    self.last_try = nil
     self.confirmed_at = Time.zone.now
     self.status = :active
 
