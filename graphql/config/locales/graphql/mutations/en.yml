@@ -127,6 +127,7 @@ en:
       create_checkout:
         notifications:
           redirection: 'You will be redirected to checkout page'
+          success: 'You was registered to the event'
       withdraw_balance:
         notifications:
           success: 'We sent money to your account!'

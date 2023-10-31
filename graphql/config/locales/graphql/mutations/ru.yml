@@ -128,6 +128,7 @@ ru:
       create_checkout:
         notifications:
           redirection: 'Вы будете перенаправлены на страницу оплаты'
+          success: 'Вас успешно зарегистрировали на мероприятие'
       withdraw_balance:
         notifications:
           success: 'Мы отправили деньги на ваш аккаунт'

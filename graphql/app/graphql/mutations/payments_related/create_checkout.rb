@@ -16,7 +16,18 @@ module Mutations
           return {
             url: nil,
             booking: booking,
-            payment: nil
+            payment: nil,
+            notification: I18n.t('graphql.mutations.create_checkout.notifications.success')
+          }
+        end
+
+        if args[:payment_type] == 'full_amount' && booking.left_to_pay_price.zero?
+          booking.update(payment_type: 'stripe')
+          return {
+            url: nil,
+            booking: booking,
+            payment: nil,
+            notification: I18n.t('graphql.mutations.create_checkout.notifications.success')
           }
         end
 
