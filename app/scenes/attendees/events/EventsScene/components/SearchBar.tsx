@@ -79,7 +79,7 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
     }
 
     requestRef.current = setTimeout(() => {
-      refetch({ query: internalQuery }, { fetchPolicy: "store-and-network" });
+      refetch({ query: internalQuery as string }, { fetchPolicy: "store-and-network" });
     }, 500);
   }, [internalQuery]);
 
@@ -180,7 +180,7 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
           updateInterest(value.query)
         }
       }}
-      inputValue={internalQuery}
+      inputValue={internalQuery as string}
       endDecorator={<SearchIcon />}
       freeSolo
     />
