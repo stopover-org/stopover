@@ -57,6 +57,10 @@ const translation = {
       logOut: "Выход",
       myProfile: "Мой профиль",
     },
+    metadata: {
+      firmTitle: "Stopoverx | Управление бронированиями",
+      commonTitle: "Stopoverx",
+    },
   },
   event: {
     book: "Забронировать",

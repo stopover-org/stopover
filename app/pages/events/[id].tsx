@@ -1,5 +1,5 @@
 import React from "react";
-import { graphql, usePreloadedQuery } from "react-relay";
+import { graphql, useFragment, usePreloadedQuery } from "react-relay";
 import { RelayProps, withRelay } from "relay-nextjs";
 import Layout from "../../components/MainPage/Layout";
 import { getClientEnvironment } from "../../lib/clientEnvironment";
@@ -9,6 +9,7 @@ import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 import { Id_Query } from "../../artifacts/Id_Query.graphql";
+import { Id_EventFragment$key } from "../../artifacts/Id_EventFragment.graphql";
 
 const Query = graphql`
   query Id_Query($id: ID!) {
@@ -16,6 +17,7 @@ const Query = graphql`
       ...Layout_CurrentUserFragment
     }
     event(id: $id) {
+      ...Id_EventFragment
       ...EventScene_EventFragment
     }
   }
@@ -34,8 +36,21 @@ const Event = ({
   const { event, currentUser } = usePreloadedQuery(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
 
+  const eventFragment = useFragment<Id_EventFragment$key>(
+    graphql`
+      fragment Id_EventFragment on Event {
+        title
+      }
+    `,
+    event
+  );
+
   return (
-    <Layout currentUserFragment={currentUser} CSN={CSN}>
+    <Layout
+      currentUserFragment={currentUser}
+      CSN={CSN}
+      title={eventFragment?.title}
+    >
       <EventScene eventFragmentRef={event!} />
     </Layout>
   );
