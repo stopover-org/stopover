@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <!--  created with www.mysitemapgenerator.com -->
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+  <loc>http://staging.stopoverx.com/</loc>
+  <lastmod>2023-10-31T23:25:24+01:00</lastmod>
+  <priority>0.4</priority>
+</url>
+<url>
+  <loc>http://staging.stopoverx.com/auth/sign_in</loc>
+  <lastmod>2023-10-31T23:25:24+01:00</lastmod>
+  <priority>0.1</priority>
+</url>
+<url>
+  <loc>http://staging.stopoverx.com/firms/new</loc>
+  <lastmod>2023-10-31T23:25:24+01:00</lastmod>
+  <priority>0.1</priority>
+</url>
+<url>
+  <loc>http://staging.stopoverx.com/trips</loc>
+  <lastmod>2023-10-31T23:25:24+01:00</lastmod>
+  <priority>0.2</priority>
+</url>
+</urlset>
