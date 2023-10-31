@@ -211,10 +211,6 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
   depositAmountCents: Yup.number()
     .min(0)
-    .lessThan(
-      Yup.ref("organizerPricePerUomCents"),
-      "Deposit should be less then general for attendee price"
-    )
     .integer()
     .transform(numberTransform),
   recurringDates: Yup.array()
