@@ -171,7 +171,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.current)
+            expect(user.last_try).to be_nil
             expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
@@ -306,8 +306,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
-            expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.current)
+            expect(user.delay).to eq(0)
+            expect(user.last_try).to be_nil
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -473,7 +473,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.current)
+            expect(user.last_try).to be_nil
             expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
@@ -605,11 +605,12 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             user = User.last
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
+
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
-            expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.current)
+            expect(user.delay).to eq(0)
+            expect(user.last_try).to be_nil
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -762,7 +763,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.current)
+            expect(user.last_try).to be_nil
             expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
@@ -897,8 +898,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
-            expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.current)
+            expect(user.delay).to eq(0)
+            expect(user.last_try).to be_nil
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -1064,7 +1065,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.current)
+            expect(user.last_try).to be_nil
             expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
@@ -1199,8 +1200,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
-            expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.current)
+            expect(user.delay).to eq(0)
+            expect(user.last_try).to be_nil
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -1232,10 +1233,10 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
-            user = current_user
+            user = current_user.reload
             expect(user.status).to eq('active')
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(default_time)
+            expect(user.last_try).to eq(Time.current)
             expect(user.confirmation_code).not_to be_nil
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
@@ -1258,7 +1259,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
 
-            user = current_user
+            user = current_user.reload
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.current)
 
@@ -1277,7 +1278,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
 
-            user = current_user
+            user = current_user.reload
             expect(user.delay).to eq(30)
             expect(user.last_try).to eq(30.seconds.ago)
 
@@ -1296,7 +1297,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                              }, context: { current_user: current_user }).to_h.deep_symbolize_keys
             end.to change { User.count }.by(0)
 
-            user = current_user
+            user = current_user.reload
             expect(user.delay).to eq(0)
             expect(user.last_try).to eq(90.seconds.ago)
 
@@ -1332,11 +1333,11 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.account).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
-            user = current_user
+            user = current_user.reload
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.current)
+            expect(user.last_try).to be_nil
             expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
@@ -1369,7 +1370,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
-            user = current_user
+            user = current_user.reload
             expect(user.status).to eq('active')
             expect(user.confirmation_code).not_to be_nil
 
@@ -1404,7 +1405,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
-            user = current_user
+            user = current_user.reload
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.current)
 
@@ -1426,7 +1427,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
-            user = current_user
+            user = current_user.reload
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.current)
 
@@ -1463,9 +1464,9 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
-            user = current_user
-            expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.current)
+            user = current_user.reload
+            expect(user.delay).to eq(0)
+            expect(user.last_try).to be_nil
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -1492,7 +1493,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
-            user = current_user
+            user = current_user.reload
             expect(user.status).to eq('active')
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(default_time)
@@ -1513,7 +1514,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
-            user = current_user
+            user = current_user.reload
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.current)
 
@@ -1587,11 +1588,11 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
-            user = current_user
+            user = current_user.reload
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.current)
+            expect(user.last_try).to eq(nil)
             expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
@@ -1627,7 +1628,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
-            user = current_user
+            user = current_user.reload
             expect(user.status).to eq('active')
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
@@ -1657,12 +1658,13 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           expect(current_user.account).not_to be_nil
 
           travel_to(default_time + 60.seconds) do
-            user = current_user
+            user = current_user.reload
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
+            user.reload
+
             expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.current)
 
             expect(result.dig(:data, :signIn, :user)).to be_nil
             expect(result.dig(:data, :signIn, :delay)).to eq(60)
@@ -1678,9 +1680,11 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           expect(current_user.account).not_to be_nil
 
           travel_to(default_time) do
-            user = current_user
+            user = current_user.reload
             expect(user.confirmation_code).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
+
+            user.reload
 
             expect(user.delay).to eq(60)
             expect(user.last_try).to eq(Time.current)
@@ -1713,13 +1717,15 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           expect(current_user.account).not_to be_nil
 
           travel_to(default_time + 60.seconds) do
-            user = current_user
+            user = current_user.reload
             expect(user.confirmation_code).not_to be_nil
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
-            expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.current)
+            user.reload
+
+            expect(user.delay).to eq(0)
+            expect(user.last_try).to be_nil
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -1848,11 +1854,12 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
-            user = User.last
+            user.reload
+
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.current)
+            expect(user.last_try).to be_nil
             expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
@@ -1980,8 +1987,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
-            expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.current)
+            expect(user.delay).to eq(0)
+            expect(user.last_try).to be_nil
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
@@ -2105,7 +2112,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect(user.status).to eq('active')
             expect(user.confirmation_code).to be_nil
             expect(user.session_password).not_to be_nil
-            expect(user.last_try).to eq(Time.current)
+            expect(user.last_try).to be_nil
             expect(user.confirmed_at).to eq(Time.current)
             expect(user.account).not_to be_nil
 
@@ -2237,8 +2244,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
             user = User.last
-            expect(user.delay).to eq(60)
-            expect(user.last_try).to eq(Time.current)
+            expect(user.delay).to eq(0)
+            expect(user.last_try).to be_nil
 
             expect(result.dig(:data, :signIn, :user, :id)).to eq(GraphqlSchema.id_from_object(user))
             expect(result.dig(:data, :signIn, :user, :status)).to eq('active')
