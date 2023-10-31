@@ -80,9 +80,10 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     `,
     eventsFragmentRef as EventsScene_InterestsFragment$key
   );
-  const query = useQuery('query', '')
-  const interestsSlug = useQuery('interests', [])
-  const updateInterests = useUpdateQuery('interests', )
+  console.log(router.query)
+  const query = useQuery('query', router.query.query)
+  const interestsSlug = useQuery('interests', [router.query.interests])
+  const updateInterests = useUpdateQuery('interests', [router.query.interests])
   const events = usePagedEdges(data.events, currentPage, 10);
   const [{ filters }, setFilters] = React.useState<any>({
     query,
@@ -167,22 +168,24 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           <Grid xl={9} lg={12} xs={12} p={1}>
             <Stack direction="row" useFlexGap spacing={2}>
               {interestsSlug.map((interest: string) => (
-                <Chip
-                  key={interest}
-                  size="lg"
-                  variant="outlined"
-                  endDecorator={
-                    <ChipDelete
-                      onDelete={() => {
-                        updateInterests(interestsSlug.filter(
-                          (slug: string) => slug !== interest
-                        ))
-                      }}
-                    />
-                  }
-                >
-                  {interest}
-                </Chip>
+                interest ? 
+                  <Chip
+                    key={interest}
+                    size="lg"
+                    variant="outlined"
+                    endDecorator={
+                      <ChipDelete
+                        onDelete={() => {
+                          updateInterests(interestsSlug.filter(
+                            (slug: string) => slug !== interest
+                          ))
+                        }}
+                      />
+                    }
+                  >
+                    {interest}
+                  </Chip>
+                  : null
               ))}
             </Stack>
           </Grid>

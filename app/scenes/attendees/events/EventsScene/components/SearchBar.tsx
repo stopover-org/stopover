@@ -11,14 +11,16 @@ import { SearchBar_EventsAutocompleteFragment$key } from "../../../../../artifac
 import { SearchBarAutocompleteQuery } from "../../../../../artifacts/SearchBarAutocompleteQuery.graphql";
 import { SearchBar_AutocompleteQuery } from "../../../../../artifacts/SearchBar_AutocompleteQuery.graphql";
 
-interface SearchBarProps {}
+interface SearchBarProps {
+  redirect?: boolean
+}
 
-const SearchBar = (props: SearchBarProps) => {
-  const updateQuery = useUpdateQuery('query')
-  const updateInterest = useUpdateQuery('interests', [])
-  const query = useQuery('query', '')
-  const [internalQuery, setInternalQuery] = React.useState('')
-  const router = useRouter();
+const SearchBar = ({ redirect = false }: SearchBarProps) => {
+  const router = useRouter()
+  const updateQuery = useUpdateQuery('query', router.query.query)
+  const updateInterest = useUpdateQuery('interests', [router.query.interests])
+  const query = useQuery('query', router.query.query)
+  const [internalQuery, setInternalQuery] = React.useState(router.query.query)
 
   const eventsAutocompleteFragmentRef = useLazyLoadQuery<SearchBar_AutocompleteQuery>(graphql`
     query SearchBar_AutocompleteQuery {
@@ -136,7 +138,11 @@ const SearchBar = (props: SearchBarProps) => {
       onBlur={onQueryChange}
       onKeyUp={(e) => {
         if (e.key === "Enter") {
-          updateQuery(internalQuery)
+          if (redirect) {
+            router.push(`/events?query=${internalQuery}`)
+          } else {
+            updateQuery(internalQuery)
+          }
         }
       }}
       onInputChange={(e, value) => {

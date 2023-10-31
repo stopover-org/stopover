@@ -17,7 +17,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
     fragment RootScene_QueryFragment on Query {
       interests {
         title
-        id
+        slug
         preview
       }
     }
@@ -54,7 +54,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
              }}
           >
             <Typography fontSize={'28px'} level='title-lg' sx={{  }}>Я ищу:</Typography>
-            <SearchBar />
+            <SearchBar redirect />
           </Box>
         </Grid>
       </Grid>
@@ -76,16 +76,16 @@ const RootScene = ({ queryFragmentRef }: Props) => {
               borderRadius: 'sm',
             }}
           >
-            {interests ? interests.slice(0, (interests.length / 3)).map(({ title, id, preview }) => (
-              <>
-                <ListItem component='a' href={`/events?interests[]=${id}`} sx={{ '&:hover': { cursor: 'pointer', textDecoration: 'underline' }}}>
+            {interests ? interests.slice(0, (interests.length / 3)).map(({ title, slug, preview }) => (
+              <React.Fragment key={slug}>
+                <ListItem component='a' href={`/events?interests=${slug}`} sx={{ '&:hover': { cursor: 'pointer', textDecoration: 'underline' }}}>
                   <ListItemDecorator>
                     <Avatar size="sm" src={preview || undefined} />
                   </ListItemDecorator>
                   {title}
                 </ListItem>
                 <ListDivider inset='startContent' />
-              </>
+              </React.Fragment>
             )) : null}
           </List>
         </Grid>
@@ -97,16 +97,16 @@ const RootScene = ({ queryFragmentRef }: Props) => {
               borderRadius: 'sm',
             }}
           >
-            {interests ? interests.slice(interests.length / 3, (interests.length / 3) * 2).map(({ title, id, preview }) => (
-              <>
-                <ListItem component='a' href={`/events?interests[]=${id}`} sx={{ '&:hover': { cursor: 'pointer', textDecoration: 'underline' }}}>
+            {interests ? interests.slice(interests.length / 3, (interests.length / 3) * 2).map(({ title, slug, preview }) => (
+              <React.Fragment key={slug}>
+                <ListItem component='a' href={`/events?interests=${slug}`} sx={{ '&:hover': { cursor: 'pointer', textDecoration: 'underline' }}}>
                   <ListItemDecorator>
                     <Avatar size="sm" src={preview || undefined} />
                   </ListItemDecorator>
                   {title}
                 </ListItem>
                 <ListDivider inset='startContent' />
-              </>
+              </React.Fragment>
             )) : null}
           </List>
         </Grid>
@@ -117,16 +117,16 @@ const RootScene = ({ queryFragmentRef }: Props) => {
               borderRadius: 'sm',
             }}
           >
-            {interests ? interests.slice((interests.length / 3) * 2, interests.length).map(({ title, id, preview }) => (
-              <>
-                <ListItem component='a' href={`/events?interests[]=${id}`} sx={{ '&:hover': { cursor: 'pointer', textDecoration: 'underline' }}}>
+            {interests ? interests.slice((interests.length / 3) * 2, interests.length).map(({ title, slug, preview }) => (
+              <React.Fragment key={slug}>
+                <ListItem component='a' href={`/events?interests=${slug}`} sx={{ '&:hover': { cursor: 'pointer', textDecoration: 'underline' }}}>
                   <ListItemDecorator>
                     <Avatar size="sm" src={preview || undefined} />
                   </ListItemDecorator>
                   {title}
                 </ListItem>
                 <ListDivider inset='startContent' />
-              </>
+              </React.Fragment>
             )) : null}
           </List>
         </Grid>
@@ -143,8 +143,8 @@ const RootScene = ({ queryFragmentRef }: Props) => {
           >
             <AspectRatio minHeight="100%" maxHeight="100%">
               <img
-                src="https://s3.eu-north-1.amazonaws.com/stopoverx.production/shallow-focused-shot-cap-wearing-man-s-back-during-sunset-golden-hour.jpg"
-                srcSet="https://s3.eu-north-1.amazonaws.com/stopoverx.production/shallow-focused-shot-cap-wearing-man-s-back-during-sunset-golden-hour.jpg 2x"
+                src="https://s3.eu-north-1.amazonaws.com/stopoverx.production/portrait-flight-attendant-with-inflatable-jacket_23-2150282858.jpg"
+                srcSet="https://s3.eu-north-1.amazonaws.com/stopoverx.production/portrait-flight-attendant-with-inflatable-jacket_23-2150282858.jpg 2x"
                 loading="lazy"
                 alt=""
               />
@@ -158,7 +158,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
                 left: '50%'
                }}
              >
-              <Button>
+              <Button size='lg' sx={{ boxShadow: '0 0 2px white;' }}>
                 Стать партнером
               </Button>
             </Link>
