@@ -27,7 +27,7 @@ const Section = ({ children, color, variant, ...props }: ISectionProps) => (
   <Grid xs={12} {...props}>
     <Card variant={variant || "outlined"} color={color}>
       <CardContent>
-        <Grid container spacing={1}>
+        <Grid container spacing={0}>
           {children}
         </Grid>
       </CardContent>

@@ -40,7 +40,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   const isLargeDisplay = useMediaQuery(theme.breakpoints.up("lg"));
   const isVeryLargeDisplay = useMediaQuery(theme.breakpoints.up("xl"));
   const currentPage = useQuery('currentPage', 1)
-  const updateCurrentPage = useUpdateQuery('currentPage', 1)
+  const updateCurrentPage = useUpdateQuery('currentPage')
   const { data, hasPrevious, hasNext, loadPrevious, loadNext, refetch } =
     usePaginationFragment<
       EventsScenePaginationQuery,
@@ -80,10 +80,10 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     `,
     eventsFragmentRef as EventsScene_InterestsFragment$key
   );
-  console.log(router.query)
-  const query = useQuery('query', router.query.query)
-  const interestsSlug = useQuery('interests', [router.query.interests])
-  const updateInterests = useUpdateQuery('interests', [router.query.interests])
+  
+  const query = useQuery('query')
+  const interestsSlug = useQuery('interests')
+  const updateInterests = useUpdateQuery('interests')
   const events = usePagedEdges(data.events, currentPage, 10);
   const [{ filters }, setFilters] = React.useState<any>({
     query,

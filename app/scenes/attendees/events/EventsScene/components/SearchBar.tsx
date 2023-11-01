@@ -17,9 +17,9 @@ interface SearchBarProps {
 
 const SearchBar = ({ redirect = false }: SearchBarProps) => {
   const router = useRouter()
-  const updateQuery = useUpdateQuery('query', router.query.query)
-  const updateInterest = useUpdateQuery('interests', [router.query.interests])
-  const query = useQuery('query', router.query.query)
+  const updateQuery = useUpdateQuery('query')
+  const updateInterest = useUpdateQuery('interests')
+  const query = useQuery('query')
   const [internalQuery, setInternalQuery] = React.useState(router.query.query)
 
   const eventsAutocompleteFragmentRef = useLazyLoadQuery<SearchBar_AutocompleteQuery>(graphql`
@@ -145,7 +145,7 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
           }
         }
       }}
-      onInputChange={(e, value) => {
+      onInputChange={(e: any, value) => {
         setInternalQuery(value);
       }}
       renderOption={(props, option) => (
@@ -168,7 +168,7 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
           )}
         </AutocompleteOption>
       )}
-      onChange={(evt, value) => {
+      onChange={(evt: any, value) => {
         if (typeof value === 'string') {
           setInternalQuery(value)
           return

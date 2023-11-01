@@ -23,7 +23,7 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
   return (
     <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
       <Box>
-        <Typography textAlign="justify">{event.description}</Typography>
+        <div style={{ textAlign: 'justify', whiteSpace: 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: event.description }} />
       </Box>
       <Box>
         <BookEvent eventFragmentRef={event} />

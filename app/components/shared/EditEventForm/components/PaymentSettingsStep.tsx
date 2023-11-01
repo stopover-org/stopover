@@ -28,8 +28,6 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
   const organizerPriceField = form.useFormField<number>(
     "organizerPricePerUomCents"
   );
-
-  console.log(form, organizerPriceField);
   const depositAmountField = form.useFormField<number>("depositAmountCents");
   const requiresDepositField = form.useFormField("requiresDeposit");
   const { t } = useTranslation();
@@ -49,6 +47,7 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
             sx={{ maxWidth: 300 }}
             type="number"
             {...organizerPriceField}
+            min={0}
             onChange={(value) => {
               if (parseInt(value, 10) >= 0) {
                 organizerPriceField.onChange(parseInt(value, 10));
