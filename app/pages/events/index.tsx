@@ -9,6 +9,7 @@ import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 import { events_Query } from "../../artifacts/events_Query.graphql";
+import { useQuery } from "../../lib/hooks/useQuery";
 
 const Query = graphql`
   query events_Query {
@@ -31,6 +32,10 @@ const Events = ({
 }: RelayProps<Props, events_Query>) => {
   const data = usePreloadedQuery(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
+
+  useQuery("interests", []);
+
+  useQuery("query");
 
   return (
     <Layout currentUserFragment={data.currentUser} CSN={CSN}>

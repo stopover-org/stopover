@@ -28,7 +28,7 @@ const Sidebar = ({
   onChange,
   sidebar,
 }: Props) => {
-  const query = useQuery('query', '')
+  const query = useQuery('query')
   const { t } = useTranslation();
   const theme = useTheme();
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));

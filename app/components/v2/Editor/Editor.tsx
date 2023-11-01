@@ -1,5 +1,4 @@
 import React from "react";
-import "react-quill/dist/quill.snow.css";
 import { Editor as TinymceEditor } from "@tinymce/tinymce-react";
 
 interface EditorProps {
@@ -54,8 +53,6 @@ const Editor = ({ value, onChange, placeholder }: EditorProps) => (
     }}
     onEditorChange={(_, editor) => {
       if (onChange instanceof Function) {
-        console.log(editor.getContent({ format: "html" }));
-
         onChange(editor.getContent({ format: "html" }));
       }
     }}

@@ -28,8 +28,6 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
   const organizerPriceField = form.useFormField<number>(
     "organizerPricePerUomCents"
   );
-
-  console.log(form, organizerPriceField);
   const depositAmountField = form.useFormField<number>("depositAmountCents");
   const requiresDepositField = form.useFormField("requiresDeposit");
   const { t } = useTranslation();

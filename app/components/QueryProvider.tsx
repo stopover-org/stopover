@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React from "react";
 
 export interface IQueryContext extends Record<string, any> {}
@@ -21,7 +22,8 @@ interface QueryProviderProps {
 }
 
 const QueryProvider = ({ children }: QueryProviderProps) => {
-  const [query, setQuery] = React.useState<IQueryContext>({});
+  const router = useRouter();
+  const [query, setQuery] = React.useState<IQueryContext>(router.query);
   const setKey = React.useCallback(
     (key: string, value: any) => {
       setQuery({ ...query, [key]: value });
