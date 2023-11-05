@@ -85,7 +85,6 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     filters: { query },
   });
   const queryRef = React.useRef<Disposable>();
-  console.log(filters);
 
   React.useEffect(() => {
     const startDate = filters?.startDate

@@ -6,7 +6,7 @@ const { withSentryConfig } = require("@sentry/nextjs");
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: ['placehold.co'],
+        domains: ['placehold.co', 's3.eu-north-1.amazonaws.com'],
     },
     env: {
         GRAPHQL_API_URL: process.env.GRAPHQL_API_URL,

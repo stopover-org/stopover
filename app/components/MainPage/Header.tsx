@@ -82,7 +82,10 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
             </Box>
           )}
           <Link href="/">
-            <Image src="https://placehold.co/250x75" {...imageSize} />
+            <Image
+              src="https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx.svg"
+              {...imageSize}
+            />
           </Link>
         </Stack>
       </Grid>
