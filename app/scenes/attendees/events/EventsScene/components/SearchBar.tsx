@@ -6,27 +6,30 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import Link from "../../../../../components/v2/Link/Link";
-import { useUpdateQuery, useQuery } from '../../../../../lib/hooks/useQuery'
+import { useUpdateQuery, useQuery } from "../../../../../lib/hooks/useQuery";
 import { SearchBar_EventsAutocompleteFragment$key } from "../../../../../artifacts/SearchBar_EventsAutocompleteFragment.graphql";
 import { SearchBarAutocompleteQuery } from "../../../../../artifacts/SearchBarAutocompleteQuery.graphql";
 import { SearchBar_AutocompleteQuery } from "../../../../../artifacts/SearchBar_AutocompleteQuery.graphql";
 
 interface SearchBarProps {
-  redirect?: boolean
+  redirect?: boolean;
 }
 
 const SearchBar = ({ redirect = false }: SearchBarProps) => {
-  const router = useRouter()
-  const updateQuery = useUpdateQuery('query')
-  const updateInterest = useUpdateQuery('interests')
-  const query = useQuery('query')
-  const [internalQuery, setInternalQuery] = React.useState(router.query.query)
-
-  const eventsAutocompleteFragmentRef = useLazyLoadQuery<SearchBar_AutocompleteQuery>(graphql`
-    query SearchBar_AutocompleteQuery {
-      ...SearchBar_EventsAutocompleteFragment
-    }
-  `, {})
+  const router = useRouter();
+  const updateQuery = useUpdateQuery("query");
+  const updateInterest = useUpdateQuery("interests");
+  const query = useQuery("query");
+  const [internalQuery, setInternalQuery] = React.useState(router.query.query);
+  const eventsAutocompleteFragmentRef =
+    useLazyLoadQuery<SearchBar_AutocompleteQuery>(
+      graphql`
+        query SearchBar_AutocompleteQuery {
+          ...SearchBar_EventsAutocompleteFragment
+        }
+      `,
+      {}
+    );
 
   const [data, refetch] = useRefetchableFragment<
     SearchBarAutocompleteQuery,
@@ -64,12 +67,11 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
     `,
     eventsAutocompleteFragmentRef
   );
-
   const requestRef = React.useRef<NodeJS.Timeout | null>(null);
 
   React.useEffect(() => {
-    setInternalQuery(query)
-  }, [query])
+    setInternalQuery(query);
+  }, [query]);
 
   React.useEffect(() => {
     if (requestRef.current) {
@@ -79,7 +81,10 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
     }
 
     requestRef.current = setTimeout(() => {
-      refetch({ query: internalQuery as string }, { fetchPolicy: "store-and-network" });
+      refetch(
+        { query: internalQuery as string },
+        { fetchPolicy: "store-and-network" }
+      );
     }, 500);
   }, [internalQuery]);
 
@@ -118,12 +123,13 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
 
   const onQueryChange = (e?: React.SyntheticEvent<any, any>) => {
     if (e) {
-      e.preventDefault()
-      e.stopPropagation()
+      e.preventDefault();
+
+      e.stopPropagation();
     }
 
-    updateQuery(internalQuery)
-  }
+    updateQuery(internalQuery);
+  };
 
   return (
     <Autocomplete
@@ -139,9 +145,9 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
       onKeyUp={(e) => {
         if (e.key === "Enter") {
           if (redirect) {
-            router.push(`/events?query=${internalQuery}`)
+            router.push(`/events?query=${internalQuery}`);
           } else {
-            updateQuery(internalQuery)
+            updateQuery(internalQuery);
           }
         }
       }}
@@ -155,7 +161,7 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
               <Typography>{option.title}</Typography>
             </Link>
           ) : (
-            <Typography color='primary'>{option.title}</Typography>
+            <Typography color="primary">{option.title}</Typography>
           )}
           &nbsp;
           <Chip size="sm" variant="outlined">
@@ -169,15 +175,15 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
         </AutocompleteOption>
       )}
       onChange={(evt: any, value) => {
-        if (typeof value === 'string') {
-          setInternalQuery(value)
-          return
+        if (typeof value === "string") {
+          setInternalQuery(value);
+          return;
         }
 
         if (value.link) {
           router.push(value.link);
-        } else if (value.type === 'interest' && value.query) {
-          updateInterest(value.query)
+        } else if (value.type === "interest" && value.query) {
+          updateInterest(value.query);
         }
       }}
       inputValue={internalQuery as string}

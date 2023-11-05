@@ -7,7 +7,6 @@ import {
   useFragment,
   usePaginationFragment,
 } from "react-relay";
-import { useRouter } from "next/router";
 import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
 import { EventsScene_EventsPaginationFragment$key } from "../../../../artifacts/EventsScene_EventsPaginationFragment.graphql";
@@ -33,14 +32,13 @@ const ContentWrapper = styled(Grid)(({ theme }) => ({
 }));
 
 const EventsScene = ({ eventsFragmentRef }: Props) => {
-  const router = useRouter();
   const theme = useTheme();
   const { setContent } = React.useContext(GlobalSidebarContext);
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   const isLargeDisplay = useMediaQuery(theme.breakpoints.up("lg"));
   const isVeryLargeDisplay = useMediaQuery(theme.breakpoints.up("xl"));
-  const currentPage = useQuery('currentPage', 1)
-  const updateCurrentPage = useUpdateQuery('currentPage')
+  const currentPage = useQuery("currentPage", 1);
+  const updateCurrentPage = useUpdateQuery("currentPage");
   const { data, hasPrevious, hasNext, loadPrevious, loadNext, refetch } =
     usePaginationFragment<
       EventsScenePaginationQuery,
@@ -52,7 +50,6 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String", defaultValue: "0" }
-          filters: { type: "EventsFilter", defaultValue: {} }
         ) {
           events(first: $count, after: $cursor, filters: $filters)
             @connection(key: "EventsScene_query_events") {
@@ -80,16 +77,15 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     `,
     eventsFragmentRef as EventsScene_InterestsFragment$key
   );
-  
-  const query = useQuery('query')
-  const interestsSlug = useQuery('interests')
-  const updateInterests = useUpdateQuery('interests')
+  const query = useQuery("query");
+  const interestsSlug = useQuery("interests");
+  const updateInterests = useUpdateQuery("interests");
   const events = usePagedEdges(data.events, currentPage, 10);
   const [{ filters }, setFilters] = React.useState<any>({
-    query,
+    filters: { query },
   });
-  
   const queryRef = React.useRef<Disposable>();
+  console.log(filters);
 
   React.useEffect(() => {
     const startDate = filters?.startDate
@@ -167,8 +163,8 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         {interestsSlug.length > 0 && (
           <Grid xl={9} lg={12} xs={12} p={1}>
             <Stack direction="row" useFlexGap spacing={2}>
-              {interestsSlug.map((interest: string) => (
-                interest ? 
+              {interestsSlug.map((interest: string) =>
+                interest ? (
                   <Chip
                     key={interest}
                     size="lg"
@@ -176,17 +172,19 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
                     endDecorator={
                       <ChipDelete
                         onDelete={() => {
-                          updateInterests(interestsSlug.filter(
-                            (slug: string) => slug !== interest
-                          ))
+                          updateInterests(
+                            interestsSlug.filter(
+                              (slug: string) => slug !== interest
+                            )
+                          );
                         }}
                       />
                     }
                   >
                     {interest}
                   </Chip>
-                  : null
-              ))}
+                ) : null
+              )}
             </Stack>
           </Grid>
         )}
