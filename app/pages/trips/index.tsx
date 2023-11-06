@@ -15,6 +15,7 @@ const Query = graphql`
   query trips_Query {
     currentUser {
       ...Layout_CurrentUserFragment
+      ...AttendeeSidebar_CurrentUserFragment
       account {
         ...TripsScene_AccountFragment
       }
@@ -35,7 +36,7 @@ const Trips = ({
 
   return (
     <Layout currentUserFragment={data.currentUser} CSN={CSN}>
-      <AttendeeSidebar>
+      <AttendeeSidebar currentUserFragmentRef={data.currentUser}>
         <TripsScene accountFragmentRef={data.currentUser.account} />
       </AttendeeSidebar>
     </Layout>

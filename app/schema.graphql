@@ -9,7 +9,7 @@ type Account implements Node {
   interests: [Interest!]
   latitude: Float
   longitude: Float
-  name: String!
+  name: String
   phones: [String!]
   primaryEmail: String
   primaryPhone: String
