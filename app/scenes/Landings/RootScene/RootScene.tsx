@@ -68,7 +68,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
             }}
           >
             <Typography fontSize="28px" level="title-lg" sx={{}}>
-              {t("scenes.rootScene.lookingFor")}:
+              {t("scenes.rootScene.lookingFor")}
             </Typography>
             <SearchBar redirect />
           </Box>
@@ -84,7 +84,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
       >
         <Grid xs={12}>
           <Typography fontSize="32px" level="title-lg">
-            {t("scenes.rootScene.whatAreYouLookingForm")}:
+            {t("scenes.rootScene.whatAreYouLookingForm")}
           </Typography>
         </Grid>
         <Grid xs={12} sm={12} md={4} lg={4}>
@@ -216,7 +216,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
               }}
             >
               <Button size="lg" sx={{ boxShadow: "0 0 2px white;" }}>
-                {t("scenes.rootScene.becomePartner")}:
+                {t("scenes.rootScene.becomePartner")}
               </Button>
             </Link>
           </Box>
