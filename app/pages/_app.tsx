@@ -13,12 +13,15 @@ import "@fontsource/public-sans";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
+import ReactGA from "react-ga4";
 import { getClientEnvironment } from "../lib/clientEnvironment";
 import { theme } from "../lib/theme";
 import ApiKeysProvider from "../components/ApiKeysProvider";
 import englishTranslations from "../config/locales/en";
 import russianTranslations from "../config/locales/ru";
 import QueryProvider from "../components/QueryProvider";
+
+ReactGA.initialize("G-VC1XS420Q4");
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({

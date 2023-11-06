@@ -66,6 +66,7 @@
     "react-dates": "^21.8.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-ga4": "^2.1.0",
     "react-google-autocomplete": "^2.7.3",
     "react-hook-form": "^7.43.8",
     "react-i18next": "^13.2.2",
