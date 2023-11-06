@@ -6,7 +6,7 @@ import { TypographyProps } from "../Typography/Typography";
 
 interface BaseLinkProps {
   children: React.ReactNode;
-  href: string;
+  href?: string;
   disabled?: boolean;
   primary?: boolean;
   underline?: boolean;
@@ -67,10 +67,11 @@ const Link = React.forwardRef(
         sx={{
           textDecoration: underline ? "underline" : "unset",
           cursor: "pointer",
+          color: primary ? "primary" : color,
           ...sx,
         }}
       >
-        <a href={href}>{children}</a>
+        {href ? <a href={href}>{children}</a> : children}
       </TypographyLink>
     );
   }

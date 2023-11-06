@@ -4,7 +4,7 @@ import * as momentTimezones from "moment-timezone/data/packed/latest.json";
 import { Card, Grid } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import { useSignInForm } from "./useSignInForm";
-import Link from "../../components/v1/Link";
+import Link from "../../components/v2/Link";
 import Input from "../../components/v2/Input";
 import PhoneInput from "../../components/v2/PhoneInput";
 import Typography from "../../components/v2/Typography";
@@ -78,15 +78,14 @@ export const SignIn = () => {
                   router.back();
                 }
               }}
+              underline={false}
             >
-              <Typography underline>
-                &lt;{" "}
-                {showCode
-                  ? t("scenes.signInScene.changeLoginType", {
-                      type: t(`general.${typeField.value}`),
-                    })
-                  : t("general.back")}
-              </Typography>
+              &lt;{" "}
+              {showCode
+                ? t("scenes.signInScene.changeLoginType", {
+                    type: t(`general.${typeField.value}`),
+                  })
+                : t("general.back")}
             </Link>
             {showCode && (
               <Typography level="body-md">{usernameField.value}</Typography>
@@ -115,11 +114,17 @@ export const SignIn = () => {
                           seconds: delay,
                         })
                       ) : (
-                        <Link onClick={handleSubmit(true, 0)}>
-                          <Typography fontSize="sm" color="primary">
-                            {t("scenes.signInScene.resendCode")}
-                          </Typography>
-                        </Link>
+                        <>
+                          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                          <Link
+                            onClick={handleSubmit(true, 0)}
+                            underline={false}
+                          >
+                            <Typography fontSize="sm" color="primary">
+                              {t("scenes.signInScene.resendCode")}
+                            </Typography>
+                          </Link>
+                        </>
                       )
                     }
                   />
@@ -145,16 +150,15 @@ export const SignIn = () => {
                     )}
                   </Grid>
                   <Grid container justifyContent="flex-end">
-                    <Link onClick={changeType}>
-                      <Typography fontSize="sm" color="primary">
-                        {t("scenes.signInScene.useType", {
-                          type: t(
-                            `general.${
-                              typeField.value === "email" ? "phone" : "email"
-                            }`
-                          ),
-                        })}
-                      </Typography>
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                    <Link onClick={changeType} underline={false} primary>
+                      {t("scenes.signInScene.useType", {
+                        type: t(
+                          `general.${
+                            typeField.value === "email" ? "phone" : "email"
+                          }`
+                        ),
+                      })}
                     </Link>
                   </Grid>
                 </>
