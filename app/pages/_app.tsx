@@ -12,6 +12,7 @@ import "react-phone-input-2/lib/style.css";
 import "@fontsource/public-sans";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
 import { getClientEnvironment } from "../lib/clientEnvironment";
 import { theme } from "../lib/theme";
 import ApiKeysProvider from "../components/ApiKeysProvider";
@@ -24,22 +25,25 @@ const initialPreloadedQuery = getInitialPreloadedQuery({
   createClientEnvironment: () => getClientEnvironment()!,
 });
 
-i18n.use(initReactI18next).init({
-  resources: {
-    en: {
-      translation: englishTranslations,
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources: {
+      en: {
+        translation: englishTranslations,
+      },
+      ru: {
+        translation: russianTranslations,
+      },
     },
-    ru: {
-      translation: russianTranslations,
-    },
-  },
-  lng: "en",
-  fallbackLng: "en",
+    lng: "en",
+    fallbackLng: "en",
 
-  interpolation: {
-    escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
-  },
-});
+    interpolation: {
+      escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
+    },
+  });
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const relayProps = getRelayProps(pageProps, initialPreloadedQuery);
