@@ -10,11 +10,14 @@ import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 import AttendeeSidebar from "../../components/shared/AttendeeSidebar";
 import { profile_Query } from "../../artifacts/profile_Query.graphql";
 import ProfileScene from "../../scenes/attendees/ProfileScene";
+import AuthGuard from "../../components/shared/AuthGuard";
 
 const Query = graphql`
   query profile_Query {
     currentUser {
       ...Layout_CurrentUserFragment
+      ...AttendeeSidebar_CurrentUserFragment
+      status
       account {
         ...ProfileScene_AccountFragment
       }
@@ -36,9 +39,11 @@ const Profile = ({
 
   return (
     <Layout currentUserFragment={data.currentUser} CSN={CSN}>
-      <AttendeeSidebar>
-        <ProfileScene accountFragmentRef={data.currentUser.account} />
-      </AttendeeSidebar>
+      <AuthGuard accessible={Boolean(data.currentUser.status === "active")}>
+        <AttendeeSidebar currentUserFragmentRef={data.currentUser}>
+          <ProfileScene accountFragmentRef={data.currentUser.account} />
+        </AttendeeSidebar>
+      </AuthGuard>
     </Layout>
   );
 };

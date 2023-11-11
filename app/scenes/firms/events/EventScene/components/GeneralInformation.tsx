@@ -12,6 +12,7 @@ import ImagesPreview from "../../../../../components/shared/ImagesPreview";
 import CancellationsSection from "./CancellationsSection";
 import Section from "../../../../../components/v2/Section";
 import Typography from "../../../../../components/v2/Typography/Typography";
+import Description from "../../../../../components/v2/Description";
 
 interface GeneralInformationProps {
   eventFragmentRef: GeneralInformation_EventFragment$key;
@@ -102,7 +103,7 @@ const GeneralInformation = ({
               </Typography>
             </Grid>
             <Grid xs={10}>
-              <Typography>{event.description}</Typography>
+              <Description html={event.description} />
             </Grid>
 
             <Grid xs={12} p={5}>

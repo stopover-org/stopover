@@ -18,7 +18,7 @@ module Types
       end
 
       def link
-        "/events?interests[]=#{object.slug}"
+        "/events?interests=#{object.slug}"
       end
 
       def preview

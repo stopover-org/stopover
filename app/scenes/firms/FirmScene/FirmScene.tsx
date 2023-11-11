@@ -14,6 +14,7 @@ import Fieldset from "../../../components/v2/Fieldset";
 import useStatusColor from "../../../lib/hooks/useStatusColor";
 import { capitalize } from "../../../lib/utils/capitalize";
 import ImagesPreview from "../../../components/shared/ImagesPreview";
+import Description from "../../../components/v2/Description";
 
 interface FirmSceneProps {
   firmFragmentRef: FirmScene_FirmFragment$key;
@@ -219,7 +220,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
             <Divider sx={{ margin: "5px" }} />
           </Grid>
           <Grid xs={12}>
-            <Typography>{firm.description}</Typography>
+            <Description html={firm.description || ''} />
           </Grid>
         </Fieldset>
 

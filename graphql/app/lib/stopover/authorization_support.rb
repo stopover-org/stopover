@@ -6,7 +6,7 @@ module Stopover
   class AuthorizationSupport
     JWT_ALGORITHM = 'HS256'
     COOKIE_KEY = 'access_token'
-    AUTHORIZATION_HEADER = 'Authorization'
+    AUTHORIZATION_HEADER = ' X-Authorization'
 
     def self.decode_user(headers:, cookies:)
       cookie_token = cookies.encrypted[COOKIE_KEY]

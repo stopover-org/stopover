@@ -71,13 +71,17 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
   }, [booking]);
 
   const fullAmount = React.useMemo(
-    () =>
-      t(`scenes.attendees.trips.tripScene.payOnline`, {
+    () => {
+      if (booking.leftToPayPrice.cents === 0) {
+        return t("scenes.attendees.trips.tripScene.confirmBooking");
+      }
+      return t(`scenes.attendees.trips.tripScene.payOnline`, {
         amount: getCurrencyFormat(
           booking.leftToPayPrice?.cents,
           booking.leftToPayPrice?.currency.name
         ),
-      }),
+      })
+    },
     [booking]
   );
 
@@ -149,7 +153,7 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
           </>
         ) : (
           <Grid container alignItems="center" spacing={2}>
-            {!booking.paymentType && (
+            {!booking.paymentType && booking.leftToPayPrice.cents !== 0 && booking.leftToPayDepositPrice.cents !== 0 && (
               <Grid>
                 <Autocomplete
                   disableClearable

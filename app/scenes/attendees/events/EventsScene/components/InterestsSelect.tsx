@@ -17,8 +17,8 @@ interface InterestsSelectProps {
 }
 
 const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
-  const queryInterests = useQuery('interests', [])
-  const updateInterests = useUpdateQuery('interests', [])
+  const queryInterests = useQuery('interests')
+  const updateInterests = useUpdateQuery('interests')
   const { t } = useTranslation();
   const { interests } = useFragment<InterestsSelect_InterestsFragment$key>(
     graphql`

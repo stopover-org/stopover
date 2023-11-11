@@ -21,14 +21,16 @@ module Mutations
         case type
         when 'phone'
           if current_user
-            user = current_user
+            existing_user = User.find_by(phone: username.gsub(/[\s()\-]/, ''))
+            user = existing_user || current_user
             user.update!(phone: username.gsub(/[\s()\-]/, ''))
           else
             user = User.find_or_create_by!(phone: username.gsub(/[\s()\-]/, ''))
           end
         when 'email'
           if current_user
-            user = current_user
+            existing_user = User.find_by(email: username)
+            user = existing_user || current_user
             user.update!(email: username)
           else
             user = User.find_or_create_by!(email: username)

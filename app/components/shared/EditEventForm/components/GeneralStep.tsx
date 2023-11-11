@@ -1,16 +1,16 @@
 import React from "react";
 import { Grid, Option, Stack } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import Fieldset from "../../../v2/Fieldset/Fieldset";
-import Input from "../../../v2/Input/Input";
-import FileUploader from "../../../v2/FileUploader/FileUploader";
-import AddressFieldset from "../../AddressFieldset/AddressFieldset";
+import Fieldset from "../../../v2/Fieldset";
+import Input from "../../../v2/Input";
+import FileUploader from "../../../v2/FileUploader";
+import AddressFieldset from "../../AddressFieldset";
 import useFormContext from "../../../../lib/hooks/useFormContext";
-import Typography from "../../../v2/Typography/Typography";
-import Checkbox from "../../../v2/Checkbox/Checkbox";
-import Select from "../../../v2/Select/Select";
-import TextArea from "../../../v2/TextArea/TextArea";
+import Typography from "../../../v2/Typography";
+import Checkbox from "../../../v2/Checkbox";
+import Select from "../../../v2/Select";
 import ImagesPreviewFields from "../../ImagesPreviewFields";
+import Editor from "../../../v2/Editor";
 
 const GeneralStep = () => {
   const form = useFormContext();
@@ -19,6 +19,7 @@ const GeneralStep = () => {
   const requiresContractField = form.useFormField("requiresContract");
   const requiresPassport = form.useFormField("requiresPassport");
   const eventType = form.useFormField("eventType");
+  const descriptionField = form.useFormField("description");
   const { t } = useTranslation();
 
   return (
@@ -157,12 +158,7 @@ const GeneralStep = () => {
               type="number"
               label={t("models.event.attributes.maxAttendees")}
               placeholder="Max"
-              slotProps={{
-                input: {
-                  min: 0,
-                  step: 1,
-                },
-              }}
+              min={0}
               {...form.useFormField("maxAttendees")}
             />
           </Grid>
@@ -175,9 +171,9 @@ const GeneralStep = () => {
           </Typography>
         </Grid>
         <Grid xs={12}>
-          <TextArea
-            minRows={6}
-            {...form.useFormField("description")}
+          <Editor
+            value={descriptionField.value}
+            onChange={descriptionField.onChange}
             placeholder={t("models.event.attributes.description")}
           />
         </Grid>

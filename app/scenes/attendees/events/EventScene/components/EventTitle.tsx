@@ -33,13 +33,13 @@ const EventTitle = ({ eventFragmentRef }: TitleProps) => {
       </Box>
       <Box>
         <Stack flexDirection="row" alignItems="center">
-          <Rating
+{/*          <Rating
             rating={event.averageRating}
             label={t("event.ratingOf", {
               val: event.averageRating || 0,
               max: 5,
             })}
-          />
+          />*/}
           {event.tags.map((tag) => (
             <Tag key={tag.id} href={`/events?tags=${tag.id}`} primary>
               {tag.title}

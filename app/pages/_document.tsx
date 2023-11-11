@@ -6,6 +6,9 @@ import Document, {
   NextScript,
 } from "next/document";
 import { createRelayDocument, RelayDocument } from "relay-nextjs/document";
+import React from "react";
+import { prepareStyles } from "../components/v2/Description/Description";
+import { EditorStyles } from "../components/v2/Editor/Editor";
 
 type DocumentProps = {
   relayDocument: RelayDocument;
@@ -37,6 +40,8 @@ class MyDocument extends Document<DocumentProps> {
       <Html>
         <Head>
           <relayDocument.Script />
+
+          <style>{prepareStyles(EditorStyles)}</style>
         </Head>
         <body>
           <Main />

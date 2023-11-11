@@ -1,5 +1,4 @@
 import React from "react";
-import NextLink from "next/link";
 import { Tooltip, styled } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import Typography from "../Typography";
@@ -7,7 +6,7 @@ import { TypographyProps } from "../Typography/Typography";
 
 interface BaseLinkProps {
   children: React.ReactNode;
-  href: string | object;
+  href?: string;
   disabled?: boolean;
   primary?: boolean;
   underline?: boolean;
@@ -60,21 +59,20 @@ const Link = React.forwardRef(
     }
 
     return (
-      <NextLink href={href}>
-        <TypographyLink
-          {...props}
-          ref={ref}
-          color={primary ? "primary" : color}
-          level={level || "body-md"}
-          sx={{
-            textDecoration: underline ? "underline" : "unset",
-            cursor: "pointer",
-            ...sx,
-          }}
-        >
-          {children}
-        </TypographyLink>
-      </NextLink>
+      <TypographyLink
+        {...props}
+        ref={ref}
+        color={primary ? "primary" : color}
+        level={level || "body-md"}
+        sx={{
+          textDecoration: underline ? "underline" : "unset",
+          cursor: "pointer",
+          color: primary ? "primary" : color,
+          ...sx,
+        }}
+      >
+        {href ? <a href={href}>{children}</a> : children}
+      </TypographyLink>
     );
   }
 );

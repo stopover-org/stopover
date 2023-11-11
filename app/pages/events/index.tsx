@@ -9,19 +9,22 @@ import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
 import { IApiKeys } from "../../components/ApiKeysProvider";
 import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
 import { events_Query } from "../../artifacts/events_Query.graphql";
+import { useQuery } from "../../lib/hooks/useQuery";
+import { EventsFilter } from "../../artifacts/EventsScenePaginationQuery.graphql";
 
-const Query = graphql`
-  query events_Query {
+export const Query = graphql`
+  query events_Query($filters: EventsFilter!) {
     currentUser {
       ...Layout_CurrentUserFragment
     }
-    ...EventsScene_InterestsFragment
     ...EventsScene_EventsPaginationFragment
+    ...EventsScene_InterestsFragment
   }
 `;
 
 interface Props {
   apiKeys: IApiKeys;
+  filters: EventsFilter;
 }
 
 const Events = ({
@@ -29,12 +32,16 @@ const Events = ({
   apiKeys,
   CSN,
 }: RelayProps<Props, events_Query>) => {
-  const data = usePreloadedQuery(Query, preloadedQuery);
+  const queryRef = usePreloadedQuery(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
 
+  useQuery("interests", []);
+
+  useQuery("query");
+
   return (
-    <Layout currentUserFragment={data.currentUser} CSN={CSN}>
-      <EventsScene eventsFragmentRef={data} />
+    <Layout currentUserFragment={queryRef.currentUser} CSN={CSN}>
+      <EventsScene eventsFragmentRef={queryRef} />
     </Layout>
   );
 };
@@ -47,9 +54,22 @@ export default withRelay(Events, Query, {
   // Note: This function must always return the same value.
   createClientEnvironment: () => getClientEnvironment()!,
   // Gets server side props for the page.
-  serverSideProps: async () => ({
-    apiKeys: fetchEnvVariables(),
-  }),
+  serverSideProps: async (ctx) => {
+    // @ts-ignore
+    ctx.query.filters = {};
+
+    // @ts-ignore
+    ctx.query.filters.interests = [ctx.query.interests as string].filter(
+      Boolean
+    );
+
+    // @ts-ignore
+    ctx.query.filters.query = (ctx.query.query as string) || "";
+
+    return {
+      apiKeys: fetchEnvVariables(),
+    };
+  },
   // Server-side props can be accessed as the second argument
   // to this function.
   createServerEnvironment: async ({ req }) => {

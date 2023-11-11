@@ -1,18 +1,26 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { QueryContext } from "../../components/QueryProvider";
 
 export function useQuery(key?: string, defaultValue?: any) {
+  const router = useRouter();
   const { query, setKey } = React.useContext(QueryContext);
   React.useEffect(() => {
     if (defaultValue && key) {
-      setKey(key, defaultValue);
+      const isArray = Array.isArray(defaultValue);
+      const routerValue =
+        !Array.isArray(router.query[key]) && isArray
+          ? [router.query[key]].filter(Boolean)
+          : router.query[key];
+
+      setKey(key, routerValue || defaultValue);
     }
   }, []);
 
   return React.useMemo(() => {
     if (key) {
       if (Object.keys(query).includes(key)) {
-        return query[key] || defaultValue;
+        return query[key];
       }
       return defaultValue;
     }
@@ -20,12 +28,12 @@ export function useQuery(key?: string, defaultValue?: any) {
   }, [query, key]);
 }
 
-export function useUpdateQuery(key: string, defaultValue?: any) {
+export function useUpdateQuery(key: string) {
   const { setKey, deleteKey, query } = React.useContext(QueryContext);
   return React.useCallback(
     (value: any) => {
       if (value) {
-        setKey(key, value || defaultValue);
+        setKey(key, value);
       } else {
         deleteKey(key);
       }

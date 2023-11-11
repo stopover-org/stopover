@@ -6,7 +6,7 @@ module Types
       field :id,            ID, null: false
       field :status,        String, null: false
 
-      field :name,          String, null: false
+      field :name,          String
       field :street,        String
       field :city,          String
       field :region,        String

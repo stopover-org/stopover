@@ -8,16 +8,17 @@ import AddressFieldset from "../AddressFieldset/AddressFieldset";
 import Typography from "../../v2/Typography/Typography";
 import PhoneInput from "../../v2/PhoneInput/PhoneInput";
 import ChipsInput from "../../v2/ChipsInput/ChipsInput";
-import TextArea from "../../v2/TextArea/TextArea";
 import useFormContext from "../../../lib/hooks/useFormContext";
 import ImagePreviewFields from "../ImagePreviewFields";
 import { capitalize } from "../../../lib/utils/capitalize";
 import SubmitButton from "../SubmitButton";
+import Editor from "../../v2/Editor";
 
 const EditFirmForm = () => {
   const form = useFormContext();
   const paymentTypesField = form.useFormField("paymentTypes");
   const imageField = form.useFormField("image");
+  const descriptionField = form.useFormField("description");
   const { t } = useTranslation();
 
   return (
@@ -123,10 +124,9 @@ const EditFirmForm = () => {
           </Typography>
         </Grid>
         <Grid xs={12}>
-          <TextArea
-            {...form.useFormField("description")}
-            label={t("models.firm.attributes.description")}
-            minRows={5}
+          <Editor
+            value={descriptionField.value}
+            onChange={descriptionField.onChange}
           />
         </Grid>
       </Fieldset>

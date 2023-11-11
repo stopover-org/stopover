@@ -19,6 +19,7 @@ interface BaseInputProps {
   placeholder?: string;
   tooltip?: string;
   tooltipMark?: string;
+  min?: any;
 }
 
 export interface InputProps
@@ -35,15 +36,32 @@ const Input = React.forwardRef(
       value,
       tooltip,
       tooltipMark = "?",
+      min = 0,
       ...props
     }: InputProps,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref: React.Ref<HTMLDivElement>
   ) => {
-    const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (!(onChange instanceof Function)) return;
-      onChange(event.target.value, event);
-    };
+    const onChangeHandler = React.useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!(onChange instanceof Function)) return;
+        let inputValue: string | number = event.target.value;
+
+        if (props.type === "number") {
+          inputValue = parseInt(inputValue, 10);
+          if (Number.isNaN(inputValue)) {
+            inputValue = 0;
+          }
+        }
+
+        if (typeof min === "number" && (inputValue as number) < min) {
+          inputValue = min;
+        }
+
+        onChange(inputValue as string, event);
+      },
+      [onChange, value, min]
+    );
 
     const errorMessage = React.useMemo(
       () => (typeof error === "string" ? error : error?.message),

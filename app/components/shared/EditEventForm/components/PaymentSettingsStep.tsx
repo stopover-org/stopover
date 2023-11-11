@@ -47,6 +47,14 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
             sx={{ maxWidth: 300 }}
             type="number"
             {...organizerPriceField}
+            min={0}
+            onChange={(value) => {
+              if (parseInt(value, 10) >= 0) {
+                organizerPriceField.onChange(parseInt(value, 10));
+              } else {
+                organizerPriceField.onChange(0);
+              }
+            }}
             value={organizerPriceField.value.toString()}
           />
         </Grid>

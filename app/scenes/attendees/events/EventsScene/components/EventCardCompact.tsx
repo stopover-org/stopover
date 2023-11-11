@@ -105,7 +105,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
     });
   };
 
-  const changeInterest = useUpdateQuery('interests', [])
+  const changeInterest = useUpdateQuery('interests')
 
   return (
     <Grid
@@ -140,13 +140,13 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
               })}
             </Typography>
           </Box>
-          <Rating
+{/*          <Rating
             rating={event.averageRating}
             label={t("event.ratingOf", {
               val: event.averageRating | 0,
               max: 5,
             })}
-          />
+          />*/}
           <Stack
             flexDirection="row"
             alignItems="center"

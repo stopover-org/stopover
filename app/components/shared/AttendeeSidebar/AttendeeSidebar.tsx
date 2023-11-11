@@ -2,8 +2,10 @@ import { Grid, styled, useTheme } from "@mui/joy";
 import React from "react";
 import { useMediaQuery } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { graphql, useFragment } from "react-relay";
 import Sidebar from "../Sidebar/Sidebar";
 import { GlobalSidebarContext } from "../../GlobalSidebarProvider";
+import { AttendeeSidebar_CurrentUserFragment$key } from "../../../artifacts/AttendeeSidebar_CurrentUserFragment.graphql";
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
@@ -18,24 +20,40 @@ interface AttendeeSidebarProps {
     | React.ReactNode
     | React.ReactNode[];
   sx?: any;
+  currentUserFragmentRef: AttendeeSidebar_CurrentUserFragment$key;
 }
 
-const AttendeeSidebar = ({ children, sx }: AttendeeSidebarProps) => {
+const AttendeeSidebar = ({
+  children,
+  sx,
+  currentUserFragmentRef,
+}: AttendeeSidebarProps) => {
+  const currentUser = useFragment(
+    graphql`
+      fragment AttendeeSidebar_CurrentUserFragment on User {
+        status
+        account {
+          id
+        }
+      }
+    `,
+    currentUserFragmentRef
+  );
   const theme = useTheme();
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   const { setContent } = React.useContext(GlobalSidebarContext);
   const { t } = useTranslation();
-  const items = React.useMemo(
-    () => [
-      { title: t("layout.header.myProfile"), href: "/profile" },
-      { title: t("layout.header.myTrips"), href: "/trips" },
-    ],
-    []
-  );
+  const items = React.useMemo(() => {
+    const menuItems = [];
+    if (currentUser.status === "active")
+      menuItems.push({ title: t("layout.header.myProfile"), href: "/profile" });
+    menuItems.push({ title: t("layout.header.myTrips"), href: "/trips" });
+    return menuItems;
+  }, [t, currentUser]);
 
   React.useEffect(() => {
     setContent(<Sidebar items={items} />);
-  }, [t]);
+  }, [items, setContent]);
 
   return (
     <Grid

@@ -105,7 +105,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
     });
   };
 
-  const updateInterest = useUpdateQuery('interests', [])
+  const updateInterest = useUpdateQuery('interests')
 
   return (
     <React.Suspense>

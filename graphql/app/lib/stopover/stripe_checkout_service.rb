@@ -13,6 +13,12 @@ module Stopover
     end
 
     def self.generate_stripe_checkout_session(booking, payment_type)
+      if payment_type == 'full_amount'
+        return if booking.left_to_pay_price.zero?
+      elsif booking.left_to_pay_deposit_price.zero?
+        return
+      end
+
       payment = booking.payments.create!(payment_type: payment_type,
                                          balance: booking.event.firm.balance,
                                          total_price: payment_type == 'full_amount' ? booking.left_to_pay_price : booking.left_to_pay_deposit_price)
