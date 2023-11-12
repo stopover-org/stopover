@@ -1,0 +1,11 @@
+<h3>
+  <a href="<%= Rails.application.credentials.frontend_url %>/my-firm/bookings/<%= GraphqlSchema.id_from_object(booking)%>">Booking</a> was cancelled.
+</h3>
+
+<div>
+  All payments will be refunded
+</div>
+
+<div>
+  Booking was cancelled by <%= current_user.email %>
+</div>

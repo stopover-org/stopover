@@ -52,9 +52,7 @@ const TripScene = ({ tripFragmentRef }: TripSceneProps) => {
   return (
     <Grid container spacing={2} padding={2}>
       <Grid xs={12}>
-        <Typography level="h2">
-          {trip.cities.join(", ")}
-        </Typography>
+        <Typography level="h2">{trip.cities.join(", ")}</Typography>
       </Grid>
       <Grid xs={12}>
         <Typography level="h3">

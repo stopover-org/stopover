@@ -1,0 +1,11 @@
+<h3>
+  <%= booking.account.primary_email %> booked <a href="<%= Rails.application.credentials.frontend_url %>/my-firm/events/<%= GraphqlSchema.id_from_object(booking.event) %>"><%= booking.event.title %></a> at <%= I18n.l(booking.schedule.scheduled_for, format: :short) %>
+</h3>
+
+<div>
+  You can edit booking <a href="<%= Rails.application.credentials.frontend_url %>/my-firm/bookings/<%= GraphqlSchema.id_from_object(booking)%>">here</a>
+</div>
+
+<div>
+  You can add or remove attendees.
+</div>

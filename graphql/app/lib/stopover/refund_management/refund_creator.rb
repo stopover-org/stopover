@@ -25,6 +25,15 @@ module Stopover
           generate_related_refunds
 
           @parent_refund.save!
+
+          Notification.create!(
+            delivery_method: 'email',
+            to: @booking.account.primary_email,
+            subject: 'We sent refund to you',
+            content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/refund_created',
+                                                            locals: { booking: @booking, amount: refund.format,
+                                                                      penalty: penalty.positive? ? penalty.format : nil })
+          )
         end
 
         GraphqlSchema.subscriptions.trigger(:booking_changed, { bookingId: @booking.id }, { booking: @booking })

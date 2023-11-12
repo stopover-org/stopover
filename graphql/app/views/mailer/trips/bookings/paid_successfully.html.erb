@@ -1,0 +1,6 @@
+<h3>
+  <a href="<%= Rails.application.credentials.frontend_url %>/trips/<%= GraphqlSchema.id_from_object(booking.trip) %>#<%= GraphqlSchema.id_from_object(booking)%>">Booking</a> was paid successfully
+</h3>
+<div>
+  You can find recipt <a href="<%= Rails.application.credentials.frontend_url %>/checkouts/verify/<%= GraphqlSchema.id_from_object(booking)%>">here</a>
+</div>

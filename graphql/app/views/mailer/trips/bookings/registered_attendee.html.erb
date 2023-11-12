@@ -1,0 +1,7 @@
+<h3>
+  You was registered for <a href="<%= Rails.application.credentials.frontend_url %>/events/<%= GraphqlSchema.id_from_object(attendee.booking.event) %>"><%= attendee.booking.event.title %></a>
+</h3>
+
+<div>
+  <%= attendee.first_name %> <%= attendee.last_name %> was registered for event. You can check your booking <a href="<%= Rails.application.credentials.frontend_url %>/trips/<%= GraphqlSchema.id_from_object(attendee.booking.trip) %>#<%= GraphqlSchema.id_from_object(attendee.booking) %>">here</a>
+</div>

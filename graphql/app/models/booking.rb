@@ -65,11 +65,11 @@ class Booking < ApplicationRecord
     state :cancelled
     state :paid
 
-    event :pay do
+    event :pay, after_commit: :paid_notify do
       transitions from: :active, to: :paid
     end
 
-    event :partially_pay do
+    event :partially_pay, after_commit: :not_paid_notify do
       transitions from: :paid, to: :active
     end
 
@@ -99,6 +99,7 @@ class Booking < ApplicationRecord
   before_validation :create_attendee
   before_validation :adjust_stripe_integration, on: :create
   before_validation :create_booking_options,    on: :create
+  after_create :created_notify
   after_commit :refund_diff, if: :refundable?
 
   # SCOPES ================================================================
@@ -209,6 +210,44 @@ class Booking < ApplicationRecord
   end
 
   private
+
+  def created_notify
+    Notification.create!(
+      delivery_method: 'email',
+      to: booking.account.primary_email,
+      subject: 'You booked event',
+      content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/booking_created',
+                                                      locals: { booking: booking })
+    )
+
+    Notification.create!(
+      delivery_method: 'email',
+      to: booking.firm.primary_email,
+      subject: "#{booking.event.title} was booked for #{booking.schedule.scheduled_for}",
+      content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/bookings/booking_created',
+                                                      locals: { booking: self })
+    )
+  end
+
+  def paid_notify
+    Notification.create!(
+      delivery_method: 'email',
+      to: account.primary_email,
+      subject: 'Booking paid sucecssfully',
+      content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/paid_successfully',
+                                                      locals: { booking: self })
+    )
+  end
+
+  def not_paid_notify
+    Notification.create!(
+      delivery_method: 'email',
+      to: account.primary_email,
+      subject: 'Booking price was changed',
+      content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/not_paid_successfully',
+                                                      locals: { booking: self })
+    )
+  end
 
   def adjust_firm
     self.firm = event.firm unless firm

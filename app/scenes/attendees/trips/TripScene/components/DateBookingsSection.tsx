@@ -2,11 +2,11 @@ import React from "react";
 import { Moment } from "moment";
 import { graphql, useFragment } from "react-relay";
 import { Grid, Stack } from "@mui/joy";
+import { useRouter } from "next/router";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import { dayMonthFormat } from "../../../../../lib/utils/dates";
 import BookingCard from "./BookingCard";
 import { DateBookingsSection_TripFragment$key } from "../../../../../artifacts/DateBookingsSection_TripFragment.graphql";
-import { useRouter } from "next/router";
 
 interface DateBookingsSectionProps {
   tripFragmentRef: DateBookingsSection_TripFragment$key;
@@ -37,9 +37,14 @@ const DateBookingsSection = ({
   );
 
   React.useEffect(() => {
-    window.document.getElementById(window.document.location.hash.replace('#', ''))?.scrollIntoView()
-  }, [])
-  
+    const domNode = window.document.getElementById(
+      window.document.location.hash.replace("#", "")
+    );
+    if (domNode) {
+      domNode.scrollIntoView();
+    }
+  }, []);
+
   return (
     <Grid xs={12}>
       <Typography level="h3">{date.format(dayMonthFormat)}</Typography>

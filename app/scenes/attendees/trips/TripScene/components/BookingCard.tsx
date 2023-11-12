@@ -11,14 +11,12 @@ import {
   useTheme,
 } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import Link from "../../../../../components/v2/Link";
 import BookingTime from "./BookingTime";
 import BookingDescription from "./BookingDescription";
-import BookingEditForm from "./BookingEditForm";
 import Tag from "../../../../../components/v2/Tag/Tag";
 import { BookingCard_BookingFragment$key } from "../../../../../artifacts/BookingCard_BookingFragment.graphql";
 import BookingSummary from "../../../../../components/shared/BookingSummary";
@@ -72,11 +70,6 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
     `,
     bookingFragmentRef
   );
-  const [isFormOpened, setIsFormOpened] = React.useState(false);
-  const onShowBookingInfo = React.useCallback(
-    () => setIsFormOpened(!isFormOpened),
-    [isFormOpened, setIsFormOpened]
-  );
   const thme = useTheme();
   const isMobileView = useMediaQuery(thme.breakpoints.down("md"));
   const imageWidthHeight = isMobileView ? "100%" : "320px";
@@ -97,15 +90,23 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
     [booking.status]
   );
 
-  const [editAttendeesOpened, setEditAttendeesOpened] = React.useState<boolean>(false)
-  const [editBookingOpened, setEditBookingOpened] = React.useState<boolean>(false)
-  const [cancelBookingOpened, setCancelBookingOpened] = React.useState<boolean>(false)
-  const cancellable = useBookingCancellable(booking)
+  const [editAttendeesOpened, setEditAttendeesOpened] =
+    React.useState<boolean>(false);
 
+  const [editBookingOpened, setEditBookingOpened] =
+    React.useState<boolean>(false);
+
+  const [cancelBookingOpened, setCancelBookingOpened] =
+    React.useState<boolean>(false);
+  const cancellable = useBookingCancellable(booking);
+  const highlight = React.useMemo(
+    () => booking.id === window.document.location.hash.replace("#", ""),
+    []
+  );
 
   return (
     <Stack
-      direction={'column'}
+      direction="column"
       sx={(theme) => ({
         width: "880px",
         [theme.breakpoints.down("md")]: {
@@ -135,6 +136,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
             })}
             objectFit="cover"
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={booking.event.images[0]} loading="lazy" alt="" />
           </AspectRatio>
           <Box
@@ -179,6 +181,8 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
               >
                 <Typography
                   level="h3"
+                  color={highlight ? "primary" : "neutral"}
+                  variant={highlight ? "soft" : "plain"}
                   sx={(theme) => ({
                     fontSize: "22px",
                     whiteSpace: "nowrap",
@@ -217,7 +221,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
           <CheckoutForm bookingFragmentRef={booking} />
         </Grid>
         <Grid xs={12} sm={12} md={3} lg={3}>
-          <Box width='100%' pl="10px">
+          <Box width="100%" pl="10px">
             <Typography
               alignItems="flex-end"
               color="primary"
@@ -225,14 +229,14 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
               sx={{
                 "&:hover": {
                   cursor: "pointer",
-                  textDecoration: 'underline',
+                  textDecoration: "underline",
                 },
               }}
             >
-              {t('scenes.attendees.trips.tripScene.adjustAttendees')}
+              {t("scenes.attendees.trips.tripScene.adjustAttendees")}
             </Typography>
           </Box>
-          <Box width='100%' pl="10px">
+          <Box width="100%" pl="10px">
             <Typography
               fontSize="12px"
               alignItems="flex-end"
@@ -241,32 +245,34 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
               sx={{
                 "&:hover": {
                   cursor: "pointer",
-                  textDecoration: 'underline',
+                  textDecoration: "underline",
                 },
               }}
             >
-              {t('scenes.attendees.trips.tripScene.changeBooking')}
+              {t("scenes.attendees.trips.tripScene.changeBooking")}
             </Typography>
           </Box>
-          {cancellable && <Box width='100%' pl="10px">
-            <Typography
-              fontSize="12px"
-              alignItems="flex-end"
-              color="danger"
-              onClick={() => setCancelBookingOpened(true)}
-              sx={{
-                "&:hover": {
-                  cursor: "pointer",
-                  textDecoration: 'underline',
-                },
-              }}
-            >
-              {t('scenes.attendees.trips.tripScene.cancelBooking')}
-            </Typography>
-          </Box>}
+          {cancellable && (
+            <Box width="100%" pl="10px">
+              <Typography
+                fontSize="12px"
+                alignItems="flex-end"
+                color="danger"
+                onClick={() => setCancelBookingOpened(true)}
+                sx={{
+                  "&:hover": {
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  },
+                }}
+              >
+                {t("scenes.attendees.trips.tripScene.cancelBooking")}
+              </Typography>
+            </Box>
+          )}
         </Grid>
       </Grid>
-      <Divider sx={{ margin: '20px' }} />
+      <Divider sx={{ margin: "20px" }} />
       <EditAttendeesModal
         bookingFragmentRef={booking}
         opened={editAttendeesOpened}
@@ -277,11 +283,13 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
         opened={editBookingOpened}
         onClose={() => setEditBookingOpened(false)}
       />
-      {cancellable && <CancelBookingModal
-        open={cancelBookingOpened}
-        onClose={() => setCancelBookingOpened(false)}
-        bookingFragmentRef={booking}
-      />}
+      {cancellable && (
+        <CancelBookingModal
+          open={cancelBookingOpened}
+          onClose={() => setCancelBookingOpened(false)}
+          bookingFragmentRef={booking}
+        />
+      )}
     </Stack>
   );
 };
