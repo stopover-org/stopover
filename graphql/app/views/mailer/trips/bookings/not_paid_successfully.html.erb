@@ -1,0 +1,9 @@
+<h3>
+  <a href="<%= Rails.application.credentials.frontend_url %>/trips/<%= GraphqlSchema.id_from_object(booking.trip) %>#<%= GraphqlSchema.id_from_object(booking)%>">Booking</a> price was changed
+</h3>
+<div>
+  You need to pay <%= booking.stripe? ? booking.left_to_pay_price.format : booking.left_to_pay_deposit_price.format %>
+</div>
+<div>
+  You can find recipt <a href="<%= Rails.application.credentials.frontend_url %>/checkouts/verify/<%= GraphqlSchema.id_from_object(booking)%>">here</a>
+</div>

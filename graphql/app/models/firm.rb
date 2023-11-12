@@ -68,10 +68,10 @@ class Firm < ApplicationRecord
     state :active
     state :removed
 
-    event :activate do
+    event :activate, after_commit: :verified_notify do
       transitions from: %i[pending removed], to: :active
     end
-    event :remove, after_commit: :remove_callback do
+    event :remove, after_commit: %i[remove_callback removed_notify] do
       transitions from: %i[active pending], to: :removed
     end
   end
@@ -125,6 +125,7 @@ class Firm < ApplicationRecord
   # CALLBACKS =============================================================
   before_validation :transform_phone
   after_create :create_balance
+  after_create :created_notify
 
   # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[pending active removed]) }
@@ -141,6 +142,48 @@ class Firm < ApplicationRecord
 
   def remove_callback
     RemoveFirmJob.perform_later(id)
+  end
+
+  def verified_notify
+    Notification.create!(
+      delivery_method: 'email',
+      to: primary_email,
+      subject: 'Firm verified',
+      content: Stopover::MailProvider.prepare_content(
+        file: 'mailer/firms/firm_verified',
+        locals: {
+          firm: self
+        }
+      )
+    )
+  end
+
+  def removed_notify
+    Notification.create!(
+      delivery_method: 'email',
+      to: primary_email,
+      subject: 'Firm removed',
+      content: Stopover::MailProvider.prepare_content(
+        file: 'mailer/firms/firm_removed',
+        locals: {
+          firm: self
+        }
+      )
+    )
+  end
+
+  def created_notify
+    Notification.create!(
+      delivery_method: 'email',
+      to: primary_email,
+      subject: 'Firm created',
+      content: Stopover::MailProvider.prepare_content(
+        file: 'mailer/firms/firm_created',
+        locals: {
+          firm: self
+        }
+      )
+    )
   end
 
   private

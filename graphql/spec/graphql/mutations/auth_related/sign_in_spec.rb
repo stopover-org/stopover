@@ -35,6 +35,14 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
     $skip_phone_validation = true
   end
 
+  shared_examples :notification_sent do |travel_to_delay|
+    it 'notification sent' do
+      travel_to(default_time + (travel_to_delay || 0.seconds)) do
+        expect { subject }.to change { Notification.where(to: input[:username]).reload.count }.by(1)
+      end
+    end
+  end
+
   context 'sign in (new user)' do
     let(:current_user) { nil }
     context 'by email' do
@@ -43,6 +51,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
       describe 'valid email' do
         let(:email) { 'user@stopover.com' }
         let(:input) { { username: email, type: type } }
+
+        include_examples :notification_sent
 
         it 'successful' do
           result = nil
@@ -166,6 +176,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             input[:code] = user.confirmation_code
 
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
+                                                                .and change { Notification.count }.by(1)
 
             user = User.last
             expect(user.status).to eq('active')
@@ -239,6 +250,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           end
         end
 
+        include_examples :notification_sent, 60.seconds
+
         it 'success' do
           result = nil
 
@@ -295,6 +308,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                     context: { current_user: current_user })
           end
         end
+
+        include_examples :notification_sent, 60.seconds
 
         it 'will authorize user' do
           result = nil
@@ -634,6 +649,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         let(:email) { 'user@stopover.com' }
         let(:input) { { username: email, type: type } }
 
+        include_examples :notification_sent
+
         it 'successful' do
           result = nil
 
@@ -758,6 +775,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
+                                                                .and change { Notification.count }.by(1)
 
             user = User.last
             expect(user.status).to eq('active')
@@ -831,6 +849,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           end
         end
 
+        include_examples :notification_sent, 60.seconds
+
         it 'success' do
           result = nil
 
@@ -887,6 +907,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                     context: { current_user: current_user })
           end
         end
+
+        include_examples :notification_sent, 60.seconds
 
         it 'will authorize user' do
           result = nil
@@ -1226,6 +1248,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
       describe 'valid email' do
         let(:input) { { username: email, type: type } }
 
+        include_examples :notification_sent
+
         it 'successful' do
           result = nil
           expect(current_user.account).not_to be_nil
@@ -1332,6 +1356,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             input[:code] = user.confirmation_code
             expect(user.account).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
+                                                                .and change { Notification.count }.by(1)
 
             user = current_user.reload
             expect(user.status).to eq('active')
@@ -1396,6 +1421,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           end
         end
 
+        include_examples :notification_sent, 60.seconds
+
         it 'success' do
           result = nil
           expect(current_user.account).not_to be_nil
@@ -1453,6 +1480,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                     context: { current_user: current_user })
           end
         end
+
+        include_examples :notification_sent, 60.seconds
 
         it 'will authorize user' do
           result = nil
@@ -1750,6 +1779,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
       describe 'valid email' do
         let(:input) { { username: email, type: type } }
 
+        include_examples :notification_sent
+
         it 'successful' do
           result = nil
 
@@ -1853,6 +1884,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
+                                                                .and change { Notification.count }.by(1)
 
             user.reload
 
@@ -1921,6 +1953,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
           end
         end
 
+        include_examples :notification_sent, 60.seconds
+
         it 'success' do
           result = nil
 
@@ -1976,6 +2010,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                     context: { current_user: current_user })
           end
         end
+
+        include_examples :notification_sent, 60.seconds
 
         it 'will authorize user' do
           result = nil

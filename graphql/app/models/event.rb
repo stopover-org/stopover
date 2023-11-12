@@ -61,7 +61,7 @@ class Event < ApplicationRecord
   # MODULES ===============================================================
   include Mixins::Translatable
   include AASM
-  searchkick
+  searchkick callbacks: Rails.env.test? ? false : :async
 
   # MONETIZE =====================================================================
   monetize :attendee_price_per_uom_cents
@@ -103,14 +103,14 @@ class Event < ApplicationRecord
     state :unpublished
     state :removed
 
-    event :publish do
+    event :publish, after_commit: :published_notify do
       transitions from: :unpublished, to: :published, guard: :can_publish
     end
-    event :unpublish do
+    event :unpublish, after_commit: :archived_notify do
       transitions from: %i[draft published], to: :unpublished
     end
-    event :remove do
-      transitions from: %i[published unpublished draft], to: :removed
+    event :remove, after_commit: :removed_notify do
+      transitions from: %i[published unpublished draft], to: :removed, guard: :can_remove
     end
     event :restore do
       transitions from: :removed, to: :draft
@@ -154,7 +154,8 @@ class Event < ApplicationRecord
   before_validation :set_prices,      unless: :removed?
   before_validation :adjust_prices,   unless: :removed?
   before_validation :adjust_category, unless: :removed?
-  after_commit :sync_stripe, unless: :removed?
+  after_create      :created_notify
+  after_commit      :sync_stripe, unless: :removed?
 
   # SCOPES =====================================================================
   default_scope { in_order_of(:status, %w[draft published unpublished removed]).order(created_at: :desc) }
@@ -243,10 +244,67 @@ class Event < ApplicationRecord
     }
   end
 
+  def archived_notify
+    case saved_changes['status'][0]
+    when 'published'
+      Notification.create!(
+        delivery_method: 'email',
+        to: firm.primary_email,
+        subject: "#{title} was published",
+        content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_archived',
+                                                        locals: { event: self })
+      )
+
+    when 'draft'
+      Notification.create!(
+        delivery_method: 'email',
+        to: firm.primary_email,
+        subject: "#{title} was verified",
+        content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_verified',
+                                                        locals: { event: self })
+      )
+
+    end
+  end
+
+  def removed_notify
+    Notification.create!(
+      delivery_method: 'email',
+      to: firm.primary_email,
+      subject: "#{title} was removed",
+      content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_removed',
+                                                      locals: { event: self })
+    )
+  end
+
+  def published_notify
+    Notification.create!(
+      delivery_method: 'email',
+      to: firm.primary_email,
+      subject: "#{title} was published",
+      content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_published',
+                                                      locals: { event: self })
+    )
+  end
+
+  def created_notify
+    Notification.create!(
+      delivery_method: 'email',
+      to: firm.primary_email,
+      subject: "#{title} was created",
+      content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_created',
+                                                      locals: { event: self })
+    )
+  end
+
   private
 
   def sync_stripe
     StripeIntegratorSyncJob.perform_later('event', id)
+  end
+
+  def can_remove
+    bookings.active.joins(:schedule).where('schedules.scheduled_for > ?', Time.current).empty?
   end
 
   def can_publish

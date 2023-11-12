@@ -51,7 +51,6 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if current_user&.temporary?
         return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if current_user&.inactive?
         return false, { errors: [I18n.t('graphql.errors.general')] } unless current_firm
-
         super
       end
     end

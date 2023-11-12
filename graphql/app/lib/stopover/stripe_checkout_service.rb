@@ -112,7 +112,7 @@ module Stopover
 
       {
         url: checkout[:url],
-          payment: payment
+        payment: payment
       }
     end
 

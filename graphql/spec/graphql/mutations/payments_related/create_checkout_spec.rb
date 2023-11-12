@@ -74,7 +74,9 @@ RSpec.describe Mutations::PaymentsRelated::CreateCheckout, type: :mutation do
   end
 
   context 'create checkout url' do
-    before { booking.firm.update(payment_types: ['stripe']) }
+    before do
+      booking.firm.update(payment_types: ['stripe'])
+    end
     context 'as common user' do
       context 'for full amount' do
         context 'without existing payment' do

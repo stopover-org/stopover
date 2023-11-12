@@ -30,7 +30,7 @@ class Booking < ApplicationRecord
   GRAPHQL_TYPE = Types::BookingsRelated::BookingType
 
   # MODULES ===============================================================
-  searchkick callbacks: :async
+  searchkick callbacks: Rails.env.test? ? false : :async
   include AASM
 
   # MONETIZE ==============================================================
@@ -56,7 +56,7 @@ class Booking < ApplicationRecord
   has_many :attendee_options, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
-  has_many :booking_ft_options, through: :event
+  has_many :booking_cancellation_options, through: :event
   has_many :event_options, through: :event
 
   # AASM STATES ===========================================================
@@ -65,11 +65,11 @@ class Booking < ApplicationRecord
     state :cancelled
     state :paid
 
-    event :pay do
+    event :pay, after_commit: :paid_notify do
       transitions from: :active, to: :paid
     end
 
-    event :partially_pay do
+    event :partially_pay, after_commit: :not_paid_notify do
       transitions from: :paid, to: :active
     end
 
@@ -99,6 +99,7 @@ class Booking < ApplicationRecord
   before_validation :create_attendee
   before_validation :adjust_stripe_integration, on: :create
   before_validation :create_booking_options,    on: :create
+  after_create :created_notify
   after_commit :refund_diff, if: :refundable?
 
   # SCOPES ================================================================
@@ -165,7 +166,7 @@ class Booking < ApplicationRecord
   end
 
   def already_paid_price
-    total_payments = payments.where.not(status: %i[cancelled pending processing])
+    total_payments = payments.where(status: :successful)
                              .map(&:total_price).sum(Money.new(0))
     total_refunds = refunds.where.not(status: :cancelled)
                            .where.not(refund_id: nil)
@@ -209,6 +210,48 @@ class Booking < ApplicationRecord
   end
 
   private
+
+  def created_notify
+    if account.primary_email
+      Notification.create!(
+        delivery_method: 'email',
+        to: account.primary_email,
+        subject: "You booked #{event.title}",
+        content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/booking_created',
+                                                        locals: { booking: self })
+      )
+    end
+
+    Notification.create!(
+      delivery_method: 'email',
+      to: firm.primary_email,
+      subject: "#{event.title} was booked for #{schedule.scheduled_for}",
+      content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/bookings/booking_created',
+                                                      locals: { booking: self })
+    )
+  end
+
+  def paid_notify
+    return unless account.primary_email
+    Notification.create!(
+      delivery_method: 'email',
+      to: account.primary_email,
+      subject: 'Booking paid successfully',
+      content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/paid_successfully',
+                                                      locals: { booking: self })
+    )
+  end
+
+  def not_paid_notify
+    return unless account.primary_email
+    Notification.create!(
+      delivery_method: 'email',
+      to: account.primary_email,
+      subject: 'Booking price was changed',
+      content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/not_paid_successfully',
+                                                      locals: { booking: self })
+    )
+  end
 
   def adjust_firm
     self.firm = event.firm unless firm

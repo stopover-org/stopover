@@ -56,7 +56,6 @@ class User < ApplicationRecord
   end
 
   # ENUMS =======================================================================
-  enum primary: { email: 'email', phone: 'phone' }, _prefix: true
 
   # VALIDATIONS ================================================================
   validates :email, uniqueness: { message: 'is taken', allow_blank: true }
@@ -108,14 +107,16 @@ class User < ApplicationRecord
     raise StandardError, I18n.t('graphql.mutations.sign_in.errors.confirmation_code_incorrect') if code != confirmation_code || confirmation_code.nil?
 
     if account
-      account.update(name: phone || email,
-                     primary_phone: phone,
-                     phones: phone.present? ? [phone] : [],
+      account.update(name: account&.name || phone || email,
+                     primary_phone: account.primary_phone || phone,
+                     primary_email: account.primary_email || email,
+                     phones: account.phones || [],
                      user: self)
     else
       self.account = Account.create(name: phone || email,
                                     primary_phone: phone,
-                                    phones: phone.present? ? [phone] : [],
+                                    primary_email: email,
+                                    phones: [],
                                     user: self)
     end
 
@@ -128,14 +129,14 @@ class User < ApplicationRecord
 
     save!
 
-    if primary_email?
+    if email
       Notification.create!(
         to: email,
         subject: 'Your confirmation code',
         content: Stopover::MailProvider.prepare_content(file: 'mailer/auth/successfully_signed_in'),
         delivery_method: 'email'
       )
-    elsif primary_phone?
+    elsif phone
       Notification.create!(
         to: phone,
         content: 'You successfully signed in',

@@ -68,7 +68,6 @@ module Mutations
         end
 
         checkout = Stopover::StripeCheckoutService.generate_stripe_checkout_session(booking, args[:payment_type])
-
         {
           url: checkout[:url],
           booking: booking,

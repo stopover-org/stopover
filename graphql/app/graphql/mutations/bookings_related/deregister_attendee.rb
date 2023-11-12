@@ -8,6 +8,7 @@ module Mutations
       argument :attendee_id, ID, loads: Types::BookingsRelated::AttendeeType
       def resolve(attendee:, **_args)
         attendee.deregister!
+
         {
           attendee: attendee,
           notification: I18n.t('graphql.mutations.deregister_attendee.notifications.success')

@@ -56,7 +56,7 @@ class Attendee < ApplicationRecord
     state :registered
     state :removed
 
-    event :register do
+    event :register, after_commit: :register_notify do
       transitions from: :not_registered, to: :registered
     end
 
@@ -94,6 +94,16 @@ class Attendee < ApplicationRecord
   end
 
   private
+
+  def register_notify
+    Notification.create!(
+      delivery_method: 'email',
+      to: booking.account.primary_email,
+      subject: 'You was registered',
+      content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/registered_attendee',
+                                                      locals: { attendee: self })
+    )
+  end
 
   def adjust_booking_info
     self.event = booking&.event unless event

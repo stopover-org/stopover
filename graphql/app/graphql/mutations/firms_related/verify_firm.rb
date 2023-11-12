@@ -7,6 +7,7 @@ module Mutations
 
       def resolve(**_args)
         current_firm.activate!
+
         {
           firm: current_firm,
           notification: I18n.t('graphql.mutations.verify_firm.notifications.success')

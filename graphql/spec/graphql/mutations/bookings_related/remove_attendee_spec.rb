@@ -43,6 +43,18 @@ RSpec.describe Mutations::BookingsRelated::RemoveAttendee, type: :mutation do
   end
 
   shared_examples :successful_with_refund do |refund|
+    it 'send notification to booking owner' do
+      Sidekiq::Testing.inline! do
+        expect { subject }.to change { Notification.where(to: attendee.booking.account.primary_email).count }.by(2)
+      end
+    end
+
+    it 'send notification to booking owner' do
+      Sidekiq::Testing.inline! do
+        expect { subject }.to change { Notification.where(to: attendee.booking.firm.primary_email).count }.by(1)
+      end
+    end
+
     it 'successful with refund' do
       Sidekiq::Testing.inline! do
         booking = attendee.booking

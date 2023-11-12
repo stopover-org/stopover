@@ -1,0 +1,9 @@
+<h3>Event <a href="<%= Rails.application.credentials.frontend_url %>/my-firm/events/<%= GraphqlSchema.id_from_object(event) %>"><%= event.title %></a> was published</h3>
+
+<div>
+  You can unpublish event whenever you will want it.
+</div>
+
+<div>
+  It was scheduled for <%= event.recurring_days_with_time.join(', ') %> <% if event.single_days_with_time.any? %> and <% end %> <%= event.single_days_with_time.join(', ') %>
+</div>

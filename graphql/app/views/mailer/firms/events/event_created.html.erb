@@ -1,0 +1,9 @@
+<h3>You created draft event <a href="<%= Rails.application.credentials.frontend_url %>/my-firm/events/<%= GraphqlSchema.id_from_object(event) %>"><%= event.title %></a></h3>
+
+<div>
+  When event will be verified you will receive email and then you can publish it.
+</div>
+
+<div>
+  It will be scheduled for <%= event.recurring_days_with_time.join(', ') %> <% if event.single_days_with_time.any? %> and <% end %> <%= event.single_days_with_time.join(', ') %>
+</div>

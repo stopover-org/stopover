@@ -7,6 +7,7 @@ module Mutations
       def resolve
         stripe_connect = context[:current_user].account.current_firm.stripe_connects.create!
         account_link = Stopover::StripeAccountService.create_stripe_account(context[:current_user], stripe_connect)
+
         {
           setup_account_url: account_link[:account_link],
           notification: I18n.t('graphql.mutations.create_stripe_account.notifications.redirection')

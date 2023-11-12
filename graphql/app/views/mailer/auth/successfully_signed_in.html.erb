@@ -1,19 +1,6 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-  .content {
-      background-color: white;
-      text-align: left;
-      padding: 35px;
-      font-size: 25px;
-  }
-  </style>
-</head>
-  <body>
-    <h1>You was signed in</h1>
-  </body>
-</html>
+<div>
+  <h1>You was signed in</h1>
+</div>
+<div>
+  <a href="<%= "#{Rails.application.credentials.frontend_url}/profile"%>">Edit Profile</a>
+</div>

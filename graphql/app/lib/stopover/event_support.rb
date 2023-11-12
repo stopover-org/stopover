@@ -64,6 +64,7 @@ module Stopover
           event.schedules.create!(scheduled_for: date_with_time)
         end
       end
+      event.reindex unless Rails.env.test?
     end
   end
 end

@@ -43,6 +43,12 @@ RSpec.describe Mutations::BookingsRelated::ChangeBookingOptionAvailability, type
   end
 
   shared_examples :successful_with_refund do |refund|
+    it 'send notification to booking owner' do
+      Sidekiq::Testing.inline! do
+        expect { subject }.to change { Notification.where(to: booking_option.booking.account.primary_email).count }.by(1)
+      end
+    end
+
     it 'successful with refund' do
       Sidekiq::Testing.inline! do
         booking = booking_option.booking

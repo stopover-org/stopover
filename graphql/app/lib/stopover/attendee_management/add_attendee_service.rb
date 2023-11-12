@@ -15,6 +15,22 @@ module Stopover
         @booking.payments.processing.destroy_all
         ::BookingManagement::PriceResetJob.perform_later(@booking.id)
 
+        Notification.create!(
+          delivery_method: 'email',
+          to: @booking.account.primary_email,
+          subject: 'Attendee was added to your booking',
+          content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/attendee_added',
+                                                          locals: { booking: @booking })
+        )
+
+        Notification.create!(
+          delivery_method: 'email',
+          to: @booking.firm.primary_email,
+          subject: 'Attendee was added to the booking',
+          content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/bookings/attendee_added',
+                                                          locals: { booking: @booking, user: @current_user })
+        )
+
         @booking
       end
     end

@@ -1,0 +1,15 @@
+<h3>Refund was sent</h3>
+<div>
+  We sent refund (<%= amount %>) for <a href="<%= Rails.application.credentials.frontend_url %>/trips/<%= GraphqlSchema.id_from_object(booking.trip) %>#<%= GraphqlSchema.id_from_object(booking)%>">booking</a>
+</div>
+<% if penalty %>
+  <div>
+    Penalty is <%= penalty %>
+  </div>
+<% end %>
+<div>
+  You will receive it to the card you paid with
+</div>
+<div>
+  You can find recipt <a href="<%= Rails.application.credentials.frontend_url %>/checkouts/verify/<%= GraphqlSchema.id_from_object(booking)%>">here</a>
+</div>

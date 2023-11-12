@@ -8,6 +8,7 @@ module Mutations
       def resolve(**_args)
         firm = context[:current_user].account.current_firm
         firm.remove!
+
         {
           firm: firm.reload,
           notification: I18n.t('graphql.mutations.remove_firm.notifications.success')

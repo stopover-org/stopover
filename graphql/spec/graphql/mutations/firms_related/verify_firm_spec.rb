@@ -34,6 +34,10 @@ RSpec.describe Mutations::FirmsRelated::VerifyFirm, type: :mutation do
   end
 
   context 'verify firm' do
+    it 'send notification to firm owner' do
+      expect { subject }.to change { Notification.where(to: current_firm.primary_email).count }.by(1)
+    end
+
     it 'check pending firm' do
       expect(current_firm.status).to eq('pending')
     end

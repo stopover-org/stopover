@@ -27,6 +27,10 @@ RSpec.describe Mutations::FirmsRelated::RemoveFirm, type: :mutation do
   end
 
   context 'remove firm' do
+    it 'send notification to firm owner' do
+      expect { subject }.to change { Notification.where(to: firm.primary_email).count }.by(1)
+    end
+
     it 'successfully' do
       result = nil
       firm

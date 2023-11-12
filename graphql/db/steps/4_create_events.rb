@@ -19,10 +19,9 @@ events_data.each do |event_data|
                           else
                             []
                           end
-  debugger unless firm && event_data[:event_type]
   next unless firm && event_data[:event_type]
   event.assign_attributes(
-    **event_data.except(:firm_ref, :single_days_with_time, :recurring_days_with_time,),
+    **event_data.except(:firm_ref, :single_days_with_time, :recurring_days_with_time),
     ref_number: event_data[:ref_number] || event_data[:title].parameterize,
     firm: firm,
     country: firm&.country,
@@ -40,5 +39,3 @@ events_data.each do |event_data|
 end
 
 ScheduleAllEventsJob.perform_now
-
-

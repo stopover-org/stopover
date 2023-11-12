@@ -9,6 +9,7 @@ module Mutations
 
       def resolve(booking:)
         Stopover::AttendeeManagement::AddAttendeeService.new(booking, current_user).perform
+
         {
           booking: booking.reload,
           notification: I18n.t('graphql.mutations.add_attendee.notifications.success')
