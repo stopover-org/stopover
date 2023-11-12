@@ -37,21 +37,6 @@ module Mutations
 
         super
       end
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: event.firm.primary_email,
-          subject: 'Event verified',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/event_related',
-            locals: {
-              title: event.title,
-              text: 'Your email was verified'
-            }
-          )
-        )
-      end
     end
   end
 end

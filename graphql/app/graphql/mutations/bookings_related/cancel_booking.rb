@@ -9,7 +9,6 @@ module Mutations
       argument :booking_id, ID, loads: Types::BookingsRelated::BookingType
 
       def resolve(booking:)
-        notify
         {
           booking: Stopover::BookingManagement::BookingCancellation.new(booking, current_user).perform,
           trip: booking.trip,
@@ -36,21 +35,6 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.booking_past')] } if booking.past?
         return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
         super
-      end
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: booking.firm.primary_email,
-          subject: 'Booking canceled',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/booking_related',
-            locals: {
-              title: booking.event.title,
-              text: 'Your booking was cancelled'
-            }
-          )
-        )
       end
     end
   end

@@ -58,22 +58,22 @@ RSpec.describe Mutations::EventsRelated::RemoveEvent, type: :mutation do
     before { event.firm.update(status: 'active') }
     context 'as manager' do
       context 'for published event' do
-        before { event.update(status: 'published') }
+        before { event.update!(status: 'published') }
         include_examples :successful
       end
       context 'for unpublished event' do
-        before { event.update(status: 'unpublished') }
+        before { event.update!(status: 'unpublished') }
         include_examples :successful
       end
       context 'for draft event' do
-        before { event.update(status: 'draft') }
+        before { event.update!(status: 'draft') }
         include_examples :successful
       end
     end
 
     context 'permissions' do
       context 'for removed event' do
-        before { event.update(status: 'removed') }
+        before { event.update!(status: 'removed') }
         include_examples :fail, 'Event removed'
       end
 

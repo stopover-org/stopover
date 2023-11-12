@@ -14,7 +14,7 @@ module Mutations
         service = Stopover::BookingManagement::BookingCreator.new(context[:current_user])
         booking = service.perform(event, args[:booked_for], args[:attendees_count])
         context[:current_user] = booking.account.user
-        notify
+
         {
           booking: booking,
           access_token: booking.user.access_token,
@@ -44,21 +44,6 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.all_places_reserved')] } if inputs[:event].max_attendees && potential_attendees_count > inputs[:event].max_attendees
 
         super
-      end
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: booking.firm.primary_email,
-          subject: 'Booked event',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/booking_related',
-            locals: {
-              title: booking.event.title,
-              text: 'You booked event'
-            }
-          )
-        )
       end
     end
   end

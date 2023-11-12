@@ -20,7 +20,7 @@ module Mutations
         end
 
         BookingManagement::PriceResetJob.perform_later(booking.id)
-        notify
+
         {
           attendee_option: attendee_option,
           notification: message
@@ -44,21 +44,6 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.event_past')] } if attendee_option.booking.past?
         return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if attendee_option.booking.cancelled?
         super
-      end
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: booking.firm.primary_email,
-          subject: 'Attendees options',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/booking_related',
-            locals: {
-              title: booking.event.title,
-              text: 'You can now choose options for attendees'
-            }
-          )
-        )
       end
     end
   end

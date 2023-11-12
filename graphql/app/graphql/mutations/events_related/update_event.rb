@@ -78,21 +78,6 @@ module Mutations
 
         super
       end
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: current_firm.primary_email,
-          subject: 'Event updated',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/event_related',
-            locals: {
-              title: event.title,
-              text: 'Your event was updated'
-            }
-          )
-        )
-      end
     end
   end
 end

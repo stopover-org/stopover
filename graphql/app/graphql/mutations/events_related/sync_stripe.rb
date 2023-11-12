@@ -40,21 +40,6 @@ module Mutations
 
         super
       end
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: Stopover::MailProvider::NOTIFICATION_EMAIL,
-          subject: 'Stripe synced',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/event_related',
-            locals: {
-              title: event.title,
-              text: 'Your event was synced with stripe'
-            }
-          )
-        )
-      end
     end
   end
 end

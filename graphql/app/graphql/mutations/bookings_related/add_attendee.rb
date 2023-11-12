@@ -9,7 +9,7 @@ module Mutations
 
       def resolve(booking:)
         Stopover::AttendeeManagement::AddAttendeeService.new(booking, current_user).perform
-        notify
+
         {
           booking: booking.reload,
           notification: I18n.t('graphql.mutations.add_attendee.notifications.success')
@@ -35,23 +35,6 @@ module Mutations
                                                                                                                            .count >= booking.event.max_attendees
 
         super
-      end
-
-      private
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: booking.firm.primary_email,
-          subject: 'New attendee',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/booking_related',
-            locals: {
-              title: booking.event.title,
-              text: 'Attendee was added'
-            }
-          )
-        )
       end
     end
   end

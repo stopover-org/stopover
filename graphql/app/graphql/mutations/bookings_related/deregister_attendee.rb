@@ -8,7 +8,7 @@ module Mutations
       argument :attendee_id, ID, loads: Types::BookingsRelated::AttendeeType
       def resolve(attendee:, **_args)
         attendee.deregister!
-        notify
+
         {
           attendee: attendee,
           notification: I18n.t('graphql.mutations.deregister_attendee.notifications.success')
@@ -34,21 +34,6 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.event_past')] } if attendee.booking.past?
         return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if attendee.booking.cancelled?
         super
-      end
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: booking.firm.primary_email,
-          subject: 'Attendee deregistred',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/booking_related',
-            locals: {
-              title: booking.event.title,
-              text: 'Attendee was deregistred'
-            }
-          )
-        )
       end
     end
   end

@@ -101,21 +101,6 @@ module Mutations
 
         super
       end
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: Stopover::MailProvider::NOTIFICATION_EMAIL,
-          subject: 'Checkout created',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/',
-            locals: {
-              title: booking.event.title,
-              text: 'Checkout created'
-            }
-          )
-        )
-      end
     end
   end
 end

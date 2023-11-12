@@ -36,7 +36,7 @@ module Mutations
 
           firm.image.attach(io_object)
         end
-        notify
+
         { firm: firm,
           notification: I18n.t('graphql.mutations.update_firm.notifications.success') }
       rescue StandardError => e
@@ -52,23 +52,6 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if current_user&.inactive?
         return false, { errors: [I18n.t('graphql.errors.general')] } unless current_firm
         super
-      end
-
-      private
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: current_firm.primary_email,
-          subject: 'Your firm updated',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/firm_related',
-            locals: {
-              title: current_firm.title,
-              text: 'Data in your firm was changed'
-            }
-          )
-        )
       end
     end
   end

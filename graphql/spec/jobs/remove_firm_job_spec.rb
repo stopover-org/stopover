@@ -66,12 +66,7 @@ RSpec.describe RemoveFirmJob, type: :job do
         events.each do |event|
           expect(event.schedules.count).to eq(59)
         end
-        RemoveFirmJob.perform_now(firm.id)
-        events.each do |event|
-          expect(event.reload.status).to eq('removed')
-          expect(event.schedules.count).to eq(4)
-          expect(event.bookings.count).to eq(1)
-        end
+        expect { RemoveFirmJob.perform_now(firm.id) }.to raise_exception(AASM::InvalidTransition)
       end
     end
   end

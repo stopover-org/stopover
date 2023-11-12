@@ -9,7 +9,7 @@ module Mutations
       argument :attendee_id, ID, loads: Types::BookingsRelated::AttendeeType
       def resolve(attendee:, **_args)
         Stopover::AttendeeManagement::RemoveAttendeeService.new(attendee, current_user).perform
-        notify
+
         {
           attendee: attendee.reload,
           booking: attendee.booking,
@@ -36,21 +36,6 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.event_past')] } if attendee.booking.past?
         return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if attendee.booking.cancelled?
         super
-      end
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: booking.firm.primary_email,
-          subject: 'Attendee removed',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/booking_related',
-            locals: {
-              title: booking.event.title,
-              text: 'Attendee removed'
-            }
-          )
-        )
       end
     end
   end

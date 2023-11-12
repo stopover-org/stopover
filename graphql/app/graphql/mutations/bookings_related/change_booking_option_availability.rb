@@ -45,21 +45,6 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking_option.booking.cancelled?
         super
       end
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: booking.firm.primary_email,
-          subject: 'Booking options',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/booking_related',
-            locals: {
-              title: booking.event.title,
-              text: 'You can now choose options for booking'
-            }
-          )
-        )
-      end
     end
   end
 end

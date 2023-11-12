@@ -14,7 +14,7 @@ module Mutations
         else
           stripe_connect.remove!
         end
-        notify
+
         { stripe_connect: stripe_connect,
           notification: soft ? I18n.t('graphql.mutations.decline_stripe_connect.notifications.declined') : I18n.t('graphql.mutations.decline_stripe_connect.notifications.removed') }
       rescue StandardError => e
@@ -33,23 +33,6 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.general')] } unless current_firm
 
         super
-      end
-
-      private
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: current_firm.primary_email,
-          subject: 'Stripe account',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/firm_related',
-            locals: {
-              title: current_firm.title,
-              text: 'Your stripe connect was removed'
-            }
-          )
-        )
       end
     end
   end

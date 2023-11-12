@@ -61,7 +61,7 @@ class Event < ApplicationRecord
   # MODULES ===============================================================
   include Mixins::Translatable
   include AASM
-  searchkick
+  searchkick callbacks: Rails.env.test? ? false : :async
 
   # MONETIZE =====================================================================
   monetize :attendee_price_per_uom_cents
@@ -250,7 +250,7 @@ class Event < ApplicationRecord
       Notification.create!(
         delivery_method: 'email',
         to: firm.primary_email,
-        subject: 'Event was removed',
+        subject: "#{title} was published",
         content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_archived',
                                                         locals: { event: self })
       )
@@ -259,7 +259,7 @@ class Event < ApplicationRecord
       Notification.create!(
         delivery_method: 'email',
         to: firm.primary_email,
-        subject: 'Event was removed',
+        subject: "#{title} was verified",
         content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_verified',
                                                         locals: { event: self })
       )
@@ -271,7 +271,7 @@ class Event < ApplicationRecord
     Notification.create!(
       delivery_method: 'email',
       to: firm.primary_email,
-      subject: 'Event was removed',
+      subject: "#{title} was removed",
       content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_removed',
                                                       locals: { event: self })
     )
@@ -280,8 +280,8 @@ class Event < ApplicationRecord
   def published_notify
     Notification.create!(
       delivery_method: 'email',
-      to: event.firm.primary_email,
-      subject: 'Event was published',
+      to: firm.primary_email,
+      subject: "#{title} was published",
       content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_published',
                                                       locals: { event: self })
     )
@@ -290,8 +290,8 @@ class Event < ApplicationRecord
   def created_notify
     Notification.create!(
       delivery_method: 'email',
-      to: event.firm.primary_email,
-      subject: 'Event was created',
+      to: firm.primary_email,
+      subject: "#{title} was created",
       content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_created',
                                                       locals: { event: self })
     )
@@ -304,7 +304,7 @@ class Event < ApplicationRecord
   end
 
   def can_remove
-    bookings.active.joins(:schedule).where('schedules.scheduled_for > ?', Time.current).zero?
+    bookings.active.joins(:schedule).where('schedules.scheduled_for > ?', Time.current).empty?
   end
 
   def can_publish

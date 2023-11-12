@@ -42,21 +42,6 @@ module Mutations
 
         super
       end
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: event.firm.primary_email,
-          subject: 'Event options',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/event_related',
-            locals: {
-              title: event.title,
-              text: 'You can now choose event options'
-            }
-          )
-        )
-      end
     end
   end
 end

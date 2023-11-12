@@ -30,7 +30,7 @@ class Booking < ApplicationRecord
   GRAPHQL_TYPE = Types::BookingsRelated::BookingType
 
   # MODULES ===============================================================
-  searchkick callbacks: :async
+  searchkick callbacks: Rails.env.test? ? false : :async
   include AASM
 
   # MONETIZE ==============================================================
@@ -56,7 +56,7 @@ class Booking < ApplicationRecord
   has_many :attendee_options, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
-  has_many :booking_ft_options, through: :event
+  has_many :booking_cancellation_options, through: :event
   has_many :event_options, through: :event
 
   # AASM STATES ===========================================================
@@ -166,7 +166,7 @@ class Booking < ApplicationRecord
   end
 
   def already_paid_price
-    total_payments = payments.where.not(status: %i[cancelled pending processing])
+    total_payments = payments.where(status: :successful)
                              .map(&:total_price).sum(Money.new(0))
     total_refunds = refunds.where.not(status: :cancelled)
                            .where.not(refund_id: nil)
@@ -212,34 +212,38 @@ class Booking < ApplicationRecord
   private
 
   def created_notify
-    Notification.create!(
-      delivery_method: 'email',
-      to: booking.account.primary_email,
-      subject: 'You booked event',
-      content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/booking_created',
-                                                      locals: { booking: booking })
-    )
+    if account.primary_email
+      Notification.create!(
+        delivery_method: 'email',
+        to: account.primary_email,
+        subject: "You booked #{event.title}",
+        content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/booking_created',
+                                                        locals: { booking: self })
+      )
+    end
 
     Notification.create!(
       delivery_method: 'email',
-      to: booking.firm.primary_email,
-      subject: "#{booking.event.title} was booked for #{booking.schedule.scheduled_for}",
+      to: firm.primary_email,
+      subject: "#{event.title} was booked for #{schedule.scheduled_for}",
       content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/bookings/booking_created',
                                                       locals: { booking: self })
     )
   end
 
   def paid_notify
+    return unless account.primary_email
     Notification.create!(
       delivery_method: 'email',
       to: account.primary_email,
-      subject: 'Booking paid sucecssfully',
+      subject: 'Booking paid successfully',
       content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/paid_successfully',
                                                       locals: { booking: self })
     )
   end
 
   def not_paid_notify
+    return unless account.primary_email
     Notification.create!(
       delivery_method: 'email',
       to: account.primary_email,

@@ -26,7 +26,6 @@ module Mutations
 
         attendee.booking.payments.processing.destroy_all
 
-        notify
         {
           attendee: attendee,
           notification: I18n.t('graphql.mutations.update_attendee.notifications.success')
@@ -52,23 +51,6 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.general')] } if inputs[:event_options]&.reject { |opt| opt.for_attendee }&.any?
 
         super
-      end
-
-      private
-
-      def notify
-        Notification.create!(
-          delivery_method: 'email',
-          to: booking.firm.primary_email,
-          subject: 'Attendee update',
-          content: Stopover::MailProvider.prepare_content(
-            file: 'mailer/auth/booking_related',
-            locals: {
-              title: booking.event.title,
-              text: 'Information about attendee was updated'
-            }
-          )
-        )
       end
     end
   end
