@@ -63,7 +63,6 @@ class Schedule < ApplicationRecord
   # VALIDATIONS ===========================================================
 
   # CALLBACKS =============================================================
-  after_commit :reindex_event
 
   # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[active disabled]).order(scheduled_for: :asc) }
@@ -74,9 +73,5 @@ class Schedule < ApplicationRecord
 
   def can_disable
     bookings.where(status: :active).count.zero?
-  end
-
-  def reindex_event
-    event.reindex
   end
 end
