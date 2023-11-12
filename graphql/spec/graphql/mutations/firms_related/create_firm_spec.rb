@@ -60,6 +60,10 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
   end
 
   context 'create new firm' do
+    it 'send notification to firm owner' do
+      expect { subject }.to change { Notification.where(to: input[:primaryEmail]).count }.by(1)
+    end
+
     it 'successfully' do
       result = nil
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(1)

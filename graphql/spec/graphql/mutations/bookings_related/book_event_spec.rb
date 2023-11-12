@@ -43,6 +43,14 @@ RSpec.describe Mutations::BookingsRelated::AddAttendee, type: :mutation do
       expect(event.status).to eq('published')
     end
 
+    it 'send notification to booking owner' do
+      expect { subject }.to change { Notification.where(to: current_user.account.primary_email).count }.by(1) if current_user&.account
+    end
+
+    it 'send notification to firm owner' do
+      expect { subject }.to change { Notification.where(to: event.firm.primary_email).count }.by(1)
+    end
+
     it 'successful' do
       result = nil
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Booking.count }.by(1)

@@ -68,8 +68,9 @@ export const SignIn = () => {
       sx={{ flexGrow: 1, paddingTop: "50px" }}
     >
       <Card variant="outlined" sx={{ width: 500 }}>
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid xs={12}>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <Link
               onClick={() => {
                 if (showCode) {
@@ -92,7 +93,7 @@ export const SignIn = () => {
             )}
           </Grid>
 
-          <Grid xs={12} container justifyContent="center">
+          <Grid xs={12} justifyContent="center">
             <Typography level="h3">{t("scenes.signInScene.header")}</Typography>
           </Grid>
 
@@ -149,18 +150,18 @@ export const SignIn = () => {
                       />
                     )}
                   </Grid>
-                  <Grid container justifyContent="flex-end">
-                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                    <Link onClick={changeType} underline={false} primary>
-                      {t("scenes.signInScene.useType", {
-                        type: t(
-                          `general.${
-                            typeField.value === "email" ? "phone" : "email"
-                          }`
-                        ),
-                      })}
-                    </Link>
-                  </Grid>
+                  {/* <Grid container justifyContent="flex-end"> */}
+                  {/*  /!* eslint-disable-next-line jsx-a11y/anchor-is-valid *!/ */}
+                  {/*  <Link onClick={changeType} underline={false} primary> */}
+                  {/*    {t("scenes.signInScene.useType", { */}
+                  {/*      type: t( */}
+                  {/*        `general.${ */}
+                  {/*          typeField.value === "email" ? "phone" : "email" */}
+                  {/*        }` */}
+                  {/*      ), */}
+                  {/*    })} */}
+                  {/*  </Link> */}
+                  {/* </Grid> */}
                 </>
               )}
 

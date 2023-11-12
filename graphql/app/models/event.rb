@@ -106,7 +106,7 @@ class Event < ApplicationRecord
     event :publish, after_commit: :published_notify do
       transitions from: :unpublished, to: :published, guard: :can_publish
     end
-    event :unpublish do
+    event :unpublish, after_commit: :archived_notify do
       transitions from: %i[draft published], to: :unpublished
     end
     event :remove, after_commit: :removed_notify do

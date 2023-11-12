@@ -32,6 +32,10 @@ RSpec.describe Mutations::EventsRelated::VerifyEvent, type: :mutation do
   end
 
   shared_examples :successful do
+    it 'send notification to firm owner' do
+      expect { subject }.to change { Notification.where(to: event.firm.primary_email).count }.by(1)
+    end
+
     it 'successful' do
       result = nil
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Event.count }.by(0)
