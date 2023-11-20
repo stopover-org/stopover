@@ -44,8 +44,7 @@ const Editor = ({ value, onChange, placeholder }: EditorProps) => (
     apiKey="hqlsvda7rj2nm0vtq7y28mg1zghcmvct4gjn2n95kc59y6jk"
     init={{
       menubar: false,
-      plugins:
-        "linkwordcount tinymcespellchecker autocorrect a11ychecker typography",
+      plugins: "linkwordcount",
       toolbar: "blocks | bold italic underline strikethrough",
       placeholder,
       body_class: "tinymce-editor",

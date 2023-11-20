@@ -46,6 +46,7 @@ const AddressFieldset = () => {
       }
 
       if (!field) return;
+      if (Object.keys(fullAddress).length === 0) return;
 
       if (value) {
         field.onChange(value);

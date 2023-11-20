@@ -10,14 +10,10 @@ import {
 } from "@mui/joy";
 import { graphql, useFragment, useMutation } from "react-relay";
 import moment, { Moment } from "moment";
-import { useRouter } from "next/router";
-import { stringify } from "qs";
 import { useTranslation } from "react-i18next";
 import Typography from "../../../../../components/v2/Typography";
-import Rating from "../../../../../components/v2/Rating/Rating";
 import Link from "../../../../../components/v2/Link";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
-import Tag from "../../../../../components/v2/Tag";
 import { EventCardCompact_BookEventMutation } from "../../../../../artifacts/EventCardCompact_BookEventMutation.graphql";
 import { EventCardCompacts_EventFragment$key } from "../../../../../artifacts/EventCardCompacts_EventFragment.graphql";
 import SubmitButton from "../../../../../components/shared/SubmitButton/SubmitButton";
@@ -30,7 +26,6 @@ interface Props {
 }
 
 const EventCardCompact = ({ eventFragmentRef }: Props) => {
-  const router = useRouter();
   const { t } = useTranslation();
   const event = useFragment(
     graphql`
@@ -104,8 +99,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
       },
     });
   };
-
-  const changeInterest = useUpdateQuery('interests')
+  const changeInterest = useUpdateQuery("interests");
 
   return (
     <Grid
@@ -128,25 +122,20 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
           </Link>
           <Box>
             <Typography level="body-md" sx={{ fontSize: "md" }}>
-              {event.interests.map((interest) => {
-                return (
-                  <React.Fragment key={interest.id}>
-                    <Typography underline color='primary' onClick={() => changeInterest([interest.slug])}>
-                      {interest.title}
-                    </Typography>
-                    &nbsp;
-                  </React.Fragment>
-                );
-              })}
+              {event.interests.map((interest) => (
+                <React.Fragment key={interest.id}>
+                  <Typography
+                    underline
+                    color="primary"
+                    onClick={() => changeInterest([interest.slug])}
+                  >
+                    {interest.title}
+                  </Typography>
+                  &nbsp;
+                </React.Fragment>
+              ))}
             </Typography>
           </Box>
-{/*          <Rating
-            rating={event.averageRating}
-            label={t("event.ratingOf", {
-              val: event.averageRating | 0,
-              max: 5,
-            })}
-          />*/}
           <Stack
             flexDirection="row"
             alignItems="center"
@@ -175,8 +164,13 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
               </SubmitButton>
             )}
             {booking && (
-              <Link href={`/trips/${booking.trip.id}#${booking.id}`} underline={false}>
-                <Button size="sm">{t('scenes.attendees.events.eventsScene.details')}</Button>
+              <Link
+                href={`/trips/${booking.trip.id}#${booking.id}`}
+                underline={false}
+              >
+                <Button size="sm">
+                  {t("scenes.attendees.events.eventsScene.details")}
+                </Button>
               </Link>
             )}
           </Stack>

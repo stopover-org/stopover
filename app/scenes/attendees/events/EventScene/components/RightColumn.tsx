@@ -4,6 +4,7 @@ import React from "react";
 import Typography from "../../../../../components/v2/Typography";
 import { RightColumn_EventFragment$key } from "../../../../../artifacts/RightColumn_EventFragment.graphql";
 import BookEvent from "./BookEvent";
+import Description from "../../../../../components/v2/Description";
 
 interface RightColumnProps {
   eventFragmentRef: RightColumn_EventFragment$key;
@@ -23,7 +24,7 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
   return (
     <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
       <Box>
-        <div style={{ textAlign: 'justify', whiteSpace: 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: event.description }} />
+        <Description html={event.description} />
       </Box>
       <Box>
         <BookEvent eventFragmentRef={event} />

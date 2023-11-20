@@ -28,7 +28,7 @@ const Sidebar = ({
   onChange,
   sidebar,
 }: Props) => {
-  const query = useQuery('query')
+  const query = useQuery("query");
   const { t } = useTranslation();
   const theme = useTheme();
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
@@ -62,18 +62,17 @@ const Sidebar = ({
   >([null, null]);
 
   const [priceRange, setPriceRange] = React.useState<number[]>([
-    edgeFiltersValues.minPrice.cents,
-    edgeFiltersValues.maxPrice.cents,
+    edgeFiltersValues.minPrice.cents / 100,
+    edgeFiltersValues.maxPrice.cents / 100,
   ]);
   const [city, setCity] = React.useState("");
-
   const filters = React.useMemo(
     () => ({
       filters: {
         startDate: selectedDates[0]?.toDate(),
         endDate: selectedDates[1]?.toDate(),
-        minPrice: priceRange[0],
-        maxPrice: priceRange[1],
+        minPrice: priceRange[0] * 100,
+        maxPrice: priceRange[1] * 100,
         city,
         query,
       },
@@ -149,8 +148,8 @@ const Sidebar = ({
           }
           value={priceRange}
           onChange={(value) => setPriceRange(value)}
-          max={edgeFiltersValues.maxPrice.cents}
-          min={edgeFiltersValues.minPrice.cents}
+          max={edgeFiltersValues.maxPrice.cents / 100}
+          min={edgeFiltersValues.minPrice.cents / 100}
           valueLabelDisplay="auto"
           size="lg"
           label={t("scenes.attendees.events.eventsScene.sidebar.priceRance")}
@@ -163,7 +162,7 @@ const Sidebar = ({
             type="number"
             value={priceRange[0].toString()}
             onChange={(value) => {
-              let newValue = parseInt(value, 10);
+              let newValue = parseInt(value, 10) * 100;
               if (Number.isNaN(newValue)) newValue = 0;
               setPriceRange([newValue, priceRange[1]]);
             }}
@@ -176,7 +175,7 @@ const Sidebar = ({
             type="number"
             value={priceRange[1].toString()}
             onChange={(value) => {
-              let newValue = parseInt(value, 10);
+              let newValue = parseInt(value, 10) * 100;
               if (Number.isNaN(newValue)) newValue = 0;
               setPriceRange([priceRange[0], newValue]);
             }}

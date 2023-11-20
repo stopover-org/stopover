@@ -33,7 +33,6 @@ interface BaseAddressAutocompleteProps {
   value?: string;
 }
 
-// @ts-ignore
 interface AddressAutocompleteProps
   extends Omit<
       Omit<
@@ -87,7 +86,7 @@ const AddressAutocomplete = React.forwardRef(
               onChange(val ? val.label : null, opt?.option?.placeId);
             }
           }}
-          onInputChange={(event, val) => {
+          onInputChange={(_, val) => {
             if (val) {
               getPlacePredictions({
                 input: val,
