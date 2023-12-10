@@ -75,6 +75,9 @@ services:
       DATABASE_HOST: db
       RAILS_MAX_THREADS: 20
       REDIS_URL: redis://redis:6379/12
+      DEEPL_AUTH_KEY: ${DEEPL_AUTH_KEY}
+      RAILS_ENV: ${RAILS_ENV}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
     ports:
       - 8080:8080
     depends_on:
@@ -94,6 +97,9 @@ services:
       DATABASE_HOST: db
       RAILS_MAX_THREADS: 20
       REDIS_URL: redis://redis:6379/12
+      DEEPL_AUTH_KEY: ${DEEPL_AUTH_KEY}
+      RAILS_ENV: ${RAILS_ENV}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
     depends_on:
       - db
       - redis
