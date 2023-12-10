@@ -1,2 +1,1 @@
 sidekiq: bundle exec sidekiq
-elasticsearch:  bin/foreman/opensearch
