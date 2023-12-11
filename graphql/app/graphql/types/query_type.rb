@@ -8,7 +8,7 @@ module Types
 
     field :current_user, Types::UsersRelated::UserType, null: false
 
-    field :interests, [Types::EventsRelated::InterestType] do
+    field :interests, [Types::EventsRelated::InterestType], null: false do
       argument :filters, Types::Filters::InterestsFilter, required: false
     end
 
@@ -24,15 +24,19 @@ module Types
       argument :city, String, required: false
     end
 
-    field :event, Types::EventsRelated::EventType do
+    field :event, Types::EventsRelated::EventType, null: false do
       argument :id, ID, required: true, loads: Types::EventsRelated::EventType
+    end
+
+    field :firm, Types::FirmsRelated::FirmType, null: false do
+      argument :id, ID, required: true, loads: Types::FirmsRelated::FirmType
     end
 
     field :booking, Types::BookingsRelated::BookingType do
       argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
     end
 
-    field :bookings, [Types::BookingsRelated::BookingType] do
+    field :bookings, [Types::BookingsRelated::BookingType], null: false do
       argument :filters, Types::Filters::BookingsFilter, required: false
     end
 
@@ -44,11 +48,15 @@ module Types
       argument :query, String, required: true
     end
 
-    field :payment, Types::PaymentsRelated::PaymentType do
+    field :payment, Types::PaymentsRelated::PaymentType, null: false do
       argument :id, ID, required: true, loads: Types::PaymentsRelated::PaymentType
     end
 
     def payment(id:)
+      id
+    end
+
+    def firm(id:)
       id
     end
 

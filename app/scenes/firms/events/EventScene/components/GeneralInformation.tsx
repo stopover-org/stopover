@@ -165,11 +165,11 @@ const GeneralInformation = ({
               </Typography>
             </Grid>
             <Grid xs={10}>
-              {event.recurringDaysWithTime.map((date, index) => (
+              {event.recurringDaysWithTime.map((date, idx) => (
                 <Tag
                   link={false}
                   sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
-                  key={`recurring_date-${date}-${index}`}
+                  key={`recurring_date-${date}-${idx}`}
                 >
                   {date}
                 </Tag>

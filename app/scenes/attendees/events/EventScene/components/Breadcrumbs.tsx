@@ -11,6 +11,10 @@ export const Breadcrumbs = ({
   const event = useFragment<Breadcrumbs_EventFragment$key>(
     graphql`
       fragment Breadcrumbs_EventFragment on Event {
+        firm {
+          id
+          title
+        }
         interests {
           id
           title
@@ -23,10 +27,13 @@ export const Breadcrumbs = ({
 
   return (
     <BreadcrumbsComponent
-      items={event?.interests?.map((interest) => ({
-        title: interest.title,
-        href: `/events?interests=${interest.slug}`,
-      }))}
+      items={[
+        { title: event.firm.title, href: `/firms/${event.firm.id}` },
+        ...event.interests.map((interest) => ({
+          title: interest.title,
+          href: `/events?interests=${interest.slug}`,
+        })),
+      ]}
     />
   );
 };
