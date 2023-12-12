@@ -18,3 +18,7 @@ enqueue_payouts:
   cron: '* * * * *'
   class: 'Workers::EnqueuePayoutsJob'
   queue: 'background_payments'
+refresh_searchkick_indices_job:
+  cron: '0 */2 * * *'
+  class: 'Workers::RefreshSearchkickIndicesJob'
+  queue: 'searchkick_queue'
