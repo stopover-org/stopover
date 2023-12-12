@@ -3,10 +3,6 @@
 class EventsQuery
   PER_PAGE = 10
 
-  def self.total_pages
-    Event.published.count
-  end
-
   def initialize(
     params = {},
     after: 0,

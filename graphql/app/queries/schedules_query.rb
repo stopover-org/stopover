@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SchedulesQuery
+  PER_PAGE = 30
+
   def initialize(
     params = {},
     relations = Schedule.where('scheduled_for > ?', Time.zone.now).active
