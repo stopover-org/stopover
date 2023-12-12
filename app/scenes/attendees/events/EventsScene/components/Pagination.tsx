@@ -7,6 +7,8 @@ interface PaginationProps {
   onPrev: () => void;
   onNext: () => void;
   currentPage: number;
+  perPage: number;
+  total: number;
 }
 
 const PaginationPoint = styled(Sheet)(() => ({
@@ -21,6 +23,8 @@ const Pagination = ({
   onPrev,
   onNext,
   currentPage,
+  perPage,
+  total,
 }: PaginationProps) => (
   <Stack flexDirection="row">
     {(currentPage !== 1 || showPrev) && (
@@ -33,7 +37,7 @@ const Pagination = ({
       {currentPage}
     </PaginationPoint>
 
-    {showNext && (
+    {(showNext || total / perPage > currentPage) && (
       <PaginationPoint variant="outlined" color="neutral" onClick={onNext}>
         &gt;
       </PaginationPoint>

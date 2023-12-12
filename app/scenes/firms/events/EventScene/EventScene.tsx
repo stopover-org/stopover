@@ -1,16 +1,16 @@
 import {
+  Box,
+  Chip,
+  Dropdown,
   Grid,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  Stack,
   Tab,
   TabList,
   Tabs,
-  Box,
-  Stack,
-  Chip,
-  Dropdown,
-  MenuButton,
-  IconButton,
-  Menu,
-  MenuItem,
   Tooltip,
 } from "@mui/joy";
 import React from "react";
@@ -151,7 +151,14 @@ const EventScene = ({
       <Grid lg={8} sm={12}>
         <Typography level="h3" sx={{ display: "inline" }}>
           {event.title}
-          <Link href={`/events/${event.id}`} underline={false} fontSize="12px" sx={{padding: '0 5px'}} target='_blank' primary>
+          <Link
+            href={`/events/${event.id}`}
+            underline={false}
+            fontSize="12px"
+            sx={{ padding: "0 5px" }}
+            target="_blank"
+            primary
+          >
             <LaunchIcon />
           </Link>
         </Typography>
@@ -175,7 +182,7 @@ const EventScene = ({
             </Link>
           )}
           <Dropdown>
-            <Tooltip title={t('general.additional')}>
+            <Tooltip title={t("general.additional")}>
               <MenuButton
                 slots={{ root: IconButton }}
                 slotProps={{
