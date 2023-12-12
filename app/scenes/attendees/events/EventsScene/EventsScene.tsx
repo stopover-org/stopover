@@ -223,6 +223,8 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
                 updateCurrentPage(currentPage + 1);
               }}
               currentPage={currentPage}
+              perPage={10}
+              total={data.events.edges.length}
             />
           </Grid>
         </Grid>

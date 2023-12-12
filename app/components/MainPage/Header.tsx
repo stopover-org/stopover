@@ -69,7 +69,11 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
   );
 
   return (
-    <Grid container>
+    <Grid
+      container
+      paddingLeft={{ sx: 0, md: 2 }}
+      paddingRight={{ sx: 1, md: 2 }}
+    >
       <Grid xs={6} sm={6}>
         <Stack
           flexDirection="row"

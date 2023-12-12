@@ -849,6 +849,7 @@ type Firm implements Node {
     Returns the elements in the list that come after the specified cursor.
     """
     after: String
+    backend: Boolean
 
     """
     Returns the elements in the list that come before the specified cursor.

@@ -29,6 +29,7 @@ module Types
       field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false
       field :events,    Types::EventsRelated::EventType.connection_type, null: false do
         argument :filters, Types::Filters::EventsFilter, required: false
+        argument :backend, Boolean, required: false
       end
 
       field :stripe_connects, [Types::FirmsRelated::StripeConnectType], null: false, require_manager: true
@@ -48,7 +49,11 @@ module Types
       end
 
       def events(**args)
-        Connections::SearchkickConnection.new(arguments: { query_type: ::EventsQuery, **(args[:filters] || {}), backend: true })
+        Connections::SearchkickConnection.new(arguments: { query_type: ::EventsQuery,
+                                                           **(args[:filters] || {}),
+                                                           firm: object,
+                                                           per_page: 12,
+                                                           backend: args[:backend].nil? ? true : args[:backend] })
       end
 
       def image

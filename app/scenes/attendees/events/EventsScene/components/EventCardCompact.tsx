@@ -107,6 +107,7 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
         lg: "calc(33% - 20px)",
         md: "calc(50% - 20px)",
         sm: "calc(100% - 20px)",
+        xs: "calc(100% - 20px)",
       }}
       padding="10px"
     >

@@ -5,8 +5,8 @@ module Connections
     def initialize(**args)
       @arguments = args[:arguments]
       @query_type = @arguments[:query_type]
-      per_page = @query_type::PER_PAGE
-      super([], default_page_size: per_page, max_page_size: per_page, **args)
+      @per_page = @arguments[:per_page] || @query_type::PER_PAGE
+      super([], default_page_size: @per_page, max_page_size: @per_page, **args)
     end
 
     def nodes
@@ -14,7 +14,7 @@ module Connections
     end
 
     def has_next_page
-      query.total > after_value + @query_type::PER_PAGE
+      query.total > after_value + @per_page
     end
 
     def has_previous_page
@@ -36,7 +36,7 @@ module Connections
     end
 
     def query
-      @query ||= @query_type.new(@arguments.except(:query_type), after: after_value)
+      @query ||= @query_type.new(@arguments.except(:query_type), limit: @per_page, after: after_value)
     end
 
     def after_value
