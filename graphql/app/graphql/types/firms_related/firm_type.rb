@@ -26,8 +26,10 @@ module Types
       field :balance,   Types::FirmsRelated::BalanceType
       field :payments,  Types::PaymentsRelated::PaymentType.connection_type, null: false
       field :bookings,  Types::BookingsRelated::BookingType.connection_type, null: false
-      field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false
-      field :events,    Types::EventsRelated::EventType.connection_type, null: false do
+      field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false do
+        argument :filters, Types::Filters::SchedulesFilter, required: false
+      end
+      field :events, Types::EventsRelated::EventType.connection_type, null: false do
         argument :filters, Types::Filters::EventsFilter, required: false
         argument :backend, Boolean, required: false
       end

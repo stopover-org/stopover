@@ -17,7 +17,7 @@ module Types
     end
 
     field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false do
-      argument :filters, Types::Filters::EventsFilter, required: false
+      argument :filters, Types::Filters::SchedulesFilter, required: false
     end
 
     field :event_filters, Types::EventsRelated::EventFiltersType, null: false do

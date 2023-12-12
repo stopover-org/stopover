@@ -17,6 +17,7 @@ import {
 } from "../../../../components/shared/tables/columns/schedules";
 import useEdges from "../../../../lib/hooks/useEdges";
 import { SchedulesSceneFirmFragment } from "../../../../artifacts/SchedulesSceneFirmFragment.graphql";
+import Input from "../../../../components/v2/Input/Input";
 
 interface SchedulesSceneProps {
   firmFragmentRef: SchedulesScene_FirmFragment$key;
@@ -128,6 +129,7 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
     <Grid xs={12} container>
       <Grid md={4} sm={12}>
         <Typography level="h4">{t("models.schedule.plural")}</Typography>
+        <Input autoFocus label={t("general.search")} size="sm" />
         <Table
           data={schedulesData}
           headers={schedulesHeaders}
