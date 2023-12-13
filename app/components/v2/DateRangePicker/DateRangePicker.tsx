@@ -1,7 +1,7 @@
 import * as React from "react";
 import { PickersDayProps } from "@mui/x-date-pickers";
 import { Moment } from "moment/moment";
-import { FormControl, Grid, IconButton, Tooltip } from "@mui/joy";
+import { FormControl, FormLabel, Grid, IconButton, Tooltip } from "@mui/joy";
 import { ClickAwayListener } from "@mui/base";
 import ClearIcon from "@mui/icons-material/Clear";
 import DatePicker from "../DatePicker";
@@ -16,6 +16,7 @@ interface BaseDatePickerProps {
   endInputProps?: Partial<InputProps>;
   value: [Moment | null, Moment | null];
   availableDates?: Moment[];
+  clearStyles?: any;
 }
 
 export interface DatePickerProps
@@ -29,6 +30,8 @@ const DateRangePicker = ({
   endInputProps = {},
   availableDates,
   value,
+  clearStyles = {},
+  label,
   ...props
 }: DatePickerProps) => {
   const formControlRef = React.useRef<HTMLDivElement>(null);
@@ -96,6 +99,11 @@ const DateRangePicker = ({
       }}
     >
       <Grid xs={12} container spacing={1}>
+        {label && (
+          <Grid xs={12}>
+            <FormLabel>{label}</FormLabel>
+          </Grid>
+        )}
         <Grid xs={5}>
           <Input
             value={getDate(selectedDates[0]) || ""}
@@ -114,7 +122,7 @@ const DateRangePicker = ({
             readOnly
           />
         </Grid>
-        <Grid xs={2} sx={{ paddingTop: "30px" }}>
+        <Grid xs={2} sx={clearStyles}>
           <IconButton
             size="sm"
             onClick={() => {

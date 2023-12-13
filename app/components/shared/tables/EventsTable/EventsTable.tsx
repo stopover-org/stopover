@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { graphql, usePaginationFragment, Disposable } from "react-relay";
+import { Disposable, graphql, usePaginationFragment } from "react-relay";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@mui/joy";
@@ -41,7 +41,7 @@ const EventsTable = ({
   withSearchBar = false,
 }: EventsTableProps) => {
   const {
-    data: { events, id },
+    data: { events },
     hasPrevious,
     hasNext,
     loadPrevious,
@@ -59,7 +59,6 @@ const EventsTable = ({
         cursor: { type: "String", defaultValue: "" }
         filters: { type: "EventsFilter", defaultValue: {} }
       ) {
-        id
         events(first: $count, after: $cursor, filters: $filters)
           @connection(key: "EventsTable_query_events") {
           total
@@ -211,7 +210,6 @@ const EventsTable = ({
       {
         filters: {
           query: value,
-          firmId: id,
         },
         cursor: "0",
       },

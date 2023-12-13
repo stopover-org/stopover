@@ -23,10 +23,10 @@ module Types
       field :image,           String
       field :payment_types,   [String], null: false
 
-      field :balance,   Types::FirmsRelated::BalanceType
-      field :payments,  Types::PaymentsRelated::PaymentType.connection_type, null: false
-      field :bookings,  Types::BookingsRelated::BookingType.connection_type, null: false
-      field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false do
+      field :balance,   Types::FirmsRelated::BalanceType, require_manager: true
+      field :payments,  Types::PaymentsRelated::PaymentType.connection_type, null: false, require_manager: true
+      field :bookings,  Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true
+      field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false, require_manager: true do
         argument :filters, Types::Filters::SchedulesFilter, required: false
       end
       field :events, Types::EventsRelated::EventType.connection_type, null: false do
@@ -37,11 +37,11 @@ module Types
       field :stripe_connects, [Types::FirmsRelated::StripeConnectType], null: false, require_manager: true
       field :margin,          Integer, null: false, require_service_user: true
 
-      field :accounts,  [Types::UsersRelated::AccountType]
-      field :event,     Types::EventsRelated::EventType do
+      field :accounts,  [Types::UsersRelated::AccountType], require_manager: true
+      field :event,     Types::EventsRelated::EventType, require_manager: true do
         argument :id, ID, required: true, loads: Types::EventsRelated::EventType
       end
-      field :booking, Types::BookingsRelated::BookingType do
+      field :booking, Types::BookingsRelated::BookingType, require_manager: true do
         argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
       end
       field :events_count, Integer, null:
@@ -51,11 +51,23 @@ module Types
       end
 
       def events(**args)
-        Connections::SearchkickConnection.new(arguments: { query_type: ::EventsQuery,
-                                                           **(args[:filters] || {}),
-                                                           firm: object,
-                                                           per_page: 12,
-                                                           backend: args[:backend].nil? ? true : args[:backend] })
+        arguments = {
+          query_type: ::EventsQuery,
+          **(args[:filters] || {}),
+          firm: object,
+          per_page: 12,
+          backend: args[:backend].nil? ? true : args[:backend]
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
+      end
+
+      def schedules(**args)
+        arguments = {
+          query_type: ::SchedulesQuery,
+          **(args[:filters] || {}),
+          firm_id: object.id
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
       end
 
       def image

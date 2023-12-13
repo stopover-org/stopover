@@ -1,8 +1,9 @@
 import { Grid } from "@mui/joy";
 import moment from "moment/moment";
 import React from "react";
-import { graphql, usePaginationFragment } from "react-relay";
+import { Disposable, graphql, usePaginationFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
+import { Moment } from "moment";
 import Typography from "../../../../components/v2/Typography/Typography";
 import Table from "../../../../components/v2/Table/Table";
 import { getHumanDateTime } from "../../../../lib/utils/dates";
@@ -17,14 +18,14 @@ import {
 } from "../../../../components/shared/tables/columns/schedules";
 import useEdges from "../../../../lib/hooks/useEdges";
 import { SchedulesSceneFirmFragment } from "../../../../artifacts/SchedulesSceneFirmFragment.graphql";
-import Input from "../../../../components/v2/Input/Input";
+import DateRangePicker from "../../../../components/v2/DateRangePicker/DateRangePicker";
 
 interface SchedulesSceneProps {
   firmFragmentRef: SchedulesScene_FirmFragment$key;
 }
 
 const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
-  const { data, hasNext, hasPrevious, loadNext, loadPrevious } =
+  const { data, hasNext, hasPrevious, loadNext, loadPrevious, refetch } =
     usePaginationFragment<
       SchedulesSceneFirmFragment,
       SchedulesScene_FirmFragment$key
@@ -34,10 +35,14 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 30 }
           cursor: { type: "String", defaultValue: "" }
+          filters: { type: "SchedulesFilter", defaultValue: {} }
         )
         @refetchable(queryName: "SchedulesSceneFirmFragment") {
-          pagedSchedules: schedules(first: $count, after: $cursor)
-            @connection(key: "SchedulesScene_pagedSchedules") {
+          pagedSchedules: schedules(
+            first: $count
+            after: $cursor
+            filters: $filters
+          ) @connection(key: "SchedulesScene_pagedSchedules") {
             edges {
               node {
                 id
@@ -124,12 +129,60 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
   );
   const bookingsHeaders = useBookingsHeaders();
   const { t } = useTranslation();
+  const [range, setRange] = React.useState<[Moment | null, Moment | null]>([
+    null,
+    null,
+  ]);
+  const queryRef = React.useRef<Disposable>();
+
+  React.useEffect(() => {
+    if (queryRef.current) {
+      queryRef.current.dispose();
+    }
+
+    queryRef.current = refetch(
+      {
+        filters: {
+          startDate: range[0],
+          endDate: range[1],
+        },
+        cursor: "0",
+      },
+      {
+        onComplete: () => {
+          if (currentPage !== 1) {
+            setCurrentPage(1);
+          }
+        },
+      }
+    );
+  }, [range, setCurrentPage]);
 
   return (
     <Grid xs={12} container>
       <Grid md={4} sm={12}>
         <Typography level="h4">{t("models.schedule.plural")}</Typography>
-        <Input autoFocus label={t("general.search")} size="sm" />
+        <Grid md={6} sm={12} container>
+          <DateRangePicker
+            value={range}
+            onChange={(dates) => setRange(dates)}
+            clearStyles={{ paddingTop: "30px" }}
+            startInputProps={{
+              label: t("scenes.attendees.events.eventsScene.sidebar.startDate"),
+              placeholder: t(
+                "scenes.attendees.events.eventsScene.sidebar.startDatePlaceholder"
+              ),
+              size: "sm",
+            }}
+            endInputProps={{
+              label: t("scenes.attendees.events.eventsScene.sidebar.endDate"),
+              placeholder: t(
+                "scenes.attendees.events.eventsScene.sidebar.endDatePlaceholder"
+              ),
+              size: "sm",
+            }}
+          />
+        </Grid>
         <Table
           data={schedulesData}
           headers={schedulesHeaders}
