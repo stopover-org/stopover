@@ -9,21 +9,21 @@ import { validatePhone } from "../../../lib/utils/validations";
 
 export interface CreateFirmFields {
   title: string;
-  contactPerson: string | null;
-  country: string | null;
-  region: string | null;
-  city: string | null;
-  street: string | null;
-  houseNumber: string | null;
-  fullAddress: string | null;
+  contactPerson: string;
+  country: string;
+  region: string;
+  city: string;
+  street: string;
+  houseNumber: string;
+  fullAddress: string;
   primaryEmail: string;
-  primaryPhone: string | null;
-  contacts: string | null;
-  website: string | null;
-  description: string | null;
-  image: string | null;
+  primaryPhone: string;
+  contacts: string;
+  website: string;
+  description: string;
+  image: string;
   paymentTypes: string[];
-  contractAddress: string | null;
+  contractAddress: string;
 }
 
 function useDefaultValues(): CreateFirmFields {
