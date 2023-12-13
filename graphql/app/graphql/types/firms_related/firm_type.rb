@@ -22,6 +22,7 @@ module Types
       field :website,         String
       field :image,           String
       field :payment_types,   [String], null: false
+      field :contract_address, String
 
       field :balance,   Types::FirmsRelated::BalanceType, require_manager: true
       field :payments,  Types::PaymentsRelated::PaymentType.connection_type, null: false, require_manager: true

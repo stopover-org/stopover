@@ -24,11 +24,13 @@ export default {
         margin: "Margin",
         primaryPhone: "Phone for notifications",
         primaryEmail: "Email for notifications",
+        contractAddress: "Contract address for crypto payments",
       },
       enums: {
         paymentTypes: {
           stripe: "Online",
           cash: "Cash",
+          crypto: "Crypto",
         },
       },
     },

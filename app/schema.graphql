@@ -484,6 +484,7 @@ input CreateFirmInput {
   clientMutationId: String
   contactPerson: String!
   contacts: String
+  contractAddress: String
   country: String!
   description: String
   fullAddress: String
@@ -841,6 +842,7 @@ type Firm implements Node {
   city: String
   contactPerson: String
   contacts: String
+  contractAddress: String
   country: String
   description: String
   event(id: ID!): Event
@@ -1968,6 +1970,7 @@ input UpdateFirmInput {
   clientMutationId: String
   contactPerson: String
   contacts: String
+  contractAddress: String
   country: String
   description: String
   fullAddress: String

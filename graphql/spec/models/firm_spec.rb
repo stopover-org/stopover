@@ -9,6 +9,7 @@
 #  city              :string
 #  contact_person    :string
 #  contacts          :text
+#  contract_address  :string
 #  country           :string
 #  description       :text
 #  full_address      :string

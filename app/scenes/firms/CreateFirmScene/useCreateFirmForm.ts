@@ -9,20 +9,21 @@ import { validatePhone } from "../../../lib/utils/validations";
 
 export interface CreateFirmFields {
   title: string;
-  contactPerson: string;
-  country: string;
-  region: string;
-  city: string;
-  street: string;
-  houseNumber: string;
-  fullAddress: string;
+  contactPerson: string | null;
+  country: string | null;
+  region: string | null;
+  city: string | null;
+  street: string | null;
+  houseNumber: string | null;
+  fullAddress: string | null;
   primaryEmail: string;
-  primaryPhone: string;
-  contacts: string;
-  website: string;
-  description: string;
-  image: string;
+  primaryPhone: string | null;
+  contacts: string | null;
+  website: string | null;
+  description: string | null;
+  image: string | null;
   paymentTypes: string[];
+  contractAddress: string | null;
 }
 
 function useDefaultValues(): CreateFirmFields {
@@ -43,6 +44,7 @@ function useDefaultValues(): CreateFirmFields {
       description: "",
       image: "",
       paymentTypes: ["stripe", "cash"],
+      contractAddress: "",
     }),
     []
   );
@@ -65,6 +67,7 @@ const validationSchema = Yup.object().shape({
   description: Yup.string(),
   image: Yup.string(),
   paymentTypes: Yup.array().required("Required"),
+  contractAddress: Yup.string().nullable(),
 });
 
 export function useCreateFirmForm() {

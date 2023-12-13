@@ -1,4 +1,4 @@
-import { Chip, Grid } from "@mui/joy";
+import { Chip, Divider, Grid } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
@@ -41,6 +41,7 @@ const BalanceSection = ({
         stripeConnects {
           status
         }
+        contractAddress
         ...StripeConnectsTable_FirmFragment
       }
     `,
@@ -127,6 +128,15 @@ const BalanceSection = ({
             firmFragmentRef={firm}
             currentUserFragmentRef={currentUser}
           />
+        </Grid>
+        <Divider />
+        <Grid xs={12}>
+          <Typography level="h4">
+            {t("models.firm.attributes.contractAddress")}
+          </Typography>
+        </Grid>
+        <Grid xs={12}>
+          <Typography>{firm.contractAddress}</Typography>
         </Grid>
       </Grid>
     </Section>

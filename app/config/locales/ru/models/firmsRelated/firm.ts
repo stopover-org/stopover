@@ -24,11 +24,13 @@ export default {
         margin: "Маржа",
         primaryPhone: "Телефон для уведомлений",
         primaryEmail: "Email для уведомлений",
+        contractAddress: "Адрес контракта для проведения криптоплатежей",
       },
       enums: {
         paymentTypes: {
           stripe: "Online",
           cash: "Наличными",
+          crypto: "Криптовалюта",
         },
       },
     },
