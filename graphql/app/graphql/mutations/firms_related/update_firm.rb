@@ -23,6 +23,7 @@ module Mutations
       argument :title,          String, required: false
       argument :website,        String, required: false
       argument :payment_types,  [String], required: false
+      argument :contract_address, String, required: false
 
       def resolve(**args)
         firm = context[:current_user].account.current_firm

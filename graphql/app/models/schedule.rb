@@ -24,6 +24,7 @@ class Schedule < ApplicationRecord
 
   # MODULES ===============================================================
   include AASM
+  searchkick callbacks: Rails.env.test? ? false : :async
 
   # MONETIZE ==============================================================
 
@@ -68,6 +69,14 @@ class Schedule < ApplicationRecord
   default_scope { in_order_of(:status, %w[active disabled]).order(scheduled_for: :asc) }
 
   # DELEGATION ============================================================
+
+  def search_data
+    {
+      scheduled_for: scheduled_for,
+      status: status,
+      event: event.title
+    }
+  end
 
   private
 

@@ -484,6 +484,7 @@ input CreateFirmInput {
   clientMutationId: String
   contactPerson: String!
   contacts: String
+  contractAddress: String
   country: String!
   description: String
   fullAddress: String
@@ -841,6 +842,7 @@ type Firm implements Node {
   city: String
   contactPerson: String
   contacts: String
+  contractAddress: String
   country: String
   description: String
   event(id: ID!): Event
@@ -910,6 +912,7 @@ type Firm implements Node {
     Returns the elements in the list that come before the specified cursor.
     """
     before: String
+    filters: SchedulesFilter
 
     """
     Returns the first _n_ elements from the list.
@@ -1336,7 +1339,7 @@ type Query {
     Returns the elements in the list that come before the specified cursor.
     """
     before: String
-    filters: EventsFilter
+    filters: SchedulesFilter
 
     """
     Returns the first _n_ elements from the list.
@@ -1528,6 +1531,13 @@ type ScheduleEdge {
   The item at the end of the edge.
   """
   node: Schedule
+}
+
+input SchedulesFilter {
+  endDate: DateTime
+  eventIds: [ID!]
+  firmId: ID
+  startDate: DateTime
 }
 
 """
@@ -1960,6 +1970,7 @@ input UpdateFirmInput {
   clientMutationId: String
   contactPerson: String
   contacts: String
+  contractAddress: String
   country: String
   description: String
   fullAddress: String

@@ -9,6 +9,7 @@
 #  city              :string
 #  contact_person    :string
 #  contacts          :text
+#  contract_address  :string
 #  country           :string
 #  description       :text
 #  full_address      :string
@@ -55,12 +56,12 @@ class Firm < ApplicationRecord
   has_many :payouts,          dependent: :nullify
   has_many :attendees,        dependent: :nullify
   has_many :attendee_options, dependent: :nullify
+  has_many :payments,         dependent: :nullify
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :accounts,   through: :account_firms
   has_many :bookings,   through: :events
   has_many :schedules,  through: :events
-  has_many :payments,   through: :balance
 
   # AASM STATES ===========================================================
   aasm column: :status do

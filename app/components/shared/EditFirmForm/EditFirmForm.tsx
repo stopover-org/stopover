@@ -1,5 +1,5 @@
 import React from "react";
-import { Autocomplete, Grid } from "@mui/joy";
+import { Autocomplete, FormControl, FormLabel, Grid } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import Fieldset from "../../v2/Fieldset/Fieldset";
 import Input from "../../v2/Input/Input";
@@ -19,6 +19,11 @@ const EditFirmForm = () => {
   const paymentTypesField = form.useFormField("paymentTypes");
   const imageField = form.useFormField("image");
   const descriptionField = form.useFormField("description");
+  const contractAddressField = form.useFormField("contractAddress");
+  const includingCrypto = React.useMemo(
+    () => paymentTypesField.value.includes("crypto"),
+    [paymentTypesField]
+  );
   const { t } = useTranslation();
 
   return (
@@ -46,41 +51,52 @@ const EditFirmForm = () => {
       </Fieldset>
 
       <Fieldset>
-        <Grid xs={12}>
+        <Grid xs={12} p={1}>
           <Typography level="title-lg">
             {t("forms.editFirm.paymentInformation")}
           </Typography>
         </Grid>
-        <Grid xs={12}>
-          <Autocomplete
-            disableClearable
-            multiple
-            placeholder={t("models.firm.attributes.paymentType")}
-            options={["Cash", "Stripe"].map((v) => ({
-              label: capitalize(v),
-              value: v.toLowerCase(),
-            }))}
-            onChange={(
-              event,
-              values: Array<{ label: string; value: string }>
-            ) => {
-              const newValue = values.reduce((res, val) => {
-                if (res.includes(val.value)) {
+        <Grid xs={6}>
+          <FormControl>
+            <FormLabel>{t("models.firm.attributes.paymentType")}</FormLabel>
+            <Autocomplete
+              disableClearable
+              multiple
+              placeholder={t("models.firm.attributes.paymentType")}
+              options={["Cash", "Stripe", "Crypto"].map((v) => ({
+                label: capitalize(v),
+                value: v.toLowerCase(),
+              }))}
+              onChange={(
+                event,
+                values: Array<{ label: string; value: string }>
+              ) => {
+                const newValue = values.reduce((res, val) => {
+                  if (res.includes(val.value)) {
+                    return res;
+                  }
+                  res.push(val.value);
                   return res;
-                }
-                res.push(val.value);
-                return res;
-              }, [] as string[]);
+                }, [] as string[]);
 
-              paymentTypesField.onChange(newValue);
-            }}
-            getOptionLabel={(option) => option.label}
-            value={paymentTypesField.value.map((val: string) => ({
-              label: capitalize(val),
-              value: val.toLowerCase(),
-            }))}
-          />
+                paymentTypesField.onChange(newValue);
+              }}
+              getOptionLabel={(option) => option.label}
+              value={paymentTypesField.value.map((val: string) => ({
+                label: capitalize(val),
+                value: val.toLowerCase(),
+              }))}
+            />
+          </FormControl>
         </Grid>
+        {includingCrypto && (
+          <Grid md={6} sm={12}>
+            <Input
+              {...contractAddressField}
+              label={t("models.firm.attributes.contractAddress")}
+            />
+          </Grid>
+        )}
       </Fieldset>
 
       <AddressFieldset />

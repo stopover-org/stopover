@@ -17,7 +17,7 @@ module Types
     end
 
     field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false do
-      argument :filters, Types::Filters::EventsFilter, required: false
+      argument :filters, Types::Filters::SchedulesFilter, required: false
     end
 
     field :event_filters, Types::EventsRelated::EventFiltersType, null: false do
@@ -61,7 +61,7 @@ module Types
     end
 
     def events_autocomplete(**args)
-      if !args[:query] || args[:query]&.empty?
+      if args[:query].blank?
         return { bookings: [],
                  events: [],
                  interests: [] }
@@ -93,11 +93,20 @@ module Types
     end
 
     def events(**args)
-      Connections::SearchkickConnection.new(arguments: { query_type: ::EventsQuery, **(args[:filters] || {}) })
+      arguments = {
+        query_type: ::EventsQuery,
+        **(args[:filters] || {})
+      }
+      Connections::SearchkickConnection.new(arguments: arguments)
     end
 
     def schedules(**args)
-      ::SchedulesQuery.new(args[:filters].to_h || {}).all
+      arguments = {
+        query_type: ::SchedulesQ,
+        **(args[:filters] || {}),
+        firm_id: context[:current_user]&.account&.firm&.id
+      }
+      Connections::SearchkickConnection.new(arguments: arguments)
     end
 
     def event(id:)

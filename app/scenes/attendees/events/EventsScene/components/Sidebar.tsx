@@ -126,6 +126,7 @@ const Sidebar = ({
         }}
         minDate={edgeFiltersValues.startDate}
         disablePast
+        clearStyles={{ paddingTop: "30px" }}
         startInputProps={{
           label: t("scenes.attendees.events.eventsScene.sidebar.startDate"),
           placeholder: t(
