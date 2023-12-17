@@ -96,8 +96,6 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
         return false, { errors: [I18n.t('graphql.errors.firm_removed')] } if booking.firm.removed?
         return false, { errors: [I18n.t('graphql.errors.event_removed')] } if booking.event.removed?
-        return false, { errors: [I18n.t('graphql.errors.general')] } unless booking.stripe_integration&.active?
-        return false, { errors: [I18n.t('graphql.errors.general')] } unless booking.firm.payment_types.include?('stripe')
 
         super
       end

@@ -107,37 +107,48 @@ const BalanceSection = ({
           ))}
         </Grid>
 
-        <Grid xs={12}>
-          <Typography level="h4">
-            {t("scenes.firms.dashboardScene.payoutSettings")}
-          </Typography>
-        </Grid>
-        {firm?.paymentTypes?.includes("stripe") && !activeStripeConnect && (
-          <Grid xs={12}>
-            <ConnectStripeForm />
-          </Grid>
-        )}
+        {firm?.paymentTypes?.includes("stripe") ||
+          (firm?.paymentTypes?.includes("crypto") && (
+            <>
+              <Grid xs={12}>
+                <Typography level="h4">
+                  {t("scenes.firms.dashboardScene.payoutSettings")}
+                </Typography>
+              </Grid>
+              <Grid xs={12}>
+                <ConnectStripeForm />
+              </Grid>
+            </>
+          ))}
 
-        <Grid xs={12}>
-          <Typography level="h4">
-            {t("scenes.firms.dashboardScene.connectedStripeAccounts")}
-          </Typography>
-        </Grid>
-        <Grid xs={12}>
-          <StripeConnectsTable
-            firmFragmentRef={firm}
-            currentUserFragmentRef={currentUser}
-          />
-        </Grid>
+        {firm?.paymentTypes?.includes("stripe") && (
+          <>
+            <Grid xs={12}>
+              <Typography level="h4">
+                {t("scenes.firms.dashboardScene.connectedStripeAccounts")}
+              </Typography>
+            </Grid>
+            <Grid xs={12}>
+              <StripeConnectsTable
+                firmFragmentRef={firm}
+                currentUserFragmentRef={currentUser}
+              />
+            </Grid>
+          </>
+        )}
         <Divider />
-        <Grid xs={12}>
-          <Typography level="h4">
-            {t("models.firm.attributes.contractAddress")}
-          </Typography>
-        </Grid>
-        <Grid xs={12}>
-          <Typography>{firm.contractAddress}</Typography>
-        </Grid>
+        {firm?.paymentTypes?.includes("crypto") && (
+          <>
+            <Grid xs={12}>
+              <Typography level="h4">
+                {t("models.firm.attributes.contractAddress")}
+              </Typography>
+            </Grid>
+            <Grid xs={12}>
+              <Typography>{firm.contractAddress}</Typography>
+            </Grid>
+          </>
+        )}
       </Grid>
     </Section>
   );

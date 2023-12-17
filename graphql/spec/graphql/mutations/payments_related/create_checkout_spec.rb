@@ -126,16 +126,6 @@ RSpec.describe Mutations::PaymentsRelated::CreateCheckout, type: :mutation do
     end
 
     context 'permissions' do
-      context 'without stripe integration' do
-        before { booking.firm.update(payment_types: []) }
-        include_examples :fail, 'Something went wrong'
-      end
-
-      context 'without stripe payment type' do
-        before { booking.update_columns(stripe_integration_id: nil) }
-        include_examples :fail, 'Something went wrong'
-      end
-
       context 'for cancelled booking' do
         before { booking.update(status: 'cancelled') }
         include_examples :fail, 'Booking cancelled'
