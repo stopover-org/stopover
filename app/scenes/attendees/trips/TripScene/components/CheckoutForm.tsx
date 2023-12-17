@@ -1,7 +1,6 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import moment from "moment/moment";
-import { Autocomplete, Grid, Stack } from "@mui/joy";
+import { Autocomplete, Grid } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import { CheckoutForm_BookingFragmentRef$key } from "../../../../../artifacts/CheckoutForm_BookingFragmentRef.graphql";
 import { useCheckoutForm } from "./useCheckoutForm";
@@ -11,7 +10,6 @@ import Typography from "../../../../../components/v2/Typography";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import { useBookingPayable } from "../../../../../lib/hooks/useBookingStates";
 import QRModal from "./QRModal";
-import Button from "../../../../../components/v2/Button";
 import Link from "../../../../../components/v2/Link";
 
 interface CheckoutFormProps {
@@ -70,20 +68,17 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
     });
   }, [booking]);
 
-  const fullAmount = React.useMemo(
-    () => {
-      if (booking.leftToPayPrice.cents === 0) {
-        return t("scenes.attendees.trips.tripScene.confirmBooking");
-      }
-      return t(`scenes.attendees.trips.tripScene.payOnline`, {
-        amount: getCurrencyFormat(
-          booking.leftToPayPrice?.cents,
-          booking.leftToPayPrice?.currency.name
-        ),
-      })
-    },
-    [booking]
-  );
+  const fullAmount = React.useMemo(() => {
+    if (booking.leftToPayPrice.cents === 0) {
+      return t("scenes.attendees.trips.tripScene.confirmBooking");
+    }
+    return t(`scenes.attendees.trips.tripScene.payOnline`, {
+      amount: getCurrencyFormat(
+        booking.leftToPayPrice?.cents,
+        booking.leftToPayPrice?.currency.name
+      ),
+    });
+  }, [booking]);
 
   const paid = React.useMemo(() => {
     if (booking.paymentType === "cash") {
@@ -153,33 +148,37 @@ const CheckoutForm = ({ bookingFragmentRef }: CheckoutFormProps) => {
           </>
         ) : (
           <Grid container alignItems="center" spacing={2}>
-            {!booking.paymentType && booking.leftToPayPrice.cents !== 0 && booking.leftToPayDepositPrice.cents !== 0 && (
-              <Grid>
-                <Autocomplete
-                  disableClearable
-                  placeholder={t("models.firm.attributes.paymentType")}
-                  options={booking.event.firm.paymentTypes.map((v) => ({
-                    label: capitalize(t(`models.firm.enums.paymentTypes.${v}`)),
-                    value: v.toLowerCase(),
-                  }))}
-                  onChange={(event, { value }) =>
-                    paymentMethodField.onChange(value)
-                  }
-                  getOptionLabel={(option) => option.label}
-                  value={{
-                    label: capitalize(
-                      t(
-                        `models.firm.enums.paymentTypes.${paymentMethodField.value}`
-                      )
-                    ),
-                    value: paymentMethodField.value.toLowerCase(),
-                  }}
-                  sx={{ marginRight: "10px" }}
-                  size="md"
-                  disabled={disabled}
-                />
-              </Grid>
-            )}
+            {!booking.paymentType &&
+              booking.leftToPayPrice.cents !== 0 &&
+              booking.leftToPayDepositPrice.cents !== 0 && (
+                <Grid>
+                  <Autocomplete
+                    disableClearable
+                    placeholder={t("models.firm.attributes.paymentType")}
+                    options={booking.event.firm.paymentTypes.map((v) => ({
+                      label: capitalize(
+                        t(`models.firm.enums.paymentTypes.${v}`)
+                      ),
+                      value: v.toLowerCase(),
+                    }))}
+                    onChange={(event, { value }) =>
+                      paymentMethodField.onChange(value)
+                    }
+                    getOptionLabel={(option) => option.label}
+                    value={{
+                      label: capitalize(
+                        t(
+                          `models.firm.enums.paymentTypes.${paymentMethodField.value}`
+                        )
+                      ),
+                      value: paymentMethodField.value.toLowerCase(),
+                    }}
+                    sx={{ marginRight: "10px" }}
+                    size="md"
+                    disabled={disabled}
+                  />
+                </Grid>
+              )}
             <Grid>
               <SubmitButton
                 submitting={form.formState.isSubmitting}

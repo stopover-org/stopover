@@ -1,13 +1,12 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import { FormLabel, Grid } from "@mui/joy";
+import { Grid } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import { PaymentSettingsStep_FirmFragment$key } from "../../../../artifacts/PaymentSettingsStep_FirmFragment.graphql";
 import Fieldset from "../../../v2/Fieldset";
 import Input from "../../../v2/Input/Input";
 import useFormContext from "../../../../lib/hooks/useFormContext";
 import Typography from "../../../v2/Typography";
-import Checkbox from "../../../v2/Checkbox/Checkbox";
 import BookingCancellationOptionsFieldset from "./BookingCancellationOptionsFieldset";
 
 interface PaymentSettingsStepProps {
@@ -28,8 +27,8 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
   const organizerPriceField = form.useFormField<number>(
     "organizerPricePerUomCents"
   );
-  const depositAmountField = form.useFormField<number>("depositAmountCents");
-  const requiresDepositField = form.useFormField("requiresDeposit");
+  // const depositAmountField = form.useFormField<number>("depositAmountCents");
+  // const requiresDepositField = form.useFormField("requiresDeposit");
   const { t } = useTranslation();
   return (
     <>
@@ -70,7 +69,7 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
             readOnly
           />
         </Grid>
-
+        {/*
         {firm.paymentTypes.includes("cash") &&
           firm.paymentTypes.includes("cash") && (
             <>
@@ -103,7 +102,7 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
                 </Grid>
               )}
             </>
-          )}
+          )} */}
       </Fieldset>
       <BookingCancellationOptionsFieldset />
     </>
