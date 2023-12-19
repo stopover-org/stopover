@@ -1,16 +1,16 @@
 import { graphql, usePreloadedQuery } from "react-relay";
 import { RelayProps, withRelay } from "relay-nextjs";
-import { IApiKeys } from "../components/ApiKeysProvider";
-import { useUpdateApiKeys } from "../lib/hooks/useUpdateApiKeys";
-import Layout from "../components/MainPage/Layout";
-import { getClientEnvironment } from "../lib/clientEnvironment";
-import { fetchEnvVariables } from "../lib/fetchEnvVariables";
-import Loading from "../components/v2/Loading";
-import { pages_HomePageQuery } from "../artifacts/pages_HomePageQuery.graphql";
-import RootScene from "../scenes/Landings/RootScene";
+import { IApiKeys } from "components/ApiKeysProvider";
+import { useUpdateApiKeys } from "lib/hooks/useUpdateApiKeys";
+import Layout from "components/MainPage/Layout";
+import { getClientEnvironment } from "lib/clientEnvironment";
+import { fetchEnvVariables } from "lib/fetchEnvVariables";
+import Loading from "components/v2/Loading";
+import RootScene from "scenes/Landings/RootScene";
+import { app_HomePage_Query } from "artifacts/app_HomePage_Query.graphql";
 
 const Query = graphql`
-  query pages_HomePageQuery {
+  query app_HomePage_Query {
     currentUser {
       ...Layout_CurrentUserFragment
     }
@@ -26,8 +26,8 @@ const Home = ({
   preloadedQuery,
   apiKeys,
   CSN,
-}: RelayProps<Props, pages_HomePageQuery>) => {
-  const data = usePreloadedQuery<pages_HomePageQuery>(Query, preloadedQuery);
+}: RelayProps<Props, app_HomePage_Query>) => {
+  const data = usePreloadedQuery<app_HomePage_Query>(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
 
   return (

@@ -1,18 +1,18 @@
 import React from "react";
 import { graphql, usePreloadedQuery } from "react-relay";
 import { RelayProps, withRelay } from "relay-nextjs";
-import { Id_VerifyCheckoutQuery } from "../../../artifacts/Id_VerifyCheckoutQuery.graphql";
-import AuthGuard from "../../../components/shared/AuthGuard";
-import { IApiKeys } from "../../../components/ApiKeysProvider";
-import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
-import Layout from "../../../components/MainPage/Layout";
-import Loading from "../../../components/v2/Loading";
-import { getClientEnvironment } from "../../../lib/clientEnvironment";
-import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
-import VerifyBookingScene from "../../../scenes/attendees/bookings/VerifyBookingScene";
+import AuthGuard from "components/shared/AuthGuard";
+import { IApiKeys } from "components/ApiKeysProvider";
+import { useUpdateApiKeys } from "lib/hooks/useUpdateApiKeys";
+import Layout from "components/MainPage/Layout";
+import Loading from "components/v2/Loading";
+import { getClientEnvironment } from "lib/clientEnvironment";
+import { fetchEnvVariables } from "lib/fetchEnvVariables";
+import VerifyBookingScene from "scenes/attendees/bookings/VerifyBookingScene";
+import { page_VerifyCheckout_Query } from "../../../../artifacts/page_VerifyCheckout_Query.graphql";
 
 const Query = graphql`
-  query Id_VerifyCheckoutQuery($id: ID!) {
+  query page_VerifyCheckout_Query($id: ID!) {
     currentUser {
       ...Layout_CurrentUserFragment
       account {
@@ -38,7 +38,7 @@ const Event = ({
   preloadedQuery,
   apiKeys,
   CSN,
-}: RelayProps<Props, Id_VerifyCheckoutQuery>) => {
+}: RelayProps<Props, page_VerifyCheckout_Query>) => {
   const { currentUser, booking } = usePreloadedQuery(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
 
@@ -70,7 +70,7 @@ export default withRelay(Event, Query, {
   // to this function.
   createServerEnvironment: async ({ req }) => {
     const { createServerEnvironment } = await import(
-      "../../../lib/serverEnvironment"
+      "../../../../lib/serverEnvironment"
     );
 
     return createServerEnvironment(req!.headers.cookie);

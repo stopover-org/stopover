@@ -1,10 +1,22 @@
 // Injected content via Sentry wizard below
 const { withSentryConfig } = require("@sentry/nextjs");
+const path = require("path");
 
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
     reactStrictMode: true,
+    compiler: {
+        relay: {
+            // This should match relay.config.js
+            artifactDirectory: './artifacts',
+            schema: path.resolve(__dirname, './schema.graphql'),
+            src: path.resolve(__dirname),
+            exclude: ['**/node_modules/**', '**/__generated__/**', 'schema.graphql'],
+            language: "typescript",
+            noFutureProofEnums: true,
+        },
+    },
     images: {
         domains: ['placehold.co', 's3.eu-north-1.amazonaws.com'],
     },

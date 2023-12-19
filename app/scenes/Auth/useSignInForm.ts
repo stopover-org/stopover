@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { graphql } from "react-relay";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { UseFormReturn } from "react-hook-form/dist/types";
 import { UseMutationConfig } from "react-relay/relay-hooks/useMutation";
 import { Disposable } from "relay-runtime";

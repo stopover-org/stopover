@@ -1,14 +1,16 @@
-import React, { useCallback, useState } from "react";
-import { useRouter } from "next/router";
+"use client";
+
+import React from "react";
+import { useRouter } from "next/navigation";
 import * as momentTimezones from "moment-timezone/data/packed/latest.json";
 import { Card, Grid } from "@mui/joy";
 import { useTranslation } from "react-i18next";
+import Link from "components/v2/Link";
+import Input from "components/v2/Input";
+import PhoneInput from "components/v2/PhoneInput";
+import Typography from "components/v2/Typography";
+import SubmitButton from "components/shared/SubmitButton";
 import { useSignInForm } from "./useSignInForm";
-import Link from "../../components/v2/Link";
-import Input from "../../components/v2/Input";
-import PhoneInput from "../../components/v2/PhoneInput";
-import Typography from "../../components/v2/Typography";
-import SubmitButton from "../../components/shared/SubmitButton";
 
 // @ts-ignore
 if (typeof window !== "undefined") window.momentTimezones = momentTimezones;
@@ -16,8 +18,8 @@ if (typeof window !== "undefined") window.momentTimezones = momentTimezones;
 export const SignIn = () => {
   const router = useRouter();
   const { t } = useTranslation();
-  const [showCode, setShowCode] = useState(false);
-  const [delay, setDelay] = useState<number | null>(null);
+  const [showCode, setShowCode] = React.useState(false);
+  const [delay, setDelay] = React.useState<number | null>(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const decreaseDelay = (value: number) => {
     if (value <= 0) {
@@ -43,12 +45,6 @@ export const SignIn = () => {
   const typeField = useFormField("type");
   const usernameField = useFormField("username");
   const codeField = useFormField("code");
-  const changeType = useCallback(() => {
-    typeField.onChange(typeField.value === "email" ? "phone" : "email");
-
-    resetField("username");
-  }, [typeField.value, typeField.onChange]);
-
   const onStepBack = () => {
     reset();
 
@@ -133,36 +129,22 @@ export const SignIn = () => {
               )}
 
               {!showCode && (
-                <>
-                  <Grid>
-                    {typeField.value === "email" && (
-                      <Input
-                        {...usernameField}
-                        label={t("scenes.signInScene.enterEmail")}
-                        placeholder={t("scenes.signInScene.enterEmail")}
-                      />
-                    )}
-                    {typeField.value === "phone" && (
-                      <PhoneInput
-                        {...usernameField}
-                        label={t("scenes.signInScene.enterPhone")}
-                        placeholder={t("scenes.signInScene.enterPhone")}
-                      />
-                    )}
-                  </Grid>
-                  {/* <Grid container justifyContent="flex-end"> */}
-                  {/*  /!* eslint-disable-next-line jsx-a11y/anchor-is-valid *!/ */}
-                  {/*  <Link onClick={changeType} underline={false} primary> */}
-                  {/*    {t("scenes.signInScene.useType", { */}
-                  {/*      type: t( */}
-                  {/*        `general.${ */}
-                  {/*          typeField.value === "email" ? "phone" : "email" */}
-                  {/*        }` */}
-                  {/*      ), */}
-                  {/*    })} */}
-                  {/*  </Link> */}
-                  {/* </Grid> */}
-                </>
+                <Grid>
+                  {typeField.value === "email" && (
+                    <Input
+                      {...usernameField}
+                      label={t("scenes.signInScene.enterEmail")}
+                      placeholder={t("scenes.signInScene.enterEmail")}
+                    />
+                  )}
+                  {typeField.value === "phone" && (
+                    <PhoneInput
+                      {...usernameField}
+                      label={t("scenes.signInScene.enterPhone")}
+                      placeholder={t("scenes.signInScene.enterPhone")}
+                    />
+                  )}
+                </Grid>
               )}
 
               <Grid container justifyContent="flex-end">

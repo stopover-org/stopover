@@ -3,7 +3,7 @@ import React from "react";
 import * as Yup from "yup";
 import moment, { Moment } from "moment";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import useMutationForm from "../../../../lib/hooks/useMutationForm";
 import useClosestDate from "../../../../lib/hooks/useClosestDate";
 import useUniqueMomentDates from "../../../../lib/hooks/useUniqueMomentDates";

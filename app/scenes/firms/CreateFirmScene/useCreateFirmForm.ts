@@ -2,7 +2,7 @@ import { graphql } from "react-relay";
 import React from "react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useCreateFirmForm_CreateFirmMutation } from "../../../artifacts/useCreateFirmForm_CreateFirmMutation.graphql";
 import { validatePhone } from "../../../lib/utils/validations";

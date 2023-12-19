@@ -2,7 +2,7 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useConnectStripeForm_CreateStripeAccountMutation } from "../../../artifacts/useConnectStripeForm_CreateStripeAccountMutation.graphql";
 

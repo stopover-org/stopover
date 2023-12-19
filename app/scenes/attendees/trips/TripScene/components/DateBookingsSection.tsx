@@ -2,7 +2,6 @@ import React from "react";
 import { Moment } from "moment";
 import { graphql, useFragment } from "react-relay";
 import { Grid, Stack } from "@mui/joy";
-import { useRouter } from "next/router";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import { dayMonthFormat } from "../../../../../lib/utils/dates";
 import BookingCard from "./BookingCard";

@@ -2,8 +2,8 @@ import { Box, Drawer, Grid } from "@mui/joy";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
-import Link from "./v2/Link";
-import { GlobalSidebarProvider_FirmFragment$key } from "../artifacts/GlobalSidebarProvider_FirmFragment.graphql";
+import { GlobalSidebarProvider_FirmFragment$key } from "artifacts/GlobalSidebarProvider_FirmFragment.graphql";
+import Link from "components/v2/Link";
 
 export const GlobalSidebarContext = React.createContext<{
   opened: boolean;

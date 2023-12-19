@@ -7,17 +7,17 @@ import {
   useFragment,
   usePaginationFragment,
 } from "react-relay";
-import Sidebar from "./components/Sidebar";
-import SearchBar from "./components/SearchBar";
-import { EventsScene_EventsPaginationFragment$key } from "../../../../artifacts/EventsScene_EventsPaginationFragment.graphql";
-import EventCardCompact from "./components/EventCardCompact";
-import EventCardWide from "./components/EventCardWide";
+import { EventsScene_EventsPaginationFragment$key } from "artifacts/EventsScene_EventsPaginationFragment.graphql";
+import { usePagedEdges } from "lib/hooks/usePagedEdges";
+import { EventsScenePaginationQuery } from "artifacts/EventsScenePaginationQuery.graphql";
+import { EventsScene_InterestsFragment$key } from "artifacts/EventsScene_InterestsFragment.graphql";
+import { GlobalSidebarContext } from "components/GlobalSidebarProvider";
+import { useQuery, useUpdateQuery } from "lib/hooks/useQuery";
 import Pagination from "./components/Pagination";
-import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
-import { EventsScenePaginationQuery } from "../../../../artifacts/EventsScenePaginationQuery.graphql";
-import { EventsScene_InterestsFragment$key } from "../../../../artifacts/EventsScene_InterestsFragment.graphql";
-import { GlobalSidebarContext } from "../../../../components/GlobalSidebarProvider";
-import { useQuery, useUpdateQuery } from "../../../../lib/hooks/useQuery";
+import EventCardWide from "./components/EventCardWide";
+import EventCardCompact from "./components/EventCardCompact";
+import SearchBar from "./components/SearchBar";
+import Sidebar from "./components/Sidebar";
 
 interface Props {
   eventsFragmentRef:
