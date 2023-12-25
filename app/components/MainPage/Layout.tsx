@@ -8,7 +8,6 @@ import Chatra from "@chatra/chatra";
 import Footer from "components/MainPage/Footer";
 import Header from "components/MainPage/Header";
 import GlobalSidebarProvider from "components/GlobalSidebarProvider";
-import { useApiKey } from "lib/hooks/useApiKey";
 import { Layout_CurrentUserFragment$key } from "artifacts/Layout_CurrentUserFragment.graphql";
 
 type LayoutProps = {
@@ -52,7 +51,7 @@ const Layout = ({
     i18n.changeLanguage(value.i18next || "ru");
   }, []);
 
-  const chatraApiKey = useApiKey("chatraApiKey");
+  const chatraApiKey = process.env.NEXT_PUBLIC_CHATRA_API_KEY;
 
   React.useEffect(() => {
     const config = {

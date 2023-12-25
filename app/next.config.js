@@ -6,6 +6,9 @@ const path = require("path");
 
 const nextConfig = {
     reactStrictMode: true,
+    experimental: {
+        windowHistorySupport: true
+    },
     compiler: {
         relay: {
             // This should match relay.config.js
@@ -24,7 +27,6 @@ const nextConfig = {
         GRAPHQL_API_URL: process.env.GRAPHQL_API_URL,
         SENTRY_DSN: process.env.SENTRY_DSN,
     },
-    webpack5: true,
     webpack: (config) => {
         config.resolve.fallback = { fs: false };
 

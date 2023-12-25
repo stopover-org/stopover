@@ -42,7 +42,7 @@ const Edit = ({
 
   useUpdateApiKeys(apiKeys);
   return (
-    <Layout currentUserFragment={currentUser} CSN={CSN}>
+    <Layout currentUserFragment={currentUser}>
       <AuthGuard
         accessible={Boolean(currentUser.account.firm?.id)}
         redirectTo="/firms/new"

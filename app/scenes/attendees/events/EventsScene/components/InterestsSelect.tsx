@@ -17,8 +17,10 @@ interface InterestsSelectProps {
 }
 
 const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
-  const queryInterests = useQuery('interests')
-  const updateInterests = useUpdateQuery('interests')
+  const queryInterests = useQuery("interests", [], (value) =>
+    Array.from(value)
+  );
+  const updateInterests = useUpdateQuery("interests");
   const { t } = useTranslation();
   const { interests } = useFragment<InterestsSelect_InterestsFragment$key>(
     graphql`
@@ -62,7 +64,9 @@ const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
               variant={
                 queryInterests.includes(interest.slug) ? "soft" : "plain"
               }
-              sx={{ '&:hover': { cursor: 'pointer', backgroundColor: 'primary' } }}
+              sx={{
+                "&:hover": { cursor: "pointer", backgroundColor: "primary" },
+              }}
             >
               <ListItemDecorator>
                 <Avatar size="sm" src={interest.preview || undefined} />

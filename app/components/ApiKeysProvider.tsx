@@ -1,4 +1,5 @@
 import React from "react";
+import { fetchEnvVariables } from "../lib/fetchEnvVariables";
 
 export interface IApiKeys extends Record<string, string> {}
 
@@ -19,7 +20,7 @@ interface ApiKeysProviderProps {
 }
 
 const ApiKeysProvider = ({ children }: ApiKeysProviderProps) => {
-  const [apiKeys, setApiKeys] = React.useState<IApiKeys>({});
+  const [apiKeys, setApiKeys] = React.useState<IApiKeys>(fetchEnvVariables());
   const value = React.useMemo(
     () => ({
       apiKeys,

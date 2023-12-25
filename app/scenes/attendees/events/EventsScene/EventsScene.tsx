@@ -13,6 +13,7 @@ import { EventsScenePaginationQuery } from "artifacts/EventsScenePaginationQuery
 import { EventsScene_InterestsFragment$key } from "artifacts/EventsScene_InterestsFragment.graphql";
 import { GlobalSidebarContext } from "components/GlobalSidebarProvider";
 import { useQuery, useUpdateQuery } from "lib/hooks/useQuery";
+import moment from "moment";
 import Pagination from "./components/Pagination";
 import EventCardWide from "./components/EventCardWide";
 import EventCardCompact from "./components/EventCardCompact";
@@ -33,12 +34,12 @@ const ContentWrapper = styled(Grid)(({ theme }) => ({
 
 const EventsScene = ({ eventsFragmentRef }: Props) => {
   const theme = useTheme();
+  const [initialRender, setInitialRender] = React.useState(true);
   const { setContent } = React.useContext(GlobalSidebarContext);
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   const isLargeDisplay = useMediaQuery(theme.breakpoints.up("lg"));
   const isVeryLargeDisplay = useMediaQuery(theme.breakpoints.up("xl"));
-  const currentPage = useQuery("currentPage", 1);
-  const updateCurrentPage = useUpdateQuery("currentPage");
+  const [currentPage, updateCurrentPage] = React.useState<number>(1);
   const { data, hasPrevious, hasNext, loadPrevious, loadNext, refetch } =
     usePaginationFragment<
       EventsScenePaginationQuery,
@@ -77,9 +78,11 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     `,
     eventsFragmentRef as EventsScene_InterestsFragment$key
   );
-  const query = useQuery("query");
-  const interestsSlug = useQuery("interests");
+  const query = useQuery("query", "");
+  const interests = useQuery("interests", [], (value) => Array.from(value));
   const updateInterests = useUpdateQuery("interests");
+  const startDate = useQuery("startDate", null, (value) => moment(value));
+  const endDate = useQuery("endDate", null, (value) => moment(value));
   const events = usePagedEdges(data.events, currentPage, 10);
   const [{ filters }, setFilters] = React.useState<any>({
     filters: { query },
@@ -87,13 +90,10 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   const queryRef = React.useRef<Disposable>();
 
   React.useEffect(() => {
-    const startDate = filters?.startDate
-      ? filters?.startDate.toISOString()
-      : undefined;
-
-    const endDate = filters?.endDate
-      ? filters?.endDate.toISOString()
-      : undefined;
+    if (initialRender) {
+      setInitialRender(false);
+      return;
+    }
 
     if (queryRef.current) {
       queryRef.current.dispose();
@@ -102,8 +102,8 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     queryRef.current = refetch(
       {
         filters: {
-          ...filters,
-          interests: interestsSlug,
+          interests,
+          query,
           startDate,
           endDate,
         },
@@ -117,16 +117,13 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         },
       }
     );
-  }, [filters, interestsSlug]);
+  }, [query, startDate, endDate, interests]);
 
   React.useEffect(() => {
     setContent(
       <Sidebar
         eventFiltersFragment={data?.eventFilters}
         interestsQueryFragmentRef={interestsQuery}
-        onChange={(args) => {
-          setFilters(args);
-        }}
       />
     );
   }, [data, interestsQuery, filters, setFilters]);
@@ -138,9 +135,6 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           <Sidebar
             eventFiltersFragment={data?.eventFilters}
             interestsQueryFragmentRef={interestsQuery}
-            onChange={(args) => {
-              setFilters(args);
-            }}
           />
         </Grid>
       )}
@@ -159,10 +153,10 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         <Grid xl={9} lg={12} xs={12}>
           <SearchBar />
         </Grid>
-        {interestsSlug.length > 0 && (
+        {interests.length > 0 && (
           <Grid xl={9} lg={12} xs={12} p={1}>
             <Stack direction="row" useFlexGap spacing={2}>
-              {interestsSlug.map((interest: string) =>
+              {interests.map((interest: string) =>
                 interest ? (
                   <Chip
                     key={interest}
@@ -172,7 +166,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
                       <ChipDelete
                         onDelete={() => {
                           updateInterests(
-                            interestsSlug.filter(
+                            interests.filter(
                               (slug: string) => slug !== interest
                             )
                           );
@@ -192,13 +186,15 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
             if (index === 0) {
               if (isVeryLargeDisplay || isLargeDisplay) {
                 return (
-                  <Grid key={event.id} xs={12} lg={12} xl={12} padding={0}>
-                    <EventCardWide eventFragmentRef={event} />
+                  <Grid key={event!.id} xs={12} lg={12} xl={12} padding={0}>
+                    <EventCardWide eventFragmentRef={event!} />
                   </Grid>
                 );
               }
             }
-            return <EventCardCompact key={event.id} eventFragmentRef={event} />;
+            return (
+              <EventCardCompact key={event!.id} eventFragmentRef={event!} />
+            );
           })}
           <Grid xs={12}>
             <Pagination

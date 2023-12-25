@@ -89,6 +89,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
             <Image
               src="https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx.svg"
               alt="logo"
+              priority
               {...imageSize}
             />
           </Link>

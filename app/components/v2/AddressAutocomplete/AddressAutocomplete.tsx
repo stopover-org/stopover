@@ -10,7 +10,6 @@ import React from "react";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import { FieldError } from "react-hook-form";
 import Typography from "../Typography";
-import { useApiKey } from "../../../lib/hooks/useApiKey";
 
 interface BaseAddressAutocompleteProps {
   countries?: string[];
@@ -58,7 +57,7 @@ const AddressAutocomplete = React.forwardRef(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref: React.Ref<HTMLDivElement>
   ) => {
-    const googleMapsApiKey = useApiKey("googleMaps");
+    const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
     const { placePredictions, getPlacePredictions } = usePlacesService({
       apiKey: googleMapsApiKey || "",
     });

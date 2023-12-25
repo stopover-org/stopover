@@ -1,9 +1,8 @@
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import React from "react";
-import { useApiKey } from "./useApiKey";
 
 export function usePlaceIdFromGMaps(placeId: string | null) {
-  const googleMapsApiKey = useApiKey("googleMaps");
+  const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const { placesService } = usePlacesService({
     apiKey: googleMapsApiKey || "",
   });

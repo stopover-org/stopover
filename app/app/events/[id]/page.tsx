@@ -1,23 +1,23 @@
 import React from "react";
 import { graphql, useFragment, usePreloadedQuery } from "react-relay";
 import { RelayProps, withRelay } from "relay-nextjs";
-import Layout from "../../components/MainPage/Layout";
-import { getClientEnvironment } from "../../lib/clientEnvironment";
-import Loading from "../../components/v2/Loading";
-import EventScene from "../../scenes/attendees/events/EventScene";
-import { fetchEnvVariables } from "../../lib/fetchEnvVariables";
-import { IApiKeys } from "../../components/ApiKeysProvider";
-import { useUpdateApiKeys } from "../../lib/hooks/useUpdateApiKeys";
-import { Id_Query } from "../../artifacts/Id_Query.graphql";
-import { Id_EventFragment$key } from "../../artifacts/Id_EventFragment.graphql";
+import Layout from "../../../components/MainPage/Layout";
+import { getClientEnvironment } from "../../../lib/clientEnvironment";
+import Loading from "../../../components/v2/Loading";
+import EventScene from "../../../scenes/attendees/events/EventScene";
+import { fetchEnvVariables } from "../../../lib/fetchEnvVariables";
+import { IApiKeys } from "../../../components/ApiKeysProvider";
+import { useUpdateApiKeys } from "../../../lib/hooks/useUpdateApiKeys";
+import { page_EventPage_EventFragment$key } from "../../../artifacts/page_EventPage_EventFragment.graphql";
+import { page_EventPage_Query } from "../../../artifacts/page_EventPage_Query.graphql";
 
 const Query = graphql`
-  query Id_Query($id: ID!) {
+  query page_EventPage_Query($id: ID!) {
     currentUser {
       ...Layout_CurrentUserFragment
     }
     event(id: $id) {
-      ...Id_EventFragment
+      ...page_EventPage_EventFragment
       ...EventScene_EventFragment
     }
   }
@@ -31,14 +31,13 @@ interface Props {
 const Event = ({
   preloadedQuery,
   apiKeys,
-  CSN,
-}: RelayProps<Props, Id_Query>) => {
+}: RelayProps<Props, page_EventPage_Query>) => {
   const { event, currentUser } = usePreloadedQuery(Query, preloadedQuery);
   useUpdateApiKeys(apiKeys);
 
-  const eventFragment = useFragment<Id_EventFragment$key>(
+  const eventFragment = useFragment<page_EventPage_EventFragment$key>(
     graphql`
-      fragment Id_EventFragment on Event {
+      fragment page_EventPage_EventFragment on Event {
         title
       }
     `,
@@ -46,11 +45,7 @@ const Event = ({
   );
 
   return (
-    <Layout
-      currentUserFragment={currentUser}
-      CSN={CSN}
-      title={eventFragment?.title}
-    >
+    <Layout currentUserFragment={currentUser} title={eventFragment?.title}>
       <EventScene eventFragmentRef={event!} />
     </Layout>
   );
@@ -72,7 +67,7 @@ export default withRelay(Event, Query, {
   // to this function.
   createServerEnvironment: async ({ req }) => {
     const { createServerEnvironment } = await import(
-      "../../lib/serverEnvironment"
+      "../../../lib/serverEnvironment"
     );
 
     return createServerEnvironment(req!.headers.cookie);

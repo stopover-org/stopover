@@ -11,7 +11,8 @@ export function usePagedEdges<T>(
   const edges = useEdges<T>(data);
 
   return React.useMemo(
-    () => edges.slice((page - 1) * perPage, page * perPage),
+    (): T[] =>
+      edges.slice((page - 1) * perPage, page * perPage).filter(Boolean),
     [page, edges]
   );
 }

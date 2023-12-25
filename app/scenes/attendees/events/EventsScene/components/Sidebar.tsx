@@ -6,6 +6,7 @@ import { Moment } from "moment/moment";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
 import { Sidebar_EventFiltersFragment$key } from "../../../../../artifacts/Sidebar_EventFiltersFragment.graphql";
 import { Sidebar_InterestsFragment$key } from "../../../../../artifacts/Sidebar_InterestsFragment.graphql";
 import DateRangePicker from "../../../../../components/v2/DateRangePicker/DateRangePicker";
@@ -13,22 +14,20 @@ import Input from "../../../../../components/v2/Input/Input";
 import Link from "../../../../../components/v2/Link";
 import SliderRange from "../../../../../components/v2/SliderRange/SliderRange";
 import InterestsSelect from "./InterestsSelect";
-import { useQuery } from "../../../../../lib/hooks/useQuery";
+import { useQuery, useUpdateQuery } from "../../../../../lib/hooks/useQuery";
 
 interface Props {
   eventFiltersFragment: Sidebar_EventFiltersFragment$key;
   interestsQueryFragmentRef: Sidebar_InterestsFragment$key;
-  onChange: (args: Record<string, any>) => void;
   sidebar?: boolean;
 }
 
 const Sidebar = ({
   eventFiltersFragment,
   interestsQueryFragmentRef,
-  onChange,
   sidebar,
 }: Props) => {
-  const query = useQuery("query");
+  const query = useQuery("query", "");
   const { t } = useTranslation();
   const theme = useTheme();
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
@@ -56,16 +55,31 @@ const Sidebar = ({
     `,
     interestsQueryFragmentRef
   );
+  const city = useQuery("city");
+  const minPrice = useQuery("minPrice", edgeFiltersValues.minPrice.cents / 100);
+  const maxPrice = useQuery("maxPrice", edgeFiltersValues.minPrice.cents / 100);
+  const startDate = useQuery("startDate", null, (value) => moment(value));
+  const endDate = useQuery("endDate", null, (value) => moment(value));
+  const setCity = useUpdateQuery("city");
+  const setMinPrice = useUpdateQuery("minPrice");
+  const setMaxPrice = useUpdateQuery("maxPrice");
+  const setStartDate = useUpdateQuery("startDate", (value: Moment) =>
+    value.format("YYYY-MM-DD")
+  );
+
+  const setEndDate = useUpdateQuery("endDate", (value: Moment) =>
+    value.format("YYYY-MM-DD")
+  );
   const ref = React.useRef<NodeJS.Timeout | null>(null);
   const [selectedDates, setDates] = React.useState<
     [Moment | null, Moment | null]
-  >([null, null]);
+  >([startDate, endDate]);
 
   const [priceRange, setPriceRange] = React.useState<number[]>([
-    edgeFiltersValues.minPrice.cents / 100,
-    edgeFiltersValues.maxPrice.cents / 100,
+    minPrice,
+    maxPrice,
   ]);
-  const [city, setCity] = React.useState("");
+
   const filters = React.useMemo(
     () => ({
       filters: {
@@ -86,11 +100,16 @@ const Sidebar = ({
 
       ref.current = null;
     }
-    ref.current = setTimeout(() => {
-      onChange(filters);
 
-      ref.current = null;
-    }, 1000);
+    setCity(filters.filters.city);
+
+    setMinPrice(filters.filters.minPrice);
+
+    setMaxPrice(filters.filters.maxPrice);
+
+    setStartDate(filters.filters.startDate);
+
+    setEndDate(filters.filters.endDate);
   }, [filters, ref]);
 
   return (
@@ -102,7 +121,12 @@ const Sidebar = ({
       {!isMediumDisplay && (
         <Grid xs={12}>
           <Link href="/">
-            <Image src="https://placehold.co/250x75" width={300} height={90} />
+            <Image
+              src="https://placehold.co/250x75"
+              alt="logo"
+              width={300}
+              height={90}
+            />
           </Link>
         </Grid>
       )}

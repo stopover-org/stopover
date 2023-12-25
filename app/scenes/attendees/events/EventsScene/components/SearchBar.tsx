@@ -19,8 +19,8 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
   const router = useRouter();
   const updateQuery = useUpdateQuery("query");
   const updateInterest = useUpdateQuery("interests");
-  const query = useQuery("query");
-  const [internalQuery, setInternalQuery] = React.useState(router.query.query);
+  const query = useQuery("query", "");
+  const [internalQuery, setInternalQuery] = React.useState(query);
   const eventsAutocompleteFragmentRef =
     useLazyLoadQuery<SearchBar_AutocompleteQuery>(
       graphql`
@@ -81,10 +81,7 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
     }
 
     requestRef.current = setTimeout(() => {
-      refetch(
-        { query: internalQuery as string },
-        { fetchPolicy: "store-and-network" }
-      );
+      refetch({ query: internalQuery }, { fetchPolicy: "store-and-network" });
     }, 500);
   }, [internalQuery]);
 
@@ -182,11 +179,11 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
 
         if (value.link) {
           router.push(value.link);
-        } else if (value.type === "interest" && value.query) {
-          updateInterest(value.query);
+        } else if (value.type?.toLowerCase() === "interest" && value.query) {
+          updateInterest([value.query]);
         }
       }}
-      inputValue={internalQuery as string}
+      inputValue={internalQuery}
       endDecorator={<SearchIcon />}
       freeSolo
     />
