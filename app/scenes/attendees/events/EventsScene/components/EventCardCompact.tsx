@@ -109,9 +109,8 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
         sm: "calc(100% - 20px)",
         xs: "calc(100% - 20px)",
       }}
-      padding="10px"
     >
-      <Card variant="outlined" sx={{ width: "100%" }}>
+      <Card variant="outlined" sx={{ width: "100%", margin: "0px" }}>
         <CardOverflow>
           <AspectRatio ratio="2">
             <img src={event.images[0]} loading="lazy" alt="" />

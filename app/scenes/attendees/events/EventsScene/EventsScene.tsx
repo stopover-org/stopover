@@ -181,12 +181,12 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
             </Stack>
           </Grid>
         )}
-        <Grid xl={9} lg={12} xs={12} container spacing={2}>
+        <Grid xl={9} lg={12} xs={12} container rowSpacing={1} gap={1} pt="20px">
           {events.map((event, index) => {
             if (index === 0) {
               if (isVeryLargeDisplay || isLargeDisplay) {
                 return (
-                  <Grid key={event!.id} xs={12} lg={12} xl={12} padding={0}>
+                  <Grid key={event!.id} xs={12} lg={12} xl={12}>
                     <EventCardWide eventFragmentRef={event!} />
                   </Grid>
                 );

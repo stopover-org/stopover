@@ -136,7 +136,6 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
       getOptionLabel={(option) =>
         typeof option === "string" ? option : option.title
       }
-      sx={{ borderRadius: "0", marginRight: "5px" }}
       groupBy={(option) => option.type}
       onBlur={onQueryChange}
       onKeyUp={(e) => {

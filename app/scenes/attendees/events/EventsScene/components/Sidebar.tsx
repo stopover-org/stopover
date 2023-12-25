@@ -7,14 +7,15 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
-import { Sidebar_EventFiltersFragment$key } from "../../../../../artifacts/Sidebar_EventFiltersFragment.graphql";
-import { Sidebar_InterestsFragment$key } from "../../../../../artifacts/Sidebar_InterestsFragment.graphql";
-import DateRangePicker from "../../../../../components/v2/DateRangePicker/DateRangePicker";
-import Input from "../../../../../components/v2/Input/Input";
-import Link from "../../../../../components/v2/Link";
-import SliderRange from "../../../../../components/v2/SliderRange/SliderRange";
+import DateRangePicker from "components/v2/DateRangePicker/DateRangePicker";
+import Input from "components/v2/Input/Input";
+import Link from "components/v2/Link";
+import SliderRange from "components/v2/SliderRange/SliderRange";
+import { useQuery, useUpdateQuery } from "lib/hooks/useQuery";
+import { Sidebar_InterestsFragment$key } from "artifacts/Sidebar_InterestsFragment.graphql";
+import { Sidebar_EventFiltersFragment$key } from "artifacts/Sidebar_EventFiltersFragment.graphql";
 import InterestsSelect from "./InterestsSelect";
-import { useQuery, useUpdateQuery } from "../../../../../lib/hooks/useQuery";
+import QueryInput from "../../../../../components/shared/QueryInput";
 
 interface Props {
   eventFiltersFragment: Sidebar_EventFiltersFragment$key;
@@ -55,9 +56,18 @@ const Sidebar = ({
     `,
     interestsQueryFragmentRef
   );
-  const city = useQuery("city");
-  const minPrice = useQuery("minPrice", edgeFiltersValues.minPrice.cents / 100);
-  const maxPrice = useQuery("maxPrice", edgeFiltersValues.minPrice.cents / 100);
+  const city = useQuery("city", "");
+  const minPrice = useQuery(
+    "minPrice",
+    edgeFiltersValues.minPrice.cents / 100,
+    (value) => parseInt(value, 10)
+  );
+
+  const maxPrice = useQuery(
+    "maxPrice",
+    edgeFiltersValues.maxPrice.cents / 100,
+    (value) => parseInt(value, 10)
+  );
   const startDate = useQuery("startDate", null, (value) => moment(value));
   const endDate = useQuery("endDate", null, (value) => moment(value));
   const setCity = useUpdateQuery("city");
@@ -103,10 +113,6 @@ const Sidebar = ({
 
     setCity(filters.filters.city);
 
-    setMinPrice(filters.filters.minPrice);
-
-    setMaxPrice(filters.filters.maxPrice);
-
     setStartDate(filters.filters.startDate);
 
     setEndDate(filters.filters.endDate);
@@ -131,9 +137,8 @@ const Sidebar = ({
         </Grid>
       )}
       <Grid xs={12}>
-        <Input
-          onChange={(value) => setCity(value)}
-          value={city}
+        <QueryInput
+          queryName="city"
           label={t("scenes.attendees.events.eventsScene.sidebar.city")}
           endDecorator={<EditIcon />}
         />
