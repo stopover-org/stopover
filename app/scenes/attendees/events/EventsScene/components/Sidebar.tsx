@@ -11,7 +11,7 @@ import DateRangePicker from "components/v2/DateRangePicker/DateRangePicker";
 import Input from "components/v2/Input/Input";
 import Link from "components/v2/Link";
 import SliderRange from "components/v2/SliderRange/SliderRange";
-import { useQuery, useUpdateQuery } from "lib/hooks/useQuery";
+import { parseValue, useQuery, useUpdateQuery } from "lib/hooks/useQuery";
 import { Sidebar_InterestsFragment$key } from "artifacts/Sidebar_InterestsFragment.graphql";
 import { Sidebar_EventFiltersFragment$key } from "artifacts/Sidebar_EventFiltersFragment.graphql";
 import InterestsSelect from "./InterestsSelect";
@@ -70,7 +70,7 @@ const Sidebar = ({
   );
 
   const dates = useQuery("dates", null, (datesStr) => {
-    const datesArray = JSON.parse(datesStr) as string[];
+    const datesArray = parseValue(datesStr) as string[];
     return datesArray
       .map((dt) => moment(dt))
       .filter((dt: Moment) => dt.isValid);

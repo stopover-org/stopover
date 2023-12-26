@@ -1,6 +1,15 @@
 import React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+export function parseValue(value: string) {
+  try {
+    return JSON.parse(value);
+  } catch (error) {
+    console.warn(error);
+    return undefined;
+  }
+}
+
 export function useQuery(
   key: string,
   defaultValue?: any,
@@ -21,7 +30,7 @@ export function useQuery(
       }
 
       if (value) {
-        return JSON.parse(value);
+        return parseValue(value);
       }
     }
 

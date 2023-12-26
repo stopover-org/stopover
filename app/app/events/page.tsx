@@ -2,15 +2,16 @@ import React from "react";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import PageWrapper from "components/shared/PageWrapper";
 import moment, { Moment } from "moment";
-import EventsScene from "./scene";
 import query_EventsPage_QueryNode, {
   EventsFilter,
   query_EventsPage_Query,
-} from "../../artifacts/query_EventsPage_Query.graphql";
+} from "artifacts/query_EventsPage_Query.graphql";
+import { parseValue } from "lib/hooks/useQuery";
+import EventsScene from "./scene";
 
 const filterParsers = {
-  query: (value: string) => JSON.parse(value),
-  interests: (value: string) => JSON.parse(value),
+  query: (value: string) => parseValue(value),
+  interests: (value: string) => parseValue(value),
   minPrice: (value: string) => parseInt(value, 10),
   maxPrice: (value: string) => parseInt(value, 10),
 };
@@ -34,7 +35,7 @@ const Page = async ({
     );
 
     if (searchParams.dates) {
-      const dates = JSON.parse(searchParams.dates)
+      const dates = parseValue(searchParams.dates)
         .map((val: string) => moment(val))
         .filter((dt: Moment) => dt.isValid);
 

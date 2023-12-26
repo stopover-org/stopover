@@ -12,7 +12,7 @@ import { usePagedEdges } from "lib/hooks/usePagedEdges";
 import { EventsScenePaginationQuery } from "artifacts/EventsScenePaginationQuery.graphql";
 import { EventsScene_InterestsFragment$key } from "artifacts/EventsScene_InterestsFragment.graphql";
 import { GlobalSidebarContext } from "components/GlobalSidebarProvider";
-import { useQuery, useUpdateQuery } from "lib/hooks/useQuery";
+import { parseValue, useQuery, useUpdateQuery } from "lib/hooks/useQuery";
 import moment, { Moment } from "moment";
 import Pagination from "./components/Pagination";
 import EventCardWide from "./components/EventCardWide";
@@ -98,10 +98,13 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     data.eventFilters.minPrice.cents / 100,
     (value) => parseInt(value, 10)
   );
-  const interests = useQuery("interests", [], (value) => Array.from(value));
+
+  const interests = useQuery("interests", [], (value) =>
+    Array.from(parseValue(value))
+  );
   const updateInterests = useUpdateQuery("interests");
   const dates = useQuery("dates", [], (dts) =>
-    JSON.parse(dts)
+    parseValue(dts)
       .map((dt: string) => moment(dt))
       .filter((dt: Moment) => dt.isValid)
   );
