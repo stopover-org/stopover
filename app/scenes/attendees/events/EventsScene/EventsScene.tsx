@@ -13,7 +13,7 @@ import { EventsScenePaginationQuery } from "artifacts/EventsScenePaginationQuery
 import { EventsScene_InterestsFragment$key } from "artifacts/EventsScene_InterestsFragment.graphql";
 import { GlobalSidebarContext } from "components/GlobalSidebarProvider";
 import { useQuery, useUpdateQuery } from "lib/hooks/useQuery";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import Pagination from "./components/Pagination";
 import EventCardWide from "./components/EventCardWide";
 import EventCardCompact from "./components/EventCardCompact";
@@ -64,6 +64,14 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           }
           eventFilters {
             ...Sidebar_EventFiltersFragment
+            startDate
+            endDate
+            minPrice {
+              cents
+            }
+            maxPrice {
+              cents
+            }
           }
         }
       `,
@@ -79,14 +87,27 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
     eventsFragmentRef as EventsScene_InterestsFragment$key
   );
   const query = useQuery("query", "");
+  const maxPrice = useQuery(
+    "maxPrice",
+    data.eventFilters.maxPrice.cents / 100,
+    (value) => parseInt(value, 10)
+  );
+
+  const minPrice = useQuery(
+    "minPrice",
+    data.eventFilters.minPrice.cents / 100,
+    (value) => parseInt(value, 10)
+  );
   const interests = useQuery("interests", [], (value) => Array.from(value));
   const updateInterests = useUpdateQuery("interests");
-  const startDate = useQuery("startDate", null, (value) => moment(value));
-  const endDate = useQuery("endDate", null, (value) => moment(value));
+  const dates = useQuery("dates", [], (dts) =>
+    JSON.parse(dts)
+      .map((dt: string) => moment(dt))
+      .filter((dt: Moment) => dt.isValid)
+  );
+  const startDate = dates[0]?.toISOString();
+  const endDate = dates[1]?.toISOString();
   const events = usePagedEdges(data.events, currentPage, 10);
-  const [{ filters }, setFilters] = React.useState<any>({
-    filters: { query },
-  });
   const queryRef = React.useRef<Disposable>();
 
   React.useEffect(() => {
@@ -106,6 +127,8 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           query,
           startDate,
           endDate,
+          minPrice,
+          maxPrice,
         },
         cursor: "0",
       },
@@ -117,7 +140,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         },
       }
     );
-  }, [query, startDate, endDate, interests]);
+  }, [query, startDate, endDate, minPrice, maxPrice, interests]);
 
   React.useEffect(() => {
     setContent(
@@ -126,7 +149,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         interestsQueryFragmentRef={interestsQuery}
       />
     );
-  }, [data, interestsQuery, filters, setFilters]);
+  }, [data, interestsQuery]);
 
   return (
     <Grid container>

@@ -16,13 +16,12 @@ export function useQuery(
         return typeof defaultValue === "undefined" ? null : defaultValue;
       }
 
-      const parsedValue = JSON.parse(value);
       if (useCustomParse && value) {
-        return parse(parsedValue);
+        return parse(value);
       }
 
-      if (parsedValue) {
-        return parsedValue;
+      if (value) {
+        return JSON.parse(value);
       }
     }
 

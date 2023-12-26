@@ -28,7 +28,6 @@ const Sidebar = ({
   interestsQueryFragmentRef,
   sidebar,
 }: Props) => {
-  const query = useQuery("query", "");
   const { t } = useTranslation();
   const theme = useTheme();
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
@@ -56,67 +55,48 @@ const Sidebar = ({
     `,
     interestsQueryFragmentRef
   );
-  const city = useQuery("city", "");
-  const minPrice = useQuery(
-    "minPrice",
-    edgeFiltersValues.minPrice.cents / 100,
-    (value) => parseInt(value, 10)
+
+  const priceBoundaries = {
+    min: edgeFiltersValues.minPrice.cents / 100,
+    max: edgeFiltersValues.maxPrice.cents / 100,
+  };
+
+  const minPrice = useQuery("minPrice", priceBoundaries.min, (value) =>
+    parseInt(value, 10)
   );
 
-  const maxPrice = useQuery(
-    "maxPrice",
-    edgeFiltersValues.maxPrice.cents / 100,
-    (value) => parseInt(value, 10)
+  const maxPrice = useQuery("maxPrice", priceBoundaries.max, (value) =>
+    parseInt(value, 10)
   );
-  const startDate = useQuery("startDate", null, (value) => moment(value));
-  const endDate = useQuery("endDate", null, (value) => moment(value));
-  const setCity = useUpdateQuery("city");
+
+  const dates = useQuery("dates", null, (datesStr) => {
+    const datesArray = JSON.parse(datesStr) as string[];
+    return datesArray
+      .map((dt) => moment(dt))
+      .filter((dt: Moment) => dt.isValid);
+  });
   const setMinPrice = useUpdateQuery("minPrice");
   const setMaxPrice = useUpdateQuery("maxPrice");
-  const setStartDate = useUpdateQuery("startDate", (value: Moment) =>
-    value.format("YYYY-MM-DD")
+  const setQueryDate = useUpdateQuery("dates", (dts: Moment[]) =>
+    JSON.stringify(dts.map((val) => val.format("YYYY-MM-DD")))
   );
 
-  const setEndDate = useUpdateQuery("endDate", (value: Moment) =>
-    value.format("YYYY-MM-DD")
-  );
-  const ref = React.useRef<NodeJS.Timeout | null>(null);
-  const [selectedDates, setDates] = React.useState<
-    [Moment | null, Moment | null]
-  >([startDate, endDate]);
+  const [selectedDates, setDates] =
+    React.useState<[Moment | null, Moment | null]>(dates);
 
   const [priceRange, setPriceRange] = React.useState<number[]>([
     minPrice,
     maxPrice,
   ]);
 
-  const filters = React.useMemo(
-    () => ({
-      filters: {
-        startDate: selectedDates[0]?.toDate(),
-        endDate: selectedDates[1]?.toDate(),
-        minPrice: priceRange[0] * 100,
-        maxPrice: priceRange[1] * 100,
-        city,
-        query,
-      },
-    }),
-    [selectedDates, priceRange, city, query]
-  );
-
   React.useEffect(() => {
-    if (ref.current) {
-      clearTimeout(ref.current);
-
-      ref.current = null;
+    if (priceRange[0] !== minPrice) {
+      setMinPrice(priceRange[0]);
     }
-
-    setCity(filters.filters.city);
-
-    setStartDate(filters.filters.startDate);
-
-    setEndDate(filters.filters.endDate);
-  }, [filters, ref]);
+    if (priceRange[1] !== maxPrice) {
+      setMaxPrice(priceRange[1]);
+    }
+  }, [priceRange, minPrice, maxPrice]);
 
   return (
     <Grid
@@ -145,12 +125,14 @@ const Sidebar = ({
       </Grid>
       <DateRangePicker
         value={selectedDates}
-        onChange={(dates) => {
+        onChange={(dts) => {
           if (
-            dates.filter(Boolean).length === 2 ||
-            dates.filter(Boolean).length === 0
+            dts.filter(Boolean).length === 2 ||
+            dts.filter(Boolean).length === 0
           ) {
-            setDates(dates);
+            setDates(dts);
+
+            setQueryDate(dts.filter(Boolean));
           }
         }}
         minDate={edgeFiltersValues.startDate}
@@ -177,9 +159,11 @@ const Sidebar = ({
             t("scenes.attendees.events.eventsScene.sidebar.priceRance")
           }
           value={priceRange}
-          onChange={(value) => setPriceRange(value)}
-          max={edgeFiltersValues.maxPrice.cents / 100}
-          min={edgeFiltersValues.minPrice.cents / 100}
+          onChange={(value) => {
+            setPriceRange(value);
+          }}
+          max={priceBoundaries.max}
+          min={priceBoundaries.min}
           valueLabelDisplay="auto"
           size="lg"
           label={t("scenes.attendees.events.eventsScene.sidebar.priceRance")}
@@ -192,11 +176,19 @@ const Sidebar = ({
             type="number"
             value={priceRange[0].toString()}
             onChange={(value) => {
-              let newValue = parseInt(value, 10) * 100;
+              let newValue = parseInt(value, 10);
               if (Number.isNaN(newValue)) newValue = 0;
               setPriceRange([newValue, priceRange[1]]);
+
+              setMinPrice(newValue);
             }}
             label={t("scenes.attendees.events.eventsScene.sidebar.minPrice")}
+            slotProps={{
+              input: {
+                ...priceBoundaries,
+                step: 1,
+              },
+            }}
           />
         </Grid>
         <Grid xs={6}>
@@ -205,11 +197,19 @@ const Sidebar = ({
             type="number"
             value={priceRange[1].toString()}
             onChange={(value) => {
-              let newValue = parseInt(value, 10) * 100;
+              let newValue = parseInt(value, 10);
               if (Number.isNaN(newValue)) newValue = 0;
               setPriceRange([priceRange[0], newValue]);
+
+              setMaxPrice(newValue);
             }}
             label={t("scenes.attendees.events.eventsScene.sidebar.maxPrice")}
+            slotProps={{
+              input: {
+                ...priceBoundaries,
+                step: 1,
+              },
+            }}
           />
         </Grid>
       </Grid>
