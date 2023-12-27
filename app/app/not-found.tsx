@@ -10,6 +10,8 @@ import { Grid } from "@mui/joy";
 import Typography from "components/v2/Typography";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import React from "react";
+import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 
 const NotFound = () => {
   const data = useLazyLoadQuery<notFound_Query>(
@@ -24,6 +26,9 @@ const NotFound = () => {
   );
   const { t } = useTranslation();
   const pathname = usePathname();
+
+  useDocumentTitle(t("general.404"));
+
   return (
     <Layout currentUserFragment={data.currentUser}>
       <AuthGuard accessible>

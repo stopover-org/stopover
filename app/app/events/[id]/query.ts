@@ -7,6 +7,7 @@ export default graphql`
     }
     event(id: $id) {
       id
+      title
       ...EventScene_EventFragment
     }
   }

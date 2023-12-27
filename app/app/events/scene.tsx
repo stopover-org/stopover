@@ -12,6 +12,8 @@ import query_EventsPage_QueryNode, {
 } from "artifacts/query_EventsPage_Query.graphql";
 import SceneWrapper from "components/shared/SceneWrapper";
 import EventsScene from "scenes/attendees/events/EventsScene";
+import { useTranslation } from "react-i18next";
+import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import query from "./query";
 
 const Scene = ({
@@ -26,6 +28,9 @@ const Scene = ({
   const queryRef: PreloadedQuery<query_EventsPage_Query> =
     useSerializablePreloadedQuery(environment, preloadedQuery);
   const data = usePreloadedQuery(query, queryRef);
+  const { t } = useTranslation();
+
+  useDocumentTitle(t("models.event.plural"));
 
   return (
     <SceneWrapper>

@@ -12,6 +12,8 @@ import EventScene from "scenes/attendees/events/EventScene";
 import query_EventPage_QueryNode, {
   query_EventPage_Query,
 } from "artifacts/query_EventPage_Query.graphql";
+import { useTranslation } from "react-i18next";
+import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import query from "./query";
 
 const Scene = ({
@@ -26,6 +28,9 @@ const Scene = ({
   const queryRef: PreloadedQuery<query_EventPage_Query> =
     useSerializablePreloadedQuery(environment, preloadedQuery);
   const data = usePreloadedQuery(query, queryRef);
+  const { t } = useTranslation();
+
+  useDocumentTitle(`${t("models.event.singular")} ${data.event.title}`);
 
   return (
     <SceneWrapper>

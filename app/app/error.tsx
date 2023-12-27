@@ -9,11 +9,13 @@ import SceneWrapper from "components/shared/SceneWrapper";
 import { Grid } from "@mui/joy";
 import Typography from "components/v2/Typography";
 import { useTranslation } from "react-i18next";
+import React from "react";
+import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 
 const NotFound = () => {
   const data = useLazyLoadQuery<notFound_Query>(
     graphql`
-      query notFound_Query {
+      query error_Query {
         currentUser {
           ...Layout_CurrentUserFragment
         }
@@ -22,6 +24,8 @@ const NotFound = () => {
     {}
   );
   const { t } = useTranslation();
+
+  useDocumentTitle(t("general.502"));
 
   return (
     <Layout currentUserFragment={data.currentUser}>
@@ -47,5 +51,3 @@ export default () => (
     </SceneWrapper>
   </PageWrapper>
 );
-
-export const generateMetadata = () => ({ title: "Something is broken" });
