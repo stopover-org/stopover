@@ -1,5 +1,5 @@
 import React from "react";
-import SignInScene from "app/auth/sign_in/scene";
+import Scene from "app/auth/sign_in/scene";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import query_SignInPage_QueryNode, {
   query_SignInPage_Query,
@@ -14,7 +14,7 @@ const Page = async () => {
 
   return (
     <PageWrapper>
-      <SignInScene preloadedQuery={preloadedQuery} />
+      <Scene preloadedQuery={preloadedQuery} />
     </PageWrapper>
   );
 };

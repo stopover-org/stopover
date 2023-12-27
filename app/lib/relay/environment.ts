@@ -9,6 +9,7 @@ import {
   Store,
   Variables,
 } from "relay-runtime";
+import { createRelaySubscriptionHandler } from "graphql-ruby-client";
 
 const IS_SERVER = typeof window === typeof undefined;
 const CACHE_TTL = 5 * 1000; // 5 seconds, to resolve preloaded results
@@ -37,7 +38,6 @@ export async function networkFetch(
   // property of the response. If any exceptions occurred when processing the request,
   // throw an error to indicate to the developer what went wrong.
   if (Array.isArray(json.errors)) {
-    console.error(json.errors);
     throw new Error(
       `Error fetching GraphQL query '${
         request.name
@@ -57,7 +57,7 @@ export const responseCache: QueryResponseCache | null = IS_SERVER
       ttl: CACHE_TTL,
     });
 
-function createNetwork() {
+function createNetwork(isServer = false) {
   async function fetchResponse(
     params: RequestParameters,
     variables: Variables,
@@ -76,13 +76,21 @@ function createNetwork() {
     return networkFetch(params, variables);
   }
 
-  const network = Network.create(fetchResponse);
+  const subscriptionHandler = isServer
+    ? undefined
+    : createRelaySubscriptionHandler({
+        // eslint-disable-next-line global-require
+        cable: require("@rails/actioncable").createConsumer(
+          getGraphQLBaseUrl().replace("https://", "ws://")
+        ),
+      });
+  const network = Network.create(fetchResponse, subscriptionHandler);
   return network;
 }
 
 function createEnvironment() {
   return new Environment({
-    network: createNetwork(),
+    network: createNetwork(IS_SERVER),
     store: new Store(RecordSource.create()),
     isServer: IS_SERVER,
   });

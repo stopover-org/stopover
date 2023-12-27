@@ -32,7 +32,7 @@ module Types
       argument :id, ID, required: true, loads: Types::FirmsRelated::FirmType
     end
 
-    field :booking, Types::BookingsRelated::BookingType do
+    field :booking, Types::BookingsRelated::BookingType, null: false do
       argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
     end
 

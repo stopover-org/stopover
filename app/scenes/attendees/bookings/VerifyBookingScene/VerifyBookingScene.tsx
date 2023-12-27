@@ -10,12 +10,12 @@ import {
 } from "@mui/joy";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
-import { VerifyBookingScene_BookingFragment$key } from "../../../../artifacts/VerifyBookingScene_BookingFragment.graphql";
-import Typography from "../../../../components/v2/Typography";
-import BookingSummary from "../../../../components/shared/BookingSummary";
-import Checkout from "../../../../components/shared/Checkout";
-import useSubscription from "../../../../lib/hooks/useSubscription";
-import Link from "../../../../components/v2/Link";
+import { VerifyBookingScene_BookingFragment$key } from "artifacts/VerifyBookingScene_BookingFragment.graphql";
+import Typography from "components/v2/Typography";
+import BookingSummary from "components/shared/BookingSummary";
+import Checkout from "components/shared/Checkout";
+import useSubscription from "lib/hooks/useSubscription";
+import Link from "components/v2/Link";
 
 interface VerifyBookingSceneProps {
   bookingFragmentRef: VerifyBookingScene_BookingFragment$key;

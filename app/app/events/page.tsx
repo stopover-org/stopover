@@ -7,7 +7,7 @@ import query_EventsPage_QueryNode, {
 } from "artifacts/query_EventsPage_Query.graphql";
 import { parseValue } from "lib/hooks/useQuery";
 import PageWrapper from "components/shared/PageWrapper";
-import EventsScene from "./scene";
+import Scene from "./scene";
 
 const filterParsers = {
   query: (value: string) => parseValue(value),
@@ -59,7 +59,7 @@ const Page = async ({
 
   return (
     <PageWrapper>
-      <EventsScene preloadedQuery={preloadedQuery} />
+      <Scene preloadedQuery={preloadedQuery} />
     </PageWrapper>
   );
 };

@@ -4,7 +4,7 @@ import PageWrapper from "components/shared/PageWrapper";
 import query_EventPage_QueryNode, {
   query_EventPage_Query,
 } from "artifacts/query_EventPage_Query.graphql";
-import EventScene from "./scene";
+import Scene from "./scene";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {
   const preloadedQuery = await loadSerializableQuery<
@@ -14,7 +14,7 @@ const Page = async ({ params }: { params: Record<string, string> }) => {
 
   return (
     <PageWrapper>
-      <EventScene preloadedQuery={preloadedQuery} />
+      <Scene preloadedQuery={preloadedQuery} />
     </PageWrapper>
   );
 };

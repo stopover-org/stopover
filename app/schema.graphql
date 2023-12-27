@@ -1278,7 +1278,7 @@ type PublishEventPayload {
 }
 
 type Query {
-  booking(id: ID!): Booking
+  booking(id: ID!): Booking!
   bookings(filters: BookingsFilter): [Booking!]!
   currentUser: User!
   event(id: ID!): Event!
