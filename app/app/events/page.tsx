@@ -1,12 +1,12 @@
 import React from "react";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import PageWrapper from "components/shared/PageWrapper";
-import moment, { Moment } from "moment";
+import moment, {Moment} from "moment";
 import query_EventsPage_QueryNode, {
   EventsFilter,
   query_EventsPage_Query,
 } from "artifacts/query_EventsPage_Query.graphql";
-import { parseValue } from "lib/hooks/useQuery";
+import {parseValue} from "lib/hooks/useQuery";
 import EventsScene from "./scene";
 
 const filterParsers = {
@@ -37,7 +37,7 @@ const Page = async ({
     if (searchParams.dates) {
       const dates = parseValue(searchParams.dates)
         .map((val: string) => moment(val))
-        .filter((dt: Moment) => dt.isValid);
+        .filter((dt: Moment) => dt.isValid());
 
       if (dates.length === 2) {
         // eslint-disable-next-line prefer-destructuring

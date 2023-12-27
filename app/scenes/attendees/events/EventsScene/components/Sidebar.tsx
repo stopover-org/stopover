@@ -14,8 +14,8 @@ import SliderRange from "components/v2/SliderRange/SliderRange";
 import { parseValue, useQuery, useUpdateQuery } from "lib/hooks/useQuery";
 import { Sidebar_InterestsFragment$key } from "artifacts/Sidebar_InterestsFragment.graphql";
 import { Sidebar_EventFiltersFragment$key } from "artifacts/Sidebar_EventFiltersFragment.graphql";
+import QueryInput from "components/shared/QueryInput";
 import InterestsSelect from "./InterestsSelect";
-import QueryInput from "../../../../../components/shared/QueryInput";
 
 interface Props {
   eventFiltersFragment: Sidebar_EventFiltersFragment$key;
@@ -73,7 +73,7 @@ const Sidebar = ({
     const datesArray = parseValue(datesStr) as string[];
     return datesArray
       .map((dt) => moment(dt))
-      .filter((dt: Moment) => dt.isValid);
+      .filter((dt: Moment) => dt.isValid());
   });
   const setMinPrice = useUpdateQuery("minPrice");
   const setMaxPrice = useUpdateQuery("maxPrice");

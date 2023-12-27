@@ -3,13 +3,13 @@ import React from "react";
 import * as Yup from "yup";
 import moment, { Moment } from "moment";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
-import useMutationForm from "../../../../lib/hooks/useMutationForm";
-import useClosestDate from "../../../../lib/hooks/useClosestDate";
-import useUniqueMomentDates from "../../../../lib/hooks/useUniqueMomentDates";
-import { dateFormat } from "../../../../lib/utils/dates";
-import useMomentDates from "../../../../lib/hooks/useMomentDates";
-import { useBookEventForm_EventFragment$key } from "../../../../artifacts/useBookEventForm_EventFragment.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
+import useClosestDate from "lib/hooks/useClosestDate";
+import useUniqueMomentDates from "lib/hooks/useUniqueMomentDates";
+import { dateFormat } from "lib/utils/dates";
+import useMomentDates from "lib/hooks/useMomentDates";
+import { useBookEventForm_EventFragment$key } from "artifacts/useBookEventForm_EventFragment.graphql";
+import { useQuery } from "lib/hooks/useQuery";
 
 interface BookEventFields {
   eventId: string;
@@ -20,7 +20,6 @@ interface BookEventFields {
 function useDefaultValues(
   eventFragmentRef: useBookEventForm_EventFragment$key
 ): BookEventFields {
-  const router = useRouter();
   const event = useFragment(
     graphql`
       fragment useBookEventForm_EventFragment on Event {
@@ -42,12 +41,18 @@ function useDefaultValues(
     event?.myBookings?.map((b) => b.bookedFor)
   );
   const closestBookedDate = useClosestDate(bookedDates);
+  const date = useQuery("date", null, (value) => moment(value, dateFormat));
   const parsedDate = React.useMemo(() => {
-    const date = moment(router.query.date, dateFormat);
-    if (availableDates.find((dt) => dt.isSame(date, "day"))) {
-      if (date.isValid()) return date.startOf("day");
+    if (!date?.isValid()) {
+      return null;
     }
+
+    if (availableDates.find((dt) => dt.isSame(date, "day"))) {
+      return date.startOf("day");
+    }
+
     if (closestBookedDate) return closestBookedDate;
+
     return closestDate;
   }, []);
 
