@@ -10,6 +10,7 @@ import {
   Variables,
 } from "relay-runtime";
 import { createRelaySubscriptionHandler } from "graphql-ruby-client";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 const IS_SERVER = typeof window === typeof undefined;
 const CACHE_TTL = 5 * 1000; // 5 seconds, to resolve preloaded results
@@ -17,20 +18,26 @@ const CACHE_TTL = 5 * 1000; // 5 seconds, to resolve preloaded results
 export const getGraphQLBaseUrl = () =>
   process.env.GRAPHQL_API_URL || "http://localhost:8080/graphql";
 
+const getCookiesString = (cookies: RequestCookie[] = []) =>
+  cookies.map(({ name, value }) => `${name}=${value}`).join(";");
+
 export async function networkFetch(
   request: RequestParameters,
-  variables: Variables
+  variables: Variables,
+  cookies: RequestCookie[] = []
 ): Promise<GraphQLResponse> {
   const resp = await fetch(getGraphQLBaseUrl(), {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Cookie: getCookiesString(cookies),
     },
     body: JSON.stringify({
       query: request.text,
       variables,
     }),
+    credentials: "include",
   });
   const json = await resp.json();
 

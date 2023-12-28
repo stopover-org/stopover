@@ -81,7 +81,9 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
     }
 
     requestRef.current = setTimeout(() => {
-      refetch({ query: internalQuery }, { fetchPolicy: "store-and-network" });
+      if (query !== internalQuery) {
+        refetch({ query: internalQuery }, { fetchPolicy: "store-and-network" });
+      }
     }, 500);
   }, [internalQuery]);
 

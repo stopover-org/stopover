@@ -7,6 +7,7 @@ import query_EventsPage_QueryNode, {
 } from "artifacts/query_EventsPage_Query.graphql";
 import { parseValue } from "lib/hooks/useQuery";
 import PageWrapper from "components/shared/PageWrapper";
+import { cookies } from "next/headers";
 import Scene from "./scene";
 
 const filterParsers = {
@@ -53,9 +54,13 @@ const Page = async ({
   const preloadedQuery = await loadSerializableQuery<
     typeof query_EventsPage_QueryNode,
     query_EventsPage_Query
-  >(query_EventsPage_QueryNode.params, {
-    filters,
-  });
+  >(
+    query_EventsPage_QueryNode.params,
+    {
+      filters,
+    },
+    cookies().getAll()
+  );
 
   return (
     <PageWrapper>

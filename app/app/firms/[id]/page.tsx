@@ -4,13 +4,18 @@ import query_AttendeesFirm_QueryNode, {
 } from "artifacts/query_AttendeesFirm_Query.graphql";
 import PageWrapper from "components/shared/PageWrapper/PageWrapper";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
+import { cookies } from "next/headers";
 import Scene from "./scene";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {
   const preloadedQuery = await loadSerializableQuery<
     typeof query_AttendeesFirm_QueryNode,
     query_AttendeesFirm_Query
-  >(query_AttendeesFirm_QueryNode.params, { id: unescape(params.id) });
+  >(
+    query_AttendeesFirm_QueryNode.params,
+    { id: unescape(params.id) },
+    cookies().getAll()
+  );
 
   return (
     <PageWrapper>
