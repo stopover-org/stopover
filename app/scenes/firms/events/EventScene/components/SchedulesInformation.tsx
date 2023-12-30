@@ -11,7 +11,6 @@ import {
   useSchedulesColumns,
   useSchedulesHeaders,
 } from "../../../../../components/shared/tables/columns/schedules";
-import { usePagedEdges } from "../../../../../lib/hooks/usePagedEdges";
 import {
   useBookingsColumns,
   useBookingsHeaders,
@@ -111,7 +110,10 @@ const SchedulesInformation = ({
     null
   );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const schedules = useEdges(data.pagedSchedules);
+  const schedules = useEdges(data.pagedSchedules) as ReadonlyArray<
+    Record<string, any>
+  >;
+
   const schedule = React.useMemo(
     () => schedules[selectedSchedule!],
     [schedules, selectedSchedule]

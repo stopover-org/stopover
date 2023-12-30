@@ -5,7 +5,7 @@ import { RelayEnvironmentProvider } from "react-relay";
 import { getCurrentEnvironment } from "lib/relay/environment";
 
 const PageWrapper = ({ children }: { children: React.ReactNode }) => {
-  const environment = getCurrentEnvironment();
+  const environment = getCurrentEnvironment([]);
 
   return (
     <RelayEnvironmentProvider environment={environment}>

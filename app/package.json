@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build --turbo",
+    "build": "next build",
     "build-storybook": "build-storybook",
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "eslint": "eslint",
     "generate": "relay-compiler",
     "lint": "next lint",

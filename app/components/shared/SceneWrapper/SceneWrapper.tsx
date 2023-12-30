@@ -5,7 +5,6 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import React from "react";
 import { CssVarsProvider } from "@mui/joy";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import QueryProvider from "components/QueryProvider";
 import { theme } from "lib/theme";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
@@ -37,14 +36,14 @@ i18n
   });
 
 const SceneWrapper = ({ children }: { children: React.ReactNode }) => (
-  <QueryProvider>
+  <>
     <Toaster richColors />
     <CssVarsProvider theme={theme}>
       <LocalizationProvider dateAdapter={AdapterMoment}>
         {children}
       </LocalizationProvider>
     </CssVarsProvider>
-  </QueryProvider>
+  </>
 );
 
 export default React.memo(SceneWrapper);

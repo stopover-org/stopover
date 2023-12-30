@@ -57,7 +57,11 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
     `,
     firmFragmentRef
   );
-  const payments = useEdges(data.payments);
+
+  const payments = useEdges(data.payments) as ReadonlyArray<
+    Record<string, any>
+  >;
+
   const actualPayments = usePaymentsColumns(
     payments.map((payment) => ({
       event: {

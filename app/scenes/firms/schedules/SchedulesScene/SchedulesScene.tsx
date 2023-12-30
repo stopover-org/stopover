@@ -117,7 +117,10 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
     null
   );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const schedules = useEdges(data.pagedSchedules);
+  const schedules = useEdges(data.pagedSchedules) as ReadonlyArray<
+    Record<string, any>
+  >;
+
   const schedule = React.useMemo(
     () => schedules[selectedSchedule!],
     [schedules, selectedSchedule]

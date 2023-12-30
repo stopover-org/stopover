@@ -14,6 +14,7 @@ import { useSignInForm } from "./useSignInForm";
 
 // @ts-ignore
 if (typeof window !== typeof undefined)
+  // @ts-ignore
   window.momentTimezones = momentTimezones;
 
 export const SignIn = () => {

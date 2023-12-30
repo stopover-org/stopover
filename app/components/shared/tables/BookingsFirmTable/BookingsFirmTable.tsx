@@ -90,7 +90,11 @@ const BookingsFirmTable = ({
     firmFragmentRef
   );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const pagedBookings = usePagedEdges(bookings, currentPage, 30);
+  const pagedBookings = usePagedEdges(
+    bookings,
+    currentPage,
+    30
+  ) as ReadonlyArray<Record<string, any>>;
   const actualBookings = useBookingsColumns(pagedBookings);
   const headers = useBookingsHeaders();
 

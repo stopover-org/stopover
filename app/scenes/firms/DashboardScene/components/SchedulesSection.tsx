@@ -48,7 +48,9 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
     firmFragmentRef
   );
   const { t } = useTranslation();
-  const schedules = useEdges(data.schedules);
+  const schedules = useEdges(data.schedules) as ReadonlyArray<
+    Record<string, any>
+  >;
   const schedulesData = useSchedulesColumns(schedules);
   const schedulesHeaders = useSchedulesHeaders();
 

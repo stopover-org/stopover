@@ -54,7 +54,7 @@ const FirmSection = ({
     primary: ["active"],
     danger: ["removed"],
     info: ["pending"],
-    status: firm.status,
+    status: firm.status!,
   });
 
   return (

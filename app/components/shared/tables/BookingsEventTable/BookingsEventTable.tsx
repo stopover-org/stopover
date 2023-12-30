@@ -88,7 +88,9 @@ const BookingsEventTable = ({
     eventFragmentRef
   );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const pagedBookings = useEdges(paginatedBookings);
+  const pagedBookings = useEdges(paginatedBookings) as ReadonlyArray<
+    Record<string, any>
+  >;
   const actualBookings = useBookingsColumns(pagedBookings);
   const headers = useBookingsHeaders();
 
