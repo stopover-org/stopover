@@ -2,6 +2,7 @@ export default {
   scenes: {
     firms: {
       dashboardScene: {
+        title: "My firm's dashboard",
         view: "View",
         edit: "Edit",
         total: "Total",
