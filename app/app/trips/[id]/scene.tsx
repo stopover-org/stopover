@@ -42,10 +42,8 @@ const Scene = ({
   return (
     <SceneWrapper>
       <Layout currentUserFragment={data.currentUser}>
-        <AuthGuard accessible={!!data.currentUser.account.trip.id}>
-          <React.Suspense>
-            <TripScene tripFragmentRef={data.currentUser.account.trip!} />
-          </React.Suspense>
+        <AuthGuard accessible={Boolean(data.currentUser.account.trip.id)}>
+          <TripScene tripFragmentRef={data.currentUser.account.trip!} />
         </AuthGuard>
       </Layout>
     </SceneWrapper>

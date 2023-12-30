@@ -16,6 +16,11 @@ const DateBookingsSection = ({
   tripFragmentRef,
   date,
 }: DateBookingsSectionProps) => {
+  const [serverSide, setServerSide] = React.useState(true);
+  React.useEffect(() => {
+    setServerSide(false);
+  }, []);
+
   const trip = useFragment(
     graphql`
       fragment DateBookingsSection_TripFragment on Trip {
@@ -36,7 +41,7 @@ const DateBookingsSection = ({
   );
 
   React.useEffect(() => {
-    if (typeof window === typeof undefined) {
+    if (serverSide) {
       return;
     }
 
@@ -47,7 +52,9 @@ const DateBookingsSection = ({
     if (domNode) {
       domNode.scrollIntoView();
     }
-  }, []);
+  }, [serverSide]);
+
+  if (serverSide) return null;
 
   return (
     <Grid xs={12}>

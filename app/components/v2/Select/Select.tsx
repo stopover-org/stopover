@@ -39,6 +39,7 @@ const Select = React.forwardRef(
       if (!(onChange instanceof Function)) return;
       onChange(value, event);
     };
+
     return (
       <FormControl>
         {label && <FormLabel>{label}</FormLabel>}

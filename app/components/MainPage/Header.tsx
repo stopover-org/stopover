@@ -98,6 +98,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
               alt="logo"
               priority
               {...imageSize}
+              suppressHydrationWarning
             />
           </Link>
         </Stack>

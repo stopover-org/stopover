@@ -47,24 +47,26 @@ const TripScene = ({ tripFragmentRef }: TripSceneProps) => {
   );
 
   return (
-    <Grid container spacing={2} padding={2}>
-      <Grid xs={12}>
-        <Typography level="h2">{trip.cities.join(", ")}</Typography>
+    <React.Suspense>
+      <Grid container spacing={2} padding={2}>
+        <Grid xs={12}>
+          <Typography level="h2">{trip.cities.join(", ")}</Typography>
+        </Grid>
+        <Grid xs={12}>
+          <Typography level="h3">
+            {moment(trip.startDate).calendar()} -{" "}
+            {moment(trip.endDate).calendar()}
+          </Typography>
+        </Grid>
+        {dates.map((dt) => (
+          <DateBookingsSection
+            key={dt.toISOString()}
+            tripFragmentRef={trip}
+            date={dt}
+          />
+        ))}
       </Grid>
-      <Grid xs={12}>
-        <Typography level="h3">
-          {moment(trip.startDate).calendar()} -{" "}
-          {moment(trip.endDate).calendar()}
-        </Typography>
-      </Grid>
-      {dates.map((dt) => (
-        <DateBookingsSection
-          key={dt.toISOString()}
-          tripFragmentRef={trip}
-          date={dt}
-        />
-      ))}
-    </Grid>
+    </React.Suspense>
   );
 };
 

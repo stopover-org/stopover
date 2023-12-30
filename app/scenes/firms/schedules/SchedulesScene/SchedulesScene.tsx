@@ -162,7 +162,7 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
   }, [range, setCurrentPage]);
 
   return (
-    <Grid xs={12} container>
+    <Grid xs={12} container suppressHydrationWarning>
       <Grid md={4} sm={12}>
         <Typography level="h4">{t("models.schedule.plural")}</Typography>
         <Grid md={6} sm={12} container>

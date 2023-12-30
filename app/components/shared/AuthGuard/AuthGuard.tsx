@@ -21,7 +21,7 @@ const AuthGuard = ({
 }: AuthGuardProps): React.ReactElement | null => {
   const router = useRouter();
   if (accessible) {
-    return <React.Suspense>{children}</React.Suspense>;
+    return children;
   }
 
   if (redirectTo) {

@@ -3,10 +3,10 @@ import React from "react";
 import { useMediaQuery } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
+import { SidebarContent_AccountFragment$key } from "artifacts/SidebarContent_AccountFragment.graphql";
 import Sidebar from "../Sidebar/Sidebar";
 import { GlobalSidebarContext } from "../../GlobalSidebarProvider";
 import SelectCurrentFirm from "../SelectCurrentFirm";
-import { SidebarContent_AccountFragment$key } from "../../../artifacts/SidebarContent_AccountFragment.graphql";
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
