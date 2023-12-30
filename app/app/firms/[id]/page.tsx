@@ -1,26 +1,22 @@
 import React from "react";
-import query_AttendeesFirm_QueryNode, {
-  query_AttendeesFirm_Query,
-} from "artifacts/query_AttendeesFirm_Query.graphql";
-import PageWrapper from "components/shared/PageWrapper/PageWrapper";
+import scene_AttendeesFirm_QueryNode, {
+  scene_AttendeesFirm_Query,
+} from "artifacts/scene_AttendeesFirm_Query.graphql";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
-import Scene from "./scene";
+import QueryWrapper from "./query";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {
   const preloadedQuery = await loadSerializableQuery<
-    typeof query_AttendeesFirm_QueryNode,
-    query_AttendeesFirm_Query
-  >(
-    query_AttendeesFirm_QueryNode.params,
-    { id: unescape(params.id) },
-    cookies().getAll()
-  );
+    typeof scene_AttendeesFirm_QueryNode,
+    scene_AttendeesFirm_Query
+  >(scene_AttendeesFirm_QueryNode.params, { id: unescape(params.id) });
 
   return (
-    <PageWrapper>
-      <Scene preloadedQuery={preloadedQuery} />
-    </PageWrapper>
+    <QueryWrapper
+      preloadedQuery={preloadedQuery}
+      cookies={cookies().getAll()}
+    />
   );
 };
 

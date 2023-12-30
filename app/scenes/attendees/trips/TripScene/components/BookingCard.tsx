@@ -99,10 +99,13 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
   const [cancelBookingOpened, setCancelBookingOpened] =
     React.useState<boolean>(false);
   const cancellable = useBookingCancellable(booking);
-  const highlight = React.useMemo(
-    () => booking.id === window.document.location.hash.replace("#", ""),
-    []
-  );
+  const highlight = React.useMemo(() => {
+    if (typeof window === typeof undefined) {
+      return false;
+    }
+
+    return booking.id === window.document.location.hash.replace("#", "");
+  }, []);
 
   return (
     <Stack

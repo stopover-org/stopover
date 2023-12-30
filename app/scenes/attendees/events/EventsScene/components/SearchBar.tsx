@@ -4,12 +4,12 @@ import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay";
 import { Autocomplete, AutocompleteOption, Chip } from "@mui/joy";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import Typography from "../../../../../components/v2/Typography/Typography";
-import Link from "../../../../../components/v2/Link/Link";
-import { useQuery, useUpdateQuery } from "../../../../../lib/hooks/useQuery";
-import { SearchBar_EventsAutocompleteFragment$key } from "../../../../../artifacts/SearchBar_EventsAutocompleteFragment.graphql";
-import { SearchBarAutocompleteQuery } from "../../../../../artifacts/SearchBarAutocompleteQuery.graphql";
-import { SearchBar_AutocompleteQuery } from "../../../../../artifacts/SearchBar_AutocompleteQuery.graphql";
+import Typography from "components/v2/Typography/Typography";
+import Link from "components/v2/Link/Link";
+import { useQuery, useUpdateQuery } from "lib/hooks/useQuery";
+import { SearchBar_EventsAutocompleteFragment$key } from "artifacts/SearchBar_EventsAutocompleteFragment.graphql";
+import { SearchBarAutocompleteQuery } from "artifacts/SearchBarAutocompleteQuery.graphql";
+import { SearchBar_AutocompleteQuery } from "artifacts/SearchBar_AutocompleteQuery.graphql";
 
 interface SearchBarProps {
   redirect?: boolean;

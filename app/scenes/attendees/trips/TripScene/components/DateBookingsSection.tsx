@@ -36,9 +36,14 @@ const DateBookingsSection = ({
   );
 
   React.useEffect(() => {
+    if (typeof window === typeof undefined) {
+      return;
+    }
+
     const domNode = window.document.getElementById(
       window.document.location.hash.replace("#", "")
     );
+
     if (domNode) {
       domNode.scrollIntoView();
     }

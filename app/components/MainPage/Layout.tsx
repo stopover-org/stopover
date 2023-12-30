@@ -25,12 +25,6 @@ const Layout = ({
   currentUserFragment,
   showRegisterFirm = true,
 }: LayoutProps) => {
-  const [isSSR, setIsSSR] = React.useState(true);
-
-  React.useEffect(() => {
-    setIsSSR(false);
-  }, []);
-
   const currentUser = useFragment(
     graphql`
       fragment Layout_CurrentUserFragment on User {
@@ -68,7 +62,7 @@ const Layout = ({
           currentUserFragment={currentUser}
           showRegisterFirm={showRegisterFirm}
         />
-        {!isSSR ? children : null}
+        {children}
         <Footer />
       </Sheet>
     </GlobalSidebarProvider>

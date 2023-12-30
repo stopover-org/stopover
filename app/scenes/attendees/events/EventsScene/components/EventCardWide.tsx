@@ -12,15 +12,15 @@ import { graphql, useFragment, useMutation } from "react-relay";
 import moment from "moment";
 import { Moment } from "moment/moment";
 import { useTranslation } from "react-i18next";
-import Typography from "../../../../../components/v2/Typography";
-import Link from "../../../../../components/v2/Link";
-import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
-import Button from "../../../../../components/v2/Button";
-import { EventCardCompact_BookEventMutation } from "../../../../../artifacts/EventCardCompact_BookEventMutation.graphql";
-import { EventCardWide_EventFragment$key } from "../../../../../artifacts/EventCardWide_EventFragment.graphql";
-import SubmitButton from "../../../../../components/shared/SubmitButton";
+import Typography from "components/v2/Typography";
+import Link from "components/v2/Link";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import Button from "components/v2/Button";
+import { EventCardCompact_BookEventMutation } from "artifacts/EventCardCompact_BookEventMutation.graphql";
+import { EventCardWide_EventFragment$key } from "artifacts/EventCardWide_EventFragment.graphql";
+import SubmitButton from "components/shared/SubmitButton";
+import { useUpdateQuery } from "lib/hooks/useQuery";
 import DateAutocomplete from "./DateAutocomplete";
-import { useUpdateQuery } from "../../../../../lib/hooks/useQuery";
 
 interface Props {
   eventFragmentRef: EventCardWide_EventFragment$key;

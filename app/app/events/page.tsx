@@ -1,14 +1,13 @@
 import React from "react";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import moment, { Moment } from "moment";
-import query_EventsPage_QueryNode, {
+import scene_EventsPage_QueryNode, {
   EventsFilter,
-  query_EventsPage_Query,
-} from "artifacts/query_EventsPage_Query.graphql";
+  scene_EventsPage_Query,
+} from "artifacts/scene_EventsPage_Query.graphql";
 import { parseValue } from "lib/hooks/useQuery";
-import PageWrapper from "components/shared/PageWrapper";
 import { cookies } from "next/headers";
-import Scene from "./scene";
+import QueryWrapper from "./query";
 
 const filterParsers = {
   query: (value: string) => parseValue(value),
@@ -52,20 +51,17 @@ const Page = async ({
   }, [searchParams]);
 
   const preloadedQuery = await loadSerializableQuery<
-    typeof query_EventsPage_QueryNode,
-    query_EventsPage_Query
-  >(
-    query_EventsPage_QueryNode.params,
-    {
-      filters,
-    },
-    cookies().getAll()
-  );
+    typeof scene_EventsPage_QueryNode,
+    scene_EventsPage_Query
+  >(scene_EventsPage_QueryNode.params, {
+    filters,
+  });
 
   return (
-    <PageWrapper>
-      <Scene preloadedQuery={preloadedQuery} />
-    </PageWrapper>
+    <QueryWrapper
+      preloadedQuery={preloadedQuery}
+      cookies={cookies().getAll()}
+    />
   );
 };
 

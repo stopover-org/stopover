@@ -4,7 +4,6 @@ import {
   Box,
   Card,
   CardOverflow,
-  Grid,
   Stack,
   Tooltip,
   useTheme,
@@ -15,13 +14,13 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import IconButton from "@mui/joy/IconButton";
 import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "@mui/material";
-import Link from "../../../../../components/v2/Link/Link";
-import Typography from "../../../../../components/v2/Typography/Typography";
-import { TripCard_TripFragment$key } from "../../../../../artifacts/TripCard_TripFragment.graphql";
+import Link from "components/v2/Link/Link";
+import Typography from "components/v2/Typography/Typography";
+import { TripCard_TripFragment$key } from "artifacts/TripCard_TripFragment.graphql";
 
 interface TripCardProps {
   tripFragmentRef: TripCard_TripFragment$key;
-  danger?: boolean
+  danger?: boolean;
 }
 
 const TripCard = ({ tripFragmentRef, danger }: TripCardProps) => {
@@ -67,10 +66,10 @@ const TripCard = ({ tripFragmentRef, danger }: TripCardProps) => {
       orientation="horizontal"
       sx={{
         width: isMobileView ? "unset" : "420px",
-        maxHeight: isMobileView ? 'unset' : '130px',
-        minHeight: isMobileView ? 'unset' : '130px',
+        maxHeight: isMobileView ? "unset" : "130px",
+        minHeight: isMobileView ? "unset" : "130px",
       }}
-      color={danger ? 'danger' : undefined}
+      color={danger ? "danger" : undefined}
     >
       {!isMobileView && (
         <CardOverflow>
@@ -85,7 +84,13 @@ const TripCard = ({ tripFragmentRef, danger }: TripCardProps) => {
           </AspectRatio>
         </CardOverflow>
       )}
-      <Stack paddingLeft={isMobileView ? 0 : "10px"} width="100%" sx={{ position: "relative" }} spacing={1} useFlexGap>
+      <Stack
+        paddingLeft={isMobileView ? 0 : "10px"}
+        width="100%"
+        sx={{ position: "relative" }}
+        spacing={1}
+        useFlexGap
+      >
         {trip.canCancel && (
           <Box>
             <Tooltip title={t("scenes.attendees.trips.tripsScene.cancelTrip")}>
@@ -110,7 +115,7 @@ const TripCard = ({ tripFragmentRef, danger }: TripCardProps) => {
                 whiteSpace: "nowrap",
                 display: "inline-block",
                 overflow: "hidden",
-                maxWidth: '150px'
+                maxWidth: "150px",
               }}
             >
               {trip.cities.join(", ")}
@@ -118,22 +123,29 @@ const TripCard = ({ tripFragmentRef, danger }: TripCardProps) => {
           </Tooltip>
         </Link>
         <Box>
-          <Tooltip title={`${moment(trip.startDate).calendar()} - ${moment(trip.endDate).calendar()}`}>
-            <Typography level="body-md" sx={{ 
-              fontSize: "sm",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              display: "inline-block",
-              overflow: "hidden",
-              maxWidth: '230px'
-            }}>
+          <Tooltip
+            title={`${moment(trip.startDate).calendar()} - ${moment(
+              trip.endDate
+            ).calendar()}`}
+          >
+            <Typography
+              level="body-md"
+              sx={{
+                fontSize: "sm",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                display: "inline-block",
+                overflow: "hidden",
+                maxWidth: "230px",
+              }}
+            >
               {moment(trip.startDate).calendar()} -{" "}
               {moment(trip.endDate).calendar()}
             </Typography>
           </Tooltip>
         </Box>
         <Box>
-          <Stack direction='row' justifyContent={'space-between'}>
+          <Stack direction="row" justifyContent="space-between">
             <Typography level="body-sm">
               {t("scenes.attendees.trips.tripScene.attendeesCount", {
                 count: trip.attendeesCount,

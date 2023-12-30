@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Box, Grid, Stack, useTheme } from "@mui/joy";
 import Image from "next/image";
@@ -60,10 +62,15 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
     [currentUser]
   );
 
+  const isServer = React.useMemo(
+    () => typeof window === typeof undefined,
+    [typeof window]
+  );
+
   const imageSize = React.useMemo(
     () => ({
-      width: !isMediumDisplay ? 150 : 250,
-      height: !isMediumDisplay ? 45 : 75,
+      width: !isMediumDisplay && !isServer ? 150 : 250,
+      height: !isMediumDisplay && !isServer ? 45 : 75,
     }),
     [isMediumDisplay]
   );

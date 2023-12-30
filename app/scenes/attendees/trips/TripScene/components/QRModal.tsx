@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DialogContent,
   DialogTitle,
@@ -32,6 +34,13 @@ const QRModal = ({ bookingFragmentRef, opened, onClose }: QRModalProps) => {
     bookingFragmentRef
   );
   const { t } = useTranslation();
+  const QRUrl = React.useMemo(() => {
+    if (typeof window === typeof undefined) {
+      return "";
+    }
+
+    return `${window.location.protocol}${window.location.host}/my-firm/bookings/${booking.id}`;
+  }, []);
 
   return (
     <Modal open={opened} onClose={onClose}>
@@ -46,10 +55,8 @@ const QRModal = ({ bookingFragmentRef, opened, onClose }: QRModalProps) => {
         </DialogTitle>
         <Divider />
         <DialogContent sx={{ overflowX: "hidden" }}>
-          <QRCode
-            value={`${window.location.protocol}${window.location.host}/my-firm/bookings/${booking.id}`}
-            style={{ width: "100%" }}
-          />
+          <QRCode value={QRUrl} style={{ width: "100%" }} />
+
           <Divider />
           <Typography>{booking.event.fullAddress}</Typography>
         </DialogContent>

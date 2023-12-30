@@ -7,51 +7,45 @@ import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
 import { useTranslation } from "react-i18next";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
-import VerifyBookingScene from "scenes/attendees/bookings/VerifyBookingScene";
-import { scene_VerifyCheckout_Query } from "artifacts/scene_VerifyCheckout_Query.graphql";
+import { scene_Trip_Query } from "artifacts/scene_Trip_Query.graphql";
+import TripScene from "scenes/attendees/trips/TripScene/TripScene";
 
-export const Query = graphql`
-  query scene_VerifyCheckout_Query($id: ID!) {
+const Query = graphql`
+  query scene_Trip_Query($id: ID!) {
     currentUser {
       ...Layout_CurrentUserFragment
       account {
-        id
+        trip(tripId: $id) {
+          id
+          cities
+          ...TripScene_TripFragment
+        }
       }
-    }
-    booking(id: $id) {
-      id
-      account {
-        id
-      }
-      event {
-        title
-      }
-      ...VerifyBookingScene_BookingFragment
     }
   }
 `;
+
 const Scene = ({
   queryRef,
 }: {
-  queryRef: PreloadedQuery<scene_VerifyCheckout_Query>;
+  queryRef: PreloadedQuery<scene_Trip_Query>;
 }) => {
   const data = usePreloadedQuery(Query, queryRef);
   const { t } = useTranslation();
 
   useDocumentTitle(
-    `${t("models.booking.singular")} ${data.booking.event.title}`
+    `${t("models.trip.singular")} | ${data.currentUser.account.trip.cities.join(
+      ", "
+    )}`
   );
 
   return (
     <SceneWrapper>
       <Layout currentUserFragment={data.currentUser}>
-        <AuthGuard
-          accessible={
-            !!data.booking?.id &&
-            data.booking.account.id === data.currentUser.account.id
-          }
-        >
-          <VerifyBookingScene bookingFragmentRef={data.booking} />
+        <AuthGuard accessible={!!data.currentUser.account.trip.id}>
+          <React.Suspense>
+            <TripScene tripFragmentRef={data.currentUser.account.trip!} />
+          </React.Suspense>
         </AuthGuard>
       </Layout>
     </SceneWrapper>

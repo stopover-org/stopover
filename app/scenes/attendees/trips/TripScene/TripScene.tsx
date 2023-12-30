@@ -2,9 +2,7 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { Grid } from "@mui/joy";
 import moment, { Moment } from "moment";
-import { useTranslation } from "react-i18next";
 import Typography from "../../../../components/v2/Typography";
-import Tag from "../../../../components/v2/Tag";
 import { TripScene_TripFragment$key } from "../../../../artifacts/TripScene_TripFragment.graphql";
 import DateBookingsSection from "./components/DateBookingsSection";
 
@@ -13,7 +11,6 @@ interface TripSceneProps {
 }
 
 const TripScene = ({ tripFragmentRef }: TripSceneProps) => {
-  const { t } = useTranslation();
   const trip = useFragment(
     graphql`
       fragment TripScene_TripFragment on Trip {

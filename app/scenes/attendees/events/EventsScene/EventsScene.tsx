@@ -34,7 +34,6 @@ const ContentWrapper = styled(Grid)(({ theme }) => ({
 
 const EventsScene = ({ eventsFragmentRef }: Props) => {
   const theme = useTheme();
-  const [initialRender, setInitialRender] = React.useState(true);
   const { setContent } = React.useContext(GlobalSidebarContext);
   const showSidebar = useMediaQuery(theme.breakpoints.up("md"));
   const isLargeDisplay = useMediaQuery(theme.breakpoints.up("lg"));
@@ -114,11 +113,6 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   const queryRef = React.useRef<Disposable>();
 
   React.useEffect(() => {
-    if (initialRender) {
-      setInitialRender(false);
-      return;
-    }
-
     if (queryRef.current) {
       queryRef.current.dispose();
     }

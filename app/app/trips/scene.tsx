@@ -7,51 +7,39 @@ import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
 import { useTranslation } from "react-i18next";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
-import VerifyBookingScene from "scenes/attendees/bookings/VerifyBookingScene";
-import { scene_VerifyCheckout_Query } from "artifacts/scene_VerifyCheckout_Query.graphql";
+import { scene_Trips_Query } from "artifacts/scene_Trips_Query.graphql";
+import AttendeeSidebar from "components/shared/AttendeeSidebar/AttendeeSidebar";
+import TripsScene from "scenes/attendees/trips/TripsScene/TripsScene";
 
-export const Query = graphql`
-  query scene_VerifyCheckout_Query($id: ID!) {
+const Query = graphql`
+  query scene_Trips_Query {
     currentUser {
       ...Layout_CurrentUserFragment
+      ...AttendeeSidebar_CurrentUserFragment
       account {
-        id
+        ...TripsScene_AccountFragment
       }
-    }
-    booking(id: $id) {
-      id
-      account {
-        id
-      }
-      event {
-        title
-      }
-      ...VerifyBookingScene_BookingFragment
     }
   }
 `;
+
 const Scene = ({
   queryRef,
 }: {
-  queryRef: PreloadedQuery<scene_VerifyCheckout_Query>;
+  queryRef: PreloadedQuery<scene_Trips_Query>;
 }) => {
   const data = usePreloadedQuery(Query, queryRef);
   const { t } = useTranslation();
 
-  useDocumentTitle(
-    `${t("models.booking.singular")} ${data.booking.event.title}`
-  );
+  useDocumentTitle(`${t("models.trip.plural")}`);
 
   return (
     <SceneWrapper>
       <Layout currentUserFragment={data.currentUser}>
-        <AuthGuard
-          accessible={
-            !!data.booking?.id &&
-            data.booking.account.id === data.currentUser.account.id
-          }
-        >
-          <VerifyBookingScene bookingFragmentRef={data.booking} />
+        <AuthGuard accessible>
+          <AttendeeSidebar currentUserFragmentRef={data.currentUser}>
+            <TripsScene accountFragmentRef={data.currentUser.account} />
+          </AttendeeSidebar>
         </AuthGuard>
       </Layout>
     </SceneWrapper>

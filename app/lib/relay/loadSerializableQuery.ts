@@ -6,7 +6,7 @@ import {
 } from "relay-runtime";
 import { ConcreteRequest } from "relay-runtime/lib/util/RelayConcreteNode";
 import { networkFetch } from "lib/relay/environment";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import { cookies } from "next/headers";
 
 export interface SerializablePreloadedQuery<
   TRequest extends ConcreteRequest,
@@ -25,10 +25,9 @@ export default async function loadSerializableQuery<
   TQuery extends OperationType
 >(
   params: RequestParameters,
-  variables: VariablesOf<TQuery>,
-  cookies: RequestCookie[] = []
+  variables: VariablesOf<TQuery>
 ): Promise<SerializablePreloadedQuery<TRequest, TQuery>> {
-  const response = await networkFetch(params, variables, cookies);
+  const response = await networkFetch(params, variables, cookies().getAll());
   return {
     params,
     variables,

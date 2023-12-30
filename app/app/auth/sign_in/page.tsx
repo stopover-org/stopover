@@ -1,22 +1,22 @@
 import React from "react";
-import Scene from "app/auth/sign_in/scene";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
-import query_SignInPage_QueryNode, {
-  query_SignInPage_Query,
-} from "artifacts/query_SignInPage_Query.graphql";
-import PageWrapper from "components/shared/PageWrapper";
+import scene_SignIn_QueryNode, {
+  scene_SignIn_Query,
+} from "artifacts/scene_SignIn_Query.graphql";
 import { cookies } from "next/headers";
+import QueryWrapper from "./query";
 
 const Page = async () => {
   const preloadedQuery = await loadSerializableQuery<
-    typeof query_SignInPage_QueryNode,
-    query_SignInPage_Query
-  >(query_SignInPage_QueryNode.params, {}, cookies().getAll());
+    typeof scene_SignIn_QueryNode,
+    scene_SignIn_Query
+  >(scene_SignIn_QueryNode.params, {});
 
   return (
-    <PageWrapper>
-      <Scene preloadedQuery={preloadedQuery} />
-    </PageWrapper>
+    <QueryWrapper
+      preloadedQuery={preloadedQuery}
+      cookies={cookies().getAll()}
+    />
   );
 };
 

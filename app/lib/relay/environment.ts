@@ -12,27 +12,28 @@ import {
 import { createRelaySubscriptionHandler } from "graphql-ruby-client";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
-const IS_SERVER = typeof window === typeof undefined;
+export const IS_SERVER = typeof window === typeof undefined;
 const CACHE_TTL = 5 * 1000; // 5 seconds, to resolve preloaded results
-
-export const getGraphQLBaseUrl = () =>
+const getGraphQLBaseUrl = () =>
   process.env.GRAPHQL_API_URL || "http://localhost:8080/graphql";
 
-const getCookiesString = (cookies: RequestCookie[] = []) =>
-  cookies.map(({ name, value }) => `${name}=${value}`).join(";");
+const getCookiesString = (cookiesObj: RequestCookie[] = []) =>
+  cookiesObj.map(({ name, value }) => `${name}=${value}`).join(";");
 
 export async function networkFetch(
   request: RequestParameters,
   variables: Variables,
   cookies: RequestCookie[] = []
 ): Promise<GraphQLResponse> {
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Cookie: getCookiesString(cookies),
+  };
+
   const resp = await fetch(getGraphQLBaseUrl(), {
     method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Cookie: getCookiesString(cookies),
-    },
+    headers,
     body: JSON.stringify({
       query: request.text,
       variables,
@@ -64,7 +65,7 @@ export const responseCache: QueryResponseCache | null = IS_SERVER
       ttl: CACHE_TTL,
     });
 
-function createNetwork(isServer = false) {
+function createNetwork(isServer = false, cookies: RequestCookie[] = []) {
   async function fetchResponse(
     params: RequestParameters,
     variables: Variables,
@@ -80,7 +81,7 @@ function createNetwork(isServer = false) {
       }
     }
 
-    return networkFetch(params, variables);
+    return networkFetch(params, variables, cookies);
   }
 
   const subscriptionHandler = isServer
@@ -95,9 +96,9 @@ function createNetwork(isServer = false) {
   return network;
 }
 
-function createEnvironment() {
+export function createEnvironment(cookies: RequestCookie[] = []) {
   return new Environment({
-    network: createNetwork(IS_SERVER),
+    network: createNetwork(IS_SERVER, cookies),
     store: new Store(RecordSource.create()),
     isServer: IS_SERVER,
   });
@@ -105,9 +106,9 @@ function createEnvironment() {
 
 export const environment = createEnvironment();
 
-export function getCurrentEnvironment() {
+export function getCurrentEnvironment(cookies: RequestCookie[]) {
   if (IS_SERVER) {
-    return createEnvironment();
+    return createEnvironment(cookies);
   }
 
   return environment;

@@ -72,7 +72,7 @@ export function useSignInForm(onNextStep: (delay: number) => void) {
 
             toast.success(result.signIn?.notification!);
           } else if (result.signIn?.user?.id) {
-            router.push("/events");
+            router.push("/trips");
 
             toast.success(result.signIn?.notification!);
           }

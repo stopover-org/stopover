@@ -1,14 +1,14 @@
 import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import React from "react";
 import { Grid } from "@mui/joy";
-import { FirmScene_CurrentFirmFragment$key } from "../../../../artifacts/FirmScene_CurrentFirmFragment.graphql";
-import Typography from "../../../../components/v2/Typography/Typography";
-import Description from "../../../../components/v2/Description/Description";
-import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
-import Pagination from "../../events/EventsScene/components/Pagination";
-import EventCardCompact from "../../events/EventsScene/components/EventCardCompact";
-import { FirmScenePaginationQuery } from "../../../../artifacts/FirmScenePaginationQuery.graphql";
-import { FirmScene_EventPaginationFragment$key } from "../../../../artifacts/FirmScene_EventPaginationFragment.graphql";
+import { FirmScene_CurrentFirmFragment$key } from "artifacts/FirmScene_CurrentFirmFragment.graphql";
+import Typography from "components/v2/Typography/Typography";
+import Description from "components/v2/Description/Description";
+import { usePagedEdges } from "lib/hooks/usePagedEdges";
+import Pagination from "scenes/attendees/events/EventsScene/components/Pagination";
+import EventCardCompact from "scenes/attendees/events/EventsScene/components/EventCardCompact";
+import { FirmScenePaginationQuery } from "artifacts/FirmScenePaginationQuery.graphql";
+import { FirmScene_EventPaginationFragment$key } from "artifacts/FirmScene_EventPaginationFragment.graphql";
 
 interface Props {
   firmFragmentRef: FirmScene_CurrentFirmFragment$key;
@@ -77,7 +77,11 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
       </Grid>
       <Grid lg={9} md={12} sm={12} xs={12} container>
         {events.map((event) => (
-          <EventCardCompact key={event.id} eventFragmentRef={event} />
+          <EventCardCompact
+            key={event!.id}
+            eventFragmentRef={event!}
+            includeInterests={false}
+          />
         ))}
       </Grid>
       <Grid xs={12}>

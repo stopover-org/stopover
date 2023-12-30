@@ -22,7 +22,7 @@ export function createWsHandler() {
 }
 
 export function getClientEnvironment() {
-  if (typeof window === "undefined") return null;
+  if (typeof window === typeof undefined) return null;
 
   const w = window as any;
 

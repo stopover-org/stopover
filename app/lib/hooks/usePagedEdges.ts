@@ -7,7 +7,7 @@ export function usePagedEdges<T>(
   },
   page: number,
   perPage: number
-) {
+): T[] {
   const edges = useEdges<T>(data);
 
   return React.useMemo(

@@ -1,22 +1,22 @@
 import React from "react";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
-import PageWrapper from "components/shared/PageWrapper";
-import query_Profile_QueryNode, {
-  query_Profile_Query,
-} from "artifacts/query_Profile_Query.graphql";
+import scene_Profile_QueryNode, {
+  scene_Profile_Query,
+} from "artifacts/scene_Profile_Query.graphql";
 import { cookies } from "next/headers";
-import Scene from "./scene";
+import QueryWrapper from "./query";
 
 const Page = async () => {
   const preloadedQuery = await loadSerializableQuery<
-    typeof query_Profile_QueryNode,
-    query_Profile_Query
-  >(query_Profile_QueryNode.params, {}, cookies().getAll());
+    typeof scene_Profile_QueryNode,
+    scene_Profile_Query
+  >(scene_Profile_QueryNode.params, {});
 
   return (
-    <PageWrapper>
-      <Scene preloadedQuery={preloadedQuery} />
-    </PageWrapper>
+    <QueryWrapper
+      preloadedQuery={preloadedQuery}
+      cookies={cookies().getAll()}
+    />
   );
 };
 

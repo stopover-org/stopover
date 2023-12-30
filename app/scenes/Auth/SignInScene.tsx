@@ -13,7 +13,8 @@ import SubmitButton from "components/shared/SubmitButton";
 import { useSignInForm } from "./useSignInForm";
 
 // @ts-ignore
-if (typeof window !== "undefined") window.momentTimezones = momentTimezones;
+if (typeof window !== typeof undefined)
+  window.momentTimezones = momentTimezones;
 
 export const SignIn = () => {
   const router = useRouter();
