@@ -139,11 +139,17 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
         typeof option === "string" ? option : option.title
       }
       groupBy={(option) => option.type}
-      onBlur={onQueryChange}
+      onBlur={(...rest) => {
+        if (redirect) {
+          router.push(`/events?query=${JSON.stringify(internalQuery)}`);
+        } else {
+          onQueryChange(...rest);
+        }
+      }}
       onKeyUp={(e) => {
         if (e.key === "Enter") {
           if (redirect) {
-            router.push(`/events?query=${internalQuery}`);
+            router.push(`/events?query=${JSON.stringify(internalQuery)}`);
           } else {
             updateQuery(internalQuery);
           }
