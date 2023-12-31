@@ -73,7 +73,12 @@ module Types
     end
 
     def bookings(**args)
-      ::BookingQuery.new(args[:filters].to_h || {}, Booking.all, current_user).all
+      arguments = {
+        query_type: ::BookingQuery,
+        **(args[:filters] || {}),
+        firm_id: current_user.account.firm.id
+      }
+      Connections::SearchkickConnection.new(arguments: arguments)
     end
 
     def booking(id:)

@@ -1,20 +1,14 @@
 import { graphql, usePaginationFragment } from "react-relay";
 import React from "react";
-import moment from "moment";
 import { Grid, TabPanel } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import { SchedulesInformation_EventFragment$key } from "../../../../../artifacts/SchedulesInformation_EventFragment.graphql";
-import { getHumanDateTime } from "../../../../../lib/utils/dates";
 import Table from "../../../../../components/v2/Table";
 import Typography from "../../../../../components/v2/Typography";
 import {
   useSchedulesColumns,
   useSchedulesHeaders,
 } from "../../../../../components/shared/tables/columns/schedules";
-import {
-  useBookingsColumns,
-  useBookingsHeaders,
-} from "../../../../../components/shared/tables/columns/bookings";
 import useEdges from "../../../../../lib/hooks/useEdges";
 
 interface SchedulesInformationProps {
@@ -46,58 +40,6 @@ const SchedulesInformation = ({
                   title
                   id
                 }
-                bookings {
-                  id
-                  status
-                  event {
-                    id
-                    title
-                  }
-                  bookingOptions {
-                    status
-                    eventOption {
-                      title
-                      builtIn
-                    }
-                    attendeePrice {
-                      cents
-                      currency {
-                        name
-                      }
-                    }
-                    organizerPrice {
-                      cents
-                      currency {
-                        name
-                      }
-                    }
-                  }
-                  attendeeTotalPrice {
-                    cents
-                    currency {
-                      name
-                    }
-                  }
-                  organizerTotalPrice {
-                    cents
-                    currency {
-                      name
-                    }
-                  }
-                  alreadyPaidPrice {
-                    cents
-                    currency {
-                      name
-                    }
-                  }
-                  attendees {
-                    id
-                    firstName
-                    lastName
-                    phone
-                    email
-                  }
-                }
               }
             }
           }
@@ -113,17 +55,8 @@ const SchedulesInformation = ({
   const schedules = useEdges(data.pagedSchedules) as ReadonlyArray<
     Record<string, any>
   >;
-
-  const schedule = React.useMemo(
-    () => schedules[selectedSchedule!],
-    [schedules, selectedSchedule]
-  );
   const schedulesData = useSchedulesColumns(schedules);
   const schedulesHeaders = useSchedulesHeaders();
-  const bookingsData = useBookingsColumns(
-    (schedule ? schedule.bookings : []) as any[]
-  );
-  const bookingsHeaders = useBookingsHeaders();
   const { t } = useTranslation();
 
   return (
@@ -162,29 +95,6 @@ const SchedulesInformation = ({
               },
             }}
           />
-        </Grid>
-        <Grid md={6} lg={8} sx={{ sm: { display: "none" } }}>
-          {schedule ? (
-            <>
-              <Typography level="h4">
-                {t(
-                  "scenes.firms.events.eventScene.schedulesInformation.chosenScheduleAction",
-                  { date: getHumanDateTime(moment(schedule.scheduledFor)) }
-                )}
-              </Typography>
-              <Table
-                data={bookingsData}
-                headers={bookingsHeaders}
-                hoverRow={false}
-              />
-            </>
-          ) : (
-            <Typography level="h4">
-              {t(
-                "scenes.firms.events.eventScene.schedulesInformation.chooseScheduleAction"
-              )}
-            </Typography>
-          )}
         </Grid>
       </Grid>
     </TabPanel>

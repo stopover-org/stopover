@@ -9,11 +9,13 @@ import { useTranslation } from "react-i18next";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_Trip_Query } from "artifacts/scene_Trip_Query.graphql";
 import TripScene from "scenes/attendees/trips/TripScene/TripScene";
+import AttendeeSidebar from "components/shared/AttendeeSidebar";
 
 const Query = graphql`
   query scene_Trip_Query($id: ID!) {
     currentUser {
       ...Layout_CurrentUserFragment
+      ...AttendeeSidebar_CurrentUserFragment
       account {
         trip(tripId: $id) {
           id
@@ -43,7 +45,9 @@ const Scene = ({
     <SceneWrapper>
       <Layout currentUserFragment={data.currentUser}>
         <AuthGuard accessible={Boolean(data.currentUser.account.trip.id)}>
-          <TripScene tripFragmentRef={data.currentUser.account.trip!} />
+          <AttendeeSidebar currentUserFragmentRef={data.currentUser}>
+            <TripScene tripFragmentRef={data.currentUser.account.trip!} />
+          </AttendeeSidebar>
         </AuthGuard>
       </Layout>
     </SceneWrapper>

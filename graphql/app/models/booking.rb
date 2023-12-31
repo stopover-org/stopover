@@ -202,10 +202,13 @@ class Booking < ApplicationRecord
       city: event.city,
       region: event.region,
       address: event.full_address,
-      dates: schedule.scheduled_for,
+      booked_for: schedule.scheduled_for,
       organizer: firm&.title,
       tags: event.tags.map(&:title),
-      interests: event.interests.map(&:title)
+      interests: event.interests.map(&:title),
+
+      trip_id: trip.id,
+      event_id: event.id
     }
   end
 

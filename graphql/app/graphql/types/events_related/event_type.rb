@@ -7,7 +7,9 @@ module Types
       field :attendee_price_per_uom,  Types::MoneyType
       field :available_dates,         [Types::DateTimeType], null: false
       field :average_rating,          Float, null: false
-      field :bookings,                Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true
+      field :bookings,                Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true do
+        argument :filters, Types::Filters::BookingsFilter, required: false
+      end
       field :booking_cancellation_options, [Types::EventsRelated::BookingCancellationOptionType], null: false
       field :city,          String
       field :country,       String
@@ -75,6 +77,15 @@ module Types
         object.images.map do |img|
           img&.url
         end
+      end
+
+      def bookings(**args)
+        arguments = {
+          query_type: ::BookingQuery,
+          **(args[:filters] || {}),
+          event_id: object.firm.id
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
       end
 
       def my_bookings

@@ -26,7 +26,9 @@ module Types
 
       field :balance,   Types::FirmsRelated::BalanceType, require_manager: true
       field :payments,  Types::PaymentsRelated::PaymentType.connection_type, null: false, require_manager: true
-      field :bookings,  Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true
+      field :bookings,  Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true do
+        argument :filters, Types::Filters::BookingsFilter, required: false
+      end
       field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false, require_manager: true do
         argument :filters, Types::Filters::SchedulesFilter, required: false
       end
@@ -65,6 +67,15 @@ module Types
       def schedules(**args)
         arguments = {
           query_type: ::SchedulesQuery,
+          **(args[:filters] || {}),
+          firm_id: object.id
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
+      end
+
+      def bookings(**args)
+        arguments = {
+          query_type: ::BookingQuery,
           **(args[:filters] || {}),
           firm_id: object.id
         }

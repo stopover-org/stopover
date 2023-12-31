@@ -31,11 +31,7 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
             node {
               scheduledFor
               status
-              bookings {
-                attendees {
-                  id
-                }
-              }
+              bookedPlaces
               event {
                 id
                 title

@@ -1,10 +1,9 @@
 import { graphql, usePaginationFragment } from "react-relay";
 import React from "react";
-import Table from "../../../v2/Table/Table";
+import Table from "components/v2/Table/Table";
+import { BookingsEventTableBookingsPaginationQuery } from "artifacts/BookingsEventTableBookingsPaginationQuery.graphql";
+import { BookingsEventTable_BookingsPaginationFragment$key } from "artifacts/BookingsEventTable_BookingsPaginationFragment.graphql";
 import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
-import { BookingsEventTableBookingsPaginationQuery } from "../../../../artifacts/BookingsEventTableBookingsPaginationQuery.graphql";
-import { BookingsEventTable_BookingsPaginationFragment$key } from "../../../../artifacts/BookingsEventTable_BookingsPaginationFragment.graphql";
-import useEdges from "../../../../lib/hooks/useEdges";
 
 interface BookingsEventTableProps {
   eventFragmentRef: BookingsEventTable_BookingsPaginationFragment$key;
@@ -15,83 +14,38 @@ const BookingsEventTable = ({
   eventFragmentRef,
   withPagination,
 }: BookingsEventTableProps) => {
-  const {
-    data: { paginatedBookings },
-    hasPrevious,
-    hasNext,
-    loadPrevious,
-    loadNext,
-  } = usePaginationFragment<
-    BookingsEventTableBookingsPaginationQuery,
-    BookingsEventTable_BookingsPaginationFragment$key
-  >(
-    graphql`
-      fragment BookingsEventTable_BookingsPaginationFragment on Event
-      @refetchable(queryName: "BookingsEventTableBookingsPaginationQuery")
-      @argumentDefinitions(
-        count: { type: "Int", defaultValue: 30 }
-        cursor: { type: "String", defaultValue: "" }
-      ) {
-        paginatedBookings: bookings(first: $count, after: $cursor)
-          @connection(key: "BookingsEventTable_query_paginatedBookings") {
-          edges {
-            node {
-              id
-              status
-              bookedFor
-              organizerTotalPrice {
-                cents
-                currency {
-                  name
-                }
-              }
-              attendeeTotalPrice {
-                cents
-                currency {
-                  name
-                }
-              }
-              alreadyPaidPrice {
-                cents
-                currency {
-                  name
-                }
-              }
-              attendees {
-                firstName
-                lastName
-                phone
-                email
-              }
-              bookingOptions {
-                eventOption {
-                  title
-                }
-                organizerPrice {
-                  cents
-                  currency {
-                    name
-                  }
-                }
-                attendeePrice {
-                  cents
-                  currency {
-                    name
-                  }
-                }
+  const { data, hasPrevious, hasNext, loadPrevious, loadNext } =
+    usePaginationFragment<
+      BookingsEventTableBookingsPaginationQuery,
+      BookingsEventTable_BookingsPaginationFragment$key
+    >(
+      graphql`
+        fragment BookingsEventTable_BookingsPaginationFragment on Event
+        @refetchable(queryName: "BookingsEventTableBookingsPaginationQuery")
+        @argumentDefinitions(
+          count: { type: "Int", defaultValue: 30 }
+          cursor: { type: "String", defaultValue: "" }
+        ) {
+          paginatedBookings: bookings(first: $count, after: $cursor)
+            @connection(key: "BookingsEventTable_query_paginatedBookings") {
+            ...bookings_useBookingsColumns_BookingsConnectionFragment
+            edges {
+              node {
+                __typename
+                id
               }
             }
           }
         }
-      }
-    `,
-    eventFragmentRef
-  );
+      `,
+      eventFragmentRef
+    );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const pagedBookings = useEdges(paginatedBookings) as ReadonlyArray<
-    Record<string, any>
-  >;
-  const actualBookings = useBookingsColumns(pagedBookings);
+  const actualBookings = useBookingsColumns(
+    data.paginatedBookings,
+    currentPage,
+    30
+  );
   const headers = useBookingsHeaders();
 
   return (

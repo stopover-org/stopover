@@ -26,8 +26,12 @@ module Types
         object.bookings.where.not(status: :cancelled).map { |b| b.attendees.where.not(status: :removed).count }.max || 0
       end
 
-      def bookings
-        object.bookings.where.not(status: :cancelled)
+      def bookings(**_args)
+        arguments = {
+          query_type: ::BookingQuery,
+          trip_id: object.id
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
       end
     end
   end

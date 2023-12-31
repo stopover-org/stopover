@@ -1,17 +1,11 @@
 import { Grid } from "@mui/joy";
-import moment from "moment/moment";
 import React from "react";
 import { Disposable, graphql, usePaginationFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
 import { Moment } from "moment";
 import Typography from "../../../../components/v2/Typography/Typography";
 import Table from "../../../../components/v2/Table/Table";
-import { getHumanDateTime } from "../../../../lib/utils/dates";
 import { SchedulesScene_FirmFragment$key } from "../../../../artifacts/SchedulesScene_FirmFragment.graphql";
-import {
-  useBookingsColumns,
-  useBookingsHeaders,
-} from "../../../../components/shared/tables/columns/bookings";
 import {
   useSchedulesColumns,
   useSchedulesHeaders,
@@ -48,62 +42,10 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
                 id
                 scheduledFor
                 status
+                bookedPlaces
                 event {
                   title
                   id
-                }
-                bookings {
-                  id
-                  status
-                  event {
-                    id
-                    title
-                  }
-                  attendeeTotalPrice {
-                    cents
-                    currency {
-                      name
-                    }
-                  }
-                  organizerTotalPrice {
-                    cents
-                    currency {
-                      name
-                    }
-                  }
-                  alreadyPaidPrice {
-                    cents
-                    currency {
-                      name
-                    }
-                  }
-                  attendees {
-                    id
-                    firstName
-                    lastName
-                    phone
-                    email
-                  }
-                  bookingOptions {
-                    id
-                    eventOption {
-                      title
-                      builtIn
-                    }
-                    status
-                    organizerPrice {
-                      cents
-                      currency {
-                        name
-                      }
-                    }
-                    attendeePrice {
-                      cents
-                      currency {
-                        name
-                      }
-                    }
-                  }
                 }
               }
             }
@@ -112,25 +54,12 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
       `,
       firmFragmentRef
     );
-
-  const [selectedSchedule, setSelectedSchedule] = React.useState<null | number>(
-    null
-  );
   const [currentPage, setCurrentPage] = React.useState(1);
   const schedules = useEdges(data.pagedSchedules) as ReadonlyArray<
     Record<string, any>
   >;
-
-  const schedule = React.useMemo(
-    () => schedules[selectedSchedule!],
-    [schedules, selectedSchedule]
-  );
   const schedulesData = useSchedulesColumns(schedules);
   const schedulesHeaders = useSchedulesHeaders();
-  const bookingsData = useBookingsColumns(
-    (schedule ? schedule.bookings : []) as any[]
-  );
-  const bookingsHeaders = useBookingsHeaders();
   const { t } = useTranslation();
   const [range, setRange] = React.useState<[Moment | null, Moment | null]>([
     null,
@@ -190,7 +119,6 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
           data={schedulesData}
           headers={schedulesHeaders}
           withPagination
-          onRowClick={(i: number) => setSelectedSchedule(i)}
           paginationProps={{
             setPage: setCurrentPage,
             page: currentPage,
@@ -215,30 +143,6 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
             },
           }}
         />
-      </Grid>
-      <Grid md={8} sm={12}>
-        {schedule ? (
-          <>
-            <Typography level="h4">
-              {t(
-                "scenes.firms.events.eventScene.schedulesInformation.chosenScheduleAction",
-                { date: getHumanDateTime(moment(schedule.scheduledFor)) }
-              )}{" "}
-              {schedule.event.title}
-            </Typography>
-            <Table
-              data={bookingsData}
-              headers={bookingsHeaders}
-              hoverRow={false}
-            />
-          </>
-        ) : (
-          <Typography level="h4">
-            {t(
-              "scenes.firms.events.eventScene.schedulesInformation.chooseScheduleAction"
-            )}
-          </Typography>
-        )}
       </Grid>
     </Grid>
   );

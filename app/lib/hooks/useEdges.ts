@@ -7,7 +7,7 @@ function useEdges<T>(data: {
     if (!data?.edges) return [];
     return data.edges
       .filter((edge: { node: T | null }) => Boolean(edge.node))
-      .map((edge: { node: T | null }) => edge.node)
+      .map((edge: { node: T | null }) => edge.node!)
       .filter(Boolean) as T[];
   }, [data]);
 }
