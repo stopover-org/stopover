@@ -180,7 +180,27 @@ type Booking implements Node {
   ): PaymentConnection!
   possiblePenaltyAmount: Money!
   possibleRefundAmount: Money!
-  refunds: [Refund!]!
+  refunds(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): RefundConnection!
   schedule: Schedule!
   status: String!
   trip: Trip!
@@ -900,6 +920,7 @@ type Firm implements Node {
   latitude: Float
   longitude: Float
   margin: Int!
+  payment(id: ID!): Payment!
   paymentTypes: [String!]!
   payments(
     """
@@ -1215,7 +1236,27 @@ type Payment implements Node {
   booking: Booking!
   createdAt: DateTime!
   id: ID!
-  refunds: [Refund!]!
+  refunds(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): RefundConnection!
   status: String!
   totalPrice: Money!
   updatedAt: DateTime!
@@ -1386,6 +1427,42 @@ type Refund implements Node {
   status: String!
   totalAmount: Money!
   updatedAt: DateTime!
+}
+
+"""
+The connection type for Refund.
+"""
+type RefundConnection {
+  """
+  A list of edges.
+  """
+  edges: [RefundEdge!]!
+
+  """
+  A list of nodes.
+  """
+  nodes: [Refund!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  total: Int
+}
+
+"""
+An edge in a connection.
+"""
+type RefundEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge.
+  """
+  node: Refund
 }
 
 """

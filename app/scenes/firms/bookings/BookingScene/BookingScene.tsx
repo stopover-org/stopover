@@ -85,21 +85,13 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           }
         }
         refunds {
-          id
-          status
-          totalAmount {
-            cents
-            currency {
-              name
+          ...refunds_useRefundsColumns_RefundsFragment
+          edges {
+            node {
+              __typename
+              id
             }
           }
-          penaltyAmount {
-            cents
-            currency {
-              name
-            }
-          }
-          createdAt
         }
         ...EventOptionsTable_BookingFragment
         ...AttendeesTable_BookingFragment
@@ -132,21 +124,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
   const paymentsHeaders = usePaymentsHeaders();
   const paymentsData = usePaymentsColumns(booking.payments);
   const refundsHeaders = useRefundsHeaders();
-  const refundsData = useRefundsColumns(
-    booking.refunds.map((refund) => ({
-      event: {
-        id: booking.event.id,
-        title: booking.event.title,
-      },
-      booking: {
-        id: booking.id,
-      },
-      createdAt: refund.createdAt,
-      totalAmount: refund.totalAmount,
-      penaltyAmount: refund.penaltyAmount,
-      status: refund.status,
-    }))
-  );
+  const refundsData = useRefundsColumns(booking.refunds);
   const { t } = useTranslation();
 
   return (

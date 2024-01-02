@@ -21,8 +21,8 @@ module Types
       field :possible_penalty_amount,   Types::MoneyType,                             null: false
       field :trip,                      Types::TripsRelated::TripType,                null: false
       field :payments,                  Types::PaymentsRelated::PaymentType.connection_type, null: false, require_manager: true
-      field :refunds,                   [Types::PaymentsRelated::RefundType],         null: false, require_manager: true
-      field :cancellation_terms,        String,                                       null: false
+      field :refunds,                   Types::PaymentsRelated::RefundType.connection_type, null: false, require_manager: true
+      field :cancellation_terms,        String, null: false
 
       field :attendees, [Types::BookingsRelated::AttendeeType], null: false do
         argument :filters, Types::Filters::AttendeesFilter, required: false
@@ -36,8 +36,12 @@ module Types
         Connections::SearchkickConnection.new(arguments: arguments)
       end
 
-      def refunds
-        object.refunds.where(refund_id: nil)
+      def refunds(**_args)
+        arguments = {
+          query_type: ::RefundsQuery,
+          per_page: 30
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
       end
 
       def booked_for

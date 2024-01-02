@@ -30,6 +30,11 @@ export function usePaymentsHeaders() {
   return React.useMemo(
     () => [
       {
+        label: t("models.payment.singular"),
+        width: 150,
+        key: "payment",
+      },
+      {
         label: t("models.event.singular"),
         width: 300,
         key: "event",
@@ -94,6 +99,11 @@ export function usePaymentsColumns(
   return React.useMemo(
     () =>
       paymentsData.map((payment) => ({
+        payment: (
+          <Link primary href={`/my-firm/payments/${payment.id}`}>
+            {payment.id}
+          </Link>
+        ),
         event: (
           <Link href={`/my-firm/events/${payment.booking.event?.id}`}>
             {payment.booking.event?.title}

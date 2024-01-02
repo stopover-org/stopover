@@ -50,7 +50,7 @@ const PaymentsScene = ({ firmFragmentRef }: PaymentsSceneProps) => {
   return (
     <Grid xs={12} container suppressHydrationWarning>
       <Grid sm={12}>
-        <Typography level="h4">{t("models.schedule.plural")}</Typography>
+        <Typography level="h4">{t("models.payment.plural")}</Typography>
       </Grid>
       <Grid sm={12}>
         <Table

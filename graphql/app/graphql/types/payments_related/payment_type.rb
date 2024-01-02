@@ -9,7 +9,15 @@ module Types
       field :updated_at,  DateTimeType, null: false
       field :created_at,  DateTimeType, null: false
       field :booking,     Types::BookingsRelated::BookingType, null: false
-      field :refunds,     [Types::PaymentsRelated::RefundType], null: false
+      field :refunds,     Types::PaymentsRelated::RefundType.connection_type, null: false
+
+      def refunds(**_args)
+        arguments = {
+          query_type: ::RefundsQuery,
+          per_page: 30
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
+      end
     end
   end
 end

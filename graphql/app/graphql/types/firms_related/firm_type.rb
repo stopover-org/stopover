@@ -26,7 +26,10 @@ module Types
 
       field :balance,   Types::FirmsRelated::BalanceType, require_manager: true
       field :payments,  Types::PaymentsRelated::PaymentType.connection_type, null: false, require_manager: true
-      field :bookings,  Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true do
+      field :payment, Types::PaymentsRelated::PaymentType, null: false, require_manager: true do
+        argument :id, ID, required: true, loads: Types::PaymentsRelated::PaymentType
+      end
+      field :bookings, Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true do
         argument :filters, Types::Filters::BookingsFilter, required: false
       end
       field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false, require_manager: true do
@@ -58,6 +61,10 @@ module Types
           per_page: 30
         }
         Connections::SearchkickConnection.new(arguments: arguments)
+      end
+
+      def payment(**args)
+        args[:id]
       end
 
       def events(**args)
