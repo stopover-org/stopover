@@ -97,7 +97,7 @@ const EventsTable = ({
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = React.useState(1);
   const [value, setValue] = React.useState("");
-  const pagedEvents = useEdges(events) as ReadonlyArray<Record<string, any>>;
+  const pagedEvents = useEdges(events).map((v) => v!);
   const data = useMemo(
     () =>
       pagedEvents.map((event) => ({
@@ -148,6 +148,8 @@ const EventsTable = ({
       })),
     [pagedEvents]
   );
+
+  console.log(pagedEvents, data);
 
   const headers = React.useMemo(
     () => [

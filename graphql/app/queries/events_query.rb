@@ -29,7 +29,7 @@ class EventsQuery
   end
 
   def total
-    execute(offset: nil, limit: nil).count
+    execute(offset: 0, limit: nil).count
   end
 
   def conditions

@@ -50,18 +50,13 @@ module Types
       field :booking, Types::BookingsRelated::BookingType, require_manager: true do
         argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
       end
-      field :events_count, Integer, null:
-
-      def events_count
-        object.events.count
-      end
 
       def events(**args)
         arguments = {
           query_type: ::EventsQuery,
           **(args[:filters] || {}),
-          firm: object,
-          per_page: 12,
+          firm_id: object.id,
+          per_page: 30,
           backend: args[:backend].nil? ? true : args[:backend]
         }
         Connections::SearchkickConnection.new(arguments: arguments)

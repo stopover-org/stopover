@@ -873,7 +873,6 @@ type Firm implements Node {
     """
     last: Int
   ): EventConnection!
-  eventsCount: Int
   fullAddress: String
   houseNumber: String
   id: ID!
