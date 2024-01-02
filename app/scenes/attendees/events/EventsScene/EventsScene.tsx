@@ -113,15 +113,6 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   const queryRef = React.useRef<Disposable>();
 
   React.useEffect(() => {
-    console.log(
-      "fetching. why?",
-      query,
-      startDate,
-      endDate,
-      minPrice,
-      maxPrice,
-      interests
-    );
     if (queryRef.current) {
       queryRef.current.dispose();
     }

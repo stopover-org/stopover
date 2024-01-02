@@ -14,7 +14,6 @@ module Connections
     end
 
     def has_next_page
-      Rails.logger.debug after_value, @per_page, query.total, @arguments[:per_page]
       query.total > after_value + @per_page
     end
 

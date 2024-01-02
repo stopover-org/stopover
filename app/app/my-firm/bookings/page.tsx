@@ -6,7 +6,7 @@ import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
 import QueryWrapper from "./query";
 
-const Page = async ({ params }: { params: Record<string, string> }) => {
+const Page = async () => {
   const preloadedQuery = await loadSerializableQuery<
     typeof scene_FirmBookings_QueryNode,
     scene_FirmBookings_Query

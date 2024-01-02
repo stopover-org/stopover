@@ -149,8 +149,6 @@ const EventsTable = ({
     [pagedEvents]
   );
 
-  console.log(pagedEvents, data);
-
   const headers = React.useMemo(
     () => [
       { key: "title", width: 300, label: t("models.event.attributes.title") },
