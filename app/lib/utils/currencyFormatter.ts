@@ -7,7 +7,8 @@ export const getCurrencyFormat = (
     value = 0;
   }
   if (!currency) currency = "usd";
-  const language = navigator?.language || "de-DE";
+  const language = "de-DE";
+
   if (cents) {
     value /= 100;
   }

@@ -8,17 +8,19 @@ import {
   ListItemDecorator,
 } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { InterestsSelect_InterestsFragment$key } from "../../../../../artifacts/InterestsSelect_InterestsFragment.graphql";
-import Typography from "../../../../../components/v2/Typography";
-import { useQuery, useUpdateQuery } from "../../../../../lib/hooks/useQuery";
+import { InterestsSelect_InterestsFragment$key } from "artifacts/InterestsSelect_InterestsFragment.graphql";
+import Typography from "components/v2/Typography";
+import { parseValue, useQuery, useUpdateQuery } from "lib/hooks/useQuery";
 
 interface InterestsSelectProps {
   queryFragmentRef: InterestsSelect_InterestsFragment$key;
 }
 
 const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
-  const queryInterests = useQuery('interests')
-  const updateInterests = useUpdateQuery('interests')
+  const queryInterests = useQuery("interests", [], (value) =>
+    Array.from(parseValue(value))
+  );
+  const updateInterests = useUpdateQuery("interests");
   const { t } = useTranslation();
   const { interests } = useFragment<InterestsSelect_InterestsFragment$key>(
     graphql`
@@ -62,7 +64,9 @@ const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
               variant={
                 queryInterests.includes(interest.slug) ? "soft" : "plain"
               }
-              sx={{ '&:hover': { cursor: 'pointer', backgroundColor: 'primary' } }}
+              sx={{
+                "&:hover": { cursor: "pointer", backgroundColor: "primary" },
+              }}
             >
               <ListItemDecorator>
                 <Avatar size="sm" src={interest.preview || undefined} />

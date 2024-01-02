@@ -9,7 +9,7 @@ module Stopover
     AUTHORIZATION_HEADER = ' X-Authorization'
 
     def self.decode_user(headers:, cookies:)
-      cookie_token = cookies.encrypted[COOKIE_KEY]
+      cookie_token = cookies[COOKIE_KEY]
       header = headers[AUTHORIZATION_HEADER]
       return nil if !header && !cookie_token
 

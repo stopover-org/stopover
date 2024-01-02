@@ -7,7 +7,9 @@ module Types
       field :attendee_price_per_uom,  Types::MoneyType
       field :available_dates,         [Types::DateTimeType], null: false
       field :average_rating,          Float, null: false
-      field :bookings,                Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true
+      field :bookings,                Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true do
+        argument :filters, Types::Filters::BookingsFilter, required: false
+      end
       field :booking_cancellation_options, [Types::EventsRelated::BookingCancellationOptionType], null: false
       field :city,          String
       field :country,       String
@@ -37,7 +39,11 @@ module Types
       field :requires_contract, Boolean, null: false
       field :requires_passport, Boolean, null: false
       field :requires_deposit,  Boolean, null: false
-      field :schedules,         Types::EventsRelated::ScheduleType.connection_type, null: false
+
+      field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false, require_manager: true do
+        argument :filters, Types::Filters::SchedulesFilter, required: false
+      end
+
       field :single_days_with_time, [Types::DateTimeType], null: false
       field :status,    String, null: false
       field :street,    String
@@ -75,6 +81,24 @@ module Types
         object.images.map do |img|
           img&.url
         end
+      end
+
+      def bookings(**args)
+        arguments = {
+          query_type: ::BookingQuery,
+          **(args[:filters] || {}),
+          event_id: object.firm.id
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
+      end
+
+      def schedules(**args)
+        arguments = {
+          query_type: ::SchedulesQuery,
+          **(args[:filters] || {}),
+          firm_id: object.id
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
       end
 
       def my_bookings

@@ -1,5 +1,6 @@
 import React from "react";
-import { Tooltip, styled } from "@mui/joy";
+import NextLink from "next/link";
+import { styled, Tooltip } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import Typography from "../Typography";
 import { TypographyProps } from "../Typography/Typography";
@@ -50,9 +51,9 @@ const Link = React.forwardRef(
               ...sx,
             }}
           >
-            <a href={href} target={target}>
+            <NextLink href={href} target={target}>
               {children}
-            </a>
+            </NextLink>
           </TypographyLink>
         </Tooltip>
       );
@@ -71,7 +72,7 @@ const Link = React.forwardRef(
           ...sx,
         }}
       >
-        {href ? <a href={href}>{children}</a> : children}
+        {href ? <NextLink href={href}>{children}</NextLink> : children}
       </TypographyLink>
     );
   }

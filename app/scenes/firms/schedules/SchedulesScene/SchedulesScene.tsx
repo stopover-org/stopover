@@ -1,24 +1,17 @@
 import { Grid } from "@mui/joy";
-import moment from "moment/moment";
 import React from "react";
 import { Disposable, graphql, usePaginationFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
 import { Moment } from "moment";
-import Typography from "../../../../components/v2/Typography/Typography";
-import Table from "../../../../components/v2/Table/Table";
-import { getHumanDateTime } from "../../../../lib/utils/dates";
-import { SchedulesScene_FirmFragment$key } from "../../../../artifacts/SchedulesScene_FirmFragment.graphql";
-import {
-  useBookingsColumns,
-  useBookingsHeaders,
-} from "../../../../components/shared/tables/columns/bookings";
+import Typography from "components/v2/Typography/Typography";
+import Table from "components/v2/Table/Table";
+import { SchedulesScene_FirmFragment$key } from "artifacts/SchedulesScene_FirmFragment.graphql";
 import {
   useSchedulesColumns,
   useSchedulesHeaders,
-} from "../../../../components/shared/tables/columns/schedules";
-import useEdges from "../../../../lib/hooks/useEdges";
-import { SchedulesSceneFirmFragment } from "../../../../artifacts/SchedulesSceneFirmFragment.graphql";
-import DateRangePicker from "../../../../components/v2/DateRangePicker/DateRangePicker";
+} from "components/shared/tables/columns/schedules";
+import { SchedulesSceneFirmFragment } from "artifacts/SchedulesSceneFirmFragment.graphql";
+import DateRangePicker from "components/v2/DateRangePicker/DateRangePicker";
 
 interface SchedulesSceneProps {
   firmFragmentRef: SchedulesScene_FirmFragment$key;
@@ -43,68 +36,11 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
             after: $cursor
             filters: $filters
           ) @connection(key: "SchedulesScene_pagedSchedules") {
+            ...schedules_useSchedulesColumns_SchedulesConnectionFragment
             edges {
               node {
+                __typename
                 id
-                scheduledFor
-                status
-                event {
-                  title
-                  id
-                }
-                bookings {
-                  id
-                  status
-                  event {
-                    id
-                    title
-                  }
-                  attendeeTotalPrice {
-                    cents
-                    currency {
-                      name
-                    }
-                  }
-                  organizerTotalPrice {
-                    cents
-                    currency {
-                      name
-                    }
-                  }
-                  alreadyPaidPrice {
-                    cents
-                    currency {
-                      name
-                    }
-                  }
-                  attendees {
-                    id
-                    firstName
-                    lastName
-                    phone
-                    email
-                  }
-                  bookingOptions {
-                    id
-                    eventOption {
-                      title
-                      builtIn
-                    }
-                    status
-                    organizerPrice {
-                      cents
-                      currency {
-                        name
-                      }
-                    }
-                    attendeePrice {
-                      cents
-                      currency {
-                        name
-                      }
-                    }
-                  }
-                }
               }
             }
           }
@@ -112,22 +48,9 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
       `,
       firmFragmentRef
     );
-
-  const [selectedSchedule, setSelectedSchedule] = React.useState<null | number>(
-    null
-  );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const schedules = useEdges(data.pagedSchedules);
-  const schedule = React.useMemo(
-    () => schedules[selectedSchedule!],
-    [schedules, selectedSchedule]
-  );
-  const schedulesData = useSchedulesColumns(schedules);
+  const schedulesData = useSchedulesColumns(data.pagedSchedules);
   const schedulesHeaders = useSchedulesHeaders();
-  const bookingsData = useBookingsColumns(
-    (schedule ? schedule.bookings : []) as any[]
-  );
-  const bookingsHeaders = useBookingsHeaders();
   const { t } = useTranslation();
   const [range, setRange] = React.useState<[Moment | null, Moment | null]>([
     null,
@@ -143,8 +66,8 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
     queryRef.current = refetch(
       {
         filters: {
-          startDate: range[0],
-          endDate: range[1],
+          startDate: range[0]?.toISOString(),
+          endDate: range[1]?.toISOString(),
         },
         cursor: "0",
       },
@@ -159,8 +82,8 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
   }, [range, setCurrentPage]);
 
   return (
-    <Grid xs={12} container>
-      <Grid md={4} sm={12}>
+    <Grid xs={12} container suppressHydrationWarning>
+      <Grid sm={12}>
         <Typography level="h4">{t("models.schedule.plural")}</Typography>
         <Grid md={6} sm={12} container>
           <DateRangePicker
@@ -187,7 +110,6 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
           data={schedulesData}
           headers={schedulesHeaders}
           withPagination
-          onRowClick={(i: number) => setSelectedSchedule(i)}
           paginationProps={{
             setPage: setCurrentPage,
             page: currentPage,
@@ -212,30 +134,6 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
             },
           }}
         />
-      </Grid>
-      <Grid md={8} sm={12}>
-        {schedule ? (
-          <>
-            <Typography level="h4">
-              {t(
-                "scenes.firms.events.eventScene.schedulesInformation.chosenScheduleAction",
-                { date: getHumanDateTime(moment(schedule.scheduledFor)) }
-              )}{" "}
-              {schedule.event.title}
-            </Typography>
-            <Table
-              data={bookingsData}
-              headers={bookingsHeaders}
-              hoverRow={false}
-            />
-          </>
-        ) : (
-          <Typography level="h4">
-            {t(
-              "scenes.firms.events.eventScene.schedulesInformation.chooseScheduleAction"
-            )}
-          </Typography>
-        )}
       </Grid>
     </Grid>
   );

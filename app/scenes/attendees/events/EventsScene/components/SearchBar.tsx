@@ -1,15 +1,15 @@
-import React, { ChangeEvent } from "react";
+import React from "react";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay";
 import { Autocomplete, AutocompleteOption, Chip } from "@mui/joy";
 import moment from "moment";
-import { useRouter } from "next/router";
-import Typography from "../../../../../components/v2/Typography/Typography";
-import Link from "../../../../../components/v2/Link/Link";
-import { useUpdateQuery, useQuery } from "../../../../../lib/hooks/useQuery";
-import { SearchBar_EventsAutocompleteFragment$key } from "../../../../../artifacts/SearchBar_EventsAutocompleteFragment.graphql";
-import { SearchBarAutocompleteQuery } from "../../../../../artifacts/SearchBarAutocompleteQuery.graphql";
-import { SearchBar_AutocompleteQuery } from "../../../../../artifacts/SearchBar_AutocompleteQuery.graphql";
+import { useRouter } from "next/navigation";
+import Typography from "components/v2/Typography/Typography";
+import Link from "components/v2/Link/Link";
+import { useQuery, useUpdateQuery } from "lib/hooks/useQuery";
+import { SearchBar_EventsAutocompleteFragment$key } from "artifacts/SearchBar_EventsAutocompleteFragment.graphql";
+import { SearchBarAutocompleteQuery } from "artifacts/SearchBarAutocompleteQuery.graphql";
+import { SearchBar_AutocompleteQuery } from "artifacts/SearchBar_AutocompleteQuery.graphql";
 
 interface SearchBarProps {
   redirect?: boolean;
@@ -19,8 +19,8 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
   const router = useRouter();
   const updateQuery = useUpdateQuery("query");
   const updateInterest = useUpdateQuery("interests");
-  const query = useQuery("query");
-  const [internalQuery, setInternalQuery] = React.useState(router.query.query);
+  const query = useQuery("query", "");
+  const [internalQuery, setInternalQuery] = React.useState(query);
   const eventsAutocompleteFragmentRef =
     useLazyLoadQuery<SearchBar_AutocompleteQuery>(
       graphql`
@@ -81,10 +81,9 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
     }
 
     requestRef.current = setTimeout(() => {
-      refetch(
-        { query: internalQuery as string },
-        { fetchPolicy: "store-and-network" }
-      );
+      if (query !== internalQuery) {
+        refetch({ query: internalQuery }, { fetchPolicy: "store-and-network" });
+      }
     }, 500);
   }, [internalQuery]);
 
@@ -139,13 +138,18 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
       getOptionLabel={(option) =>
         typeof option === "string" ? option : option.title
       }
-      sx={{ borderRadius: "0", marginRight: "5px" }}
       groupBy={(option) => option.type}
-      onBlur={onQueryChange}
+      onBlur={(...rest) => {
+        if (redirect) {
+          router.push(`/events?query=${JSON.stringify(internalQuery)}`);
+        } else {
+          onQueryChange(...rest);
+        }
+      }}
       onKeyUp={(e) => {
         if (e.key === "Enter") {
           if (redirect) {
-            router.push(`/events?query=${internalQuery}`);
+            router.push(`/events?query=${JSON.stringify(internalQuery)}`);
           } else {
             updateQuery(internalQuery);
           }
@@ -182,11 +186,11 @@ const SearchBar = ({ redirect = false }: SearchBarProps) => {
 
         if (value.link) {
           router.push(value.link);
-        } else if (value.type === "interest" && value.query) {
-          updateInterest(value.query);
+        } else if (value.type?.toLowerCase() === "interest" && value.query) {
+          updateInterest([value.query]);
         }
       }}
-      inputValue={internalQuery as string}
+      inputValue={internalQuery}
       endDecorator={<SearchIcon />}
       freeSolo
     />

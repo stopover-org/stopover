@@ -13,6 +13,7 @@ import {
 import { useMediaQuery } from "@mui/material";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
 import Typography from "../../../../../components/v2/Typography/Typography";
 import Link from "../../../../../components/v2/Link";
 import BookingTime from "./BookingTime";
@@ -32,6 +33,11 @@ interface BookingCardProps {
 
 const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
   const { t } = useTranslation();
+  const [serverSide, setServerSide] = React.useState(true);
+  React.useEffect(() => {
+    setServerSide(false);
+  }, []);
+
   const booking = useFragment(
     graphql`
       fragment BookingCard_BookingFragment on Booking {
@@ -99,10 +105,13 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
   const [cancelBookingOpened, setCancelBookingOpened] =
     React.useState<boolean>(false);
   const cancellable = useBookingCancellable(booking);
-  const highlight = React.useMemo(
-    () => booking.id === window.document.location.hash.replace("#", ""),
-    []
-  );
+  const highlight = React.useMemo(() => {
+    if (serverSide) {
+      return false;
+    }
+
+    return booking.id === window.document.location.hash.replace("#", "");
+  }, [serverSide]);
 
   return (
     <Stack
@@ -137,7 +146,9 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
             objectFit="cover"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={booking.event.images[0]} loading="lazy" alt="" />
+            {booking.event.images.length > 0 && (
+              <Image src={booking.event.images[0]} loading="lazy" alt="" />
+            )}
           </AspectRatio>
           <Box
             sx={{

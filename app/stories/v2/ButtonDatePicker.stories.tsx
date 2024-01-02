@@ -18,22 +18,20 @@ const Preview = () => (
       <Grid container spacing={2} xs={12}>
         <Grid xs={3}>
           <Grid xs={12}>
-            <ButtonDatePicker onChange={(date) => console.log(date)}>
+            {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
+            <ButtonDatePicker onChange={(date) => {}}>Book</ButtonDatePicker>
+          </Grid>
+          <Grid xs={12}>
+            {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
+            <ButtonDatePicker variant="outlined" onChange={(date) => {}}>
               Book
             </ButtonDatePicker>
           </Grid>
           <Grid xs={12}>
             <ButtonDatePicker
               variant="outlined"
-              onChange={(date) => console.log(date)}
-            >
-              Book
-            </ButtonDatePicker>
-          </Grid>
-          <Grid xs={12}>
-            <ButtonDatePicker
-              variant="outlined"
-              onChange={(date) => console.log(date)}
+              /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+              onChange={(date) => {}}
               datePickerProps={{
                 availableDates: [
                   moment(),
@@ -48,7 +46,8 @@ const Preview = () => (
           <Grid xs={12}>
             <ButtonDatePicker
               variant="outlined"
-              onChange={(date) => console.log(date)}
+              /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+              onChange={(date) => {}}
               datePickerProps={{
                 availableDates: [
                   moment(),

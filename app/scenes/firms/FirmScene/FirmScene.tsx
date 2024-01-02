@@ -3,18 +3,18 @@ import { graphql, useFragment } from "react-relay";
 import { Box, Chip, Divider, Grid, Stack, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import Typography from "../../../components/v2/Typography";
-import Button from "../../../components/v2/Button";
-import Breadcrumbs from "../../../components/v2/Breadcrumbs";
+import Typography from "components/v2/Typography";
+import Button from "components/v2/Button";
+import Breadcrumbs from "components/v2/Breadcrumbs";
+import Tag from "components/v2/Tag";
+import Link from "components/v2/Link";
+import { FirmScene_FirmFragment$key } from "artifacts/FirmScene_FirmFragment.graphql";
+import Fieldset from "components/v2/Fieldset";
+import useStatusColor from "lib/hooks/useStatusColor";
+import { capitalize } from "lib/utils/capitalize";
+import ImagesPreview from "components/shared/ImagesPreview";
+import Description from "components/v2/Description";
 import RemoveFirm from "./components/RemoveFirm";
-import Tag from "../../../components/v2/Tag";
-import Link from "../../../components/v2/Link";
-import { FirmScene_FirmFragment$key } from "../../../artifacts/FirmScene_FirmFragment.graphql";
-import Fieldset from "../../../components/v2/Fieldset";
-import useStatusColor from "../../../lib/hooks/useStatusColor";
-import { capitalize } from "../../../lib/utils/capitalize";
-import ImagesPreview from "../../../components/shared/ImagesPreview";
-import Description from "../../../components/v2/Description";
 
 interface FirmSceneProps {
   firmFragmentRef: FirmScene_FirmFragment$key;
@@ -53,7 +53,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
     primary: ["active"],
     danger: ["removed"],
     info: ["pending"],
-    status: firm.status,
+    status: firm.status!,
   });
   const { t } = useTranslation();
   const theme = useTheme();
@@ -220,7 +220,7 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
             <Divider sx={{ margin: "5px" }} />
           </Grid>
           <Grid xs={12}>
-            <Description html={firm.description || ''} />
+            <Description html={firm.description || ""} />
           </Grid>
         </Fieldset>
 

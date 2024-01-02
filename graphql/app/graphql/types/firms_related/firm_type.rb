@@ -26,9 +26,14 @@ module Types
 
       field :balance,   Types::FirmsRelated::BalanceType, require_manager: true
       field :payments,  Types::PaymentsRelated::PaymentType.connection_type, null: false, require_manager: true
-      field :bookings,  Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true
+      field :bookings,  Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true do
+        argument :filters, Types::Filters::BookingsFilter, required: false
+      end
       field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false, require_manager: true do
         argument :filters, Types::Filters::SchedulesFilter, required: false
+      end
+      field :schedule, Types::EventsRelated::ScheduleType, null: false, require_manager: true do
+        argument :id, ID, required: true, loads: Types::EventsRelated::ScheduleType
       end
       field :events, Types::EventsRelated::EventType.connection_type, null: false do
         argument :filters, Types::Filters::EventsFilter, required: false
@@ -45,18 +50,13 @@ module Types
       field :booking, Types::BookingsRelated::BookingType, require_manager: true do
         argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
       end
-      field :events_count, Integer, null:
-
-      def events_count
-        object.events.count
-      end
 
       def events(**args)
         arguments = {
           query_type: ::EventsQuery,
           **(args[:filters] || {}),
-          firm: object,
-          per_page: 12,
+          firm_id: object.id,
+          per_page: 30,
           backend: args[:backend].nil? ? true : args[:backend]
         }
         Connections::SearchkickConnection.new(arguments: arguments)
@@ -65,6 +65,15 @@ module Types
       def schedules(**args)
         arguments = {
           query_type: ::SchedulesQuery,
+          **(args[:filters] || {}),
+          firm_id: object.id
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
+      end
+
+      def bookings(**args)
+        arguments = {
+          query_type: ::BookingQuery,
           **(args[:filters] || {}),
           firm_id: object.id
         }
@@ -81,6 +90,10 @@ module Types
       end
 
       def event(**args)
+        args[:id]
+      end
+
+      def schedule(**args)
         args[:id]
       end
     end

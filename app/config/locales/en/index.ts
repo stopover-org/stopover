@@ -32,6 +32,9 @@ const translation = {
     required: "Required",
     details: "Details",
     search: "Search",
+    404: "This page doesn't exist",
+    502: "Something is borken. We are already working on it",
+    "502Details": "We are already working on it",
   },
   weekdays: {
     monday: "Monday",

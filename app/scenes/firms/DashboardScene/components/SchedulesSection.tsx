@@ -2,16 +2,15 @@ import { Grid } from "@mui/joy";
 import React from "react";
 import { graphql, usePaginationFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import Section from "../../../../components/v2/Section";
-import { SchedulesSection_FirmFragment$key } from "../../../../artifacts/SchedulesSection_FirmFragment.graphql";
-import Typography from "../../../../components/v2/Typography/Typography";
-import Table from "../../../../components/v2/Table";
-import Link from "../../../../components/v2/Link";
+import Section from "components/v2/Section";
+import { SchedulesSection_FirmFragment$key } from "artifacts/SchedulesSection_FirmFragment.graphql";
+import Typography from "components/v2/Typography/Typography";
+import Table from "components/v2/Table";
+import Link from "components/v2/Link";
 import {
   useSchedulesColumns,
   useSchedulesHeaders,
-} from "../../../../components/shared/tables/columns/schedules";
-import useEdges from "../../../../lib/hooks/useEdges";
+} from "components/shared/tables/columns/schedules";
 
 interface ScheduleSectionProps {
   firmFragmentRef: SchedulesSection_FirmFragment$key;
@@ -22,24 +21,16 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
       fragment SchedulesSection_FirmFragment on Firm
       @refetchable(queryName: "SchedulesSectionFirmFragment")
       @argumentDefinitions(
-        count: { type: "Int", defaultValue: 10 }
+        count: { type: "Int", defaultValue: 5 }
         cursor: { type: "String", defaultValue: "" }
       ) {
         schedules(first: $count, after: $cursor)
           @connection(key: "DashboardScene_query_schedules") {
+          ...schedules_useSchedulesColumns_SchedulesConnectionFragment
           edges {
             node {
-              scheduledFor
-              status
-              bookings {
-                attendees {
-                  id
-                }
-              }
-              event {
-                id
-                title
-              }
+              __typename
+              id
             }
           }
         }
@@ -48,8 +39,7 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
     firmFragmentRef
   );
   const { t } = useTranslation();
-  const schedules = useEdges(data.schedules);
-  const schedulesData = useSchedulesColumns(schedules);
+  const schedulesData = useSchedulesColumns(data.schedules);
   const schedulesHeaders = useSchedulesHeaders();
 
   return (
@@ -60,7 +50,7 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
 
       <Grid xs={12}>
         <Table
-          data={schedulesData}
+          data={schedulesData.slice(0, 5)}
           headers={schedulesHeaders}
           aria-label="schedules table"
         />

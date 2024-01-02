@@ -97,7 +97,7 @@ const EventsTable = ({
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = React.useState(1);
   const [value, setValue] = React.useState("");
-  const pagedEvents = useEdges(events);
+  const pagedEvents = useEdges(events).map((v) => v!);
   const data = useMemo(
     () =>
       pagedEvents.map((event) => ({
@@ -115,7 +115,7 @@ const EventsTable = ({
           event.attendeePricePerUom?.currency.name
         ),
         recurringDaysWithTime: event.recurringDaysWithTime.map(
-          (date, index) => (
+          (date: string, index: number) => (
             <Tag
               key={`${index}-${date}`}
               link={false}
@@ -125,17 +125,19 @@ const EventsTable = ({
             </Tag>
           )
         ),
-        singleDaysWithTime: event.singleDaysWithTime.map((date, index) => (
-          <React.Fragment key={`${index}-${date}`}>
-            <Tag
-              key={`${index}-${date}`}
-              link={false}
-              sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
-            >
-              {moment(date).format(dateTimeFormat)}
-            </Tag>{" "}
-          </React.Fragment>
-        )),
+        singleDaysWithTime: event.singleDaysWithTime.map(
+          (date: string, index: number) => (
+            <React.Fragment key={`${index}-${date}`}>
+              <Tag
+                key={`${index}-${date}`}
+                link={false}
+                sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+              >
+                {moment(date).format(dateTimeFormat)}
+              </Tag>{" "}
+            </React.Fragment>
+          )
+        ),
         status: <TagColor status={event.status} />,
         durationTime: event.durationTime,
         minAttendees: event.minAttendees,
@@ -240,35 +242,33 @@ const EventsTable = ({
         </Grid>
       )}
       <Grid xs={12}>
-        <React.Suspense>
-          <Table
-            data={data}
-            headers={headers}
-            withPagination={withPagination}
-            paginationProps={{
-              rowsPerPage: 30,
-              colSpan: headers.length,
-              setPage: setCurrentPage,
-              page: currentPage,
-              hasPrevious,
-              hasNext,
-              onNextPage: () => {
-                if (hasNext) {
-                  loadNext(30, {
-                    onComplete: () => setCurrentPage(currentPage + 1),
-                  });
-                }
-              },
-              onPrevPage: () => {
-                if (hasPrevious) {
-                  loadPrevious(30, {
-                    onComplete: () => setCurrentPage(currentPage - 1),
-                  });
-                }
-              },
-            }}
-          />
-        </React.Suspense>
+        <Table
+          data={data}
+          headers={headers}
+          withPagination={withPagination}
+          paginationProps={{
+            rowsPerPage: 30,
+            colSpan: headers.length,
+            setPage: setCurrentPage,
+            page: currentPage,
+            hasPrevious,
+            hasNext,
+            onNextPage: () => {
+              if (hasNext) {
+                loadNext(30, {
+                  onComplete: () => setCurrentPage(currentPage + 1),
+                });
+              }
+            },
+            onPrevPage: () => {
+              if (hasPrevious) {
+                loadPrevious(30, {
+                  onComplete: () => setCurrentPage(currentPage - 1),
+                });
+              }
+            },
+          }}
+        />
       </Grid>
     </Grid>
   );

@@ -1,22 +1,17 @@
-import { graphql, usePaginationFragment } from "react-relay";
+import { Disposable, graphql, usePaginationFragment } from "react-relay";
 import React from "react";
-import moment from "moment";
 import { Grid, TabPanel } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { SchedulesInformation_EventFragment$key } from "../../../../../artifacts/SchedulesInformation_EventFragment.graphql";
-import { getHumanDateTime } from "../../../../../lib/utils/dates";
-import Table from "../../../../../components/v2/Table";
-import Typography from "../../../../../components/v2/Typography";
+import { SchedulesInformation_EventFragment$key } from "artifacts/SchedulesInformation_EventFragment.graphql";
+import Table from "components/v2/Table";
+import Typography from "components/v2/Typography";
 import {
   useSchedulesColumns,
   useSchedulesHeaders,
-} from "../../../../../components/shared/tables/columns/schedules";
-import { usePagedEdges } from "../../../../../lib/hooks/usePagedEdges";
-import {
-  useBookingsColumns,
-  useBookingsHeaders,
-} from "../../../../../components/shared/tables/columns/bookings";
-import useEdges from "../../../../../lib/hooks/useEdges";
+} from "components/shared/tables/columns/schedules";
+import { SchedulesSectionEventFragment } from "artifacts/SchedulesSectionEventFragment.graphql";
+import { Moment } from "moment";
+import DateRangePicker from "../../../../../components/v2/DateRangePicker/DateRangePicker";
 
 interface SchedulesInformationProps {
   eventFragmentRef: SchedulesInformation_EventFragment$key;
@@ -27,78 +22,29 @@ const SchedulesInformation = ({
   eventFragmentRef,
   index,
 }: SchedulesInformationProps) => {
-  const { data, hasNext, hasPrevious, loadNext, loadPrevious } =
-    usePaginationFragment(
+  const { data, hasNext, hasPrevious, loadNext, loadPrevious, refetch } =
+    usePaginationFragment<
+      SchedulesSectionEventFragment,
+      SchedulesInformation_EventFragment$key
+    >(
       graphql`
         fragment SchedulesInformation_EventFragment on Event
         @refetchable(queryName: "SchedulesSectionEventFragment")
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 30 }
           cursor: { type: "String", defaultValue: "" }
+          filters: { type: "SchedulesFilter", defaultValue: {} }
         ) {
-          pagedSchedules: schedules(first: $count, after: $cursor)
-            @connection(key: "SchedulesInformation_pagedSchedules") {
+          pagedSchedules: schedules(
+            first: $count
+            after: $cursor
+            filters: $filters
+          ) @connection(key: "SchedulesInformation_pagedSchedules") {
+            ...schedules_useSchedulesColumns_SchedulesConnectionFragment
             edges {
               node {
+                __typename
                 id
-                scheduledFor
-                status
-                event {
-                  title
-                  id
-                }
-                bookings {
-                  id
-                  status
-                  event {
-                    id
-                    title
-                  }
-                  bookingOptions {
-                    status
-                    eventOption {
-                      title
-                      builtIn
-                    }
-                    attendeePrice {
-                      cents
-                      currency {
-                        name
-                      }
-                    }
-                    organizerPrice {
-                      cents
-                      currency {
-                        name
-                      }
-                    }
-                  }
-                  attendeeTotalPrice {
-                    cents
-                    currency {
-                      name
-                    }
-                  }
-                  organizerTotalPrice {
-                    cents
-                    currency {
-                      name
-                    }
-                  }
-                  alreadyPaidPrice {
-                    cents
-                    currency {
-                      name
-                    }
-                  }
-                  attendees {
-                    id
-                    firstName
-                    lastName
-                    phone
-                    email
-                  }
-                }
               }
             }
           }
@@ -106,36 +52,73 @@ const SchedulesInformation = ({
       `,
       eventFragmentRef
     );
-
-  const [selectedSchedule, setSelectedSchedule] = React.useState<null | number>(
-    null
-  );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const schedules = useEdges(data.pagedSchedules);
-  const schedule = React.useMemo(
-    () => schedules[selectedSchedule!],
-    [schedules, selectedSchedule]
-  );
-  const schedulesData = useSchedulesColumns(schedules);
+  const schedulesData = useSchedulesColumns(data.pagedSchedules);
   const schedulesHeaders = useSchedulesHeaders();
-  const bookingsData = useBookingsColumns(
-    (schedule ? schedule.bookings : []) as any[]
-  );
-  const bookingsHeaders = useBookingsHeaders();
   const { t } = useTranslation();
+  const [range, setRange] = React.useState<[Moment | null, Moment | null]>([
+    null,
+    null,
+  ]);
+  const queryRef = React.useRef<Disposable>();
+
+  React.useEffect(() => {
+    if (queryRef.current) {
+      queryRef.current.dispose();
+    }
+
+    queryRef.current = refetch(
+      {
+        filters: {
+          startDate: range[0]?.toISOString(),
+          endDate: range[1]?.toISOString(),
+        },
+        cursor: "0",
+      },
+      {
+        onComplete: () => {
+          if (currentPage !== 1) {
+            setCurrentPage(1);
+          }
+        },
+      }
+    );
+  }, [range, setCurrentPage]);
 
   return (
     <TabPanel value={index} size="sm" sx={{ paddingTop: "20px" }}>
       <Grid xs={12} container>
-        <Grid md={6} lg={4} sm={12}>
+        <Grid md={12} lg={12} sm={12}>
           <Typography level="h4">
             {t("general.all")} {t("models.schedule.plural")}
           </Typography>
+          <Grid md={6} sm={12} container>
+            <DateRangePicker
+              value={range}
+              onChange={(dates) => setRange(dates)}
+              clearStyles={{ paddingTop: "30px" }}
+              startInputProps={{
+                label: t(
+                  "scenes.attendees.events.eventsScene.sidebar.startDate"
+                ),
+                placeholder: t(
+                  "scenes.attendees.events.eventsScene.sidebar.startDatePlaceholder"
+                ),
+                size: "sm",
+              }}
+              endInputProps={{
+                label: t("scenes.attendees.events.eventsScene.sidebar.endDate"),
+                placeholder: t(
+                  "scenes.attendees.events.eventsScene.sidebar.endDatePlaceholder"
+                ),
+                size: "sm",
+              }}
+            />
+          </Grid>
           <Table
             data={schedulesData}
             headers={schedulesHeaders}
             withPagination
-            onRowClick={setSelectedSchedule}
             paginationProps={{
               setPage: setCurrentPage,
               page: currentPage,
@@ -160,29 +143,6 @@ const SchedulesInformation = ({
               },
             }}
           />
-        </Grid>
-        <Grid md={6} lg={8} sx={{ sm: { display: "none" } }}>
-          {schedule ? (
-            <>
-              <Typography level="h4">
-                {t(
-                  "scenes.firms.events.eventScene.schedulesInformation.chosenScheduleAction",
-                  { date: getHumanDateTime(moment(schedule.scheduledFor)) }
-                )}
-              </Typography>
-              <Table
-                data={bookingsData}
-                headers={bookingsHeaders}
-                hoverRow={false}
-              />
-            </>
-          ) : (
-            <Typography level="h4">
-              {t(
-                "scenes.firms.events.eventScene.schedulesInformation.chooseScheduleAction"
-              )}
-            </Typography>
-          )}
         </Grid>
       </Grid>
     </TabPanel>

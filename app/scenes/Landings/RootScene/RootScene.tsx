@@ -57,14 +57,16 @@ const RootScene = ({ queryFragmentRef }: Props) => {
             minWidth="250px"
             margin="0 auto"
             position="absolute"
-            top={isMobileView ? "30px" : "200px"}
-            left={isMobileView ? "0" : "25%"}
+            top={isMobileView ? "50%" : "200px"}
+            left={isMobileView ? "50%" : "25%"}
             width={isMobileView ? "100%" : "50%"}
             sx={{
-              transform: "translateX(-25%)",
+              transform: isMobileView
+                ? "translate(-50%, -50%)"
+                : "translateX(-25%)",
               backgroundColor: "rgba(255, 255, 255, 0.5)",
               borderRadius: "3px",
-              padding: "5px",
+              padding: isMobileView ? "5px 25px" : "5px",
             }}
           >
             <Typography fontSize="28px" level="title-lg" sx={{}}>
@@ -101,7 +103,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
                     <React.Fragment key={slug}>
                       <ListItem
                         component="a"
-                        href={`/events?interests=${slug}`}
+                        href={`/events?interests=${JSON.stringify([slug])}`}
                         sx={{
                           "&:hover": {
                             cursor: "pointer",
@@ -135,7 +137,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
                     <React.Fragment key={slug}>
                       <ListItem
                         component="a"
-                        href={`/events?interests=${slug}`}
+                        href={`/events?interests=${JSON.stringify([slug])}`}
                         sx={{
                           "&:hover": {
                             cursor: "pointer",
@@ -168,7 +170,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
                     <React.Fragment key={slug}>
                       <ListItem
                         component="a"
-                        href={`/events?interests=${slug}`}
+                        href={`/events?interests=${JSON.stringify([slug])}`}
                         sx={{
                           "&:hover": {
                             cursor: "pointer",
@@ -210,14 +212,12 @@ const RootScene = ({ queryFragmentRef }: Props) => {
               href="/firms/new"
               position="absolute"
               sx={{
-                transform: "translate(-50%, -50%)",
-                top: "50%",
+                transform: "translate(-50%, -75%)",
+                top: "75%",
                 left: "50%",
               }}
             >
-              <Button size="lg" sx={{ boxShadow: "0 0 2px white;" }}>
-                {t("scenes.rootScene.becomePartner")}
-              </Button>
+              <Button size="lg">{t("scenes.rootScene.becomePartner")}</Button>
             </Link>
           </Box>
         </Grid>

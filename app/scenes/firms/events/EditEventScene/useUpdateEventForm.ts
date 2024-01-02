@@ -2,7 +2,7 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import moment, { Moment } from "moment";
 import useMutationForm from "../../../../lib/hooks/useMutationForm";
 import { dateTimeFormat, setTime } from "../../../../lib/utils/dates";
@@ -209,10 +209,7 @@ const validationSchema = Yup.object().shape({
     .integer()
     .transform(numberTransform)
     .required("Required"),
-  depositAmountCents: Yup.number()
-    .min(0)
-    .integer()
-    .transform(numberTransform),
+  depositAmountCents: Yup.number().min(0).integer().transform(numberTransform),
   recurringDates: Yup.array()
     .of(
       Yup.object().shape({

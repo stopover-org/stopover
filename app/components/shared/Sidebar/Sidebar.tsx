@@ -26,6 +26,7 @@ const Sidebar = ({ items }: SidebarProps) => (
               href={item.href}
               underline={false}
               key={`item-${item.href}`}
+              component="div"
             >
               <ListItem>
                 <ListItemButton color="primary" href={item.href}>

@@ -11,21 +11,25 @@ import {
 import { graphql, useFragment, useMutation } from "react-relay";
 import moment, { Moment } from "moment";
 import { useTranslation } from "react-i18next";
-import Typography from "../../../../../components/v2/Typography";
-import Link from "../../../../../components/v2/Link";
-import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
-import { EventCardCompact_BookEventMutation } from "../../../../../artifacts/EventCardCompact_BookEventMutation.graphql";
-import { EventCardCompacts_EventFragment$key } from "../../../../../artifacts/EventCardCompacts_EventFragment.graphql";
-import SubmitButton from "../../../../../components/shared/SubmitButton/SubmitButton";
+import Typography from "components/v2/Typography";
+import Link from "components/v2/Link";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import { EventCardCompact_BookEventMutation } from "artifacts/EventCardCompact_BookEventMutation.graphql";
+import { EventCardCompacts_EventFragment$key } from "artifacts/EventCardCompacts_EventFragment.graphql";
+import SubmitButton from "components/shared/SubmitButton/SubmitButton";
+import Button from "components/v2/Button/Button";
+import { useUpdateQuery } from "lib/hooks/useQuery";
 import DateAutocomplete from "./DateAutocomplete";
-import Button from "../../../../../components/v2/Button/Button";
-import { useUpdateQuery } from "../../../../../lib/hooks/useQuery";
 
 interface Props {
   eventFragmentRef: EventCardCompacts_EventFragment$key;
+  includeInterests?: boolean;
 }
 
-const EventCardCompact = ({ eventFragmentRef }: Props) => {
+const EventCardCompact = ({
+  eventFragmentRef,
+  includeInterests = true,
+}: Props) => {
   const { t } = useTranslation();
   const event = useFragment(
     graphql`
@@ -109,9 +113,8 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
         sm: "calc(100% - 20px)",
         xs: "calc(100% - 20px)",
       }}
-      padding="10px"
     >
-      <Card variant="outlined" sx={{ width: "100%" }}>
+      <Card variant="outlined" sx={{ width: "100%", margin: "0px" }}>
         <CardOverflow>
           <AspectRatio ratio="2">
             <img src={event.images[0]} loading="lazy" alt="" />
@@ -121,22 +124,25 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
           <Link href={`/events/${event.id}`}>
             <Typography sx={{ fontSize: "xl" }}>{event.title}</Typography>
           </Link>
-          <Box>
-            <Typography level="body-md" sx={{ fontSize: "md" }}>
+          {includeInterests && (
+            <Box>
               {event.interests.map((interest) => (
                 <React.Fragment key={interest.id}>
                   <Typography
                     underline
                     color="primary"
-                    onClick={() => changeInterest([interest.slug])}
+                    onClick={() => {
+                      changeInterest([interest.slug]);
+                    }}
+                    level="body-md"
+                    sx={{ fontSize: "md" }}
                   >
                     {interest.title}
-                  </Typography>
-                  &nbsp;
+                  </Typography>{" "}
                 </React.Fragment>
               ))}
-            </Typography>
-          </Box>
+            </Box>
+          )}
           <Stack
             flexDirection="row"
             alignItems="center"

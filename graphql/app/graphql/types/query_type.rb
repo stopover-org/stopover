@@ -32,7 +32,7 @@ module Types
       argument :id, ID, required: true, loads: Types::FirmsRelated::FirmType
     end
 
-    field :booking, Types::BookingsRelated::BookingType do
+    field :booking, Types::BookingsRelated::BookingType, null: false do
       argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
     end
 
@@ -73,7 +73,12 @@ module Types
     end
 
     def bookings(**args)
-      ::BookingQuery.new(args[:filters].to_h || {}, Booking.all, current_user).all
+      arguments = {
+        query_type: ::BookingQuery,
+        **(args[:filters] || {}),
+        firm_id: current_user.account.firm.id
+      }
+      Connections::SearchkickConnection.new(arguments: arguments)
     end
 
     def booking(id:)

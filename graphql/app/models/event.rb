@@ -227,7 +227,6 @@ class Event < ApplicationRecord
   def search_data
     {
       title: title,
-      description: description,
       country: country,
       city: city,
       region: region,

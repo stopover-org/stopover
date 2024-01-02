@@ -1,7 +1,7 @@
 import React from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Grid, Sheet } from "@mui/joy";
-import Typography from "../../v2/Typography";
+import Typography from "components/v2/Typography";
 
 interface AuthGuardProps {
   children: any;
@@ -29,7 +29,7 @@ const AuthGuard = ({
       noAccess = "Redirecting...";
     }
 
-    if (typeof window !== "undefined") {
+    if (typeof window !== typeof undefined) {
       router.push(redirectTo);
     }
   }

@@ -3,7 +3,6 @@ import { PickerOverlay } from "filestack-react";
 import { PickerOptions } from "filestack-js";
 import { useTranslation } from "react-i18next";
 import Button from "../Button";
-import { useApiKey } from "../../../lib/hooks/useApiKey";
 
 interface BaseFileUploaderProps {
   onChange: (files: string[]) => void;
@@ -13,7 +12,7 @@ interface BaseFileUploaderProps {
 interface FileUploaderProps extends BaseFileUploaderProps {}
 
 const FileUploader = ({ onChange, pickerOptions }: FileUploaderProps) => {
-  const filestackApiKey = useApiKey("filestack")!;
+  const filestackApiKey = process.env.NEXT_PUBLIC_FILESTACK_API_KEY || "";
   const [opened, setOpened] = React.useState(false);
   const { t } = useTranslation();
   return (

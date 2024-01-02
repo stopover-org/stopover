@@ -3,10 +3,11 @@ import React from "react";
 import { useMediaQuery } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
-import Sidebar from "../Sidebar/Sidebar";
-import { GlobalSidebarContext } from "../../GlobalSidebarProvider";
+import { SidebarContent_AccountFragment$key } from "artifacts/SidebarContent_AccountFragment.graphql";
+import { GlobalSidebarContext } from "components/GlobalSidebarProvider";
+import Typography from "components/v2/Typography";
+import Sidebar from "components/shared/Sidebar";
 import SelectCurrentFirm from "../SelectCurrentFirm";
-import { SidebarContent_AccountFragment$key } from "../../../artifacts/SidebarContent_AccountFragment.graphql";
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
@@ -29,10 +30,13 @@ const SidebarContent = ({
   sx,
   accountFragmentRef,
 }: SidebarContentProps) => {
-  const account = useFragment(
+  const account = useFragment<SidebarContent_AccountFragment$key>(
     graphql`
       fragment SidebarContent_AccountFragment on Account {
         ...SelectCurrentFirm_AccountFragment
+        firm {
+          title
+        }
         user {
           serviceUser
         }
@@ -47,7 +51,15 @@ const SidebarContent = ({
   const items = React.useMemo(() => {
     const array = account.user.serviceUser
       ? [{ slot: <SelectCurrentFirm accountFragmentRef={account} /> }]
-      : [];
+      : [
+          {
+            slot: (
+              <Typography pl="15px" level="h4">
+                {account?.firm?.title}
+              </Typography>
+            ),
+          },
+        ];
     return [
       ...array,
       { title: t("layout.header.myFirm"), href: "/my-firm/dashboard" },

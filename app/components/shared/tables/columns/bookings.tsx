@@ -3,14 +3,17 @@ import moment from "moment";
 import UnfoldMoreDoubleIcon from "@mui/icons-material/UnfoldMoreDouble";
 import { IconButton } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import Link from "../../../v2/Link/Link";
-import { getHumanDateTime } from "../../../../lib/utils/dates";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
-import useStatusColor from "../../../../lib/hooks/useStatusColor";
-import Tag from "../../../v2/Tag/Tag";
-import Table from "../../../v2/Table/Table";
-import Typography from "../../../v2/Typography";
-import Checkbox from "../../../v2/Checkbox";
+import { graphql, useFragment } from "react-relay";
+import { bookings_useBookingsColumns_BookingsConnectionFragment$key } from "artifacts/bookings_useBookingsColumns_BookingsConnectionFragment.graphql";
+import Link from "components/v2/Link/Link";
+import { getHumanDateTime } from "lib/utils/dates";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import useStatusColor from "lib/hooks/useStatusColor";
+import Tag from "components/v2/Tag/Tag";
+import Table from "components/v2/Table/Table";
+import Typography from "components/v2/Typography";
+import Checkbox from "components/v2/Checkbox";
+import useEdges from "lib/hooks/useEdges";
 
 export function useBookingsHeaders() {
   const { t } = useTranslation();
@@ -67,8 +70,66 @@ const TagColor = ({ status }: { status: string }) => {
 };
 
 export function useBookingsColumns(
-  bookings: ReadonlyArray<Record<string, any>>
+  connectionFragmentRef: bookings_useBookingsColumns_BookingsConnectionFragment$key
 ) {
+  const bookings =
+    useFragment<bookings_useBookingsColumns_BookingsConnectionFragment$key>(
+      graphql`
+        fragment bookings_useBookingsColumns_BookingsConnectionFragment on BookingConnection {
+          edges {
+            node {
+              id
+              status
+              bookedFor
+              organizerTotalPrice {
+                cents
+                currency {
+                  name
+                }
+              }
+              attendeeTotalPrice {
+                cents
+                currency {
+                  name
+                }
+              }
+              alreadyPaidPrice {
+                cents
+                currency {
+                  name
+                }
+              }
+              attendees {
+                firstName
+                lastName
+                phone
+                email
+              }
+              bookingOptions {
+                eventOption {
+                  title
+                  builtIn
+                }
+                status
+                organizerPrice {
+                  cents
+                  currency {
+                    name
+                  }
+                }
+                attendeePrice {
+                  cents
+                  currency {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      `,
+      connectionFragmentRef
+    );
   const { t } = useTranslation();
   const attendeesHeaders = React.useMemo(
     () => [
@@ -104,78 +165,81 @@ export function useBookingsColumns(
     ],
     []
   );
+  const pagedBookings = useEdges(bookings);
   return React.useMemo(
     () =>
-      bookings.map((booking) => {
-        const attendeesData = booking.attendees.map(
-          (attendee: any, index: number) => ({
-            id: index + 1,
-            firstName: attendee.firstName?.trim() || t("general.noData"),
-            lastName: attendee.lastName?.trim() || t("general.noData"),
-            email: attendee.email?.trim() || t("general.noData"),
-            phone: attendee.phone?.trim() || t("general.noData"),
-          })
-        );
+      pagedBookings
+        .map((v) => v!)
+        .map((booking) => {
+          const attendeesData = booking.attendees.map(
+            (attendee: any, index: number) => ({
+              id: index + 1,
+              firstName: attendee.firstName?.trim() || t("general.noData"),
+              lastName: attendee.lastName?.trim() || t("general.noData"),
+              email: attendee.email?.trim() || t("general.noData"),
+              phone: attendee.phone?.trim() || t("general.noData"),
+            })
+          );
 
-        const bookingOptionsData = booking.bookingOptions.map(
-          (opt: any, index: number) => ({
-            id: index + 1,
-            title: opt.eventOption.title,
+          const bookingOptionsData = booking.bookingOptions.map(
+            (opt: any, index: number) => ({
+              id: index + 1,
+              title: opt.eventOption.title,
+              organizerPrice: getCurrencyFormat(
+                opt.eventOption.builtIn ? 0 : opt.organizerPrice.cents,
+                opt.organizerPrice.currency.name
+              ),
+              attendeePrice: getCurrencyFormat(
+                opt.eventOption.builtIn ? 0 : opt.attendeePrice.cents,
+                opt.attendeePrice.currency.name
+              ),
+              builtIn: (
+                <Checkbox label="" checked={opt.eventOption.builtIn} readOnly />
+              ),
+              status: <TagColor status={opt.status} />,
+            })
+          );
+          return {
+            id: (
+              <Link primary href={`/my-firm/bookings/${booking.id}`}>
+                {booking.id}
+              </Link>
+            ),
+            status: <TagColor status={booking.status} />,
+            bookedFor: getHumanDateTime(moment(booking.bookedFor)),
             organizerPrice: getCurrencyFormat(
-              opt.eventOption.builtIn ? 0 : opt.organizerPrice.cents,
-              opt.organizerPrice.currency.name
+              booking?.organizerTotalPrice?.cents,
+              booking?.organizerTotalPrice?.currency?.name
             ),
             attendeePrice: getCurrencyFormat(
-              opt.eventOption.builtIn ? 0 : opt.attendeePrice.cents,
-              opt.attendeePrice.currency.name
+              booking?.attendeeTotalPrice?.cents,
+              booking?.attendeeTotalPrice?.currency?.name
             ),
-            builtIn: (
-              <Checkbox label="" checked={opt.eventOption.builtIn} readOnly />
+            alreadyPaid: getCurrencyFormat(
+              booking?.alreadyPaidPrice?.cents,
+              booking?.alreadyPaidPrice?.currency?.name
             ),
-            status: <TagColor status={opt.status} />,
-          })
-        );
-        return {
-          id: (
-            <Link primary href={`/my-firm/bookings/${booking.id}`}>
-              {booking.id}
-            </Link>
-          ),
-          status: <TagColor status={booking.status} />,
-          bookedFor: getHumanDateTime(moment(booking.bookedFor)),
-          organizerPrice: getCurrencyFormat(
-            booking?.organizerTotalPrice?.cents,
-            booking?.organizerTotalPrice?.currency?.name
-          ),
-          attendeePrice: getCurrencyFormat(
-            booking?.attendeeTotalPrice?.cents,
-            booking?.attendeeTotalPrice?.currency?.name
-          ),
-          alreadyPaid: getCurrencyFormat(
-            booking?.alreadyPaidPrice?.cents,
-            booking?.alreadyPaidPrice?.currency?.name
-          ),
-          expand: (
-            <IconButton size="sm">
-              <UnfoldMoreDoubleIcon />
-            </IconButton>
-          ),
-          tables: [
-            <Typography level="title-lg">Attendees</Typography>,
-            <Table
-              hoverRow={false}
-              headers={attendeesHeaders}
-              data={attendeesData}
-            />,
-            <Typography level="title-lg">Booking Options</Typography>,
-            <Table
-              hoverRow={false}
-              headers={bookingOptionsHeaders}
-              data={bookingOptionsData}
-            />,
-          ],
-        };
-      }),
-    [bookings]
+            expand: (
+              <IconButton size="sm">
+                <UnfoldMoreDoubleIcon />
+              </IconButton>
+            ),
+            tables: [
+              <Typography level="title-lg">Attendees</Typography>,
+              <Table
+                hoverRow={false}
+                headers={attendeesHeaders}
+                data={attendeesData}
+              />,
+              <Typography level="title-lg">Booking Options</Typography>,
+              <Table
+                hoverRow={false}
+                headers={bookingOptionsHeaders}
+                data={bookingOptionsData}
+              />,
+            ],
+          };
+        }),
+    [pagedBookings]
   );
 }

@@ -2,7 +2,7 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useUpdateFirmForm_FirmFragment$key } from "../../../artifacts/useUpdateFirmForm_FirmFragment.graphql";
 import { useUpdateFirmForm_UpdateFirmMutation } from "../../../artifacts/useUpdateFirmForm_UpdateFirmMutation.graphql";
@@ -56,22 +56,22 @@ function useDefaultValues(
 
   return React.useMemo(
     () => ({
-      title: firm?.title,
-      contactPerson: firm?.contactPerson,
-      country: firm?.country,
-      region: firm?.region,
-      street: firm?.street,
-      fullAddress: firm?.fullAddress,
-      primaryEmail: firm?.primaryEmail,
-      primaryPhone: firm?.primaryPhone,
-      contacts: firm?.contacts,
-      website: firm?.website,
-      description: firm?.description,
-      city: firm?.city,
-      houseNumber: firm?.houseNumber,
-      image: firm?.image,
-      paymentTypes: firm?.paymentTypes.map(String),
-      contractAddress: firm?.contractAddress,
+      title: firm?.title || "",
+      contactPerson: firm?.contactPerson || null,
+      country: firm?.country || null,
+      region: firm?.region || null,
+      street: firm?.street || null,
+      fullAddress: firm?.fullAddress || null,
+      primaryEmail: firm?.primaryEmail || "",
+      primaryPhone: firm?.primaryPhone || null,
+      contacts: firm?.contacts || "",
+      website: firm?.website || null,
+      description: firm?.description || null,
+      city: firm?.city || null,
+      houseNumber: firm?.houseNumber || null,
+      image: firm?.image || null,
+      paymentTypes: firm?.paymentTypes.map(String) || [],
+      contractAddress: firm?.contractAddress || null,
     }),
     [firm]
   );

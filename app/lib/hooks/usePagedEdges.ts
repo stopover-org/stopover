@@ -7,11 +7,11 @@ export function usePagedEdges<T>(
   },
   page: number,
   perPage: number
-) {
+): T[] {
   const edges = useEdges<T>(data);
 
   return React.useMemo(
-    () => edges.slice((page - 1) * perPage, page * perPage),
+    (): T[] => edges.slice((page - 1) * perPage, page * perPage) as T[],
     [page, edges]
   );
 }

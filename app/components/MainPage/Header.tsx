@@ -1,15 +1,17 @@
+"use client";
+
 import React from "react";
 import { Box, Grid, Stack, useTheme } from "@mui/joy";
 import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
 import { graphql, useFragment, useMutation } from "react-relay";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Menu from "@mui/icons-material/Menu";
 import { useTranslation } from "react-i18next";
-import Link from "../v2/Link";
-import { Header_CurrentUserFragment$key } from "../../artifacts/Header_CurrentUserFragment.graphql";
-import { Header_SignOutMutation } from "../../artifacts/Header_SignOutMutation.graphql";
-import { GlobalSidebarContext } from "../GlobalSidebarProvider";
+import Link from "components/v2/Link";
+import { Header_CurrentUserFragment$key } from "artifacts/Header_CurrentUserFragment.graphql";
+import { Header_SignOutMutation } from "artifacts/Header_SignOutMutation.graphql";
+import { GlobalSidebarContext } from "components/GlobalSidebarProvider";
 
 interface HeaderProps {
   currentUserFragment: Header_CurrentUserFragment$key;
@@ -60,10 +62,15 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
     [currentUser]
   );
 
+  const isServer = React.useMemo(
+    () => typeof window === typeof undefined,
+    [typeof window]
+  );
+
   const imageSize = React.useMemo(
     () => ({
-      width: !isMediumDisplay ? 150 : 250,
-      height: !isMediumDisplay ? 45 : 75,
+      width: !isMediumDisplay && !isServer ? 150 : 250,
+      height: !isMediumDisplay && !isServer ? 45 : 75,
     }),
     [isMediumDisplay]
   );
@@ -88,7 +95,10 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
           <Link href="/">
             <Image
               src="https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx.svg"
+              alt="logo"
+              priority
               {...imageSize}
+              suppressHydrationWarning
             />
           </Link>
         </Stack>

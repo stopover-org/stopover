@@ -4,9 +4,9 @@ import moment from "moment/moment";
 import React from "react";
 import { Moment } from "moment";
 import { useTranslation } from "react-i18next";
-import { dayMonthTimeFormat } from "../../../../../lib/utils/dates";
-import Typography from "../../../../../components/v2/Typography/Typography";
-import { DateAutocomplete_Event$key } from "../../../../../artifacts/DateAutocomplete_Event.graphql";
+import { dayMonthTimeFormat } from "lib/utils/dates";
+import Typography from "components/v2/Typography/Typography";
+import { DateAutocomplete_Event$key } from "artifacts/DateAutocomplete_Event.graphql";
 
 interface DateAutocompleteProps {
   value: Moment | null;

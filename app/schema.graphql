@@ -245,6 +245,7 @@ type BookingOption implements Node {
 
 input BookingsFilter {
   eventId: ID
+  scheduleId: [ID!]
   scheduledFor: DateTime
   status: String
   tripId: [ID!]
@@ -616,6 +617,7 @@ type Event implements Node {
     Returns the elements in the list that come before the specified cursor.
     """
     before: String
+    filters: BookingsFilter
 
     """
     Returns the first _n_ elements from the list.
@@ -666,6 +668,7 @@ type Event implements Node {
     Returns the elements in the list that come before the specified cursor.
     """
     before: String
+    filters: SchedulesFilter
 
     """
     Returns the first _n_ elements from the list.
@@ -828,6 +831,7 @@ type Firm implements Node {
     Returns the elements in the list that come before the specified cursor.
     """
     before: String
+    filters: BookingsFilter
 
     """
     Returns the first _n_ elements from the list.
@@ -869,7 +873,6 @@ type Firm implements Node {
     """
     last: Int
   ): EventConnection!
-  eventsCount: Int
   fullAddress: String
   houseNumber: String
   id: ID!
@@ -902,6 +905,7 @@ type Firm implements Node {
   primaryEmail: String!
   primaryPhone: String
   region: String
+  schedule(id: ID!): Schedule!
   schedules(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -1278,7 +1282,7 @@ type PublishEventPayload {
 }
 
 type Query {
-  booking(id: ID!): Booking
+  booking(id: ID!): Booking!
   bookings(filters: BookingsFilter): [Booking!]!
   currentUser: User!
   event(id: ID!): Event!
@@ -1489,7 +1493,29 @@ type RescheduleEventPayload {
 }
 
 type Schedule implements Node {
-  bookings: [Booking!]!
+  bookedPlaces: Int
+  bookings(
+    """
+    Returns the elements in the list that come after the specified cursor.
+    """
+    after: String
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+    filters: BookingsFilter
+
+    """
+    Returns the first _n_ elements from the list.
+    """
+    first: Int
+
+    """
+    Returns the last _n_ elements from the list.
+    """
+    last: Int
+  ): BookingConnection!
   event: Event!
   id: ID!
   leftPlaces: Int

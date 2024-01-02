@@ -1,7 +1,6 @@
 import { graphql, usePaginationFragment } from "react-relay";
 import React from "react";
 import Table from "../../../v2/Table/Table";
-import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
 import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
 import { BookingsFirmTable_BookingsFirmPaginationFragment$key } from "../../../../artifacts/BookingsFirmTable_BookingsFirmPaginationFragment.graphql";
 import { BookingsFirmTableFirmPaginationQuery } from "../../../../artifacts/BookingsFirmTableFirmPaginationQuery.graphql";
@@ -15,88 +14,39 @@ const BookingsFirmTable = ({
   firmFragmentRef,
   withPagination,
 }: BookingFirmTableProps) => {
-  const {
-    data: { bookings },
-    hasPrevious,
-    hasNext,
-    loadPrevious,
-    loadNext,
-  } = usePaginationFragment<
-    BookingsFirmTableFirmPaginationQuery,
-    BookingsFirmTable_BookingsFirmPaginationFragment$key
-  >(
-    graphql`
-      fragment BookingsFirmTable_BookingsFirmPaginationFragment on Firm
-      @refetchable(queryName: "BookingsFirmTableFirmPaginationQuery")
-      @argumentDefinitions(
-        count: { type: "Int", defaultValue: 30 }
-        cursor: { type: "String", defaultValue: "" }
-      ) {
-        bookings(first: $count, after: $cursor)
-          @connection(key: "BookingsFirmTable_query_bookings") {
-          edges {
-            node {
-              id
-              status
-              bookedFor
-              organizerTotalPrice {
-                cents
-                currency {
-                  name
-                }
-              }
-              attendeeTotalPrice {
-                cents
-                currency {
-                  name
-                }
-              }
-              alreadyPaidPrice {
-                cents
-                currency {
-                  name
-                }
-              }
-              attendees {
-                firstName
-                lastName
-                phone
-                email
-              }
-              bookingOptions {
-                eventOption {
-                  title
-                  builtIn
-                }
-                status
-                organizerPrice {
-                  cents
-                  currency {
-                    name
-                  }
-                }
-                attendeePrice {
-                  cents
-                  currency {
-                    name
-                  }
-                }
+  const { data, hasPrevious, hasNext, loadPrevious, loadNext } =
+    usePaginationFragment<
+      BookingsFirmTableFirmPaginationQuery,
+      BookingsFirmTable_BookingsFirmPaginationFragment$key
+    >(
+      graphql`
+        fragment BookingsFirmTable_BookingsFirmPaginationFragment on Firm
+        @refetchable(queryName: "BookingsFirmTableFirmPaginationQuery")
+        @argumentDefinitions(
+          count: { type: "Int", defaultValue: 30 }
+          cursor: { type: "String", defaultValue: "" }
+        ) {
+          bookings(first: $count, after: $cursor)
+            @connection(key: "BookingsFirmTable_query_bookings") {
+            ...bookings_useBookingsColumns_BookingsConnectionFragment
+            edges {
+              node {
+                __typename
+                id
               }
             }
           }
         }
-      }
-    `,
-    firmFragmentRef
-  );
+      `,
+      firmFragmentRef
+    );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const pagedBookings = usePagedEdges(bookings, currentPage, 30);
-  const actualBookings = useBookingsColumns(pagedBookings);
+  const bookings = useBookingsColumns(data.bookings);
   const headers = useBookingsHeaders();
 
   return (
     <Table
-      data={actualBookings}
+      data={bookings}
       headers={headers}
       aria-label="bookings table"
       hoverRow={false}
