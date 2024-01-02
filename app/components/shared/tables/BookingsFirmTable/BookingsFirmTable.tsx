@@ -41,7 +41,7 @@ const BookingsFirmTable = ({
       firmFragmentRef
     );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const bookings = useBookingsColumns(data.bookings, currentPage, 30);
+  const bookings = useBookingsColumns(data.bookings);
   const headers = useBookingsHeaders();
 
   return (

@@ -49,6 +49,9 @@ const EventScene = ({
   const event = useFragment<EventScene_FirmEventFragment$key>(
     graphql`
       fragment EventScene_FirmEventFragment on Event {
+        firm {
+          title
+        }
         eventOptions {
           id
         }
@@ -162,6 +165,7 @@ const EventScene = ({
             <LaunchIcon />
           </Link>
         </Typography>
+        <Typography level="h4">{event.firm.title}</Typography>
         <Tag color={tagColor} link={false}>
           {t(`statuses.${event.status}`)}
         </Tag>

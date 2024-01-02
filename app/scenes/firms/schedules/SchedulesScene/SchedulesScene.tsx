@@ -3,16 +3,15 @@ import React from "react";
 import { Disposable, graphql, usePaginationFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
 import { Moment } from "moment";
-import Typography from "../../../../components/v2/Typography/Typography";
-import Table from "../../../../components/v2/Table/Table";
-import { SchedulesScene_FirmFragment$key } from "../../../../artifacts/SchedulesScene_FirmFragment.graphql";
+import Typography from "components/v2/Typography/Typography";
+import Table from "components/v2/Table/Table";
+import { SchedulesScene_FirmFragment$key } from "artifacts/SchedulesScene_FirmFragment.graphql";
 import {
   useSchedulesColumns,
   useSchedulesHeaders,
-} from "../../../../components/shared/tables/columns/schedules";
-import useEdges from "../../../../lib/hooks/useEdges";
-import { SchedulesSceneFirmFragment } from "../../../../artifacts/SchedulesSceneFirmFragment.graphql";
-import DateRangePicker from "../../../../components/v2/DateRangePicker/DateRangePicker";
+} from "components/shared/tables/columns/schedules";
+import { SchedulesSceneFirmFragment } from "artifacts/SchedulesSceneFirmFragment.graphql";
+import DateRangePicker from "components/v2/DateRangePicker/DateRangePicker";
 
 interface SchedulesSceneProps {
   firmFragmentRef: SchedulesScene_FirmFragment$key;
@@ -37,16 +36,11 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
             after: $cursor
             filters: $filters
           ) @connection(key: "SchedulesScene_pagedSchedules") {
+            ...schedules_useSchedulesColumns_SchedulesConnectionFragment
             edges {
               node {
+                __typename
                 id
-                scheduledFor
-                status
-                bookedPlaces
-                event {
-                  title
-                  id
-                }
               }
             }
           }
@@ -55,10 +49,9 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
       firmFragmentRef
     );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const schedules = useEdges(data.pagedSchedules) as ReadonlyArray<
-    Record<string, any>
-  >;
-  const schedulesData = useSchedulesColumns(schedules);
+  const schedulesData = useSchedulesColumns(data.pagedSchedules);
+
+  console.log(schedulesData);
   const schedulesHeaders = useSchedulesHeaders();
   const { t } = useTranslation();
   const [range, setRange] = React.useState<[Moment | null, Moment | null]>([
@@ -92,7 +85,7 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
 
   return (
     <Grid xs={12} container suppressHydrationWarning>
-      <Grid md={4} sm={12}>
+      <Grid sm={12}>
         <Typography level="h4">{t("models.schedule.plural")}</Typography>
         <Grid md={6} sm={12} container>
           <DateRangePicker

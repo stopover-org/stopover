@@ -41,11 +41,7 @@ const BookingsEventTable = ({
       eventFragmentRef
     );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const actualBookings = useBookingsColumns(
-    data.paginatedBookings,
-    currentPage,
-    30
-  );
+  const actualBookings = useBookingsColumns(data.paginatedBookings);
   const headers = useBookingsHeaders();
 
   return (

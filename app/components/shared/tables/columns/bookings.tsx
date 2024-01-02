@@ -5,15 +5,15 @@ import { IconButton } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
 import { bookings_useBookingsColumns_BookingsConnectionFragment$key } from "artifacts/bookings_useBookingsColumns_BookingsConnectionFragment.graphql";
-import Link from "../../../v2/Link/Link";
-import { getHumanDateTime } from "../../../../lib/utils/dates";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
-import useStatusColor from "../../../../lib/hooks/useStatusColor";
-import Tag from "../../../v2/Tag/Tag";
-import Table from "../../../v2/Table/Table";
-import Typography from "../../../v2/Typography";
-import Checkbox from "../../../v2/Checkbox";
-import { usePagedEdges } from "../../../../lib/hooks/usePagedEdges";
+import Link from "components/v2/Link/Link";
+import { getHumanDateTime } from "lib/utils/dates";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import useStatusColor from "lib/hooks/useStatusColor";
+import Tag from "components/v2/Tag/Tag";
+import Table from "components/v2/Table/Table";
+import Typography from "components/v2/Typography";
+import Checkbox from "components/v2/Checkbox";
+import useEdges from "lib/hooks/useEdges";
 
 export function useBookingsHeaders() {
   const { t } = useTranslation();
@@ -70,9 +70,7 @@ const TagColor = ({ status }: { status: string }) => {
 };
 
 export function useBookingsColumns(
-  connectionFragmentRef: bookings_useBookingsColumns_BookingsConnectionFragment$key,
-  currentPage: number,
-  perPage: number
+  connectionFragmentRef: bookings_useBookingsColumns_BookingsConnectionFragment$key
 ) {
   const bookings =
     useFragment<bookings_useBookingsColumns_BookingsConnectionFragment$key>(
@@ -167,7 +165,7 @@ export function useBookingsColumns(
     ],
     []
   );
-  const pagedBookings = usePagedEdges(bookings, currentPage, perPage);
+  const pagedBookings = useEdges(bookings);
   return React.useMemo(
     () =>
       pagedBookings

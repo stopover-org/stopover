@@ -74,7 +74,8 @@ class Schedule < ApplicationRecord
     {
       scheduled_for: scheduled_for,
       status: status,
-      event: event.title
+      event_id: event.id,
+      firm_id: event.firm.id
     }
   end
 

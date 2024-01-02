@@ -242,35 +242,33 @@ const EventsTable = ({
         </Grid>
       )}
       <Grid xs={12}>
-        <React.Suspense>
-          <Table
-            data={data}
-            headers={headers}
-            withPagination={withPagination}
-            paginationProps={{
-              rowsPerPage: 30,
-              colSpan: headers.length,
-              setPage: setCurrentPage,
-              page: currentPage,
-              hasPrevious,
-              hasNext,
-              onNextPage: () => {
-                if (hasNext) {
-                  loadNext(30, {
-                    onComplete: () => setCurrentPage(currentPage + 1),
-                  });
-                }
-              },
-              onPrevPage: () => {
-                if (hasPrevious) {
-                  loadPrevious(30, {
-                    onComplete: () => setCurrentPage(currentPage - 1),
-                  });
-                }
-              },
-            }}
-          />
-        </React.Suspense>
+        <Table
+          data={data}
+          headers={headers}
+          withPagination={withPagination}
+          paginationProps={{
+            rowsPerPage: 30,
+            colSpan: headers.length,
+            setPage: setCurrentPage,
+            page: currentPage,
+            hasPrevious,
+            hasNext,
+            onNextPage: () => {
+              if (hasNext) {
+                loadNext(30, {
+                  onComplete: () => setCurrentPage(currentPage + 1),
+                });
+              }
+            },
+            onPrevPage: () => {
+              if (hasPrevious) {
+                loadPrevious(30, {
+                  onComplete: () => setCurrentPage(currentPage - 1),
+                });
+              }
+            },
+          }}
+        />
       </Grid>
     </Grid>
   );

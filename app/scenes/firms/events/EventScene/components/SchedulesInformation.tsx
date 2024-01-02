@@ -2,14 +2,14 @@ import { graphql, usePaginationFragment } from "react-relay";
 import React from "react";
 import { Grid, TabPanel } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { SchedulesInformation_EventFragment$key } from "../../../../../artifacts/SchedulesInformation_EventFragment.graphql";
-import Table from "../../../../../components/v2/Table";
-import Typography from "../../../../../components/v2/Typography";
+import { SchedulesInformation_EventFragment$key } from "artifacts/SchedulesInformation_EventFragment.graphql";
+import Table from "components/v2/Table";
+import Typography from "components/v2/Typography";
 import {
   useSchedulesColumns,
   useSchedulesHeaders,
-} from "../../../../../components/shared/tables/columns/schedules";
-import useEdges from "../../../../../lib/hooks/useEdges";
+} from "components/shared/tables/columns/schedules";
+import { SchedulesSectionEventFragment } from "artifacts/SchedulesSectionEventFragment.graphql";
 
 interface SchedulesInformationProps {
   eventFragmentRef: SchedulesInformation_EventFragment$key;
@@ -21,7 +21,10 @@ const SchedulesInformation = ({
   index,
 }: SchedulesInformationProps) => {
   const { data, hasNext, hasPrevious, loadNext, loadPrevious } =
-    usePaginationFragment(
+    usePaginationFragment<
+      SchedulesSectionEventFragment,
+      SchedulesInformation_EventFragment$key
+    >(
       graphql`
         fragment SchedulesInformation_EventFragment on Event
         @refetchable(queryName: "SchedulesSectionEventFragment")
@@ -31,15 +34,11 @@ const SchedulesInformation = ({
         ) {
           pagedSchedules: schedules(first: $count, after: $cursor)
             @connection(key: "SchedulesInformation_pagedSchedules") {
+            ...schedules_useSchedulesColumns_SchedulesConnectionFragment
             edges {
               node {
+                __typename
                 id
-                scheduledFor
-                status
-                event {
-                  title
-                  id
-                }
               }
             }
           }
@@ -47,15 +46,8 @@ const SchedulesInformation = ({
       `,
       eventFragmentRef
     );
-
-  const [selectedSchedule, setSelectedSchedule] = React.useState<null | number>(
-    null
-  );
   const [currentPage, setCurrentPage] = React.useState(1);
-  const schedules = useEdges(data.pagedSchedules) as ReadonlyArray<
-    Record<string, any>
-  >;
-  const schedulesData = useSchedulesColumns(schedules);
+  const schedulesData = useSchedulesColumns(data.pagedSchedules);
   const schedulesHeaders = useSchedulesHeaders();
   const { t } = useTranslation();
 
@@ -70,7 +62,6 @@ const SchedulesInformation = ({
             data={schedulesData}
             headers={schedulesHeaders}
             withPagination
-            onRowClick={setSelectedSchedule}
             paginationProps={{
               setPage: setCurrentPage,
               page: currentPage,
