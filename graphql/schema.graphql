@@ -668,6 +668,7 @@ type Event implements Node {
     Returns the elements in the list that come before the specified cursor.
     """
     before: String
+    filters: SchedulesFilter
 
     """
     Returns the first _n_ elements from the list.
@@ -905,6 +906,7 @@ type Firm implements Node {
   primaryEmail: String!
   primaryPhone: String
   region: String
+  schedule(id: ID!): Schedule!
   schedules(
     """
     Returns the elements in the list that come after the specified cursor.

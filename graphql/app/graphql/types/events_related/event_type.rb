@@ -39,7 +39,11 @@ module Types
       field :requires_contract, Boolean, null: false
       field :requires_passport, Boolean, null: false
       field :requires_deposit,  Boolean, null: false
-      field :schedules,         Types::EventsRelated::ScheduleType.connection_type, null: false
+
+      field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false, require_manager: true do
+        argument :filters, Types::Filters::SchedulesFilter, required: false
+      end
+
       field :single_days_with_time, [Types::DateTimeType], null: false
       field :status,    String, null: false
       field :street,    String
@@ -84,6 +88,15 @@ module Types
           query_type: ::BookingQuery,
           **(args[:filters] || {}),
           event_id: object.firm.id
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
+      end
+
+      def schedules(**args)
+        arguments = {
+          query_type: ::SchedulesQuery,
+          **(args[:filters] || {}),
+          firm_id: object.id
         }
         Connections::SearchkickConnection.new(arguments: arguments)
       end

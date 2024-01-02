@@ -50,7 +50,7 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
 
       <Grid xs={12}>
         <Table
-          data={schedulesData}
+          data={schedulesData.slice(0, 5)}
           headers={schedulesHeaders}
           aria-label="schedules table"
         />

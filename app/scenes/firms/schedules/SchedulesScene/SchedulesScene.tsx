@@ -50,8 +50,6 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
     );
   const [currentPage, setCurrentPage] = React.useState(1);
   const schedulesData = useSchedulesColumns(data.pagedSchedules);
-
-  console.log(schedulesData);
   const schedulesHeaders = useSchedulesHeaders();
   const { t } = useTranslation();
   const [range, setRange] = React.useState<[Moment | null, Moment | null]>([
@@ -68,8 +66,8 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
     queryRef.current = refetch(
       {
         filters: {
-          startDate: range[0],
-          endDate: range[1],
+          startDate: range[0]?.toISOString(),
+          endDate: range[1]?.toISOString(),
         },
         cursor: "0",
       },

@@ -208,7 +208,8 @@ class Booking < ApplicationRecord
       interests: event.interests.map(&:title),
 
       trip_id: trip.id,
-      event_id: event.id
+      event_id: event.id,
+      schedule_id: schedule.id
     }
   end
 

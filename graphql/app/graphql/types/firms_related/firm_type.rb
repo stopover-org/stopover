@@ -32,6 +32,9 @@ module Types
       field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false, require_manager: true do
         argument :filters, Types::Filters::SchedulesFilter, required: false
       end
+      field :schedule, Types::EventsRelated::ScheduleType, null: false, require_manager: true do
+        argument :id, ID, required: true, loads: Types::EventsRelated::ScheduleType
+      end
       field :events, Types::EventsRelated::EventType.connection_type, null: false do
         argument :filters, Types::Filters::EventsFilter, required: false
         argument :backend, Boolean, required: false
@@ -92,6 +95,10 @@ module Types
       end
 
       def event(**args)
+        args[:id]
+      end
+
+      def schedule(**args)
         args[:id]
       end
     end
