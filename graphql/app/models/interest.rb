@@ -24,7 +24,7 @@ class Interest < ApplicationRecord
 
   # MODULES ===============================================================
   include Mixins::Translatable
-  searchkick callbacks: Rails.env.test? ? false : :async
+  searchkick
 
   # MONETIZE ==============================================================
 

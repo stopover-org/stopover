@@ -76,15 +76,13 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           id
         }
         payments {
-          id
-          status
-          totalPrice {
-            cents
-            currency {
-              name
+          ...payments_usePaymentsColumns_PaymentsConnectionFragment
+          edges {
+            node {
+              __typename
+              id
             }
           }
-          createdAt
         }
         refunds {
           id
@@ -132,20 +130,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
     status: booking.status,
   });
   const paymentsHeaders = usePaymentsHeaders();
-  const paymentsData = usePaymentsColumns(
-    booking.payments.map((payment) => ({
-      event: {
-        id: booking.event.id,
-        title: booking.event.title,
-      },
-      booking: {
-        id: booking.id,
-      },
-      createdAt: payment.createdAt,
-      totalPrice: payment.totalPrice,
-      status: payment.status,
-    }))
-  );
+  const paymentsData = usePaymentsColumns(booking.payments);
   const refundsHeaders = useRefundsHeaders();
   const refundsData = useRefundsColumns(
     booking.refunds.map((refund) => ({

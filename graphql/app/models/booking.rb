@@ -30,7 +30,7 @@ class Booking < ApplicationRecord
   GRAPHQL_TYPE = Types::BookingsRelated::BookingType
 
   # MODULES ===============================================================
-  searchkick callbacks: Rails.env.test? ? false : :async
+  searchkick
   include AASM
 
   # MONETIZE ==============================================================

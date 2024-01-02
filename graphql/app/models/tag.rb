@@ -21,7 +21,7 @@ class Tag < ApplicationRecord
 
   # MODULES ===============================================================
   include Mixins::Translatable
-  searchkick callbacks: Rails.env.test? ? false : :async
+  searchkick
 
   # MONETIZE ==============================================================
 

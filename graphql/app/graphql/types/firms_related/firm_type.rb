@@ -51,6 +51,15 @@ module Types
         argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
       end
 
+      def payments(**_args)
+        arguments = {
+          query_type: ::PaymentsQuery,
+          firm_id: object.id,
+          per_page: 30
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
+      end
+
       def events(**args)
         arguments = {
           query_type: ::EventsQuery,

@@ -8,6 +8,7 @@ import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import useStatusColor from "../../../lib/hooks/useStatusColor";
 import Tag from "../../v2/Tag/Tag";
 import useSubscription from "../../../lib/hooks/useSubscription";
+import useEdges from "../../../lib/hooks/useEdges";
 
 interface CheckoutProps {
   bookingFragmentRef: Checkout_BookingFragment$key;
@@ -33,12 +34,16 @@ const Checkout = ({ bookingFragmentRef }: CheckoutProps) => {
       fragment Checkout_BookingFragment on Booking {
         id
         payments {
-          id
-          status
-          totalPrice {
-            cents
-            currency {
-              name
+          edges {
+            node {
+              id
+              status
+              totalPrice {
+                cents
+                currency {
+                  name
+                }
+              }
             }
           }
         }
@@ -62,6 +67,7 @@ const Checkout = ({ bookingFragmentRef }: CheckoutProps) => {
   });
 
   const { t } = useTranslation();
+  const payments = useEdges(booking.payments).map((v) => v!);
 
   return (
     <Box>
@@ -69,7 +75,7 @@ const Checkout = ({ bookingFragmentRef }: CheckoutProps) => {
         {t("scenes.attendees.bookings.verifyBookingScene.summary")}
       </Typography>
       <List>
-        {booking.payments.map((payment) => (
+        {payments.map((payment) => (
           <ListItem key={payment.id}>
             <ListItemContent>
               <Stack direction="row" justifyContent="space-between">
