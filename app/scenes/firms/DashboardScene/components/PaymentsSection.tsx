@@ -2,16 +2,16 @@ import { Grid } from "@mui/joy";
 import React from "react";
 import { graphql, usePaginationFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import Section from "../../../../components/v2/Section";
-import Typography from "../../../../components/v2/Typography/Typography";
-import { PaymentsSection_FirmFragment$key } from "../../../../artifacts/PaymentsSection_FirmFragment.graphql";
-import Table from "../../../../components/v2/Table/Table";
-import Link from "../../../../components/v2/Link";
-import { PaymentSectionFirmFragment } from "../../../../artifacts/PaymentSectionFirmFragment.graphql";
+import Section from "components/v2/Section";
+import Typography from "components/v2/Typography/Typography";
+import { PaymentsSection_FirmFragment$key } from "artifacts/PaymentsSection_FirmFragment.graphql";
+import Table from "components/v2/Table/Table";
+import Link from "components/v2/Link";
+import { PaymentSectionFirmFragment } from "artifacts/PaymentSectionFirmFragment.graphql";
 import {
   usePaymentsColumns,
   usePaymentsHeaders,
-} from "../../../../components/shared/tables/columns/payments";
+} from "components/shared/tables/columns/payments";
 
 interface PaymentSectionProps {
   firmFragmentRef: PaymentsSection_FirmFragment$key;
