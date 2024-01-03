@@ -3,29 +3,30 @@ import React from "react";
 import moment from "moment/moment";
 import { Box, Divider, Grid, Stack } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import Typography from "../../../../components/v2/Typography";
-import { BookingScene_FirmBookingFragment$key } from "../../../../artifacts/BookingScene_FirmBookingFragment.graphql";
-import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
-import { getHumanDateTime } from "../../../../lib/utils/dates";
-import EventOptionsTable from "./components/EventOptionsTable";
-import AttendeesTable from "./components/AttendeesTable";
-import Link from "../../../../components/v2/Link";
-import Tag from "../../../../components/v2/Tag/Tag";
-import useStatusColor from "../../../../lib/hooks/useStatusColor";
+import Typography from "components/v2/Typography";
+import { BookingScene_FirmBookingFragment$key } from "artifacts/BookingScene_FirmBookingFragment.graphql";
+import Breadcrumbs from "components/v2/Breadcrumbs/Breadcrumbs";
+import { getHumanDateTime } from "lib/utils/dates";
+import Link from "components/v2/Link";
+import Tag from "components/v2/Tag/Tag";
+import useStatusColor from "lib/hooks/useStatusColor";
 import {
   usePaymentsColumns,
   usePaymentsHeaders,
-} from "../../../../components/shared/tables/columns/payments";
-import Table from "../../../../components/v2/Table";
+} from "components/shared/tables/columns/payments";
+import Table from "components/v2/Table";
 import {
   useRefundsColumns,
   useRefundsHeaders,
-} from "../../../../components/shared/tables/columns/refunds";
-import RefundBookingModal from "./components/RefundBookingModal";
-import Button from "../../../../components/v2/Button";
+} from "components/shared/tables/columns/refunds";
+import Button from "components/v2/Button";
+import useSubscription from "lib/hooks/useSubscription";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
 import AddAttendeeModal from "./components/AddAttendeeModal";
-import useSubscription from "../../../../lib/hooks/useSubscription";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
+import RefundBookingModal from "./components/RefundBookingModal";
+import AttendeesTable from "./components/AttendeesTable";
+import EventOptionsTable from "./components/EventOptionsTable";
+import BookingInformation from "./components/BookingInformation";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
@@ -34,10 +35,11 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
   const booking = useFragment<BookingScene_FirmBookingFragment$key>(
     graphql`
       fragment BookingScene_FirmBookingFragment on Booking {
-        bookedFor
+        ...BookingInformation_BookingFragment
         id
         status
         paymentType
+        bookedFor
         attendeeTotalPrice {
           cents
           currency {
@@ -155,8 +157,9 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
                 </Tag>
                 {booking.paymentType && (
                   <Tag color="primary" link={false}>
-                    {t(`models.firm.enums.paymentTypes.${booking.paymentType}`)}{" "}
-                    {t("models.payment.singular").toLowerCase()}
+                    {t(
+                      `models.booking.enums.paymentTypes.${booking.paymentType}`
+                    )}{" "}
                   </Tag>
                 )}
               </Typography>
@@ -223,11 +226,9 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           )}
         </Grid>
 
-        <Grid xs={12} padding={5}>
-          <Divider />
-        </Grid>
+        <BookingInformation bookingFragmentRef={booking} />
 
-        <Grid lg={8} md={12}>
+        <Grid lg={12} md={12} pt={3}>
           <Typography level="title-lg" pb={1}>
             {t("models.attendee.plural")}
           </Typography>
@@ -237,7 +238,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           )}
         </Grid>
 
-        <Grid lg={4} md={12}>
+        <Grid lg={12} md={12} pt={3}>
           <Typography level="title-lg" pb={1}>
             {t("models.bookingOption.plural")}
           </Typography>

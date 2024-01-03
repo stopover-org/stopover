@@ -22,6 +22,12 @@ export default {
         past: "Event past",
         paid: "Booking was partially or fully paid",
       },
+      enums: {
+        paymentTypes: {
+          stripe: "Via Stripe",
+          cash: "Cash with deposit",
+        },
+      },
     },
   },
 };

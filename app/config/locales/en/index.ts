@@ -35,6 +35,7 @@ const translation = {
     404: "This page doesn't exist",
     502: "Something is borken. We are already working on it",
     "502Details": "We are already working on it",
+    copied: "Copied",
   },
   weekdays: {
     monday: "Monday",

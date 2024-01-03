@@ -37,7 +37,7 @@ const Scene = ({
   const data = usePreloadedQuery(Query, queryRef);
   const { t } = useTranslation();
 
-  useDocumentTitle(`${t("models.payment.plural")}`);
+  useDocumentTitle(`${t("models.payment.singular")}`);
 
   return (
     <SceneWrapper>

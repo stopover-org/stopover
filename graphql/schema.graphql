@@ -1236,6 +1236,7 @@ type Payment implements Node {
   booking: Booking!
   createdAt: DateTime!
   id: ID!
+  paymentType: PaymentTypesEnum
   refunds(
     """
     Returns the elements in the list that come after the specified cursor.

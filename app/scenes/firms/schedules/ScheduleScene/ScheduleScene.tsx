@@ -1,5 +1,5 @@
 import { graphql, useFragment, usePaginationFragment } from "react-relay";
-import { Grid } from "@mui/joy";
+import { Card, CardContent, Grid } from "@mui/joy";
 import React from "react";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -16,6 +16,7 @@ import {
   useBookingsHeaders,
 } from "components/shared/tables/columns/bookings";
 import Table from "components/v2/Table/Table";
+import CopyToClipboard from "../../../../components/shared/CopyToClipboard/CopyToClipboard";
 
 interface ScheduleSceneProps {
   scheduleFragmentRef: ScheduleScene_FirmScheduleFragment$key;
@@ -25,6 +26,7 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
   const schedule = useFragment<ScheduleScene_FirmScheduleFragment$key>(
     graphql`
       fragment ScheduleScene_FirmScheduleFragment on Schedule {
+        id
         scheduledFor
         status
         event {
@@ -90,12 +92,40 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
         <Link
           href={`/my-firm/events/${schedule.event.id}`}
           underline={false}
-          level="h4"
           primary
         >
           {schedule.event.title}
         </Link>
       </Grid>
+
+      <Grid lg={6} md={8} sm={12} xs={12}>
+        <Card sx={{ margin: "0 auto" }}>
+          <Typography level="title-lg">
+            {t("models.schedule.singular")}
+          </Typography>
+          <CardContent>
+            <Grid container>
+              <Grid xs={4}>{t("models.schedule.attributes.id")}</Grid>
+              <Grid xs={8}>
+                <CopyToClipboard text={schedule.id} />
+              </Grid>
+              <Grid xs={4}>{t("models.event.singular")}</Grid>
+              <Grid xs={8}>
+                <Link href={`/my-firm/events/${schedule.event.id}`} primary>
+                  {schedule.event.title}
+                </Link>
+              </Grid>
+              <Grid xs={4}>{t("models.schedule.attributes.status")}</Grid>
+              <Grid xs={8}>{t(`statuses.${schedule.status}`)}</Grid>
+              <Grid xs={4}>{t("models.schedule.attributes.scheduledFor")}</Grid>
+              <Grid xs={8}>
+                {moment(schedule.scheduledFor).format(dateTimeFormat)}
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
+      </Grid>
+
       <Grid xs={12}>
         <Table
           data={actualBookings}

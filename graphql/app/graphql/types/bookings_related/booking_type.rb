@@ -40,7 +40,8 @@ module Types
         arguments = {
           query_type: ::RefundsQuery,
           per_page: 30,
-          booking_id: object.id
+          booking_id: object.id,
+          refund_id: nil
         }
         Connections::SearchkickConnection.new(arguments: arguments)
       end
