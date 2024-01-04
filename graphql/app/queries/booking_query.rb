@@ -38,6 +38,8 @@ class BookingQuery
     @conditions[:booked_for] = @params[:booked_for] if @params[:booked_for].present?
     @conditions[:event_id] = @params[:event_id] if @params[:event_id].present?
     @conditions[:schedule_id] = @params[:schedule_id] if @params[:schedule_id].present?
+    @conditions[:firm_id] = @params[:firm_id] if @params[:firm_id].present?
+    @conditions[:contact_email] = @params[:contact_email] if @params[:contact_email].present?
 
     Rails.logger.debug @conditions
 

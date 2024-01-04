@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import BookingsFirmTable from "../../../../components/shared/tables/BookingsFirmTable";
+import BookingsFirmTable from "components/shared/tables/BookingsFirmTable";
 
 interface EventsSceneProps {
   firmFragmentRef: any;

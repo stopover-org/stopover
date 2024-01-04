@@ -206,10 +206,13 @@ class Booking < ApplicationRecord
       organizer: firm&.title,
       tags: event.tags.map(&:title),
       interests: event.interests.map(&:title),
+      contact_email: account.primary_email,
+      contact_phone: account.primary_phone,
 
       trip_id: trip.id,
       event_id: event.id,
-      schedule_id: schedule.id
+      schedule_id: schedule.id,
+      firm_id: firm.id
     }
   end
 

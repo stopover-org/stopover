@@ -150,6 +150,8 @@ type Booking implements Node {
   bookedFor: DateTime!
   bookingOptions: [BookingOption!]!
   cancellationTerms: String!
+  contactEmail: String
+  contactPhone: String
   event: Event!
   eventOptions: [EventOption!]!
   id: ID!
@@ -284,6 +286,7 @@ type BookingOption implements Node {
 }
 
 input BookingsFilter {
+  contactEmail: String
   eventId: ID
   scheduleId: [ID!]
   scheduledFor: DateTime

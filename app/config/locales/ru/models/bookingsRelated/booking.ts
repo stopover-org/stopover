@@ -16,6 +16,8 @@ export default {
         possibleRefundAmount: "Возможный возврат",
         possiblePenaltyAmount: "Возможный штраф",
         cancellationTerms: "Условия возврата",
+        contactEmail: "Email для связи",
+        contactPhone: "Телефон для связи",
       },
       reasons: {
         inactive: "Бронь не активна",

@@ -23,6 +23,8 @@ module Types
       field :payments,                  Types::PaymentsRelated::PaymentType.connection_type, null: false, require_manager: true
       field :refunds,                   Types::PaymentsRelated::RefundType.connection_type, null: false, require_manager: true
       field :cancellation_terms,        String, null: false
+      field :contact_email,             String
+      field :contact_phone,             String
 
       field :attendees, [Types::BookingsRelated::AttendeeType], null: false do
         argument :filters, Types::Filters::AttendeesFilter, required: false
@@ -64,6 +66,14 @@ module Types
 
       def possible_penalty_amount
         Stopover::RefundManagement::RefundCreator.new(object, current_user).calculate_penalty
+      end
+
+      def contact_email
+        object.account.primary_email
+      end
+
+      def contact_phone
+        object.account.primary_phone
       end
     end
   end

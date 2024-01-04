@@ -12,7 +12,7 @@ import SidebarContent from "components/shared/SidebarContent/SidebarContent";
 import BookingsScene from "scenes/firms/bookings/BookingsScene/BookingsScene";
 
 const Query = graphql`
-  query scene_FirmBookings_Query {
+  query scene_FirmBookings_Query($bookingsFilter: BookingsFilter) {
     currentUser {
       ...Layout_CurrentUserFragment
       account {
@@ -39,10 +39,7 @@ const Scene = ({
   return (
     <SceneWrapper>
       <Layout currentUserFragment={data.currentUser}>
-        <AuthGuard
-          accessible={Boolean(data.currentUser.account.firm?.id)}
-          redirectTo="/firms/new"
-        >
+        <AuthGuard accessible={Boolean(data.currentUser.account.firm?.id)}>
           <SidebarContent accountFragmentRef={data.currentUser.account}>
             <BookingsScene firmFragmentRef={data.currentUser.account.firm!} />
           </SidebarContent>

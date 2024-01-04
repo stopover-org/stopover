@@ -181,7 +181,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           </Stack>
         </Grid>
 
-        <Grid xs={4}>
+        <Grid xs={12}>
           <Typography level="body-lg">
             {t("models.booking.attributes.organizerTotalPrice")}:{" "}
             {getCurrencyFormat(
@@ -196,34 +196,6 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
               booking.attendeeTotalPrice.currency.name
             )}
           </Typography>
-        </Grid>
-
-        <Grid xs={4}>
-          <Typography level="body-lg">
-            {t("models.booking.attributes.alreadyPaidPrice")}:{" "}
-            {getCurrencyFormat(
-              booking.alreadyPaidPrice.cents,
-              booking.alreadyPaidPrice.currency.name
-            )}
-          </Typography>
-          {booking.paymentType === "stripe" && (
-            <Typography level="body-lg">
-              {t("models.booking.attributes.leftToPayPrice")}:{" "}
-              {getCurrencyFormat(
-                booking.leftToPayPrice.cents,
-                booking.leftToPayPrice.currency.name
-              )}
-            </Typography>
-          )}
-          {booking.paymentType === "cash" && (
-            <Typography level="body-lg">
-              {t("models.booking.attributes.leftToPayDeposit")}:{" "}
-              {getCurrencyFormat(
-                booking.leftToPayDepositPrice.cents,
-                booking.leftToPayDepositPrice.currency.name
-              )}
-            </Typography>
-          )}
         </Grid>
 
         <BookingInformation bookingFragmentRef={booking} />

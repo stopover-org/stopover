@@ -24,7 +24,7 @@ class Notification < ApplicationRecord
   }, _prefix: true
 
   def trigger
-    service.deliver(from: from, to: to, content: content, subject: subject, type: 'text/html')
+    service.deliver(from: from, to: to, content: content, subject: subject, type: 'text/html') unless $skip_delivery
     sent_at = Time.zone.now
 
     update!(sent_at: sent_at)
