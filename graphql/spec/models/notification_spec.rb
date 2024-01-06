@@ -17,5 +17,19 @@
 require 'rails_helper'
 
 RSpec.describe Notification, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'model setup' do
+    it 'enum' do
+      should define_enum_for(:delivery_method).with_values(email: 'email',
+                                                           sms: 'sms')
+                                              .backed_by_column_of_type(:string)
+                                              .with_prefix(true)
+    end
+    context 'validations' do
+      it 'check' do
+        should validate_presence_of(:from)
+        should validate_presence_of(:to)
+        should validate_presence_of(:delivery_method)
+      end
+    end
+  end
 end

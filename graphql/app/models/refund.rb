@@ -34,7 +34,7 @@ class Refund < ApplicationRecord
 
   # MODULES ===============================================================
   include Mixins::PaymentStatuses
-  searchkick
+  include Mixins::Indices
 
   # MONETIZE ==============================================================
   monetize :refund_amount_cents
@@ -71,6 +71,8 @@ class Refund < ApplicationRecord
   # RICH_TEXT =============================================================
 
   # VALIDATIONS ===========================================================
+  validates :refund_amount_cents, presence: true
+  validates :penalty_amount_cents, presence: true
 
   # CALLBACKS =============================================================
   before_validation :adjust_references
