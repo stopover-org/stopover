@@ -62,13 +62,11 @@ const Filters = ({ availableFilters, defaultFilters = [] }: FiltersProps) => {
     const filters = Array.from(query.entries());
 
     filters.forEach((filter: string[]) => {
-      if (filter[0] === "selectedFilters") {
+      if (!Object.keys(availableFilters).includes(filter[0])) {
         return;
       }
 
       if (!selectedFilters.includes(filter[0])) {
-        console.log(selectedFilters, filter);
-
         removeQueryKey(filter[0]);
       }
     });

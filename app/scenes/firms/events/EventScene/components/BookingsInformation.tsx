@@ -28,6 +28,7 @@ const BookingsInformation = ({
       <Grid xs={12} container>
         <Grid xs={12}>
           <Typography level="h4">All Bookings</Typography>
+
           <BookingsEventTable eventFragmentRef={event} withPagination />
         </Grid>
       </Grid>

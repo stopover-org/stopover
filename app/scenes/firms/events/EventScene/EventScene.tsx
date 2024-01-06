@@ -31,6 +31,7 @@ import UnpublishEvent from "components/shared/UnpublishEvent";
 import RemoveEvent from "components/shared/RemoveEvent";
 import RescheduleEvent from "components/shared/RescheduleEvent";
 import SyncStripe from "components/shared/SyncStripe";
+import { parseValue, useQuery, useUpdateQuery } from "lib/hooks/useQuery";
 import BookingsInformation from "./components/BookingsInformation";
 import SchedulesInformation from "./components/SchedulesInformation";
 import EventOptionsInformation from "./components/EventOptionsInformation";
@@ -101,7 +102,8 @@ const EventScene = ({
     `,
     currentUserFragmentRef
   );
-  const [tab, setTab] = React.useState(0);
+  const tab = useQuery("tab", 0, (value) => parseInt(parseValue(value), 10));
+  const setTab = useUpdateQuery("tab");
   const tagColor = useStatusColor({
     primary: ["published"],
     danger: ["removed"],
@@ -265,7 +267,7 @@ const EventScene = ({
         <Tabs
           size="sm"
           aria-label="Event Tabs"
-          defaultValue={0}
+          defaultValue={tab}
           sx={{ width: "100%", paddingTop: "10px" }}
           onChange={(_, value) => setTab(value as number)}
           orientation="vertical"

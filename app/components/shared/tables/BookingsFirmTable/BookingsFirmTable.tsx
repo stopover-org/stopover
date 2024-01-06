@@ -80,7 +80,7 @@ const BookingsFirmTable = ({
         },
       }
     );
-  }, [contactEmail, setCurrentPage]);
+  }, [contactEmail, contactPhone, eventIds, date, setCurrentPage]);
 
   const bookings = useBookingsColumns(data.bookings);
   const headers = useBookingsHeaders();
