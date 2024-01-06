@@ -28,6 +28,7 @@ class PaymentsQuery
 
   def conditions
     @conditions[:firm_id] = @params[:firm_id] if @params[:firm_id].present?
+    @conditions[:booking_id] = @params[:booking_id] if @params[:booking_id].present?
 
     @conditions
   end

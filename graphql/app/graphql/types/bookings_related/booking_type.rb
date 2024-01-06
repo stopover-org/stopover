@@ -33,7 +33,8 @@ module Types
       def payments(**_args)
         arguments = {
           query_type: ::PaymentsQuery,
-          per_page: 30
+          per_page: 30,
+          booking_id: object.id
         }
         Connections::SearchkickConnection.new(arguments: arguments)
       end
