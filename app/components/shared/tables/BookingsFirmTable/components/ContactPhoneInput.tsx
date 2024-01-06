@@ -2,16 +2,16 @@ import { useTranslation } from "react-i18next";
 import React from "react";
 import QueryInput from "../../../QueryInput/QueryInput";
 
-const ContactEmailInput = () => {
+const ContactPhoneInput = () => {
   const { t } = useTranslation();
 
   return (
     <QueryInput
       size="sm"
-      queryName="contactEmail"
-      label={t("models.booking.attributes.contactEmail")}
+      queryName="contactPhone"
+      label={t("models.booking.attributes.contactPhone")}
     />
   );
 };
 
-export default React.memo(ContactEmailInput);
+export default React.memo(ContactPhoneInput);

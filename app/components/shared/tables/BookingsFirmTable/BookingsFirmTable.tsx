@@ -1,12 +1,15 @@
 import { Disposable, graphql, usePaginationFragment } from "react-relay";
 import React from "react";
-import { Stack } from "@mui/joy";
 import Table from "components/v2/Table/Table";
 import { BookingsFirmTable_BookingsFirmPaginationFragment$key } from "artifacts/BookingsFirmTable_BookingsFirmPaginationFragment.graphql";
 import { BookingsFirmTableFirmPaginationQuery } from "artifacts/BookingsFirmTableFirmPaginationQuery.graphql";
-import { useQuery } from "lib/hooks/useQuery";
+import { parseValue, useQuery } from "lib/hooks/useQuery";
+import Filters from "components/shared/Filters";
+import { useTranslation } from "react-i18next";
 import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
 import ContactEmailInput from "./components/ContactEmailInput";
+import ContactPhoneInput from "./components/ContactPhoneInput";
+import EventsAutocomplete from "./components/EventsAutocomplete";
 
 interface BookingFirmTableProps {
   firmFragmentRef: BookingsFirmTable_BookingsFirmPaginationFragment$key;
@@ -17,6 +20,7 @@ const BookingsFirmTable = ({
   firmFragmentRef,
   withPagination,
 }: BookingFirmTableProps) => {
+  const { t } = useTranslation();
   const { data, hasPrevious, hasNext, loadPrevious, loadNext, refetch } =
     usePaginationFragment<
       BookingsFirmTableFirmPaginationQuery,
@@ -46,6 +50,10 @@ const BookingsFirmTable = ({
   const [currentPage, setCurrentPage] = React.useState(1);
   const queryRef = React.useRef<Disposable>();
   const contactEmail = useQuery("contactEmail", "");
+  const contactPhone = useQuery("contactPhone", "");
+  const events = useQuery("events", [], (value) =>
+    Array.from(parseValue(value))
+  );
 
   React.useEffect(() => {
     if (queryRef.current) {
@@ -56,6 +64,8 @@ const BookingsFirmTable = ({
       {
         bookingsFilter: {
           contactEmail,
+          contactPhone,
+          events,
         },
         cursor: "0",
       },
@@ -71,12 +81,21 @@ const BookingsFirmTable = ({
 
   const bookings = useBookingsColumns(data.bookings);
   const headers = useBookingsHeaders();
+  const filters = React.useMemo(
+    () => ({
+      contactEmail: <ContactEmailInput />,
+      contactPhone: <ContactPhoneInput />,
+      events: <EventsAutocomplete label={t("filters.bookings.events")} />,
+      date: <ContactPhoneInput />,
+      status: <ContactPhoneInput />,
+      attendeesCount: <ContactPhoneInput />,
+    }),
+    []
+  );
 
   return (
     <>
-      <Stack direction="row">
-        <ContactEmailInput />
-      </Stack>
+      <Filters availableFilters={filters} defaultFilters={["events"]} />
       <Table
         data={bookings}
         headers={headers}

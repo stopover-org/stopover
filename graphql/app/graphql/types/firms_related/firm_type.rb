@@ -24,34 +24,71 @@ module Types
       field :payment_types,   [String], null: false
       field :contract_address, String
 
-      field :balance,   Types::FirmsRelated::BalanceType, require_manager: true
-      field :payments,  Types::PaymentsRelated::PaymentType.connection_type, null: false, require_manager: true
+      field :balance, Types::FirmsRelated::BalanceType, require_manager: true
+
+      field :payments,
+            Types::PaymentsRelated::PaymentType.connection_type,
+            null: false,
+            require_manager: true
+
       field :payment, Types::PaymentsRelated::PaymentType, null: false, require_manager: true do
         argument :id, ID, required: true, loads: Types::PaymentsRelated::PaymentType
       end
+
       field :bookings, Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true do
         argument :filters, Types::Filters::BookingsFilter, required: false
       end
+
       field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false, require_manager: true do
         argument :filters, Types::Filters::SchedulesFilter, required: false
       end
+
       field :schedule, Types::EventsRelated::ScheduleType, null: false, require_manager: true do
         argument :id, ID, required: true, loads: Types::EventsRelated::ScheduleType
       end
+
       field :events, Types::EventsRelated::EventType.connection_type, null: false do
         argument :filters, Types::Filters::EventsFilter, required: false
         argument :backend, Boolean, required: false
       end
 
-      field :stripe_connects, [Types::FirmsRelated::StripeConnectType], null: false, require_manager: true
-      field :margin,          Integer, null: false, require_service_user: true
+      field :stripe_connects,
+            [Types::FirmsRelated::StripeConnectType],
+            null: false,
+            require_manager: true
 
-      field :accounts,  [Types::UsersRelated::AccountType], require_manager: true
-      field :event,     Types::EventsRelated::EventType, require_manager: true do
+      field :margin,
+            Integer,
+            null: false,
+            require_service_user: true
+
+      field :accounts,
+            [Types::UsersRelated::AccountType],
+            require_manager: true
+
+      field :event, Types::EventsRelated::EventType, require_manager: true do
         argument :id, ID, required: true, loads: Types::EventsRelated::EventType
       end
+
+      field :events_autocomplete, Types::EventsRelated::EventsAutocompleteType, null: false do
+        argument :query, String, required: true
+        argument :ids, [ID], loads: Types::EventsRelated::EventType, required: false
+      end
+
       field :booking, Types::BookingsRelated::BookingType, require_manager: true do
         argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
+      end
+
+      def events_autocomplete(**args)
+        if args[:query].blank?
+          return { bookings: [],
+                   events: args[:ids],
+                   interests: [] }
+        end
+
+        { bookings: Booking.search(args[:query], where: { firm_id: object.id }, limit: 5).to_a,
+          events: (Event.search(args[:query], where: { firm_id: object.id }, limit: 5).to_a + args[:ids]).uniq,
+          interests: Interest.search(args[:query], limit: 5).to_a }
       end
 
       def payments(**_args)

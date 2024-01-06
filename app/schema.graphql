@@ -287,6 +287,7 @@ type BookingOption implements Node {
 
 input BookingsFilter {
   contactEmail: String
+  contactPhone: String
   eventId: ID
   scheduleId: [ID!]
   scheduledFor: DateTime
@@ -916,6 +917,7 @@ type Firm implements Node {
     """
     last: Int
   ): EventConnection!
+  eventsAutocomplete(ids: [ID!], query: String!): EventsAutocomplete!
   fullAddress: String
   houseNumber: String
   id: ID!
@@ -1374,7 +1376,7 @@ type Query {
     """
     last: Int
   ): EventConnection!
-  eventsAutocomplete(query: String!): EventsAutocomplete!
+  eventsAutocomplete(ids: [ID!], query: String!): EventsAutocomplete!
   firm(id: ID!): Firm!
   interests(filters: InterestsFilter): [Interest!]!
 

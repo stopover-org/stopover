@@ -46,6 +46,7 @@ module Types
 
     field :events_autocomplete, Types::EventsRelated::EventsAutocompleteType, null: false do
       argument :query, String, required: true
+      argument :ids, [ID], loads: Types::EventsRelated::EventType, required: false
     end
 
     field :payment, Types::PaymentsRelated::PaymentType, null: false do
@@ -58,18 +59,6 @@ module Types
 
     def firm(id:)
       id
-    end
-
-    def events_autocomplete(**args)
-      if args[:query].blank?
-        return { bookings: [],
-                 events: [],
-                 interests: [] }
-      end
-
-      { bookings: Booking.search(args[:query], limit: 5).to_a,
-        events: Event.search(args[:query], limit: 5).to_a,
-        interests: Interest.search(args[:query], limit: 5).to_a }
     end
 
     def bookings(**args)

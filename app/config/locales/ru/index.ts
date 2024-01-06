@@ -2,6 +2,7 @@ import { merge } from "lodash";
 import translations from "./models";
 import scenesTranslations from "./scenes";
 import formsTranslations from "./forms";
+import filtersTranslations from "./filters";
 
 const translation = {
   general: {
@@ -117,5 +118,6 @@ export default merge(
   translations,
   formsTranslations,
   scenesTranslations,
+  filtersTranslations,
   translation
 );
