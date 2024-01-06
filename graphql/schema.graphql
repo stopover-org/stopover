@@ -1625,6 +1625,7 @@ type Schedule implements Node {
   id: ID!
   leftPlaces: Int
   scheduledFor: DateTime!
+  statistics: [Statistics!]!
   status: String!
 }
 

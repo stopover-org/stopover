@@ -56,7 +56,7 @@ export default {
       },
       statistics: {
         bookings: "Qty bookings",
-        paid: "Qty paid",
+        paid: "Qty paid bookings",
       },
     },
   },

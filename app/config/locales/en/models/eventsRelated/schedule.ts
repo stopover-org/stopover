@@ -9,6 +9,10 @@ export default {
         status: "Status",
         leftPlaces: "Left {{places}} places for booking",
       },
+      statistics: {
+        bookings: "Qty bookings",
+        paid: "Qty paid bookings",
+      },
     },
   },
 };
