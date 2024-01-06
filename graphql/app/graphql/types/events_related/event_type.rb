@@ -52,6 +52,14 @@ module Types
       field :unit,      Types::EventsRelated::UnitType
       field :end_date,  Types::DateTimeType
       field :stripe_integrations, Types::EventsRelated::StripeIntegrationType.connection_type, null: false, require_service_user: true
+      field :statistics, [Types::StatisticsType], null: false
+
+      def statistics
+        [{ name: :bookings,
+           value: object.bookings.count },
+         { name: :paid,
+           value: object.bookings.where(bookings: { status: :paid }).count }]
+      end
 
       def title
         if current_firm == object.firm

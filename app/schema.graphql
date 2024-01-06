@@ -726,6 +726,7 @@ type Event implements Node {
     last: Int
   ): ScheduleConnection!
   singleDaysWithTime: [DateTime!]!
+  statistics: [Statistics!]!
   status: String!
   street: String
   stripeIntegrations(
@@ -1759,6 +1760,11 @@ type SignOutPayload {
   errors: [String!]
   notification: String
   signedOut: Boolean
+}
+
+type Statistics {
+  name: String!
+  value: Float!
 }
 
 type StripeConnect implements Node {
