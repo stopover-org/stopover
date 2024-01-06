@@ -10,8 +10,9 @@ import {
   useSchedulesHeaders,
 } from "components/shared/tables/columns/schedules";
 import { SchedulesSectionEventFragment } from "artifacts/SchedulesSectionEventFragment.graphql";
-import { Moment } from "moment";
-import DateRangePicker from "../../../../../components/v2/DateRangePicker/DateRangePicker";
+import DateQueryInput from "../../../../../components/shared/DateQueryInput/DateQueryInput";
+import { parseValue, useQuery } from "../../../../../lib/hooks/useQuery";
+import Filters from "../../../../../components/shared/Filters/Filters";
 
 interface SchedulesInformationProps {
   eventFragmentRef: SchedulesInformation_EventFragment$key;
@@ -53,13 +54,13 @@ const SchedulesInformation = ({
       eventFragmentRef
     );
   const [currentPage, setCurrentPage] = React.useState(1);
+  const date = useQuery("scheduledFor", null);
+  const eventIds = useQuery("eventIds", [], (value) =>
+    Array.from(parseValue(value))
+  );
   const schedulesData = useSchedulesColumns(data.pagedSchedules);
   const schedulesHeaders = useSchedulesHeaders();
   const { t } = useTranslation();
-  const [range, setRange] = React.useState<[Moment | null, Moment | null]>([
-    null,
-    null,
-  ]);
   const queryRef = React.useRef<Disposable>();
 
   React.useEffect(() => {
@@ -70,8 +71,8 @@ const SchedulesInformation = ({
     queryRef.current = refetch(
       {
         filters: {
-          startDate: range[0]?.toISOString(),
-          endDate: range[1]?.toISOString(),
+          scheduledFor: date,
+          eventIds,
         },
         cursor: "0",
       },
@@ -83,7 +84,19 @@ const SchedulesInformation = ({
         },
       }
     );
-  }, [range, setCurrentPage]);
+  }, [eventIds, date, setCurrentPage]);
+
+  const filters = React.useMemo(
+    () => ({
+      scheduledFor: (
+        <DateQueryInput
+          queryKey="scheduledFor"
+          label={t("filters.schedules.scheduledFor")}
+        />
+      ),
+    }),
+    []
+  );
 
   return (
     <TabPanel value={index} size="sm" sx={{ paddingTop: "20px" }}>
@@ -92,29 +105,11 @@ const SchedulesInformation = ({
           <Typography level="h4">
             {t("general.all")} {t("models.schedule.plural")}
           </Typography>
-          <Grid md={6} sm={12} container>
-            <DateRangePicker
-              value={range}
-              onChange={(dates) => setRange(dates)}
-              clearStyles={{ paddingTop: "30px" }}
-              startInputProps={{
-                label: t(
-                  "scenes.attendees.events.eventsScene.sidebar.startDate"
-                ),
-                placeholder: t(
-                  "scenes.attendees.events.eventsScene.sidebar.startDatePlaceholder"
-                ),
-                size: "sm",
-              }}
-              endInputProps={{
-                label: t("scenes.attendees.events.eventsScene.sidebar.endDate"),
-                placeholder: t(
-                  "scenes.attendees.events.eventsScene.sidebar.endDatePlaceholder"
-                ),
-                size: "sm",
-              }}
-            />
-          </Grid>
+          <Filters
+            availableFilters={filters}
+            defaultFilters={["scheduledFor"]}
+            scope="schedules"
+          />
           <Table
             data={schedulesData}
             headers={schedulesHeaders}
