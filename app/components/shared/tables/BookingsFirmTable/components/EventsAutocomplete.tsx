@@ -14,18 +14,15 @@ import Checkbox from "components/v2/Checkbox";
 import { useTranslation } from "react-i18next";
 
 interface EventsAutocompleteProps {
-  key?: string;
+  queryKey: string;
   label: string;
 }
 
-const EventsAutocomplete = ({
-  key = "eventIds",
-  label,
-}: EventsAutocompleteProps) => {
-  const eventIds: string[] = useQuery(key, [], (value) =>
+const EventsAutocomplete = ({ queryKey, label }: EventsAutocompleteProps) => {
+  const eventIds: string[] = useQuery(queryKey, [], (value) =>
     Array.from(parseValue(value))
   );
-  const updateEvents = useUpdateQuery(key);
+  const updateEvents = useUpdateQuery(queryKey);
   const [query, setQuery] = React.useState("");
   const queryRef = useLazyLoadQuery<EventsAutocomplete_AutocompleteQuery>(
     graphql`
@@ -128,4 +125,4 @@ const EventsAutocomplete = ({
   );
 };
 
-export default React.memo(EventsAutocomplete);
+export default EventsAutocomplete;

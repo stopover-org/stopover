@@ -3,7 +3,7 @@ export default {
     bookings: {
       contactEmail: "Контактный email",
       contactPhone: "Контактный телефон",
-      eventIds: "Мероприятие",
+      eventIds: "Мероприятия",
       bookedFor: "Дата бронирования",
       status: "Статус",
       attendeesCount: "Количество участников",
@@ -13,7 +13,7 @@ export default {
     bookings: {
       contactEmail: "Введите контактный Email",
       contactPhone: "Введите контактный Телефон",
-      eventIds: "Выберите мероприятие",
+      eventIds: "Выберите мероприятия",
       bookedFor: "Введите дату бронирования",
     },
   },

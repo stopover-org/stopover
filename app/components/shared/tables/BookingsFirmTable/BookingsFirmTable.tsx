@@ -92,13 +92,13 @@ const BookingsFirmTable = ({
       contactPhone: <ContactPhoneInput />,
       eventIds: (
         <EventsAutocomplete
-          key="eventIds"
+          queryKey="eventIds"
           label={t("filters.bookings.eventIds")}
         />
       ),
       bookedFor: (
         <DateQueryInput
-          key="bookedFor"
+          queryKey="bookedFor"
           label={t("filters.bookings.bookedFor")}
         />
       ),
@@ -109,7 +109,11 @@ const BookingsFirmTable = ({
   return (
     <>
       {withFilters && (
-        <Filters availableFilters={filters} defaultFilters={["eventIds"]} />
+        <Filters
+          availableFilters={filters}
+          defaultFilters={["eventIds"]}
+          scope="bookings"
+        />
       )}
       <Table
         data={bookings}

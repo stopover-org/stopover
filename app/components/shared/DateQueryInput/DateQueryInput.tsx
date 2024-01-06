@@ -5,12 +5,12 @@ import DatePicker from "components/v2/DatePicker";
 import React from "react";
 
 interface DateQueryInputProps {
-  key?: string;
+  queryKey: string;
   label: string;
 }
 
-const DateQueryInput = ({ key = "bookedFor", label }: DateQueryInputProps) => {
-  const date = useQuery(key, null, (dateStr) => {
+const DateQueryInput = ({ queryKey, label }: DateQueryInputProps) => {
+  const date = useQuery(queryKey, null, (dateStr) => {
     const parsedDt = moment(parseValue(dateStr));
     if (parsedDt.isValid()) {
       return parsedDt;
@@ -18,7 +18,7 @@ const DateQueryInput = ({ key = "bookedFor", label }: DateQueryInputProps) => {
     return null;
   });
 
-  const updateDate = useUpdateQuery(key, (dt: Moment) =>
+  const updateDate = useUpdateQuery(queryKey, (dt: Moment) =>
     JSON.stringify(dt.format("YYYY-MM-DD"))
   );
 

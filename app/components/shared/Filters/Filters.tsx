@@ -21,9 +21,14 @@ import { useSearchParams } from "next/navigation";
 interface FiltersProps {
   availableFilters: Record<string, React.ReactNode>;
   defaultFilters: string[];
+  scope: string;
 }
 
-const Filters = ({ availableFilters, defaultFilters = [] }: FiltersProps) => {
+const Filters = ({
+  availableFilters,
+  defaultFilters = [],
+  scope,
+}: FiltersProps) => {
   const { t } = useTranslation();
   const searchParams = useSearchParams();
   const selectedFilters: string[] = useQuery(
@@ -37,7 +42,7 @@ const Filters = ({ availableFilters, defaultFilters = [] }: FiltersProps) => {
     () =>
       Object.keys(availableFilters)
         .filter((key) => !selectedFilters.includes(key))
-        .map((key) => [key, t(`filters.bookings.${key}`)]),
+        .map((key) => [key, t(`filters.${scope}.${key}`)]),
     [availableFilters, selectedFilters]
   );
 

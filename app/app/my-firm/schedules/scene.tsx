@@ -12,7 +12,7 @@ import SidebarContent from "components/shared/SidebarContent/SidebarContent";
 import SchedulesScene from "scenes/firms/schedules/SchedulesScene/SchedulesScene";
 
 const Query = graphql`
-  query scene_FirmSchedules_Query {
+  query scene_FirmSchedules_Query($filters: SchedulesFilter) {
     currentUser {
       ...Layout_CurrentUserFragment
       account {

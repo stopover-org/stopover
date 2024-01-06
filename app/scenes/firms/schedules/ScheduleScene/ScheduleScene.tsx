@@ -129,13 +129,13 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
       contactPhone: <ContactPhoneInput />,
       eventIds: (
         <EventsAutocomplete
-          key="eventIds"
+          queryKey="eventIds"
           label={t("filters.bookings.eventIds")}
         />
       ),
       bookedFor: (
         <DateQueryInput
-          key="bookedFor"
+          queryKey="bookedFor"
           label={t("filters.bookings.bookedFor")}
         />
       ),
@@ -191,7 +191,11 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
       </Grid>
 
       <Grid xs={12}>
-        <Filters availableFilters={filters} defaultFilters={["eventIds"]} />
+        <Filters
+          availableFilters={filters}
+          defaultFilters={["eventIds"]}
+          scope="bookings"
+        />
         <Table
           data={actualBookings}
           headers={headers}

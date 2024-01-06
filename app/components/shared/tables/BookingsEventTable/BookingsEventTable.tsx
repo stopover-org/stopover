@@ -92,7 +92,7 @@ const BookingsEventTable = ({
       contactPhone: <ContactPhoneInput />,
       bookedFor: (
         <DateQueryInput
-          key="bookedFor"
+          queryKey="bookedFor"
           label={t("filters.bookings.bookedFor")}
         />
       ),
@@ -102,7 +102,11 @@ const BookingsEventTable = ({
 
   return (
     <>
-      <Filters availableFilters={filters} defaultFilters={["bookedFor"]} />
+      <Filters
+        availableFilters={filters}
+        defaultFilters={["bookedFor"]}
+        scope="bookings"
+      />
       <Table
         data={actualBookings}
         headers={headers}

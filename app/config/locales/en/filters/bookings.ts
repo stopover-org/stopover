@@ -13,7 +13,7 @@ export default {
     bookings: {
       contactEmail: "Enter contact Email",
       contactPhone: "Enter contact Phone",
-      eventIds: "Select Event",
+      eventIds: "Select Events",
       bookedFor: "Select Booking Date",
     },
   },
