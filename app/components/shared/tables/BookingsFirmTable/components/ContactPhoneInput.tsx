@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import React from "react";
-import QueryInput from "../../../QueryInput/QueryInput";
+import QueryInput from "components/shared/QueryInput";
 
 const ContactPhoneInput = () => {
   const { t } = useTranslation();

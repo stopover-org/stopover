@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_FirmPayment_Query } from "artifacts/scene_FirmPayment_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent/SidebarContent";
-import PaymentScene from "../../../../scenes/firms/payments/PaymentScene";
+import PaymentScene from "scenes/firms/payments/PaymentScene";
 
 const Query = graphql`
   query scene_FirmPayment_Query($id: ID!) {

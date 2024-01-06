@@ -8,7 +8,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
 import { BookingInformation_BookingFragment$key } from "artifacts/BookingInformation_BookingFragment.graphql";
-import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
 
 interface BookingInformationProps {
   bookingFragmentRef: BookingInformation_BookingFragment$key;

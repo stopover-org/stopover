@@ -2,13 +2,13 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { Box, List, ListItem, ListItemContent, Stack } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { Checkout_BookingFragment$key } from "../../../artifacts/Checkout_BookingFragment.graphql";
-import Typography from "../../v2/Typography";
-import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
-import useStatusColor from "../../../lib/hooks/useStatusColor";
-import Tag from "../../v2/Tag/Tag";
-import useSubscription from "../../../lib/hooks/useSubscription";
-import useEdges from "../../../lib/hooks/useEdges";
+import Typography from "components/v2/Typography";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import useStatusColor from "lib/hooks/useStatusColor";
+import Tag from "components/v2/Tag";
+import useSubscription from "lib/hooks/useSubscription";
+import useEdges from "lib/hooks/useEdges";
+import { Checkout_BookingFragment$key } from "artifacts/Checkout_BookingFragment.graphql";
 
 interface CheckoutProps {
   bookingFragmentRef: Checkout_BookingFragment$key;

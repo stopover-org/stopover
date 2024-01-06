@@ -4,12 +4,12 @@ import Table from "components/v2/Table/Table";
 import { BookingsEventTableBookingsPaginationQuery } from "artifacts/BookingsEventTableBookingsPaginationQuery.graphql";
 import { BookingsEventTable_BookingsPaginationFragment$key } from "artifacts/BookingsEventTable_BookingsPaginationFragment.graphql";
 import { useTranslation } from "react-i18next";
+import { parseValue, useQuery } from "lib/hooks/useQuery";
 import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
-import Filters from "../../Filters/Filters";
+import Filters from "../../Filters";
 import ContactEmailInput from "../BookingsFirmTable/components/ContactEmailInput";
 import ContactPhoneInput from "../BookingsFirmTable/components/ContactPhoneInput";
 import DateQueryInput from "../../DateQueryInput/DateQueryInput";
-import { parseValue, useQuery } from "../../../../lib/hooks/useQuery";
 
 interface BookingsEventTableProps {
   eventFragmentRef: BookingsEventTable_BookingsPaginationFragment$key;

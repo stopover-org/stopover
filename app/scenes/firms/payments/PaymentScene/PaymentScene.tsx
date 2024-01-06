@@ -15,7 +15,7 @@ import {
   useRefundsHeaders,
 } from "components/shared/tables/columns/refunds";
 import Table from "components/v2/Table/Table";
-import CopyToClipboard from "../../../../components/shared/CopyToClipboard";
+import CopyToClipboard from "components/shared/CopyToClipboard";
 
 interface PaymentSceneProp {
   paymentFragmentRef: PaymentScene_PaymentFragment$key;
