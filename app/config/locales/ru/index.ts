@@ -37,6 +37,7 @@ const translation = {
     502: "Что то пошло не так",
     "502Details": "Мы уже исправляем",
     copied: "Скопировано",
+    statistics: "Статистика",
   },
   weekdays: {
     monday: "Понедельник",

@@ -97,7 +97,7 @@ const GeneralInformation = ({
       <Sheet>
         <Grid lg={6} md={8} sm={12} xs={12}>
           <Card>
-            <Typography level="h4">Statistics</Typography>
+            <Typography level="h4">{t("general.statistics")}</Typography>
             <CardContent>
               <Stack direction="row" useFlexGap spacing={2}>
                 {event.statistics.map((stat) => (

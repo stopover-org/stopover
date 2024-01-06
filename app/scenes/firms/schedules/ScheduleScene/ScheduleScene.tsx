@@ -167,7 +167,7 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
       </Grid>
       <Grid lg={8} md={8} sm={12} xs={12}>
         <Card sx={{ margin: "0 auto" }}>
-          <Typography level="h4">Statistics</Typography>
+          <Typography level="h4">{t("general.statistics")}</Typography>
           <CardContent>
             <Stack direction="row" useFlexGap spacing={2}>
               {schedule.statistics.map((stat) => (
