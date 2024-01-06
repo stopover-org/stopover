@@ -27,9 +27,10 @@ class SchedulesQuery
   end
 
   def conditions
-    @conditions[:scheduled_for] = { gte: @params[:start_date], lte: @params[:end_date] } if @params[:start_date].present? && @params[:end_date].present?
+    @conditions[:scheduled_for] = { gte: @params[:scheduled_for].at_beginning_of_day, lte: @params[:scheduled_for].at_end_of_day } if @params[:scheduled_for].present?
     @conditions[:firm_id] = @params[:firm_id] if @params[:firm_id].present?
-    @conditions[:event_ids] = @params[:event_ids] if @params[:event_ids].present?
+    @conditions[:event_id] = @params[:event_ids] if @params[:event_ids].present?
+    @conditions[:event_id] = @params[:event_id] if @params[:event_id].present?
 
     @conditions
   end

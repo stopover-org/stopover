@@ -18,8 +18,11 @@ firms_data.each do |firm_data|
   firm.assign_attributes(**firm_data.except(:country), country: country)
   firm.account_firms.build(account: associated_user.account)
   firm.save!
+  associated_user.account.update(firm: firm)
   find_and_attach(firm.ref_number)
   firm.activate!
 end
+
+User.find_by_email('mikhail@dorokhovich.ru').account.update(firms: Firm.all, firm: Firm.first)
 
 ActiveRecord::Base.connection_pool.flush!

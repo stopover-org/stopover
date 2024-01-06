@@ -2,7 +2,6 @@ import { Grid } from "@mui/joy";
 import React from "react";
 import { Disposable, graphql, usePaginationFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import { Moment } from "moment";
 import Typography from "components/v2/Typography/Typography";
 import Table from "components/v2/Table/Table";
 import { SchedulesScene_FirmFragment$key } from "artifacts/SchedulesScene_FirmFragment.graphql";
@@ -11,7 +10,10 @@ import {
   useSchedulesHeaders,
 } from "components/shared/tables/columns/schedules";
 import { SchedulesSceneFirmFragment } from "artifacts/SchedulesSceneFirmFragment.graphql";
-import DateRangePicker from "components/v2/DateRangePicker/DateRangePicker";
+import EventsAutocomplete from "components/shared/tables/BookingsFirmTable/components/EventsAutocomplete";
+import DateQueryInput from "components/shared/DateQueryInput/DateQueryInput";
+import Filters from "components/shared/Filters/Filters";
+import { parseValue, useQuery } from "lib/hooks/useQuery";
 
 interface SchedulesSceneProps {
   firmFragmentRef: SchedulesScene_FirmFragment$key;
@@ -28,7 +30,6 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 30 }
           cursor: { type: "String", defaultValue: "" }
-          filters: { type: "SchedulesFilter", defaultValue: {} }
         )
         @refetchable(queryName: "SchedulesSceneFirmFragment") {
           pagedSchedules: schedules(
@@ -49,13 +50,13 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
       firmFragmentRef
     );
   const [currentPage, setCurrentPage] = React.useState(1);
+  const date = useQuery("scheduledFor", null);
+  const eventIds = useQuery("eventIds", [], (value) =>
+    Array.from(parseValue(value))
+  );
   const schedulesData = useSchedulesColumns(data.pagedSchedules);
   const schedulesHeaders = useSchedulesHeaders();
   const { t } = useTranslation();
-  const [range, setRange] = React.useState<[Moment | null, Moment | null]>([
-    null,
-    null,
-  ]);
   const queryRef = React.useRef<Disposable>();
 
   React.useEffect(() => {
@@ -66,8 +67,8 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
     queryRef.current = refetch(
       {
         filters: {
-          startDate: range[0]?.toISOString(),
-          endDate: range[1]?.toISOString(),
+          scheduledFor: date,
+          eventIds,
         },
         cursor: "0",
       },
@@ -79,33 +80,37 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
         },
       }
     );
-  }, [range, setCurrentPage]);
+  }, [eventIds, date, setCurrentPage]);
+
+  const filters = React.useMemo(
+    () => ({
+      eventIds: (
+        <EventsAutocomplete
+          queryKey="eventIds"
+          label={t("filters.schedules.eventIds")}
+        />
+      ),
+      scheduledFor: (
+        <DateQueryInput
+          queryKey="scheduledFor"
+          label={t("filters.schedules.scheduledFor")}
+        />
+      ),
+    }),
+    []
+  );
 
   return (
     <Grid xs={12} container suppressHydrationWarning>
       <Grid sm={12}>
         <Typography level="h4">{t("models.schedule.plural")}</Typography>
-        <Grid md={6} sm={12} container>
-          <DateRangePicker
-            value={range}
-            onChange={(dates) => setRange(dates)}
-            clearStyles={{ paddingTop: "30px" }}
-            startInputProps={{
-              label: t("scenes.attendees.events.eventsScene.sidebar.startDate"),
-              placeholder: t(
-                "scenes.attendees.events.eventsScene.sidebar.startDatePlaceholder"
-              ),
-              size: "sm",
-            }}
-            endInputProps={{
-              label: t("scenes.attendees.events.eventsScene.sidebar.endDate"),
-              placeholder: t(
-                "scenes.attendees.events.eventsScene.sidebar.endDatePlaceholder"
-              ),
-              size: "sm",
-            }}
-          />
-        </Grid>
+      </Grid>
+      <Grid sm={12}>
+        <Filters
+          availableFilters={filters}
+          defaultFilters={["eventIds", "scheduledFor"]}
+          scope="schedules"
+        />
         <Table
           data={schedulesData}
           headers={schedulesHeaders}

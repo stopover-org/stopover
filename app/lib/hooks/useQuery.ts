@@ -38,6 +38,28 @@ export function useQuery(
   }, [query, value, key]);
 }
 
+export function useRemoveQuery() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const query = new URLSearchParams(Array.from(searchParams.entries())); // -> has to use this form
+
+  return React.useCallback(
+    (key: string) => {
+      query.delete(key);
+
+      let queryString = query.toString();
+
+      if (!queryString) {
+        queryString = "";
+      }
+
+      router.push(`${pathname}?${queryString}`);
+    },
+    [query]
+  );
+}
+
 export function useUpdateQuery(key: string, format?: (value: any) => string) {
   const router = useRouter();
   const pathname = usePathname();

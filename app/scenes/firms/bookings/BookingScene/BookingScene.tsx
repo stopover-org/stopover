@@ -3,29 +3,30 @@ import React from "react";
 import moment from "moment/moment";
 import { Box, Divider, Grid, Stack } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import Typography from "../../../../components/v2/Typography";
-import { BookingScene_FirmBookingFragment$key } from "../../../../artifacts/BookingScene_FirmBookingFragment.graphql";
-import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
-import { getHumanDateTime } from "../../../../lib/utils/dates";
-import EventOptionsTable from "./components/EventOptionsTable";
-import AttendeesTable from "./components/AttendeesTable";
-import Link from "../../../../components/v2/Link";
-import Tag from "../../../../components/v2/Tag/Tag";
-import useStatusColor from "../../../../lib/hooks/useStatusColor";
+import Typography from "components/v2/Typography";
+import { BookingScene_FirmBookingFragment$key } from "artifacts/BookingScene_FirmBookingFragment.graphql";
+import Breadcrumbs from "components/v2/Breadcrumbs/Breadcrumbs";
+import { getHumanDateTime } from "lib/utils/dates";
+import Link from "components/v2/Link";
+import Tag from "components/v2/Tag/Tag";
+import useStatusColor from "lib/hooks/useStatusColor";
 import {
   usePaymentsColumns,
   usePaymentsHeaders,
-} from "../../../../components/shared/tables/columns/payments";
-import Table from "../../../../components/v2/Table";
+} from "components/shared/tables/columns/payments";
+import Table from "components/v2/Table";
 import {
   useRefundsColumns,
   useRefundsHeaders,
-} from "../../../../components/shared/tables/columns/refunds";
-import RefundBookingModal from "./components/RefundBookingModal";
-import Button from "../../../../components/v2/Button";
+} from "components/shared/tables/columns/refunds";
+import Button from "components/v2/Button";
+import useSubscription from "lib/hooks/useSubscription";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
 import AddAttendeeModal from "./components/AddAttendeeModal";
-import useSubscription from "../../../../lib/hooks/useSubscription";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
+import RefundBookingModal from "./components/RefundBookingModal";
+import AttendeesTable from "./components/AttendeesTable";
+import EventOptionsTable from "./components/EventOptionsTable";
+import BookingInformation from "./components/BookingInformation";
 
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
@@ -34,10 +35,11 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
   const booking = useFragment<BookingScene_FirmBookingFragment$key>(
     graphql`
       fragment BookingScene_FirmBookingFragment on Booking {
-        bookedFor
+        ...BookingInformation_BookingFragment
         id
         status
         paymentType
+        bookedFor
         attendeeTotalPrice {
           cents
           currency {
@@ -76,32 +78,22 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           id
         }
         payments {
-          id
-          status
-          totalPrice {
-            cents
-            currency {
-              name
+          ...payments_usePaymentsColumns_PaymentsConnectionFragment
+          edges {
+            node {
+              __typename
+              id
             }
           }
-          createdAt
         }
         refunds {
-          id
-          status
-          totalAmount {
-            cents
-            currency {
-              name
+          ...refunds_useRefundsColumns_RefundsFragment
+          edges {
+            node {
+              __typename
+              id
             }
           }
-          penaltyAmount {
-            cents
-            currency {
-              name
-            }
-          }
-          createdAt
         }
         ...EventOptionsTable_BookingFragment
         ...AttendeesTable_BookingFragment
@@ -132,36 +124,9 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
     status: booking.status,
   });
   const paymentsHeaders = usePaymentsHeaders();
-  const paymentsData = usePaymentsColumns(
-    booking.payments.map((payment) => ({
-      event: {
-        id: booking.event.id,
-        title: booking.event.title,
-      },
-      booking: {
-        id: booking.id,
-      },
-      createdAt: payment.createdAt,
-      totalPrice: payment.totalPrice,
-      status: payment.status,
-    }))
-  );
+  const paymentsData = usePaymentsColumns(booking.payments);
   const refundsHeaders = useRefundsHeaders();
-  const refundsData = useRefundsColumns(
-    booking.refunds.map((refund) => ({
-      event: {
-        id: booking.event.id,
-        title: booking.event.title,
-      },
-      booking: {
-        id: booking.id,
-      },
-      createdAt: refund.createdAt,
-      totalAmount: refund.totalAmount,
-      penaltyAmount: refund.penaltyAmount,
-      status: refund.status,
-    }))
-  );
+  const refundsData = useRefundsColumns(booking.refunds);
   const { t } = useTranslation();
 
   return (
@@ -192,8 +157,9 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
                 </Tag>
                 {booking.paymentType && (
                   <Tag color="primary" link={false}>
-                    {t(`models.firm.enums.paymentTypes.${booking.paymentType}`)}{" "}
-                    {t("models.payment.singular").toLowerCase()}
+                    {t(
+                      `models.booking.enums.paymentTypes.${booking.paymentType}`
+                    )}{" "}
                   </Tag>
                 )}
               </Typography>
@@ -215,7 +181,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           </Stack>
         </Grid>
 
-        <Grid xs={4}>
+        <Grid xs={12}>
           <Typography level="body-lg">
             {t("models.booking.attributes.organizerTotalPrice")}:{" "}
             {getCurrencyFormat(
@@ -232,39 +198,9 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           </Typography>
         </Grid>
 
-        <Grid xs={4}>
-          <Typography level="body-lg">
-            {t("models.booking.attributes.alreadyPaidPrice")}:{" "}
-            {getCurrencyFormat(
-              booking.alreadyPaidPrice.cents,
-              booking.alreadyPaidPrice.currency.name
-            )}
-          </Typography>
-          {booking.paymentType === "stripe" && (
-            <Typography level="body-lg">
-              {t("models.booking.attributes.leftToPayPrice")}:{" "}
-              {getCurrencyFormat(
-                booking.leftToPayPrice.cents,
-                booking.leftToPayPrice.currency.name
-              )}
-            </Typography>
-          )}
-          {booking.paymentType === "cash" && (
-            <Typography level="body-lg">
-              {t("models.booking.attributes.leftToPayDeposit")}:{" "}
-              {getCurrencyFormat(
-                booking.leftToPayDepositPrice.cents,
-                booking.leftToPayDepositPrice.currency.name
-              )}
-            </Typography>
-          )}
-        </Grid>
+        <BookingInformation bookingFragmentRef={booking} />
 
-        <Grid xs={12} padding={5}>
-          <Divider />
-        </Grid>
-
-        <Grid lg={8} md={12}>
+        <Grid lg={12} md={12} pt={3}>
           <Typography level="title-lg" pb={1}>
             {t("models.attendee.plural")}
           </Typography>
@@ -274,7 +210,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
           )}
         </Grid>
 
-        <Grid lg={4} md={12}>
+        <Grid lg={12} md={12} pt={3}>
           <Typography level="title-lg" pb={1}>
             {t("models.bookingOption.plural")}
           </Typography>

@@ -46,6 +46,7 @@ module Types
 
     field :events_autocomplete, Types::EventsRelated::EventsAutocompleteType, null: false do
       argument :query, String, required: true
+      argument :ids, [ID], loads: Types::EventsRelated::EventType, required: false
     end
 
     field :payment, Types::PaymentsRelated::PaymentType, null: false do
@@ -63,7 +64,7 @@ module Types
     def events_autocomplete(**args)
       if args[:query].blank?
         return { bookings: [],
-                 events: [],
+                 events: args[:ids] || [],
                  interests: [] }
       end
 

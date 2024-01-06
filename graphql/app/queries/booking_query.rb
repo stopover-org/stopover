@@ -35,11 +35,13 @@ class BookingQuery
   def conditions
     @conditions[:status] = @params[:status] if @params[:status].present?
     @conditions[:trip_id] = @params[:trip_id] if @params[:trip_id].present?
-    @conditions[:booked_for] = @params[:booked_for] if @params[:booked_for].present?
+    @conditions[:booked_for] = { gt: @params[:booked_for].at_beginning_of_day, lt: @params[:booked_for].at_end_of_day } if @params[:booked_for].present?
     @conditions[:event_id] = @params[:event_id] if @params[:event_id].present?
+    @conditions[:event_id] = @params[:event_ids] if @params[:event_ids].present?
     @conditions[:schedule_id] = @params[:schedule_id] if @params[:schedule_id].present?
-
-    Rails.logger.debug @conditions
+    @conditions[:firm_id] = @params[:firm_id] if @params[:firm_id].present?
+    @conditions[:contact_email] = @params[:contact_email] if @params[:contact_email].present?
+    @conditions[:contact_phone] = @params[:contact_phone] if @params[:contact_phone].present?
 
     @conditions
   end

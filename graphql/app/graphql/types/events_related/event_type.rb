@@ -87,7 +87,7 @@ module Types
         arguments = {
           query_type: ::BookingQuery,
           **(args[:filters] || {}),
-          event_id: object.firm.id
+          event_id: object.id
         }
         Connections::SearchkickConnection.new(arguments: arguments)
       end
@@ -96,7 +96,7 @@ module Types
         arguments = {
           query_type: ::SchedulesQuery,
           **(args[:filters] || {}),
-          firm_id: object.id
+          event_id: object.id
         }
         Connections::SearchkickConnection.new(arguments: arguments)
       end

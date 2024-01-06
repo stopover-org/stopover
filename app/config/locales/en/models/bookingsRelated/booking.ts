@@ -16,11 +16,19 @@ export default {
         possibleRefundAmount: "Possible refund",
         possiblePenaltyAmount: "Possible penalty",
         cancellationTerms: "Booking cancellation terms",
+        contactEmail: "Contact Email",
+        contactPhone: "Contact Phone",
       },
       reasons: {
         inactive: "Booking is not active",
         past: "Event past",
         paid: "Booking was partially or fully paid",
+      },
+      enums: {
+        paymentTypes: {
+          stripe: "Via Stripe",
+          cash: "Cash with deposit",
+        },
       },
     },
   },

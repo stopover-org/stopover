@@ -2,6 +2,7 @@ import { merge } from "lodash";
 import translations from "./models";
 import scenesTranslations from "./scenes";
 import formsTranslations from "./forms";
+import filtersTranslations from "./filters";
 
 const translation = {
   general: {
@@ -35,6 +36,7 @@ const translation = {
     404: "This page doesn't exist",
     502: "Something is borken. We are already working on it",
     "502Details": "We are already working on it",
+    copied: "Copied",
   },
   weekdays: {
     monday: "Monday",
@@ -116,5 +118,6 @@ export default merge(
   translations,
   formsTranslations,
   scenesTranslations,
+  filtersTranslations,
   translation
 );

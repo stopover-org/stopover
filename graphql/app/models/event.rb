@@ -61,7 +61,7 @@ class Event < ApplicationRecord
   # MODULES ===============================================================
   include Mixins::Translatable
   include AASM
-  searchkick callbacks: Rails.env.test? ? false : :async
+  searchkick
 
   # MONETIZE =====================================================================
   monetize :attendee_price_per_uom_cents

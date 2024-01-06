@@ -2,17 +2,16 @@ import { Grid } from "@mui/joy";
 import React from "react";
 import { graphql, usePaginationFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import Section from "../../../../components/v2/Section";
-import Typography from "../../../../components/v2/Typography/Typography";
-import { PaymentsSection_FirmFragment$key } from "../../../../artifacts/PaymentsSection_FirmFragment.graphql";
-import Table from "../../../../components/v2/Table/Table";
-import useEdges from "../../../../lib/hooks/useEdges";
-import Link from "../../../../components/v2/Link";
-import { PaymentSectionFirmFragment } from "../../../../artifacts/PaymentSectionFirmFragment.graphql";
+import Section from "components/v2/Section";
+import Typography from "components/v2/Typography/Typography";
+import { PaymentsSection_FirmFragment$key } from "artifacts/PaymentsSection_FirmFragment.graphql";
+import Table from "components/v2/Table/Table";
+import Link from "components/v2/Link";
+import { PaymentSectionFirmFragment } from "artifacts/PaymentSectionFirmFragment.graphql";
 import {
   usePaymentsColumns,
   usePaymentsHeaders,
-} from "../../../../components/shared/tables/columns/payments";
+} from "components/shared/tables/columns/payments";
 
 interface PaymentSectionProps {
   firmFragmentRef: PaymentsSection_FirmFragment$key;
@@ -32,24 +31,11 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
       ) {
         payments(first: $count, after: $cursor)
           @connection(key: "DashboardScene_query_payments") {
+          ...payments_usePaymentsColumns_PaymentsConnectionFragment
           edges {
             node {
+              __typename
               id
-              status
-              createdAt
-              booking {
-                event {
-                  id
-                  title
-                }
-                id
-              }
-              totalPrice {
-                cents
-                currency {
-                  name
-                }
-              }
             }
           }
         }
@@ -57,25 +43,7 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
     `,
     firmFragmentRef
   );
-
-  const payments = useEdges(data.payments) as ReadonlyArray<
-    Record<string, any>
-  >;
-
-  const actualPayments = usePaymentsColumns(
-    payments.map((payment) => ({
-      event: {
-        id: payment.booking.event.id,
-        title: payment.booking.event.title,
-      },
-      booking: {
-        id: payment.booking.id,
-      },
-      createdAt: payment.createdAt,
-      totalPrice: payment.totalPrice,
-      status: payment.status,
-    }))
-  );
+  const actualPayments = usePaymentsColumns(data.payments);
   const headers = usePaymentsHeaders();
   const { t } = useTranslation();
 

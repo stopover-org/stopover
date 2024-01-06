@@ -73,6 +73,10 @@ const SidebarContent = ({
         title: t("models.schedule.plural"),
         href: "/my-firm/schedules",
       },
+      {
+        title: t("models.payment.plural"),
+        href: "/my-firm/payments",
+      },
     ];
   }, [account]);
 

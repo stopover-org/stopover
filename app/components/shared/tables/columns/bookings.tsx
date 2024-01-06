@@ -25,6 +25,11 @@ export function useBookingsHeaders() {
         key: "id",
       },
       {
+        label: t("models.event.singular"),
+        width: 150,
+        key: "event",
+      },
+      {
         label: t("models.booking.attributes.status"),
         width: 100,
         key: "status",
@@ -81,6 +86,10 @@ export function useBookingsColumns(
               id
               status
               bookedFor
+              event {
+                id
+                title
+              }
               organizerTotalPrice {
                 cents
                 currency {
@@ -203,6 +212,11 @@ export function useBookingsColumns(
             id: (
               <Link primary href={`/my-firm/bookings/${booking.id}`}>
                 {booking.id}
+              </Link>
+            ),
+            event: (
+              <Link primary href={`/my-firm/events/${booking.event.id}`}>
+                {booking.event.title}
               </Link>
             ),
             status: <TagColor status={booking.status} />,

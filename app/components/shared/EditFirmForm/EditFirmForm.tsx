@@ -63,7 +63,7 @@ const EditFirmForm = () => {
               disableClearable
               multiple
               placeholder={t("models.firm.attributes.paymentType")}
-              options={["Cash"].map((v) => ({
+              options={["Cash", "Stripe"].map((v) => ({
                 label: capitalize(v),
                 value: v.toLowerCase(),
               }))}

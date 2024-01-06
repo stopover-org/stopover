@@ -24,7 +24,7 @@ class Schedule < ApplicationRecord
 
   # MODULES ===============================================================
   include AASM
-  searchkick callbacks: Rails.env.test? ? false : :async
+  searchkick
 
   # MONETIZE ==============================================================
 

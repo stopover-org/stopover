@@ -34,6 +34,7 @@ class Refund < ApplicationRecord
 
   # MODULES ===============================================================
   include Mixins::PaymentStatuses
+  searchkick
 
   # MONETIZE ==============================================================
   monetize :refund_amount_cents
@@ -84,6 +85,20 @@ class Refund < ApplicationRecord
 
   def top_up_balance
     firm.balance.update!(total_amount: firm.balance.total_amount - refund_amount) if parent_refund
+  end
+
+  def search_data
+    {
+      penalty_amount_cents: penalty_amount_cents,
+      refund_amount_cents: refund_amount_cents,
+      status: status,
+      booking_cancellation_option_id: booking_cancellation_option_id,
+      booking_id: booking_id,
+      firm_id: firm_id,
+      payment_id: payment_id,
+      refund_id: refund_id,
+      stripe_refund_id: stripe_refund_id
+    }
   end
 
   private

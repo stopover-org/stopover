@@ -16,11 +16,20 @@ export default {
         possibleRefundAmount: "Возможный возврат",
         possiblePenaltyAmount: "Возможный штраф",
         cancellationTerms: "Условия возврата",
+        contactEmail: "Email для связи",
+        contactPhone: "Телефон для связи",
       },
       reasons: {
         inactive: "Бронь не активна",
         past: "Мероприятие прошло",
         paid: "Бронь была полностью или частично оплачена",
+      },
+      enums: {
+        paymentTypes: {
+          stripe: "Через Страйп",
+          cash: "Наличными",
+          crypto: "Криптовалюта",
+        },
       },
     },
   },

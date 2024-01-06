@@ -8,12 +8,16 @@ module Stopover
     DEFAULT_SENDER = 'no-reply@stopoverx.com'
     NOTIFICATION_EMAIL = 'stopover@dorokhovich.ru'
 
+    DEV_DOMAINS = %w[dorokhovich.ru stopoverx.com].freeze
+
     def self.prepare_content(file:, locals: {})
       ApplicationController.render(file, locals: locals, layout: 'layouts/mailer')
     end
 
     def self.deliver(from:, to:, subject:, content:, type: 'text/html')
       return if Rails.env.test?
+
+      return if Rails.env.development? && DEV_DOMAINS.exclude?(to.split('@').last)
 
       personalization = Personalization.new
       personalization.add_bcc(SendGrid::Email.new(email: NOTIFICATION_EMAIL, name: 'Stopover Manager')) if to != NOTIFICATION_EMAIL

@@ -1,11 +1,14 @@
 import React from "react";
 import moment from "moment/moment";
 import { useTranslation } from "react-i18next";
-import Link from "../../../v2/Link";
-import { getHumanDateTime } from "../../../../lib/utils/dates";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
-import useStatusColor from "../../../../lib/hooks/useStatusColor";
-import Tag from "../../../v2/Tag/Tag";
+import Link from "components/v2/Link";
+import { getHumanDateTime } from "lib/utils/dates";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import useStatusColor from "lib/hooks/useStatusColor";
+import Tag from "components/v2/Tag/Tag";
+import { graphql, useFragment } from "react-relay";
+import { refunds_useRefundsColumns_RefundsFragment$key } from "artifacts/refunds_useRefundsColumns_RefundsFragment.graphql";
+import useEdges from "lib/hooks/useEdges";
 
 const TagColor = ({ status }: { status: string }) => {
   const color = useStatusColor({
@@ -61,13 +64,49 @@ export function useRefundsHeaders() {
   );
 }
 
-export function useRefundsColumns(refunds: ReadonlyArray<Record<string, any>>) {
+export function useRefundsColumns(
+  refundsConnectionFragmentRef: refunds_useRefundsColumns_RefundsFragment$key
+) {
+  const refunds = useFragment<refunds_useRefundsColumns_RefundsFragment$key>(
+    graphql`
+      fragment refunds_useRefundsColumns_RefundsFragment on RefundConnection {
+        edges {
+          node {
+            id
+            status
+            totalAmount {
+              cents
+              currency {
+                name
+              }
+            }
+            penaltyAmount {
+              cents
+              currency {
+                name
+              }
+            }
+            booking {
+              id
+              event {
+                id
+                title
+              }
+            }
+            createdAt
+          }
+        }
+      }
+    `,
+    refundsConnectionFragmentRef
+  );
+  const refundsData = useEdges(refunds).map((v) => v!);
   return React.useMemo(
     () =>
-      refunds.map((refund) => ({
+      refundsData.map((refund) => ({
         event: (
-          <Link href={`/my-firm/events/${refund.event?.id}`}>
-            {refund.event?.title}
+          <Link href={`/my-firm/events/${refund.booking.event?.id}`}>
+            {refund.booking.event?.title}
           </Link>
         ),
         booking: (

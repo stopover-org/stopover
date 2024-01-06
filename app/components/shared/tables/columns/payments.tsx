@@ -1,11 +1,14 @@
 import React from "react";
 import moment from "moment/moment";
 import { useTranslation } from "react-i18next";
-import Link from "../../../v2/Link";
-import { getHumanDateTime } from "../../../../lib/utils/dates";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
-import useStatusColor from "../../../../lib/hooks/useStatusColor";
-import Tag from "../../../v2/Tag/Tag";
+import Link from "components/v2/Link";
+import { getHumanDateTime } from "lib/utils/dates";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import useStatusColor from "lib/hooks/useStatusColor";
+import Tag from "components/v2/Tag/Tag";
+import useEdges from "lib/hooks/useEdges";
+import { graphql, useFragment } from "react-relay";
+import { payments_usePaymentsColumns_PaymentsConnectionFragment$key } from "artifacts/payments_usePaymentsColumns_PaymentsConnectionFragment.graphql";
 
 const TagColor = ({ status }: { status: string }) => {
   const color = useStatusColor({
@@ -26,6 +29,11 @@ export function usePaymentsHeaders() {
   const { t } = useTranslation();
   return React.useMemo(
     () => [
+      {
+        label: t("models.payment.singular"),
+        width: 150,
+        key: "payment",
+      },
       {
         label: t("models.event.singular"),
         width: 300,
@@ -57,14 +65,48 @@ export function usePaymentsHeaders() {
 }
 
 export function usePaymentsColumns(
-  payments: ReadonlyArray<Record<string, any>>
+  paymentsConnectionFragmentRef: payments_usePaymentsColumns_PaymentsConnectionFragment$key
 ) {
+  const payments =
+    useFragment<payments_usePaymentsColumns_PaymentsConnectionFragment$key>(
+      graphql`
+        fragment payments_usePaymentsColumns_PaymentsConnectionFragment on PaymentConnection {
+          edges {
+            node {
+              id
+              status
+              createdAt
+              booking {
+                event {
+                  id
+                  title
+                }
+                id
+              }
+              totalPrice {
+                cents
+                currency {
+                  name
+                }
+              }
+            }
+          }
+        }
+      `,
+      paymentsConnectionFragmentRef
+    );
+  const paymentsData = useEdges(payments).map((v) => v!);
   return React.useMemo(
     () =>
-      payments.map((payment) => ({
+      paymentsData.map((payment) => ({
+        payment: (
+          <Link primary href={`/my-firm/payments/${payment.id}`}>
+            {payment.id}
+          </Link>
+        ),
         event: (
-          <Link href={`/my-firm/events/${payment.event?.id}`}>
-            {payment.event?.title}
+          <Link href={`/my-firm/events/${payment.booking.event?.id}`}>
+            {payment.booking.event?.title}
           </Link>
         ),
         booking: (

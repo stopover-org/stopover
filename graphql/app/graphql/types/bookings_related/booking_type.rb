@@ -20,16 +20,32 @@ module Types
       field :possible_refund_amount,    Types::MoneyType,                             null: false
       field :possible_penalty_amount,   Types::MoneyType,                             null: false
       field :trip,                      Types::TripsRelated::TripType,                null: false
-      field :payments,                  [Types::PaymentsRelated::PaymentType],        null: false, require_manager: true
-      field :refunds,                   [Types::PaymentsRelated::RefundType],         null: false, require_manager: true
-      field :cancellation_terms,        String,                                       null: false
+      field :payments,                  Types::PaymentsRelated::PaymentType.connection_type, null: false, require_manager: true
+      field :refunds,                   Types::PaymentsRelated::RefundType.connection_type, null: false, require_manager: true
+      field :cancellation_terms,        String, null: false
+      field :contact_email,             String
+      field :contact_phone,             String
 
       field :attendees, [Types::BookingsRelated::AttendeeType], null: false do
         argument :filters, Types::Filters::AttendeesFilter, required: false
       end
 
-      def refunds
-        object.refunds.where(refund_id: nil)
+      def payments(**_args)
+        arguments = {
+          query_type: ::PaymentsQuery,
+          per_page: 30
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
+      end
+
+      def refunds(**_args)
+        arguments = {
+          query_type: ::RefundsQuery,
+          per_page: 30,
+          booking_id: object.id,
+          refund_id: nil
+        }
+        Connections::SearchkickConnection.new(arguments: arguments)
       end
 
       def booked_for
@@ -50,6 +66,14 @@ module Types
 
       def possible_penalty_amount
         Stopover::RefundManagement::RefundCreator.new(object, current_user).calculate_penalty
+      end
+
+      def contact_email
+        object.account.primary_email
+      end
+
+      def contact_phone
+        object.account.primary_phone
       end
     end
   end
