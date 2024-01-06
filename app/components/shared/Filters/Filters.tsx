@@ -67,13 +67,15 @@ const Filters = ({ availableFilters, defaultFilters = [] }: FiltersProps) => {
       }
 
       if (!selectedFilters.includes(filter[0])) {
+        console.log(selectedFilters, filter);
+
         removeQueryKey(filter[0]);
       }
     });
-  });
+  }, [selectedFilters]);
 
   return (
-    <Stack direction="row" alignItems="flex-end">
+    <Stack direction="row" alignItems="flex-end" flexWrap="wrap">
       <Dropdown>
         <MenuButton size="sm" variant="soft" sx={{ marginBottom: "5px" }}>
           <FilterAltIcon />

@@ -3,8 +3,8 @@ export default {
     bookings: {
       contactEmail: "Contact Email",
       contactPhone: "Contact Phone",
-      events: "Events",
-      date: "Booking Date",
+      eventIds: "Events",
+      bookedFor: "Booking Date",
       status: "Status",
       attendeesCount: "Attendees Count",
     },

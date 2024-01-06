@@ -38,7 +38,7 @@ const DatePickerInputField = React.forwardRef(
       <FormControl
         disabled={disabled}
         id={id}
-        sx={{ ...formControlSx }}
+        sx={{ ...formControlSx, padding: 0 }}
         ref={containerRef}
       >
         <Input

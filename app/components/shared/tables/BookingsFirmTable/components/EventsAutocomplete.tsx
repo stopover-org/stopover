@@ -18,7 +18,7 @@ interface EventsAutocompleteProps {
 }
 
 const EventsAutocomplete = ({
-  key = "events",
+  key = "eventIds",
   label,
 }: EventsAutocompleteProps) => {
   const eventIds: string[] = useQuery(key, [], (value) =>

@@ -286,11 +286,12 @@ type BookingOption implements Node {
 }
 
 input BookingsFilter {
+  bookedFor: DateTime
   contactEmail: String
   contactPhone: String
   eventId: ID
+  eventIds: [ID!]
   scheduleId: [ID!]
-  scheduledFor: DateTime
   status: String
   tripId: [ID!]
 }

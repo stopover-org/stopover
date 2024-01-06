@@ -10,6 +10,7 @@ import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
 import ContactEmailInput from "./components/ContactEmailInput";
 import ContactPhoneInput from "./components/ContactPhoneInput";
 import EventsAutocomplete from "./components/EventsAutocomplete";
+import DateQueryInput from "../../DateQueryInput";
 
 interface BookingFirmTableProps {
   firmFragmentRef: BookingsFirmTable_BookingsFirmPaginationFragment$key;
@@ -51,7 +52,8 @@ const BookingsFirmTable = ({
   const queryRef = React.useRef<Disposable>();
   const contactEmail = useQuery("contactEmail", "");
   const contactPhone = useQuery("contactPhone", "");
-  const events = useQuery("events", [], (value) =>
+  const date = useQuery("bookedFor", null);
+  const eventIds = useQuery("eventIds", [], (value) =>
     Array.from(parseValue(value))
   );
 
@@ -65,7 +67,8 @@ const BookingsFirmTable = ({
         bookingsFilter: {
           contactEmail,
           contactPhone,
-          events,
+          eventIds,
+          bookedFor: date,
         },
         cursor: "0",
       },
@@ -85,17 +88,25 @@ const BookingsFirmTable = ({
     () => ({
       contactEmail: <ContactEmailInput />,
       contactPhone: <ContactPhoneInput />,
-      events: <EventsAutocomplete label={t("filters.bookings.events")} />,
-      date: <ContactPhoneInput />,
-      status: <ContactPhoneInput />,
-      attendeesCount: <ContactPhoneInput />,
+      eventIds: (
+        <EventsAutocomplete
+          key="eventIds"
+          label={t("filters.bookings.eventIds")}
+        />
+      ),
+      bookedFor: (
+        <DateQueryInput
+          key="bookedFor"
+          label={t("filters.bookings.bookedFor")}
+        />
+      ),
     }),
     []
   );
 
   return (
     <>
-      <Filters availableFilters={filters} defaultFilters={["events"]} />
+      <Filters availableFilters={filters} defaultFilters={["eventIds"]} />
       <Table
         data={bookings}
         headers={headers}

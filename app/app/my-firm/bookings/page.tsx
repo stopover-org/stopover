@@ -10,6 +10,9 @@ import QueryWrapper from "./query";
 
 const filterParsers = {
   contactEmail: (value: string) => parseValue(value),
+  contactPhone: (value: string) => parseValue(value),
+  eventIds: (value: string) => parseValue(value),
+  bookedFor: (value: string) => parseValue(value),
 };
 
 const Page = async ({
