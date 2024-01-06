@@ -60,11 +60,13 @@ const EventScene = ({
           nodes {
             id
           }
+          total
         }
         bookings {
           nodes {
             id
           }
+          total
         }
         firm {
           status
@@ -285,13 +287,13 @@ const EventScene = ({
             <Tab variant={tab === 2 ? "outlined" : "plain"}>
               {t("models.schedule.plural")}
               <Chip size="sm" variant="soft">
-                {event.schedules.nodes.length}
+                {event.schedules.total}
               </Chip>
             </Tab>
             <Tab variant={tab === 3 ? "outlined" : "plain"}>
               {t("models.booking.plural")}
               <Chip size="sm" variant="soft">
-                {event.bookings.nodes.length}
+                {event.bookings.total}
               </Chip>
             </Tab>
             {currentUser.serviceUser && (

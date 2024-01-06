@@ -11,6 +11,7 @@ import { parseValue, useQuery, useUpdateQuery } from "lib/hooks/useQuery";
 import { EventsAutocomplete_AutocompleteQuery } from "artifacts/EventsAutocomplete_AutocompleteQuery.graphql";
 import { EventsAutocomplete_EventsAutocompleteFragment$key } from "artifacts/EventsAutocomplete_EventsAutocompleteFragment.graphql";
 import Checkbox from "components/v2/Checkbox";
+import { useTranslation } from "react-i18next";
 
 interface EventsAutocompleteProps {
   key?: string;
@@ -82,6 +83,7 @@ const EventsAutocomplete = ({
 
     return filteredValues;
   }, [eventIds]);
+  const { t } = useTranslation();
 
   return (
     <FormControl>
@@ -97,6 +99,7 @@ const EventsAutocomplete = ({
         }}
         limitTags={1}
         onChange={(_e, values) => updateEvents(values.map((event) => event.id))}
+        placeholder={t("placeholders.bookings.eventIds")}
         renderOption={(props, option) => (
           <AutocompleteOption
             {...props}

@@ -9,4 +9,12 @@ export default {
       attendeesCount: "Количество участников",
     },
   },
+  placeholders: {
+    bookings: {
+      contactEmail: "Введите контактный Email",
+      contactPhone: "Введите контактный Телефон",
+      eventIds: "Выберите мероприятие",
+      bookedFor: "Введите дату бронирования",
+    },
+  },
 };

@@ -7,6 +7,7 @@ const ContactPhoneInput = () => {
 
   return (
     <QueryInput
+      placeholder={t("placeholders.bookings.contactPhone")}
       size="sm"
       queryName="contactPhone"
       label={t("models.booking.attributes.contactPhone")}

@@ -130,7 +130,7 @@ module Types
           **(args[:filters] || {}),
           firm_id: object.id
         }
-        arguments[:event_ids] = args[:filters][:events].map(&:id) if args[:filters][:events]
+        arguments[:event_ids] = args[:filters][:events].map(&:id) if args.dig(:filters, :events)
         Connections::SearchkickConnection.new(arguments: arguments)
       end
 

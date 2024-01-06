@@ -15,11 +15,13 @@ import DateQueryInput from "../../DateQueryInput";
 interface BookingFirmTableProps {
   firmFragmentRef: BookingsFirmTable_BookingsFirmPaginationFragment$key;
   withPagination?: boolean;
+  withFilters?: boolean;
 }
 
 const BookingsFirmTable = ({
   firmFragmentRef,
   withPagination,
+  withFilters = true,
 }: BookingFirmTableProps) => {
   const { t } = useTranslation();
   const { data, hasPrevious, hasNext, loadPrevious, loadNext, refetch } =
@@ -106,7 +108,9 @@ const BookingsFirmTable = ({
 
   return (
     <>
-      <Filters availableFilters={filters} defaultFilters={["eventIds"]} />
+      {withFilters && (
+        <Filters availableFilters={filters} defaultFilters={["eventIds"]} />
+      )}
       <Table
         data={bookings}
         headers={headers}

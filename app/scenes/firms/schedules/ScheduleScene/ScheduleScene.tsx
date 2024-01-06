@@ -1,4 +1,9 @@
-import { graphql, useFragment, usePaginationFragment } from "react-relay";
+import {
+  Disposable,
+  graphql,
+  useFragment,
+  usePaginationFragment,
+} from "react-relay";
 import { Card, CardContent, Grid } from "@mui/joy";
 import React from "react";
 import moment from "moment";
@@ -16,7 +21,13 @@ import {
   useBookingsHeaders,
 } from "components/shared/tables/columns/bookings";
 import Table from "components/v2/Table/Table";
-import CopyToClipboard from "../../../../components/shared/CopyToClipboard/CopyToClipboard";
+import CopyToClipboard from "components/shared/CopyToClipboard/CopyToClipboard";
+import Filters from "components/shared/Filters/Filters";
+import ContactEmailInput from "components/shared/tables/BookingsFirmTable/components/ContactEmailInput";
+import ContactPhoneInput from "components/shared/tables/BookingsFirmTable/components/ContactPhoneInput";
+import EventsAutocomplete from "components/shared/tables/BookingsFirmTable/components/EventsAutocomplete";
+import DateQueryInput from "components/shared/DateQueryInput/DateQueryInput";
+import { parseValue, useQuery } from "lib/hooks/useQuery";
 
 interface ScheduleSceneProps {
   scheduleFragmentRef: ScheduleScene_FirmScheduleFragment$key;
@@ -42,7 +53,7 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
     scheduleFragmentRef
   );
 
-  const { data, hasPrevious, hasNext, loadPrevious, loadNext } =
+  const { data, hasPrevious, hasNext, loadPrevious, loadNext, refetch } =
     usePaginationFragment<
       ScheduleTableBookingsPaginationQuery,
       ScheduleScene_BookingsPaginationFragment$key
@@ -53,8 +64,9 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
         @argumentDefinitions(
           count: { type: "Int", defaultValue: 30 }
           cursor: { type: "String", defaultValue: "" }
+          filters: { type: "BookingsFilter", defaultValue: {} }
         ) {
-          bookings(first: $count, after: $cursor)
+          bookings(first: $count, after: $cursor, filters: $filters)
             @connection(key: "ScheduleBookingsTable_query_bookings") {
             ...bookings_useBookingsColumns_BookingsConnectionFragment
             edges {
@@ -78,6 +90,58 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
   const actualBookings = useBookingsColumns(data.bookings);
   const headers = useBookingsHeaders();
   const { t } = useTranslation();
+  const queryRef = React.useRef<Disposable>();
+  const contactEmail = useQuery("contactEmail", "");
+  const contactPhone = useQuery("contactPhone", "");
+  const date = useQuery("bookedFor", null);
+  const eventIds = useQuery("eventIds", [], (value) =>
+    Array.from(parseValue(value))
+  );
+
+  React.useEffect(() => {
+    if (queryRef.current) {
+      queryRef.current.dispose();
+    }
+
+    queryRef.current = refetch(
+      {
+        filters: {
+          contactEmail,
+          contactPhone,
+          eventIds,
+          bookedFor: date,
+        },
+        cursor: "0",
+      },
+      {
+        onComplete: () => {
+          if (currentPage !== 1) {
+            setCurrentPage(1);
+          }
+        },
+      }
+    );
+  }, [contactEmail, contactPhone, eventIds, date, setCurrentPage]);
+
+  const filters = React.useMemo(
+    () => ({
+      contactEmail: <ContactEmailInput />,
+      contactPhone: <ContactPhoneInput />,
+      eventIds: (
+        <EventsAutocomplete
+          key="eventIds"
+          label={t("filters.bookings.eventIds")}
+        />
+      ),
+      bookedFor: (
+        <DateQueryInput
+          key="bookedFor"
+          label={t("filters.bookings.bookedFor")}
+        />
+      ),
+    }),
+    []
+  );
 
   return (
     <Grid container spacing={2} sm={12} md={12}>
@@ -127,6 +191,7 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
       </Grid>
 
       <Grid xs={12}>
+        <Filters availableFilters={filters} defaultFilters={["eventIds"]} />
         <Table
           data={actualBookings}
           headers={headers}
