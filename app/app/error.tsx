@@ -35,7 +35,7 @@ const NotFound = () => {
             <Typography level="h2">{t("general.502")}</Typography>
             <Typography level="h4">{t("general.502Details")}</Typography>
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={12} maxWidth="1024px" margin="0 auto">
             <img src="/502.svg" alt="Something is broken" />
           </Grid>
         </Grid>

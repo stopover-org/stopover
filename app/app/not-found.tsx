@@ -38,7 +38,7 @@ const NotFound = () => {
               {pathname} {t("general.404")}
             </Typography>
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={12} maxWidth="1024px" margin="0 auto">
             <img src="/404.svg" alt="Not Found 404" />
           </Grid>
         </Grid>
