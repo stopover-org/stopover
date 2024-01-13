@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import React from "react";
 import Typography from "components/v2/Typography";
 import { Box, Divider, Grid, Stack, useTheme } from "@mui/joy";
-import overlay from "components/backgrounds/overlay.svg";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
@@ -48,7 +47,7 @@ const FirmLandingScene = () => {
         >
           <Box
             style={{
-              background: `url(${overlay.src}) center center/cover no-repeat`,
+              background: `url(https://s3.eu-north-1.amazonaws.com/stopoverx.production/Group+1.svg) center center/cover no-repeat`,
               height: "225px",
               width: "250px",
               position: "relative",
@@ -82,7 +81,7 @@ const FirmLandingScene = () => {
         >
           <Box
             style={{
-              background: `url(${overlay.src}) center center/cover no-repeat`,
+              background: `url(https://s3.eu-north-1.amazonaws.com/stopoverx.production/Group+1.svg) center center/cover no-repeat`,
               height: "225px",
               width: "250px",
               position: "relative",
@@ -116,7 +115,7 @@ const FirmLandingScene = () => {
         >
           <Box
             style={{
-              background: `url(${overlay.src}) center center/cover no-repeat`,
+              background: `url(https://s3.eu-north-1.amazonaws.com/stopoverx.production/Group+1.svg) center center/cover no-repeat`,
               height: "225px",
               width: "250px",
               position: "relative",
@@ -150,7 +149,7 @@ const FirmLandingScene = () => {
         >
           <Box
             style={{
-              background: `url(${overlay.src}) center center/cover no-repeat`,
+              background: `url(https://s3.eu-north-1.amazonaws.com/stopoverx.production/Group+1.svg) center center/cover no-repeat`,
               height: "225px",
               width: "250px",
               position: "relative",
@@ -184,7 +183,7 @@ const FirmLandingScene = () => {
         >
           <Box
             style={{
-              background: `url(${overlay.src}) center center/cover no-repeat`,
+              background: `url(https://s3.eu-north-1.amazonaws.com/stopoverx.production/Group+1.svg) center center/cover no-repeat`,
               height: "225px",
               width: "250px",
               position: "relative",
@@ -209,7 +208,7 @@ const FirmLandingScene = () => {
           </Box>
         </Stack>
       </Grid>
-      <Grid xs={12} paddingTop={isMobileView ? "50px" : "350px"}>
+      <Grid xs={12} paddingTop="50px">
         <RegisterFirmCTA />
       </Grid>
     </Grid>
