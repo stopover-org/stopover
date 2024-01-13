@@ -1,18 +1,18 @@
 import React from "react";
 import { Autocomplete, FormControl, FormLabel, Grid } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import Fieldset from "../../v2/Fieldset/Fieldset";
-import Input from "../../v2/Input/Input";
-import FileUploader from "../../v2/FileUploader/FileUploader";
-import AddressFieldset from "../AddressFieldset/AddressFieldset";
-import Typography from "../../v2/Typography/Typography";
-import PhoneInput from "../../v2/PhoneInput/PhoneInput";
-import ChipsInput from "../../v2/ChipsInput/ChipsInput";
-import useFormContext from "../../../lib/hooks/useFormContext";
-import ImagePreviewFields from "../ImagePreviewFields";
-import { capitalize } from "../../../lib/utils/capitalize";
-import SubmitButton from "../SubmitButton";
-import Editor from "../../v2/Editor";
+import Fieldset from "components/v2/Fieldset/Fieldset";
+import Input from "components/v2/Input/Input";
+import FileUploader from "components/v2/FileUploader/FileUploader";
+import AddressFieldset from "components/shared/AddressFieldset";
+import Typography from "components/v2/Typography/Typography";
+import PhoneInput from "components/v2/PhoneInput/PhoneInput";
+import ChipsInput from "components/v2/ChipsInput/ChipsInput";
+import useFormContext from "lib/hooks/useFormContext";
+import ImagePreviewFields from "components/shared/ImagePreviewFields";
+import { capitalize } from "lib/utils/capitalize";
+import SubmitButton from "components/shared/SubmitButton";
+import Editor from "components/v2/Editor";
 
 const EditFirmForm = () => {
   const form = useFormContext();

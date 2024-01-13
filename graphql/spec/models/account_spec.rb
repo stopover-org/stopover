@@ -48,10 +48,13 @@ RSpec.describe Account, type: :model do
       should have_many(:firms).through(:account_firms)
 
       should belong_to(:user).optional(false)
+      should belong_to(:firm).optional(true)
     end
 
     it 'enums' do
-      # PASS
+      should define_enum_for(:language).with_values(ru: 'ru',
+                                                    en: 'en')
+                                       .backed_by_column_of_type(:string)
     end
 
     it 'monetize' do

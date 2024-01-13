@@ -37,7 +37,10 @@ const Scene = ({
   return (
     <SceneWrapper>
       <Layout currentUserFragment={data.currentUser}>
-        <AuthGuard accessible={!data.currentUser?.account?.firm?.id}>
+        <AuthGuard
+          accessible={!data.currentUser?.account?.firm?.id}
+          redirectTo="/my-firm/dashboard"
+        >
           <CreateFirmScene />
         </AuthGuard>
       </Layout>
