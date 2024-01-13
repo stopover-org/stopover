@@ -24,7 +24,7 @@ class Schedule < ApplicationRecord
 
   # MODULES ===============================================================
   include AASM
-  searchkick
+  include Mixins::Indices
 
   # MONETIZE ==============================================================
 

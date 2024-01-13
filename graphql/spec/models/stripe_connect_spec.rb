@@ -19,5 +19,17 @@
 require 'rails_helper'
 
 RSpec.describe StripeConnect, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'model setup' do
+    it 'constants' do
+      expect(StripeConnect::GRAPHQL_TYPE).to eq(Types::FirmsRelated::StripeConnectType)
+    end
+    it 'relations' do
+      should belong_to(:firm).optional
+    end
+    context 'validations' do
+      it 'check' do
+        should validate_presence_of(:status)
+      end
+    end
+  end
 end

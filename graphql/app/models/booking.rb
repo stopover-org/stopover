@@ -30,7 +30,8 @@ class Booking < ApplicationRecord
   GRAPHQL_TYPE = Types::BookingsRelated::BookingType
 
   # MODULES ===============================================================
-  searchkick
+
+  include Mixins::Indices
   include AASM
 
   # MONETIZE ==============================================================

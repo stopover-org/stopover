@@ -13,11 +13,10 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useMediaQuery } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import Typography from "../../../components/v2/Typography";
-import { RootScene_QueryFragment$key } from "../../../artifacts/RootScene_QueryFragment.graphql";
+import Typography from "components/v2/Typography";
+import { RootScene_QueryFragment$key } from "artifacts/RootScene_QueryFragment.graphql";
+import RegisterFirmCTA from "components/shared/RegisterFirmCTA";
 import SearchBar from "../../attendees/events/EventsScene/components/SearchBar";
-import Button from "../../../components/v2/Button";
-import Link from "../../../components/v2/Link";
 
 interface Props {
   queryFragmentRef: any;
@@ -190,36 +189,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
           </List>
         </Grid>
         <Grid xs={12} paddingTop={isMobileView ? "50px" : "350px"}>
-          <Box
-            width={isMobileView ? "100%" : "500px"}
-            height={isMobileView ? "unset" : "500px"}
-            margin="0 auto"
-            sx={{
-              borderRadius: "3px",
-              padding: "5px",
-            }}
-            position="relative"
-          >
-            <AspectRatio minHeight="100%" maxHeight="100%">
-              <img
-                src="https://s3.eu-north-1.amazonaws.com/stopoverx.production/portrait-flight-attendant-with-inflatable-jacket_23-2150282858.jpg"
-                srcSet="https://s3.eu-north-1.amazonaws.com/stopoverx.production/portrait-flight-attendant-with-inflatable-jacket_23-2150282858.jpg 2x"
-                loading="lazy"
-                alt=""
-              />
-            </AspectRatio>
-            <Link
-              href="/firms/new"
-              position="absolute"
-              sx={{
-                transform: "translate(-50%, -75%)",
-                top: "75%",
-                left: "50%",
-              }}
-            >
-              <Button size="lg">{t("scenes.rootScene.becomePartner")}</Button>
-            </Link>
-          </Box>
+          <RegisterFirmCTA />
         </Grid>
       </Grid>
     </>

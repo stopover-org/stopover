@@ -4,7 +4,7 @@ import {
   useFragment,
   usePaginationFragment,
 } from "react-relay";
-import { Card, CardContent, Grid } from "@mui/joy";
+import { Box, Card, CardContent, Grid, Stack } from "@mui/joy";
 import React from "react";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -46,6 +46,10 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
           firm {
             title
           }
+        }
+        statistics {
+          name
+          value
         }
         ...ScheduleScene_BookingsPaginationFragment
       }
@@ -161,8 +165,21 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
           {schedule.event.title}
         </Link>
       </Grid>
-
-      <Grid lg={6} md={8} sm={12} xs={12}>
+      <Grid lg={8} md={8} sm={12} xs={12}>
+        <Card sx={{ margin: "0 auto" }}>
+          <Typography level="h4">{t("general.statistics")}</Typography>
+          <CardContent>
+            <Stack direction="row" useFlexGap spacing={2}>
+              {schedule.statistics.map((stat) => (
+                <Box>
+                  {t(`models.schedule.statistics.${stat.name}`)}: {stat.value}
+                </Box>
+              ))}
+            </Stack>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid lg={8} md={8} sm={12} xs={12}>
         <Card sx={{ margin: "0 auto" }}>
           <Typography level="title-lg">
             {t("models.schedule.singular")}
@@ -190,6 +207,9 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
         </Card>
       </Grid>
 
+      <Grid xs={12}>
+        <Typography level="h4">{t("models.booking.plural")}</Typography>
+      </Grid>
       <Grid xs={12}>
         <Filters
           availableFilters={filters}

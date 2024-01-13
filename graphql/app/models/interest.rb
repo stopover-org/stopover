@@ -24,7 +24,7 @@ class Interest < ApplicationRecord
 
   # MODULES ===============================================================
   include Mixins::Translatable
-  searchkick
+  include Mixins::Indices
 
   # MONETIZE ==============================================================
 

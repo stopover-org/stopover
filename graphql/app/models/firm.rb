@@ -80,10 +80,10 @@ class Firm < ApplicationRecord
   # ENUMS =================================================================
   enum business_type: {
     individual: 'individual',
-      company: 'company',
-      non_profit: 'non_profit',
-      # US only
-      government_entity: 'government_entity'
+    company: 'company',
+    non_profit: 'non_profit',
+    # US only
+    government_entity: 'government_entity'
   }
 
   # SECURE TOKEN ==========================================================

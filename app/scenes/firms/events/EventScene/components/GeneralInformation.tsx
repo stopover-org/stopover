@@ -1,5 +1,14 @@
 import React from "react";
-import { Divider, Grid, Sheet, Stack, TabPanel } from "@mui/joy";
+import {
+  Box,
+  Card,
+  CardContent,
+  Divider,
+  Grid,
+  Sheet,
+  Stack,
+  TabPanel,
+} from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import moment from "moment/moment";
 import { useTranslation } from "react-i18next";
@@ -68,6 +77,10 @@ const GeneralInformation = ({
         firm {
           paymentTypes
         }
+        statistics {
+          name
+          value
+        }
         ...CancellationsSection_EventFragment
       }
     `,
@@ -82,6 +95,20 @@ const GeneralInformation = ({
       sx={{ paddingTop: "20px", minWidth: "600px" }}
     >
       <Sheet>
+        <Grid lg={6} md={8} sm={12} xs={12}>
+          <Card>
+            <Typography level="h4">{t("general.statistics")}</Typography>
+            <CardContent>
+              <Stack direction="row" useFlexGap spacing={2}>
+                {event.statistics.map((stat) => (
+                  <Box>
+                    {t(`models.event.statistics.${stat.name}`)}: {stat.value}
+                  </Box>
+                ))}
+              </Stack>
+            </CardContent>
+          </Card>
+        </Grid>
         <Section>
           <Grid container xs={12} spacing={2}>
             <Grid xs={2}>

@@ -45,8 +45,6 @@ RSpec.describe EventsQuery, type: :query do
       create(:tag, title: 'tour'.titleize)
       Event.offset(1).first(2).each { |event| event.tags << Tag.first }
       Event.offset(1).last(2).each { |event| event.tags << Tag.last }
-
-      Event.reindex
     end
   end
 
@@ -54,58 +52,60 @@ RSpec.describe EventsQuery, type: :query do
     Event.search_index.refresh
   end
 
-  xdescribe 'initialization' do
-    let(:query) { EventsQuery.new }
-
-    subject { query.all }
-
+  describe 'initialization' do
     it 'with all future events' do
-      expect(subject.count).to eq(4)
-    end
-  end
-
-  xdescribe 'query by price' do
-    context 'by min and max prices' do
-      let!(:query) { EventsQuery.new({ min_price: 125, max_price: 1295 }) }
-
-      subject { query.all }
-
-      it 'should include one event' do
-        expect(subject.count).to eq(1)
-
-        event = subject.last
-        expect(event.attendee_price_per_uom).to eq(Money.new(143, :usd))
+      Event.reindex_test
+      Timecop.freeze(Time.current) do
+        query = EventsQuery.new
+        expect(query.conditions).to eq({ dates: { gte: Time.current }, status: [:published] })
+        expect(query.total).to eq(4)
       end
     end
   end
 
-  xdescribe 'query by dates' do
+  describe 'query by price' do
+    context 'by min and max prices' do
+      it 'should include one event' do
+        Event.reindex_test
+        Timecop.freeze(Time.current) do
+          query = EventsQuery.new({ min_price: 125, max_price: 1295 })
+          expect(query.conditions).to eq({ dates: { gte: Time.current }, price: { gte: 12_500, lte: 129_500 }, status: [:published] })
+          expect(query.total).to eq(1)
+
+          event = query.execute.to_a.last
+          expect(event.attendee_price_per_uom).to eq(Money.new(14_300, :usd))
+        end
+      end
+    end
+  end
+
+  describe 'query by dates' do
     context '3 days in future' do
-      let!(:query) { EventsQuery.new({ start_date: now, end_date: now + 3.days }) }
-
-      subject { query.all }
-
       it 'with events in the next 3 days' do
-        expect(subject.count).to eq(1)
+        Event.reindex_test
+        Timecop.freeze(Time.current) do
+          query = EventsQuery.new({ start_date: now, end_date: now + 3.days })
+          expect(query.conditions).to eq({ dates: { gte: now, lte: now + 3.days }, status: [:published] })
+          expect(query.total).to eq(1)
 
-        event = subject.last
-        expect(event.available_dates).to include(future_2_day)
+          event = query.execute.to_a.last
+          expect(event.available_dates).to include(future_2_day)
+        end
       end
     end
 
     context 'from 1 to 5 days in future' do
-      let!(:query) do
-        EventsQuery.new({ start_date: now + 3.days,
-                                      end_date: now + 5.days })
-      end
-
-      subject { query.all }
-
       it 'with events from 1 to 5 days' do
-        expect(subject.count).to eq(1)
+        Event.reindex_test
+        Timecop.freeze(Time.current) do
+          query = EventsQuery.new({ start_date: now + 3.days,
+                              end_date: now + 5.days })
+          expect(query.conditions).to eq({ dates: { gte: now + 3.days, lte: now + 5.days }, status: [:published] })
+          expect(query.total).to eq(1)
 
-        event = subject.last
-        expect(event.available_dates).to include(future_4_day)
+          event = query.execute.to_a.last
+          expect(event.available_dates).to include(future_4_day)
+        end
       end
     end
   end

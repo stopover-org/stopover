@@ -28,7 +28,7 @@ class Payment < ApplicationRecord
 
   # MODULES ===============================================================
   include Mixins::PaymentStatuses
-  searchkick
+  include Mixins::Indices
 
   # MONETIZE ==============================================================
   monetize :total_price_cents

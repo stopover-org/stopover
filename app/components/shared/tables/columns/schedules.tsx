@@ -79,6 +79,7 @@ export function useSchedulesColumns(
                 nodes {
                   id
                 }
+                total
               }
               event {
                 id
@@ -106,7 +107,7 @@ export function useSchedulesColumns(
             </Link>
           ),
           date: getHumanDateTime(moment(scheduleRow.scheduledFor)),
-          bookings: scheduleRow.bookings.nodes.length,
+          bookings: scheduleRow.bookings.total,
           attendees: scheduleRow.bookedPlaces,
           status: <TagColor status={scheduleRow.status} />,
           eventId: (

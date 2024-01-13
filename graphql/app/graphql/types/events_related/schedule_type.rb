@@ -12,6 +12,14 @@ module Types
       end
       field :left_places,   Integer
       field :booked_places, Integer
+      field :statistics,    [Types::StatisticsType], null: false
+
+      def statistics
+        [{ name: 'bookings',
+           value: object.bookings.count },
+         { name: 'paid',
+           value: object.bookings.where(status: :paid).count }]
+      end
 
       def booked_places
         object.attendees.where.not(status: :removed).count

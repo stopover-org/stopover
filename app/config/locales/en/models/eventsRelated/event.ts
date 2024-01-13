@@ -54,6 +54,10 @@ export default {
           gastronomic: "Gastronomic event",
         },
       },
+      statistics: {
+        bookings: "Qty bookings",
+        paid: "Qty paid bookings",
+      },
     },
   },
 };

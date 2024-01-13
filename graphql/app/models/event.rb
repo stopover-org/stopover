@@ -60,8 +60,8 @@ class Event < ApplicationRecord
 
   # MODULES ===============================================================
   include Mixins::Translatable
+  include Mixins::Indices
   include AASM
-  searchkick
 
   # MONETIZE =====================================================================
   monetize :attendee_price_per_uom_cents

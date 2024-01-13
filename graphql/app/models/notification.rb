@@ -15,6 +15,10 @@
 #  updated_at      :datetime         not null
 #
 class Notification < ApplicationRecord
+  validates :from, presence: true
+  validates :to, presence: true
+  validates :delivery_method, presence: true
+
   before_validation :set_from
   after_commit :trigger, unless: :sent_at
 

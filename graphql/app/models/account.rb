@@ -67,6 +67,10 @@ class Account < ApplicationRecord
   end
 
   # ENUMS =================================================================
+  enum language: {
+    ru: 'ru',
+    en: 'en'
+  }
 
   # SECURE TOKEN ==========================================================
 

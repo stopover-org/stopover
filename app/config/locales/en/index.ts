@@ -37,6 +37,7 @@ const translation = {
     502: "Something is borken. We are already working on it",
     "502Details": "We are already working on it",
     copied: "Copied",
+    statistics: "Statistics",
   },
   weekdays: {
     monday: "Monday",

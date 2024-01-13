@@ -6,10 +6,8 @@ class BookingQuery
   def initialize(
     params = {},
     after: 0,
-    limit: PER_PAGE,
-    backend: false
+    limit: PER_PAGE
   )
-    @backend = backend
     @params = params
     @conditions = {}
     @offset = after
@@ -17,7 +15,7 @@ class BookingQuery
   end
 
   def execute(offset: 0, limit: @limit)
-    if query && !@backend
+    if query
       Booking.search(query, where: conditions, offset: offset, limit: limit)
     else
       Booking.search(where: conditions, offset: offset, limit: limit)
@@ -35,7 +33,10 @@ class BookingQuery
   def conditions
     @conditions[:status] = @params[:status] if @params[:status].present?
     @conditions[:trip_id] = @params[:trip_id] if @params[:trip_id].present?
-    @conditions[:booked_for] = { gt: @params[:booked_for].at_beginning_of_day, lt: @params[:booked_for].at_end_of_day } if @params[:booked_for].present?
+    if @params[:booked_for].present?
+      @conditions[:booked_for] = { gt: @params[:booked_for].at_beginning_of_day,
+                                   lt: @params[:booked_for].at_end_of_day }
+    end
     @conditions[:event_id] = @params[:event_id] if @params[:event_id].present?
     @conditions[:event_id] = @params[:event_ids] if @params[:event_ids].present?
     @conditions[:schedule_id] = @params[:schedule_id] if @params[:schedule_id].present?
