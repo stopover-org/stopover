@@ -50,23 +50,23 @@ const DashboardScene = ({
         />
       </Grid>
 
-      <Grid lg={8} md={12}>
+      <Grid lg={12} md={12}>
         <BalanceSection
           firmFragmentRef={firm}
           currentUserFragmentRef={currentUser}
         />
       </Grid>
 
-      <Grid lg={4} md={12}>
+      <Grid lg={12} md={12}>
+        <SchedulesSection firmFragmentRef={firm} />
+      </Grid>
+
+      <Grid lg={12} md={12}>
         <PaymentsSection firmFragmentRef={firm} />
       </Grid>
 
-      <Grid lg={8} md={12}>
+      <Grid lg={12} md={12}>
         <BookingsSection firmFragmentRef={firm} />
-      </Grid>
-
-      <Grid lg={4} md={12}>
-        <SchedulesSection firmFragmentRef={firm} />
       </Grid>
 
       <Grid lg={12} md={12}>

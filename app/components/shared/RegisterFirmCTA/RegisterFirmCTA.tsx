@@ -2,13 +2,17 @@ import { AspectRatio, Box, Stack, useTheme } from "@mui/joy";
 import React from "react";
 import { useMediaQuery } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import Link from "../../v2/Link/Link";
-import overlay from "../../backgrounds/overlay.svg";
+import Link from "components/v2/Link/Link";
 
 export const RegisterFirmCTA = () => {
+  const [isServer, setIsServer] = React.useState<boolean>(true);
   const theme = useTheme();
   const isMobileView = useMediaQuery(theme.breakpoints.down("md"));
   const { t } = useTranslation();
+
+  React.useEffect(() => {
+    setIsServer(false);
+  });
 
   return (
     <Box
@@ -29,36 +33,38 @@ export const RegisterFirmCTA = () => {
           alt=""
         />
       </AspectRatio>
-      <Link
-        href="/firms/new"
-        position="absolute"
-        sx={{
-          transform: "translate(-50%, -75%)",
-          top: "75%",
-          left: "50%",
-          color: "white",
-          opacity: 0.95,
-          transition: "opacity 0.1s ease 0s",
-          "&:hover": {
-            opacity: 1,
-          },
-        }}
-        underline={false}
-        fontSize="18px"
-      >
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          width="250px"
-          height="200px"
+      {!isServer && (
+        <Link
+          href="/firms/new"
+          position="absolute"
           sx={{
-            background: `url(${overlay.src}) center center/cover no-repeat`,
+            transform: "translate(-50%, -75%)",
+            top: "75%",
+            left: "50%",
+            color: "white",
+            opacity: 0.95,
+            transition: "opacity 0.1s ease 0s",
+            "&:hover": {
+              opacity: 1,
+            },
           }}
+          underline={false}
+          fontSize="18px"
         >
-          {t("scenes.rootScene.becomePartner")}
-        </Stack>
-      </Link>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            width="250px"
+            height="200px"
+            sx={{
+              background: `url(https://s3.eu-north-1.amazonaws.com/stopoverx.production/Group+1.svg) center center/cover no-repeat`,
+            }}
+          >
+            {t("scenes.rootScene.becomePartner")}
+          </Stack>
+        </Link>
+      )}
     </Box>
   );
 };

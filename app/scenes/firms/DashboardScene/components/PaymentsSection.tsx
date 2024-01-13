@@ -55,7 +55,7 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
 
       <Grid xs={12}>
         <Table
-          data={actualPayments}
+          data={actualPayments.slice(0, 5)}
           headers={headers}
           aria-label="payments table"
         />
