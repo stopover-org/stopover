@@ -13,7 +13,11 @@ import {
   useDetailedAddress,
 } from "../../../lib/hooks/useDetailedAddress";
 
-const AddressFieldset = () => {
+interface AddressFieldsetProps {
+  simple?: boolean;
+}
+
+const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
   const form = useFormContext<CreateFirmFields>();
   const [countryCode, setCountryCode] = React.useState<string | null>(null);
   const [fullAddressCode, setFullAddressCode] = React.useState<
@@ -63,20 +67,22 @@ const AddressFieldset = () => {
       <Grid xs={12}>
         <Typography level="title-lg">{t("address.title")}</Typography>
       </Grid>
-      <Grid xs={12}>
-        <AddressAutocomplete
-          countries={gMapCountryCode ? [gMapCountryCode] : undefined}
-          value={fullAddressField.value}
-          onChange={(value, placeId) => {
-            fullAddressField.onChange(value);
+      {!simple && (
+        <Grid xs={12}>
+          <AddressAutocomplete
+            countries={gMapCountryCode ? [gMapCountryCode] : undefined}
+            value={fullAddressField.value}
+            onChange={(value, placeId) => {
+              fullAddressField.onChange(value);
 
-            setFullAddressCode(placeId);
-          }}
-          label={t("address.fullAddress")}
-          error={fullAddressField.error}
-        />
-      </Grid>
-      <Grid md={6} sm={12}>
+              setFullAddressCode(placeId);
+            }}
+            label={t("address.fullAddress")}
+            error={fullAddressField.error}
+          />
+        </Grid>
+      )}
+      <Grid lg={simple ? 12 : 6} md={simple ? 12 : 6} sm={12} xs={12}>
         <AddressAutocomplete
           types={["country"]}
           value={countryField.value}
@@ -89,37 +95,45 @@ const AddressFieldset = () => {
           error={countryField.error}
         />
       </Grid>
-      <Grid md={6} sm={12}>
-        <AddressAutocomplete
-          types={[
-            "administrative_area_level_1",
-            "administrative_area_level_2",
-            "administrative_area_level_3",
-          ]}
-          countries={gMapCountryCode ? [gMapCountryCode] : undefined}
-          {...regionField}
-          label={t("address.region")}
-        />
-      </Grid>
-      <Grid md={6} sm={12}>
-        <AddressAutocomplete
-          types={["locality", "administrative_area_level_3"]}
-          countries={gMapCountryCode ? [gMapCountryCode] : undefined}
-          {...cityField}
-          label={t("address.city")}
-        />
-      </Grid>
-      <Grid md={6} sm={12}>
-        <AddressAutocomplete
-          types={["address"]}
-          countries={gMapCountryCode ? [gMapCountryCode] : undefined}
-          {...streetField}
-          label={t("address.street")}
-        />
-      </Grid>
-      <Grid md={6} sm={12}>
-        <Input {...houseNumberField} label={t("address.houseNumber")} />
-      </Grid>
+      {!simple && (
+        <Grid md={6} sm={12}>
+          <AddressAutocomplete
+            types={[
+              "administrative_area_level_1",
+              "administrative_area_level_2",
+              "administrative_area_level_3",
+            ]}
+            countries={gMapCountryCode ? [gMapCountryCode] : undefined}
+            {...regionField}
+            label={t("address.region")}
+          />
+        </Grid>
+      )}
+      {!simple && (
+        <Grid md={6} sm={12}>
+          <AddressAutocomplete
+            types={["locality", "administrative_area_level_3"]}
+            countries={gMapCountryCode ? [gMapCountryCode] : undefined}
+            {...cityField}
+            label={t("address.city")}
+          />
+        </Grid>
+      )}
+      {!simple && (
+        <Grid md={6} sm={12}>
+          <AddressAutocomplete
+            types={["address"]}
+            countries={gMapCountryCode ? [gMapCountryCode] : undefined}
+            {...streetField}
+            label={t("address.street")}
+          />
+        </Grid>
+      )}
+      {!simple && (
+        <Grid md={6} sm={12}>
+          <Input {...houseNumberField} label={t("address.houseNumber")} />
+        </Grid>
+      )}
     </Fieldset>
   );
 };

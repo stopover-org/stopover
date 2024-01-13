@@ -14,6 +14,7 @@ const Query = graphql`
   query scene_NewFirm_Query {
     currentUser {
       ...Layout_CurrentUserFragment
+      status
       account {
         id
         firm {
@@ -38,10 +39,15 @@ const Scene = ({
     <SceneWrapper>
       <Layout currentUserFragment={data.currentUser}>
         <AuthGuard
-          accessible={!data.currentUser?.account?.firm?.id}
-          redirectTo="/my-firm/dashboard"
+          accessible={data.currentUser?.status === "active"}
+          redirectTo="/auth/sign_in"
         >
-          <CreateFirmScene />
+          <AuthGuard
+            accessible={!data.currentUser?.account?.firm?.id}
+            redirectTo="/my-firm/dashboard"
+          >
+            <CreateFirmScene />
+          </AuthGuard>
         </AuthGuard>
       </Layout>
     </SceneWrapper>

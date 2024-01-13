@@ -6,7 +6,7 @@ module Mutations
       field :firm, Types::FirmsRelated::FirmType
 
       argument :city,           String,   required: true
-      argument :contact_person, String,   required: true
+      argument :contact_person, String,   required: false
       argument :contacts,       String,   required: false
       argument :country,        String,   required: true
       argument :description,    String,   required: false
@@ -15,7 +15,7 @@ module Mutations
       argument :image,          String,   required: false
       argument :latitude,       Float,    required: false
       argument :longitude,      Float,    required: false
-      argument :primary_email,  String,   required: true
+      argument :primary_email,  String,   required: false
       argument :primary_phone,  String,   required: true
       argument :region,         String,   required: false
       argument :status,         String,   required: false

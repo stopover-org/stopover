@@ -14,7 +14,7 @@ const CreateFirmScene = () => {
       <Breadcrumbs items={[t("forms.editFirm.createYourFirm")]} />
       <FormProvider {...form}>
         <form onSubmit={form.handleSubmit()}>
-          <EditFirmForm />
+          <EditFirmForm simple />
         </form>
       </FormProvider>
     </>
