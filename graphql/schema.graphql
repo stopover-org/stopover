@@ -528,7 +528,7 @@ input CreateFirmInput {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
-  contactPerson: String!
+  contactPerson: String
   contacts: String
   contractAddress: String
   country: String!
@@ -539,7 +539,7 @@ input CreateFirmInput {
   latitude: Float
   longitude: Float
   paymentTypes: [String!]!
-  primaryEmail: String!
+  primaryEmail: String
   primaryPhone: String!
   region: String
   status: String

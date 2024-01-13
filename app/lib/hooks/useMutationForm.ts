@@ -132,7 +132,13 @@ function useMutationForm<
         ref: field.ref,
         value: form.watch(name) as ValueType,
         onChange: (value: PathValue<FieldsType, Path<FieldsType>>) => {
-          form.setValue(name, value, { shouldDirty: true, shouldTouch: true });
+          console.log("onChange", value);
+
+          form.setValue(name, value, {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true,
+          });
         },
         error: form.formState.errors?.[name] as FieldError,
       }),

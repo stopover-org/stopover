@@ -14,7 +14,11 @@ import { capitalize } from "lib/utils/capitalize";
 import SubmitButton from "components/shared/SubmitButton";
 import Editor from "components/v2/Editor";
 
-const EditFirmForm = () => {
+interface EditFirmFormProps {
+  simple?: boolean;
+}
+
+const EditFirmForm = ({ simple = false }: EditFirmFormProps) => {
   const form = useFormContext();
   const paymentTypesField = form.useFormField("paymentTypes");
   const imageField = form.useFormField("image");
@@ -29,25 +33,29 @@ const EditFirmForm = () => {
   return (
     <Grid container spacing={2} lg={8} md={12} sm={12}>
       <Fieldset>
-        <Grid md={6} sm={12}>
+        <Grid lg={simple ? 12 : 6} md={simple ? 12 : 6} sm={12} xs={12}>
           <Input
             {...form.useFormField("title")}
             label={t("models.firm.attributes.title")}
           />
         </Grid>
-        <Grid md={6} sm={12}>
-          <Input
-            {...form.useFormField("contactPerson")}
-            label={t("models.firm.attributes.contactPerson")}
-          />
-        </Grid>
-        <Grid xs={12}>
-          <FileUploader
-            onChange={(images) => imageField.onChange(images[0])}
-            pickerOptions={{ maxFiles: 1 }}
-          />
-        </Grid>
-        <ImagePreviewFields />
+        {!simple && (
+          <>
+            <Grid md={6} sm={12}>
+              <Input
+                {...form.useFormField("contactPerson")}
+                label={t("models.firm.attributes.contactPerson")}
+              />
+            </Grid>
+            <Grid xs={12}>
+              <FileUploader
+                onChange={(images) => imageField.onChange(images[0])}
+                pickerOptions={{ maxFiles: 1 }}
+              />
+            </Grid>
+            <ImagePreviewFields />
+          </>
+        )}
       </Fieldset>
 
       <Fieldset>
@@ -56,7 +64,7 @@ const EditFirmForm = () => {
             {t("forms.editFirm.paymentInformation")}
           </Typography>
         </Grid>
-        <Grid xs={6}>
+        <Grid lg={simple ? 12 : 6} md={simple ? 12 : 6} sm={12} xs={12}>
           <FormControl>
             <FormLabel>{t("models.firm.attributes.paymentType")}</FormLabel>
             <Autocomplete
@@ -90,7 +98,7 @@ const EditFirmForm = () => {
           </FormControl>
         </Grid>
         {includingCrypto && (
-          <Grid md={6} sm={12}>
+          <Grid md={simple ? 12 : 6} sm={12}>
             <Input
               {...contractAddressField}
               label={t("models.firm.attributes.contractAddress")}
@@ -99,7 +107,7 @@ const EditFirmForm = () => {
         )}
       </Fieldset>
 
-      <AddressFieldset />
+      <AddressFieldset simple={simple} />
 
       <Fieldset>
         <Grid xs={12}>
@@ -107,45 +115,51 @@ const EditFirmForm = () => {
             {t("forms.editFirm.contactInformation")}
           </Typography>
         </Grid>
-        <Grid md={6} sm={12}>
+        <Grid lg={simple ? 12 : 6} md={simple ? 12 : 6} sm={12} xs={12}>
           <Input
             {...form.useFormField("primaryEmail")}
             label={t("models.firm.attributes.primaryEmail")}
           />
         </Grid>
-        <Grid md={6} sm={12}>
-          <PhoneInput
-            {...form.useFormField("primaryPhone")}
-            label={t("models.firm.attributes.primaryPhone")}
-          />
-        </Grid>
-        <Grid xs={12}>
-          <ChipsInput
-            {...form.useFormField("contacts")}
-            label={t("models.firm.attributes.contacts")}
-          />
-        </Grid>
-        <Grid xs={12}>
-          <Input
-            {...form.useFormField("website")}
-            label={t("models.firm.attributes.website")}
-          />
-        </Grid>
+        {!simple && (
+          <>
+            <Grid md={6} sm={12}>
+              <PhoneInput
+                {...form.useFormField("primaryPhone")}
+                label={t("models.firm.attributes.primaryPhone")}
+              />
+            </Grid>
+            <Grid xs={12}>
+              <ChipsInput
+                {...form.useFormField("contacts")}
+                label={t("models.firm.attributes.contacts")}
+              />
+            </Grid>
+            <Grid xs={12}>
+              <Input
+                {...form.useFormField("website")}
+                label={t("models.firm.attributes.website")}
+              />
+            </Grid>
+          </>
+        )}
       </Fieldset>
 
-      <Fieldset>
-        <Grid xs={12}>
-          <Typography level="title-lg">
-            {t("models.firm.attributes.description")}
-          </Typography>
-        </Grid>
-        <Grid xs={12}>
-          <Editor
-            value={descriptionField.value}
-            onChange={descriptionField.onChange}
-          />
-        </Grid>
-      </Fieldset>
+      {!simple && (
+        <Fieldset>
+          <Grid xs={12}>
+            <Typography level="title-lg">
+              {t("models.firm.attributes.description")}
+            </Typography>
+          </Grid>
+          <Grid xs={12}>
+            <Editor
+              value={descriptionField.value}
+              onChange={descriptionField.onChange}
+            />
+          </Grid>
+        </Fieldset>
+      )}
 
       <Fieldset>
         <Grid xs={12}>

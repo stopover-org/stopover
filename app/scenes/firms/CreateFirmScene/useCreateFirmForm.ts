@@ -5,7 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useCreateFirmForm_CreateFirmMutation } from "../../../artifacts/useCreateFirmForm_CreateFirmMutation.graphql";
-import { validatePhone } from "../../../lib/utils/validations";
 
 export interface CreateFirmFields {
   title: string;
@@ -51,23 +50,10 @@ function useDefaultValues(): CreateFirmFields {
 }
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Required"),
-  contactPerson: Yup.string(),
   country: Yup.string().required("Required"),
-  region: Yup.string(),
-  city: Yup.string().required("Required"),
-  street: Yup.string(),
-  houseNumber: Yup.string(),
-  fullAddress: Yup.string(),
   primaryEmail: Yup.string().email().required("Required"),
-  primaryPhone: Yup.string()
-    .test("validate-phone", "invalid", validatePhone)
-    .required("Required"),
-  contacts: Yup.string(),
-  website: Yup.string(),
-  description: Yup.string(),
-  image: Yup.string(),
+  image: Yup.string().nullable(),
   paymentTypes: Yup.array().required("Required"),
-  contractAddress: Yup.string().nullable(),
 });
 
 export function useCreateFirmForm() {
@@ -87,10 +73,9 @@ export function useCreateFirmForm() {
         }
       }
     `,
-    ({ image, ...values }) => ({
+    (values) => ({
       input: {
         ...values,
-        image,
       },
     }),
     {
@@ -98,7 +83,7 @@ export function useCreateFirmForm() {
       resolver: yupResolver(validationSchema),
       onCompleted(result) {
         if (result.createFirm?.firm?.id) {
-          router.replace("/my-firm");
+          router.replace("/my-firm/dashboard");
         }
       },
     }

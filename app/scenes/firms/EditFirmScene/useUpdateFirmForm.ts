@@ -3,10 +3,10 @@ import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useUpdateFirmForm_FirmFragment$key } from "../../../artifacts/useUpdateFirmForm_FirmFragment.graphql";
-import { useUpdateFirmForm_UpdateFirmMutation } from "../../../artifacts/useUpdateFirmForm_UpdateFirmMutation.graphql";
-import { validatePhone } from "../../../lib/utils/validations";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { useUpdateFirmForm_FirmFragment$key } from "artifacts/useUpdateFirmForm_FirmFragment.graphql";
+import { useUpdateFirmForm_UpdateFirmMutation } from "artifacts/useUpdateFirmForm_UpdateFirmMutation.graphql";
+import { validatePhone } from "lib/utils/validations";
 
 interface UpdateFirmFields {
   title: string;
@@ -77,26 +77,28 @@ function useDefaultValues(
   );
 }
 
-const validationSchema = Yup.object().shape({
-  title: Yup.string().required("Required"),
-  contactPerson: Yup.string().nullable(),
-  country: Yup.string().required("Required"),
-  region: Yup.string().nullable(),
-  city: Yup.string().required("Required"),
-  street: Yup.string().nullable(),
-  houseNumber: Yup.string().nullable(),
-  fullAddress: Yup.string().nullable(),
-  primaryEmail: Yup.string().email().required("Required"),
-  primaryPhone: Yup.string()
-    .test("validate-phone", "invalid", validatePhone)
-    .required("Required"),
-  contacts: Yup.string().nullable(),
-  website: Yup.string().nullable(),
-  description: Yup.string().nullable(),
-  image: Yup.string().nullable(),
-  paymentTypes: Yup.array().required("Required"),
-  contractAddress: Yup.string().nullable(),
-});
+const validationSchema = Yup.object()
+  .shape({
+    title: Yup.string().required("Required"),
+    contactPerson: Yup.string().nullable(),
+    country: Yup.string().required("Required"),
+    region: Yup.string().nullable(),
+    city: Yup.string().nullable(),
+    street: Yup.string().nullable(),
+    houseNumber: Yup.string().nullable(),
+    fullAddress: Yup.string().nullable(),
+    primaryEmail: Yup.string().email().required("Required"),
+    primaryPhone: Yup.string()
+      .test("validate-phone", "Invalid", validatePhone)
+      .required("Required"),
+    contacts: Yup.string().nullable(),
+    website: Yup.string().nullable(),
+    description: Yup.string().nullable(),
+    image: Yup.string().nullable(),
+    paymentTypes: Yup.array().required("Required"),
+    contractAddress: Yup.string().nullable(),
+  })
+  .required("Required");
 
 export function useUpdateFirmForm(
   formFragmentRef: useUpdateFirmForm_FirmFragment$key
@@ -117,10 +119,9 @@ export function useUpdateFirmForm(
         }
       }
     `,
-    ({ image, ...values }) => ({
+    (values) => ({
       input: {
         ...values,
-        image,
       },
     }),
     {
