@@ -17,6 +17,8 @@ function useFormContext<FieldsType extends FieldValues>() {
   function useFormField<ValueType = any>(name: Path<FieldsType>) {
     const field = form.register(name);
 
+    console.log(form.formState.errors);
+
     return React.useMemo(
       () => ({
         ...field,
@@ -25,7 +27,7 @@ function useFormContext<FieldsType extends FieldValues>() {
         onChange: (value: PathValue<FieldsType, Path<FieldsType>>) => {
           form.setValue(name, value, { shouldDirty: true, shouldTouch: true });
         },
-        error: form.formState.errors?.[name] as FieldError,
+        error: form.control._formState.errors?.[name] as FieldError,
       }),
       [field, form.watch, form.setValue, form.formState.errors]
     );
