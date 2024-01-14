@@ -305,6 +305,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_101458) do
     t.string "ref_number"
     t.string "payment_types", default: [], null: false, array: true
     t.integer "margin", default: 0
+    t.string "contract_address"
     t.bigint "address_id"
     t.index ["address_id"], name: "index_firms_on_address_id"
     t.index ["ref_number"], name: "index_firms_on_ref_number", unique: true

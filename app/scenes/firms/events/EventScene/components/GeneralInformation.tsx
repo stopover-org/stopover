@@ -56,6 +56,8 @@ const GeneralInformation = ({
           city
           street
           houseNumber
+          latitude
+          longitude
         }
         depositAmount {
           cents

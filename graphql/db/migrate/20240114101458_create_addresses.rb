@@ -49,8 +49,6 @@ class CreateAddresses < ActiveRecord::Migration[7.0]
       t.remove :house_number, type: :string
       t.remove :latitude, type: :float
       t.remove :longitude, type: :float
-
-      t.remove :contract_address, type: :string
     end
 
     change_table :accounts do |t|

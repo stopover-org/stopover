@@ -1,24 +1,20 @@
 import React from "react";
 import { Grid } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import Fieldset from "../../v2/Fieldset/Fieldset";
-import Typography from "../../v2/Typography/Typography";
-import AddressAutocomplete from "../../v2/AddressAutocomplete/AddressAutocomplete";
-import Input from "../../v2/Input/Input";
-import useFormContext from "../../../lib/hooks/useFormContext";
-import { CreateFirmFields } from "../../../scenes/firms/CreateFirmScene/useCreateFirmForm";
-import { usePlaceIdFromGMaps } from "../../../lib/hooks/usePlaceIdFromGMaps";
-import {
-  IAddress,
-  useDetailedAddress,
-} from "../../../lib/hooks/useDetailedAddress";
+import Fieldset from "components/v2/Fieldset/Fieldset";
+import Typography from "components/v2/Typography/Typography";
+import AddressAutocomplete from "components/v2/AddressAutocomplete/AddressAutocomplete";
+import Input from "components/v2/Input/Input";
+import useFormContext from "lib/hooks/useFormContext";
+import { usePlaceIdFromGMaps } from "lib/hooks/usePlaceIdFromGMaps";
+import { IAddress, useDetailedAddress } from "lib/hooks/useDetailedAddress";
 
 interface AddressFieldsetProps {
   simple?: boolean;
 }
 
 const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
-  const form = useFormContext<CreateFirmFields>();
+  const form = useFormContext<any>();
   const [countryCode, setCountryCode] = React.useState<string | null>(null);
   const [fullAddressCode, setFullAddressCode] = React.useState<
     string | undefined

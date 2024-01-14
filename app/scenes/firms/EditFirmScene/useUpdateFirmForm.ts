@@ -18,6 +18,7 @@ interface UpdateFirmFields {
   description: string | null;
   image: string | null;
   paymentTypes: string[];
+  contractAddress: string | null;
 }
 
 function useDefaultValues(
@@ -35,6 +36,7 @@ function useDefaultValues(
         primaryPhone
         title
         website
+        contractAddress
       }
     `,
     updateFirmFragmentRef
@@ -51,6 +53,7 @@ function useDefaultValues(
       description: firm?.description || null,
       image: firm?.image || null,
       paymentTypes: firm?.paymentTypes.map(String) || [],
+      contractAddress: firm?.contractAddress || null,
     }),
     [firm]
   );
@@ -68,6 +71,7 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().nullable(),
   image: Yup.string().nullable(),
   paymentTypes: Yup.array().required("Required"),
+  contractAddress: Yup.string().nullable(),
 });
 
 export function useUpdateFirmForm(

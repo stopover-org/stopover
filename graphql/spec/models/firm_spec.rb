@@ -8,6 +8,7 @@
 #  business_type     :string           default("individual"), not null
 #  contact_person    :string
 #  contacts          :text
+#  contract_address  :string
 #  description       :text
 #  margin            :integer          default(0)
 #  payment_types     :string           default([]), not null, is an Array

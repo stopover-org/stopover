@@ -882,6 +882,7 @@ type Firm implements Node {
   ): BookingConnection!
   contactPerson: String
   contacts: String
+  contractAddress: String
   description: String
   event(id: ID!): Event
   events(

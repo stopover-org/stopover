@@ -24,6 +24,7 @@ const BalanceSection = ({
     graphql`
       fragment BalanceSection_FirmFragment on Firm {
         paymentTypes
+        contractAddress
         balance {
           totalAmount {
             cents
