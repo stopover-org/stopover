@@ -1,17 +1,25 @@
-import { Grid, Stack, useTheme } from "@mui/joy";
+import {
+  Box,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  Tooltip,
+  useTheme,
+} from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import { useMediaQuery } from "@mui/material";
-import Section from "../../../../components/v2/Section";
-import Typography from "../../../../components/v2/Typography";
-import { FirmSection_FirmFragment$key } from "../../../../artifacts/FirmSection_FirmFragment.graphql";
-import Button from "../../../../components/v2/Button";
-import Link from "../../../../components/v2/Link";
-import Tag from "../../../../components/v2/Tag";
-import VerifyFirm from "../../../../components/shared/VerifyFirm";
-import { FirmSection_CurrentUserFragment$key } from "../../../../artifacts/FirmSection_CurrentUserFragment.graphql";
-import useStatusColor from "../../../../lib/hooks/useStatusColor";
+import Section from "components/v2/Section";
+import Typography from "components/v2/Typography";
+import { FirmSection_FirmFragment$key } from "artifacts/FirmSection_FirmFragment.graphql";
+import Button from "components/v2/Button";
+import Link from "components/v2/Link";
+import Tag from "components/v2/Tag";
+import VerifyFirm from "components/shared/VerifyFirm";
+import { FirmSection_CurrentUserFragment$key } from "artifacts/FirmSection_CurrentUserFragment.graphql";
+import useStatusColor from "lib/hooks/useStatusColor";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface FirmSectionProps {
   firmFragmentRef: FirmSection_FirmFragment$key;
@@ -28,19 +36,20 @@ const FirmSection = ({
       fragment FirmSection_FirmFragment on Firm {
         title
         contactPerson
-        fullAddress
-        country
-        region
-        city
-        street
-        houseNumber
         status
+        address {
+          fullAddress
+          country
+          region
+          city
+          street
+          houseNumber
+        }
       }
     `,
     firmFragmentRef
   );
   const theme = useTheme();
-  const isMobileView = useMediaQuery(theme.breakpoints.down("md"));
   const currentUser = useFragment(
     graphql`
       fragment FirmSection_CurrentUserFragment on User {
@@ -92,10 +101,29 @@ const FirmSection = ({
         </Stack>
       </Grid>
       <Grid xs={12}>{firm.contactPerson}</Grid>
-      <Grid xs={12}>{firm.fullAddress}</Grid>
+
       <Grid xs={12}>
-        {firm.country} {firm.region} {firm.city} {firm.street}{" "}
-        {firm.houseNumber}
+        <Divider sx={{ margin: 2 }} />
+      </Grid>
+
+      <Grid xs={12}>
+        <Typography level="h4">Address</Typography>
+      </Grid>
+      <Grid xs={12}>
+        <Stack direction="row" justifyContent="space-between">
+          <Box>{firm.address?.fullAddress || t("general.noData")}</Box>
+          <Box>
+            <Tooltip title={t("scenes.firms.dashboardScene.changeAddress")}>
+              <IconButton size="sm" color="primary" variant="outlined">
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Stack>
+      </Grid>
+      <Grid xs={12}>
+        {firm.address?.country} {firm.address?.region} {firm.address?.city}{" "}
+        {firm.address?.street} {firm.address?.houseNumber}
       </Grid>
     </Section>
   );

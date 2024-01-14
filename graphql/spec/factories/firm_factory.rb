@@ -6,31 +6,24 @@
 #
 #  id                :bigint           not null, primary key
 #  business_type     :string           default("individual"), not null
-#  city              :string
 #  contact_person    :string
 #  contacts          :text
-#  contract_address  :string
-#  country           :string
 #  description       :text
-#  full_address      :string
-#  house_number      :string
-#  latitude          :float
-#  longitude         :float
 #  margin            :integer          default(0)
 #  payment_types     :string           default([]), not null, is an Array
 #  postal_code       :string
 #  primary_email     :string
 #  primary_phone     :string
 #  ref_number        :string
-#  region            :string
 #  status            :string           default("pending")
-#  street            :string
 #  title             :string           not null
 #  website           :string
+#  address_id        :bigint
 #  stripe_account_id :string
 #
 # Indexes
 #
+#  index_firms_on_address_id  (address_id)
 #  index_firms_on_ref_number  (ref_number) UNIQUE
 #
 
@@ -39,8 +32,7 @@ FactoryBot.define do
     title { Faker::App.name }
     primary_email { Faker::Internet.email }
     margin { 10 }
-    city { 'Belgrade' }
-    country { 'Serbia' }
+    address { build(:address) }
 
     transient do
       accounts { create_list(:account, 1) }

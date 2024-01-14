@@ -22,11 +22,14 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
         title
         description
         image
-        fullAddress
-        country
-        city
-        street
-        houseNumber
+        address {
+          fullAddress
+          country
+          region
+          city
+          street
+          houseNumber
+        }
         ...FirmScene_EventPaginationFragment
       }
     `,
@@ -65,7 +68,7 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
     <Grid container padding={2} spacing={2} sm={12} md={12}>
       <Grid lg={12} sm={12}>
         <Typography level="h3">{firm.title}</Typography>
-        <Typography>{firm.fullAddress}</Typography>
+        <Typography>{firm.address?.fullAddress}</Typography>
       </Grid>
       <Grid lg={3} md={3} sm={12} xs={12}>
         {firm.image && (

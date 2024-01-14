@@ -28,10 +28,12 @@ function useDefaultValues(
         primaryEmail
         primaryPhone
         name
-        country
-        city
-        region
         dateOfBirth
+        address {
+          country
+          region
+          city
+        }
       }
     `,
     accountFragmentRef

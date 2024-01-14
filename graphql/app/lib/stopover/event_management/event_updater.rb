@@ -9,11 +9,30 @@ module Stopover
 
       def execute(**args)
         Event.transaction do
+          @event.address = Address.new unless @event.address
+          @event.address.assign_attributes(args.slice(:full_address,
+                                                      :country,
+                                                      :region,
+                                                      :city,
+                                                      :street,
+                                                      :house_number,
+                                                      :latitude,
+                                                      :longitude))
+          @event.address.save!
+
           @event.assign_attributes(args.except(:recurring_dates,
                                                :single_dates,
                                                :event_options,
                                                :images,
-                                               :booking_cancellation_options))
+                                               :booking_cancellation_options,
+                                               :full_address,
+                                               :country,
+                                               :region,
+                                               :city,
+                                               :street,
+                                               :house_number,
+                                               :latitude,
+                                               :longitude))
 
           if args[:event_options].present?
             args[:event_options].map do |option|

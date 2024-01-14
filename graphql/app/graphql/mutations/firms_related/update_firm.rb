@@ -5,37 +5,43 @@ module Mutations
     class UpdateFirm < BaseMutation
       field :firm, Types::FirmsRelated::FirmType
 
-      argument :city,           String, required: false
+      argument :city, String, required: false
       argument :contact_person, String, required: false
-      argument :contacts,       String, required: false
-      argument :country,        String, required: false
-      argument :description,    String, required: false
-      argument :full_address,   String, required: false
-      argument :house_number,   String, required: false
-      argument :image,          String, required: false
-      argument :latitude,       Float,  required: false
-      argument :longitude,      Float,  required: false
-      argument :primary_email,  String, required: false
-      argument :primary_phone,  String, required: false
-      argument :region,         String, required: false
-      argument :status,         String, required: false
-      argument :street,         String, required: false
-      argument :title,          String, required: false
-      argument :website,        String, required: false
-      argument :payment_types,  [String], required: false
+      argument :contacts, String, required: false
+      argument :country, String, required: false
+      argument :description, String, required: false
+      argument :full_address, String, required: false
+      argument :house_number, String, required: false
+      argument :image, String, required: false
+      argument :latitude, Float, required: false
+      argument :longitude, Float, required: false
+      argument :primary_email, String, required: false
+      argument :primary_phone, String, required: false
+      argument :region, String, required: false
+      argument :status, String, required: false
+      argument :street, String, required: false
+      argument :title, String, required: false
+      argument :website, String, required: false
+      argument :payment_types, [String], required: false
       argument :contract_address, String, required: false
 
       def resolve(**args)
         firm = context[:current_user].account.current_firm
-        args[:country] = ISO3166::Country.find_country_by_any_name(args[:country]).iso_short_name if args[:country]
-        firm.update!(args.except(:image))
 
-        firm.image.purge if args[:image].nil?
+        Firm.transaction do
+          args[:country] = ISO3166::Country.find_country_by_any_name(args[:country])&.iso_short_name if args[:country]
+          firm.update!(args.except(:image, :full_address, :country, :region, :city, :street, :house_number, :latitude, :longitude))
+          firm.address = Address.new unless firm.address
+          firm.address.assign_attributes(args.slice(:full_address, :country, :region, :city, :street, :house_number, :latitude, :longitude))
+          firm.address.save!
 
-        if args[:image].present?
-          io_object = Stopover::FilesSupport.url_to_io(args[:image])
+          firm.image.purge if args[:image].nil?
 
-          firm.image.attach(io_object)
+          if args[:image].present?
+            io_object = Stopover::FilesSupport.url_to_io(args[:image])
+
+            firm.image.attach(io_object)
+          end
         end
 
         { firm: firm,

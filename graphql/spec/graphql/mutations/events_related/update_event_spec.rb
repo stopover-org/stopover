@@ -19,12 +19,14 @@ RSpec.describe Mutations::EventsRelated::UpdateEvent, type: :mutation do
             durationTime
             endDate
 
-            houseNumber
-            street
-            city
-            country
-            region
-            fullAddress
+            address {
+              houseNumber
+              street
+              city
+              country
+              region
+              fullAddress
+            }
 
             schedules {
               nodes {
@@ -145,13 +147,6 @@ RSpec.describe Mutations::EventsRelated::UpdateEvent, type: :mutation do
       durationTime: '2h 30m',
       endDate: nil,
 
-      houseNumber: '10',
-      street: 'Makedonska 21',
-      city: 'Beograd',
-      country: 'Serbia',
-      region: nil,
-      fullAddress: 'Impact Hub Beograd',
-
       requiresContract: true,
       requiresPassport: true,
       requiresCheckIn: true,
@@ -164,6 +159,17 @@ RSpec.describe Mutations::EventsRelated::UpdateEvent, type: :mutation do
       attendeePricePerUom: 1100,
 
       eventOptions: []
+    }
+  end
+
+  let(:expected_address) do
+    {
+      houseNumber: '10',
+      street: 'Makedonska 21',
+      city: 'Beograd',
+      country: 'Serbia',
+      region: nil,
+      fullAddress: 'Impact Hub Beograd'
     }
   end
 
@@ -180,6 +186,10 @@ RSpec.describe Mutations::EventsRelated::UpdateEvent, type: :mutation do
 
       expected.except(:organizerPricePerUom, :attendeePricePerUom, :depositAmount, :eventOptions, :bookingCancellationOptions).each do |key, value|
         expect(result.dig(:data, :updateEvent, :event, key)).to eq(value)
+      end
+
+      expected_address.each do |key, value|
+        expect(result.dig(:data, :updateEvent, :event, :address, key)).to eq(value)
       end
 
       expect(result.dig(:data, :updateEvent, :notification)).to eq('Event updated')
@@ -264,26 +274,26 @@ RSpec.describe Mutations::EventsRelated::UpdateEvent, type: :mutation do
         before do
           input[:eventOptions] = [{
             title: 'Evt Opt #1',
-            organizerPriceCents: 100,
-            builtIn: true
+                                    organizerPriceCents: 100,
+                                    builtIn: true
           }, {
             title: 'Evt Opt #2',
-            organizerPriceCents: 100,
-            builtIn: true,
-            forAttendee: true
+                                    organizerPriceCents: 100,
+                                    builtIn: true,
+                                    forAttendee: true
           }]
 
           expected[:eventOptions] = [{
             title: 'Evt Opt #1',
-            attendeePrice: 110,
-            organizerPrice: 100,
-            builtIn: true
+                                       attendeePrice: 110,
+                                       organizerPrice: 100,
+                                       builtIn: true
           }, {
             title: 'Evt Opt #2',
-            attendeePrice: 110,
-            organizerPrice: 100,
-            builtIn: true,
-            forAttendee: true
+                                       attendeePrice: 110,
+                                       organizerPrice: 100,
+                                       builtIn: true,
+                                       forAttendee: true
           }]
         end
         include_examples :successful
@@ -293,22 +303,22 @@ RSpec.describe Mutations::EventsRelated::UpdateEvent, type: :mutation do
         before do
           input[:bookingCancellationOptions] = [{
             penaltyPriceCents: 10,
-            deadline: 24,
-            description: 'description'
+                                                  deadline: 24,
+                                                  description: 'description'
           }, {
             penaltyPriceCents: 20,
-            deadline: 48,
-            description: 'description'
+                                                  deadline: 48,
+                                                  description: 'description'
           }]
 
           expected[:bookingCancellationOptions] = [{
             penaltyPrice: 20,
-              deadline: 48,
-              description: 'description'
+                                                     deadline: 48,
+                                                     description: 'description'
           }, {
             penaltyPrice: 10,
-            deadline: 24,
-            description: 'description'
+                                                     deadline: 24,
+                                                     description: 'description'
           }]
         end
         include_examples :successful

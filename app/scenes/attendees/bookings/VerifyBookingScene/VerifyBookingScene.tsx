@@ -36,7 +36,9 @@ const VerifyBookingScene = ({
         event {
           title
           images
-          fullAddress
+          address {
+            fullAddress
+          }
           attendeePricePerUom {
             cents
             currency {
@@ -112,7 +114,7 @@ const VerifyBookingScene = ({
           </CardOverflow>
           <CardContent>
             <Typography level="title-lg">{booking.event.title}</Typography>
-            <Typography>{booking.event.fullAddress}</Typography>
+            <Typography>{booking.event.address?.fullAddress}</Typography>
             <BookingSummary bookingFragmentRef={booking} readonly />
             <Checkout bookingFragmentRef={booking} />
           </CardContent>

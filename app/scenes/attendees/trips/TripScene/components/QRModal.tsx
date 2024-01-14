@@ -27,7 +27,9 @@ const QRModal = ({ bookingFragmentRef, opened, onClose }: QRModalProps) => {
       fragment QRModal_FragmentReference on Booking {
         id
         event {
-          fullAddress
+          address {
+            fullAddress
+          }
         }
       }
     `,
@@ -58,7 +60,7 @@ const QRModal = ({ bookingFragmentRef, opened, onClose }: QRModalProps) => {
           <QRCode value={QRUrl} style={{ width: "100%" }} />
 
           <Divider />
-          <Typography>{booking.event.fullAddress}</Typography>
+          <Typography>{booking.event.address?.fullAddress}</Typography>
         </DialogContent>
       </ModalDialog>
     </Modal>

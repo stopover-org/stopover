@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import Fieldset from "components/v2/Fieldset/Fieldset";
 import Input from "components/v2/Input/Input";
 import FileUploader from "components/v2/FileUploader/FileUploader";
-import AddressFieldset from "components/shared/AddressFieldset";
 import Typography from "components/v2/Typography/Typography";
 import PhoneInput from "components/v2/PhoneInput/PhoneInput";
 import ChipsInput from "components/v2/ChipsInput/ChipsInput";
@@ -106,8 +105,6 @@ const EditFirmForm = ({ simple = false }: EditFirmFormProps) => {
           </Grid>
         )}
       </Fieldset>
-
-      <AddressFieldset simple={simple} />
 
       <Fieldset>
         <Grid xs={12}>

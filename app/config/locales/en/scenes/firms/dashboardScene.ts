@@ -9,6 +9,7 @@ export default {
         withdraw: "Withdraw all",
         payoutSettings: "Payout settings",
         connectedStripeAccounts: "Connected Stripe Accounts",
+        changeAddress: "Change address",
       },
     },
   },

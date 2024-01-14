@@ -11,12 +11,6 @@ import { validatePhone } from "lib/utils/validations";
 interface UpdateFirmFields {
   title: string;
   contactPerson: string | null;
-  country: string | null;
-  region: string | null;
-  city: string | null;
-  street: string | null;
-  houseNumber: string | null;
-  fullAddress: string | null;
   primaryEmail: string;
   primaryPhone: string | null;
   contacts: string | null;
@@ -24,7 +18,6 @@ interface UpdateFirmFields {
   description: string | null;
   image: string | null;
   paymentTypes: string[];
-  contractAddress: string | null;
 }
 
 function useDefaultValues(
@@ -33,22 +26,15 @@ function useDefaultValues(
   const firm = useFragment<useUpdateFirmForm_FirmFragment$key>(
     graphql`
       fragment useUpdateFirmForm_FirmFragment on Firm {
-        city
         contactPerson
         contacts
-        country
         description
-        fullAddress
-        houseNumber
         image
         paymentTypes
         primaryEmail
         primaryPhone
-        region
-        street
         title
         website
-        contractAddress
       }
     `,
     updateFirmFragmentRef
@@ -58,47 +44,31 @@ function useDefaultValues(
     () => ({
       title: firm?.title || "",
       contactPerson: firm?.contactPerson || null,
-      country: firm?.country || null,
-      region: firm?.region || null,
-      street: firm?.street || null,
-      fullAddress: firm?.fullAddress || null,
       primaryEmail: firm?.primaryEmail || "",
       primaryPhone: firm?.primaryPhone || null,
       contacts: firm?.contacts || "",
       website: firm?.website || null,
       description: firm?.description || null,
-      city: firm?.city || null,
-      houseNumber: firm?.houseNumber || null,
       image: firm?.image || null,
       paymentTypes: firm?.paymentTypes.map(String) || [],
-      contractAddress: firm?.contractAddress || null,
     }),
     [firm]
   );
 }
 
-const validationSchema = Yup.object()
-  .shape({
-    title: Yup.string().required("Required"),
-    contactPerson: Yup.string().nullable(),
-    country: Yup.string().required("Required"),
-    region: Yup.string().nullable(),
-    city: Yup.string().nullable(),
-    street: Yup.string().nullable(),
-    houseNumber: Yup.string().nullable(),
-    fullAddress: Yup.string().nullable(),
-    primaryEmail: Yup.string().email().required("Required"),
-    primaryPhone: Yup.string()
-      .test("validate-phone", "Invalid", validatePhone)
-      .required("Required"),
-    contacts: Yup.string().nullable(),
-    website: Yup.string().nullable(),
-    description: Yup.string().nullable(),
-    image: Yup.string().nullable(),
-    paymentTypes: Yup.array().required("Required"),
-    contractAddress: Yup.string().nullable(),
-  })
-  .required("Required");
+const validationSchema = Yup.object().shape({
+  title: Yup.string().required("Required"),
+  contactPerson: Yup.string().nullable(),
+  primaryEmail: Yup.string().email().required("Required"),
+  primaryPhone: Yup.string()
+    .test("validate-phone", "Invalid", validatePhone)
+    .required("Required"),
+  contacts: Yup.string().nullable(),
+  website: Yup.string().nullable(),
+  description: Yup.string().nullable(),
+  image: Yup.string().nullable(),
+  paymentTypes: Yup.array().required("Required"),
+});
 
 export function useUpdateFirmForm(
   formFragmentRef: useUpdateFirmForm_FirmFragment$key

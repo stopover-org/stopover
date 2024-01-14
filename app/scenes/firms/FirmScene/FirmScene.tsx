@@ -19,24 +19,19 @@ import RemoveFirm from "./components/RemoveFirm";
 interface FirmSceneProps {
   firmFragmentRef: FirmScene_FirmFragment$key;
 }
+
 const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
   const firm = useFragment<FirmScene_FirmFragment$key>(
     graphql`
       fragment FirmScene_FirmFragment on Firm {
-        city
         contactPerson
         contacts
-        country
         description
-        fullAddress
-        houseNumber
         image
         paymentTypes
         primaryEmail
         primaryPhone
-        region
         status
-        street
         title
         website
       }
@@ -89,59 +84,6 @@ const FirmScene = ({ firmFragmentRef }: FirmSceneProps) => {
             {firm.image && (
               <ImagesPreview images={[firm.image]} width={250} readonly />
             )}
-          </Grid>
-        </Fieldset>
-
-        <Fieldset>
-          <Grid xs={12}>
-            <Typography level="h3">{t("address.title")}</Typography>
-            <Divider sx={{ margin: "5px" }} />
-          </Grid>
-          <Grid md={2} xs={12}>
-            <Typography level="title-lg">
-              {t("address.country")}:&nbsp;
-            </Typography>
-          </Grid>
-          <Grid md={4} xs={12}>
-            <Typography textAlign={textAlign}>{firm.country}</Typography>
-          </Grid>
-          <Grid md={2} xs={12}>
-            <Typography level="title-lg">
-              {t("address.region")}:&nbsp;
-            </Typography>
-          </Grid>
-          <Grid md={4} xs={12}>
-            <Typography textAlign={textAlign}>{firm.region}</Typography>
-          </Grid>
-          <Grid md={2} xs={12}>
-            <Typography level="title-lg">{t("address.city")}:&nbsp;</Typography>
-          </Grid>
-          <Grid md={4} xs={12}>
-            <Typography textAlign={textAlign}>{firm.city}</Typography>
-          </Grid>
-          <Grid md={2} xs={12}>
-            <Typography level="title-lg">
-              {t("address.street")}:&nbsp;
-            </Typography>
-          </Grid>
-          <Grid md={4} xs={12}>
-            <Typography textAlign={textAlign}>{firm.street}</Typography>
-          </Grid>
-          <Grid md={2} xs={12}>
-            <Typography level="title-lg">
-              {t("address.houseNumber")}:&nbsp;
-            </Typography>
-          </Grid>
-          <Grid md={4} xs={12}>
-            <Typography textAlign={textAlign}>{firm.houseNumber}</Typography>
-          </Grid>
-          <Grid md={2} xs={12}>
-            <Typography level="title-lg">
-              {t("address.fullAddress")}:&nbsp;
-            </Typography>
-          </Grid>
-          <Grid md={4} xs={12}>
-            <Typography textAlign={textAlign}>{firm.fullAddress}</Typography>
           </Grid>
         </Fieldset>
 

@@ -1,16 +1,15 @@
 import React from "react";
 import { Grid, Option, Stack } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import Fieldset from "../../../v2/Fieldset";
-import Input from "../../../v2/Input";
-import FileUploader from "../../../v2/FileUploader";
-import AddressFieldset from "../../AddressFieldset";
-import useFormContext from "../../../../lib/hooks/useFormContext";
-import Typography from "../../../v2/Typography";
-import Checkbox from "../../../v2/Checkbox";
-import Select from "../../../v2/Select";
-import ImagesPreviewFields from "../../ImagesPreviewFields";
-import Editor from "../../../v2/Editor";
+import Fieldset from "components/v2/Fieldset";
+import Input from "components/v2/Input";
+import FileUploader from "components/v2/FileUploader";
+import useFormContext from "lib/hooks/useFormContext";
+import Typography from "components/v2/Typography";
+import Checkbox from "components/v2/Checkbox";
+import Select from "components/v2/Select";
+import ImagesPreviewFields from "components/shared/ImagesPreviewFields";
+import Editor from "components/v2/Editor";
 
 const GeneralStep = () => {
   const form = useFormContext();
@@ -47,7 +46,7 @@ const GeneralStep = () => {
         </Grid>
         <ImagesPreviewFields />
       </Fieldset>
-      <AddressFieldset />
+
       <Fieldset>
         <Grid xs={12}>
           <Typography level="title-lg">

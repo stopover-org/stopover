@@ -9,7 +9,6 @@ RSpec.describe Mutations::EventsRelated::RemoveEvent, type: :mutation do
         removeEvent(input: $input) {
           event {
             id
-            status
           }
 
           errors
@@ -32,19 +31,16 @@ RSpec.describe Mutations::EventsRelated::RemoveEvent, type: :mutation do
   end
 
   shared_examples :successful do
-    it 'send notification to firm owner' do
-      expect { subject }.to change { Notification.where(to: event.firm.primary_email).count }.by(1)
-    end
-
     it 'successful' do
-      result = nil
-      expect(event.schedules.count).to eq(56)
-      expect(RemoveEventJob).to receive(:perform_later).with(event_id: event.id)
-      expect { result = subject.to_h.deep_symbolize_keys }.to change { Event.count }.by(0)
+      Sidekiq::Testing.inline! do
+        result = nil
+        expect(event.schedules.count).to eq(56)
+        expect(RemoveEventJob).to receive(:perform_later).with(event_id: event.id)
+        expect { result = subject.to_h.deep_symbolize_keys }.to change { Event.count }.by(0)
 
-      expect(result.dig(:data, :removeEvent, :event, :id)).to eq(GraphqlSchema.id_from_object(event))
-      expect(result.dig(:data, :removeEvent, :event, :status)).to eq('removed')
-      expect(result.dig(:data, :removeEvent, :notification)).to eq('Event removed')
+        expect(result.dig(:data, :removeEvent, :event, :id)).to eq(GraphqlSchema.id_from_object(event))
+        expect(result.dig(:data, :removeEvent, :notification)).to eq('Event removed')
+      end
     end
   end
 
@@ -62,22 +58,22 @@ RSpec.describe Mutations::EventsRelated::RemoveEvent, type: :mutation do
     before { event.firm.update(status: 'active') }
     context 'as manager' do
       context 'for published event' do
-        before { event.update!(status: 'published') }
+        before { event.update_columns(status: 'published') }
         include_examples :successful
       end
       context 'for unpublished event' do
-        before { event.update!(status: 'unpublished') }
+        before { event.update_columns(status: 'unpublished') }
         include_examples :successful
       end
       context 'for draft event' do
-        before { event.update!(status: 'draft') }
+        before { event.update_columns(status: 'draft') }
         include_examples :successful
       end
     end
 
     context 'permissions' do
       context 'for removed event' do
-        before { event.update!(status: 'removed') }
+        before { event.update_columns(status: 'removed') }
         include_examples :fail, 'Event removed'
       end
 

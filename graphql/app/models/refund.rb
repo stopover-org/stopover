@@ -50,29 +50,30 @@ class Refund < ApplicationRecord
   belongs_to :parent_refund, class_name: 'Refund', optional: true, foreign_key: 'refund_id', inverse_of: :related_refunds
 
   # HAS_ONE ASSOCIATIONS ==================================================
-
+  #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
-
+  #
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :related_refunds, class_name: 'Refund'
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
-
+  #
   # AASM STATES ===========================================================
-
+  #
   # ENUMS =================================================================
-
+  #
   # SECURE TOKEN ==========================================================
-
+  #
   # SECURE PASSWORD =======================================================
-
+  #
   # ATTACHMENTS ===========================================================
-
+  #
   # RICH_TEXT =============================================================
-
+  #
   # VALIDATIONS ===========================================================
   validates :refund_amount_cents, presence: true
   validates :penalty_amount_cents, presence: true
+  validates :status, presence: true
 
   # CALLBACKS =============================================================
   before_validation :adjust_references

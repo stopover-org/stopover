@@ -6,40 +6,34 @@
 #
 #  id                            :bigint           not null, primary key
 #  attendee_price_per_uom_cents  :decimal(, )      default(0.0)
-#  city                          :string
-#  country                       :string
 #  deposit_amount_cents          :decimal(, )      default(0.0), not null
 #  description                   :text             not null
 #  duration_time                 :string
 #  end_date                      :datetime
 #  event_type                    :string           not null
-#  full_address                  :string
-#  house_number                  :string
 #  landmark                      :string
 #  language                      :string           default("en")
-#  latitude                      :float
-#  longitude                     :float
 #  max_attendees                 :integer
 #  min_attendees                 :integer          default(0)
 #  organizer_price_per_uom_cents :decimal(, )      default(0.0)
 #  recurring_days_with_time      :string           default([]), is an Array
 #  ref_number                    :string
-#  region                        :string
 #  requires_check_in             :boolean          default(FALSE), not null
 #  requires_contract             :boolean          default(FALSE), not null
 #  requires_deposit              :boolean          default(FALSE), not null
 #  requires_passport             :boolean          default(FALSE), not null
 #  single_days_with_time         :datetime         default([]), is an Array
 #  status                        :string
-#  street                        :string
 #  title                         :string           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  address_id                    :bigint
 #  firm_id                       :bigint
 #  unit_id                       :bigint
 #
 # Indexes
 #
+#  index_events_on_address_id              (address_id)
 #  index_events_on_event_type              (event_type)
 #  index_events_on_firm_id                 (firm_id)
 #  index_events_on_ref_number_and_firm_id  (ref_number,firm_id) UNIQUE
@@ -75,17 +69,17 @@ class Event < ApplicationRecord
   #
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :event_achievements, dependent: :destroy
-  has_many :event_interests,    dependent: :destroy
-  has_many :event_tags,         dependent: :destroy
-  has_many :event_options,      dependent: :destroy
-  has_many :bookings,           dependent: :destroy
-  has_many :ratings,            dependent: :destroy
-  has_many :schedules,          dependent: :destroy
-  has_many :attendees,          dependent: :nullify
-  has_many :attendee_options,   dependent: :nullify
+  has_many :event_interests, dependent: :destroy
+  has_many :event_tags, dependent: :destroy
+  has_many :event_options, dependent: :destroy
+  has_many :bookings, dependent: :destroy
+  has_many :ratings, dependent: :destroy
+  has_many :schedules, dependent: :destroy
+  has_many :attendees, dependent: :nullify
+  has_many :attendee_options, dependent: :nullify
   has_many :booking_cancellation_options, dependent: :destroy
-  has_many :stripe_integrations,  as: :stripeable,    dependent: :destroy
-  has_many :dynamic_translations, as: :translatable,  dependent: :destroy
+  has_many :stripe_integrations, as: :stripeable, dependent: :destroy
+  has_many :dynamic_translations, as: :translatable, dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :achievements, through: :event_achievements
@@ -95,6 +89,7 @@ class Event < ApplicationRecord
   # BELONGS_TO ASSOCIATIONS =======================================================
   belongs_to :unit, optional: true
   belongs_to :firm, optional: false
+  belongs_to :address
 
   # AASM STATES ================================================================
   aasm column: :status do
@@ -139,9 +134,6 @@ class Event < ApplicationRecord
   validates :title,
             :description, presence: true
   validates :event_type,
-            :city,
-            :country,
-            :full_address,
             :duration_time,
             :language,
             :status,
@@ -151,11 +143,12 @@ class Event < ApplicationRecord
             allow_blank: true
 
   # CALLBACKS ================================================================
-  before_validation :set_prices,      unless: :removed?
-  before_validation :adjust_prices,   unless: :removed?
+  before_validation :set_prices, unless: :removed?
+  before_validation :adjust_prices, unless: :removed?
   before_validation :adjust_category, unless: :removed?
-  after_create      :created_notify
-  after_commit      :sync_stripe, unless: :removed?
+  before_validation :adjust_address
+  after_create :created_notify
+  after_commit :sync_stripe, unless: :removed?
 
   # SCOPES =====================================================================
   default_scope { in_order_of(:status, %w[draft published unpublished removed]).order(created_at: :desc) }
@@ -174,7 +167,7 @@ class Event < ApplicationRecord
 
   def adjust_prices
     self.attendee_price_per_uom = margin ? (organizer_price_per_uom * (1 + (margin / 100.0))) : organizer_price_per_uom
-    self.deposit_amount         = attendee_price_per_uom if deposit_amount > attendee_price_per_uom
+    self.deposit_amount = attendee_price_per_uom if deposit_amount > attendee_price_per_uom
   end
 
   def set_prices
@@ -227,10 +220,10 @@ class Event < ApplicationRecord
   def search_data
     {
       title: title,
-      country: country,
-      city: city,
-      region: region,
-      address: full_address,
+      country: address.country,
+      city: address.city,
+      region: address.region,
+      address: address.full_address,
       dates: schedules.map(&:scheduled_for).map(&:to_time),
       unit: unit&.name,
       unit_type: unit&.unit_type,
@@ -297,6 +290,11 @@ class Event < ApplicationRecord
   end
 
   private
+
+  def adjust_address
+    return if address
+    self.address = firm.address
+  end
 
   def sync_stripe
     StripeIntegratorSyncJob.perform_later('event', id)

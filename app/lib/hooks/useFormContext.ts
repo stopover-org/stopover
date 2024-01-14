@@ -17,8 +17,6 @@ function useFormContext<FieldsType extends FieldValues>() {
   function useFormField<ValueType = any>(name: Path<FieldsType>) {
     const field = form.register(name);
 
-    console.log(form.formState.errors);
-
     return React.useMemo(
       () => ({
         ...field,

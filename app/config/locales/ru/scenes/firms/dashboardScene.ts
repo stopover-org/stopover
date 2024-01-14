@@ -8,6 +8,7 @@ export default {
         withdraw: "Вывести деньги",
         payoutSettings: "Настройки вывода денег",
         connectedStripeAccounts: "Подключенные Stripe Accounts",
+        changeAddress: "Измерить адрес",
       },
     },
   },

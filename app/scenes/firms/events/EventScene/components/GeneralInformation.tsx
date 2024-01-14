@@ -12,21 +12,22 @@ import {
 import { graphql, useFragment } from "react-relay";
 import moment from "moment/moment";
 import { useTranslation } from "react-i18next";
-import { GeneralInformation_EventFragment$key } from "../../../../../artifacts/GeneralInformation_EventFragment.graphql";
-import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
-import Tag from "../../../../../components/v2/Tag/Tag";
-import { dateFormat, dateTimeFormat } from "../../../../../lib/utils/dates";
-import Checkbox from "../../../../../components/v2/Checkbox";
-import ImagesPreview from "../../../../../components/shared/ImagesPreview";
+import { GeneralInformation_EventFragment$key } from "artifacts/GeneralInformation_EventFragment.graphql";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import Tag from "components/v2/Tag/Tag";
+import { dateFormat, dateTimeFormat } from "lib/utils/dates";
+import Checkbox from "components/v2/Checkbox";
+import ImagesPreview from "components/shared/ImagesPreview";
+import Section from "components/v2/Section";
+import Typography from "components/v2/Typography/Typography";
+import Description from "components/v2/Description";
 import CancellationsSection from "./CancellationsSection";
-import Section from "../../../../../components/v2/Section";
-import Typography from "../../../../../components/v2/Typography/Typography";
-import Description from "../../../../../components/v2/Description";
 
 interface GeneralInformationProps {
   eventFragmentRef: GeneralInformation_EventFragment$key;
   index: number;
 }
+
 const GeneralInformation = ({
   eventFragmentRef,
   index,
@@ -34,28 +35,28 @@ const GeneralInformation = ({
   const event = useFragment(
     graphql`
       fragment GeneralInformation_EventFragment on Event {
-        city
-        country
         description
         durationTime
         endDate
         eventType
-        fullAddress
-        houseNumber
         id
         images
-        latitude
-        longitude
         maxAttendees
         minAttendees
         recurringDaysWithTime
-        region
         requiresCheckIn
         requiresContract
         requiresPassport
         singleDaysWithTime
-        street
         title
+        address {
+          fullAddress
+          country
+          region
+          city
+          street
+          houseNumber
+        }
         depositAmount {
           cents
           currency {
@@ -231,21 +232,22 @@ const GeneralInformation = ({
               <Typography level="title-lg">{t("address.title")}</Typography>
             </Grid>
             <Grid xs={10}>
-              {event.fullAddress}
+              {event.address?.fullAddress}
               <br />
-              {t("address.country")}: {event.country}
+              {t("models.address.attributes.country")}: {event.address?.country}
               <br />
-              {t("address.region")}: {event.region}
+              {t("models.address.attributes.region")}: {event.address?.region}
               <br />
-              {t("address.city")}: {event.city}
+              {t("models.address.attributes.city")}: {event.address?.city}
               <br />
-              {t("address.street")}: {event.street}
+              {t("models.address.attributes.street")}: {event.address?.street}
               <br />
-              {t("address.houseNumber")}: {event.houseNumber}
+              {t("models.address.attributes.houseNumber")}:{" "}
+              {event.address?.houseNumber}
               <br />
-              {t("address.latitude")}/{t("address.longitude")}:{" "}
-              {event.latitude || t("general.noData")} /{" "}
-              {event.longitude || t("general.noData")}
+              {t("models.address.attributes.latitude")}/{t("address.longitude")}
+              : {event.address?.latitude || t("general.noData")} /{" "}
+              {event.address?.longitude || t("general.noData")}
             </Grid>
 
             <Grid xs={2}>

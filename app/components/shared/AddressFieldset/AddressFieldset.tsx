@@ -77,7 +77,7 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
 
               setFullAddressCode(placeId);
             }}
-            label={t("address.fullAddress")}
+            label={t("models.address.attributes.fullAddress")}
             error={fullAddressField.error}
           />
         </Grid>
@@ -91,7 +91,7 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
 
             setCountryCode(placeId);
           }}
-          label={t("address.country")}
+          label={t("models.address.attributes.country")}
           error={countryField.error}
         />
       </Grid>
@@ -105,7 +105,7 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
             ]}
             countries={gMapCountryCode ? [gMapCountryCode] : undefined}
             {...regionField}
-            label={t("address.region")}
+            label={t("models.address.attributes.region")}
           />
         </Grid>
       )}
@@ -115,7 +115,7 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
             types={["locality", "administrative_area_level_3"]}
             countries={gMapCountryCode ? [gMapCountryCode] : undefined}
             {...cityField}
-            label={t("address.city")}
+            label={t("models.address.attributes.city")}
           />
         </Grid>
       )}
@@ -125,13 +125,16 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
             types={["address"]}
             countries={gMapCountryCode ? [gMapCountryCode] : undefined}
             {...streetField}
-            label={t("address.street")}
+            label={t("models.address.attributes.street")}
           />
         </Grid>
       )}
       {!simple && (
         <Grid md={6} sm={12}>
-          <Input {...houseNumberField} label={t("address.houseNumber")} />
+          <Input
+            {...houseNumberField}
+            label={t("models.address.attributes.houseNumber")}
+          />
         </Grid>
       )}
     </Fieldset>

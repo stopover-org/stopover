@@ -6,40 +6,34 @@
 #
 #  id                            :bigint           not null, primary key
 #  attendee_price_per_uom_cents  :decimal(, )      default(0.0)
-#  city                          :string
-#  country                       :string
 #  deposit_amount_cents          :decimal(, )      default(0.0), not null
 #  description                   :text             not null
 #  duration_time                 :string
 #  end_date                      :datetime
 #  event_type                    :string           not null
-#  full_address                  :string
-#  house_number                  :string
 #  landmark                      :string
 #  language                      :string           default("en")
-#  latitude                      :float
-#  longitude                     :float
 #  max_attendees                 :integer
 #  min_attendees                 :integer          default(0)
 #  organizer_price_per_uom_cents :decimal(, )      default(0.0)
 #  recurring_days_with_time      :string           default([]), is an Array
 #  ref_number                    :string
-#  region                        :string
 #  requires_check_in             :boolean          default(FALSE), not null
 #  requires_contract             :boolean          default(FALSE), not null
 #  requires_deposit              :boolean          default(FALSE), not null
 #  requires_passport             :boolean          default(FALSE), not null
 #  single_days_with_time         :datetime         default([]), is an Array
 #  status                        :string
-#  street                        :string
 #  title                         :string           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  address_id                    :bigint
 #  firm_id                       :bigint
 #  unit_id                       :bigint
 #
 # Indexes
 #
+#  index_events_on_address_id              (address_id)
 #  index_events_on_event_type              (event_type)
 #  index_events_on_firm_id                 (firm_id)
 #  index_events_on_ref_number_and_firm_id  (ref_number,firm_id) UNIQUE
@@ -59,13 +53,14 @@ FactoryBot.define do
     firm { create(:firm) }
     organizer_price_per_uom_cents { 500 }
     deposit_amount_cents { 100 }
-    country { Faker::Address.country }
-    city { Faker::Address.city }
-    full_address { Faker::Address.full_address }
     duration_time { '4h' }
 
     transient do
       skip_schedules { false }
+    end
+
+    before(:create) do |event|
+      event.address = event.firm.address
     end
 
     trait :recurring do
