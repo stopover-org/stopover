@@ -1,12 +1,4 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  IconButton,
-  Stack,
-  Tooltip,
-  useTheme,
-} from "@mui/joy";
+import { Box, Divider, Grid, Stack } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
@@ -19,7 +11,7 @@ import Tag from "components/v2/Tag";
 import VerifyFirm from "components/shared/VerifyFirm";
 import { FirmSection_CurrentUserFragment$key } from "artifacts/FirmSection_CurrentUserFragment.graphql";
 import useStatusColor from "lib/hooks/useStatusColor";
-import EditIcon from "@mui/icons-material/Edit";
+import EditFirmAddress from "components/shared/EditFirmAddress";
 
 interface FirmSectionProps {
   firmFragmentRef: FirmSection_FirmFragment$key;
@@ -38,6 +30,7 @@ const FirmSection = ({
         contactPerson
         status
         address {
+          ...EditFirmAddress_AddressFragment
           fullAddress
           country
           region
@@ -49,7 +42,7 @@ const FirmSection = ({
     `,
     firmFragmentRef
   );
-  const theme = useTheme();
+
   const currentUser = useFragment(
     graphql`
       fragment FirmSection_CurrentUserFragment on User {
@@ -107,20 +100,14 @@ const FirmSection = ({
       </Grid>
 
       <Grid xs={12}>
-        <Typography level="h4">Address</Typography>
-      </Grid>
-      <Grid xs={12}>
         <Stack direction="row" justifyContent="space-between">
-          <Box>{firm.address?.fullAddress || t("general.noData")}</Box>
+          <Typography level="h4">Address</Typography>
           <Box>
-            <Tooltip title={t("scenes.firms.dashboardScene.changeAddress")}>
-              <IconButton size="sm" color="primary" variant="outlined">
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
+            <EditFirmAddress addressFragmentRef={firm.address!} />
           </Box>
         </Stack>
       </Grid>
+      <Grid xs={12}>{firm.address?.fullAddress || t("general.noData")}</Grid>
       <Grid xs={12}>
         {firm.address?.country} {firm.address?.region} {firm.address?.city}{" "}
         {firm.address?.street} {firm.address?.houseNumber}

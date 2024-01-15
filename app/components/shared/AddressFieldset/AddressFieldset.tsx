@@ -11,9 +11,15 @@ import { IAddress, useDetailedAddress } from "lib/hooks/useDetailedAddress";
 
 interface AddressFieldsetProps {
   simple?: boolean;
+  variant?: "outlined" | "solid" | "plain" | "soft";
+  withHeader?: boolean;
 }
 
-const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
+const AddressFieldset = ({
+  simple,
+  variant,
+  withHeader = true,
+}: AddressFieldsetProps) => {
   const form = useFormContext<any>();
   const [countryCode, setCountryCode] = React.useState<string | null>(null);
   const [fullAddressCode, setFullAddressCode] = React.useState<
@@ -25,11 +31,22 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
   const streetField = form.useFormField("street");
   const houseNumberField = form.useFormField("houseNumber");
   const fullAddressField = form.useFormField("fullAddress");
+  const latitudeField = form.useFormField("latitude");
+  const longitudeField = form.useFormField("longitude");
   const gMapCountryCode = usePlaceIdFromGMaps(countryCode);
   const fullAddress: IAddress = useDetailedAddress(fullAddressCode);
 
   React.useEffect(() => {
-    const keys = ["country", "region", "city", "street", "houseNumber"];
+    const keys = [
+      "country",
+      "region",
+      "city",
+      "street",
+      "houseNumber",
+      "latitude",
+      "longitude",
+    ];
+
     keys.forEach((key: string) => {
       const value = (fullAddress as Record<string, string | null>)[key];
       let field = null;
@@ -43,6 +60,10 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
         field = streetField;
       } else if (key === "houseNumber") {
         field = houseNumberField;
+      } else if (key === "latitude") {
+        field = latitudeField;
+      } else if (key === "longitude") {
+        field = longitudeField;
       }
 
       if (!field) return;
@@ -59,10 +80,12 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
   const { t } = useTranslation();
 
   return (
-    <Fieldset>
-      <Grid xs={12}>
-        <Typography level="title-lg">{t("address.title")}</Typography>
-      </Grid>
+    <Fieldset variant={variant}>
+      {withHeader && (
+        <Grid xs={12}>
+          <Typography level="title-lg">{t("address.title")}</Typography>
+        </Grid>
+      )}
       {!simple && (
         <Grid xs={12}>
           <AddressAutocomplete

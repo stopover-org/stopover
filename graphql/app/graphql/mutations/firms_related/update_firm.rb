@@ -8,6 +8,7 @@ module Mutations
       argument :city, String, required: false
       argument :contact_person, String, required: false
       argument :contacts, String, required: false
+      argument :contract_address, String, required: false
       argument :country, String, required: false
       argument :description, String, required: false
       argument :full_address, String, required: false
@@ -15,6 +16,7 @@ module Mutations
       argument :image, String, required: false
       argument :latitude, Float, required: false
       argument :longitude, Float, required: false
+      argument :payment_types, [String], required: false
       argument :primary_email, String, required: false
       argument :primary_phone, String, required: false
       argument :region, String, required: false
@@ -22,18 +24,31 @@ module Mutations
       argument :street, String, required: false
       argument :title, String, required: false
       argument :website, String, required: false
-      argument :payment_types, [String], required: false
-      argument :contract_address, String, required: false
 
       def resolve(**args)
         firm = context[:current_user].account.current_firm
 
         Firm.transaction do
           args[:country] = ISO3166::Country.find_country_by_any_name(args[:country])&.iso_short_name if args[:country]
-          firm.update!(args.except(:image, :full_address, :country, :region, :city, :street, :house_number, :latitude, :longitude))
-          firm.address = Address.new unless firm.address
-          firm.address.assign_attributes(args.slice(:full_address, :country, :region, :city, :street, :house_number, :latitude, :longitude))
-          firm.address.save!
+          address = Address.new(firm: firm) unless firm.address
+          address.assign_attributes(args.slice(:full_address,
+                                               :country,
+                                               :region,
+                                               :city,
+                                               :street,
+                                               :house_number,
+                                               :latitude,
+                                               :longitude))
+          address.save!
+          firm.update!(address: address, **args.except(:image,
+                                                       :full_address,
+                                                       :country,
+                                                       :region,
+                                                       :city,
+                                                       :street,
+                                                       :house_number,
+                                                       :latitude,
+                                                       :longitude))
 
           firm.image.purge if args[:image].nil?
 

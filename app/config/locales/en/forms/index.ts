@@ -18,6 +18,7 @@ import syncStripe from "./syncStripe";
 import removeFirm from "./removeFirm";
 import editEvent from "./editEvent";
 import editProfile from "./editProfile";
+import editFirmAddress from "./editFirmAddress";
 
 export default merge(
   verifyStripeConnect,
@@ -38,5 +39,6 @@ export default merge(
   syncStripe,
   removeFirm,
   editEvent,
-  editProfile
+  editProfile,
+  editFirmAddress
 );

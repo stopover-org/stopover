@@ -8,6 +8,8 @@ export interface IAddress {
   street?: string;
   houseNumber?: string;
   postalCode?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export function useDetailedAddress(placeId?: string) {
@@ -30,6 +32,10 @@ export function useDetailedAddress(placeId?: string) {
   return React.useMemo(() => {
     const address: IAddress = {};
     if (!result) return address;
+
+    address.latitude = result.geometry.location.lat();
+
+    address.longitude = result.geometry.location.lng();
 
     return result.address_components.reduce(
       (

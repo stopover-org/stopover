@@ -54,8 +54,8 @@ type Address implements Node {
   fullAddress: String
   houseNumber: String
   id: ID!
-  latitude: String
-  longitude: String
+  latitude: Float
+  longitude: Float
   region: String
   street: String
 }

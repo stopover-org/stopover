@@ -12,8 +12,8 @@ module Types
       field :street, String
       field :house_number, String
 
-      field :latitude, String
-      field :longitude, String
+      field :latitude, Float
+      field :longitude, Float
     end
   end
 end

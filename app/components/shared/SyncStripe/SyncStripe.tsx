@@ -2,10 +2,10 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { Box } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { SyncStripe_EventFragment$key } from "../../../artifacts/SyncStripe_EventFragment.graphql";
-import Button from "../../v2/Button";
+import { SyncStripe_EventFragment$key } from "artifacts/SyncStripe_EventFragment.graphql";
+import Button from "components/v2/Button";
+import { ButtonProps } from "components/v2/Button/Button";
 import SyncStripeModal from "./SyncStripeModal";
-import { ButtonProps } from "../../v2/Button/Button";
 
 interface SyncStripeProps extends ButtonProps {
   eventFragmentRef: SyncStripe_EventFragment$key;
