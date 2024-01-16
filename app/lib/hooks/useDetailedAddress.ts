@@ -15,7 +15,7 @@ export interface IAddress {
 export function useDetailedAddress(placeId?: string) {
   const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const { placesService } = usePlacesService({
-    apiKey: googleMapsApiKey || "",
+    apiKey: googleMapsApiKey,
   });
   const [result, setResult] = React.useState<any>(null);
   React.useEffect(() => {
@@ -27,7 +27,7 @@ export function useDetailedAddress(placeId?: string) {
         (placeDetails) => setResult(placeDetails)
       );
     }
-  }, [placeId, googleMapsApiKey]);
+  }, [placeId, googleMapsApiKey, placesService]);
 
   return React.useMemo(() => {
     const address: IAddress = {};

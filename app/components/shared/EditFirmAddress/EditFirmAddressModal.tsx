@@ -1,5 +1,14 @@
 import { graphql, useFragment } from "react-relay";
-import { DialogActions, Divider, Modal, ModalDialog, Stack } from "@mui/joy";
+import {
+  DialogActions,
+  DialogTitle,
+  Divider,
+  Grid,
+  Modal,
+  ModalClose,
+  ModalDialog,
+  Stack,
+} from "@mui/joy";
 import React from "react";
 import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
 import { useTranslation } from "react-i18next";
@@ -35,14 +44,19 @@ const EditFirmAddressModal = ({
   return (
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">
-        <Stack flexDirection="row" alignItems="center" useFlexGap spacing={1}>
-          <BusinessRoundedIcon color="warning" />
-          {t("forms.editFirmAddress.modal.header")}
-        </Stack>
+        <ModalClose />
+        <DialogTitle sx={{ marginRight: "30px" }}>
+          <Stack flexDirection="row" alignItems="center" useFlexGap spacing={1}>
+            <BusinessRoundedIcon color="warning" />
+            {t("forms.editFirmAddress.modal.header")}
+          </Stack>
+        </DialogTitle>
         <Divider />
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit()}>
-            <AddressFieldset variant="plain" withHeader={false} />
+            <Grid container>
+              <AddressFieldset variant="plain" withHeader={false} />
+            </Grid>
             <DialogActions>
               <SubmitButton size="sm" submitting={form.formState.isSubmitting}>
                 {t("forms.editFirmAddress.action")}

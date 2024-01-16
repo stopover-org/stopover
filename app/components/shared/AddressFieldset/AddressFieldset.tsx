@@ -8,6 +8,7 @@ import Input from "components/v2/Input/Input";
 import useFormContext from "lib/hooks/useFormContext";
 import { usePlaceIdFromGMaps } from "lib/hooks/usePlaceIdFromGMaps";
 import { IAddress, useDetailedAddress } from "lib/hooks/useDetailedAddress";
+import GoogleMap from "components/shared/GoogleMap";
 
 interface AddressFieldsetProps {
   simple?: boolean;
@@ -153,6 +154,13 @@ const AddressFieldset = ({
           <Input
             {...houseNumberField}
             label={t("models.address.attributes.houseNumber")}
+          />
+        </Grid>
+      )}
+      {!simple && latitudeField.value && longitudeField.value && (
+        <Grid md={12} sm={12}>
+          <GoogleMap
+            center={{ lat: latitudeField.value, lng: longitudeField.value }}
           />
         </Grid>
       )}

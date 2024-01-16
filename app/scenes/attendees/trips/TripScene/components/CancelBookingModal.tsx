@@ -1,23 +1,23 @@
 import {
   Box,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
   Modal,
+  ModalClose,
   ModalDialog,
   Stack,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  ModalClose,
 } from "@mui/joy";
-import React, { useTransition } from "react";
+import React from "react";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import CancelBookingForm from "../../../../../components/shared/CancelBooking/CancelBookingForm";
-import Button from "../../../../../components/v2/Button";
-import { CancelBookingModal_BookingFragment$key } from "../../../../../artifacts/CancelBookingModal_BookingFragment.graphql";
-import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
-import Typography from "../../../../../components/v2/Typography";
+import CancelBookingForm from "components/shared/CancelBooking/CancelBookingForm";
+import Button from "components/v2/Button";
+import { CancelBookingModal_BookingFragment$key } from "artifacts/CancelBookingModal_BookingFragment.graphql";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import Typography from "components/v2/Typography";
 
 interface CancelBookingModalProps {
   open: boolean;
@@ -55,9 +55,13 @@ const CancelBookingModal = ({
 
   return (
     <Modal open={open} onClose={onClose}>
-      <ModalDialog variant="outlined" role="alertdialog" sx={{ width: { xs: '100%', sm: '100%', md: 'unset', lg: 'unset' } }}>
+      <ModalDialog
+        variant="outlined"
+        role="alertdialog"
+        sx={{ width: { xs: "100%", sm: "100%", md: "unset", lg: "unset" } }}
+      >
         <ModalClose />
-        <DialogTitle sx={{marginRight: '30px'}}>
+        <DialogTitle sx={{ marginRight: "30px" }}>
           <Stack flexDirection="row" alignItems="center" spacing={2} useFlexGap>
             <WarningRoundedIcon />
             {t("scenes.attendees.trips.tripScene.cancelBookingModal.title")}

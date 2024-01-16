@@ -24,22 +24,24 @@ class Trip < ApplicationRecord
   # MODULES ===============================================================
   include AASM
 
-  # ATTACHMENTS ===========================================================
+  # MONETIZE ==============================================================
   #
-  # HAS_ONE ASSOCIATIONS ==========================================================
+  # BELONGS_TO ASSOCIATIONS ===============================================
+  belongs_to :account
+
+  # HAS_ONE ASSOCIATIONS ==================================================
   #
-  # HAS_MANY ASSOCIATIONS =========================================================
+  # HAS_ONE THROUGH ASSOCIATIONS ==========================================
+  #
+  # HAS_MANY ASSOCIATIONS =================================================
   has_many :bookings,
            -> { includes(:schedule).order('schedules.scheduled_for ASC') },
            dependent: :destroy,
            inverse_of: :trip
 
-  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  # HAS_MANY THROUGH ASSOCIATIONS =========================================
   #
-  # BELONGS_TO ASSOCIATIONS =======================================================
-  belongs_to :account
-
-  # AASM STATES ================================================================
+  # AASM STATES ===========================================================
   aasm :status do
     state :draft, initial: true
     state :active
@@ -57,15 +59,24 @@ class Trip < ApplicationRecord
       transitions from: :draft, to: :active
     end
   end
-  # ENUMS =======================================================================
+
+  # ENUMS =================================================================
   #
-  # VALIDATIONS ================================================================
+  # SECURE TOKEN ==========================================================
   #
-  # CALLBACKS ================================================================
+  # SECURE PASSWORD =======================================================
   #
-  # SCOPES =====================================================================
+  # ATTACHMENTS ===========================================================
   #
-  # DELEGATIONS ==============================================================
+  # RICH_TEXT =============================================================
+  #
+  # VALIDATIONS ===========================================================
+  #
+  # CALLBACKS =============================================================
+  #
+  # SCOPES ================================================================
+  #
+  # DELEGATION ============================================================
 
   def firm
     account.current_firm
@@ -87,9 +98,11 @@ class Trip < ApplicationRecord
   end
 
   def cities
+    return [] if bookings.count.zero?
+
     bookings.map do |booking|
-      booking.event.city
-    end.uniq
+      booking.event.address&.city
+    end.uniq.compact
   end
 
   def cancel_trip

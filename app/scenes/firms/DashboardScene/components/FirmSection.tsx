@@ -12,6 +12,7 @@ import VerifyFirm from "components/shared/VerifyFirm";
 import { FirmSection_CurrentUserFragment$key } from "artifacts/FirmSection_CurrentUserFragment.graphql";
 import useStatusColor from "lib/hooks/useStatusColor";
 import EditFirmAddress from "components/shared/EditFirmAddress";
+import GoogleMap from "components/shared/GoogleMap";
 
 interface FirmSectionProps {
   firmFragmentRef: FirmSection_FirmFragment$key;
@@ -37,6 +38,8 @@ const FirmSection = ({
           city
           street
           houseNumber
+          latitude
+          longitude
         }
       }
     `,
@@ -112,6 +115,22 @@ const FirmSection = ({
         {firm.address?.country} {firm.address?.region} {firm.address?.city}{" "}
         {firm.address?.street} {firm.address?.houseNumber}
       </Grid>
+      {firm.address?.latitude && firm.address?.longitude && (
+        <Grid xs={12}>
+          <GoogleMap
+            center={{
+              lat: firm.address?.latitude!,
+              lng: firm.address?.longitude!,
+            }}
+            markers={[
+              {
+                lat: firm.address?.latitude!,
+                lng: firm.address?.longitude!,
+              },
+            ]}
+          />
+        </Grid>
+      )}
     </Section>
   );
 };
