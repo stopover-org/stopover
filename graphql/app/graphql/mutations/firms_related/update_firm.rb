@@ -30,7 +30,7 @@ module Mutations
 
         Firm.transaction do
           args[:country] = ISO3166::Country.find_country_by_any_name(args[:country])&.iso_short_name if args[:country]
-          address = Address.new(firm: firm) unless firm.address
+          address = firm.address || Address.new(firm: firm)
           address.assign_attributes(args.slice(:full_address,
                                                :country,
                                                :region,

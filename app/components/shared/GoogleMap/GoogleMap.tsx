@@ -22,6 +22,7 @@ const GoogleMap = ({
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: googleMapsApiKey!,
+    libraries: ["places"],
   });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [googleMap, setMap] = React.useState<any>(null);
@@ -37,6 +38,13 @@ const GoogleMap = ({
   const onUnmount = React.useCallback(() => {
     setMap(null);
   }, []);
+
+  React.useEffect(() => {
+    if (!googleMap) return;
+    googleMap?.setCenter(center);
+
+    googleMap?.setZoom(18);
+  }, [googleMap, center, markers]);
 
   return isLoaded ? (
     <GoogleMapBound

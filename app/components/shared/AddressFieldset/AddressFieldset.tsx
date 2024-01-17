@@ -161,6 +161,7 @@ const AddressFieldset = ({
         <Grid md={12} sm={12}>
           <GoogleMap
             center={{ lat: latitudeField.value, lng: longitudeField.value }}
+            markers={[{ lat: latitudeField.value, lng: longitudeField.value }]}
           />
         </Grid>
       )}

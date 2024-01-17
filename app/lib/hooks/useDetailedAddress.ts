@@ -17,6 +17,8 @@ export function useDetailedAddress(placeId?: string) {
   const { placesService } = usePlacesService({
     apiKey: googleMapsApiKey,
   });
+
+  console.log(placesService, google.maps.places.AutocompleteService);
   const [result, setResult] = React.useState<any>(null);
   React.useEffect(() => {
     if (placeId) {
@@ -27,7 +29,7 @@ export function useDetailedAddress(placeId?: string) {
         (placeDetails) => setResult(placeDetails)
       );
     }
-  }, [placeId, googleMapsApiKey, placesService]);
+  }, [placeId, googleMapsApiKey]);
 
   return React.useMemo(() => {
     const address: IAddress = {};
@@ -64,5 +66,5 @@ export function useDetailedAddress(placeId?: string) {
       },
       address
     );
-  }, [result, placeId]);
+  }, [result, placeId, placesService]);
 }
