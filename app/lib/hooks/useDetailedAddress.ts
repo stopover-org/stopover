@@ -17,8 +17,6 @@ export function useDetailedAddress(placeId?: string) {
   const { placesService } = usePlacesService({
     apiKey: googleMapsApiKey,
   });
-
-  console.log(placesService, google.maps.places.AutocompleteService);
   const [result, setResult] = React.useState<any>(null);
   React.useEffect(() => {
     if (placeId) {
