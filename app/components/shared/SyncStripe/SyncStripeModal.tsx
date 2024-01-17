@@ -3,10 +3,10 @@ import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
-import Button from "../../v2/Button";
-import SubmitButton from "../SubmitButton/SubmitButton";
+import Button from "components/v2/Button";
+import SubmitButton from "components/shared/SubmitButton";
+import { SyncStripeModal_EventFragment$key } from "artifacts/SyncStripeModal_EventFragment.graphql";
 import { useSyncStripeForm } from "./useSyncStripeForm";
-import { SyncStripeModal_EventFragment$key } from "../../../artifacts/SyncStripeModal_EventFragment.graphql";
 
 interface SyncStripeModalProps {
   eventFragmentRef: SyncStripeModal_EventFragment$key;

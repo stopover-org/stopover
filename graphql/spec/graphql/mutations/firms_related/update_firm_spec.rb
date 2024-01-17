@@ -20,12 +20,14 @@ RSpec.describe Mutations::FirmsRelated::UpdateFirm, type: :mutation do
             contactPerson
             contacts
 
-            country
-            city
-            region
-            street
-            houseNumber
-            fullAddress
+            address {
+              country
+              city
+              region
+              street
+              houseNumber
+              fullAddress
+            }
           }
           errors
           notification
@@ -68,32 +70,32 @@ RSpec.describe Mutations::FirmsRelated::UpdateFirm, type: :mutation do
 
       firm = Firm.last
 
-      expect(result.dig(:data, :updateFirm, :firm, :id)).to           eq(GraphqlSchema.id_from_object(Firm.last))
-      expect(result.dig(:data, :updateFirm, :firm, :title)).to        eq(firm.title)
-      expect(result.dig(:data, :updateFirm, :firm, :description)).to  eq(firm.description)
-      expect(result.dig(:data, :updateFirm, :firm, :image)).to_not    be_nil
-      expect(result.dig(:data, :updateFirm, :firm, :status)).to       eq('pending')
+      expect(result.dig(:data, :updateFirm, :firm, :id)).to eq(GraphqlSchema.id_from_object(Firm.last))
+      expect(result.dig(:data, :updateFirm, :firm, :title)).to eq(firm.title)
+      expect(result.dig(:data, :updateFirm, :firm, :description)).to eq(firm.description)
+      expect(result.dig(:data, :updateFirm, :firm, :image)).to_not be_nil
+      expect(result.dig(:data, :updateFirm, :firm, :status)).to eq('pending')
       expect(result.dig(:data, :updateFirm, :firm, :paymentTypes)).to eq(firm.payment_types)
       expect(result.dig(:data, :updateFirm, :firm, :primaryEmail)).to eq(firm.primary_email)
       expect(result.dig(:data, :updateFirm, :firm, :primaryPhone)).to eq(firm.primary_phone)
 
-      expect(result.dig(:data, :updateFirm, :firm, :country)).to      eq(firm.country)
-      expect(result.dig(:data, :updateFirm, :firm, :city)).to         eq(firm.city)
-      expect(result.dig(:data, :updateFirm, :firm, :street)).to       eq(firm.street)
-      expect(result.dig(:data, :updateFirm, :firm, :houseNumber)).to  eq(firm.house_number)
-      expect(result.dig(:data, :updateFirm, :firm, :fullAddress)).to  eq(firm.full_address)
+      expect(result.dig(:data, :updateFirm, :firm, :address, :country)).to eq(firm.address.country)
+      expect(result.dig(:data, :updateFirm, :firm, :address, :city)).to eq(firm.address.city)
+      expect(result.dig(:data, :updateFirm, :firm, :address, :street)).to eq(firm.address.street)
+      expect(result.dig(:data, :updateFirm, :firm, :address, :houseNumber)).to eq(firm.address.house_number)
+      expect(result.dig(:data, :updateFirm, :firm, :address, :fullAddress)).to eq(firm.address.full_address)
 
-      expect(result.dig(:data, :updateFirm, :firm, :title)).to        eq('New Firm')
-      expect(result.dig(:data, :updateFirm, :firm, :description)).to  eq('description')
+      expect(result.dig(:data, :updateFirm, :firm, :title)).to eq('New Firm')
+      expect(result.dig(:data, :updateFirm, :firm, :description)).to eq('description')
       expect(result.dig(:data, :updateFirm, :firm, :paymentTypes)).to eq(%w[Cash Stripe])
       expect(result.dig(:data, :updateFirm, :firm, :primaryEmail)).to eq('some@mail.com')
       expect(result.dig(:data, :updateFirm, :firm, :primaryPhone)).to eq('+381621496696')
 
-      expect(result.dig(:data, :updateFirm, :firm, :country)).to      eq('Serbia')
-      expect(result.dig(:data, :updateFirm, :firm, :city)).to         eq('Београд')
-      expect(result.dig(:data, :updateFirm, :firm, :street)).to       eq('Street Name')
-      expect(result.dig(:data, :updateFirm, :firm, :houseNumber)).to  eq('House Number')
-      expect(result.dig(:data, :updateFirm, :firm, :fullAddress)).to  eq('Full Address')
+      expect(result.dig(:data, :updateFirm, :firm, :address, :country)).to eq('Serbia')
+      expect(result.dig(:data, :updateFirm, :firm, :address, :city)).to eq('Београд')
+      expect(result.dig(:data, :updateFirm, :firm, :address, :street)).to eq('Street Name')
+      expect(result.dig(:data, :updateFirm, :firm, :address, :houseNumber)).to eq('House Number')
+      expect(result.dig(:data, :updateFirm, :firm, :address, :fullAddress)).to eq('Full Address')
 
       expect(result.dig(:data, :updateFirm, :notification)).to eq('Firm updated')
     end

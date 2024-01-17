@@ -3,56 +3,50 @@
 module Types
   module EventsRelated
     class EventType < Types::ModelObject
-      field :achievements,            [Types::FirmsRelated::AchievementType], null: false
-      field :attendee_price_per_uom,  Types::MoneyType
-      field :available_dates,         [Types::DateTimeType], null: false
-      field :average_rating,          Float, null: false
-      field :bookings,                Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true do
-        argument :filters, Types::Filters::BookingsFilter, required: false
-      end
+      field :achievements, [Types::FirmsRelated::AchievementType], null: false
+      field :attendee_price_per_uom, Types::MoneyType
+      field :available_dates, [Types::DateTimeType], null: false
+      field :average_rating, Float, null: false
       field :booking_cancellation_options, [Types::EventsRelated::BookingCancellationOptionType], null: false
-      field :city,          String
-      field :country,       String
-      field :description,   String, null: false
+      field :description, String, null: false
       field :duration_time, String, null: false
       field :event_options, [Types::EventsRelated::EventOptionType], null: false
-      field :event_type,    Types::EventsRelated::EventTypeEnum, null: false
-      field :external_id,   String, require_manager: true
-      field :firm,          Types::FirmsRelated::FirmType, null: false
-      field :full_address,  String
-      field :house_number,  String
-      field :id,            ID, null: false
-      field :images,        [String], null: false
-      field :interests,     [Types::EventsRelated::InterestType], null: false
-      field :landmarks,     String
-      field :latitude,      Float
-      field :longitude,     Float
+      field :event_type, Types::EventsRelated::EventTypeEnum, null: false
+      field :external_id, String, require_manager: true
+      field :firm, Types::FirmsRelated::FirmType, null: false
+      field :id, ID, null: false
+      field :images, [String], null: false
+      field :interests, [Types::EventsRelated::InterestType], null: false
+      field :landmarks, String
       field :max_attendees, Integer
       field :min_attendees, Integer
-      field :my_bookings,   [Types::BookingsRelated::BookingType], null: false
+      field :my_bookings, [Types::BookingsRelated::BookingType], null: false
       field :organizer_price_per_uom, Types::MoneyType
-      field :deposit_amount,  Types::MoneyType, null: false
-      field :ratings_count,   Integer
+      field :deposit_amount, Types::MoneyType, null: false
+      field :ratings_count, Integer
       field :recurring_days_with_time, [String], null: false
-      field :region,            String
       field :requires_check_in, Boolean, null: false
       field :requires_contract, Boolean, null: false
       field :requires_passport, Boolean, null: false
-      field :requires_deposit,  Boolean, null: false
+      field :requires_deposit, Boolean, null: false
+
+      field :single_days_with_time, [Types::DateTimeType], null: false
+      field :status, String, null: false
+      field :tags, [Types::TagType], null: false
+      field :title, String, null: false
+      field :unit, Types::EventsRelated::UnitType
+      field :end_date, Types::DateTimeType
+      field :stripe_integrations, Types::EventsRelated::StripeIntegrationType.connection_type, null: false, require_service_user: true
+      field :statistics, [Types::StatisticsType], null: false
+      field :address, Types::FirmsRelated::AddressType
+
+      field :bookings, Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true do
+        argument :filters, Types::Filters::BookingsFilter, required: false
+      end
 
       field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false, require_manager: true do
         argument :filters, Types::Filters::SchedulesFilter, required: false
       end
-
-      field :single_days_with_time, [Types::DateTimeType], null: false
-      field :status,    String, null: false
-      field :street,    String
-      field :tags,      [Types::TagType], null: false
-      field :title,     String, null: false
-      field :unit,      Types::EventsRelated::UnitType
-      field :end_date,  Types::DateTimeType
-      field :stripe_integrations, Types::EventsRelated::StripeIntegrationType.connection_type, null: false, require_service_user: true
-      field :statistics, [Types::StatisticsType], null: false
 
       def statistics
         [{ name: :bookings,
@@ -122,6 +116,10 @@ module Types
       def booking(**args)
         return nil if context[:current_user].account.current_firm.events.id != args[:id].event_id
         args[:id]
+      end
+
+      def event_options
+        object.event_options.reorder(created_at: :asc)
       end
 
       def stripe_integrations

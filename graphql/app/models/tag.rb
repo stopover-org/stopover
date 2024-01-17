@@ -24,39 +24,39 @@ class Tag < ApplicationRecord
   include Mixins::Indices
 
   # MONETIZE ==============================================================
-
+  #
   # BELONGS_TO ASSOCIATIONS ===============================================
-
+  #
   # HAS_ONE ASSOCIATIONS ==================================================
-
+  #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
-
+  #
   # HAS_MANY ASSOCIATIONS =================================================
-  has_many :event_tags,           dependent: :destroy
+  has_many :event_tags, dependent: :destroy
   has_many :dynamic_translations, as: :translatable, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :events, through: :event_tags
 
   # AASM STATES ===========================================================
-
+  #
   # ENUMS =================================================================
-
+  #
   # SECURE TOKEN ==========================================================
-
+  #
   # SECURE PASSWORD =======================================================
-
+  #
   # ATTACHMENTS ===========================================================
-
+  #
   # RICH_TEXT =============================================================
-
+  #
   # VALIDATIONS ===========================================================
   validates :title, presence: true, uniqueness: { case_sensitive: false }
   validates :language, presence: true
 
   # CALLBACKS =============================================================
-
+  #
   # SCOPES ================================================================
-
+  #
   # DELEGATION ============================================================
 end

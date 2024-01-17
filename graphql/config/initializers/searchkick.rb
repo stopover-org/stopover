@@ -1,7 +1,7 @@
 # ENV['OPENSEARCH_URL'] = Rails.application.credentials.opensearch_url || 'http://localhost:9200'
 
 connection_hash = {
-  hosts: [ Rails.application.credentials.opensearch_url || 'http://localhost:9200' ],
+  hosts: [Rails.application.credentials.opensearch_url || ENV['OPENSEARCH_URL'] || 'http://localhost:9200'],
   reload_connections: true,
   adapter: :httpclient,
   retry_on_failure: 2,

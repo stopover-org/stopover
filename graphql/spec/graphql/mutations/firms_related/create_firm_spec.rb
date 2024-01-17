@@ -19,13 +19,6 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
             primaryEmail
             contactPerson
             contacts
-
-            country
-            city
-            region
-            street
-            houseNumber
-            fullAddress
           }
           errors
           notification
@@ -36,14 +29,7 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
   let(:current_user) { create(:active_user, with_account: true) }
   let(:input) do
     {
-      country: 'Serbia',
-      city: 'Београд',
-      street: 'Street Name',
-      houseNumber: 'House Number',
-      fullAddress: 'Full Address',
-
       image: 'https://placehold.co/600x400/EEE/31343C',
-
       title: 'New Firm',
       description: 'description',
       paymentTypes: %w[Cash Stripe],
@@ -70,50 +56,26 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
 
       firm = Firm.last
 
-      expect(result.dig(:data, :createFirm, :firm, :id)).to           eq(GraphqlSchema.id_from_object(Firm.last))
-      expect(result.dig(:data, :createFirm, :firm, :title)).to        eq(firm.title)
-      expect(result.dig(:data, :createFirm, :firm, :description)).to  eq(firm.description)
-      expect(result.dig(:data, :createFirm, :firm, :image)).to_not    be_nil
-      expect(result.dig(:data, :createFirm, :firm, :status)).to       eq('pending')
+      expect(result.dig(:data, :createFirm, :firm, :id)).to eq(GraphqlSchema.id_from_object(Firm.last))
+      expect(result.dig(:data, :createFirm, :firm, :title)).to eq(firm.title)
+      expect(result.dig(:data, :createFirm, :firm, :description)).to eq(firm.description)
+      expect(result.dig(:data, :createFirm, :firm, :image)).to_not be_nil
+      expect(result.dig(:data, :createFirm, :firm, :status)).to eq('pending')
       expect(result.dig(:data, :createFirm, :firm, :paymentTypes)).to eq(firm.payment_types)
       expect(result.dig(:data, :createFirm, :firm, :primaryEmail)).to eq(firm.primary_email)
       expect(result.dig(:data, :createFirm, :firm, :primaryPhone)).to eq(firm.primary_phone)
 
-      expect(result.dig(:data, :createFirm, :firm, :country)).to      eq(firm.country)
-      expect(result.dig(:data, :createFirm, :firm, :city)).to         eq(firm.city)
-      expect(result.dig(:data, :createFirm, :firm, :street)).to       eq(firm.street)
-      expect(result.dig(:data, :createFirm, :firm, :houseNumber)).to  eq(firm.house_number)
-      expect(result.dig(:data, :createFirm, :firm, :fullAddress)).to  eq(firm.full_address)
-
-      expect(result.dig(:data, :createFirm, :firm, :title)).to        eq('New Firm')
-      expect(result.dig(:data, :createFirm, :firm, :description)).to  eq('description')
+      expect(result.dig(:data, :createFirm, :firm, :title)).to eq('New Firm')
+      expect(result.dig(:data, :createFirm, :firm, :description)).to eq('description')
       expect(result.dig(:data, :createFirm, :firm, :paymentTypes)).to eq(%w[Cash Stripe])
       expect(result.dig(:data, :createFirm, :firm, :primaryEmail)).to eq('some@mail.com')
       expect(result.dig(:data, :createFirm, :firm, :primaryPhone)).to eq('+381621496696')
-
-      expect(result.dig(:data, :createFirm, :firm, :country)).to      eq('Serbia')
-      expect(result.dig(:data, :createFirm, :firm, :city)).to         eq('Београд')
-      expect(result.dig(:data, :createFirm, :firm, :street)).to       eq('Street Name')
-      expect(result.dig(:data, :createFirm, :firm, :houseNumber)).to  eq('House Number')
-      expect(result.dig(:data, :createFirm, :firm, :fullAddress)).to  eq('Full Address')
 
       expect(result.dig(:data, :createFirm, :notification)).to eq('Firm created')
     end
   end
 
   context 'validations' do
-    context 'address' do
-      context 'invalid country' do
-        it 'fails' do
-          input[:country] = 'WRONG COUNTRY'
-          result = nil
-          expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
-          expect(result.dig(:data, :createFirm, :firm)).to be_nil
-          expect(result.dig(:data, :createFirm, :errors)).to_not be_empty
-        end
-      end
-    end
-
     context 'invalid phone' do
       it 'fails' do
         input[:primaryPhone] = 'WRONG PHONE'

@@ -24,7 +24,7 @@ RSpec.describe StripeConnect, type: :model do
       expect(StripeConnect::GRAPHQL_TYPE).to eq(Types::FirmsRelated::StripeConnectType)
     end
     it 'relations' do
-      should belong_to(:firm).optional
+      should belong_to(:firm)
     end
     context 'validations' do
       it 'check' do

@@ -25,5 +25,5 @@ export default Page;
 export const revalidate = 0;
 
 export const generateMetadata = () => ({
-  title: "Firm",
+  title: "Trips",
 });

@@ -8,13 +8,17 @@ export interface IAddress {
   street?: string;
   houseNumber?: string;
   postalCode?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export function useDetailedAddress(placeId?: string) {
   const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const { placesService } = usePlacesService({
-    apiKey: googleMapsApiKey || "",
+    apiKey: googleMapsApiKey,
   });
+
+  console.log(placesService, google.maps.places.AutocompleteService);
   const [result, setResult] = React.useState<any>(null);
   React.useEffect(() => {
     if (placeId) {
@@ -30,6 +34,10 @@ export function useDetailedAddress(placeId?: string) {
   return React.useMemo(() => {
     const address: IAddress = {};
     if (!result) return address;
+
+    address.latitude = result.geometry.location.lat();
+
+    address.longitude = result.geometry.location.lng();
 
     return result.address_components.reduce(
       (
@@ -58,5 +66,5 @@ export function useDetailedAddress(placeId?: string) {
       },
       address
     );
-  }, [result, placeId]);
+  }, [result, placeId, placesService]);
 }

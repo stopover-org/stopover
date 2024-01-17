@@ -22,8 +22,10 @@ const SelectCurrentFirm = ({ accountFragmentRef }: SelectCurrentFirmProps) => {
         firms {
           id
           title
-          country
-          city
+          address {
+            country
+            city
+          }
         }
       }
     `,

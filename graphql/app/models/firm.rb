@@ -6,31 +6,25 @@
 #
 #  id                :bigint           not null, primary key
 #  business_type     :string           default("individual"), not null
-#  city              :string
 #  contact_person    :string
 #  contacts          :text
 #  contract_address  :string
-#  country           :string
 #  description       :text
-#  full_address      :string
-#  house_number      :string
-#  latitude          :float
-#  longitude         :float
 #  margin            :integer          default(0)
 #  payment_types     :string           default([]), not null, is an Array
 #  postal_code       :string
 #  primary_email     :string
 #  primary_phone     :string
 #  ref_number        :string
-#  region            :string
 #  status            :string           default("pending")
-#  street            :string
 #  title             :string           not null
 #  website           :string
+#  address_id        :bigint
 #  stripe_account_id :string
 #
 # Indexes
 #
+#  index_firms_on_address_id  (address_id)
 #  index_firms_on_ref_number  (ref_number) UNIQUE
 #
 class Firm < ApplicationRecord
@@ -40,6 +34,7 @@ class Firm < ApplicationRecord
   include AASM
 
   # MONETIZE ==============================================================
+  belongs_to :address, optional: true
 
   # BELONGS_TO ASSOCIATIONS ===============================================
 
@@ -49,19 +44,20 @@ class Firm < ApplicationRecord
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
 
   # HAS_MANY ASSOCIATIONS =================================================
-  has_many :account_firms,    dependent: :destroy
-  has_many :events,           dependent: :destroy
-  has_many :stripe_connects,  dependent: :nullify
-  has_many :refunds,          dependent: :nullify
-  has_many :payouts,          dependent: :nullify
-  has_many :attendees,        dependent: :nullify
+  has_many :account_firms, dependent: :destroy
+  has_many :events, dependent: :destroy
+  has_many :stripe_connects, dependent: :nullify
+  has_many :refunds, dependent: :nullify
+  has_many :payouts, dependent: :nullify
+  has_many :attendees, dependent: :nullify
   has_many :attendee_options, dependent: :nullify
-  has_many :payments,         dependent: :nullify
+  has_many :payments, dependent: :nullify
+  has_many :addresses, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
-  has_many :accounts,   through: :account_firms
-  has_many :bookings,   through: :events
-  has_many :schedules,  through: :events
+  has_many :accounts, through: :account_firms
+  has_many :bookings, through: :events
+  has_many :schedules, through: :events
 
   # AASM STATES ===========================================================
   aasm column: :status do
@@ -109,12 +105,6 @@ class Firm < ApplicationRecord
   validates :ref_number,
             uniqueness: true,
             allow_blank: true
-  validates :city,
-            presence: true
-  validates :country,
-            presence: true
-  validates :country,
-            inclusion: { in: ISO3166::Country.all.map(&:iso_short_name) }
   validates :primary_email,
             format: { with: URI::MailTo::EMAIL_REGEXP,
                       message: 'is invalid',

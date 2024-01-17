@@ -3,8 +3,8 @@ import React from "react";
 
 export function usePlaceIdFromGMaps(placeId: string | null) {
   const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  const { placesService } = usePlacesService({
-    apiKey: googleMapsApiKey || "",
+  const { placesService, autocompleteSessionToken } = usePlacesService({
+    apiKey: googleMapsApiKey!,
   });
   const [result, setResult] = React.useState<any>(null);
   React.useEffect(() => {
@@ -16,7 +16,7 @@ export function usePlaceIdFromGMaps(placeId: string | null) {
         (placeDetails) => setResult(placeDetails)
       );
     }
-  }, [placeId, googleMapsApiKey]);
+  }, [placeId, googleMapsApiKey, autocompleteSessionToken, placesService]);
 
   return React.useMemo(
     () => result?.address_components?.[0].short_name,

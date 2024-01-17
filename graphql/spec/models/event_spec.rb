@@ -6,40 +6,34 @@
 #
 #  id                            :bigint           not null, primary key
 #  attendee_price_per_uom_cents  :decimal(, )      default(0.0)
-#  city                          :string
-#  country                       :string
 #  deposit_amount_cents          :decimal(, )      default(0.0), not null
 #  description                   :text             not null
 #  duration_time                 :string
 #  end_date                      :datetime
 #  event_type                    :string           not null
-#  full_address                  :string
-#  house_number                  :string
 #  landmark                      :string
 #  language                      :string           default("en")
-#  latitude                      :float
-#  longitude                     :float
 #  max_attendees                 :integer
 #  min_attendees                 :integer          default(0)
 #  organizer_price_per_uom_cents :decimal(, )      default(0.0)
 #  recurring_days_with_time      :string           default([]), is an Array
 #  ref_number                    :string
-#  region                        :string
 #  requires_check_in             :boolean          default(FALSE), not null
 #  requires_contract             :boolean          default(FALSE), not null
 #  requires_deposit              :boolean          default(FALSE), not null
 #  requires_passport             :boolean          default(FALSE), not null
 #  single_days_with_time         :datetime         default([]), is an Array
 #  status                        :string
-#  street                        :string
 #  title                         :string           not null
 #  created_at                    :datetime         not null
 #  updated_at                    :datetime         not null
+#  address_id                    :bigint
 #  firm_id                       :bigint
 #  unit_id                       :bigint
 #
 # Indexes
 #
+#  index_events_on_address_id              (address_id)
 #  index_events_on_event_type              (event_type)
 #  index_events_on_firm_id                 (firm_id)
 #  index_events_on_ref_number_and_firm_id  (ref_number,firm_id) UNIQUE
@@ -116,9 +110,6 @@ RSpec.describe Event, type: :model do
         should validate_presence_of(:title)
         should validate_presence_of(:description)
         should validate_presence_of(:event_type)
-        should validate_presence_of(:city)
-        should validate_presence_of(:country)
-        should validate_presence_of(:full_address)
         should validate_presence_of(:duration_time)
         should validate_presence_of(:language)
         should validate_presence_of(:status)
@@ -128,13 +119,13 @@ RSpec.describe Event, type: :model do
     end
 
     it 'monetize' do
-      expect(Event.monetized_attributes).to eq({  'attendee_price_per_uom' => 'attendee_price_per_uom_cents',
-                                                  'deposit_amount' => 'deposit_amount_cents',
-                                                  'organizer_price_per_uom' => 'organizer_price_per_uom_cents' })
+      expect(Event.monetized_attributes).to eq({ 'attendee_price_per_uom' => 'attendee_price_per_uom_cents',
+                                                 'deposit_amount' => 'deposit_amount_cents',
+                                                 'organizer_price_per_uom' => 'organizer_price_per_uom_cents' })
     end
 
     context 'callbacks' do
-      let(:event) { Event.new }
+      let(:event) { Event.new(firm: create(:firm)) }
       it 'draft' do
         allow(event).to receive(:set_prices)
         allow(event).to receive(:adjust_prices)

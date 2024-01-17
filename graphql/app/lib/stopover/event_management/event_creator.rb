@@ -11,12 +11,28 @@ module Stopover
         event = Event.new
 
         Event.transaction do
+          event.address = Address.new(args.slice(:full_address,
+                                                 :country,
+                                                 :region,
+                                                 :city,
+                                                 :street,
+                                                 :house_number,
+                                                 :latitude,
+                                                 :longitude))
           event.assign_attributes(args.except(:recurring_dates,
                                               :single_dates,
                                               :event_options,
                                               :images,
                                               :deposit_amount_cents,
-                                              :booking_cancellation_options))
+                                              :booking_cancellation_options,
+                                              :full_address,
+                                              :country,
+                                              :region,
+                                              :city,
+                                              :street,
+                                              :house_number,
+                                              :latitude,
+                                              :longitude))
           event.firm = @context[:current_user].account.current_firm
           if args[:event_options].present?
             args[:event_options].map do |option|

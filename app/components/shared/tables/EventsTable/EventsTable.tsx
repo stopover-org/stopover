@@ -66,7 +66,6 @@ const EventsTable = ({
             node {
               id
               title
-              fullAddress
               status
               durationTime
               endDate

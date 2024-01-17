@@ -1,24 +1,27 @@
 import React from "react";
 import { Grid } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import Fieldset from "../../v2/Fieldset/Fieldset";
-import Typography from "../../v2/Typography/Typography";
-import AddressAutocomplete from "../../v2/AddressAutocomplete/AddressAutocomplete";
-import Input from "../../v2/Input/Input";
-import useFormContext from "../../../lib/hooks/useFormContext";
-import { CreateFirmFields } from "../../../scenes/firms/CreateFirmScene/useCreateFirmForm";
-import { usePlaceIdFromGMaps } from "../../../lib/hooks/usePlaceIdFromGMaps";
-import {
-  IAddress,
-  useDetailedAddress,
-} from "../../../lib/hooks/useDetailedAddress";
+import Fieldset from "components/v2/Fieldset/Fieldset";
+import Typography from "components/v2/Typography/Typography";
+import AddressAutocomplete from "components/v2/AddressAutocomplete/AddressAutocomplete";
+import Input from "components/v2/Input/Input";
+import useFormContext from "lib/hooks/useFormContext";
+import { usePlaceIdFromGMaps } from "lib/hooks/usePlaceIdFromGMaps";
+import { IAddress, useDetailedAddress } from "lib/hooks/useDetailedAddress";
+import GoogleMap from "components/shared/GoogleMap";
 
 interface AddressFieldsetProps {
   simple?: boolean;
+  variant?: "outlined" | "solid" | "plain" | "soft";
+  withHeader?: boolean;
 }
 
-const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
-  const form = useFormContext<CreateFirmFields>();
+const AddressFieldset = ({
+  simple,
+  variant,
+  withHeader = true,
+}: AddressFieldsetProps) => {
+  const form = useFormContext<any>();
   const [countryCode, setCountryCode] = React.useState<string | null>(null);
   const [fullAddressCode, setFullAddressCode] = React.useState<
     string | undefined
@@ -29,11 +32,22 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
   const streetField = form.useFormField("street");
   const houseNumberField = form.useFormField("houseNumber");
   const fullAddressField = form.useFormField("fullAddress");
+  const latitudeField = form.useFormField("latitude");
+  const longitudeField = form.useFormField("longitude");
   const gMapCountryCode = usePlaceIdFromGMaps(countryCode);
   const fullAddress: IAddress = useDetailedAddress(fullAddressCode);
 
   React.useEffect(() => {
-    const keys = ["country", "region", "city", "street", "houseNumber"];
+    const keys = [
+      "country",
+      "region",
+      "city",
+      "street",
+      "houseNumber",
+      "latitude",
+      "longitude",
+    ];
+
     keys.forEach((key: string) => {
       const value = (fullAddress as Record<string, string | null>)[key];
       let field = null;
@@ -47,6 +61,10 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
         field = streetField;
       } else if (key === "houseNumber") {
         field = houseNumberField;
+      } else if (key === "latitude") {
+        field = latitudeField;
+      } else if (key === "longitude") {
+        field = longitudeField;
       }
 
       if (!field) return;
@@ -63,10 +81,12 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
   const { t } = useTranslation();
 
   return (
-    <Fieldset>
-      <Grid xs={12}>
-        <Typography level="title-lg">{t("address.title")}</Typography>
-      </Grid>
+    <Fieldset variant={variant}>
+      {withHeader && (
+        <Grid xs={12}>
+          <Typography level="title-lg">{t("address.title")}</Typography>
+        </Grid>
+      )}
       {!simple && (
         <Grid xs={12}>
           <AddressAutocomplete
@@ -77,7 +97,7 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
 
               setFullAddressCode(placeId);
             }}
-            label={t("address.fullAddress")}
+            label={t("models.address.attributes.fullAddress")}
             error={fullAddressField.error}
           />
         </Grid>
@@ -91,7 +111,7 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
 
             setCountryCode(placeId);
           }}
-          label={t("address.country")}
+          label={t("models.address.attributes.country")}
           error={countryField.error}
         />
       </Grid>
@@ -105,7 +125,7 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
             ]}
             countries={gMapCountryCode ? [gMapCountryCode] : undefined}
             {...regionField}
-            label={t("address.region")}
+            label={t("models.address.attributes.region")}
           />
         </Grid>
       )}
@@ -115,7 +135,7 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
             types={["locality", "administrative_area_level_3"]}
             countries={gMapCountryCode ? [gMapCountryCode] : undefined}
             {...cityField}
-            label={t("address.city")}
+            label={t("models.address.attributes.city")}
           />
         </Grid>
       )}
@@ -125,13 +145,24 @@ const AddressFieldset = ({ simple }: AddressFieldsetProps) => {
             types={["address"]}
             countries={gMapCountryCode ? [gMapCountryCode] : undefined}
             {...streetField}
-            label={t("address.street")}
+            label={t("models.address.attributes.street")}
           />
         </Grid>
       )}
       {!simple && (
         <Grid md={6} sm={12}>
-          <Input {...houseNumberField} label={t("address.houseNumber")} />
+          <Input
+            {...houseNumberField}
+            label={t("models.address.attributes.houseNumber")}
+          />
+        </Grid>
+      )}
+      {!simple && latitudeField.value && longitudeField.value && (
+        <Grid md={12} sm={12}>
+          <GoogleMap
+            center={{ lat: latitudeField.value, lng: longitudeField.value }}
+            markers={[{ lat: latitudeField.value, lng: longitudeField.value }]}
+          />
         </Grid>
       )}
     </Fieldset>

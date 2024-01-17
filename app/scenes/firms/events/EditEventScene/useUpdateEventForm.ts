@@ -70,14 +70,10 @@ function useDefaultValues(
   const event = useFragment<useUpdateEventForm_EventFragment$key>(
     graphql`
       fragment useUpdateEventForm_EventFragment on Event {
-        city
-        country
         description
         durationTime
         endDate
         eventType
-        fullAddress
-        houseNumber
         id
         images
         maxAttendees
@@ -89,14 +85,20 @@ function useDefaultValues(
           cents
         }
         recurringDaysWithTime
-        region
         requiresCheckIn
         requiresContract
         requiresPassport
         requiresDeposit
         singleDaysWithTime
-        street
         title
+        address {
+          fullAddress
+          country
+          region
+          city
+          street
+          houseNumber
+        }
         bookingCancellationOptions {
           id
           penaltyPrice {
@@ -154,26 +156,26 @@ function useDefaultValues(
           status: opt.status,
         })
       ),
-      city: event.city,
-      country: event.country,
+      city: event.address?.city,
+      country: event.address?.country,
       description: event.description,
       durationTime: event.durationTime,
       endDate: event.endDate ? moment(event.endDate) : null,
       eventType: event.eventType,
-      fullAddress: event.fullAddress!,
-      houseNumber: event.houseNumber,
+      fullAddress: event.address?.fullAddress!,
+      houseNumber: event.address?.houseNumber,
       id: event.id,
       images: event.images as string[],
       maxAttendees: event.maxAttendees,
       minAttendees: event.minAttendees,
       organizerPricePerUomCents: event.organizerPricePerUom!.cents! / 100,
       depositAmountCents: event.depositAmount!.cents! / 100,
-      region: event.region,
+      region: event.address?.region,
       requiresCheckIn: Boolean(event.requiresCheckIn),
       requiresContract: Boolean(event.requiresContract),
       requiresPassport: Boolean(event.requiresPassport),
       requiresDeposit: Boolean(event.requiresDeposit),
-      street: event.street,
+      street: event.address?.street,
       title: event.title,
     }),
     [event]

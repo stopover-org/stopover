@@ -15,6 +15,7 @@ interface BalanceSectionProps {
   firmFragmentRef: BalanceSection_FirmFragment$key;
   currentUserFragmentRef: any;
 }
+
 const BalanceSection = ({
   firmFragmentRef,
   currentUserFragmentRef,
@@ -23,6 +24,7 @@ const BalanceSection = ({
     graphql`
       fragment BalanceSection_FirmFragment on Firm {
         paymentTypes
+        contractAddress
         balance {
           totalAmount {
             cents
@@ -41,7 +43,6 @@ const BalanceSection = ({
         stripeConnects {
           status
         }
-        contractAddress
         ...StripeConnectsTable_FirmFragment
       }
     `,
@@ -55,10 +56,6 @@ const BalanceSection = ({
       }
     `,
     currentUserFragmentRef
-  );
-
-  const activeStripeConnect = firm?.stripeConnects?.find(
-    ({ status }) => status === "active" || status === "pending"
   );
   const { t } = useTranslation();
 

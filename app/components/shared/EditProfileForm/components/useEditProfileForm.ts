@@ -28,10 +28,12 @@ function useDefaultValues(
         primaryEmail
         primaryPhone
         name
-        country
-        city
-        region
         dateOfBirth
+        address {
+          country
+          region
+          city
+        }
       }
     `,
     accountFragmentRef
@@ -42,9 +44,9 @@ function useDefaultValues(
       primaryEmail: account.primaryEmail || "",
       primaryPhone: account.primaryPhone || "",
       name: account.name || "",
-      country: account.country || "",
-      city: account.city || "",
-      region: account.region || "",
+      country: account.address?.country || "",
+      city: account.address?.city || "",
+      region: account.address?.region || "",
       dateOfBirth: account.dateOfBirth || null,
     }),
     [account]

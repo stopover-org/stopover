@@ -22,18 +22,18 @@ class StripeConnect < ApplicationRecord
   include AASM
 
   # MONETIZE ==============================================================
-
+  #
   # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :firm
 
   # HAS_ONE ASSOCIATIONS ==================================================
-
+  #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
-
+  #
   # HAS_MANY ASSOCIATIONS =================================================
-
+  #
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
-
+  #
   # AASM STATES ===========================================================
   aasm column: :status do
     state :pending, initial: true
@@ -58,20 +58,20 @@ class StripeConnect < ApplicationRecord
   end
 
   # ENUMS =================================================================
-
+  #
   # SECURE TOKEN ==========================================================
-
+  #
   # SECURE PASSWORD =======================================================
-
+  #
   # ATTACHMENTS ===========================================================
-
+  #
   # RICH_TEXT =============================================================
-
+  #
   # VALIDATIONS ===========================================================
   validates :status, presence: true
 
   # CALLBACKS =============================================================
-
+  #
   # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[active pending inactive removed]).order(created_at: :desc) }
 

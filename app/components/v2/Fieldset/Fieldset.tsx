@@ -8,15 +8,20 @@ interface IBaseFieldsetProps {
     | React.ReactElement[]
     | React.ReactNode
     | React.ReactNode[];
+  variant?: "outlined" | "solid" | "plain" | "soft";
 }
 
 interface IFieldsetProps
   extends Omit<GridProps, keyof IBaseFieldsetProps>,
     IBaseFieldsetProps {}
 
-const Fieldset = ({ children, ...props }: IFieldsetProps) => (
+const Fieldset = ({
+  children,
+  variant = "outlined",
+  ...props
+}: IFieldsetProps) => (
   <Grid xs={12} sx={{ zIndex: "unset" }} {...props}>
-    <Card sx={{ margin: "20px" }} variant="outlined">
+    <Card sx={{ margin: "20px" }} variant={variant}>
       <CardContent sx={{ zIndex: "unset" }}>
         <Grid container spacing={1}>
           {children}

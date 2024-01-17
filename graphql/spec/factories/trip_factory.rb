@@ -4,19 +4,13 @@
 #
 # Table name: trips
 #
-#  id           :bigint           not null, primary key
-#  city         :string
-#  country      :string
-#  end_date     :date
-#  full_address :string
-#  latitude     :float
-#  longitude    :float
-#  region       :string
-#  start_date   :date
-#  status       :string           not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  account_id   :bigint
+#  id         :bigint           not null, primary key
+#  end_date   :date
+#  start_date :date
+#  status     :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  account_id :bigint
 #
 # Indexes
 #

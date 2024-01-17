@@ -1,5 +1,6 @@
-import { Grid } from "@mui/joy";
+import { Grid, useTheme } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
+import { useMediaQuery } from "@mui/material";
 import FirmSection from "./components/FirmSection";
 import BookingsSection from "./components/BookingsSection";
 import BalanceSection from "./components/BalanceSection";
@@ -40,38 +41,44 @@ const DashboardScene = ({
     `,
     currentUserFragmentRef
   );
+  const theme = useTheme();
+  const isDesktopView = useMediaQuery(theme.breakpoints.up("md"));
 
   return (
     <Grid container>
-      <Grid lg={12} md={12}>
+      <Grid lg={6} md={6} sm={12} xs={12}>
         <FirmSection
           firmFragmentRef={firm}
           currentUserFragmentRef={currentUser}
         />
       </Grid>
 
-      <Grid lg={12} md={12}>
+      <Grid lg={6} md={6} sm={12} xs={12}>
         <BalanceSection
           firmFragmentRef={firm}
           currentUserFragmentRef={currentUser}
         />
       </Grid>
 
-      <Grid lg={12} md={12}>
+      <Grid lg={6} md={8} sm={12} xs={12}>
         <SchedulesSection firmFragmentRef={firm} />
       </Grid>
+      {isDesktopView && <Grid lg={6} md={4} sm={0} xs={0} />}
 
-      <Grid lg={12} md={12}>
+      <Grid lg={6} md={8} sm={12} xs={12}>
         <PaymentsSection firmFragmentRef={firm} />
       </Grid>
+      {isDesktopView && <Grid lg={6} md={4} sm={0} xs={0} />}
 
-      <Grid lg={12} md={12}>
+      <Grid lg={6} md={8} sm={12} xs={12}>
         <BookingsSection firmFragmentRef={firm} />
       </Grid>
+      {isDesktopView && <Grid lg={6} md={4} sm={0} xs={0} />}
 
-      <Grid lg={12} md={12}>
+      <Grid lg={6} md={8} sm={12} xs={12}>
         <EventsSection firmFragmentRef={firm} />
       </Grid>
+      {isDesktopView && <Grid lg={6} md={4} sm={0} xs={0} />}
     </Grid>
   );
 };

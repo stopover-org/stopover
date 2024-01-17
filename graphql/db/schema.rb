@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_13_225103) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_14_101458) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -35,14 +35,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_225103) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
-    t.string "house_number"
-    t.string "street"
-    t.string "city"
-    t.string "country"
-    t.string "region"
-    t.string "full_address"
-    t.float "longitude"
-    t.float "latitude"
     t.string "status", default: "initial", null: false
     t.string "phones", default: [], array: true
     t.string "primary_phone"
@@ -50,11 +42,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_225103) do
     t.datetime "verified_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "postal_code"
     t.datetime "date_of_birth"
     t.string "primary_email"
     t.string "language", default: "en", null: false
     t.bigint "firm_id"
+    t.bigint "address_id"
+    t.index ["address_id"], name: "index_accounts_on_address_id"
     t.index ["firm_id"], name: "index_accounts_on_firm_id"
     t.index ["user_id"], name: "index_accounts_on_user_id", unique: true
   end
@@ -94,6 +87,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_225103) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "addresses", force: :cascade do |t|
+    t.text "full_address"
+    t.string "country"
+    t.string "region"
+    t.string "city"
+    t.string "street"
+    t.string "house_number"
+    t.string "postal_code"
+    t.float "latitude"
+    t.float "longitude"
+    t.bigint "firm_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["firm_id"], name: "index_addresses_on_firm_id"
   end
 
   create_table "attendee_options", force: :cascade do |t|
@@ -259,14 +268,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_225103) do
     t.boolean "requires_check_in", default: false, null: false
     t.string "recurring_days_with_time", default: [], array: true
     t.string "duration_time"
-    t.string "house_number"
-    t.string "street"
-    t.string "city"
-    t.string "country"
-    t.string "region"
-    t.string "full_address"
-    t.float "longitude"
-    t.float "latitude"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "unit_id"
@@ -281,6 +282,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_225103) do
     t.bigint "firm_id"
     t.datetime "end_date"
     t.string "language", default: "en"
+    t.bigint "address_id"
+    t.index ["address_id"], name: "index_events_on_address_id"
     t.index ["event_type"], name: "index_events_on_event_type"
     t.index ["firm_id"], name: "index_events_on_firm_id"
     t.index ["ref_number", "firm_id"], name: "index_events_on_ref_number_and_firm_id", unique: true
@@ -296,14 +299,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_225103) do
     t.string "website"
     t.text "contacts"
     t.string "status", default: "pending"
-    t.string "full_address"
-    t.string "house_number"
-    t.string "street"
-    t.string "city"
-    t.string "country"
-    t.string "region"
-    t.float "longitude"
-    t.float "latitude"
     t.string "stripe_account_id"
     t.string "business_type", default: "individual", null: false
     t.string "postal_code"
@@ -311,6 +306,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_225103) do
     t.string "payment_types", default: [], null: false, array: true
     t.integer "margin", default: 0
     t.string "contract_address"
+    t.bigint "address_id"
+    t.index ["address_id"], name: "index_firms_on_address_id"
     t.index ["ref_number"], name: "index_firms_on_ref_number", unique: true
   end
 
@@ -462,12 +459,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_225103) do
     t.bigint "account_id"
     t.date "start_date"
     t.date "end_date"
-    t.string "city"
-    t.string "country"
-    t.string "region"
-    t.string "full_address"
-    t.float "longitude"
-    t.float "latitude"
     t.string "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
