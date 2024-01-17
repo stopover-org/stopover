@@ -35,10 +35,10 @@ const SelectCurrentFirm = ({ accountFragmentRef }: SelectCurrentFirmProps) => {
   const selectedFirmField = form.useFormField("firmId");
   const options = React.useMemo(
     () =>
-      account?.firms?.map(({ id, title, country, city }) => ({
+      account?.firms?.map(({ id, title, address }) => ({
         firmId: id,
         label: title,
-        secondary: `${country}, ${city}`,
+        secondary: `${address?.country}, ${address?.city}`,
       })) || [],
     [account]
   );
