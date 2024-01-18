@@ -27,7 +27,7 @@ module Mutations
       argument :city, String, required: false
       argument :country, String, required: false
       argument :region, String, required: false
-      argument :full_address, String
+      argument :full_address, String, required: false
       argument :longitude, Float, required: false
       argument :latitude, Float, required: false
 

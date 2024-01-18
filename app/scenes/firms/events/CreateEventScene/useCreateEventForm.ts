@@ -4,20 +4,15 @@ import { graphql } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import moment, { Moment } from "moment";
-import useMutationForm from "../../../../lib/hooks/useMutationForm";
+import useMutationForm from "lib/hooks/useMutationForm";
 import {
   EventTypeEnum,
   useCreateEventForm_CreateEventMutation,
-} from "../../../../artifacts/useCreateEventForm_CreateEventMutation.graphql";
-import { dateTimeFormat, setTime } from "../../../../lib/utils/dates";
-import {
-  momentTransform,
-  numberTransform,
-} from "../../../../lib/utils/transforms";
+} from "artifacts/useCreateEventForm_CreateEventMutation.graphql";
+import { dateTimeFormat, setTime } from "lib/utils/dates";
+import { momentTransform, numberTransform } from "lib/utils/transforms";
 
 export interface CreateEventFields {
-  city?: string;
-  country?: string;
   description: string;
   durationTime: string;
   eventOptions: Array<{
@@ -27,13 +22,10 @@ export interface CreateEventFields {
     forAttendee: boolean;
   }>;
   eventType: EventTypeEnum;
-  fullAddress: string;
-  houseNumber?: string;
   images?: string[];
   maxAttendees?: number;
   minAttendees?: number;
   organizerPricePerUomCents?: number;
-  region?: string;
   requiresCheckIn: boolean;
   requiresContract: boolean;
   requiresPassport: boolean;
@@ -50,7 +42,6 @@ export interface CreateEventFields {
     minute: number | null;
   }>;
   endDate: Moment | null;
-  street?: string;
   title: string;
   bookingCancellationOptions: Array<{
     penaltyPriceCents: number;
@@ -83,8 +74,6 @@ function useDefaultValues(): Partial<CreateEventFields> {
 }
 
 const validationSchema = Yup.object().shape({
-  city: Yup.string().required("Required"),
-  country: Yup.string().required("Required"),
   description: Yup.string().required("Required"),
   durationTime: Yup.string().required("Required"),
   eventOptions: Yup.array()
@@ -100,7 +89,6 @@ const validationSchema = Yup.object().shape({
     )
     .required("Required"),
   eventType: Yup.string(),
-  fullAddress: Yup.string().required("Required"),
   houseNumber: Yup.string().nullable(),
   images: Yup.array(),
   maxAttendees: Yup.number().transform(numberTransform),
@@ -127,7 +115,6 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  region: Yup.string().nullable(),
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),
   requiresPassport: Yup.boolean(),
@@ -142,7 +129,6 @@ const validationSchema = Yup.object().shape({
     )
     .required("Required"),
   endDate: Yup.date().transform(momentTransform).nullable(),
-  street: Yup.string().nullable(),
   title: Yup.string().required("Required"),
   bookingCancellationOptions: Yup.array().of(
     Yup.object().shape({

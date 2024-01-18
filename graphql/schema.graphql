@@ -482,7 +482,7 @@ input CreateEventInput {
   endDate: DateTime
   eventOptions: [CreateEventOptionInput!]
   eventType: EventTypeEnum!
-  fullAddress: String!
+  fullAddress: String
   houseNumber: String
   images: [String!]
   interestIds: [ID!]
