@@ -23,6 +23,7 @@
 #  index_addresses_on_firm_id  (firm_id)
 #
 class Address < ApplicationRecord
+  DEFAULT_COUNTRY = ISO3166::Country.find_country_by_any_name('Serbia').iso_short_name
   # MODULES ===============================================================
   #
   # MONETIZE ==============================================================
@@ -57,8 +58,14 @@ class Address < ApplicationRecord
             inclusion: { in: ISO3166::Country.all.map(&:iso_short_name) }
   #
   # CALLBACKS =============================================================
-  #
+  before_validation :adjust_country
   # SCOPES ================================================================
   #
   # DELEGATION ============================================================
+
+  private
+
+  def adjust_country
+    self.country = DEFAULT_COUNTRY unless country
+  end
 end

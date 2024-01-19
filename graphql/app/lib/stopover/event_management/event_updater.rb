@@ -9,7 +9,11 @@ module Stopover
 
       def execute(**args)
         Event.transaction do
-          @event.address = Address.new unless @event.address
+          args[:country] = ISO3166::Country.find_country_by_any_name(args[:country])&.iso_short_name if args[:country]
+          unless @event.address
+            @event.address = Address.new(firm:    @event.firm,
+                                         country: @event.firm.address&.country)
+          end
           @event.address.assign_attributes(args.slice(:full_address,
                                                       :country,
                                                       :region,
