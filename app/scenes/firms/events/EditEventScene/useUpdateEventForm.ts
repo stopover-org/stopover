@@ -26,7 +26,6 @@ export interface UpdateEventFields {
     forAttendee: boolean;
   }>;
   eventType: EventTypeEnum;
-  houseNumber?: string | null;
   images?: string[];
   maxAttendees?: number | null;
   minAttendees?: number | null;
@@ -161,8 +160,6 @@ function useDefaultValues(
 }
 
 const validationSchema = Yup.object().shape({
-  city: Yup.string().required("Required"),
-  country: Yup.string().required("Required"),
   description: Yup.string().required("Required"),
   durationTime: Yup.string().required("Required"),
   endDate: Yup.date().transform(momentTransform).nullable(),
@@ -179,8 +176,6 @@ const validationSchema = Yup.object().shape({
     )
     .required("Required"),
   eventType: Yup.string(),
-  fullAddress: Yup.string().required("Required"),
-  houseNumber: Yup.string().nullable(),
   images: Yup.array(),
   maxAttendees: Yup.number().transform(numberTransform),
   minAttendees: Yup.number().transform(numberTransform),
@@ -199,7 +194,6 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  region: Yup.string().nullable(),
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),
   requiresPassport: Yup.boolean(),
@@ -212,7 +206,6 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  street: Yup.string().nullable(),
   title: Yup.string().required("Required"),
   bookingCancellationOptions: Yup.array().of(
     Yup.object().shape({

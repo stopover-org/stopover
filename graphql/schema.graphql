@@ -2052,7 +2052,7 @@ input UpdateEventInput {
   requiresPassport: Boolean
   singleDates: [String!]
   street: String
-  title: String!
+  title: String
   unitId: ID
 }
 

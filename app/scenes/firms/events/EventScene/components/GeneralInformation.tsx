@@ -22,6 +22,9 @@ import Section from "components/v2/Section";
 import Typography from "components/v2/Typography/Typography";
 import Description from "components/v2/Description";
 import CancellationsSection from "./CancellationsSection";
+import GoogleMap from "../../../../../components/shared/GoogleMap/GoogleMap";
+import DataRow from "../../../DashboardScene/components/DataRow";
+import EditEventAddress from "../../../../../components/shared/EditEventAddress";
 
 interface GeneralInformationProps {
   eventFragmentRef: GeneralInformation_EventFragment$key;
@@ -84,6 +87,7 @@ const GeneralInformation = ({
           name
           value
         }
+        ...EditEventAddress_EventFragment
         ...CancellationsSection_EventFragment
       }
     `,
@@ -112,41 +116,82 @@ const GeneralInformation = ({
             </CardContent>
           </Card>
         </Grid>
+
+        <Section>
+          <Grid xs={12}>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography level="h4">Address</Typography>
+              <Box>
+                <EditEventAddress eventFragmentRef={event} />
+              </Box>
+            </Stack>
+          </Grid>
+          <Grid xs={12}>
+            {event.address?.fullAddress || t("general.noData")}
+          </Grid>
+          <Grid xs={12}>
+            {event.address?.country} {event.address?.region}{" "}
+            {event.address?.city} {event.address?.street}{" "}
+            {event.address?.houseNumber}
+          </Grid>
+          {event.address?.latitude && event.address?.longitude && (
+            <Grid xs={12}>
+              <GoogleMap
+                center={{
+                  lat: event.address?.latitude!,
+                  lng: event.address?.longitude!,
+                }}
+                markers={[
+                  {
+                    lat: event.address?.latitude!,
+                    lng: event.address?.longitude!,
+                  },
+                ]}
+              />
+            </Grid>
+          )}
+        </Section>
+
         <Section>
           <Grid container xs={12} spacing={2}>
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.title")}
-              </Typography>
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.title")}
+                value={event.title}
+              />
             </Grid>
-            <Grid xs={10}>{event.title}</Grid>
 
             <Grid xs={12}>
-              <Stack direction="row">
+              <Stack direction="row" flexWrap="wrap">
                 <ImagesPreview images={event.images as string[]} readonly />
               </Stack>
             </Grid>
 
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.description")}
-              </Typography>
-            </Grid>
-            <Grid xs={10}>
-              <Description html={event.description} />
+            <Grid xs={12}>
+              <Stack
+                direction="row"
+                spacing={1}
+                useFlexGap
+                alignItems="flex-end"
+              >
+                <Typography level="title-lg">
+                  {t("models.event.attributes.description")}:
+                </Typography>
+                <Typography level="title-sm">
+                  <Description html={event.description} />
+                </Typography>
+              </Stack>
             </Grid>
 
             <Grid xs={12} p={5}>
               <Divider />
             </Grid>
 
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.eventType")}
-              </Typography>
-            </Grid>
-            <Grid xs={10}>
-              {t(`models.event.enums.eventType.${event.eventType}`)}
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.eventType")}
+                value={t(`models.event.enums.eventType.${event.eventType}`)}
+              />
             </Grid>
 
             <Grid xs={2}>
@@ -229,28 +274,6 @@ const GeneralInformation = ({
               </Typography>
             </Grid>
             <Grid xs={10}>{event.durationTime}</Grid>
-
-            <Grid xs={2}>
-              <Typography level="title-lg">{t("address.title")}</Typography>
-            </Grid>
-            <Grid xs={10}>
-              {event.address?.fullAddress}
-              <br />
-              {t("models.address.attributes.country")}: {event.address?.country}
-              <br />
-              {t("models.address.attributes.region")}: {event.address?.region}
-              <br />
-              {t("models.address.attributes.city")}: {event.address?.city}
-              <br />
-              {t("models.address.attributes.street")}: {event.address?.street}
-              <br />
-              {t("models.address.attributes.houseNumber")}:{" "}
-              {event.address?.houseNumber}
-              <br />
-              {t("models.address.attributes.latitude")}/{t("address.longitude")}
-              : {event.address?.latitude || t("general.noData")} /{" "}
-              {event.address?.longitude || t("general.noData")}
-            </Grid>
 
             <Grid xs={2}>
               <Typography level="title-lg">

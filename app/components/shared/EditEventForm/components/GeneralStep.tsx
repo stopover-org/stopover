@@ -171,6 +171,7 @@ const GeneralStep = () => {
         </Grid>
         <Grid xs={12}>
           <Editor
+            errorMessage={descriptionField.error?.message}
             value={descriptionField.value}
             onChange={descriptionField.onChange}
             placeholder={t("models.event.attributes.description")}

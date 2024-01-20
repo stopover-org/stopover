@@ -14,7 +14,7 @@ module Mutations
                loads:    Types::EventsRelated::UnitType,
                required: false
 
-      argument :title, String, required: true
+      argument :title, String, required: false
       argument :event_type, Types::EventsRelated::EventTypeEnum, required: false
       argument :description, String, required: false
       argument :recurring_dates, [String], required: false
