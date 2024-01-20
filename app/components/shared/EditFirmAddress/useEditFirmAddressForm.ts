@@ -4,7 +4,8 @@ import * as Yup from "yup";
 
 import { useEditFirmAddressForm_AddressFragment$key } from "artifacts/useEditFirmAddressForm_AddressFragment.graphql";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useMutationForm from "../../../lib/hooks/useMutationForm";
+import { useEditFirmAddressForm_UpdateFirmMutation } from "artifacts/useEditFirmAddressForm_UpdateFirmMutation.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
 
 interface EditFirmAddressFormFields {
   fullAddress: string;
@@ -63,7 +64,10 @@ export function useEditFirmAddressForm(
   addressFragmentRef: useEditFirmAddressForm_AddressFragment$key,
   onSuccess?: () => void
 ) {
-  return useMutationForm<EditFirmAddressFormFields, any>(
+  return useMutationForm<
+    EditFirmAddressFormFields,
+    useEditFirmAddressForm_UpdateFirmMutation
+  >(
     graphql`
       mutation useEditFirmAddressForm_UpdateFirmMutation(
         $input: UpdateFirmInput!

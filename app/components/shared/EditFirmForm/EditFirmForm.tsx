@@ -151,6 +151,7 @@ const EditFirmForm = ({ simple = false }: EditFirmFormProps) => {
           </Grid>
           <Grid xs={12}>
             <Editor
+              errorMessage={descriptionField.error?.message}
               value={descriptionField.value}
               onChange={descriptionField.onChange}
             />

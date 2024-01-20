@@ -482,7 +482,7 @@ input CreateEventInput {
   endDate: DateTime
   eventOptions: [CreateEventOptionInput!]
   eventType: EventTypeEnum!
-  fullAddress: String!
+  fullAddress: String
   houseNumber: String
   images: [String!]
   interestIds: [ID!]
@@ -2052,7 +2052,7 @@ input UpdateEventInput {
   requiresPassport: Boolean
   singleDates: [String!]
   street: String
-  title: String!
+  title: String
   unitId: ID
 }
 

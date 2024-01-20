@@ -4,22 +4,17 @@ import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import moment, { Moment } from "moment";
-import useMutationForm from "../../../../lib/hooks/useMutationForm";
-import { dateTimeFormat, setTime } from "../../../../lib/utils/dates";
-import {
-  momentTransform,
-  numberTransform,
-} from "../../../../lib/utils/transforms";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { dateTimeFormat, setTime } from "lib/utils/dates";
+import { momentTransform, numberTransform } from "lib/utils/transforms";
 import {
   EventTypeEnum,
   useUpdateEventForm_UpdateEventMutation,
-} from "../../../../artifacts/useUpdateEventForm_UpdateEventMutation.graphql";
-import { useUpdateEventForm_EventFragment$key } from "../../../../artifacts/useUpdateEventForm_EventFragment.graphql";
+} from "artifacts/useUpdateEventForm_UpdateEventMutation.graphql";
+import { useUpdateEventForm_EventFragment$key } from "artifacts/useUpdateEventForm_EventFragment.graphql";
 
 export interface UpdateEventFields {
   id: string;
-  city?: string | null;
-  country?: string | null;
   description: string;
   durationTime: string;
   endDate: Moment | null;
@@ -31,14 +26,11 @@ export interface UpdateEventFields {
     forAttendee: boolean;
   }>;
   eventType: EventTypeEnum;
-  fullAddress: string;
-  houseNumber?: string | null;
   images?: string[];
   maxAttendees?: number | null;
   minAttendees?: number | null;
   organizerPricePerUomCents: number;
   depositAmountCents: number;
-  region?: string | null;
   requiresCheckIn: boolean;
   requiresContract: boolean;
   requiresPassport: boolean;
@@ -53,7 +45,6 @@ export interface UpdateEventFields {
     hour: number | null;
     minute: number | null;
   }>;
-  street?: string | null;
   title: string;
   bookingCancellationOptions: Array<{
     id?: string;
@@ -91,14 +82,6 @@ function useDefaultValues(
         requiresDeposit
         singleDaysWithTime
         title
-        address {
-          fullAddress
-          country
-          region
-          city
-          street
-          houseNumber
-        }
         bookingCancellationOptions {
           id
           penaltyPrice {
@@ -156,26 +139,20 @@ function useDefaultValues(
           status: opt.status,
         })
       ),
-      city: event.address?.city,
-      country: event.address?.country,
       description: event.description,
       durationTime: event.durationTime,
       endDate: event.endDate ? moment(event.endDate) : null,
       eventType: event.eventType,
-      fullAddress: event.address?.fullAddress!,
-      houseNumber: event.address?.houseNumber,
       id: event.id,
       images: event.images as string[],
       maxAttendees: event.maxAttendees,
       minAttendees: event.minAttendees,
       organizerPricePerUomCents: event.organizerPricePerUom!.cents! / 100,
       depositAmountCents: event.depositAmount!.cents! / 100,
-      region: event.address?.region,
       requiresCheckIn: Boolean(event.requiresCheckIn),
       requiresContract: Boolean(event.requiresContract),
       requiresPassport: Boolean(event.requiresPassport),
       requiresDeposit: Boolean(event.requiresDeposit),
-      street: event.address?.street,
       title: event.title,
     }),
     [event]
@@ -183,8 +160,6 @@ function useDefaultValues(
 }
 
 const validationSchema = Yup.object().shape({
-  city: Yup.string().required("Required"),
-  country: Yup.string().required("Required"),
   description: Yup.string().required("Required"),
   durationTime: Yup.string().required("Required"),
   endDate: Yup.date().transform(momentTransform).nullable(),
@@ -201,8 +176,6 @@ const validationSchema = Yup.object().shape({
     )
     .required("Required"),
   eventType: Yup.string(),
-  fullAddress: Yup.string().required("Required"),
-  houseNumber: Yup.string().nullable(),
   images: Yup.array(),
   maxAttendees: Yup.number().transform(numberTransform),
   minAttendees: Yup.number().transform(numberTransform),
@@ -221,7 +194,6 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  region: Yup.string().nullable(),
   requiresCheckIn: Yup.boolean(),
   requiresContract: Yup.boolean(),
   requiresPassport: Yup.boolean(),
@@ -234,7 +206,6 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  street: Yup.string().nullable(),
   title: Yup.string().required("Required"),
   bookingCancellationOptions: Yup.array().of(
     Yup.object().shape({

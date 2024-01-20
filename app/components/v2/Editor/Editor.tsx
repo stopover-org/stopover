@@ -1,10 +1,13 @@
 import React from "react";
 import { Editor as TinymceEditor } from "@tinymce/tinymce-react";
+import { FormControl, FormHelperText, FormLabel, Typography } from "@mui/joy";
 
 interface EditorProps {
   value: string;
   onChange?: (value: string) => void;
   placeholder?: string;
+  label?: string;
+  errorMessage?: string;
 }
 
 export const EditorStyles = `
@@ -39,24 +42,40 @@ export const EditorStyles = `
   }
 `;
 
-const Editor = ({ value, onChange, placeholder }: EditorProps) => (
-  <TinymceEditor
-    apiKey="hqlsvda7rj2nm0vtq7y28mg1zghcmvct4gjn2n95kc59y6jk"
-    init={{
-      menubar: false,
-      plugins: "linkwordcount",
-      toolbar: "blocks | bold italic underline strikethrough",
-      placeholder,
-      body_class: "tinymce-editor",
-      content_style: `body { font-family: Roboto, sans-serif; font-weight: 300; white-space: pre-wrap; }${EditorStyles}`,
-    }}
-    onEditorChange={(_, editor) => {
-      if (onChange instanceof Function) {
-        onChange(editor.getContent({ format: "html" }));
-      }
-    }}
-    value={value}
-  />
+const Editor = ({
+  value,
+  onChange,
+  placeholder,
+  label,
+  errorMessage,
+}: EditorProps) => (
+  <FormControl>
+    {label && <FormLabel>{label}</FormLabel>}
+    <TinymceEditor
+      apiKey="hqlsvda7rj2nm0vtq7y28mg1zghcmvct4gjn2n95kc59y6jk"
+      init={{
+        menubar: false,
+        plugins: "linkwordcount",
+        toolbar: "blocks | bold italic underline strikethrough",
+        placeholder,
+        body_class: "tinymce-editor",
+        content_style: `body { font-family: Roboto, sans-serif; font-weight: 300; white-space: pre-wrap; }${EditorStyles}`,
+      }}
+      onEditorChange={(_, editor) => {
+        if (onChange instanceof Function) {
+          onChange(editor.getContent({ format: "html" }));
+        }
+      }}
+      value={value}
+    />
+    {errorMessage && (
+      <FormHelperText>
+        <Typography fontSize="sm" color="danger">
+          {errorMessage}
+        </Typography>
+      </FormHelperText>
+    )}
+  </FormControl>
 );
 
 export default React.memo(Editor);
