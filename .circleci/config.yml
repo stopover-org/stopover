@@ -8,16 +8,19 @@ workflows:
 jobs:
   build:
     executor: stopover_stack__ruby_pg_es_redis
+    working_directory: ~/stopover/graphql
     # resource_class: 'medium+'
     steps:
       - attach_workspace:
           at: ~/stopover/graphql
 
+      
+
       # CHECKOUT
       - checkout
 
       # DEPENDENCIES
-      # - install_system_dependencies
+      - install_system_dependencies
       - install_node_js
       - install_ruby_dependencies # via cache
 
@@ -32,6 +35,13 @@ jobs:
 
 commands:
   # [COMMANDS] DEPENDENCIES
+
+  ensure_working_directory:
+    steps:
+      - run:
+          name: 'Current Working Directory'
+          command: |
+            pwd
 
   install_system_dependencies:
     steps:
