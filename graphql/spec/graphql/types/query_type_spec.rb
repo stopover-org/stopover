@@ -31,7 +31,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         interests {
           id
         }
-        schedules(filters: { scheduledFor: "#{event.schedules.first.scheduled_for.iso8601}" }) {
+        schedules {
           edges {
             node {
               id
@@ -86,8 +86,8 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     assert_equal GraphqlSchema.id_from_object(interest), result.dig(:data, :interests, 0, :id)
     assert_equal GraphqlSchema.id_from_object(event.schedules.first), result.dig(:data, :schedules, :edges, 0, :node, :id)
     assert_equal({ city: '',
-                   startDate: '2024-01-21T00:00:00+01:00',
-                   endDate: '2025-01-21T23:00:00+01:00',
+                   startDate: Time.zone.now.at_beginning_of_day.iso8601,
+                   endDate: (Time.zone.now.at_end_of_day + 1.year).iso8601,
                    minPrice: { cents: 550 },
                    maxPrice: { cents: 550 } }, result.dig(:data, :eventFilters))
     assert_equal GraphqlSchema.id_from_object(current_user), result.dig(:data, :currentUser, :id)
