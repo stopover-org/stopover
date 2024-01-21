@@ -1,18 +1,17 @@
 version: 2.1
 
 workflows:
-  bilendo-app-workflow:
+  stopover-app-workflow:
     jobs:
-      - code-quality
-
       - build
 
+jobs:
   build:
     executor: stopover_stack__ruby_pg_es_redis
     # resource_class: 'medium+'
     steps:
       - attach_workspace:
-          at: ~/bilendo/graphql
+          at: ~/stopover/graphql
 
       # CHECKOUT
       - checkout
@@ -41,7 +40,7 @@ commands:
           command: |
             sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
             sudo apt-get update --allow-releaseinfo-change
-            sudo apt-get -y install libffi7 ghostscript imagemagick optipng libmagickwand-dev
+            sudo apt-get -y install apt-get install -y build-essential libpq-dev nodejs
 
   install_ruby_dependencies:
     steps:
