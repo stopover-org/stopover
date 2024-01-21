@@ -101,7 +101,7 @@ commands:
     steps:
       - run:
           name: 'Rspec'
-          command: 'bin/rspec'
+          command: 'bin/bundle exec rspec'
 
   wait_for_postgres:
     steps:
