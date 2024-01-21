@@ -48,7 +48,7 @@
 require 'date'
 
 class Event < ApplicationRecord
-  GRAPHQL_TYPE = Types::EventsRelated::EventType
+  GRAPHQL_TYPE        = Types::EventsRelated::EventType
   TRANSLATABLE_FIELDS = %i[title description duration_time].freeze
   AVAILABLE_LANGUAGES = %i[en ru].freeze
 
@@ -114,17 +114,17 @@ class Event < ApplicationRecord
 
   # ENUMS =======================================================================
   enum event_type: {
-    excursion: 'excursion',
-    tour: 'tour',
-    in_town: 'in_town',
-    out_of_town: 'out_of_town',
-    active_holiday: 'active_holiday',
-    music: 'music',
-    workshop: 'workshop',
+    excursion:          'excursion',
+    tour:               'tour',
+    in_town:            'in_town',
+    out_of_town:        'out_of_town',
+    active_holiday:     'active_holiday',
+    music:              'music',
+    workshop:           'workshop',
     business_breakfast: 'business_breakfast',
-    meetup: 'meetup',
-    sport_activity: 'sport_activity',
-    gastronomic: 'gastronomic'
+    meetup:             'meetup',
+    sport_activity:     'sport_activity',
+    gastronomic:        'gastronomic'
   }
 
   # VALIDATIONS ================================================================
@@ -139,7 +139,7 @@ class Event < ApplicationRecord
             :status,
             presence: true, unless: :draft?
   validates :ref_number,
-            uniqueness: { scope: :firm_id },
+            uniqueness:  { scope: :firm_id },
             allow_blank: true
 
   # CALLBACKS ================================================================
@@ -167,12 +167,12 @@ class Event < ApplicationRecord
 
   def adjust_prices
     self.attendee_price_per_uom = margin ? (organizer_price_per_uom * (1 + (margin / 100.0))) : organizer_price_per_uom
-    self.deposit_amount = attendee_price_per_uom if deposit_amount > attendee_price_per_uom
+    self.deposit_amount         = attendee_price_per_uom if deposit_amount > attendee_price_per_uom
   end
 
   def set_prices
     self.organizer_price_per_uom = Money.new(0) unless organizer_price_per_uom
-    self.attendee_price_per_uom = Money.new(0) unless attendee_price_per_uom
+    self.attendee_price_per_uom  = Money.new(0) unless attendee_price_per_uom
   end
 
   def available_dates
@@ -219,20 +219,20 @@ class Event < ApplicationRecord
 
   def search_data
     {
-      title: title,
-      country: address.country,
-      city: address.city,
-      region: address.region,
-      address: address.full_address,
-      dates: schedules.map(&:scheduled_for).map(&:to_time),
-      unit: unit&.name,
+      title:     title,
+      country:   address&.country,
+      city:      address&.city,
+      region:    address&.region,
+      address:   address&.full_address,
+      dates:     schedules.map(&:scheduled_for).map(&:to_time),
+      unit:      unit&.name,
       unit_type: unit&.unit_type,
       organizer: firm&.title,
-      tags: tags.map(&:title),
+      tags:      tags.map(&:title),
       interests: interests.map(&:slug),
-      price: attendee_price_per_uom.cents,
-      status: status,
-      firm_id: firm.id
+      price:     attendee_price_per_uom.cents,
+      status:    status,
+      firm_id:   firm.id
     }
   end
 
@@ -241,19 +241,19 @@ class Event < ApplicationRecord
     when 'published'
       Notification.create!(
         delivery_method: 'email',
-        to: firm.primary_email,
-        subject: "#{title} was published",
-        content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_archived',
-                                                        locals: { event: self })
+        to:              firm.primary_email,
+        subject:         "#{title} was published",
+        content:         Stopover::MailProvider.prepare_content(file:   'mailer/firms/events/event_archived',
+                                                                locals: { event: self })
       )
 
     when 'draft'
       Notification.create!(
         delivery_method: 'email',
-        to: firm.primary_email,
-        subject: "#{title} was verified",
-        content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_verified',
-                                                        locals: { event: self })
+        to:              firm.primary_email,
+        subject:         "#{title} was verified",
+        content:         Stopover::MailProvider.prepare_content(file:   'mailer/firms/events/event_verified',
+                                                                locals: { event: self })
       )
 
     end
@@ -262,30 +262,30 @@ class Event < ApplicationRecord
   def removed_notify
     Notification.create!(
       delivery_method: 'email',
-      to: firm.primary_email,
-      subject: "#{title} was removed",
-      content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_removed',
-                                                      locals: { event: self })
+      to:              firm.primary_email,
+      subject:         "#{title} was removed",
+      content:         Stopover::MailProvider.prepare_content(file:   'mailer/firms/events/event_removed',
+                                                              locals: { event: self })
     )
   end
 
   def published_notify
     Notification.create!(
       delivery_method: 'email',
-      to: firm.primary_email,
-      subject: "#{title} was published",
-      content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_published',
-                                                      locals: { event: self })
+      to:              firm.primary_email,
+      subject:         "#{title} was published",
+      content:         Stopover::MailProvider.prepare_content(file:   'mailer/firms/events/event_published',
+                                                              locals: { event: self })
     )
   end
 
   def created_notify
     Notification.create!(
       delivery_method: 'email',
-      to: firm.primary_email,
-      subject: "#{title} was created",
-      content: Stopover::MailProvider.prepare_content(file: 'mailer/firms/events/event_created',
-                                                      locals: { event: self })
+      to:              firm.primary_email,
+      subject:         "#{title} was created",
+      content:         Stopover::MailProvider.prepare_content(file:   'mailer/firms/events/event_created',
+                                                              locals: { event: self })
     )
   end
 

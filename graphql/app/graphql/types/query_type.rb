@@ -32,29 +32,15 @@ module Types
       argument :id, ID, required: true, loads: Types::FirmsRelated::FirmType
     end
 
-    field :booking, Types::BookingsRelated::BookingType, null: false do
+    field :booking, Types::BookingsRelated::BookingType do
       argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
     end
 
-    field :bookings, [Types::BookingsRelated::BookingType], null: false do
-      argument :filters, Types::Filters::BookingsFilter, required: false
-    end
-
-    field :trips, [Types::TripsRelated::TripType], null: false do
-      argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
-    end
+    field :trips, [Types::TripsRelated::TripType], null: false
 
     field :events_autocomplete, Types::EventsRelated::EventsAutocompleteType, null: false do
       argument :query, String, required: true
       argument :ids, [ID], loads: Types::EventsRelated::EventType, required: false
-    end
-
-    field :payment, Types::PaymentsRelated::PaymentType, null: false do
-      argument :id, ID, required: true, loads: Types::PaymentsRelated::PaymentType
-    end
-
-    def payment(id:)
-      id
     end
 
     def firm(id:)
@@ -73,17 +59,8 @@ module Types
         interests: Interest.search(args[:query], limit: 5).to_a }
     end
 
-    def bookings(**args)
-      arguments = {
-        query_type: ::BookingQuery,
-        **(args[:filters] || {}),
-        firm_id: current_user.account.firm.id
-      }
-      Connections::SearchkickConnection.new(arguments: arguments)
-    end
-
     def booking(id:)
-      id
+      id if id.user == current_user
     end
 
     def current_user
@@ -108,7 +85,7 @@ module Types
 
     def schedules(**args)
       arguments = {
-        query_type: ::SchedulesQ,
+        query_type: ::SchedulesQuery,
         **(args[:filters] || {}),
         firm_id: context[:current_user]&.account&.firm&.id
       }

@@ -33,7 +33,10 @@ RSpec.describe Mutations::FirmsRelated::CreateStripeAccount, type: :mutation do
       expect(Stripe::Account).to receive(:update).and_return({ id: 'account_id' })
       expect(Stripe::AccountLink).to receive(:create).and_return({ url: 'http://example.com' })
       result = nil
-      expect { result = subject.to_h.deep_symbolize_keys }.to change { StripeConnect.count }.by(1)
+
+      Sidekiq::Testing.inline! do
+        expect { result = subject.to_h.deep_symbolize_keys }.to change { StripeConnect.count }.by(1)
+      end
 
       expect(current_firm.stripe_connects.last.status).to eq('pending')
 

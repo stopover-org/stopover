@@ -60,7 +60,7 @@ FactoryBot.define do
     end
 
     before(:create) do |event|
-      event.address = event.firm.address
+      event.address = Address.create(firm: event.firm)
     end
 
     trait :recurring do

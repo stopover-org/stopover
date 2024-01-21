@@ -39,7 +39,7 @@ const Scene = ({
   const { t } = useTranslation();
 
   useDocumentTitle(
-    `${t("models.booking.singular")} ${data.booking.event.title}`
+    `${t("models.booking.singular")} ${data.booking!.event!.title}`
   );
 
   return (
@@ -51,7 +51,7 @@ const Scene = ({
             data.booking.account.id === data.currentUser.account.id
           }
         >
-          <VerifyBookingScene bookingFragmentRef={data.booking} />
+          <VerifyBookingScene bookingFragmentRef={data.booking!} />
         </AuthGuard>
       </Layout>
     </SceneWrapper>
