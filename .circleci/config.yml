@@ -16,20 +16,27 @@ jobs:
           path: ~/stopover
 
       # DEBUG
-      - ensure_working_directory
+      - ensure_working_directory:
+          working_directory: ~/stopover/graphql
 
       # DEPENDENCIES
       # - install_system_dependencies
-      - install_node_js
-      - install_ruby_dependencies # via cache
+      - install_node_js:
+          working_directory: ~/stopover/graphql
+      - install_ruby_dependencies:
+          working_directory: ~/stopover/graphql
 
       # DATABASE SETUP
-      - wait_for_postgres
-      - setup_database
+      - wait_for_postgres:
+          working_directory: ~/stopover/graphql
+      - setup_database:
+          working_directory: ~/stopover/graphql
 
       # RUN TESTS
-      - wait_for_opensearch
-      - exec_rspec
+      - wait_for_opensearch:
+          working_directory: ~/stopover/graphql
+      - exec_rspec:
+          working_directory: ~/stopover/graphql
 
 
 commands:
