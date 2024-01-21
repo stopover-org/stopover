@@ -94,7 +94,7 @@ commands:
           name: 'Setup Database'
           command: |
             pwd
-            ls
+            ls config
             bin/rails db:create db:migrate
 
   exec_rspec:
