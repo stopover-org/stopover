@@ -1334,8 +1334,7 @@ type PublishEventPayload {
 }
 
 type Query {
-  booking(id: ID!): Booking!
-  bookings(filters: BookingsFilter): [Booking!]!
+  booking(id: ID!): Booking
   currentUser: User!
   event(id: ID!): Event!
   eventFilters(city: String): EventFilters!
@@ -1384,7 +1383,6 @@ type Query {
     """
     ids: [ID!]!
   ): [Node]!
-  payment(id: ID!): Payment!
   schedules(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -1407,7 +1405,7 @@ type Query {
     """
     last: Int
   ): ScheduleConnection!
-  trips(id: ID!): [Trip!]!
+  trips: [Trip!]!
 }
 
 type Refund implements Node {
