@@ -93,8 +93,8 @@ commands:
       - run:
           name: 'Setup Database'
           command: |
-            pwd
             ls config
+            cp config/database.example.yml config/database.yml
             bin/rails db:create db:migrate
 
   exec_rspec:
