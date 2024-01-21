@@ -94,9 +94,6 @@ commands:
           name: 'Setup Database'
           command: |
             cp config/database.example.yml config/database.yml
-            ls config
-            cat config/database.yml
-            echo $DATABASE_USERNAME
             bin/rails db:create db:migrate
 
   exec_rspec:
@@ -118,7 +115,8 @@ images:
     image: 'cimg/ruby:3.1.0-browsers'
     environment:
       RAILS_MAX_THREADS: 20
-      DATABASE_USERNAME: 'root'
+      PGUSER: root
+      PGHOST: '127.0.0.1'
       DEEPL_AUTH_KEY: ${DEEPL_AUTH_KEY}
       RAILS_ENV: ${RAILS_ENV}
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
