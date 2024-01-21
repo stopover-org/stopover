@@ -100,7 +100,9 @@ commands:
     steps:
       - run:
           name: 'Rspec'
-          command: 'bin/bundle exec rspec'
+          command: |
+              bin/rake searchkick:reindex:all   
+              bin/bundle exec rspec
 
   wait_for_postgres:
     steps:
