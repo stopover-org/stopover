@@ -8,11 +8,11 @@ workflows:
 jobs:
   build:
     executor: stopover_stack__ruby_pg_es_redis
-    working_directory: ~/stopover/graphql
+    working_directory: ~/stopover
     # resource_class: 'medium+'
     steps:
       - attach_workspace:
-          at: ~/stopover/graphql
+          at: ~/stopover
 
       # CHECKOUT
       - checkout
