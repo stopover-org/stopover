@@ -14,11 +14,11 @@ jobs:
       - attach_workspace:
           at: ~/stopover/graphql
 
-      # DEBUG
-      - ensure_working_directory
-
       # CHECKOUT
       - checkout
+
+      # DEBUG
+      - ensure_working_directory
 
       # DEPENDENCIES
       # - install_system_dependencies
