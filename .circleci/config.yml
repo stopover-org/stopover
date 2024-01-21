@@ -14,7 +14,8 @@ jobs:
       - attach_workspace:
           at: ~/stopover/graphql
 
-      
+      # DEBUG
+      - ensure_working_directory
 
       # CHECKOUT
       - checkout
