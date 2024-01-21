@@ -1,26 +1,139 @@
 version: 2.1
-jobs:
-  build:
-    docker:
-      - image: cimg/base:2023.05
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Install Docker Compose
-          environment:
-            COMPOSE_VERSION: '1.29.2'
-          command: |
-            curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
-      - run:
-          name: Run Tests
-          command: |
-            docker-compose run web rake db:create db:schema:load
-            docker-compose up -d
-            docker-compose run web rspec
+
 workflows:
-  backend:
+  bilendo-app-workflow:
     jobs:
+      - code-quality
+
       - build
+
+  build:
+    executor: stopover_stack__ruby_pg_es_redis
+    # resource_class: 'medium+'
+    steps:
+      - attach_workspace:
+          at: ~/bilendo/graphql
+
+      # CHECKOUT
+      - checkout
+
+      # DEPENDENCIES
+      - install_system_dependencies
+      - install_node_js
+      - install_ruby_dependencies # via cache
+
+      # DATABASE SETUP
+      - wait_for_postgres
+      - setup_database
+
+      # RUN TESTS
+      - wait_for_opensearch
+      - exec_rspec
+
+
+commands:
+  # [COMMANDS] DEPENDENCIES
+
+  install_system_dependencies:
+    steps:
+      - run:
+          name: 'Install Linux Packages'
+          command: |
+            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
+            sudo apt-get update --allow-releaseinfo-change
+            sudo apt-get -y install libffi7 ghostscript imagemagick optipng libmagickwand-dev
+
+  install_ruby_dependencies:
+    steps:
+      - run:
+          name: 'Install bundler'
+          command: |
+            gem install bundler
+
+      - restore_cache:
+          name: 'Restore Gemfile-Cache'
+          keys:
+            - stopover-graphql-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: 'Install ruby dependencies'
+          command: |
+            bundle config set --local path "vendor/bundle"
+            bundle install --jobs 4 --retry 3
+            bundle clean --force
+
+      - save_cache:
+          name: 'Save Gemfile-Cache'
+          key: stopover-graphql-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+  install_node_js:
+    steps:
+      - run:
+          name: 'Update Node.js and npm'
+          command: |
+            curl -sSL "https://nodejs.org/dist/v20.10.0/node-v20.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v20.10.0-linux-x64/bin/node
+            sudo npm install -g    npm@latest  # update npm
+            sudo npm install -g -f yarn@latest # update yarn
+            node -v
+
+  # [COMMANDS] TASKS
+
+  setup_database:
+    steps:
+      - run:
+          name: 'Setup Database'
+          command: |
+            bin/rails db:create db:migrate
+
+  exec_rspec:
+    steps:
+      - run:
+          name: 'Rspec'
+          command: 'bin/rspec'
+
+  wait_for_postgres:
+    steps:
+      - run: 'dockerize -wait tcp://localhost:5432 -timeout 1m'
+
+  wait_for_opensearch:
+    steps:
+      - run: 'dockerize -wait tcp://localhost:9200 -timeout 1m'
+
+images:
+  ruby: &_ruby
+    image: 'cimg/ruby:3.2.2-browsers'
+    environment:
+      RAILS_MAX_THREADS: 20
+      DATABASE_USERNAME: root
+      DEEPL_AUTH_KEY: ${DEEPL_AUTH_KEY}
+      RAILS_ENV: ${RAILS_ENV}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+
+  postgres: &_postgres
+    image: 'cimg/postgres:15.4'
+    environment:
+      POSTGRES_USER: 'root'
+      TZ: 'Europe/Belgrade'
+
+  opensearch: &_opensearch
+    image: 'opensearchproject/opensearch:2.7.0'
+    environment:
+      plugins.security.disabled: 'true'
+      transport.host: 'localhost'
+      discovery.type: 'single-node'
+      cluster.name: 'opensearch'
+      ES_JAVA_OPTS: '-Xms1152m -Xmx1152m' # max heap size: 1152 MB
+
+  redis: &_redis
+    image: 'cimg/redis:7.0'
+
+executors:
+  stopover_stack__ruby_pg_es_redis:
+    working_directory: '~/stopover/graphql'
+    docker:
+      - *_ruby
+      - *_postgres
+      - *_opensearch
+      - *_redis
