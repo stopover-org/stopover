@@ -112,7 +112,7 @@ commands:
 
 images:
   ruby: &_ruby
-    image: 'cimg/ruby:3.2.2-browsers'
+    image: 'cimg/ruby:3.1.0-browsers'
     environment:
       RAILS_MAX_THREADS: 20
       DATABASE_USERNAME: root
