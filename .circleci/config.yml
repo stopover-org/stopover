@@ -43,6 +43,7 @@ commands:
           name: 'Current Working Directory'
           command: |
             pwd
+            ls
 
   install_system_dependencies:
     steps:
