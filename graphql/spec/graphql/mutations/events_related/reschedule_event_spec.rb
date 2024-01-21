@@ -18,17 +18,16 @@ RSpec.describe Mutations::EventsRelated::RescheduleEvent, type: :mutation do
       }
     "
   end
-  let!(:event) { create(:recurring_not_published_event) }
+  let(:event) { create(:recurring_not_published_event) }
   let(:current_user) { event.firm.accounts.last.user }
 
   let(:input) do
-    { eventId: GraphqlSchema.id_from_object(event) }
+    { eventId: GraphqlSchema.id_from_object(event.reload) }
   end
 
   subject do
-    GraphqlSchema.execute(mutation, variables: {
-                            input: input
-                          }, context: { current_user: current_user })
+    GraphqlSchema.execute(mutation, variables: { input: input },
+                          context: { current_user: current_user })
   end
 
   shared_examples :successful do |status|
@@ -55,26 +54,26 @@ RSpec.describe Mutations::EventsRelated::RescheduleEvent, type: :mutation do
   end
 
   context 'change event option availability' do
-    before { event.firm.update(status: 'active') }
+    before { event.firm.update!(status: 'active') }
     context 'as manager' do
       context 'for published event' do
-        before { event.update(status: 'published') }
+        before { event.update!(status: 'published') }
         include_examples :successful, 'published'
       end
       context 'for unpublished event' do
-        before { event.update(status: 'unpublished') }
+        before { event.update!(status: 'unpublished') }
         include_examples :successful, 'unpublished'
       end
     end
 
     context 'permissions' do
       context 'for removed event' do
-        before { event.update(status: 'removed') }
+        before { event.update!(status: 'removed') }
         include_examples :fail, 'Event removed'
       end
 
       context 'for draft event' do
-        before { event.update(status: 'draft') }
+        before { event.update!(status: 'draft') }
         include_examples :fail, 'Event was not verified'
       end
 
