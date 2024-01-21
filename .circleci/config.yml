@@ -114,7 +114,7 @@ images:
   ruby: &_ruby
     image: 'cimg/ruby:3.1.0-browsers'
     environment:
-      RAILS_MAX_THREADS: 20
+      PGHOST: 127.0.0.1
       PGUSER: root
       RAILS_ENV: test
       DEEPL_AUTH_KEY: ${DEEPL_AUTH_KEY}
@@ -124,6 +124,7 @@ images:
     image: 'cimg/postgres:15.4'
     environment:
       POSTGRES_USER: root
+      POSTGRES_DB: graphql_test
       TZ: 'Europe/Belgrade'
 
   opensearch: &_opensearch
