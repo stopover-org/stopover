@@ -28,7 +28,7 @@ RSpec.describe Mutations::EventsRelated::UnpublishEvent, type: :mutation do
   subject do
     GraphqlSchema.execute(mutation, variables: {
                             input: input
-                          }, context: { current_user: current_user })
+                          }, context:                                { current_user: current_user })
   end
 
   shared_examples :successful do
@@ -40,7 +40,9 @@ RSpec.describe Mutations::EventsRelated::UnpublishEvent, type: :mutation do
       result = nil
       expect(event.schedules.count).to eq(56)
       expect(ClearSchedulesJob).to receive(:perform_later).with(event_id: event.id)
-      expect { result = subject.to_h.deep_symbolize_keys }.to change { Event.count }.by(0)
+      Sidekiq::Testing.inline! do
+        expect { result = subject.to_h.deep_symbolize_keys }.to change { Event.count }.by(0)
+      end
 
       expect(result.dig(:data, :unpublishEvent, :event, :id)).to eq(GraphqlSchema.id_from_object(event))
       expect(result.dig(:data, :unpublishEvent, :event, :status)).to eq('unpublished')
@@ -51,7 +53,9 @@ RSpec.describe Mutations::EventsRelated::UnpublishEvent, type: :mutation do
   shared_examples :fail do |error|
     it 'fails' do
       result = nil
-      expect { result = subject.to_h.deep_symbolize_keys }.to change { Event.count }.by(0)
+      Sidekiq::Testing.inline! do
+        expect { result = subject.to_h.deep_symbolize_keys }.to change { Event.count }.by(0)
+      end
 
       expect(result.dig(:data, :unpublishEvent, :event)).to be_nil
       expect(result.dig(:data, :unpublishEvent, :errors)).to include(error)

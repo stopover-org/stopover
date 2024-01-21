@@ -29,8 +29,8 @@ module Mutations
         firm = context[:current_user].account.current_firm
 
         Firm.transaction do
-          args[:country] = ISO3166::Country.find_country_by_any_name(args[:country])&.iso_short_name if args[:country]
-          address = firm.address || Address.new(firm: firm)
+          args[:country] = ISO3166::Country.find_country_by_any_name(args[:country]).iso_short_name if args[:country]
+          address        = firm.address || Address.new(firm: firm)
           address.assign_attributes(args.slice(:full_address,
                                                :country,
                                                :region,
@@ -59,7 +59,7 @@ module Mutations
           end
         end
 
-        { firm: firm,
+        { firm:         firm,
           notification: I18n.t('graphql.mutations.update_firm.notifications.success') }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?

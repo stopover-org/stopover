@@ -6,11 +6,12 @@ module Mutations
       field :event, Types::EventsRelated::EventType
 
       argument :event_id, ID, loads: Types::EventsRelated::EventType
+
       def resolve(event:)
         publisher = Stopover::EventManagement::EventPublisher.new(event, context[:current_user])
 
         {
-          event: publisher.unpublish,
+          event:        publisher.unpublish,
           notification: I18n.t('graphql.mutations.unpublish_event.notifications.success')
         }
       rescue StandardError => e
@@ -18,8 +19,8 @@ module Mutations
         message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
-          event: nil,
-          errors: [e.message]
+          event:  nil,
+          errors: [message]
         }
       end
 

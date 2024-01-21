@@ -39,19 +39,19 @@ RSpec.describe Mutations::FirmsRelated::UpdateFirm, type: :mutation do
   let(:current_user) { firm.accounts.last.user }
   let(:input) do
     {
-      country: 'Serbia',
-      city: 'Београд',
-      street: 'Street Name',
-      houseNumber: 'House Number',
-      fullAddress: 'Full Address',
+      country:       'Serbia',
+      city:          'Београд',
+      street:        'Street Name',
+      houseNumber:   'House Number',
+      fullAddress:   'Full Address',
 
-      image: 'https://placehold.co/600x400/EEE/31343C',
+      image:         'https://placehold.co/600x400/EEE/31343C',
 
-      title: 'New Firm',
-      description: 'description',
-      paymentTypes: %w[Cash Stripe],
-      primaryPhone: '+381 621 496 696',
-      primaryEmail: 'some@mail.com',
+      title:         'New Firm',
+      description:   'description',
+      paymentTypes:  %w[Cash Stripe],
+      primaryPhone:  '+381 621 496 696',
+      primaryEmail:  'some@mail.com',
       contactPerson: 'Contact Person'
     }
   end
@@ -59,7 +59,7 @@ RSpec.describe Mutations::FirmsRelated::UpdateFirm, type: :mutation do
   subject do
     GraphqlSchema.execute(mutation, variables: {
                             input: input
-                          }, context: { current_user: current_user })
+                          }, context:                                { current_user: current_user })
   end
 
   context 'update firm' do
@@ -107,7 +107,7 @@ RSpec.describe Mutations::FirmsRelated::UpdateFirm, type: :mutation do
         it 'fails' do
           firm
           input[:country] = 'WRONG COUNTRY'
-          result = nil
+          result          = nil
           expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
           expect(result.dig(:data, :updateFirm, :firm)).to be_nil
           expect(result.dig(:data, :updateFirm, :errors)).to_not be_empty
@@ -119,7 +119,7 @@ RSpec.describe Mutations::FirmsRelated::UpdateFirm, type: :mutation do
       it 'fails' do
         firm
         input[:primaryPhone] = 'WRONG PHONE'
-        result = nil
+        result               = nil
         expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
         expect(result.dig(:data, :updateFirm, :firm)).to be_nil
         expect(result.dig(:data, :updateFirm, :errors)).to_not be_empty
@@ -130,7 +130,7 @@ RSpec.describe Mutations::FirmsRelated::UpdateFirm, type: :mutation do
       it 'fails' do
         firm
         input[:primaryEmail] = 'WRONG EMAIL'
-        result = nil
+        result               = nil
         expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
         expect(result.dig(:data, :updateFirm, :firm)).to be_nil
         expect(result.dig(:data, :updateFirm, :errors)).to_not be_empty
