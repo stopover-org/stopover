@@ -50,7 +50,6 @@ commands:
           name: 'Install Linux Packages'
           command: |
             sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
-            sudo apt-get update --allow-releaseinfo-change
             sudo apt-get -y install apt-get install -y build-essential libpq-dev nodejs
 
   install_ruby_dependencies:
