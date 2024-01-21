@@ -219,7 +219,10 @@ RSpec.describe Event, type: :model do
         expect(event.schedules.count).to eq(0)
 
         event.update_columns(recurring_days_with_time: ['Monday 11:30', 'Monday 18:30'])
-        subject
+
+        Sidekiq::Testing.inline! do
+          subject
+        end
 
         expect(event.schedules.count).to eq(8)
         expect(event.schedules.map(&:scheduled_for).map(&:wday)).to all(eq(1))
@@ -238,7 +241,10 @@ RSpec.describe Event, type: :model do
         expect(event.schedules.count).to eq(0)
 
         event.update_columns(recurring_days_with_time: ['Tuesday 11:30'])
-        subject
+
+        Sidekiq::Testing.inline! do
+          subject
+        end
 
         expect(event.schedules.count).to eq(4)
         expect(event.schedules.map(&:scheduled_for).map(&:wday)).to all(eq(2))
@@ -253,7 +259,10 @@ RSpec.describe Event, type: :model do
         expect(event.schedules.count).to eq(0)
 
         event.update_columns(recurring_days_with_time: ['Monday 11:30', 'Tuesday 11:30'])
-        subject
+
+        Sidekiq::Testing.inline! do
+          subject
+        end
 
         expect(event.schedules.count).to eq(8)
         expect(event.schedules.map(&:scheduled_for).map(&:wday)).to eq([1, 2, 1, 2, 1, 2, 1, 2])
