@@ -94,8 +94,7 @@ commands:
           name: 'Setup Database'
           command: |
             cp config/database.example.yml config/database.yml
-            cat config/database.yml
-            bin/rails db:create db:migrate
+            bin/rails db:create db:schema:load
 
   exec_rspec:
     steps:
