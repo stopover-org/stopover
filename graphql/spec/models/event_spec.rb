@@ -222,6 +222,8 @@ RSpec.describe Event, type: :model do
 
         Sidekiq::Testing.inline! do
           subject
+
+          event.reload
         end
 
         expect(event.schedules.count).to eq(8)
@@ -244,6 +246,8 @@ RSpec.describe Event, type: :model do
 
         Sidekiq::Testing.inline! do
           subject
+
+          event.reload
         end
 
         expect(event.schedules.count).to eq(4)
@@ -262,6 +266,8 @@ RSpec.describe Event, type: :model do
 
         Sidekiq::Testing.inline! do
           subject
+
+          event.reload
         end
 
         expect(event.schedules.count).to eq(8)
