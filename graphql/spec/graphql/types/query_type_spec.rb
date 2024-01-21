@@ -31,7 +31,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         interests {
           id
         }
-        schedules {
+        schedules(filters: { scheduledFor: "#{event.schedules.first.scheduled_for.iso8601}" }) {
           edges {
             node {
               id

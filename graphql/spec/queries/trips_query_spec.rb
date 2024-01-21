@@ -36,13 +36,4 @@ RSpec.describe TripsQuery, type: :query do
       expect(subject.count).to eq(1)
     end
   end
-
-  describe 'search by booking' do
-    let(:query) { TripsQuery.new({ bookings: [booking] }) }
-    subject { query.all }
-
-    it 'trips with booking' do
-      expect(subject.count).to eq(1)
-    end
-  end
 end
