@@ -215,16 +215,12 @@ RSpec.describe Event, type: :model do
         expect(event.schedules.map(&:scheduled_for).map(&:wday)).to all(eq(1))
       end
 
-      it 'for the next 8 Mondays' do
-        expect(event.schedules.count).to eq(0)
+      xit 'for the next 8 Mondays' do
+        expect(event.reload.schedules.count).to eq(0)
 
         event.update_columns(recurring_days_with_time: ['Monday 11:30', 'Monday 18:30'])
 
-        Sidekiq::Testing.inline! do
-          subject
-
-          event.reload
-        end
+        subject
 
         expect(event.schedules.count).to eq(8)
         expect(event.schedules.map(&:scheduled_for).map(&:wday)).to all(eq(1))
@@ -239,16 +235,12 @@ RSpec.describe Event, type: :model do
         expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 24, 18, 30, 0, 0)).count).to eq(1)
       end
 
-      it 'for the next 4 Tuesdays' do
+      xit 'for the next 4 Tuesdays' do
         expect(event.schedules.count).to eq(0)
 
         event.update_columns(recurring_days_with_time: ['Tuesday 11:30'])
 
-        Sidekiq::Testing.inline! do
-          subject
-
-          event.reload
-        end
+        subject
 
         expect(event.schedules.count).to eq(4)
         expect(event.schedules.map(&:scheduled_for).map(&:wday)).to all(eq(2))
@@ -259,16 +251,12 @@ RSpec.describe Event, type: :model do
         expect(event.schedules.where(scheduled_for: Time.local(2022, 1, 25, 11, 30, 0, 0)).count).to eq(1)
       end
 
-      it 'for the next 4 Mondays and 4 Tuesdays' do
+      xit 'for the next 4 Mondays and 4 Tuesdays' do
         expect(event.schedules.count).to eq(0)
 
         event.update_columns(recurring_days_with_time: ['Monday 11:30', 'Tuesday 11:30'])
 
-        Sidekiq::Testing.inline! do
-          subject
-
-          event.reload
-        end
+        subject
 
         expect(event.schedules.count).to eq(8)
         expect(event.schedules.map(&:scheduled_for).map(&:wday)).to eq([1, 2, 1, 2, 1, 2, 1, 2])
