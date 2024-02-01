@@ -8,9 +8,7 @@ module Types
 
     field :current_user, Types::UsersRelated::UserType, null: false
 
-    field :interests, [Types::EventsRelated::InterestType], null: false do
-      argument :filters, Types::Filters::InterestsFilter, required: false
-    end
+    field :interests, [Types::EventsRelated::InterestType], null: false
 
     field :events, Types::EventsRelated::EventType.connection_type, null: false do
       argument :filters, Types::Filters::EventsFilter, required: false
@@ -43,6 +41,23 @@ module Types
       argument :ids, [ID], loads: Types::EventsRelated::EventType, required: false
     end
 
+    def events(**args)
+      arguments = {
+        query_type: ::EventsQuery,
+        **(args[:filters] || {})
+      }
+      Connections::SearchkickConnection.new(arguments: arguments)
+    end
+
+    def schedules(**args)
+      arguments = {
+        query_type: ::SchedulesQuery,
+        **(args[:filters] || {}),
+        firm_id: context[:current_user]&.account&.firm&.id
+      }
+      Connections::SearchkickConnection.new(arguments: arguments)
+    end
+
     def firm(id:)
       id
     end
@@ -71,25 +86,8 @@ module Types
       ::EventFiltersQuery.new({ city: args[:city] }).filters
     end
 
-    def interests(**args)
-      ::InterestsQuery.new(args[:filters].to_h || {}, Interest.all, current_user).all
-    end
-
-    def events(**args)
-      arguments = {
-        query_type: ::EventsQuery,
-        **(args[:filters] || {})
-      }
-      Connections::SearchkickConnection.new(arguments: arguments)
-    end
-
-    def schedules(**args)
-      arguments = {
-        query_type: ::SchedulesQuery,
-        **(args[:filters] || {}),
-        firm_id: context[:current_user]&.account&.firm&.id
-      }
-      Connections::SearchkickConnection.new(arguments: arguments)
+    def interests(**_args)
+      Interest.all
     end
 
     def event(id:)
