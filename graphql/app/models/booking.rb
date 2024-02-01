@@ -45,15 +45,15 @@ class Booking < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==================================================
 
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
-  has_one :firm,    through: :event
+  has_one :firm, through: :event
   has_one :account, through: :trip
-  has_one :user,    through: :account
+  has_one :user, through: :account
 
   # HAS_MANY ASSOCIATIONS =================================================
-  has_many :booking_options,  dependent: :destroy
-  has_many :attendees,        dependent: :destroy
-  has_many :payments,         dependent: :nullify
-  has_many :refunds,          dependent: :nullify
+  has_many :booking_options, dependent: :destroy
+  has_many :attendees, dependent: :destroy
+  has_many :payments, dependent: :nullify
+  has_many :refunds, dependent: :nullify
   has_many :attendee_options, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
@@ -99,7 +99,7 @@ class Booking < ApplicationRecord
   # CALLBACKS =============================================================
   before_validation :create_attendee
   before_validation :adjust_stripe_integration, on: :create
-  before_validation :create_booking_options,    on: :create
+  before_validation :create_booking_options, on: :create
   after_create :created_notify
   after_commit :refund_diff, if: :refundable?
 
@@ -199,10 +199,10 @@ class Booking < ApplicationRecord
     {
       title: event.title,
       description: event.description,
-      country: event.address.country,
-      city: event.address.city,
-      region: event.address.region,
-      address: event.address.full_address,
+      country: event.address&.country,
+      city: event.address&.city,
+      region: event.address&.region,
+      address: event.address&.full_address,
       booked_for: schedule.scheduled_for,
       organizer: firm&.title,
       tags: event.tags.map(&:title),
