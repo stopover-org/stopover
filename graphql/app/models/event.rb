@@ -225,7 +225,7 @@ class Event < ApplicationRecord
       dates: schedules.map(&:scheduled_for).map(&:to_time),
       organizer: firm&.title,
       interests: interests.map(&:slug),
-      price: attendee_price_per_uom.cents,
+      price: attendee_price_per_uom_cents,
       status: status
     }
   end

@@ -265,5 +265,88 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         assert_equal 1, result.dig(:data, :events, :total)
       end
     end
+
+    context 'by dates' do
+      before do
+        start_date = Time.zone.now.at_beginning_of_day
+        Booking.destroy_all
+        Schedule.destroy_all
+        Event.second.schedules.create(scheduled_for: start_date + 3.hours + 3.days)
+        Event.second.schedules.create(scheduled_for: start_date + 27.hours + 3.days)
+        Event.last.schedules.create(scheduled_for: start_date + 3.hours)
+        Event.last.schedules.create(scheduled_for: start_date + 27.hours)
+        Event.reindex_test
+        Schedule.reindex_test
+      end
+      context 'by start date' do
+        let(:variables) { { filters: { startDate: Time.zone.today.iso8601 } } }
+
+        it 'ignore params' do
+          result = subject
+
+          assert_equal 2, result.dig(:data, :events, :edges).count
+        end
+      end
+
+      context 'by end date' do
+        let(:variables) { { filters: { endDate: (Time.zone.today + 1.day).iso8601 } } }
+
+        it 'ignore params' do
+          result = subject
+
+          assert_equal 2, result.dig(:data, :events, :edges).count
+        end
+      end
+
+      context 'by min and max dates' do
+        let(:variables) { { filters: { startDate: Time.zone.today.iso8601, endDate: (Time.zone.today + 1.day).iso8601 } } }
+
+        it 'execute' do
+          result = subject
+
+          assert_equal 1, result.dig(:data, :events, :edges).count
+        end
+      end
+    end
+
+    context 'by price' do
+      before do
+        Event.update_all(organizer_price_per_uom_cents: 20_000,
+                         attendee_price_per_uom_cents: 20_000)
+        Event.last.update!(organizer_price_per_uom_cents: 10_000,
+                           attendee_price_per_uom_cents: 10_000)
+        Event.reindex_test
+      end
+
+      context 'by min price' do
+        let(:variables) { { filters: { minPrice: 90 } } }
+
+        it 'ignore params' do
+          result = subject
+
+          assert_equal 5, result.dig(:data, :events, :edges).count
+        end
+      end
+
+      context 'by max price' do
+        let(:variables) { { filters: { maxPrice: 110 } } }
+
+        it 'ignore params' do
+          result = subject
+
+          assert_equal 5, result.dig(:data, :events, :edges).count
+        end
+      end
+
+      context 'by min max prices' do
+        let(:variables) { { filters: { minPrice: 90, maxPrice: 110 } } }
+
+        it 'execute' do
+          result = subject
+
+          assert_equal 1, result.dig(:data, :events, :edges).count
+        end
+      end
+    end
   end
 end
