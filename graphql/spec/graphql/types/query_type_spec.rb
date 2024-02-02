@@ -33,40 +33,56 @@ RSpec.describe Types::QueryType, type: :graphql_type do
 
     it 'from schema' do
       result = subject
-      expected = { data:                      { __schema:                          { queryType: { fields: [{ name: 'booking' }, { name: 'currentUser' }, { name: 'event' }, { name: 'eventFilters' }, { name: 'events' }, { name: 'eventsAutocomplete' }, { name: 'firm' }, { name: 'interests' }, { name: 'node' }, { name: 'nodes' }, { name: 'schedules' }, { name: 'trips' }] },
-                           mutationType:                              { fields:                                  [{ name: 'addAttendee' },
-                                                                                                                  { name: 'bookEvent' },
-                                                                                                                  { name: 'cancelBooking' },
-                                                                                                                  { name: 'cancelTrip' },
-                                                                                                                  { name: 'changeAttendeeOptionAvailability' },
-                                                                                                                  { name: 'changeBookingOptionAvailability' },
-                                                                                                                  { name: 'changeEventOptionAvailability' },
-                                                                                                                  { name: 'createCheckout' },
-                                                                                                                  { name: 'createEvent' },
-                                                                                                                  { name: 'createFirm' },
-                                                                                                                  { name: 'createStripeAccount' },
-                                                                                                                  { name: 'declineStripeConnect' },
-                                                                                                                  { name: 'deregisterAttendee' },
-                                                                                                                  { name: 'publishEvent' },
-                                                                                                                  { name: 'registerAttendee' },
-                                                                                                                  { name: 'removeAttendee' },
-                                                                                                                  { name: 'removeEvent' },
-                                                                                                                  { name: 'removeFirm' },
-                                                                                                                  { name: 'rescheduleEvent' },
-                                                                                                                  { name: 'setCurrentFirm' },
-                                                                                                                  { name: 'signIn' },
-                                                                                                                  { name: 'signOut' },
-                                                                                                                  { name: 'syncStripe' },
-                                                                                                                  { name: 'unpublishEvent' },
-                                                                                                                  { name: 'updateAccount' },
-                                                                                                                  { name: 'updateAttendee' },
-                                                                                                                  { name: 'updateBooking' },
-                                                                                                                  { name: 'updateEvent' },
-                                                                                                                  { name: 'updateFirm' },
-                                                                                                                  { name: 'verifyEvent' },
-                                                                                                                  { name: 'verifyFirm' },
-                                                                                                                  { name: 'verifyStripeConnect' },
-                                                                                                                  { name: 'withdrawBalance' }] } } } }
+      expected = { data:
+                     { __schema: {
+                       queryType: {
+                         fields: [{ name: 'booking' },
+                                  { name: 'currentUser' },
+                                  { name: 'event' },
+                                  { name: 'eventFilters' },
+                                  { name: 'events' },
+                                  { name: 'eventsAutocomplete' },
+                                  { name: 'firm' },
+                                  { name: 'interests' },
+                                  { name: 'node' },
+                                  { name: 'nodes' },
+                                  { name: 'schedules' },
+                                  { name: 'trips' }]
+                       },
+                       mutationType: { fields: [{ name: 'addAttendee' },
+                                                { name: 'bookEvent' },
+                                                { name: 'cancelBooking' },
+                                                { name: 'cancelTrip' },
+                                                { name: 'changeAttendeeOptionAvailability' },
+                                                { name: 'changeBookingOptionAvailability' },
+                                                { name: 'changeEventOptionAvailability' },
+                                                { name: 'createCheckout' },
+                                                { name: 'createEvent' },
+                                                { name: 'createFirm' },
+                                                { name: 'createStripeAccount' },
+                                                { name: 'declineStripeConnect' },
+                                                { name: 'deregisterAttendee' },
+                                                { name: 'publishEvent' },
+                                                { name: 'registerAttendee' },
+                                                { name: 'removeAttendee' },
+                                                { name: 'removeEvent' },
+                                                { name: 'removeFirm' },
+                                                { name: 'rescheduleEvent' },
+                                                { name: 'setCurrentFirm' },
+                                                { name: 'signIn' },
+                                                { name: 'signOut' },
+                                                { name: 'syncStripe' },
+                                                { name: 'unpublishEvent' },
+                                                { name: 'updateAccount' },
+                                                { name: 'updateAttendee' },
+                                                { name: 'updateBooking' },
+                                                { name: 'updateEvent' },
+                                                { name: 'updateFirm' },
+                                                { name: 'verifyEvent' },
+                                                { name: 'verifyFirm' },
+                                                { name: 'verifyStripeConnect' },
+                                                { name: 'withdrawBalance' }] }
+                     } } }
 
       assert_equal expected, result
     end
@@ -154,7 +170,8 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                      startDate: Time.zone.now.at_beginning_of_day.iso8601,
                      endDate: (Time.zone.now.at_end_of_day + 1.year).iso8601,
                      minPrice: { cents: 550 },
-                     maxPrice: { cents: 550 } }, result.dig(:data, :eventFilters))
+                     maxPrice: { cents: 550 } },
+                   result.dig(:data, :eventFilters))
       assert_equal GraphqlSchema.id_from_object(current_user), result.dig(:data, :currentUser, :id)
       assert_equal GraphqlSchema.id_from_object(event), result.dig(:data, :event, :id)
       assert_equal GraphqlSchema.id_from_object(event.firm), result.dig(:data, :firm, :id)
@@ -210,24 +227,43 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                 }
               }
             }
+            total
           }
         }
       GRAPHQL
     end
     before do
+      create_list(:recurring_event, 4)
       Event.reindex_test
     end
 
     subject do
       GraphqlSchema.execute(query,
                             variables: variables,
-                                context: { current_user: current_user }).to_h.deep_symbolize_keys
+                            context: { current_user: current_user }).to_h.deep_symbolize_keys
     end
 
     it 'without filters' do
       result = subject
 
-      assert_equal 1, result.dig(:data, :events, :edges).count
+      assert_equal 5, result.dig(:data, :events, :edges).count
+    end
+
+    context 'by city' do
+      let(:variables) { { filters: { city: 'Beograd' } } }
+
+      before do
+        Event.last.address.update!(city: 'Beograd')
+        Event.reindex_test
+      end
+
+      it 'execute' do
+        result = subject
+
+        assert_equal 1, result.dig(:data, :events, :edges).count
+        assert_equal 'Beograd', result.dig(:data, :events, :edges, 0, :node, :address, :city)
+        assert_equal 1, result.dig(:data, :events, :total)
+      end
     end
   end
 end
