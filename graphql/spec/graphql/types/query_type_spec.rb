@@ -252,7 +252,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     context 'by city' do
       let(:variables) { { filters: { city: 'Beograd' } } }
 
-      before do
+      before(:each) do
         Event.last.address.update!(city: 'Beograd')
         Event.reindex_test
       end
@@ -267,7 +267,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     end
 
     context 'by dates' do
-      before do
+      before(:each) do
         start_date = Time.zone.now.at_beginning_of_day
         Booking.destroy_all
         Schedule.destroy_all
@@ -310,7 +310,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     end
 
     context 'by price' do
-      before do
+      before(:each) do
         Event.update_all(organizer_price_per_uom_cents: 20_000,
                          attendee_price_per_uom_cents: 20_000)
         Event.last.update!(organizer_price_per_uom_cents: 10_000,
