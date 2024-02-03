@@ -285,6 +285,8 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         let(:variables) { { filters: { startDate: Time.zone.today.iso8601 } } }
 
         it 'ignore params' do
+          Event.reindex_test
+          Schedule.reindex_test
           result = subject
 
           assert_equal 2, result.dig(:data, :events, :edges).count
@@ -296,6 +298,8 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         let(:variables) { { filters: { endDate: (Time.zone.today + 1.day).iso8601 } } }
 
         it 'ignore params' do
+          Event.reindex_test
+          Schedule.reindex_test
           result = subject
 
           assert_equal 2, result.dig(:data, :events, :edges).count
