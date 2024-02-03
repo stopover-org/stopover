@@ -273,20 +273,18 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         start_date = Time.zone.now.at_beginning_of_day
         Booking.destroy_all
         Schedule.destroy_all
-        Event.second.schedules.create!(scheduled_for: start_date + 3.hours + 3.days)
         Event.second.schedules.create!(scheduled_for: start_date + 27.hours + 3.days)
-        Event.last.schedules.create!(scheduled_for: start_date + 3.hours)
+        Event.second.schedules.create!(scheduled_for: start_date + 51.hours + 3.days)
         Event.last.schedules.create!(scheduled_for: start_date + 27.hours)
+        Event.last.schedules.create!(scheduled_for: start_date + 51.hours)
         Event.reindex_test
         Schedule.reindex_test
       end
 
       context 'by start date' do
-        let(:variables) { { filters: { startDate: Time.zone.today.iso8601 } } }
+        let(:variables) { { filters: { startDate: (Time.zone.today + 1.day).iso8601 } } }
 
         it 'ignore params' do
-          Event.reindex_test
-          Schedule.reindex_test
           result = subject
 
           assert_equal 2, result.dig(:data, :events, :edges).count
@@ -295,11 +293,9 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       end
 
       context 'by end date' do
-        let(:variables) { { filters: { endDate: (Time.zone.today + 1.day).iso8601 } } }
+        let(:variables) { { filters: { endDate: (Time.zone.today + 2.days).iso8601 } } }
 
         it 'ignore params' do
-          Event.reindex_test
-          Schedule.reindex_test
           result = subject
 
           assert_equal 2, result.dig(:data, :events, :edges).count
@@ -308,7 +304,10 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       end
 
       context 'by min and max dates' do
-        let(:variables) { { filters: { startDate: Time.zone.today.iso8601, endDate: (Time.zone.today + 1.day).iso8601 } } }
+        let(:variables) do
+          { filters: { startDate: (Time.zone.today + 1.day).iso8601,
+                                       endDate: (Time.zone.today + 2.days).iso8601 } }
+        end
 
         it 'execute' do
           result = subject
