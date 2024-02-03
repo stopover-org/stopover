@@ -330,6 +330,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         let(:variables) { { filters: { minPrice: 90 } } }
 
         it 'ignore params' do
+          Event.reindex_test
           result = subject
 
           assert_equal 5, result.dig(:data, :events, :edges).count
@@ -341,6 +342,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         let(:variables) { { filters: { maxPrice: 110 } } }
 
         it 'ignore params' do
+          Event.reindex_test
           result = subject
 
           assert_equal 5, result.dig(:data, :events, :edges).count
@@ -352,6 +354,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         let(:variables) { { filters: { minPrice: 90, maxPrice: 110 } } }
 
         it 'execute' do
+          Event.reindex_test
           result = subject
 
           assert_equal 1, result.dig(:data, :events, :edges).count
