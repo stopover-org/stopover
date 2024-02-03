@@ -316,18 +316,18 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     end
 
     context 'by price' do
+      before do
+        Event.update_all(organizer_price_per_uom_cents: nil,
+                         attendee_price_per_uom_cents: nil)
+        Event.first.update!(organizer_price_per_uom_cents: 20_000,
+                            attendee_price_per_uom_cents: 20_000)
+        Event.second.update!(organizer_price_per_uom_cents: 10_000,
+                             attendee_price_per_uom_cents: 10_000)
+        Event.reindex_test
+      end
+
       context 'by min price' do
         let(:variables) { { filters: { minPrice: 90 } } }
-
-        before do
-          Event.update_all(organizer_price_per_uom_cents: nil,
-                           attendee_price_per_uom_cents: nil)
-          Event.first.update!(organizer_price_per_uom_cents: 20_000,
-                              attendee_price_per_uom_cents: 20_000)
-          Event.second.update!(organizer_price_per_uom_cents: 10_000,
-                               attendee_price_per_uom_cents: 10_000)
-          Event.reindex_test
-        end
 
         it 'ignore params' do
           result = subject
@@ -340,16 +340,6 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       context 'by max price' do
         let(:variables) { { filters: { maxPrice: 110 } } }
 
-        before do
-          Event.update_all(organizer_price_per_uom_cents: nil,
-                           attendee_price_per_uom_cents: nil)
-          Event.first.update!(organizer_price_per_uom_cents: 20_000,
-                              attendee_price_per_uom_cents: 20_000)
-          Event.second.update!(organizer_price_per_uom_cents: 10_000,
-                               attendee_price_per_uom_cents: 10_000)
-          Event.reindex_test
-        end
-
         it 'ignore params' do
           result = subject
 
@@ -360,16 +350,6 @@ RSpec.describe Types::QueryType, type: :graphql_type do
 
       context 'by min max prices' do
         let(:variables) { { filters: { minPrice: 90, maxPrice: 110 } } }
-
-        before do
-          Event.update_all(organizer_price_per_uom_cents: nil,
-                           attendee_price_per_uom_cents: nil)
-          Event.first.update!(organizer_price_per_uom_cents: 20_000,
-                              attendee_price_per_uom_cents: 20_000)
-          Event.second.update!(organizer_price_per_uom_cents: 10_000,
-                               attendee_price_per_uom_cents: 10_000)
-          Event.reindex_test
-        end
 
         it 'execute' do
           result = subject

@@ -5,7 +5,7 @@ module Mixins
     extend ActiveSupport::Concern
 
     included do
-      searchkick
+      searchkick callbacks: !Rails.env.test?
 
       def self.reindex_test
         searchkick_index.delete
