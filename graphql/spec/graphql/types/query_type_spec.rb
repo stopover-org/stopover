@@ -254,7 +254,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     context 'by city' do
       let(:variables) { { filters: { city: 'Beograd' } } }
 
-      before(:each) do
+      before do
         Event.last.address.update!(city: 'Beograd')
         Event.reindex_test
       end
@@ -269,7 +269,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     end
 
     context 'by dates' do
-      before(:each) do
+      before do
         start_date = Time.zone.now.at_beginning_of_day
         Booking.destroy_all
         Schedule.destroy_all
@@ -280,6 +280,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         Event.reindex_test
         Schedule.reindex_test
       end
+
       context 'by start date' do
         let(:variables) { { filters: { startDate: Time.zone.today.iso8601 } } }
 
@@ -287,6 +288,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
           result = subject
 
           assert_equal 2, result.dig(:data, :events, :edges).count
+          assert_equal 2, result.dig(:data, :events, :total)
         end
       end
 
@@ -297,6 +299,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
           result = subject
 
           assert_equal 2, result.dig(:data, :events, :edges).count
+          assert_equal 2, result.dig(:data, :events, :total)
         end
       end
 
@@ -307,16 +310,19 @@ RSpec.describe Types::QueryType, type: :graphql_type do
           result = subject
 
           assert_equal 1, result.dig(:data, :events, :edges).count
+          assert_equal 1, result.dig(:data, :events, :total)
         end
       end
     end
 
     context 'by price' do
-      before(:each) do
+      before do
+        Event.update_all(organizer_price_per_uom_cents: nil,
+                         attendee_price_per_uom_cents: nil)
         Event.first.update!(organizer_price_per_uom_cents: 20_000,
                             attendee_price_per_uom_cents: 20_000)
-        Event.last.update!(organizer_price_per_uom_cents: 10_000,
-                           attendee_price_per_uom_cents: 10_000)
+        Event.second.update!(organizer_price_per_uom_cents: 10_000,
+                             attendee_price_per_uom_cents: 10_000)
         Event.reindex_test
       end
 
@@ -327,6 +333,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
           result = subject
 
           assert_equal 5, result.dig(:data, :events, :edges).count
+          assert_equal 5, result.dig(:data, :events, :total)
         end
       end
 
@@ -337,6 +344,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
           result = subject
 
           assert_equal 5, result.dig(:data, :events, :edges).count
+          assert_equal 5, result.dig(:data, :events, :total)
         end
       end
 
@@ -347,6 +355,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
           result = subject
 
           assert_equal 1, result.dig(:data, :events, :edges).count
+          assert_equal 1, result.dig(:data, :events, :total)
         end
       end
     end
