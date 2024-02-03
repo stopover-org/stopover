@@ -49,39 +49,41 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                                   { name: 'schedules' },
                                   { name: 'trips' }]
                        },
-                       mutationType: { fields: [{ name: 'addAttendee' },
-                                                { name: 'bookEvent' },
-                                                { name: 'cancelBooking' },
-                                                { name: 'cancelTrip' },
-                                                { name: 'changeAttendeeOptionAvailability' },
-                                                { name: 'changeBookingOptionAvailability' },
-                                                { name: 'changeEventOptionAvailability' },
-                                                { name: 'createCheckout' },
-                                                { name: 'createEvent' },
-                                                { name: 'createFirm' },
-                                                { name: 'createStripeAccount' },
-                                                { name: 'declineStripeConnect' },
-                                                { name: 'deregisterAttendee' },
-                                                { name: 'publishEvent' },
-                                                { name: 'registerAttendee' },
-                                                { name: 'removeAttendee' },
-                                                { name: 'removeEvent' },
-                                                { name: 'removeFirm' },
-                                                { name: 'rescheduleEvent' },
-                                                { name: 'setCurrentFirm' },
-                                                { name: 'signIn' },
-                                                { name: 'signOut' },
-                                                { name: 'syncStripe' },
-                                                { name: 'unpublishEvent' },
-                                                { name: 'updateAccount' },
-                                                { name: 'updateAttendee' },
-                                                { name: 'updateBooking' },
-                                                { name: 'updateEvent' },
-                                                { name: 'updateFirm' },
-                                                { name: 'verifyEvent' },
-                                                { name: 'verifyFirm' },
-                                                { name: 'verifyStripeConnect' },
-                                                { name: 'withdrawBalance' }] }
+                       mutationType: {
+                         fields: [{ name: 'addAttendee' },
+                                  { name: 'bookEvent' },
+                                  { name: 'cancelBooking' },
+                                  { name: 'cancelTrip' },
+                                  { name: 'changeAttendeeOptionAvailability' },
+                                  { name: 'changeBookingOptionAvailability' },
+                                  { name: 'changeEventOptionAvailability' },
+                                  { name: 'createCheckout' },
+                                  { name: 'createEvent' },
+                                  { name: 'createFirm' },
+                                  { name: 'createStripeAccount' },
+                                  { name: 'declineStripeConnect' },
+                                  { name: 'deregisterAttendee' },
+                                  { name: 'publishEvent' },
+                                  { name: 'registerAttendee' },
+                                  { name: 'removeAttendee' },
+                                  { name: 'removeEvent' },
+                                  { name: 'removeFirm' },
+                                  { name: 'rescheduleEvent' },
+                                  { name: 'setCurrentFirm' },
+                                  { name: 'signIn' },
+                                  { name: 'signOut' },
+                                  { name: 'syncStripe' },
+                                  { name: 'unpublishEvent' },
+                                  { name: 'updateAccount' },
+                                  { name: 'updateAttendee' },
+                                  { name: 'updateBooking' },
+                                  { name: 'updateEvent' },
+                                  { name: 'updateFirm' },
+                                  { name: 'verifyEvent' },
+                                  { name: 'verifyFirm' },
+                                  { name: 'verifyStripeConnect' },
+                                  { name: 'withdrawBalance' }]
+                       }
                      } } }
 
       assert_equal expected, result
@@ -311,8 +313,8 @@ RSpec.describe Types::QueryType, type: :graphql_type do
 
     context 'by price' do
       before(:each) do
-        Event.update_all(organizer_price_per_uom_cents: 20_000,
-                         attendee_price_per_uom_cents: 20_000)
+        Event.first.update!(organizer_price_per_uom_cents: 20_000,
+                            attendee_price_per_uom_cents: 20_000)
         Event.last.update!(organizer_price_per_uom_cents: 10_000,
                            attendee_price_per_uom_cents: 10_000)
         Event.reindex_test
