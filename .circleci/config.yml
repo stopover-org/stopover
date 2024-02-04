@@ -102,7 +102,8 @@ commands:
           name: 'Rspec'
           command: |
             bin/rake searchkick:reindex:all
-            bin/bundle exec rspec ./spec/**/*_spec.rb
+            circleci tests glob "./spec/**/*_spec.rb" | \
+            circleci tests run --command="xargs timeout 20m bin/bundle exec rspec" --verbose --split-by=timings
 
   wait_for_postgres:
     steps:
