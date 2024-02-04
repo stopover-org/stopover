@@ -112,6 +112,14 @@ commands:
     steps:
       - run: 'dockerize -wait tcp://localhost:9200 -timeout 1m'
 
+  exec_minitest:
+    steps:
+      - run:
+          name: 'Minitest'
+          command: |
+            circleci tests glob "./spec/**/*_spec.rb" | \
+            circleci tests run --command="xargs timeout 20m bin/bundle exec rspec" --verbose --split-by=timings
+
 images:
   ruby: &_ruby
     image: 'cimg/ruby:3.1.0-browsers'
