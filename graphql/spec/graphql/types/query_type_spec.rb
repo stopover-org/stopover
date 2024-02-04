@@ -306,7 +306,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       context 'by min and max dates' do
         let(:variables) do
           { filters: { startDate: (Time.zone.today + 1.day).iso8601,
-                                       endDate: (Time.zone.today + 2.days).iso8601 } }
+                       endDate: (Time.zone.today + 2.days).iso8601 } }
         end
 
         it 'execute' do
