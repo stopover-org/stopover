@@ -6,7 +6,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
   let(:variables) { {} }
   let!(:current_user) { create(:active_user, with_account: true) }
   let!(:interest) { create(:interest) }
-  let!(:event) { create(:recurring_event) }
+  let!(:event) { create(:recurring_event, firm: create(:firm, status: :active)) }
   let!(:trip) { create(:trip, account: current_user.account) if current_user.active? }
   let!(:booking) { create(:booking, event: event, trip: trip, schedule: event.schedules.last) if trip }
 
@@ -308,11 +308,61 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       create_list(:recurring_event, 4)
     end
 
-    it 'without filters' do
-      Event.reindex_test
-      result = subject
+    context 'without filters' do
+      context 'include published events' do
+        before do
+          Event.reindex_test
+        end
 
-      assert_equal 5, result.dig(:data, :events, :edges).count
+        it 'success' do
+          result = subject
+
+          expect(result.dig(:data, :events, :edges).count).to eq(5)
+          expect(result.dig(:data, :events, :total)).to eq(5)
+        end
+      end
+
+      context 'exclude draft events' do
+        before do
+          Event.last.update_columns(status: :draft)
+          Event.reindex_test
+        end
+
+        it 'success' do
+          result = subject
+
+          expect(result.dig(:data, :events, :edges).count).to eq(4)
+          expect(result.dig(:data, :events, :total)).to eq(4)
+        end
+      end
+
+      context 'exclude unpublished events' do
+        before do
+          Event.last.update_columns(status: :unpublished)
+          Event.reindex_test
+        end
+
+        it 'success' do
+          result = subject
+
+          expect(result.dig(:data, :events, :edges).count).to eq(4)
+          expect(result.dig(:data, :events, :total)).to eq(4)
+        end
+      end
+
+      context 'exclude removed events' do
+        before do
+          Event.last.update_columns(status: :removed)
+          Event.reindex_test
+        end
+
+        it 'success' do
+          result = subject
+
+          expect(result.dig(:data, :events, :edges).count).to eq(4)
+          expect(result.dig(:data, :events, :total)).to eq(4)
+        end
+      end
     end
 
     context 'by city' do
@@ -596,10 +646,88 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       GRAPHQL
     end
 
-    it 'success' do
-      result = subject
+    context 'published' do
+      it 'success' do
+        result = subject
 
-      expect(result.dig(:data, :event, :id)).to eq(GraphqlSchema.id_from_object(Event.last))
+        expect(result.dig(:data, :event, :id)).to eq(GraphqlSchema.id_from_object(Event.last))
+      end
+    end
+
+    context 'draft' do
+      before do
+        Event.last.update(status: :draft)
+      end
+
+      it 'not found' do
+        result = subject
+
+        expect(result.dig(:data, :event, :id)).to be_nil
+      end
+    end
+
+    context 'unpublished' do
+      before do
+        Event.last.update(status: :unpublished)
+      end
+
+      it 'not found' do
+        result = subject
+
+        expect(result.dig(:data, :event, :id)).to be_nil
+      end
+    end
+
+    context 'removed' do
+      before do
+        Event.last.update(status: :removed)
+      end
+
+      it 'not found' do
+        result = subject
+
+        expect(result.dig(:data, :event, :id)).to be_nil
+      end
+    end
+  end
+
+  context 'firm' do
+    let(:variables) { { firmId: GraphqlSchema.id_from_object(Firm.last) } }
+    let(:query) do
+      <<-GRAPHQL
+        query (firmId: ID!) {
+          firm(id: $firmId) {
+            id
+          }
+        }
+      GRAPHQL
+    end
+
+    context 'pending' do
+      it 'success' do
+        Firm.last.update_columns(status: :pending)
+        result = subject
+
+        expect(result.dig(:data, :firm, :id)).to be_nil
+      end
+    end
+
+    context 'active' do
+      it 'success' do
+        Firm.last.update_columns(status: :active)
+        result = subject
+
+        expect(result.dig(:data, :firm, :id)).to eq(GraphqlSchema.id_from_object(Firm.last))
+      end
+    end
+
+    context 'removed' do
+      it 'success' do
+        Firm.last.update_columns(status: :removed)
+        result = subject
+
+        expect(result.dig(:data, :firm, :id)).to be_nil
+      end
     end
   end
 end

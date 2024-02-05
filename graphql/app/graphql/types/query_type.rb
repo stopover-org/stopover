@@ -18,11 +18,11 @@ module Types
       argument :city, String, required: false
     end
 
-    field :event, Types::EventsRelated::EventType, null: false do
+    field :event, Types::EventsRelated::EventType do
       argument :id, ID, required: true, loads: Types::EventsRelated::EventType
     end
 
-    field :firm, Types::FirmsRelated::FirmType, null: false do
+    field :firm, Types::FirmsRelated::FirmType do
       argument :id, ID, required: true, loads: Types::FirmsRelated::FirmType
     end
 
@@ -46,7 +46,7 @@ module Types
     end
 
     def firm(id:)
-      id
+      id if id.active?
     end
 
     def events_autocomplete(**args)
@@ -78,7 +78,7 @@ module Types
     end
 
     def event(id:)
-      id
+      id if id.published?
     end
 
     def trips(**args)
