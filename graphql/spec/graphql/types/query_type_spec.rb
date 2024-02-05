@@ -695,7 +695,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     let(:variables) { { firmId: GraphqlSchema.id_from_object(Firm.last) } }
     let(:query) do
       <<-GRAPHQL
-        query (firmId: ID!) {
+        query ($firmId: ID!) {
           firm(id: $firmId) {
             id
           }
@@ -704,8 +704,11 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     end
 
     context 'pending' do
-      it 'success' do
+      before do
         Firm.last.update_columns(status: :pending)
+      end
+
+      it 'success' do
         result = subject
 
         expect(result.dig(:data, :firm, :id)).to be_nil
@@ -713,8 +716,11 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     end
 
     context 'active' do
-      it 'success' do
+      before do
         Firm.last.update_columns(status: :active)
+      end
+
+      it 'success' do
         result = subject
 
         expect(result.dig(:data, :firm, :id)).to eq(GraphqlSchema.id_from_object(Firm.last))
@@ -722,8 +728,11 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     end
 
     context 'removed' do
-      it 'success' do
+      before do
         Firm.last.update_columns(status: :removed)
+      end
+
+      it 'success' do
         result = subject
 
         expect(result.dig(:data, :firm, :id)).to be_nil
