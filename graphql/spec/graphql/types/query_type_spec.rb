@@ -236,7 +236,6 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     end
     before do
       create_list(:recurring_event, 4)
-      Event.reindex_test
     end
 
     subject do
@@ -246,6 +245,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     end
 
     it 'without filters' do
+      Event.reindex_test
       result = subject
 
       assert_equal 5, result.dig(:data, :events, :edges).count
@@ -355,6 +355,83 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         let(:variables) { { filters: { minPrice: 90, maxPrice: 110 } } }
 
         it 'execute' do
+          result = subject
+
+          assert_equal 1, result.dig(:data, :events, :edges).count
+          assert_equal 1, result.dig(:data, :events, :total)
+        end
+      end
+    end
+
+    context 'by interests' do
+      let(:variables) { { filters: {} } }
+      let(:interests) { Interest.all }
+
+      before do
+        EventInterest.destroy_all
+        Interest.destroy_all
+        create_list(:interest, 2)
+        Interest.all.each_with_index { |interest, index| interest.event_interests.create!(event: Event.all[index]) }
+        Event.reindex_test
+      end
+
+      context 'without filters' do
+        it 'success' do
+          result = subject
+
+          assert_equal 5, result.dig(:data, :events, :edges).count
+          assert_equal 5, result.dig(:data, :events, :total)
+        end
+      end
+
+      context 'by one interest' do
+        let!(:variables) { { filters: { interests: [interests.first.slug] } } }
+
+        it 'success' do
+          result = subject
+
+          assert_equal 1, result.dig(:data, :events, :edges).count
+          assert_equal 1, result.dig(:data, :events, :total)
+        end
+      end
+
+      context 'by many interests' do
+        let!(:variables) { { filters: { interests: interests.pluck(:slug) } } }
+
+        it 'success' do
+          result = subject
+
+          assert_equal 2, result.dig(:data, :events, :edges).count
+          assert_equal 2, result.dig(:data, :events, :total)
+        end
+      end
+    end
+
+    context 'by firm' do
+      let(:variables) { { filters: {} } }
+
+      context 'without firm' do
+        before do
+          Event.reindex_test
+        end
+
+        it 'success' do
+          result = subject
+
+          assert_equal 5, result.dig(:data, :events, :edges).count
+          assert_equal 5, result.dig(:data, :events, :total)
+        end
+      end
+
+      context 'by firm' do
+        let(:variables) { { filters: { firmId: GraphqlSchema.id_from_object(Event.last.firm) } } }
+
+        before do
+          Event.first.update!(firm: create(:firm))
+          Event.reindex_test
+        end
+
+        it 'success' do
           result = subject
 
           assert_equal 1, result.dig(:data, :events, :edges).count

@@ -37,7 +37,7 @@ class EventsQuery
     @conditions[:price] = { gte: @params[:min_price] * 100, lte: @params[:max_price] * 100 } if @params[:min_price].present? && @params[:max_price].present?
     @conditions[:city] = @params[:city] if @params[:city].present? && !@params[:city].empty?
     @conditions[:interests] = @params[:interests] if @params[:interests]&.any?
-    @conditions[:firm_id] = @params[:firm_id] if @params[:firm_id].present?
+    @conditions[:firm_id] = @params[:firm].id if @params[:firm].present?
 
     @conditions[:title] = query if @backend && query
 

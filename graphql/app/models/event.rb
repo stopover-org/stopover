@@ -226,7 +226,8 @@ class Event < ApplicationRecord
       organizer: firm&.title,
       interests: interests.map(&:slug),
       price: attendee_price_per_uom_cents,
-      status: status
+      status: status,
+      firm_id: firm.id
     }
   end
 
