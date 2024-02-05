@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Types::QueryType, type: :graphql_type do
   let(:variables) { {} }
-  let!(:current_user) { create(:active_user, with_account: true) }
+  let(:current_user) { create(:active_user, with_account: true) }
   let!(:interest) { create(:interest) }
   let!(:event) { create(:recurring_event, firm: create(:firm, status: :active)) }
   let!(:trip) { create(:trip, account: current_user.account) if current_user.active? }
@@ -599,6 +599,42 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         expect(result.dig(:data, :eventFilters, :maxPrice, :cents)).to eq(6600)
         expect(result.dig(:data, :eventFilters, :city)).to eq('')
       end
+
+      it 'except draft events' do
+        Event.last.update_columns(status: :draft)
+        Event.reindex_test
+        result = subject
+
+        expect(result.dig(:data, :eventFilters, :startDate)).to eq(Time.zone.now.at_beginning_of_day.iso8601)
+        expect(result.dig(:data, :eventFilters, :endDate)).to eq((Time.zone.now.at_end_of_day + 1.year).iso8601)
+        expect(result.dig(:data, :eventFilters, :minPrice, :cents)).to eq(1100)
+        expect(result.dig(:data, :eventFilters, :maxPrice, :cents)).to eq(5500)
+        expect(result.dig(:data, :eventFilters, :city)).to eq('')
+      end
+
+      it 'except unpublished events' do
+        Event.last.update_columns(status: :unpublished)
+        Event.reindex_test
+        result = subject
+
+        expect(result.dig(:data, :eventFilters, :startDate)).to eq(Time.zone.now.at_beginning_of_day.iso8601)
+        expect(result.dig(:data, :eventFilters, :endDate)).to eq((Time.zone.now.at_end_of_day + 1.year).iso8601)
+        expect(result.dig(:data, :eventFilters, :minPrice, :cents)).to eq(1100)
+        expect(result.dig(:data, :eventFilters, :maxPrice, :cents)).to eq(5500)
+        expect(result.dig(:data, :eventFilters, :city)).to eq('')
+      end
+
+      it 'except removed events' do
+        Event.last.update_columns(status: :removed)
+        Event.reindex_test
+        result = subject
+
+        expect(result.dig(:data, :eventFilters, :startDate)).to eq(Time.zone.now.at_beginning_of_day.iso8601)
+        expect(result.dig(:data, :eventFilters, :endDate)).to eq((Time.zone.now.at_end_of_day + 1.year).iso8601)
+        expect(result.dig(:data, :eventFilters, :minPrice, :cents)).to eq(1100)
+        expect(result.dig(:data, :eventFilters, :maxPrice, :cents)).to eq(5500)
+        expect(result.dig(:data, :eventFilters, :city)).to eq('')
+      end
     end
 
     context 'with city' do
@@ -736,6 +772,38 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         result = subject
 
         expect(result.dig(:data, :firm, :id)).to be_nil
+      end
+    end
+  end
+
+  context 'booking' do
+    let(:variables) { { bookingId: GraphqlSchema.id_from_object(booking) } }
+    let(:query) do
+      <<-GRAPHQL
+        query($bookingId: ID!) {
+          booking(id: $bookingId) {
+            id
+          }
+        }
+      GRAPHQL
+    end
+
+    context 'for the owner' do
+      it 'success' do
+        result = subject
+
+        expect(result.dig(:data, :booking, :id)).to eq(GraphqlSchema.id_from_object(Booking.last))
+      end
+    end
+
+    context 'for different user' do
+      let(:current_user) { create(:active_user, with_account: true) }
+      let(:booking) { create(:booking) }
+
+      it 'success' do
+        result = subject
+
+        expect(result.dig(:data, :booking, :id)).to be_nil
       end
     end
   end

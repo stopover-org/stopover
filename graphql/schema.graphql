@@ -1331,7 +1331,7 @@ type PublishEventPayload {
 type Query {
   booking(id: ID!): Booking
   currentUser: User!
-  event(id: ID!): Event!
+  event(id: ID!): Event
   eventFilters(city: String): EventFilters!
   events(
     """
@@ -1356,7 +1356,7 @@ type Query {
     last: Int
   ): EventConnection!
   eventsAutocomplete(ids: [ID!], query: String!): EventsAutocomplete!
-  firm(id: ID!): Firm!
+  firm(id: ID!): Firm
   interests: [Interest!]!
 
   """

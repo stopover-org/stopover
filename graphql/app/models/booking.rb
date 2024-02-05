@@ -261,6 +261,10 @@ class Booking < ApplicationRecord
     )
   end
 
+  def adjust_user
+    self.user = account.user if account && !user
+  end
+
   def adjust_firm
     self.firm = event.firm unless firm
   end

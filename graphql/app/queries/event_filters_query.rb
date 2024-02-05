@@ -2,7 +2,7 @@
 
 class EventFiltersQuery
   def initialize(params = {})
-    @events = Event
+    @events = Event.where(status: :published)
     @start_date = Time.zone.now.at_beginning_of_day
     @end_date = Time.zone.now.at_end_of_day + 1.year
     @min_price = Money.new(@events.minimum(:attendee_price_per_uom_cents))
