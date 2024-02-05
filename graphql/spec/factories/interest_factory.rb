@@ -19,6 +19,6 @@
 #
 FactoryBot.define do
   factory :interest do
-    title { Faker::Coffee.blend_name }
+    title { Faker::Coffee.blend_name + (0...50).map { rand(65..90).chr }.join }
   end
 end

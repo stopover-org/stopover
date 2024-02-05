@@ -849,7 +849,6 @@ input EventsFilter {
   minPrice: Int
   query: String
   startDate: DateTime
-  tags: [String!]
 }
 
 type Firm implements Node {
@@ -972,10 +971,6 @@ type Interest implements Node {
   preview: String
   slug: String!
   title: String!
-}
-
-input InterestsFilter {
-  query: String
 }
 
 """
@@ -1362,7 +1357,7 @@ type Query {
   ): EventConnection!
   eventsAutocomplete(ids: [ID!], query: String!): EventsAutocomplete!
   firm(id: ID!): Firm!
-  interests(filters: InterestsFilter): [Interest!]!
+  interests: [Interest!]!
 
   """
   Fetches an object given its ID.
@@ -1383,28 +1378,6 @@ type Query {
     """
     ids: [ID!]!
   ): [Node]!
-  schedules(
-    """
-    Returns the elements in the list that come after the specified cursor.
-    """
-    after: String
-
-    """
-    Returns the elements in the list that come before the specified cursor.
-    """
-    before: String
-    filters: SchedulesFilter
-
-    """
-    Returns the first _n_ elements from the list.
-    """
-    first: Int
-
-    """
-    Returns the last _n_ elements from the list.
-    """
-    last: Int
-  ): ScheduleConnection!
   trips: [Trip!]!
 }
 
@@ -1648,7 +1621,6 @@ type ScheduleEdge {
 
 input SchedulesFilter {
   eventIds: [ID!]
-  firmId: ID
   scheduledFor: DateTime
 }
 
@@ -2132,6 +2104,11 @@ enum UserStatusEnum {
   active user
   """
   active
+
+  """
+  user was disabled
+  """
+  disabled
 
   """
   inactive user

@@ -51,7 +51,6 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                                   { name: 'interests' },
                                   { name: 'node' },
                                   { name: 'nodes' },
-                                  { name: 'schedules' },
                                   { name: 'trips' }]
                        },
                        mutationType: {
@@ -119,13 +118,6 @@ RSpec.describe Types::QueryType, type: :graphql_type do
           interests {
             id
           }
-          schedules {
-            edges {
-              node {
-                id
-              }
-            }
-          }
           eventFilters {
             city
             startDate
@@ -170,7 +162,6 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       assert_equal GraphqlSchema.id_from_object(current_user), result.dig(:data, :currentUser, :id)
       assert_equal GraphqlSchema.id_from_object(event), result.dig(:data, :events, :edges, 0, :node, :id)
       assert_equal GraphqlSchema.id_from_object(interest), result.dig(:data, :interests, 0, :id)
-      assert_equal GraphqlSchema.id_from_object(event.schedules.first), result.dig(:data, :schedules, :edges, 0, :node, :id)
       assert_equal({ city: '',
                      startDate: Time.zone.now.at_beginning_of_day.iso8601,
                      endDate: (Time.zone.now.at_end_of_day + 1.year).iso8601,
@@ -246,6 +237,29 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         expect(result.dig(:data, :currentUser, :id)).to eq(GraphqlSchema.id_from_object(current_user))
         expect(result.dig(:data, :currentUser, :status)).to eq('disabled')
       end
+    end
+  end
+
+  context 'interests' do
+    let(:query) do
+      <<-GRAPHQL
+        query {
+          interests {
+            id
+            slug
+          }
+        }
+      GRAPHQL
+    end
+
+    before do
+      create_list(:interest, 49, slug: nil)
+    end
+
+    it 'success' do
+      result = subject
+
+      expect(result.dig(:data, :interests).count).to eq(50)
     end
   end
 
@@ -488,6 +502,104 @@ RSpec.describe Types::QueryType, type: :graphql_type do
           assert_equal 1, result.dig(:data, :events, :total)
         end
       end
+    end
+  end
+
+  context 'event filters' do
+    before do
+      create_list(:booking, 5,
+                  event: event,
+                  trip: trip,
+                  schedule: event.schedules.last)
+      create_list(:recurring_event, 5)
+      Event.all.each_with_index do |event, index|
+        event.schedules.create!(scheduled_for: Time.zone.now + index.day)
+        event.update!(organizer_price_per_uom_cents: 1000 + (1000 * index))
+      end
+      Address.update_all(city: 'Beograd')
+      Event.reindex_test
+    end
+
+    context 'without city' do
+      let(:variables) { { city: '' } }
+      let(:query) do
+        <<-GRAPHQL
+          query($city: String!) {
+            eventFilters(city: $city) {
+              startDate
+              endDate
+              minPrice {
+                cents
+              }
+              maxPrice {
+                cents
+              }
+              city
+            }
+          }
+        GRAPHQL
+      end
+
+      it 'success' do
+        result = subject
+
+        expect(result.dig(:data, :eventFilters, :startDate)).to eq(Time.zone.now.at_beginning_of_day.iso8601)
+        expect(result.dig(:data, :eventFilters, :endDate)).to eq((Time.zone.now.at_end_of_day + 1.year).iso8601)
+        expect(result.dig(:data, :eventFilters, :minPrice, :cents)).to eq(1100)
+        expect(result.dig(:data, :eventFilters, :maxPrice, :cents)).to eq(6600)
+        expect(result.dig(:data, :eventFilters, :city)).to eq('')
+      end
+    end
+
+    context 'with city' do
+      let(:variables) { { city: 'Beograd' } }
+      let(:query) do
+        <<-GRAPHQL
+          query($city: String!) {
+            eventFilters(city: $city) {
+              startDate
+              endDate
+              minPrice {
+                cents
+              }
+              maxPrice {
+                cents
+              }
+              city
+            }
+          }
+        GRAPHQL
+      end
+
+      it 'success' do
+        Address.last.update!(city: 'Novi Sad')
+        result = subject
+
+        expect(result.dig(:data, :eventFilters, :startDate)).to eq(Time.zone.now.at_beginning_of_day.iso8601)
+        expect(result.dig(:data, :eventFilters, :endDate)).to eq((Time.zone.now.at_end_of_day + 1.year).iso8601)
+        expect(result.dig(:data, :eventFilters, :minPrice, :cents)).to eq(1100)
+        expect(result.dig(:data, :eventFilters, :maxPrice, :cents)).to eq(6600)
+        expect(result.dig(:data, :eventFilters, :city)).to eq('Beograd')
+      end
+    end
+  end
+
+  context 'event' do
+    let(:variables) { { eventId: GraphqlSchema.id_from_object(Event.last) } }
+    let(:query) do
+      <<-GRAPHQL
+        query ($eventId: ID!) {
+          event(id: $eventId) {
+            id
+          }
+        }
+      GRAPHQL
+    end
+
+    it 'success' do
+      result = subject
+
+      expect(result.dig(:data, :event, :id)).to eq(GraphqlSchema.id_from_object(Event.last))
     end
   end
 end

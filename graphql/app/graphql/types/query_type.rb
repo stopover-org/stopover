@@ -14,10 +14,6 @@ module Types
       argument :filters, Types::Filters::EventsFilter, required: false
     end
 
-    field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false do
-      argument :filters, Types::Filters::SchedulesFilter, required: false
-    end
-
     field :event_filters, Types::EventsRelated::EventFiltersType, null: false do
       argument :city, String, required: false
     end
@@ -45,15 +41,6 @@ module Types
       arguments = {
         query_type: ::EventsQuery,
         **(args[:filters] || {})
-      }
-      Connections::SearchkickConnection.new(arguments: arguments)
-    end
-
-    def schedules(**args)
-      arguments = {
-        query_type: ::SchedulesQuery,
-        **(args[:filters] || {}),
-        firm_id: context[:current_user]&.account&.firm&.id
       }
       Connections::SearchkickConnection.new(arguments: arguments)
     end
