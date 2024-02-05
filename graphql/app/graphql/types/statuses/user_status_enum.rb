@@ -6,6 +6,7 @@ module Types
       value 'active', 'active user'
       value 'inactive', 'inactive user'
       value 'temporary', 'user was created for booking purposes'
+      value 'disabled', 'user was disabled'
     end
   end
 end
