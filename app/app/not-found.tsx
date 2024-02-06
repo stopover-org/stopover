@@ -6,12 +6,10 @@ import { graphql, useLazyLoadQuery } from "react-relay";
 import { notFound_Query } from "artifacts/notFound_Query.graphql";
 import PageWrapper from "components/shared/PageWrapper";
 import SceneWrapper from "components/shared/SceneWrapper";
-import { Grid } from "@mui/joy";
-import Typography from "components/v2/Typography";
-import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
+import NotFoundComponent from "components/shared/NotFound";
 
 const NotFound = () => {
   const data = useLazyLoadQuery<notFound_Query>(
@@ -25,23 +23,13 @@ const NotFound = () => {
     {}
   );
   const { t } = useTranslation();
-  const pathname = usePathname();
 
   useDocumentTitle(t("general.404"));
 
   return (
     <Layout currentUserFragment={data.currentUser}>
       <AuthGuard accessible>
-        <Grid container p={2} spacing={2}>
-          <Grid xs={12}>
-            <Typography level="h2">
-              {pathname} {t("general.404")}
-            </Typography>
-          </Grid>
-          <Grid xs={12} maxWidth="1024px" margin="0 auto">
-            <img src="/404.svg" alt="Not Found 404" />
-          </Grid>
-        </Grid>
+        <NotFound />
       </AuthGuard>
     </Layout>
   );
@@ -50,7 +38,7 @@ const NotFound = () => {
 export default () => (
   <PageWrapper>
     <SceneWrapper>
-      <NotFound />
+      <NotFoundComponent />
     </SceneWrapper>
   </PageWrapper>
 );
