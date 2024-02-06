@@ -382,7 +382,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       end
     end
 
-    xcontext 'by dates' do
+    context 'by dates' do
       before do
         start_date = Time.zone.now.at_beginning_of_day
         Booking.destroy_all
