@@ -131,3 +131,4 @@ gem 'deepl-rb', require: 'deepl'
 gem 'aws-sdk-s3'
 gem "faraday_middleware-aws-sigv4"
 
+gem 'rspec_junit_formatter'

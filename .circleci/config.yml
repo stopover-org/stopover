@@ -31,7 +31,7 @@ jobs:
       - wait_for_opensearch
       - exec_rspec
       - store_test_results:
-          path: test/reports
+          path: rspec
 
 commands:
   # [COMMANDS] DEPENDENCIES
@@ -104,8 +104,8 @@ commands:
           name: 'Rspec'
           command: |
             bin/rake searchkick:reindex:all
-            circleci tests glob "./spec/**/*_spec.rb" | \
-            circleci tests run --command="xargs timeout 20m bin/bundle exec rspec" --verbose --split-by=timings
+            circleci tests glob "spec/**/*_spec.rb" | \
+            circleci tests run --command="xargs bin/bundle exec rspec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml" --verbose --split-by=timings
 
   wait_for_postgres:
     steps:
