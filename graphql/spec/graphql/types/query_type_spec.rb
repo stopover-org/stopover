@@ -553,6 +553,23 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         end
       end
     end
+
+    context 'with query' do
+      let(:variables) { { filters: { query: 'Cruise' } } }
+
+      before do
+        Event.update_all(title: 'event title')
+        Event.last.update(title: 'Cruise 123')
+        Event.reindex_test
+      end
+
+      it 'success' do
+        result = subject
+
+        expect(result.dig(:data, :events, :edges).count).to eq(1)
+        expect(result.dig(:data, :events, :total)).to eq(1)
+      end
+    end
   end
 
   context 'event filters' do
