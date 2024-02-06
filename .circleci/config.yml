@@ -30,6 +30,8 @@ jobs:
       # RUN TESTS
       - wait_for_opensearch
       - exec_rspec
+      - store_test_results:
+          path: test/reports
 
 commands:
   # [COMMANDS] DEPENDENCIES
@@ -112,14 +114,6 @@ commands:
   wait_for_opensearch:
     steps:
       - run: 'dockerize -wait tcp://localhost:9200 -timeout 1m'
-
-  exec_minitest:
-    steps:
-      - run:
-          name: 'Minitest'
-          command: |
-            circleci tests glob "./spec/**/*_spec.rb" | \
-            circleci tests run --command="xargs timeout 20m bin/bundle exec rspec" --verbose --split-by=timings
 
 images:
   ruby: &_ruby
