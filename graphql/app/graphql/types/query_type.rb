@@ -56,7 +56,7 @@ module Types
                  interests: [] }
       end
 
-      { bookings: Booking.search(args[:query], limit: 5).to_a,
+      { bookings: Booking.search(args[:query], where: { trip_id: current_user&.account&.trips&.ids }, limit: 5).to_a,
         events: Event.search(args[:query], where: { status: [:published] }, limit: 5).to_a,
         interests: Interest.search(args[:query], limit: 5).to_a }
     end
@@ -82,7 +82,7 @@ module Types
     end
 
     def trips(**args)
-      ::TripsQuery.new(args[:filters]&.to_h || {}, Trip.all, current_user).all
+      ::TripsQuery.new(args[:filters]&.to_h || {}, current_user).all
     end
   end
 end

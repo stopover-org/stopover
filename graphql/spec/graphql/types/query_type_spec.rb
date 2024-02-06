@@ -882,4 +882,188 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       end
     end
   end
+
+  context 'events autocomplete' do
+    let(:variables) { { query: 'Cruise' } }
+    let(:query) do
+      <<-GRAPHQL
+        query($query: String!) {
+          eventsAutocomplete(query: $query) {
+            events {
+              id
+              title
+              status
+            }
+            bookings {
+              id
+              status
+            }
+            interests {
+              id
+            }
+          }
+        }
+      GRAPHQL
+    end
+
+    context 'bookings' do
+      context 'only my bookings' do
+        before do
+          Booking.destroy_all
+          Trip.destroy_all
+
+          create_list(:active_user, 5, with_account: true)
+          User.all.each do |user|
+            user.account.trips << create(:trip, account: user.account)
+            user.account.trips << create(:trip, account: user.account)
+          end
+
+          create_list(:recurring_event, 8, status: :published, title: 'Cruise')
+          create_list(:recurring_event, 3, status: :published, title: 'Tour')
+          Trip.all.each do |trip|
+            trip.bookings += create_list(:booking, 8, event: Event.find_by(title: 'Cruise'), schedule: Event.last.schedules.last, trip: trip)
+          end
+
+          Event.reindex_test
+          Booking.reindex_test
+          Interest.reindex_test
+        end
+
+        it 'success' do
+          result = subject
+
+          expect(Booking.search('Cruise').count).to eq(112)
+          expect(Booking.search('Cruise', where: { trip_id: current_user&.account&.trips&.ids }).count).to eq(16)
+          expect(result.dig(:data, :eventsAutocomplete, :bookings).count).to eq(5)
+        end
+      end
+    end
+
+    context 'events' do
+      context 'preselected events' do
+        before do
+          create_list(:recurring_event, 2)
+        end
+        let(:variables) { { query: '', ids: Event.first(3).map { |e| GraphqlSchema.id_from_object(e) } } }
+        let(:query) do
+          <<-GRAPHQL
+            query($query: String!, $ids: [ID!]) {
+              eventsAutocomplete(query: $query, ids: $ids) {
+                events {
+                  id
+                  title
+                  status
+                }
+                bookings {
+                  id
+                  status
+                }
+                interests {
+                  id
+                }
+              }
+            }
+          GRAPHQL
+        end
+
+        it 'success' do
+          result = subject
+
+          expect(result.dig(:data, :eventsAutocomplete, :events).count).to eq(3)
+          result.dig(:data, :eventsAutocomplete, :events).each do |event|
+            expect(Event.first(3).map { |e| GraphqlSchema.id_from_object(e) }).to include(event[:id])
+          end
+        end
+      end
+
+      context 'draft' do
+        before do
+          Event.destroy_all
+          create_list(:event, 3, status: :draft, title: 'Cruise')
+          create_list(:event, 3, status: :draft, title: 'Tour')
+          Event.reindex_test
+          Booking.reindex_test
+          Interest.reindex_test
+        end
+
+        it 'not found' do
+          result = subject
+
+          expect(result.dig(:data, :eventsAutocomplete, :events).count).to eq(0)
+        end
+      end
+      context 'published' do
+        before do
+          Event.destroy_all
+          create_list(:event, 8, status: :published, title: 'Cruise')
+          create_list(:event, 3, status: :published, title: 'Tour')
+          Event.reindex_test
+          Booking.reindex_test
+          Interest.reindex_test
+        end
+
+        it 'success' do
+          result = subject
+
+          expect(Event.search('Cruise').count).to eq(8)
+
+          result.dig(:data, :eventsAutocomplete, :events).each do |event|
+            expect(event[:title]).to eq('Cruise')
+          end
+
+          expect(result.dig(:data, :eventsAutocomplete, :events).count).to eq(5)
+        end
+      end
+      context 'unpublished' do
+        before do
+          Event.destroy_all
+          create_list(:event, 3, status: :unpublished, title: 'Cruise')
+          create_list(:event, 3, status: :unpublished, title: 'Tour')
+          Event.reindex_test
+          Booking.reindex_test
+          Interest.reindex_test
+        end
+
+        it 'not found' do
+          result = subject
+
+          expect(result.dig(:data, :eventsAutocomplete, :events).count).to eq(0)
+        end
+      end
+      context 'removed' do
+        before do
+          Event.destroy_all
+          create_list(:event, 3, status: :removed, title: 'Cruise')
+          create_list(:event, 3, status: :removed, title: 'Tour')
+          Event.reindex_test
+          Booking.reindex_test
+          Interest.reindex_test
+        end
+
+        it 'not found' do
+          result = subject
+
+          expect(result.dig(:data, :eventsAutocomplete, :events).count).to eq(0)
+        end
+      end
+    end
+
+    context 'interests' do
+      before do
+        10.times do |n|
+          create(:interest, title: "Cruise #{n}")
+          create(:interest, title: "Tour #{n}")
+        end
+
+        Interest.reindex_test
+      end
+
+      it 'success' do
+        result = subject
+
+        expect(Interest.search('Cruise').count).to eq(10)
+        expect(result.dig(:data, :eventsAutocomplete, :interests).count).to eq(5)
+      end
+    end
+  end
 end

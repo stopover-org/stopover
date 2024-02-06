@@ -3,11 +3,10 @@
 class TripsQuery
   def initialize(
     params = {},
-    relations = Trip.where.not(status: 'cancelled'),
     current_user = nil
   )
-    @relations = relations.where.not(status: 'cancelled')
-                          .where(account_id: current_user.account.id)
+    @relations = Trip.where.not(status: 'cancelled')
+                     .where(account_id: current_user.account.id)
     @params = params
     @current_user = current_user
   end

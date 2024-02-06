@@ -95,6 +95,8 @@ class Event < ApplicationRecord
   aasm column: :status do
     state :draft, initial: true
     state :published
+    # TODO: rename unpublished to archived
+    # including all types, methods and mutations
     state :unpublished
     state :removed
 
