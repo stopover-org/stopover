@@ -198,6 +198,7 @@ class Booking < ApplicationRecord
   def search_data
     {
       title: event.title,
+      booked_for: schedule.scheduled_for,
 
       trip_id: trip.id,
       event_id: event.id,
