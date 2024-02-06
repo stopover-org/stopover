@@ -30,8 +30,6 @@ jobs:
       # RUN TESTS
       - wait_for_opensearch
       - exec_rspec
-      - store_test_results:
-          path: rspec
 
 commands:
   # [COMMANDS] DEPENDENCIES
@@ -100,12 +98,18 @@ commands:
 
   exec_rspec:
     steps:
+      - run: mkdir ~/rspec
+      - run: bin/rake searchkick:reindex:all
+      - run:
+          command: bundle exec rspec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml
+          when: always
       - run:
           name: 'Rspec'
           command: |
-            bin/rake searchkick:reindex:all
             circleci tests glob "spec/**/*_spec.rb" | \
             circleci tests run --command="xargs bin/bundle exec rspec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml" --verbose --split-by=timings
+      - store_test_results:
+          path: ~/rspec
 
   wait_for_postgres:
     steps:
