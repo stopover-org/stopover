@@ -824,4 +824,62 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       end
     end
   end
+
+  context 'trips' do
+    let(:query) do
+      <<-GRAPHQL
+        query {
+          trips {
+            id
+            status
+          }
+        }
+      GRAPHQL
+    end
+
+    context 'active' do
+      before do
+        Trip.destroy_all
+        create_list(:trip, 5, status: :active, account: current_user.account)
+      end
+
+      it 'success' do
+        result = subject
+
+        expect(result.dig(:data, :trips).count).to eq(5)
+        result.dig(:data, :trips).each do |trip|
+          expect(trip[:status]).to eq('active')
+        end
+      end
+    end
+
+    context 'draft' do
+      before do
+        Trip.destroy_all
+        create_list(:trip, 5, status: :draft, account: current_user.account)
+      end
+
+      it 'success' do
+        result = subject
+
+        expect(result.dig(:data, :trips).count).to eq(5)
+        result.dig(:data, :trips).each do |trip|
+          expect(trip[:status]).to eq('draft')
+        end
+      end
+    end
+
+    context 'cancelled' do
+      before do
+        Trip.destroy_all
+        create_list(:trip, 5, status: :cancelled, account: current_user.account)
+      end
+
+      it 'success' do
+        result = subject
+
+        expect(result.dig(:data, :trips).count).to eq(0)
+      end
+    end
+  end
 end
