@@ -29,9 +29,6 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
       result = subject
       expect(result.dig(:data, :__type, :fields)).to eq([
                                                           {
-                                                            name: 'achievements'
-                                                          },
-                                                          {
                                                             name: 'address'
                                                           },
                                                           {
@@ -131,13 +128,7 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
                                                             name: 'stripeIntegrations'
                                                           },
                                                           {
-                                                            name: 'tags'
-                                                          },
-                                                          {
                                                             name: 'title'
-                                                          },
-                                                          {
-                                                            name: 'unit'
                                                           }
                                                         ])
     end

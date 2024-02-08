@@ -1,9 +1,7 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { Box, Stack } from "@mui/joy";
-import { useTranslation } from "react-i18next";
 import { EventTitle_EventFragment$key } from "artifacts/EventTitle_EventFragment.graphql";
-import Tag from "components/v2/Tag/Tag";
 import Typography from "components/v2/Typography";
 
 interface TitleProps {
@@ -11,16 +9,11 @@ interface TitleProps {
 }
 
 const EventTitle = ({ eventFragmentRef }: TitleProps) => {
-  const { t } = useTranslation();
   const event = useFragment(
     graphql`
       fragment EventTitle_EventFragment on Event {
         title
         averageRating
-        tags {
-          id
-          title
-        }
       }
     `,
     eventFragmentRef
@@ -39,11 +32,6 @@ const EventTitle = ({ eventFragmentRef }: TitleProps) => {
               max: 5,
             })}
           /> */}
-          {event.tags.map((tag) => (
-            <Tag key={tag.id} href={`/events?tags=${tag.id}`} primary>
-              {tag.title}
-            </Tag>
-          ))}
         </Stack>
       </Box>
     </Stack>

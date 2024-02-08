@@ -8,9 +8,6 @@ module Mutations
       argument :interest_ids, [ID],
                loads: Types::EventsRelated::InterestType,
                required: false
-      argument :unit_id, ID,
-               loads: Types::EventsRelated::UnitType,
-               required: false
 
       argument :title, String, required: true
       argument :event_type, Types::EventsRelated::EventTypeEnum

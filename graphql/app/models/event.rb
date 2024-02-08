@@ -29,7 +29,6 @@
 #  updated_at                    :datetime         not null
 #  address_id                    :bigint
 #  firm_id                       :bigint
-#  unit_id                       :bigint
 #
 # Indexes
 #
@@ -37,12 +36,10 @@
 #  index_events_on_event_type              (event_type)
 #  index_events_on_firm_id                 (firm_id)
 #  index_events_on_ref_number_and_firm_id  (ref_number,firm_id) UNIQUE
-#  index_events_on_unit_id                 (unit_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (firm_id => firms.id)
-#  fk_rails_...  (unit_id => units.id)
 #
 
 require 'date'
@@ -68,9 +65,7 @@ class Event < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==========================================================
   #
   # HAS_MANY ASSOCIATIONS =========================================================
-  has_many :event_achievements, dependent: :destroy
   has_many :event_interests, dependent: :destroy
-  has_many :event_tags, dependent: :destroy
   has_many :event_options, dependent: :destroy
   has_many :bookings, dependent: :destroy
   has_many :ratings, dependent: :destroy
@@ -82,12 +77,9 @@ class Event < ApplicationRecord
   has_many :dynamic_translations, as: :translatable, dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
-  has_many :achievements, through: :event_achievements
   has_many :interests, through: :event_interests
-  has_many :tags, through: :event_tags
 
   # BELONGS_TO ASSOCIATIONS =======================================================
-  belongs_to :unit, optional: true
   belongs_to :firm, optional: false
   belongs_to :address
 

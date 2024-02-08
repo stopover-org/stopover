@@ -29,7 +29,6 @@
 #  updated_at                    :datetime         not null
 #  address_id                    :bigint
 #  firm_id                       :bigint
-#  unit_id                       :bigint
 #
 # Indexes
 #
@@ -37,12 +36,10 @@
 #  index_events_on_event_type              (event_type)
 #  index_events_on_firm_id                 (firm_id)
 #  index_events_on_ref_number_and_firm_id  (ref_number,firm_id) UNIQUE
-#  index_events_on_unit_id                 (unit_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (firm_id => firms.id)
-#  fk_rails_...  (unit_id => units.id)
 #
 require 'rails_helper'
 
@@ -55,9 +52,7 @@ RSpec.describe Event, type: :model do
     end
 
     it 'relations' do
-      should have_many(:event_achievements).dependent(:destroy)
       should have_many(:event_interests).dependent(:destroy)
-      should have_many(:event_tags).dependent(:destroy)
       should have_many(:event_options).dependent(:destroy)
       should have_many(:bookings).dependent(:destroy)
       should have_many(:ratings).dependent(:destroy)
@@ -68,11 +63,8 @@ RSpec.describe Event, type: :model do
       should have_many(:stripe_integrations).dependent(:destroy)
       should have_many(:dynamic_translations).dependent(:destroy)
 
-      should have_many(:achievements).through(:event_achievements)
       should have_many(:interests).through(:event_interests)
-      should have_many(:tags).through(:event_tags)
 
-      should belong_to(:unit).optional(true)
       should belong_to(:firm).optional(false)
     end
 

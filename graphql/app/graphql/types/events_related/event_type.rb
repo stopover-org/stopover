@@ -3,7 +3,6 @@
 module Types
   module EventsRelated
     class EventType < Types::ModelObject
-      field :achievements, [Types::FirmsRelated::AchievementType], null: false
       field :attendee_price_per_uom, Types::MoneyType
       field :available_dates, [Types::DateTimeType], null: false
       field :average_rating, Float, null: false
@@ -33,9 +32,7 @@ module Types
 
       field :single_days_with_time, [Types::DateTimeType], null: false
       field :status, String, null: false
-      field :tags, [Types::TagType], null: false
       field :title, String, null: false
-      field :unit, Types::EventsRelated::UnitType
       field :end_date, Types::DateTimeType
       field :stripe_integrations, Types::EventsRelated::StripeIntegrationType.connection_type, null: false, require_service_user: true
       field :statistics, [Types::StatisticsType], null: false
