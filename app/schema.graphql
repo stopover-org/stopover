@@ -959,9 +959,9 @@ type Firm implements Node {
 
 type Interest implements Node {
   id: ID!
-  link: String
   preview: String
   slug: String!
+  sourceTitle: String!
   title: String!
 }
 
