@@ -1613,6 +1613,7 @@ type ScheduleEdge {
 
 input SchedulesFilter {
   eventIds: [ID!]
+  includePast: Boolean
   scheduledFor: DateTime
 }
 

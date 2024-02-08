@@ -27,6 +27,7 @@ class SchedulesQuery
   end
 
   def conditions
+    @conditions.delete(:scheduled_for) unless @params[:include_past].nil?
     if @params[:scheduled_for].present?
       @conditions[:scheduled_for] = { gte: @params[:scheduled_for].at_beginning_of_day,
                                       lte: @params[:scheduled_for].at_end_of_day }

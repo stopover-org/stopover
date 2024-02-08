@@ -71,6 +71,7 @@ const SchedulesInformation = ({
     queryRef.current = refetch(
       {
         filters: {
+          includePast: true,
           scheduledFor: date,
           eventIds,
         },

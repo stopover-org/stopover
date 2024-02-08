@@ -361,24 +361,38 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
 
     before do
       event
+      event.schedules.first(5).each_with_index do |schedule, index|
+        schedule.update!(scheduled_for: Time.zone.now - index.days)
+      end
       Schedule.reindex_test
     end
 
-    it 'all schedules' do
+    it 'only future schedules' do
       result = subject
 
-      expect(result.dig(:data, :event, :schedules, :total)).to eq(56)
+      expect(result.dig(:data, :event, :schedules, :total)).to eq(52)
       expect(result.dig(:data, :event, :schedules, :edges).count).to eq(30)
     end
 
     context 'filter by date' do
-      let(:variables) { { eventId: GraphqlSchema.id_from_object(event), filters: { scheduledFor: 2.days.from_now } } }
+      let(:variables) { { eventId: GraphqlSchema.id_from_object(event), filters: { scheduledFor: Time.zone.today } } }
 
       it 'success' do
         result = subject
 
-        expect(result.dig(:data, :event, :schedules, :total)).to eq(2)
-        expect(result.dig(:data, :event, :schedules, :edges).count).to eq(2)
+        expect(result.dig(:data, :event, :schedules, :total)).to eq(1)
+        expect(result.dig(:data, :event, :schedules, :edges).count).to eq(1)
+      end
+    end
+
+    context 'include past dates' do
+      let(:variables) { { eventId: GraphqlSchema.id_from_object(event), filters: { includePast: true } } }
+
+      it 'success' do
+        result = subject
+
+        expect(result.dig(:data, :event, :schedules, :total)).to eq(56)
+        expect(result.dig(:data, :event, :schedules, :edges).count).to eq(30)
       end
     end
   end
