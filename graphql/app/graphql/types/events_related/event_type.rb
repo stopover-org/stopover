@@ -20,6 +20,7 @@ module Types
       field :landmarks, String
       field :max_attendees, Integer
       field :min_attendees, Integer
+      # TODO: change my bookings to the connection type
       field :my_bookings, [Types::BookingsRelated::BookingType], null: false
       field :organizer_price_per_uom, Types::MoneyType
       field :deposit_amount, Types::MoneyType, null: false
@@ -106,18 +107,12 @@ module Types
       end
 
       def my_bookings
-        return [] unless context[:current_user]
-        context[:current_user].account
-                              .bookings
-                              .where.not(status: :cancelled)
-                              .joins(:schedule)
-                              .where('schedules.scheduled_for > ? AND bookings.event_id = ?', Time.zone.now, object.id)
-                              .where(schedules: { status: :active })
-      end
-
-      def booking(**args)
-        return nil if context[:current_user].account.current_firm.events.id != args[:id].event_id
-        args[:id]
+        return [] unless current_account
+        current_account.bookings
+                       .where.not(status: :cancelled)
+                       .joins(:schedule)
+                       .where('schedules.scheduled_for > ? AND bookings.event_id = ?', Time.zone.now, object.id)
+                       .where(schedules: { status: :active })
       end
 
       def event_options

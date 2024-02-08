@@ -9,7 +9,7 @@ class SchedulesQuery
     limit: PER_PAGE
   )
     @params = params
-    @conditions = {}
+    @conditions = { scheduled_for: { gte: Time.zone.today } }
     @offset = after
     @limit = limit
   end

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
   let(:variables) { { eventId: GraphqlSchema.id_from_object(event) } }
-  let(:current_user) { create(:active_user) }
+  let(:current_user) { create(:active_user, with_account: true) }
   let(:event) { create(:recurring_event, status: :published) }
   subject do
     GraphqlSchema.execute(query,
@@ -337,6 +337,93 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
         expect(result.dig(:data, :event, :bookings, :edges).count).to eq(1)
         expect(result.dig(:data, :event, :bookings, :total)).to eq(1)
       end
+    end
+  end
+
+  context 'schedules' do
+    let(:variables) { { eventId: GraphqlSchema.id_from_object(event), filters: {} } }
+    let(:query) do
+      <<-GRAPHQL
+        query($eventId: ID!, $filters: SchedulesFilter!) {
+          event(id: $eventId) {
+            schedules(filters: $filters) {
+              edges {
+                node {
+                  scheduledFor
+                }
+              }
+              total
+            }
+          }
+        }
+      GRAPHQL
+    end
+
+    before do
+      event
+      Schedule.reindex_test
+    end
+
+    it 'all schedules' do
+      result = subject
+
+      expect(result.dig(:data, :event, :schedules, :total)).to eq(56)
+      expect(result.dig(:data, :event, :schedules, :edges).count).to eq(30)
+    end
+
+    context 'filter by date' do
+      let(:variables) { { eventId: GraphqlSchema.id_from_object(event), filters: { scheduledFor: 2.days.from_now } } }
+
+      it 'success' do
+        result = subject
+
+        expect(result.dig(:data, :event, :schedules, :total)).to eq(2)
+        expect(result.dig(:data, :event, :schedules, :edges).count).to eq(2)
+      end
+    end
+  end
+
+  context 'my bookings' do
+    let!(:booking) { create(:booking, event: event, schedule: event.schedules.last, trip: create(:trip, account: current_user.account)) }
+    let(:query) do
+      <<-GRAPHQL
+        query($eventId: ID!) {
+          event(id: $eventId) {
+            myBookings {
+              id
+            }
+          }
+        }
+      GRAPHQL
+    end
+
+    it 'success' do
+      result = subject
+
+      expect(result.dig(:data, :event, :myBookings).count).to eq(1)
+    end
+  end
+
+  context 'stripe integrations' do
+    let!(:event_options) { create_list(:event_option, 4, event: event) }
+    let(:query) do
+      <<-GRAPHQL
+        query($eventId: ID!) {
+          event(id: $eventId) {
+            stripeIntegrations {
+              nodes {
+                id
+              }
+            }
+          }
+        }
+      GRAPHQL
+    end
+
+    it 'include event and event options stripe integrations' do
+      result = subject
+
+      expect(result.dig(:data, :event, :stripeIntegrations, :nodes).count).to eq(5)
     end
   end
 end
