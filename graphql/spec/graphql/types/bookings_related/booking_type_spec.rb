@@ -218,6 +218,52 @@ RSpec.describe Types::BookingsRelated::BookingType, type: :graphql_type do
         expect(booking.attendees.count).to eq(11)
         expect(result.dig(:data, :booking, :attendees).count).to eq(11)
       end
+
+      context 'filter by status' do
+        let(:variables) { { bookingId: GraphqlSchema.id_from_object(booking), filters: {} } }
+        let(:query) do
+          <<-GRAPHQL
+          query($bookingId: ID!, $filters: AttendeesFilter) {
+            booking(id: $bookingId) {
+              attendees(filters: $filters) {
+                id
+                status
+              }
+            }
+          }
+          GRAPHQL
+        end
+
+        before do
+          create_list(:attendee, 10, booking: booking)
+        end
+
+        it 'include all attendees' do
+          result = subject
+
+          expect(booking.attendees.count).to eq(21)
+          expect(result.dig(:data, :booking, :attendees).count).to eq(21)
+        end
+
+        context 'filter by status' do
+          let(:variables) do
+            { bookingId: GraphqlSchema.id_from_object(booking),
+                              filters: { status: %w[registered not_registered] } }
+          end
+          before do
+            create_list(:attendee, 10, booking: booking, status: 'removed')
+            create_list(:attendee, 10, booking: booking, status: 'registered')
+          end
+
+          it 'include only registered and not_registered attendees' do
+            result = subject
+
+            expect(booking.attendees.where(status: 'removed').count).to eq(10)
+            result_statuses = result.dig(:data, :booking, :attendees).pluck(:status)
+            expect(result_statuses).not_to include('removed')
+          end
+        end
+      end
     end
 
     context 'cancellation terms' do

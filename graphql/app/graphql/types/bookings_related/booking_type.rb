@@ -26,7 +26,9 @@ module Types
       field :contact_email, String
       field :contact_phone, String
 
-      field :attendees, [Types::BookingsRelated::AttendeeType], null: false
+      field :attendees, [Types::BookingsRelated::AttendeeType], null: false do
+        argument :filters, Types::Filters::AttendeesFilter, required: false
+      end
 
       def payments(**_args)
         arguments = {
@@ -49,6 +51,10 @@ module Types
 
       def booked_for
         object.schedule.scheduled_for
+      end
+
+      def attendees(**args)
+        ::AttendeesQuery.new(args[:filters]&.to_h || {}, object.attendees).all
       end
 
       def cancellation_terms

@@ -40,7 +40,7 @@ module Types
       field :statistics, [Types::StatisticsType], null: false
       field :address, Types::FirmsRelated::AddressType
 
-      field :bookings, Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true do
+      field :bookings, Types::BookingsRelated::BookingType.connection_type do
         argument :filters, Types::Filters::BookingsFilter, required: false
       end
 
@@ -86,6 +86,8 @@ module Types
       end
 
       def bookings(**args)
+        return unless object.firm.accounts.include?(current_account)
+
         arguments = {
           query_type: ::BookingQuery,
           **(args[:filters] || {}),

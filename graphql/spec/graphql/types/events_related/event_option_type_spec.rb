@@ -78,21 +78,16 @@ RSpec.describe Types::EventsRelated::EventOptionType, type: :graphql_type do
       event_option.event.update_columns(status: :published)
     end
 
-    context 'firm scope' do
+    context 'with firm scope' do
       let(:firm) { create(:firm) }
       let(:event) { create(:recurring_event, firm: firm) }
       let(:event_option) { create(:event_option, event: event) }
       let(:current_user) { firm.accounts.last.user }
 
-      it 'title' do
+      it 'success' do
         result = subject
 
         expect(result.dig(:data, :event, :eventOptions, 0, :title)).to eq(event_option.title)
-      end
-
-      it 'description' do
-        result = subject
-
         expect(result.dig(:data, :event, :eventOptions, 0, :description)).to eq(event_option.description)
       end
     end
@@ -100,7 +95,7 @@ RSpec.describe Types::EventsRelated::EventOptionType, type: :graphql_type do
     context 'without firm scope' do
       let(:current_user) { create(:active_user, with_account: true) }
 
-      it 'title and description' do
+      it 'success' do
         expect_any_instance_of(EventOption).to receive(:translate).with(:title)
                                                                   .and_return('Translated title')
         expect_any_instance_of(EventOption).to receive(:translate).with(:description)

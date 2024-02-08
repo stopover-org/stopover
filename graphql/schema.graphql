@@ -101,11 +101,7 @@ enum AttendeeStatusEnum {
 
 input AttendeesFilter {
   bookingId: ID
-  email: String
   eventId: ID
-  firstName: String
-  lastName: String
-  phone: String
   status: [AttendeeStatusEnum!]
 }
 
@@ -295,11 +291,7 @@ input BookingsFilter {
   bookedFor: DateTime
   contactEmail: String
   contactPhone: String
-  eventId: ID
   eventIds: [ID!]
-  scheduleId: [ID!]
-  status: String
-  tripId: [ID!]
 }
 
 """
@@ -670,7 +662,7 @@ type Event implements Node {
     Returns the last _n_ elements from the list.
     """
     last: Int
-  ): BookingConnection!
+  ): BookingConnection
   depositAmount: Money!
   description: String!
   durationTime: String!

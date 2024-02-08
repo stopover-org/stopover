@@ -199,6 +199,8 @@ class Booking < ApplicationRecord
     {
       title: event.title,
       booked_for: schedule.scheduled_for,
+      contact_email: account.primary_email,
+      contact_phone: account.primary_phone,
 
       trip_id: trip.id,
       event_id: event.id,
