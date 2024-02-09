@@ -102,8 +102,6 @@ input AttendeesFilter {
 type Balance implements Node {
   firm: Firm!
   id: ID!
-  lastPayoutAt: Money!
-  payouts: [Payout!]!
   processingPayments: Money!
   successfulPayments: Money!
   totalAmount: Money!

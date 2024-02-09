@@ -5,11 +5,9 @@ module Types
     class BalanceType < Types::ModelObject
       field :id, ID, null: false
       field :total_amount, Types::MoneyType, null: false
-      field :last_payout_at, Types::MoneyType, null: false
-      field :successful_payments,    Types::MoneyType, null: false
-      field :processing_payments,    Types::MoneyType, null: false
-      field :firm,          Types::FirmsRelated::FirmType, null: false
-      field :payouts,       [Types::PaymentsRelated::PayoutType], null: false
+      field :successful_payments, Types::MoneyType, null: false
+      field :processing_payments, Types::MoneyType, null: false
+      field :firm, Types::FirmsRelated::FirmType, null: false
     end
   end
 end
