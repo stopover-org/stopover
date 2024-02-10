@@ -29,8 +29,8 @@ const WithdrawBalanceForm = ({
   const form = useWithdrawBalanceForm(balance);
   const activeStripeConnect = React.useMemo(
     () =>
-      balance?.firm?.stripeConnects
-        .map((stripeConnect) => stripeConnect.status)
+      balance?.firm
+        ?.stripeConnects!.map((stripeConnect) => stripeConnect.status)
         .find((status) => status === "active"),
     [balance]
   );

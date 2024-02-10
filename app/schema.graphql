@@ -834,7 +834,6 @@ input EventsFilter {
 type Firm implements Node {
   accounts: [Account!]
   address: Address
-  addresses: [Address!]!
   balance: Balance
   booking(id: ID!): Booking
   bookings(
@@ -858,7 +857,7 @@ type Firm implements Node {
     Returns the last _n_ elements from the list.
     """
     last: Int
-  ): BookingConnection!
+  ): BookingConnection
   contactPerson: String
   contacts: String
   contractAddress: String
@@ -913,10 +912,10 @@ type Firm implements Node {
     Returns the last _n_ elements from the list.
     """
     last: Int
-  ): PaymentConnection!
+  ): PaymentConnection
   primaryEmail: String!
   primaryPhone: String
-  schedule(id: ID!): Schedule!
+  schedule(id: ID!): Schedule
   schedules(
     """
     Returns the elements in the list that come after the specified cursor.
@@ -938,9 +937,9 @@ type Firm implements Node {
     Returns the last _n_ elements from the list.
     """
     last: Int
-  ): ScheduleConnection!
-  status: String
-  stripeConnects: [StripeConnect!]!
+  ): ScheduleConnection
+  status: String!
+  stripeConnects: [StripeConnect!]
   title: String!
   website: String
 }

@@ -15,6 +15,7 @@ import {
 interface ScheduleSectionProps {
   firmFragmentRef: SchedulesSection_FirmFragment$key;
 }
+
 const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
   const { data } = usePaginationFragment(
     graphql`
@@ -39,7 +40,7 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
     firmFragmentRef
   );
   const { t } = useTranslation();
-  const schedulesData = useSchedulesColumns(data.schedules);
+  const schedulesData = useSchedulesColumns(data.schedules!);
   const schedulesHeaders = useSchedulesHeaders();
 
   return (

@@ -54,7 +54,7 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
   const eventIds = useQuery("eventIds", [], (value) =>
     Array.from(parseValue(value))
   );
-  const schedulesData = useSchedulesColumns(data.pagedSchedules);
+  const schedulesData = useSchedulesColumns(data.pagedSchedules!);
   const schedulesHeaders = useSchedulesHeaders();
   const { t } = useTranslation();
   const queryRef = React.useRef<Disposable>();

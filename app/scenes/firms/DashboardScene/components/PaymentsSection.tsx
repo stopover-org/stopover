@@ -43,7 +43,7 @@ const PaymentsSection = ({ firmFragmentRef }: PaymentSectionProps) => {
     `,
     firmFragmentRef
   );
-  const actualPayments = usePaymentsColumns(data.payments);
+  const actualPayments = usePaymentsColumns(data.payments!);
   const headers = usePaymentsHeaders();
   const { t } = useTranslation();
 

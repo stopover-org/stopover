@@ -3,39 +3,39 @@
 module Types
   module FirmsRelated
     class FirmType < Types::ModelObject
+      include FirmPolicy
+
       field :id, ID, null: false
       field :contact_person, String
       field :contacts, String
       field :description, String
       field :primary_email, String, null: false
       field :primary_phone, String
-      field :status, String
+      field :status, String, null: false
       field :title, String, null: false
       field :website, String
       field :image, String
       field :payment_types, [String], null: false
-      field :addresses, [Types::FirmsRelated::AddressType], null: false
       field :address, Types::FirmsRelated::AddressType
       field :contract_address, String # Crypto Wallet address
 
       field :balance, Types::FirmsRelated::BalanceType
 
-      field :payments,
-            Types::PaymentsRelated::PaymentType.connection_type, null: false
+      field :payments, Types::PaymentsRelated::PaymentType.connection_type
 
       field :payment, Types::PaymentsRelated::PaymentType, null: false do
         argument :id, ID, required: true, loads: Types::PaymentsRelated::PaymentType
       end
 
-      field :bookings, Types::BookingsRelated::BookingType.connection_type, null: false do
+      field :bookings, Types::BookingsRelated::BookingType.connection_type do
         argument :filters, Types::Filters::BookingsFilter, required: false
       end
 
-      field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false do
+      field :schedules, Types::EventsRelated::ScheduleType.connection_type do
         argument :filters, Types::Filters::SchedulesFilter, required: false
       end
 
-      field :schedule, Types::EventsRelated::ScheduleType, null: false do
+      field :schedule, Types::EventsRelated::ScheduleType do
         argument :id, ID, required: true, loads: Types::EventsRelated::ScheduleType
       end
 
@@ -44,8 +44,7 @@ module Types
         argument :backend, Boolean, required: false
       end
 
-      field :stripe_connects,
-            [Types::FirmsRelated::StripeConnectType], null: false
+      field :stripe_connects, [Types::FirmsRelated::StripeConnectType]
 
       field :margin, Integer, null: false
 
@@ -82,6 +81,7 @@ module Types
           firm_id: object.id,
           per_page: 30
         }
+
         Connections::SearchkickConnection.new(arguments: arguments)
       end
 
@@ -106,7 +106,9 @@ module Types
           **(args[:filters] || {}),
           firm_id: object.id
         }
+
         arguments[:event_ids] = args[:filters][:events].map(&:id) if args.dig(:filters, :events)
+
         Connections::SearchkickConnection.new(arguments: arguments)
       end
 
@@ -116,7 +118,9 @@ module Types
           **(args[:filters] || {}),
           firm_id: object.id
         }
+
         arguments[:event_ids] = args[:filters][:events].map(&:id) if args.dig(:filters, :events)
+
         Connections::SearchkickConnection.new(arguments: arguments)
       end
 
