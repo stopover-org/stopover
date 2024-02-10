@@ -18,26 +18,24 @@ module Types
       field :address, Types::FirmsRelated::AddressType
       field :contract_address, String # Crypto Wallet address
 
-      field :balance, Types::FirmsRelated::BalanceType, require_manager: true
+      field :balance, Types::FirmsRelated::BalanceType
 
       field :payments,
-            Types::PaymentsRelated::PaymentType.connection_type,
-            null: false,
-            require_manager: true
+            Types::PaymentsRelated::PaymentType.connection_type, null: false
 
-      field :payment, Types::PaymentsRelated::PaymentType, null: false, require_manager: true do
+      field :payment, Types::PaymentsRelated::PaymentType, null: false do
         argument :id, ID, required: true, loads: Types::PaymentsRelated::PaymentType
       end
 
-      field :bookings, Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true do
+      field :bookings, Types::BookingsRelated::BookingType.connection_type, null: false do
         argument :filters, Types::Filters::BookingsFilter, required: false
       end
 
-      field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false, require_manager: true do
+      field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false do
         argument :filters, Types::Filters::SchedulesFilter, required: false
       end
 
-      field :schedule, Types::EventsRelated::ScheduleType, null: false, require_manager: true do
+      field :schedule, Types::EventsRelated::ScheduleType, null: false do
         argument :id, ID, required: true, loads: Types::EventsRelated::ScheduleType
       end
 
@@ -47,20 +45,13 @@ module Types
       end
 
       field :stripe_connects,
-            [Types::FirmsRelated::StripeConnectType],
-            null: false,
-            require_manager: true
+            [Types::FirmsRelated::StripeConnectType], null: false
 
-      field :margin,
-            Integer,
-            null: false,
-            require_service_user: true
+      field :margin, Integer, null: false
 
-      field :accounts,
-            [Types::UsersRelated::AccountType],
-            require_manager: true
+      field :accounts, [Types::UsersRelated::AccountType]
 
-      field :event, Types::EventsRelated::EventType, require_manager: true do
+      field :event, Types::EventsRelated::EventType do
         argument :id, ID, required: true, loads: Types::EventsRelated::EventType
       end
 
@@ -69,7 +60,7 @@ module Types
         argument :ids, [ID], loads: Types::EventsRelated::EventType, required: false
       end
 
-      field :booking, Types::BookingsRelated::BookingType, require_manager: true do
+      field :booking, Types::BookingsRelated::BookingType do
         argument :id, ID, required: true, loads: Types::BookingsRelated::BookingType
       end
 

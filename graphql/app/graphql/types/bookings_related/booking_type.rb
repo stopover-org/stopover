@@ -13,15 +13,15 @@ module Types
       field :payment_type, String, null: true
       field :schedule, Types::EventsRelated::ScheduleType, null: false
       field :attendee_total_price, Types::MoneyType, null: false
-      field :organizer_total_price, Types::MoneyType, null: false, require_manager: true
+      field :organizer_total_price, Types::MoneyType, null: false
       field :left_to_pay_price, Types::MoneyType, null: false
       field :left_to_pay_deposit_price, Types::MoneyType, null: false
       field :already_paid_price, Types::MoneyType, null: false
       field :possible_refund_amount, Types::MoneyType, null: false
       field :possible_penalty_amount, Types::MoneyType, null: false
       field :trip, Types::TripsRelated::TripType, null: false
-      field :payments, Types::PaymentsRelated::PaymentType.connection_type, null: false, require_manager: true
-      field :refunds, Types::PaymentsRelated::RefundType.connection_type, null: false, require_manager: true
+      field :payments, Types::PaymentsRelated::PaymentType.connection_type, null: false
+      field :refunds, Types::PaymentsRelated::RefundType.connection_type, null: false
       field :cancellation_terms, String, null: false
       field :contact_email, String
       field :contact_phone, String

@@ -346,6 +346,7 @@ GEM
     regexp_parser (2.3.1)
     reline (0.3.1)
       io-console (~> 0.5)
+    resource_policy (1.1.0)
     rexml (3.2.5)
     roo (2.10.0)
       nokogiri (~> 1)
@@ -520,6 +521,7 @@ DEPENDENCIES
   rails (~> 7.0.0)
   rails-erd
   redis (~> 4.0)
+  resource_policy
   roo (~> 2.10.0)
   rspec-rails
   rspec-sidekiq (~> 3.1)

@@ -11,7 +11,7 @@ module Types
       field :duration_time, String, null: false
       field :event_options, [Types::EventsRelated::EventOptionType], null: false
       field :event_type, Types::EventsRelated::EventTypeEnum, null: false
-      field :external_id, String, require_manager: true
+      field :external_id, String
       field :firm, Types::FirmsRelated::FirmType, null: false
       field :id, ID, null: false
       field :images, [String], null: false
@@ -34,7 +34,7 @@ module Types
       field :status, String, null: false
       field :title, String, null: false
       field :end_date, Types::DateTimeType
-      field :stripe_integrations, Types::EventsRelated::StripeIntegrationType.connection_type, null: false, require_service_user: true
+      field :stripe_integrations, Types::EventsRelated::StripeIntegrationType.connection_type, null: false
       field :statistics, [Types::StatisticsType], null: false
       field :address, Types::FirmsRelated::AddressType
 
@@ -42,7 +42,7 @@ module Types
         argument :filters, Types::Filters::BookingsFilter, required: false
       end
 
-      field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false, require_manager: true do
+      field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false do
         argument :filters, Types::Filters::SchedulesFilter, required: false
       end
 
