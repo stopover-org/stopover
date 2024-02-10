@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
   let(:variables) { {} }
-  let(:current_user) { create(:active_user) }
+  let(:current_user) { create(:active_user, with_account: true) }
   subject do
     GraphqlSchema.execute(query,
                           variables: variables,
@@ -32,9 +32,6 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
                                                           },
                                                           {
                                                             name: 'address'
-                                                          },
-                                                          {
-                                                            name: 'addresses'
                                                           },
                                                           {
                                                             name: 'balance'
@@ -109,6 +106,120 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
                                                             name: 'website'
                                                           }
                                                         ])
+    end
+  end
+
+  context 'sensitive fields' do
+    let(:firm) { create(:firm, status: 'active') }
+    let(:event) { create(:recurring_event) }
+    let(:schedule) { event.schedules.last }
+    let(:booking) { create(:booking, event: event, schedule: event.schedules.last) }
+    let(:payment) { create(:payment, firm: firm, booking: booking) }
+    let(:variables) do
+      {
+        paymentId: GraphqlSchema.id_from_object(payment),
+      bookingId: GraphqlSchema.id_from_object(booking),
+      scheduleId: GraphqlSchema.id_from_object(schedule),
+      eventId: GraphqlSchema.id_from_object(event),
+      firmId: GraphqlSchema.id_from_object(firm)
+      }
+    end
+    let(:query) do
+      <<-GRAPHQL
+        query($firmId: ID!, $paymentId: ID!, $bookingId: ID!, $eventId: ID!, $scheduleId: ID!) {
+          firm(id: $firmId) {
+            id
+            contactPerson
+            contacts
+            description
+            primaryEmail
+            primaryPhone
+            status
+            title
+            website
+            image
+            paymentTypes
+            address {
+              id
+            }
+            contractAddress
+            balance {
+              id
+            }
+            payments {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
+            payment(id: $paymentId) {
+              id
+            }
+            bookings {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
+            booking(id: $bookingId) {
+              id
+            }
+            schedules {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
+            schedule(id: $scheduleId) {
+              id
+            }
+            events {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
+            event(id: $eventId) {
+              id
+            }
+            stripeConnects {
+              id
+            }
+            margin
+            accounts {
+              id
+            }
+          }
+        }
+      GRAPHQL
+    end
+
+    context 'for not authorized user' do
+      it 'success' do
+        result = subject
+
+        expect(result.dig(:data, :firm)).not_to be_nil
+
+        FirmPolicy::MANAGER_PROTECTED_FIELDS.each do |field|
+          expect(result.dig(:data, :firm, field.to_s.camelize(:lower).to_sym)).to be_nil
+        end
+      end
+
+      context 'for authorized user' do
+        let(:current_user) { firm.accounts.last.user }
+
+        it 'success' do
+          result = subject
+
+          FirmPolicy::MANAGER_PROTECTED_FIELDS.each do |field|
+            expect(result.dig(:data, :firm, field.to_s.camelize(:lower).to_sym)).not_to be_nil
+          end
+        end
+      end
     end
   end
 end

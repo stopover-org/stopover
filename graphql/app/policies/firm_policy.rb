@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
 module FirmPolicy
+  include ::Fields::FirmFields
   MANAGER_PROTECTED_FIELDS = %i[
     balance
     payments
     payment
-    payouts
-    payout
-    refunds
-    refund
     bookings
     booking
     schedules
@@ -16,6 +13,7 @@ module FirmPolicy
     stripe_connects
     margin
     accounts
+    event
   ].freeze
 
   def authorized?
@@ -26,15 +24,20 @@ module FirmPolicy
     define_method(field) do |*args|
       field_defined = respond_to?(field)
 
-      self.class.alias_method "original_#{field}".to_sym, field if field_defined
-
       if authorized?
-        if respond_to?("original_#{field}") && !__callee__.match?(/\A(original_).+\Z/)
-          send("original_#{field}".to_sym, *args)
+        args_hash = args[0] || {}
+        if field_defined
+          begin
+            return super(**args_hash)
+          rescue StandardError => e
+            return object.send(field)
+          end
         else
-          object.send(field, *args)
+          return object.send(field)
         end
       end
+
+      nil
     end
   end
 end
