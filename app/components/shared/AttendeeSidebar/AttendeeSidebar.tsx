@@ -34,6 +34,9 @@ const AttendeeSidebar = ({
         status
         account {
           id
+          firm {
+            id
+          }
         }
       }
     `,
@@ -45,8 +48,16 @@ const AttendeeSidebar = ({
   const { t } = useTranslation();
   const items = React.useMemo(() => {
     const menuItems = [];
-    if (currentUser.status === "active")
+    if (currentUser.status === "active") {
       menuItems.push({ title: t("layout.header.myProfile"), href: "/profile" });
+    }
+    if (currentUser.account?.firm?.id) {
+      menuItems.push({
+        title: t("layout.header.myFirm"),
+        blank: true,
+        href: "/my-firm/dashboard",
+      });
+    }
     menuItems.push({ title: t("layout.header.myTrips"), href: "/trips" });
     return menuItems;
   }, [t, currentUser]);

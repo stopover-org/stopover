@@ -16,7 +16,6 @@ import {
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import LaunchIcon from "@mui/icons-material/Launch";
 import { MoreVert } from "@mui/icons-material";
 import { EventScene_FirmEventFragment$key } from "artifacts/EventScene_FirmEventFragment.graphql";
 import Typography from "components/v2/Typography";
@@ -156,19 +155,16 @@ const EventScene = ({
   return (
     <Grid container spacing={2} sm={12} md={12}>
       <Grid lg={8} sm={12}>
-        <Typography level="h3" sx={{ display: "inline" }}>
+        <Link
+          href={`/events/${event.id}`}
+          underline={false}
+          sx={{ padding: "0 5px" }}
+          target="_blank"
+          level="h3"
+          primary
+        >
           {event.title}
-          <Link
-            href={`/events/${event.id}`}
-            underline={false}
-            fontSize="12px"
-            sx={{ padding: "0 5px" }}
-            target="_blank"
-            primary
-          >
-            <LaunchIcon />
-          </Link>
-        </Typography>
+        </Link>
         <Typography level="h4">{event.firm.title}</Typography>
         <Tag color={tagColor} link={false}>
           {t(`statuses.${event.status}`)}

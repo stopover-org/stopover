@@ -32,7 +32,7 @@ const Scene = ({
   const data = usePreloadedQuery(Query, queryRef);
   const { t } = useTranslation();
 
-  useDocumentTitle(`${t("scenes.attendees.firms.newFirmScene.title")}`);
+  useDocumentTitle(`${t("scenes.attendees.profile.profileScene.title")}`);
 
   return (
     <SceneWrapper>

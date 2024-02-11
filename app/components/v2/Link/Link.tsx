@@ -2,6 +2,7 @@ import React from "react";
 import NextLink from "next/link";
 import { styled, Tooltip } from "@mui/joy";
 import { useTranslation } from "react-i18next";
+import LaunchIcon from "@mui/icons-material/Launch";
 import Typography from "../Typography";
 import { TypographyProps } from "../Typography/Typography";
 
@@ -12,6 +13,7 @@ interface BaseLinkProps {
   primary?: boolean;
   underline?: boolean;
   target?: string;
+  icon?: boolean;
 }
 
 export interface LinkProps
@@ -33,6 +35,7 @@ const Link = React.forwardRef(
       sx,
       level,
       target,
+      icon = true,
       ...props
     }: LinkProps,
     ref: React.ForwardedRef<HTMLParagraphElement>
@@ -53,6 +56,12 @@ const Link = React.forwardRef(
           >
             <NextLink href={href} target={target}>
               {children}
+              {icon && (
+                <>
+                  {" "}
+                  <LaunchIcon sx={{ fontSize: ".9em" }} />
+                </>
+              )}
             </NextLink>
           </TypographyLink>
         </Tooltip>

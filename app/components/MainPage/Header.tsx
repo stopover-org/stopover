@@ -134,13 +134,14 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
             <>
               {currentUser.account?.firm?.id && (
                 <Link
-                  href="/my-firm/dashboard"
+                  href="/profile"
                   textAlign="right"
                   level={isSmallDisplay ? "body-sm" : "body-md"}
                   lineHeight={`${imageSize.height}px`}
                   paddingRight={isSmallDisplay ? "3px" : "10px"}
+                  target="_blank"
                 >
-                  {t("layout.header.myFirm")}
+                  {t("models.account.singular")}
                 </Link>
               )}
 
