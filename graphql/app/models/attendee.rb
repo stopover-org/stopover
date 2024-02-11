@@ -31,7 +31,7 @@ class Attendee < ApplicationRecord
   include AASM
 
   # MONETIZE ==============================================================
-
+  #
   # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :booking
   belongs_to :firm
@@ -39,9 +39,9 @@ class Attendee < ApplicationRecord
   belongs_to :schedule
 
   # HAS_ONE ASSOCIATIONS ==================================================
-
+  #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
-
+  #
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :attendee_options, dependent: :destroy
 
@@ -73,18 +73,18 @@ class Attendee < ApplicationRecord
   end
 
   # ENUMS =================================================================
-
+  #
   # SECURE TOKEN ==========================================================
-
+  #
   # SECURE PASSWORD =======================================================
-
+  #
   # ATTACHMENTS ===========================================================
-
+  #
   # RICH_TEXT =============================================================
   default_scope { in_order_of(:status, %w[registered not_registered removed]).order(created_at: :desc) }
 
   # VALIDATIONS ===========================================================
-
+  #
   # CALLBACKS =============================================================
   before_validation :adjust_booking_info
   before_create :create_attendee_options

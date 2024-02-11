@@ -41,8 +41,8 @@ class BookingQuery
     @conditions[:event_id] = @params[:event_ids] if @params[:event_ids].present?
     @conditions[:schedule_id] = @params[:schedule_id] if @params[:schedule_id].present?
     @conditions[:firm_id] = @params[:firm_id] if @params[:firm_id].present?
-    @conditions[:contact_email] = @params[:contact_email] if @params[:contact_email].present?
-    @conditions[:contact_phone] = @params[:contact_phone] if @params[:contact_phone].present?
+    @conditions[:contact_email] = @params[:contact_email].gsub(/\s/, '') if @params[:contact_email].present?
+    @conditions[:contact_phone] = @params[:contact_phone].gsub(/\s/, '') if @params[:contact_phone].present?
 
     @conditions
   end

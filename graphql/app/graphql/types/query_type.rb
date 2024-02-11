@@ -14,19 +14,15 @@ module Types
       argument :filters, Types::Filters::EventsFilter, required: false
     end
 
-    field :schedules, Types::EventsRelated::ScheduleType.connection_type, null: false do
-      argument :filters, Types::Filters::SchedulesFilter, required: false
-    end
-
     field :event_filters, Types::EventsRelated::EventFiltersType, null: false do
       argument :city, String, required: false
     end
 
-    field :event, Types::EventsRelated::EventType, null: false do
+    field :event, Types::EventsRelated::EventType do
       argument :id, ID, required: true, loads: Types::EventsRelated::EventType
     end
 
-    field :firm, Types::FirmsRelated::FirmType, null: false do
+    field :firm, Types::FirmsRelated::FirmType do
       argument :id, ID, required: true, loads: Types::FirmsRelated::FirmType
     end
 
@@ -49,17 +45,8 @@ module Types
       Connections::SearchkickConnection.new(arguments: arguments)
     end
 
-    def schedules(**args)
-      arguments = {
-        query_type: ::SchedulesQuery,
-        **(args[:filters] || {}),
-        firm_id: context[:current_user]&.account&.firm&.id
-      }
-      Connections::SearchkickConnection.new(arguments: arguments)
-    end
-
     def firm(id:)
-      id
+      id if id.active?
     end
 
     def events_autocomplete(**args)
@@ -69,8 +56,8 @@ module Types
                  interests: [] }
       end
 
-      { bookings: Booking.search(args[:query], limit: 5).to_a,
-        events: Event.search(args[:query], limit: 5).to_a,
+      { bookings: Booking.search(args[:query], where: { trip_id: current_user&.account&.trips&.ids }, limit: 5).to_a,
+        events: Event.search(args[:query], where: { status: [:published] }, limit: 5).to_a,
         interests: Interest.search(args[:query], limit: 5).to_a }
     end
 
@@ -91,11 +78,11 @@ module Types
     end
 
     def event(id:)
-      id
+      id if id.published?
     end
 
     def trips(**args)
-      ::TripsQuery.new(args[:filters]&.to_h || {}, Trip.all, current_user).all
+      ::TripsQuery.new(args[:filters]&.to_h || {}, current_user).all
     end
   end
 end

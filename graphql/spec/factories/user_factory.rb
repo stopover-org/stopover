@@ -29,6 +29,12 @@ FactoryBot.define do
       "#{n}@example.com"
     end
 
+    trait :disabled do
+      session_password { Faker::Internet.password }
+      status { 'disabled' }
+      confirmed_at { Time.zone.now }
+    end
+
     trait :active do
       session_password { Faker::Internet.password }
       status { 'active' }
@@ -61,5 +67,6 @@ FactoryBot.define do
     factory :service_user, traits: %i[active service]
     factory :temporary_user, traits: [:temporary]
     factory :inactive_user, traits: [:inactive]
+    factory :disabled_user, traits: [:disabled]
   end
 end

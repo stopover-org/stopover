@@ -202,8 +202,6 @@ GEM
       aws-sigv4 (~> 1.0)
       faraday (>= 1.8, < 2)
     ffi (1.15.5)
-    flipper (0.28.3)
-      concurrent-ruby (< 2)
     foreman (0.87.2)
     fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
@@ -370,6 +368,8 @@ GEM
       rspec-core (~> 3.0, >= 3.0.0)
       sidekiq (>= 2.4.0)
     rspec-support (3.11.0)
+    rspec_junit_formatter (0.6.0)
+      rspec-core (>= 2, < 4, != 2.12.0)
     rubocop (1.28.2)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
@@ -498,7 +498,6 @@ DEPENDENCIES
   factory_bot_rails
   faker!
   faraday_middleware-aws-sigv4
-  flipper
   foreman
   geocoder
   graphiql-rails!
@@ -521,6 +520,7 @@ DEPENDENCIES
   roo (~> 2.10.0)
   rspec-rails
   rspec-sidekiq (~> 3.1)
+  rspec_junit_formatter
   rubocop
   rubocop-rails
   searchkick

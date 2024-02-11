@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe EventsQuery, type: :query do
-  let!(:now)          { Time.zone.now.at_beginning_of_day }
-  let!(:past_date)    { now - 2.days }
+  let!(:now) { Time.zone.now.at_beginning_of_day }
+  let!(:past_date) { now - 2.days }
   let!(:future_2_day) { now + 2.days }
   let!(:future_4_day) { now + 4.days }
   let!(:future_6_day) { now + 6.days }
@@ -36,15 +36,6 @@ RSpec.describe EventsQuery, type: :query do
              organizer_price_per_uom: Money.new(130_000, :usd),
              single_days_with_time: [future_8_day],
              schedules: [build(:schedule, scheduled_for: future_8_day)])
-
-      # drop existing tags for test purposes
-      Tag.all.delete_all
-
-      # create new tags
-      create(:tag, title: 'excursion'.titleize)
-      create(:tag, title: 'tour'.titleize)
-      Event.offset(1).first(2).each { |event| event.tags << Tag.first }
-      Event.offset(1).last(2).each { |event| event.tags << Tag.last }
     end
   end
 
@@ -99,7 +90,7 @@ RSpec.describe EventsQuery, type: :query do
         Event.reindex_test
         Timecop.freeze(Time.current) do
           query = EventsQuery.new({ start_date: now + 3.days,
-                              end_date: now + 5.days })
+                                    end_date: now + 5.days })
           expect(query.conditions).to eq({ dates: { gte: now + 3.days, lte: now + 5.days }, status: [:published] })
           expect(query.total).to eq(1)
 

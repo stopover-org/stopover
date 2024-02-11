@@ -44,7 +44,7 @@ const PaymentsScene = ({ firmFragmentRef }: PaymentsSceneProps) => {
     );
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = React.useState(1);
-  const payments = usePaymentsColumns(data.payments);
+  const payments = usePaymentsColumns(data.payments!);
   const headers = usePaymentsHeaders();
 
   return (

@@ -293,7 +293,7 @@ const EventScene = ({
             <Tab variant={tab === 3 ? "outlined" : "plain"}>
               {t("models.booking.plural")}
               <Chip size="sm" variant="soft">
-                {event.bookings.total}
+                {event.bookings?.total}
               </Chip>
             </Tab>
             {currentUser.serviceUser && (

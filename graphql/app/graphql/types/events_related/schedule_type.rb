@@ -3,16 +3,16 @@
 module Types
   module EventsRelated
     class ScheduleType < Types::ModelObject
-      field :id,            ID, null: false
+      field :id, ID, null: false
       field :scheduled_for, Types::DateTimeType, null: false
-      field :status,        String, null: false
-      field :event,         Types::EventsRelated::EventType, null: false
-      field :bookings,      Types::BookingsRelated::BookingType.connection_type, null: false, require_manager: true do
+      field :status, String, null: false
+      field :event, Types::EventsRelated::EventType, null: false
+      field :bookings, Types::BookingsRelated::BookingType.connection_type, null: false do
         argument :filters, Types::Filters::BookingsFilter, required: false
       end
-      field :left_places,   Integer
+      field :left_places, Integer
       field :booked_places, Integer
-      field :statistics,    [Types::StatisticsType], null: false
+      field :statistics, [Types::StatisticsType], null: false
 
       def statistics
         [{ name: 'bookings',

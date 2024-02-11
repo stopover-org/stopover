@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import { Autocomplete, FormControl, Grid, Option, Stack } from "@mui/joy";
+import { Autocomplete, Grid, Stack } from "@mui/joy";
 import moment, { Moment } from "moment";
 import { useTranslation } from "react-i18next";
 import Button from "../../../../../components/v2/Button";
@@ -9,7 +9,6 @@ import ButtonDatePicker from "../../../../../components/v2/ButtonDatePicker";
 import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
 import Typography from "../../../../../components/v2/Typography";
 import useTimeFromDate from "../../../../../lib/hooks/useTimeFromDate";
-import Select from "../../../../../components/v2/Select";
 import useFormContext from "../../../../../lib/hooks/useFormContext";
 import useUniqueMomentDates from "../../../../../lib/hooks/useUniqueMomentDates";
 import Link from "../../../../../components/v2/Link";
@@ -26,9 +25,6 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
     graphql`
       fragment EventActions_EventFragment on Event {
         id
-        unit {
-          name
-        }
         availableDates
         attendeePricePerUom {
           cents
@@ -87,7 +83,7 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
   return availableDates.length > 0 ? (
     <Grid container spacing={1}>
       <Grid sm={12} md={12}>
-        <Stack direction={'row'} spacing={1} useFlexGap justifyContent={'flex-end'}>
+        <Stack direction="row" spacing={1} useFlexGap justifyContent="flex-end">
           <ButtonDatePicker
             onChange={(date) => {
               if (!date) return;
@@ -106,14 +102,14 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             value={{ value: selectedTime, label: selectedTime }}
             options={availableTimes.map((time: Moment) => ({
               label: time.format(timeFormat),
-              value: time.format(timeFormat)
+              value: time.format(timeFormat),
             }))}
             onChange={(event, { value }) => {
               if (!value) return;
 
               dateField.onChange(setTime(dateField.value, value));
             }}
-            sx={{maxWidth: '125px'}}
+            sx={{ maxWidth: "125px" }}
           />
           {!booking && (
             <SubmitButton
@@ -124,8 +120,11 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             </SubmitButton>
           )}
           {booking && (
-            <Link href={`/trips/${booking.trip.id}#${booking.id}`} underline={false}>
-              <Button>{t('scenes.attendees.events.eventScene.details')}</Button>
+            <Link
+              href={`/trips/${booking.trip.id}#${booking.id}`}
+              underline={false}
+            >
+              <Button>{t("scenes.attendees.events.eventScene.details")}</Button>
             </Link>
           )}
         </Stack>
@@ -136,11 +135,13 @@ const EventActions = ({ eventFragmentRef }: EventActionsProps) => {
             event.attendeePricePerUom?.cents,
             event.attendeePricePerUom?.currency?.name
           )}{" "}
-          x {booking ? booking.attendees.length : attendeesCountField.value} {t("general.attendee")}
+          x {booking ? booking.attendees.length : attendeesCountField.value}{" "}
+          {t("general.attendee")}
           <br />
           {capitalize(t("general.total"))}:{" "}
           {getCurrencyFormat(
-            (booking ? booking.attendees.length : attendeesCountField.value) * (event.attendeePricePerUom?.cents || 0),
+            (booking ? booking.attendees.length : attendeesCountField.value) *
+              (event.attendeePricePerUom?.cents || 0),
             event.attendeePricePerUom?.currency?.name
           )}
         </Typography>

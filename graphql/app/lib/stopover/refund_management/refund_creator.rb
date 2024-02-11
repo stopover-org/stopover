@@ -89,6 +89,7 @@ module Stopover
 
       def calculate_penalty
         return Money.new(0) if @current_cancellation_service.include_penalty?
+        return Money.new(0) if @booking.already_paid_price.zero?
 
         @current_cancellation_service.perform&.penalty_price || Money.new(0)
       end

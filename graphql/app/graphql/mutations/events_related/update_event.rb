@@ -8,12 +8,8 @@ module Mutations
       argument :event_id, ID, loads: Types::EventsRelated::EventType
 
       argument :interest_ids, [ID],
-               loads:    Types::EventsRelated::InterestType,
+               loads: Types::EventsRelated::InterestType,
                required: false
-      argument :unit_id, ID,
-               loads:    Types::EventsRelated::UnitType,
-               required: false
-
       argument :title, String, required: false
       argument :event_type, Types::EventsRelated::EventTypeEnum, required: false
       argument :description, String, required: false
@@ -59,7 +55,7 @@ module Mutations
         event = Stopover::EventManagement::EventUpdater.new(event).execute(**args)
 
         {
-          event:        event,
+          event: event,
           notification: I18n.t('graphql.mutations.update_event.notifications.success')
         }
       rescue StandardError => e
@@ -67,7 +63,7 @@ module Mutations
         message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
-          event:  nil,
+          event: nil,
           errors: [e.message]
         }
       end

@@ -9,6 +9,7 @@ import EventScene from "scenes/attendees/events/EventScene";
 import { useTranslation } from "react-i18next";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_EventPage_Query } from "artifacts/scene_EventPage_Query.graphql";
+import NotFound from "components/shared/NotFound";
 
 export const Query = graphql`
   query scene_EventPage_Query($id: ID!) {
@@ -31,13 +32,13 @@ const Scene = ({
   const data = usePreloadedQuery(Query, queryRef);
   const { t } = useTranslation();
 
-  useDocumentTitle(`${t("models.event.singular")} ${data.event.title}`);
+  useDocumentTitle(`${t("models.event.singular")} ${data.event?.title}`);
 
   return (
     <SceneWrapper>
       <Layout currentUserFragment={data.currentUser}>
-        <AuthGuard accessible={!!data.event.id}>
-          <EventScene eventFragmentRef={data.event} />
+        <AuthGuard accessible={!!data.event?.id} noAccess={<NotFound />}>
+          <EventScene eventFragmentRef={data.event!} />
         </AuthGuard>
       </Layout>
     </SceneWrapper>

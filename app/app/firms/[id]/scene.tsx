@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import FirmScene from "scenes/attendees/firms/FirmScene";
 import { scene_AttendeesFirm_Query } from "artifacts/scene_AttendeesFirm_Query.graphql";
+import NotFound from "../../../components/shared/NotFound/NotFound";
 
 const Query = graphql`
   query scene_AttendeesFirm_Query($id: ID!) {
@@ -31,15 +32,13 @@ const Scene = ({
   const data = usePreloadedQuery(Query, queryRef);
   const { t } = useTranslation();
 
-  useDocumentTitle(`${t("models.firm.singular")} ${data.firm.title}`);
+  useDocumentTitle(`${t("models.firm.singular")} ${data.firm?.title}`);
 
   return (
     <SceneWrapper>
       <Layout currentUserFragment={data.currentUser}>
-        <AuthGuard accessible={!!data.firm.id}>
-          <React.Suspense>
-            <FirmScene firmFragmentRef={data.firm} />
-          </React.Suspense>
+        <AuthGuard accessible={!!data.firm?.id} noAccess={<NotFound />}>
+          <FirmScene firmFragmentRef={data.firm!} />
         </AuthGuard>
       </Layout>
     </SceneWrapper>

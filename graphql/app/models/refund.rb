@@ -87,7 +87,7 @@ class Refund < ApplicationRecord
   end
 
   def top_up_balance
-    firm.balance.update!(total_amount: firm.balance.total_amount - refund_amount) if parent_refund
+    balance.update!(total_amount: firm.balance.total_amount - refund_amount) if parent_refund && successful?
   end
 
   def search_data

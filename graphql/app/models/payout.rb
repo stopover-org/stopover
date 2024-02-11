@@ -63,6 +63,10 @@ class Payout < ApplicationRecord
 
   # DELEGATION ============================================================
 
+  def top_up_balance
+    balance.update!(total_amount: firm.balance.total_amount - total_amount) if successful?
+  end
+
   private
 
   def adjust_firm

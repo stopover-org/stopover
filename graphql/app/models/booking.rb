@@ -198,15 +198,7 @@ class Booking < ApplicationRecord
   def search_data
     {
       title: event.title,
-      description: event.description,
-      country: event.address&.country,
-      city: event.address&.city,
-      region: event.address&.region,
-      address: event.address&.full_address,
       booked_for: schedule.scheduled_for,
-      organizer: firm&.title,
-      tags: event.tags.map(&:title),
-      interests: event.interests.map(&:title),
       contact_email: account.primary_email,
       contact_phone: account.primary_phone,
 
@@ -259,6 +251,10 @@ class Booking < ApplicationRecord
       content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/not_paid_successfully',
                                                       locals: { booking: self })
     )
+  end
+
+  def adjust_user
+    self.user = account.user if account && !user
   end
 
   def adjust_firm

@@ -84,7 +84,7 @@ const BookingsFirmTable = ({
     );
   }, [contactEmail, contactPhone, eventIds, date, setCurrentPage]);
 
-  const bookings = useBookingsColumns(data.bookings);
+  const bookings = useBookingsColumns(data.bookings!);
   const headers = useBookingsHeaders();
   const filters = React.useMemo(
     () => ({

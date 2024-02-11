@@ -27,35 +27,35 @@ class Interest < ApplicationRecord
   include Mixins::Indices
 
   # MONETIZE ==============================================================
-
+  #
   # BELONGS_TO ASSOCIATIONS ===============================================
-
+  #
   # HAS_ONE ASSOCIATIONS ==================================================
-
+  #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
-
+  #
   # HAS_MANY ASSOCIATIONS =================================================
-  has_many :account_interests,  dependent: :destroy
-  has_many :event_interests,    dependent: :destroy
+  has_many :account_interests, dependent: :destroy
+  has_many :event_interests, dependent: :destroy
   has_many :dynamic_translations, as: :translatable, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :accounts, through: :account_interests
-  has_many :events,   through: :event_interests
+  has_many :events, through: :event_interests
 
   # AASM STATES ===========================================================
-
+  #
   # ENUMS =================================================================
-
+  #
   # SECURE TOKEN ==========================================================
-
+  #
   # SECURE PASSWORD =======================================================
-
+  #
   # ATTACHMENTS ===========================================================
   has_one_attached :preview
 
   # RICH_TEXT =============================================================
-
+  #
   # VALIDATIONS ===========================================================
   validates :title, :language, :active, presence: true
   validates :slug, uniqueness: { case_sensitive: false }
@@ -64,7 +64,7 @@ class Interest < ApplicationRecord
   before_validation :set_slug
 
   # SCOPES ================================================================
-
+  #
   # DELEGATION ============================================================
 
   def search_data

@@ -99,10 +99,19 @@ commands:
   exec_rspec:
     steps:
       - run:
+          name: 'Create Artifacts folder'
+          command: mkdir ~/rspec
+      - run:
+          name: 'Reindex'
+          command: bin/rake searchkick:reindex:all
+      - run:
           name: 'Rspec'
           command: |
-              bin/rake searchkick:reindex:all   
-              bin/bundle exec rspec
+            circleci tests glob "spec/**/*_spec.rb" | \
+            circleci tests run --command="xargs bin/bundle exec rspec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml" --verbose --split-by=timings
+          when: always
+      - store_test_results:
+          path: ~/rspec
 
   wait_for_postgres:
     steps:

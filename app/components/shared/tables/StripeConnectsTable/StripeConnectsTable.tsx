@@ -1,11 +1,11 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { StripeConnectsTable_FirmFragment$key } from "../../../../artifacts/StripeConnectsTable_FirmFragment.graphql";
+import { StripeConnectsTable_FirmFragment$key } from "artifacts/StripeConnectsTable_FirmFragment.graphql";
+import Table from "components/v2/Table";
 import {
   useStripeConnectsColumns,
   useStripeConnectsHeaders,
 } from "../columns/stripeConnects";
-import Table from "../../../v2/Table";
 
 interface StripeConnectsTableProps {
   firmFragmentRef: StripeConnectsTable_FirmFragment$key;
@@ -36,7 +36,7 @@ const StripeConnectsTable = ({
   );
   const data = useStripeConnectsColumns(firm, currentUser);
   const headers = useStripeConnectsHeaders(currentUser);
-  return <Table data={data} headers={headers} />;
+  return <Table data={data!} headers={headers} />;
 };
 
 export default React.memo(StripeConnectsTable);

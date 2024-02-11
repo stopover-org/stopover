@@ -118,7 +118,6 @@ gem 'stripe', '~> 8.3'
 gem 'roo', '~> 2.10.0'
 
 gem 'countries', '~> 5.5'
-gem 'flipper'
 gem 'sentry-rails'
 gem 'sentry-ruby'
 
@@ -131,3 +130,4 @@ gem 'deepl-rb', require: 'deepl'
 gem 'aws-sdk-s3'
 gem "faraday_middleware-aws-sigv4"
 
+gem 'rspec_junit_formatter'

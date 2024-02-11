@@ -114,6 +114,7 @@ RSpec.describe Account, type: :model do
           expect(account.phones).to eq(['+995591088783'])
 
           user.update_columns(email: 'user2@mail.com', phone: '+995591022788')
+          user.account.update_columns(primary_email: nil, primary_phone: nil)
 
           account.save!
 

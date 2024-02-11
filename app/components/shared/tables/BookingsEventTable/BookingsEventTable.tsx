@@ -83,7 +83,7 @@ const BookingsEventTable = ({
       }
     );
   }, [contactEmail, contactPhone, eventIds, date, setCurrentPage]);
-  const actualBookings = useBookingsColumns(data.paginatedBookings);
+  const actualBookings = useBookingsColumns(data.paginatedBookings!);
   const headers = useBookingsHeaders();
   const { t } = useTranslation();
   const filters = React.useMemo(

@@ -100,8 +100,8 @@ class Account < ApplicationRecord
   end
 
   def adjust_user_info
-    self.primary_phone = user.phone if user&.phone
-    self.primary_email = user.email if user&.email
+    self.primary_phone = user.phone if user&.phone && !primary_phone
+    self.primary_email = user.email if user&.email && !primary_email
     phones.concat([user.phone]) if user&.phone && phones&.exclude?(user&.phone)
     phones.concat([primary_phone]) if primary_phone && phones&.exclude?(primary_phone)
   end

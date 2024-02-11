@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_14_101458) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_08_221744) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,15 +50,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_101458) do
     t.index ["address_id"], name: "index_accounts_on_address_id"
     t.index ["firm_id"], name: "index_accounts_on_firm_id"
     t.index ["user_id"], name: "index_accounts_on_user_id", unique: true
-  end
-
-  create_table "achievements", force: :cascade do |t|
-    t.string "title", null: false
-    t.boolean "active", default: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "language", default: "en"
-    t.index ["title"], name: "index_achievements_on_title", unique: true
   end
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -215,15 +206,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_101458) do
     t.index ["translatable_type", "translatable_id"], name: "index_dynamic_translations_on_translatable"
   end
 
-  create_table "event_achievements", force: :cascade do |t|
-    t.bigint "event_id"
-    t.bigint "achievement_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["achievement_id"], name: "index_event_achievements_on_achievement_id"
-    t.index ["event_id"], name: "index_event_achievements_on_event_id"
-  end
-
   create_table "event_interests", force: :cascade do |t|
     t.bigint "event_id"
     t.bigint "interest_id"
@@ -248,15 +230,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_101458) do
     t.index ["event_id"], name: "index_event_options_on_event_id"
   end
 
-  create_table "event_tags", force: :cascade do |t|
-    t.bigint "tag_id"
-    t.bigint "event_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_event_tags_on_event_id"
-    t.index ["tag_id"], name: "index_event_tags_on_tag_id"
-  end
-
   create_table "events", force: :cascade do |t|
     t.string "title", null: false
     t.text "description", null: false
@@ -270,7 +243,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_101458) do
     t.string "duration_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "unit_id"
     t.string "status"
     t.datetime "single_days_with_time", precision: nil, default: [], array: true
     t.string "ref_number"
@@ -287,7 +259,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_101458) do
     t.index ["event_type"], name: "index_events_on_event_type"
     t.index ["firm_id"], name: "index_events_on_firm_id"
     t.index ["ref_number", "firm_id"], name: "index_events_on_ref_number_and_firm_id", unique: true
-    t.index ["unit_id"], name: "index_events_on_unit_id"
   end
 
   create_table "firms", force: :cascade do |t|
@@ -447,14 +418,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_101458) do
     t.index ["stripeable_id", "stripeable_type"], name: "index_stripe_integrations_on_stripeable_id_and_stripeable_type"
   end
 
-  create_table "tags", force: :cascade do |t|
-    t.string "title", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "language", default: "en"
-    t.index ["title"], name: "index_tags_on_title", unique: true
-  end
-
   create_table "trips", force: :cascade do |t|
     t.bigint "account_id"
     t.date "start_date"
@@ -463,13 +426,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_101458) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_trips_on_account_id"
-  end
-
-  create_table "units", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "unit_type", default: "common", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -500,11 +456,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_101458) do
   add_foreign_key "booking_options", "stripe_integrations"
   add_foreign_key "bookings", "schedules"
   add_foreign_key "bookings", "stripe_integrations"
-  add_foreign_key "event_achievements", "achievements"
-  add_foreign_key "event_achievements", "events"
   add_foreign_key "event_interests", "events"
   add_foreign_key "event_interests", "interests"
   add_foreign_key "events", "firms"
-  add_foreign_key "events", "units"
   add_foreign_key "schedules", "events"
 end
