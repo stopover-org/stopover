@@ -62,6 +62,7 @@ const translation = {
       logIn: "Log In",
       logOut: "Log Out",
       myProfile: "My Profile",
+      firmSettings: "Firm settings",
     },
     metadata: {
       firmTitle: "Stopoverx | Bookings management",

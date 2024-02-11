@@ -17,6 +17,7 @@ interface HeaderProps {
   currentUserFragment: Header_CurrentUserFragment$key;
   showRegisterFirm: boolean;
 }
+
 const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
   const router = useRouter();
   const theme = useTheme();
@@ -131,7 +132,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
           )}
           {isAuthorized && showRegisterFirm && (
             <>
-              {currentUser.account?.firm?.id ? (
+              {currentUser.account?.firm?.id && (
                 <Link
                   href="/my-firm/dashboard"
                   textAlign="right"
@@ -141,18 +142,6 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
                 >
                   {t("layout.header.myFirm")}
                 </Link>
-              ) : (
-                !isSmallDisplay && (
-                  <Link
-                    href="/firms/new"
-                    textAlign="right"
-                    level={isSmallDisplay ? "body-sm" : "body-md"}
-                    lineHeight={`${imageSize.height}px`}
-                    paddingRight={isSmallDisplay ? "3px" : "10px"}
-                  >
-                    {t("layout.header.registerFirm")}
-                  </Link>
-                )
               )}
 
               <Link

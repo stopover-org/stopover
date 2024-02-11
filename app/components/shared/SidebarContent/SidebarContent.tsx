@@ -49,18 +49,20 @@ const SidebarContent = ({
   const { setContent } = React.useContext(GlobalSidebarContext);
   const { t } = useTranslation();
   const items = React.useMemo(() => {
-    const array = account.user.serviceUser
-      ? [{ slot: <SelectCurrentFirm accountFragmentRef={account} /> }]
-      : [
-          {
-            slot: (
-              <Typography pl="15px" level="h4">
-                {account?.firm?.title}
-              </Typography>
-            ),
-          },
-        ];
-    return [
+    let array: Array<{ slot: JSX.Element } | { title: string; href: string }> =
+      account.user.serviceUser
+        ? [{ slot: <SelectCurrentFirm accountFragmentRef={account} /> }]
+        : [
+            {
+              slot: (
+                <Typography pl="15px" level="h4">
+                  {account?.firm?.title}
+                </Typography>
+              ),
+            },
+          ];
+
+    array = [
       ...array,
       { title: t("layout.header.myFirm"), href: "/my-firm/dashboard" },
       {
@@ -78,6 +80,15 @@ const SidebarContent = ({
         href: "/my-firm/payments",
       },
     ];
+
+    if (account.user.serviceUser) {
+      array.push({
+        title: t("layout.header.firmSettings"),
+        href: "my-firm/settings",
+      });
+    }
+
+    return array;
   }, [account]);
 
   React.useEffect(() => {
