@@ -118,10 +118,10 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
     let(:variables) do
       {
         paymentId: GraphqlSchema.id_from_object(payment),
-      bookingId: GraphqlSchema.id_from_object(booking),
-      scheduleId: GraphqlSchema.id_from_object(schedule),
-      eventId: GraphqlSchema.id_from_object(event),
-      firmId: GraphqlSchema.id_from_object(firm)
+        bookingId: GraphqlSchema.id_from_object(booking),
+        scheduleId: GraphqlSchema.id_from_object(schedule),
+        eventId: GraphqlSchema.id_from_object(event),
+        firmId: GraphqlSchema.id_from_object(firm)
       }
     end
     let(:query) do
@@ -208,16 +208,16 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
           expect(result.dig(:data, :firm, field.to_s.camelize(:lower).to_sym)).to be_nil
         end
       end
+    end
 
-      context 'for authorized user' do
-        let(:current_user) { firm.accounts.last.user }
+    context 'for authorized user' do
+      let(:current_user) { firm.accounts.last.user }
 
-        it 'success' do
-          result = subject
+      it 'success' do
+        result = subject
 
-          FirmPolicy::MANAGER_PROTECTED_FIELDS.each do |field|
-            expect(result.dig(:data, :firm, field.to_s.camelize(:lower).to_sym)).not_to be_nil
-          end
+        FirmPolicy::MANAGER_PROTECTED_FIELDS.each do |field|
+          expect(result.dig(:data, :firm, field.to_s.camelize(:lower).to_sym)).not_to be_nil
         end
       end
     end

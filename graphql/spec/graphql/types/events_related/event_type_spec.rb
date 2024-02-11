@@ -198,15 +198,26 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
       create_list(:booking, 5, event: event)
     end
 
-    it 'success' do
-      result = subject
+    context 'for not authorized user' do
+      it 'success' do
+        result = subject
 
-      expect(result.dig(:data, :event, :statistics).count).to eq(2)
-      expect(result.dig(:data, :event, :statistics, 0, :name)).to eq('bookings')
-      expect(result.dig(:data, :event, :statistics, 1, :name)).to eq('paid')
+        expect(result.dig(:data, :event, :statistics)).to be_nil
+      end
+    end
 
-      expect(result.dig(:data, :event, :statistics, 0, :value)).to eq(15)
-      expect(result.dig(:data, :event, :statistics, 1, :value)).to eq(5)
+    context 'for authorized user' do
+      let(:current_user) { event.firm.accounts.last.user }
+      it 'success' do
+        result = subject
+
+        expect(result.dig(:data, :event, :statistics).count).to eq(2)
+        expect(result.dig(:data, :event, :statistics, 0, :name)).to eq('bookings')
+        expect(result.dig(:data, :event, :statistics, 1, :name)).to eq('paid')
+
+        expect(result.dig(:data, :event, :statistics, 0, :value)).to eq(15)
+        expect(result.dig(:data, :event, :statistics, 1, :value)).to eq(5)
+      end
     end
   end
 
@@ -239,7 +250,7 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
 
     context 'for the common user' do
       let(:variables) { { eventId: GraphqlSchema.id_from_object(event), filters: {} } }
-      let(:current_user) { create(:active_user) }
+      let(:current_user) { create(:active_user, with_account: true) }
 
       it 'empty bookings' do
         result = subject
@@ -425,10 +436,21 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
       GRAPHQL
     end
 
-    it 'include event and event options stripe integrations' do
-      result = subject
+    context 'for not authorized user' do
+      it 'include event and event options stripe integrations' do
+        result = subject
 
-      expect(result.dig(:data, :event, :stripeIntegrations, :nodes).count).to eq(5)
+        expect(result.dig(:data, :event, :stripeIntegrations)).to be_nil
+      end
+    end
+
+    context 'for authorized user' do
+      let(:current_user) { event.firm.accounts.last.user }
+      it 'include event and event options stripe integrations' do
+        result = subject
+
+        expect(result.dig(:data, :event, :stripeIntegrations, :nodes).count).to eq(5)
+      end
     end
   end
 end

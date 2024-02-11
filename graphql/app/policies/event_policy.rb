@@ -1,23 +1,15 @@
 # frozen_string_literal: true
 
-module FirmPolicy
-  include ::Fields::FirmFields
+module EventPolicy
+  include ::Fields::EventFields
   MANAGER_PROTECTED_FIELDS = %i[
-    balance
-    payments
-    payment
     bookings
-    booking
-    schedules
-    schedule
-    stripe_connects
-    margin
-    accounts
-    event
+    stripe_integrations
+    statistics
   ].freeze
 
   def authorized?
-    object.accounts.include?(current_account)
+    object.firm.accounts.include?(current_account)
   end
 
   MANAGER_PROTECTED_FIELDS.each do |field|
