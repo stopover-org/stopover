@@ -3,9 +3,9 @@ import React from "react";
 import { Tooltip } from "@mui/joy";
 import CheckIcon from "@mui/icons-material/Check";
 import { useTranslation } from "react-i18next";
+import { VerifyStripeConnect_StripeConnect$key } from "artifacts/VerifyStripeConnect_StripeConnect.graphql";
+import SubmitButton from "components/shared/SubmitButton";
 import { useVerifyStripeConnectForm } from "./useVerifyStripeConnectForm";
-import { VerifyStripeConnect_StripeConnect$key } from "../../../artifacts/VerifyStripeConnect_StripeConnect.graphql";
-import SubmitButton from "../SubmitButton";
 
 interface VerifyStripeConnectProps {
   stripeConnectRef: VerifyStripeConnect_StripeConnect$key;

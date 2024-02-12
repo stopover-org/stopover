@@ -21,6 +21,7 @@ export default {
         website: "Сайт",
         image: "Логотип",
         paymentType: "Доступные способы оплаты",
+        availablePaymentMethods: "Доступные для выбора способы оплаты",
         margin: "Маржа",
         primaryPhone: "Телефон для уведомлений",
         primaryEmail: "Email для уведомлений",

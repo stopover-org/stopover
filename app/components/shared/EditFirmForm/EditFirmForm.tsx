@@ -30,7 +30,7 @@ const EditFirmForm = ({ simple = false }: EditFirmFormProps) => {
   const { t } = useTranslation();
 
   return (
-    <Grid container spacing={2} lg={8} md={12} sm={12}>
+    <Grid container spacing={2} lg={6} md={12} sm={12}>
       <Fieldset>
         <Grid lg={simple ? 12 : 6} md={simple ? 12 : 6} sm={12} xs={12}>
           <Input

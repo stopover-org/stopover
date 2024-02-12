@@ -23,7 +23,7 @@ const Fieldset = ({
   <Grid xs={12} sx={{ zIndex: "unset" }} {...props}>
     <Card sx={{ margin: "20px" }} variant={variant}>
       <CardContent sx={{ zIndex: "unset" }}>
-        <Grid container spacing={1}>
+        <Grid container spacing={1} xs={12}>
           {children}
         </Grid>
       </CardContent>

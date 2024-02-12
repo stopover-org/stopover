@@ -12,6 +12,7 @@ import SelectCurrentFirm from "../SelectCurrentFirm";
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
     maxWidth: "calc(100vw - 310px)",
+    width: "100%",
   },
 }));
 
@@ -84,7 +85,7 @@ const SidebarContent = ({
     if (account.user.serviceUser) {
       array.push({
         title: t("layout.header.firmSettings"),
-        href: "my-firm/settings",
+        href: "/my-firm/settings",
       });
     }
 

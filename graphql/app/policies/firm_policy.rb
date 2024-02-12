@@ -14,6 +14,7 @@ module FirmPolicy
     margin
     accounts
     event
+    available_payment_methods
   ].freeze
 
   def authorized?

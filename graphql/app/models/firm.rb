@@ -4,23 +4,24 @@
 #
 # Table name: firms
 #
-#  id                :bigint           not null, primary key
-#  business_type     :string           default("individual"), not null
-#  contact_person    :string
-#  contacts          :text
-#  contract_address  :string
-#  description       :text
-#  margin            :integer          default(0)
-#  payment_types     :string           default([]), not null, is an Array
-#  postal_code       :string
-#  primary_email     :string
-#  primary_phone     :string
-#  ref_number        :string
-#  status            :string           default("pending")
-#  title             :string           not null
-#  website           :string
-#  address_id        :bigint
-#  stripe_account_id :string
+#  id                        :bigint           not null, primary key
+#  available_payment_methods :string           default([]), not null, is an Array
+#  business_type             :string           default("individual"), not null
+#  contact_person            :string
+#  contacts                  :text
+#  contract_address          :string
+#  description               :text
+#  margin                    :integer          default(0)
+#  payment_types             :string           default([]), not null, is an Array
+#  postal_code               :string
+#  primary_email             :string
+#  primary_phone             :string
+#  ref_number                :string
+#  status                    :string           default("pending")
+#  title                     :string           not null
+#  website                   :string
+#  address_id                :bigint
+#  stripe_account_id         :string
 #
 # Indexes
 #

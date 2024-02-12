@@ -100,17 +100,25 @@ export function usePaymentsColumns(
     () =>
       paymentsData.map((payment) => ({
         payment: (
-          <Link primary href={`/my-firm/payments/${payment.id}`}>
+          <Link primary fontSize="sm" href={`/my-firm/payments/${payment.id}`}>
             {payment.id}
           </Link>
         ),
         event: (
-          <Link href={`/my-firm/events/${payment.booking.event?.id}`}>
+          <Link
+            primary
+            fontSize="sm"
+            href={`/my-firm/events/${payment.booking.event?.id}`}
+          >
             {payment.booking.event?.title}
           </Link>
         ),
         booking: (
-          <Link href={`/my-firm/bookings/${payment.booking?.id}`}>
+          <Link
+            primary
+            fontSize="sm"
+            href={`/my-firm/bookings/${payment.booking?.id}`}
+          >
             {payment.booking?.id}
           </Link>
         ),

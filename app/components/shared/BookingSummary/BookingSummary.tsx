@@ -4,13 +4,13 @@ import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import Typography from "../../v2/Typography";
-import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
-import { BookingSummary_BookingFragment$key } from "../../../artifacts/BookingSummary_BookingFragment.graphql";
-import { useAddAttendeeForm } from "../AddAttendee/useAddAttendeeForm";
-import SubmitButton from "../SubmitButton";
+import Typography from "components/v2/Typography";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import { BookingSummary_BookingFragment$key } from "artifacts/BookingSummary_BookingFragment.graphql";
+import { useAddAttendeeForm } from "components/shared/AddAttendee/useAddAttendeeForm";
+import SubmitButton from "components/shared/SubmitButton";
+import { useBookingDisabled } from "lib/hooks/useBookingStates";
 import { useRemoveAttendeeForm } from "../RemoveAttendeeModal/useRemoveAttendeeForm";
-import { useBookingDisabled } from "../../../lib/hooks/useBookingStates";
 
 interface BookingSummaryProps {
   bookingFragmentRef: BookingSummary_BookingFragment$key;
@@ -84,7 +84,7 @@ const BookingSummary = ({
                     size="lg"
                     disabled={disabled || booking.activeAttendees.length === 1}
                     sx={{ padding: 0, margin: 0, border: 0 }}
-                    submitting={removeAttendeeForm.formState.isSubmitting}
+                    submitting={addAttendeeF.formState.isSubmitting}
                   >
                     <RemoveIcon />
                   </SubmitButton>

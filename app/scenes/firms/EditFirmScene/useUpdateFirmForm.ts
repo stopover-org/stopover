@@ -22,7 +22,7 @@ interface UpdateFirmFields {
 }
 
 function useDefaultValues(
-  updateFirmFragmentRef: useUpdateFirmForm_FirmFragment$key
+  firmFragmentRef: useUpdateFirmForm_FirmFragment$key
 ): UpdateFirmFields {
   const firm = useFragment<useUpdateFirmForm_FirmFragment$key>(
     graphql`
@@ -39,7 +39,7 @@ function useDefaultValues(
         contractAddress
       }
     `,
-    updateFirmFragmentRef
+    firmFragmentRef
   );
 
   return React.useMemo(
@@ -75,7 +75,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useUpdateFirmForm(
-  formFragmentRef: useUpdateFirmForm_FirmFragment$key
+  firmFragmentRef: useUpdateFirmForm_FirmFragment$key
 ) {
   const router = useRouter();
   return useMutationForm<
@@ -99,7 +99,7 @@ export function useUpdateFirmForm(
       },
     }),
     {
-      defaultValues: useDefaultValues(formFragmentRef),
+      defaultValues: useDefaultValues(firmFragmentRef),
       resolver: yupResolver(validationSchema),
       onCompleted(result) {
         if (result.updateFirm?.firm?.id) {
