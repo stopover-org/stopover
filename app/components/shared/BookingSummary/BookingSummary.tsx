@@ -84,7 +84,7 @@ const BookingSummary = ({
                     size="lg"
                     disabled={disabled || booking.activeAttendees.length === 1}
                     sx={{ padding: 0, margin: 0, border: 0 }}
-                    submitting={addAttendeeF.formState.isSubmitting}
+                    submitting={removeAttendeeForm.formState.isSubmitting}
                   >
                     <RemoveIcon />
                   </SubmitButton>

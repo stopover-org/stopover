@@ -64,7 +64,7 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
             label={t("models.event.attributes.attendeePricePerUom")}
             sx={{ maxWidth: 300 }}
             type="number"
-            value={(organizerPriceField.value * (1 + firm.margin)).toString()}
+            value={(organizerPriceField.value * (1 + firm.margin!)).toString()}
             hint={t("forms.editEvent.computedValue")}
             readOnly
           />
