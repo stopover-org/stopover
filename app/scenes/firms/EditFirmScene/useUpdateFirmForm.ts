@@ -92,6 +92,8 @@ export function useUpdateFirmForm(
         updateFirm(input: $input) {
           firm {
             id
+            ...FirmScene_FirmFragment
+            ...useUpdateFirmForm_FirmFragment
           }
           notification
           errors

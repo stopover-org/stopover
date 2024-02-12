@@ -73,10 +73,14 @@ const EditFirmForm = ({ simple = false }: EditFirmFormProps) => {
               disableClearable
               multiple
               placeholder={t("models.firm.attributes.paymentType")}
-              options={availablePaymentMethodsField.value.map((v: string) => ({
-                label: capitalize(v),
-                value: v.toLowerCase(),
-              }))}
+              options={
+                availablePaymentMethodsField?.value
+                  ? availablePaymentMethodsField?.value.map((v: string) => ({
+                      label: capitalize(v),
+                      value: v.toLowerCase(),
+                    }))
+                  : []
+              }
               onChange={(
                 event,
                 values: Array<{ label: string; value: string }>
