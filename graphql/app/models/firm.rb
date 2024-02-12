@@ -118,6 +118,7 @@ class Firm < ApplicationRecord
   before_validation :transform_phone
   after_create :create_balance
   after_create :created_notify
+  after_commit :adjust_margin
 
   # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[pending active removed]) }
@@ -179,6 +180,13 @@ class Firm < ApplicationRecord
   end
 
   private
+
+  def adjust_margin
+    events.each do |event|
+      event.adjust_prices
+      event.save!
+    end
+  end
 
   def transform_phone
     self.primary_phone = primary_phone.gsub(/[\s()\-]/, '') if primary_phone

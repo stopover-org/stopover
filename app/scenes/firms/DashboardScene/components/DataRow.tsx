@@ -1,10 +1,10 @@
 import { Stack } from "@mui/joy";
 import React from "react";
-import Typography from "../../../../components/v2/Typography/Typography";
+import Typography from "components/v2/Typography/Typography";
 
 interface DataRowProps {
-  label: string;
-  value: string;
+  label: string | React.ReactElement;
+  value: string | React.ReactElement;
 }
 
 const DataRow = ({ label, value }: DataRowProps) => (
