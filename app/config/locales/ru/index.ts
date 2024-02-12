@@ -38,6 +38,7 @@ const translation = {
     "502Details": "Мы уже исправляем",
     copied: "Скопировано",
     statistics: "Статистика",
+    settings: "Настройки",
   },
   weekdays: {
     monday: "Понедельник",

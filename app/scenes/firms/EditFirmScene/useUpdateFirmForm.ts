@@ -19,6 +19,7 @@ interface UpdateFirmFields {
   image: string | null;
   paymentTypes: string[];
   contractAddress: string | null;
+  availablePaymentMethods?: string[];
 }
 
 function useDefaultValues(
@@ -37,6 +38,7 @@ function useDefaultValues(
         title
         website
         contractAddress
+        availablePaymentMethods
       }
     `,
     firmFragmentRef
@@ -54,6 +56,9 @@ function useDefaultValues(
       image: firm?.image || null,
       paymentTypes: firm?.paymentTypes.map(String) || [],
       contractAddress: firm?.contractAddress || null,
+      availablePaymentMethods: (firm?.availablePaymentMethods || [
+        "cash",
+      ]) as string[],
     }),
     [firm]
   );
@@ -93,11 +98,15 @@ export function useUpdateFirmForm(
         }
       }
     `,
-    (values) => ({
-      input: {
-        ...values,
-      },
-    }),
+    (values) => {
+      delete values?.availablePaymentMethods;
+
+      return {
+        input: {
+          ...values,
+        },
+      };
+    },
     {
       defaultValues: useDefaultValues(firmFragmentRef),
       resolver: yupResolver(validationSchema),

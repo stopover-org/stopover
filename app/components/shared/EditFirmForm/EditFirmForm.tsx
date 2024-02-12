@@ -20,6 +20,9 @@ interface EditFirmFormProps {
 const EditFirmForm = ({ simple = false }: EditFirmFormProps) => {
   const form = useFormContext();
   const paymentTypesField = form.useFormField("paymentTypes");
+  const availablePaymentMethodsField = form.useFormField(
+    "availablePaymentMethods"
+  );
   const imageField = form.useFormField("image");
   const descriptionField = form.useFormField("description");
   const contractAddressField = form.useFormField("contractAddress");
@@ -70,7 +73,7 @@ const EditFirmForm = ({ simple = false }: EditFirmFormProps) => {
               disableClearable
               multiple
               placeholder={t("models.firm.attributes.paymentType")}
-              options={["Cash", "Stripe"].map((v) => ({
+              options={availablePaymentMethodsField.value.map((v) => ({
                 label: capitalize(v),
                 value: v.toLowerCase(),
               }))}

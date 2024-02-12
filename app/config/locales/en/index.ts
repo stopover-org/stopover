@@ -38,6 +38,7 @@ const translation = {
     "502Details": "We are already working on it",
     copied: "Copied",
     statistics: "Statistics",
+    settings: "Settings",
   },
   weekdays: {
     monday: "Monday",

@@ -30,7 +30,7 @@ const SettingsScene = ({ firmFragmentRef }: SettingsSceneProps) => {
       <Breadcrumbs
         items={[
           { title: t("layout.header.myFirm"), href: "/my-firm/dashboard" },
-          t("general.edit"),
+          t("general.settings"),
         ]}
       />
       <FormProvider {...form}>
