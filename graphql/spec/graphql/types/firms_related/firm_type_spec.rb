@@ -34,6 +34,9 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
                                                             name: 'address'
                                                           },
                                                           {
+                                                            name: 'availablePaymentMethods'
+                                                          },
+                                                          {
                                                             name: 'balance'
                                                           },
                                                           {
