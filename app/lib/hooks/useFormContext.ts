@@ -34,8 +34,11 @@ function useFormContext<FieldsType extends FieldValues>() {
   return React.useMemo(
     () => ({
       ...form,
-      isSubmitting:
-        form.control._formState.isSubmitting || form.formState.isSubmitting,
+      formState: {
+        ...form.formState,
+        isSubmitting:
+          form.control._formState.isSubmitting || form.formState.isSubmitting,
+      },
       useFormField,
     }),
     [form, useFormField]

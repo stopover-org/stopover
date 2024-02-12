@@ -191,7 +191,7 @@ function useMutationForm<
       handleSubmit,
       useFormField,
     }),
-    [form]
+    [form, isSubmitting]
   );
 }
 
