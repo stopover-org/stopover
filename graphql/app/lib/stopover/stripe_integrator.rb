@@ -4,7 +4,7 @@ require 'stripe'
 module Stopover
   class StripeIntegrator
     def self.empty_price(stripe_integration)
-      { currency: 'usd', product: stripe_integration.product_id, unit_amount: 0 }
+      { currency: 'rsd', product: stripe_integration.product_id, unit_amount: 0 }
     end
 
     def self.retrieve(model)

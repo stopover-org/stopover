@@ -206,10 +206,10 @@ RSpec.describe Mutations::EventsRelated::UpdateEvent, type: :mutation do
           end
 
           expect(result.dig(:data, :updateEvent, :event, :eventOptions, idx, :organizerPrice, :cents)).to eq(expected[:eventOptions][idx][:organizerPrice])
-          expect(result.dig(:data, :updateEvent, :event, :eventOptions, idx, :organizerPrice, :currency, :name)).to eq('usd')
+          expect(result.dig(:data, :updateEvent, :event, :eventOptions, idx, :organizerPrice, :currency, :name)).to eq('rsd')
 
           expect(result.dig(:data, :updateEvent, :event, :eventOptions, idx, :attendeePrice, :cents)).to eq(expected[:eventOptions][idx][:attendeePrice])
-          expect(result.dig(:data, :updateEvent, :event, :eventOptions, idx, :attendeePrice, :currency, :name)).to eq('usd')
+          expect(result.dig(:data, :updateEvent, :event, :eventOptions, idx, :attendeePrice, :currency, :name)).to eq('rsd')
         end
       end
     end
@@ -225,7 +225,7 @@ RSpec.describe Mutations::EventsRelated::UpdateEvent, type: :mutation do
           end
 
           expect(result.dig(:data, :updateEvent, :event, :bookingCancellationOptions, idx, :penaltyPrice, :cents)).to eq(expected[:bookingCancellationOptions][idx][:penaltyPrice])
-          expect(result.dig(:data, :updateEvent, :event, :bookingCancellationOptions, idx, :penaltyPrice, :currency, :name)).to eq('usd')
+          expect(result.dig(:data, :updateEvent, :event, :bookingCancellationOptions, idx, :penaltyPrice, :currency, :name)).to eq('rsd')
         end
       end
     end
@@ -235,13 +235,13 @@ RSpec.describe Mutations::EventsRelated::UpdateEvent, type: :mutation do
       expect { result = subject.to_h.deep_symbolize_keys }.to change { Event.count }.by(0)
 
       expect(result.dig(:data, :updateEvent, :event, :organizerPricePerUom, :cents)).to eq(expected[:organizerPricePerUom])
-      expect(result.dig(:data, :updateEvent, :event, :organizerPricePerUom, :currency, :name)).to eq('usd')
+      expect(result.dig(:data, :updateEvent, :event, :organizerPricePerUom, :currency, :name)).to eq('rsd')
 
       expect(result.dig(:data, :updateEvent, :event, :attendeePricePerUom, :cents)).to eq(expected[:attendeePricePerUom])
-      expect(result.dig(:data, :updateEvent, :event, :attendeePricePerUom, :currency, :name)).to eq('usd')
+      expect(result.dig(:data, :updateEvent, :event, :attendeePricePerUom, :currency, :name)).to eq('rsd')
 
       expect(result.dig(:data, :updateEvent, :event, :depositAmount, :cents)).to eq(expected[:depositAmount])
-      expect(result.dig(:data, :updateEvent, :event, :depositAmount, :currency, :name)).to eq('usd')
+      expect(result.dig(:data, :updateEvent, :event, :depositAmount, :currency, :name)).to eq('rsd')
     end
   end
 

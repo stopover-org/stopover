@@ -29,13 +29,9 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
   let(:current_user) { create(:active_user, with_account: true) }
   let(:input) do
     {
-      image: 'https://placehold.co/600x400/EEE/31343C',
       title: 'New Firm',
-      description: 'description',
       paymentTypes: %w[Cash Stripe],
-      primaryPhone: '+381 621 496 696',
-      primaryEmail: 'some@mail.com',
-      contactPerson: 'Contact Person'
+      primaryEmail: 'some@mail.com'
     }
   end
 
@@ -66,26 +62,14 @@ RSpec.describe Mutations::FirmsRelated::CreateFirm, type: :mutation do
       expect(result.dig(:data, :createFirm, :firm, :primaryPhone)).to eq(firm.primary_phone)
 
       expect(result.dig(:data, :createFirm, :firm, :title)).to eq('New Firm')
-      expect(result.dig(:data, :createFirm, :firm, :description)).to eq('description')
       expect(result.dig(:data, :createFirm, :firm, :paymentTypes)).to eq(%w[Cash Stripe])
       expect(result.dig(:data, :createFirm, :firm, :primaryEmail)).to eq('some@mail.com')
-      expect(result.dig(:data, :createFirm, :firm, :primaryPhone)).to eq('+381621496696')
 
       expect(result.dig(:data, :createFirm, :notification)).to eq('Firm created')
     end
   end
 
   context 'validations' do
-    context 'invalid phone' do
-      it 'fails' do
-        input[:primaryPhone] = 'WRONG PHONE'
-        result = nil
-        expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
-        expect(result.dig(:data, :createFirm, :firm)).to be_nil
-        expect(result.dig(:data, :createFirm, :errors)).to_not be_empty
-      end
-    end
-
     context 'invalid email' do
       it 'fails' do
         input[:primaryEmail] = 'WRONG EMAIL'

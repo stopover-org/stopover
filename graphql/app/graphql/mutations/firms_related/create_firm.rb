@@ -13,8 +13,8 @@ module Mutations
         firm = Firm.new
         firm.assign_attributes(args)
 
-        firm.primary_email = context[:current_user].email if args[:primary_email].blank?
-        firm.primary_phone = context[:current_user].phone if args[:primary_phone].blank?
+        firm.primary_email = context[:current_user].email || '' if args[:primary_email].blank?
+        firm.primary_phone = context[:current_user].phone || '' if args[:primary_phone].blank?
 
         firm.account_firms.build(account: context[:current_user].account)
         firm.save!

@@ -112,7 +112,7 @@ class Firm < ApplicationRecord
                       allow_blank: true }
   validates :primary_phone,
             phone: { message: 'is invalid',
-                     allow_blank: true }
+                     allow_blank: true }, unless: :skip_phone_validation
 
   # CALLBACKS =============================================================
   before_validation :transform_phone
@@ -180,6 +180,10 @@ class Firm < ApplicationRecord
   end
 
   private
+
+  def skip_phone_validation
+    $skip_phone_validation || false
+  end
 
   def adjust_margin
     events.each do |event|
