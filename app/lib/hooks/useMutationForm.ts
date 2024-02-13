@@ -180,7 +180,7 @@ function useMutationForm<
         isLoading,
         isSubmitted,
         isSubmitSuccessful,
-        isSubmitting,
+        isSubmitting: isSubmitting || form.control._formState.isSubmitting,
         isValidating,
         isValid,
         submitCount,
@@ -191,7 +191,7 @@ function useMutationForm<
       handleSubmit,
       useFormField,
     }),
-    [form]
+    [form, isSubmitting]
   );
 }
 

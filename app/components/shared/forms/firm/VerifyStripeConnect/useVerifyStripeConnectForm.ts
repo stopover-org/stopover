@@ -2,19 +2,19 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useDeclineStripeConnectForm_StripeConnect$key } from "../../../artifacts/useDeclineStripeConnectForm_StripeConnect.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { useVerifyStripeConnectForm_StripeConnect$key } from "artifacts/useVerifyStripeConnectForm_StripeConnect.graphql";
 
-interface DeclineStripeConnectFields {
+interface VerifyStripeConnectFields {
   stripeConnectId: string;
 }
 
 function useDefaultValues(
-  optionFragmentRef: useDeclineStripeConnectForm_StripeConnect$key
-): DeclineStripeConnectFields {
+  optionFragmentRef: useVerifyStripeConnectForm_StripeConnect$key
+): VerifyStripeConnectFields {
   const stripeConnect = useFragment(
     graphql`
-      fragment useDeclineStripeConnectForm_StripeConnect on StripeConnect {
+      fragment useVerifyStripeConnectForm_StripeConnect on StripeConnect {
         id
       }
     `,
@@ -31,16 +31,15 @@ const validationSchema = Yup.object().shape({
   stripeConnectId: Yup.string().required(),
 });
 
-export function useDeclineStripeConnectForm(
-  stripeConnectRef: useDeclineStripeConnectForm_StripeConnect$key,
-  force: boolean = false
+export function useVerifyStripeConnectForm(
+  stripeConnectRef: useVerifyStripeConnectForm_StripeConnect$key
 ) {
   return useMutationForm(
     graphql`
-      mutation useDeclineStripeConnectForm_DeclineStripeConnectFormMutation(
-        $input: DeclineStripeConnectInput!
+      mutation useVerifyStripeConnectForm_VerifyStripeConnectFormMutation(
+        $input: VerifyStripeConnectInput!
       ) {
-        declineStripeConnect(input: $input) {
+        verifyStripeConnect(input: $input) {
           stripeConnect {
             firm {
               ...stripeConnects_FirmFragment
@@ -51,7 +50,7 @@ export function useDeclineStripeConnectForm(
         }
       }
     `,
-    ({ stripeConnectId }) => ({ input: { stripeConnectId, soft: !force } }),
+    ({ stripeConnectId }) => ({ input: { stripeConnectId } }),
     {
       defaultValues: useDefaultValues(stripeConnectRef),
       resolver: yupResolver(validationSchema),

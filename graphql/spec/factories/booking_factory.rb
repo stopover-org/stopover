@@ -4,15 +4,17 @@
 #
 # Table name: bookings
 #
-#  id                    :bigint           not null, primary key
-#  payment_type          :string
-#  status                :string
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  event_id              :bigint
-#  schedule_id           :bigint
-#  stripe_integration_id :bigint
-#  trip_id               :bigint
+#  id                            :bigint           not null, primary key
+#  attendee_price_per_uom_cents  :decimal(, )      default(0.0)
+#  organizer_price_per_uom_cents :decimal(, )      default(0.0)
+#  payment_type                  :string
+#  status                        :string
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  event_id                      :bigint
+#  schedule_id                   :bigint
+#  stripe_integration_id         :bigint
+#  trip_id                       :bigint
 #
 # Indexes
 #

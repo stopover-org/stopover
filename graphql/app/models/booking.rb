@@ -4,15 +4,17 @@
 #
 # Table name: bookings
 #
-#  id                    :bigint           not null, primary key
-#  payment_type          :string
-#  status                :string
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  event_id              :bigint
-#  schedule_id           :bigint
-#  stripe_integration_id :bigint
-#  trip_id               :bigint
+#  id                            :bigint           not null, primary key
+#  attendee_price_per_uom_cents  :decimal(, )      default(0.0)
+#  organizer_price_per_uom_cents :decimal(, )      default(0.0)
+#  payment_type                  :string
+#  status                        :string
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  event_id                      :bigint
+#  schedule_id                   :bigint
+#  stripe_integration_id         :bigint
+#  trip_id                       :bigint
 #
 # Indexes
 #
@@ -35,6 +37,8 @@ class Booking < ApplicationRecord
   include AASM
 
   # MONETIZE ==============================================================
+  monetize :attendee_price_per_uom_cents
+  monetize :organizer_price_per_uom_cents
 
   # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :event
@@ -43,7 +47,7 @@ class Booking < ApplicationRecord
   belongs_to :stripe_integration
 
   # HAS_ONE ASSOCIATIONS ==================================================
-
+  #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
   has_one :firm, through: :event
   has_one :account, through: :trip
@@ -86,13 +90,13 @@ class Booking < ApplicationRecord
   }
 
   # SECURE TOKEN ==========================================================
-
+  #
   # SECURE PASSWORD =======================================================
-
+  #
   # ATTACHMENTS ===========================================================
-
+  #
   # RICH_TEXT =============================================================
-
+  #
   # VALIDATIONS ===========================================================
   validate :check_max_attendees
 
@@ -100,6 +104,7 @@ class Booking < ApplicationRecord
   before_validation :create_attendee
   before_validation :adjust_stripe_integration, on: :create
   before_validation :create_booking_options, on: :create
+  before_validation :copy_price, on: :create
   after_create :created_notify
   after_commit :refund_diff, if: :refundable?
 
@@ -123,7 +128,7 @@ class Booking < ApplicationRecord
   end
 
   def attendee_total_price
-    event_price = event.attendee_price_per_uom * attendees.where.not(status: 'removed').count
+    event_price = attendee_price_per_uom * attendees.where.not(status: 'removed').count
 
     booking_options_price = booking_options.available
                                            .joins(:event_option)
@@ -138,7 +143,7 @@ class Booking < ApplicationRecord
   end
 
   def organizer_total_price
-    event_price = event.organizer_price_per_uom * attendees.where.not(status: 'removed').count
+    event_price = organizer_price_per_uom * attendees.where.not(status: 'removed').count
 
     booking_options_price = booking_options.available
                                            .joins(:event_option)
@@ -207,6 +212,11 @@ class Booking < ApplicationRecord
       schedule_id: schedule.id,
       firm_id: firm.id
     }
+  end
+
+  def copy_price
+    self.organizer_price_per_uom = event.organizer_price_per_uom
+    self.attendee_price_per_uom = event.attendee_price_per_uom
   end
 
   private

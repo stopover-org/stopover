@@ -8,7 +8,7 @@ import { FirmSection_FirmFragment$key } from "artifacts/FirmSection_FirmFragment
 import Button from "components/v2/Button";
 import Link from "components/v2/Link";
 import Tag from "components/v2/Tag";
-import VerifyFirm from "components/shared/VerifyFirm";
+import VerifyFirm from "components/shared/forms/firm/VerifyFirm";
 import { FirmSection_CurrentUserFragment$key } from "artifacts/FirmSection_CurrentUserFragment.graphql";
 import useStatusColor from "lib/hooks/useStatusColor";
 import EditFirmAddress from "components/shared/EditFirmAddress";

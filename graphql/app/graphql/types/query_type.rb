@@ -38,9 +38,11 @@ module Types
     end
 
     def events(**args)
+      firm_id = args[:filters][:firm].id if args[:filters] && (args[:filters][:firm])
       arguments = {
         query_type: ::EventsQuery,
-        **(args[:filters] || {})
+        **(args[:filters] || {}),
+        firm_id: firm_id
       }
       Connections::SearchkickConnection.new(arguments: arguments)
     end

@@ -26,7 +26,8 @@ class WebhooksController < ApplicationController
     case event.type
     when 'checkout.session.completed'
       payment = Payment.find_by(stripe_checkout_session_id: event.data.object.id)
-      Stopover::StripeCheckoutService.complete(payment)
+      @service = Stopover::StripeCheckoutService.new(payment)
+      @service.complete(payment)
     end
 
     LogEvent.create(event_type: event.type, content: event)

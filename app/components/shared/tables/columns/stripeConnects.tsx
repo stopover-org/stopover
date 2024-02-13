@@ -3,12 +3,12 @@ import { graphql, useFragment } from "react-relay";
 import { Stack } from "@mui/joy";
 import moment from "moment/moment";
 import { useTranslation } from "react-i18next";
-import { stripeConnects_FirmFragment$key } from "../../../../artifacts/stripeConnects_FirmFragment.graphql";
-import useStatusColor from "../../../../lib/hooks/useStatusColor";
-import Tag from "../../../v2/Tag/Tag";
-import VerifyStripeConnect from "../../VerifyStripeConnect";
-import DeclineStripeConnect from "../../DeclineStripeConnect";
-import { getHumanDateTime } from "../../../../lib/utils/dates";
+import { stripeConnects_FirmFragment$key } from "artifacts/stripeConnects_FirmFragment.graphql";
+import useStatusColor from "lib/hooks/useStatusColor";
+import Tag from "components/v2/Tag/Tag";
+import VerifyStripeConnect from "components/shared/forms/firm/VerifyStripeConnect";
+import DeclineStripeConnect from "components/shared/forms/firm/DeclineStripeConnect";
+import { getHumanDateTime } from "lib/utils/dates";
 
 export function useStripeConnectsHeaders(currentUserFragmentRef: any) {
   const currentUser = useFragment(

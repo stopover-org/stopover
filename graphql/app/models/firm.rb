@@ -4,23 +4,24 @@
 #
 # Table name: firms
 #
-#  id                :bigint           not null, primary key
-#  business_type     :string           default("individual"), not null
-#  contact_person    :string
-#  contacts          :text
-#  contract_address  :string
-#  description       :text
-#  margin            :integer          default(0)
-#  payment_types     :string           default([]), not null, is an Array
-#  postal_code       :string
-#  primary_email     :string
-#  primary_phone     :string
-#  ref_number        :string
-#  status            :string           default("pending")
-#  title             :string           not null
-#  website           :string
-#  address_id        :bigint
-#  stripe_account_id :string
+#  id                        :bigint           not null, primary key
+#  available_payment_methods :string           default([]), not null, is an Array
+#  business_type             :string           default("individual"), not null
+#  contact_person            :string
+#  contacts                  :text
+#  contract_address          :string
+#  description               :text
+#  margin                    :integer          default(0)
+#  payment_types             :string           default([]), not null, is an Array
+#  postal_code               :string
+#  primary_email             :string
+#  primary_phone             :string
+#  ref_number                :string
+#  status                    :string           default("pending")
+#  title                     :string           not null
+#  website                   :string
+#  address_id                :bigint
+#  stripe_account_id         :string
 #
 # Indexes
 #
@@ -83,14 +84,14 @@ class Firm < ApplicationRecord
   }
 
   # SECURE TOKEN ==========================================================
-
+  #
   # SECURE PASSWORD =======================================================
-
+  #
   # ATTACHMENTS ===========================================================
   has_one_attached :image
 
   # RICH_TEXT =============================================================
-
+  #
   # VALIDATIONS ===========================================================
   validates :primary_email,
             presence: true,
@@ -117,6 +118,7 @@ class Firm < ApplicationRecord
   before_validation :transform_phone
   after_create :create_balance
   after_create :created_notify
+  after_commit :adjust_margin
 
   # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[pending active removed]) }
@@ -178,6 +180,13 @@ class Firm < ApplicationRecord
   end
 
   private
+
+  def adjust_margin
+    events.each do |event|
+      event.adjust_prices
+      event.save!
+    end
+  end
 
   def transform_phone
     self.primary_phone = primary_phone.gsub(/[\s()\-]/, '') if primary_phone

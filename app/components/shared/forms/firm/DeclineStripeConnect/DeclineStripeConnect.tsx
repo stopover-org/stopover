@@ -4,9 +4,9 @@ import { Tooltip } from "@mui/joy";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useTranslation } from "react-i18next";
+import { DeclineStripeConnect_StripeConnect$key } from "artifacts/DeclineStripeConnect_StripeConnect.graphql";
+import SubmitButton from "components/shared/SubmitButton";
 import { useDeclineStripeConnectForm } from "./useDeclineStripeConnectForm";
-import { DeclineStripeConnect_StripeConnect$key } from "../../../artifacts/DeclineStripeConnect_StripeConnect.graphql";
-import SubmitButton from "../SubmitButton";
 
 interface DeclineStripeConnectProps {
   stripeConnectRef: DeclineStripeConnect_StripeConnect$key;

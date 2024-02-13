@@ -1,5 +1,5 @@
 import React from "react";
-import SubmitButton from "../../SubmitButton";
+import SubmitButton from "components/shared/SubmitButton";
 import { useVerifyFirm } from "../useVerifyFirm";
 
 const VerifyFirm = () => {

@@ -21,6 +21,7 @@ export default {
         website: "Website",
         image: "Logo",
         paymentType: "Available Payment types",
+        availablePaymentMethods: "Available for choosing Payment types",
         margin: "Margin",
         primaryPhone: "Phone for notifications",
         primaryEmail: "Email for notifications",

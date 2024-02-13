@@ -1,7 +1,7 @@
 import React from "react";
 import { CircularProgress, IconButton } from "@mui/joy";
-import Button from "../../v2/Button";
-import { ButtonProps as OriginButtonProps } from "../../v2/Button/Button";
+import Button from "components/v2/Button";
+import { ButtonProps as OriginButtonProps } from "components/v2/Button/Button";
 
 interface BaseButtonProps {
   submitting: boolean;

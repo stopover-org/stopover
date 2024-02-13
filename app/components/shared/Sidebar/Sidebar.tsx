@@ -2,10 +2,12 @@ import { Grid, ListItem, ListItemButton } from "@mui/joy";
 import List from "@mui/joy/List";
 import React from "react";
 import * as uuid from "uuid";
+import LaunchIcon from "@mui/icons-material/Launch";
 import Link from "../../v2/Link";
 
 interface SidebarItem {
   title?: string;
+  blank?: boolean;
   href?: string;
   key?: string;
   slot?: any;
@@ -27,10 +29,18 @@ const Sidebar = ({ items }: SidebarProps) => (
               underline={false}
               key={`item-${item.href}`}
               component="div"
+              target={item.blank ? "_blank" : undefined}
+              icon={false}
             >
-              <ListItem>
-                <ListItemButton color="primary" href={item.href}>
+              <ListItem sx={{ display: "inline-block" }}>
+                <ListItemButton color="primary">
                   {item.title}
+                  {item.blank && (
+                    <>
+                      {" "}
+                      <LaunchIcon sx={{ fontSize: ".9em" }} />
+                    </>
+                  )}
                 </ListItemButton>
               </ListItem>
             </Link>

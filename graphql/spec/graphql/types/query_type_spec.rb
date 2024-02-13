@@ -538,7 +538,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       end
 
       context 'by firm' do
-        let(:variables) { { filters: { firmId: GraphqlSchema.id_from_object(Event.last.firm) } } }
+        let(:variables) { { filters: { firmId: GraphqlSchema.id_from_object(Event.first.firm) } } }
 
         before do
           Event.first.update!(firm: create(:firm))

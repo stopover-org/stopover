@@ -34,6 +34,9 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
                                                             name: 'address'
                                                           },
                                                           {
+                                                            name: 'availablePaymentMethods'
+                                                          },
+                                                          {
                                                             name: 'balance'
                                                           },
                                                           {
@@ -139,6 +142,7 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
             website
             image
             paymentTypes
+            availablePaymentMethods
             address {
               id
             }

@@ -38,6 +38,7 @@ const translation = {
     "502Details": "Мы уже исправляем",
     copied: "Скопировано",
     statistics: "Статистика",
+    settings: "Настройки",
   },
   weekdays: {
     monday: "Понедельник",
@@ -62,6 +63,7 @@ const translation = {
       logIn: "Вход",
       logOut: "Выход",
       myProfile: "Мой профиль",
+      firmSettings: "Настройки фирмы",
     },
     metadata: {
       firmTitle: "Stopoverx | Управление бронированиями",

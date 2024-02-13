@@ -20,6 +20,9 @@ interface EditFirmFormProps {
 const EditFirmForm = ({ simple = false }: EditFirmFormProps) => {
   const form = useFormContext();
   const paymentTypesField = form.useFormField("paymentTypes");
+  const availablePaymentMethodsField = form.useFormField(
+    "availablePaymentMethods"
+  );
   const imageField = form.useFormField("image");
   const descriptionField = form.useFormField("description");
   const contractAddressField = form.useFormField("contractAddress");
@@ -30,7 +33,7 @@ const EditFirmForm = ({ simple = false }: EditFirmFormProps) => {
   const { t } = useTranslation();
 
   return (
-    <Grid container spacing={2} lg={8} md={12} sm={12}>
+    <Grid container spacing={2} lg={6} md={12} sm={12}>
       <Fieldset>
         <Grid lg={simple ? 12 : 6} md={simple ? 12 : 6} sm={12} xs={12}>
           <Input
@@ -70,10 +73,14 @@ const EditFirmForm = ({ simple = false }: EditFirmFormProps) => {
               disableClearable
               multiple
               placeholder={t("models.firm.attributes.paymentType")}
-              options={["Cash", "Stripe"].map((v) => ({
-                label: capitalize(v),
-                value: v.toLowerCase(),
-              }))}
+              options={
+                availablePaymentMethodsField?.value
+                  ? availablePaymentMethodsField?.value.map((v: string) => ({
+                      label: capitalize(v),
+                      value: v.toLowerCase(),
+                    }))
+                  : []
+              }
               onChange={(
                 event,
                 values: Array<{ label: string; value: string }>

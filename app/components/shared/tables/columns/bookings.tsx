@@ -210,12 +210,20 @@ export function useBookingsColumns(
           );
           return {
             id: (
-              <Link primary href={`/my-firm/bookings/${booking.id}`}>
+              <Link
+                primary
+                fontSize="sm"
+                href={`/my-firm/bookings/${booking.id}`}
+              >
                 {booking.id}
               </Link>
             ),
             event: (
-              <Link primary href={`/my-firm/events/${booking.event.id}`}>
+              <Link
+                primary
+                fontSize="sm"
+                href={`/my-firm/events/${booking.event.id}`}
+              >
                 {booking.event.title}
               </Link>
             ),

@@ -4,15 +4,17 @@
 #
 # Table name: bookings
 #
-#  id                    :bigint           not null, primary key
-#  payment_type          :string
-#  status                :string
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  event_id              :bigint
-#  schedule_id           :bigint
-#  stripe_integration_id :bigint
-#  trip_id               :bigint
+#  id                            :bigint           not null, primary key
+#  attendee_price_per_uom_cents  :decimal(, )      default(0.0)
+#  organizer_price_per_uom_cents :decimal(, )      default(0.0)
+#  payment_type                  :string
+#  status                        :string
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  event_id                      :bigint
+#  schedule_id                   :bigint
+#  stripe_integration_id         :bigint
+#  trip_id                       :bigint
 #
 # Indexes
 #
@@ -47,6 +49,17 @@ RSpec.describe Booking, type: :model do
       expect(booking.booking_options.first.organizer_price).to eq(Money.new(400))
       expect(booking.attendees.first.attendee_options.first.attendee_price).to eq(Money.new(440))
       expect(booking.attendees.first.attendee_options.first.organizer_price).to eq(Money.new(400))
+    end
+
+    it 'price should be copied create' do
+      expect(booking.attendee_price_per_uom).to be(event.attendee_price_per_uom)
+      expect(booking.organizer_price_per_uom).to be(event.organizer_price_per_uom)
+    end
+
+    it 'price should not be copied on update' do
+      event.update!(organizer_price_per_uom: Money.new(100_000))
+      expect(booking.attendee_price_per_uom).not_to be(event.attendee_price_per_uom)
+      expect(booking.organizer_price_per_uom).not_to be(event.organizer_price_per_uom)
     end
 
     it 'check price on update' do

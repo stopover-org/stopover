@@ -14,6 +14,7 @@ interface DashboardSceneProps {
   firmFragmentRef: DashboardScene_FirmFragment$key;
   currentUserFragmentRef: DashboardScene_CurrentUserFragment$key;
 }
+
 const DashboardScene = ({
   firmFragmentRef,
   currentUserFragmentRef,
@@ -46,39 +47,65 @@ const DashboardScene = ({
 
   return (
     <Grid container>
-      <Grid lg={6} md={6} sm={12} xs={12}>
+      <Grid lg={6} md={8} sm={12} xs={12}>
         <FirmSection
           firmFragmentRef={firm}
           currentUserFragmentRef={currentUser}
         />
       </Grid>
+      <Grid
+        lg={6}
+        md={4}
+        display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
+      />
 
-      <Grid lg={6} md={6} sm={12} xs={12}>
+      <Grid lg={6} md={8} sm={12} xs={12}>
         <BalanceSection
           firmFragmentRef={firm}
           currentUserFragmentRef={currentUser}
         />
       </Grid>
+      <Grid
+        lg={6}
+        md={4}
+        display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
+      />
 
       <Grid lg={6} md={8} sm={12} xs={12}>
         <SchedulesSection firmFragmentRef={firm} />
       </Grid>
-      {isDesktopView && <Grid lg={6} md={4} sm={0} xs={0} />}
+      <Grid
+        lg={6}
+        md={4}
+        display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
+      />
 
       <Grid lg={6} md={8} sm={12} xs={12}>
         <PaymentsSection firmFragmentRef={firm} />
       </Grid>
-      {isDesktopView && <Grid lg={6} md={4} sm={0} xs={0} />}
+      <Grid
+        lg={6}
+        md={4}
+        display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
+      />
 
       <Grid lg={6} md={8} sm={12} xs={12}>
         <BookingsSection firmFragmentRef={firm} />
       </Grid>
-      {isDesktopView && <Grid lg={6} md={4} sm={0} xs={0} />}
+      <Grid
+        lg={6}
+        md={4}
+        display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
+      />
 
       <Grid lg={6} md={8} sm={12} xs={12}>
         <EventsSection firmFragmentRef={firm} />
       </Grid>
-      {isDesktopView && <Grid lg={6} md={4} sm={0} xs={0} />}
+      <Grid
+        lg={6}
+        md={4}
+        display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
+      />
     </Grid>
   );
 };

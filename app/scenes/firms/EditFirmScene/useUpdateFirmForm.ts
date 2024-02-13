@@ -19,10 +19,11 @@ interface UpdateFirmFields {
   image: string | null;
   paymentTypes: string[];
   contractAddress: string | null;
+  availablePaymentMethods?: string[];
 }
 
 function useDefaultValues(
-  updateFirmFragmentRef: useUpdateFirmForm_FirmFragment$key
+  firmFragmentRef: useUpdateFirmForm_FirmFragment$key
 ): UpdateFirmFields {
   const firm = useFragment<useUpdateFirmForm_FirmFragment$key>(
     graphql`
@@ -37,9 +38,10 @@ function useDefaultValues(
         title
         website
         contractAddress
+        availablePaymentMethods
       }
     `,
-    updateFirmFragmentRef
+    firmFragmentRef
   );
 
   return React.useMemo(
@@ -54,6 +56,9 @@ function useDefaultValues(
       image: firm?.image || null,
       paymentTypes: firm?.paymentTypes.map(String) || [],
       contractAddress: firm?.contractAddress || null,
+      availablePaymentMethods: (firm?.availablePaymentMethods || [
+        "cash",
+      ]) as string[],
     }),
     [firm]
   );
@@ -75,7 +80,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useUpdateFirmForm(
-  formFragmentRef: useUpdateFirmForm_FirmFragment$key
+  firmFragmentRef: useUpdateFirmForm_FirmFragment$key
 ) {
   const router = useRouter();
   return useMutationForm<
@@ -87,19 +92,25 @@ export function useUpdateFirmForm(
         updateFirm(input: $input) {
           firm {
             id
+            ...FirmScene_FirmFragment
+            ...useUpdateFirmForm_FirmFragment
           }
           notification
           errors
         }
       }
     `,
-    (values) => ({
-      input: {
-        ...values,
-      },
-    }),
+    (values) => {
+      delete values?.availablePaymentMethods;
+
+      return {
+        input: {
+          ...values,
+        },
+      };
+    },
     {
-      defaultValues: useDefaultValues(formFragmentRef),
+      defaultValues: useDefaultValues(firmFragmentRef),
       resolver: yupResolver(validationSchema),
       onCompleted(result) {
         if (result.updateFirm?.firm?.id) {

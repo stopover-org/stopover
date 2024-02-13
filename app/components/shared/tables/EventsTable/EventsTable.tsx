@@ -101,7 +101,7 @@ const EventsTable = ({
     () =>
       pagedEvents.map((event) => ({
         title: (
-          <Link primary href={`/my-firm/events/${event.id}`}>
+          <Link primary fontSize="sm" href={`/my-firm/events/${event.id}`}>
             {event.title}
           </Link>
         ),

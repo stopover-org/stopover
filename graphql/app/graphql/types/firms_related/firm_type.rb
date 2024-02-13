@@ -62,6 +62,8 @@ module Types
         argument :query, String, required: true
         argument :ids, [ID], loads: Types::EventsRelated::EventType, required: false
       end
+
+      field :available_payment_methods, [String]
     end
   end
 end

@@ -24,13 +24,15 @@ module Mutations
       argument :street, String, required: false
       argument :title, String, required: false
       argument :website, String, required: false
+      argument :margin, Integer, required: false
+      argument :available_payment_methods, [String], required: false
 
       def resolve(**args)
         firm = context[:current_user].account.current_firm
 
         Firm.transaction do
           args[:country] = ISO3166::Country.find_country_by_any_name(args[:country]).iso_short_name if args[:country]
-          address        = firm.address || Address.new(firm: firm)
+          address = firm.address || Address.new(firm: firm)
           address.assign_attributes(args.slice(:full_address,
                                                :country,
                                                :region,
@@ -59,7 +61,7 @@ module Mutations
           end
         end
 
-        { firm:         firm,
+        { firm: firm,
           notification: I18n.t('graphql.mutations.update_firm.notifications.success') }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?

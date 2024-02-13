@@ -21,10 +21,10 @@ import ImagesPreview from "components/shared/ImagesPreview";
 import Section from "components/v2/Section";
 import Typography from "components/v2/Typography/Typography";
 import Description from "components/v2/Description";
+import GoogleMap from "components/shared/GoogleMap/GoogleMap";
+import DataRow from "scenes/firms/DashboardScene/components/DataRow";
+import EditEventAddress from "components/shared/EditEventAddress";
 import CancellationsSection from "./CancellationsSection";
-import GoogleMap from "../../../../../components/shared/GoogleMap/GoogleMap";
-import DataRow from "../../../DashboardScene/components/DataRow";
-import EditEventAddress from "../../../../../components/shared/EditEventAddress";
 
 interface GeneralInformationProps {
   eventFragmentRef: GeneralInformation_EventFragment$key;
@@ -194,147 +194,158 @@ const GeneralInformation = ({
               />
             </Grid>
 
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.organizerPricePerUom")}
-              </Typography>
-            </Grid>
-            <Grid xs={10}>
-              {getCurrencyFormat(
-                event.organizerPricePerUom?.cents,
-                event.organizerPricePerUom?.currency.name
-              )}
-            </Grid>
-
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.attendeePricePerUom")}
-              </Typography>
-            </Grid>
-            <Grid xs={10}>
-              {getCurrencyFormat(
-                event.attendeePricePerUom?.cents,
-                event.attendeePricePerUom?.currency.name
-              )}
-            </Grid>
-
-            {event.firm.paymentTypes.includes("cash") && (
-              <Grid xs={2}>
-                <Typography level="title-lg">
-                  {t("models.event.attributes.depositAmount")}
-                </Typography>
-              </Grid>
-            )}
-            {event.firm.paymentTypes.includes("cash") && (
-              <Grid xs={10}>
-                {getCurrencyFormat(
-                  event.depositAmount?.cents,
-                  event.depositAmount?.currency.name
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.organizerPricePerUom")}
+                value={getCurrencyFormat(
+                  event.organizerPricePerUom?.cents,
+                  event.organizerPricePerUom?.currency.name
                 )}
+              />
+            </Grid>
+
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.attendeePricePerUom")}
+                value={getCurrencyFormat(
+                  event.attendeePricePerUom?.cents,
+                  event.attendeePricePerUom?.currency.name
+                )}
+              />
+            </Grid>
+
+            {event.firm.paymentTypes.includes("cash") && (
+              <Grid xs={12}>
+                <DataRow
+                  label={t("models.event.attributes.depositAmount")}
+                  value={getCurrencyFormat(
+                    event.depositAmount?.cents,
+                    event.depositAmount?.currency.name
+                  )}
+                />
               </Grid>
             )}
 
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.recurringDaysWithTime")}
-              </Typography>
-            </Grid>
-            <Grid xs={10}>
-              {event.recurringDaysWithTime.map((date, idx) => (
-                <Tag
-                  link={false}
-                  sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
-                  key={`recurring_date-${date}-${idx}`}
-                >
-                  {date}
-                </Tag>
-              ))}
-            </Grid>
-
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.singleDaysWithTime")}
-              </Typography>
-            </Grid>
-            <Grid xs={10}>
-              {event.singleDaysWithTime.map((date) => (
-                <Tag
-                  link={false}
-                  sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
-                  key={`single_date-${date}-${index}`}
-                >
-                  {moment(date).format(dateTimeFormat)}
-                </Tag>
-              ))}
-            </Grid>
-
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.durationTime")}
-              </Typography>
-            </Grid>
-            <Grid xs={10}>{event.durationTime}</Grid>
-
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.requiresCheckIn")}
-              </Typography>
-            </Grid>
-            <Grid xs={10}>
-              <Checkbox
-                checked={Boolean(event.requiresCheckIn)}
-                color="primary"
-                readOnly
-                label=""
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.recurringDaysWithTime")}
+                value={
+                  <>
+                    {event.recurringDaysWithTime.map((date, idx) => (
+                      <Tag
+                        link={false}
+                        sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+                        key={`recurring_date-${date}-${idx}`}
+                      >
+                        {date}
+                      </Tag>
+                    ))}
+                  </>
+                }
               />
             </Grid>
 
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.requiresPassport")}
-              </Typography>
-            </Grid>
-            <Grid xs={10}>
-              <Checkbox
-                checked={Boolean(event.requiresPassport)}
-                color="primary"
-                readOnly
-                label=""
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.singleDaysWithTime")}
+                value={
+                  <>
+                    {event.singleDaysWithTime.map((date, idx) => (
+                      <Tag
+                        link={false}
+                        sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+                        key={`single_date-${date}-${idx}`}
+                      >
+                        {moment(date).format(dateTimeFormat)}
+                      </Tag>
+                    ))}
+                  </>
+                }
               />
             </Grid>
 
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.requiresContract")}
-              </Typography>
-            </Grid>
-            <Grid xs={10}>
-              <Checkbox
-                checked={Boolean(event.requiresContract)}
-                color="primary"
-                readOnly
-                label=""
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.eventType")}
+                value={t(`models.event.enums.eventType.${event.eventType}`)}
               />
             </Grid>
 
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.minAttendees")} -{" "}
-                {t("models.event.attributes.maxAttendees")}
-              </Typography>
-            </Grid>
-            <Grid xs={10}>
-              {event.minAttendees || t("general.noData")} -{" "}
-              {event.maxAttendees || t("general.noData")}
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.durationTime")}
+                value={event.durationTime}
+              />
             </Grid>
 
-            <Grid xs={2}>
-              <Typography level="title-lg">
-                {t("models.event.attributes.endDate")}
-              </Typography>
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.requiresCheckIn")}
+                value={
+                  <Checkbox
+                    checked={Boolean(event.requiresCheckIn)}
+                    color="primary"
+                    readOnly
+                    label=""
+                  />
+                }
+              />
             </Grid>
-            <Grid xs={10}>
-              {event.endDate ? moment(event.endDate).format(dateFormat) : "N/A"}
+
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.requiresPassport")}
+                value={
+                  <Checkbox
+                    checked={Boolean(event.requiresPassport)}
+                    color="primary"
+                    readOnly
+                    label=""
+                  />
+                }
+              />
+            </Grid>
+
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.requiresContract")}
+                value={
+                  <Checkbox
+                    checked={Boolean(event.requiresContract)}
+                    color="primary"
+                    readOnly
+                    label=""
+                  />
+                }
+              />
+            </Grid>
+
+            <Grid xs={12}>
+              <DataRow
+                label={
+                  <>
+                    {t("models.event.attributes.minAttendees")} -{" "}
+                    {t("models.event.attributes.maxAttendees")}
+                  </>
+                }
+                value={
+                  <>
+                    {event.minAttendees || t("general.noData")} -{" "}
+                    {event.maxAttendees || t("general.noData")}
+                  </>
+                }
+              />
+            </Grid>
+
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.endDate")}
+                value={
+                  event.endDate
+                    ? moment(event.endDate).format(dateFormat)
+                    : "N/A"
+                }
+              />
             </Grid>
           </Grid>
         </Section>
