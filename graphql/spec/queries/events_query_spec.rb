@@ -64,7 +64,7 @@ RSpec.describe EventsQuery, type: :query do
           expect(query.total).to eq(1)
 
           event = query.execute.to_a.last
-          expect(event.attendee_price_per_uom).to eq(Money.new(14_300, :usd))
+          expect(event.attendee_price_per_uom).to eq(Money.new(14_300, :rsd))
         end
       end
     end
