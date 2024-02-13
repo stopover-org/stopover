@@ -515,16 +515,9 @@ input CreateFirmInput {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
-  contactPerson: String
-  contacts: String
-  description: String
-  image: String
   paymentTypes: [String!]!
   primaryEmail: String
-  primaryPhone: String!
-  status: String
   title: String
-  website: String
 }
 
 """

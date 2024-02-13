@@ -18,7 +18,7 @@ RSpec.describe Stopover::StripeIntegrator do
                                                        }).and_return({ id: 'product_id' })
       expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 22,
                                                        product: 'product_id',
-                                                       currency: :usd,
+                                                       currency: :rsd,
                                                        billing_scheme: 'per_unit',
                                                        metadata: {
                                                          stopover_id: event.id,
@@ -42,16 +42,16 @@ RSpec.describe Stopover::StripeIntegrator do
                                                          description: integrated_event.description,
                                                          metadata: {
                                                            stopover_id: integrated_event.id,
-                                                             stopover_model_name: integrated_event.class.name
+                                                           stopover_model_name: integrated_event.class.name
                                                          } })
                                                  .and_return({ id: 'product_id' })
       expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 22,
                                                        product: 'product_id',
-                                                       currency: :usd,
+                                                       currency: :rsd,
                                                        billing_scheme: 'per_unit',
                                                        metadata: {
                                                          stopover_id: integrated_event.id,
-                                                           stopover_model_name: integrated_event.class.name
+                                                         stopover_model_name: integrated_event.class.name
                                                        } })
                                                .and_return({ id: 'price_id_full_amount' })
       expect(Stripe::Product).to receive(:retrieve).with(id: 'product_id').and_return({ id: 'product_id' }).exactly(1).times
@@ -117,11 +117,11 @@ RSpec.describe Stopover::StripeIntegrator do
                                                            } }).and_return(product: { id: 'product_id' }).exactly(1).time
         expect(Stripe::Price).to receive(:create).with({ unit_amount_decimal: 11,
                                                          product: 'product_id',
-                                                         currency: :usd,
+                                                         currency: :rsd,
                                                          billing_scheme: 'per_unit',
                                                          metadata: {
                                                            stopover_id: event.id,
-                                                             stopover_model_name: event.class.name
+                                                           stopover_model_name: event.class.name
                                                          } })
                                                  .and_return(price: { id: 'price_id' }).exactly(1).time
         Stopover::StripeIntegrator.sync(event)

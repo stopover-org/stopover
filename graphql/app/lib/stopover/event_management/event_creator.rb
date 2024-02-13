@@ -58,7 +58,7 @@ module Stopover
               Sentry.capture_exception(e) if Rails.env.production?
             end
 
-            @event.images.attach(images_to_attach)
+            event.images.attach(images_to_attach)
           end
 
           if args[:booking_cancellation_options].present?

@@ -248,7 +248,7 @@ RSpec.describe Types::BookingsRelated::BookingType, type: :graphql_type do
         context 'filter by status' do
           let(:variables) do
             { bookingId: GraphqlSchema.id_from_object(booking),
-                              filters: { status: %w[registered not_registered] } }
+              filters: { status: %w[registered not_registered] } }
           end
           before do
             create_list(:attendee, 10, booking: booking, status: 'removed')
@@ -341,7 +341,7 @@ RSpec.describe Types::BookingsRelated::BookingType, type: :graphql_type do
           it 'success' do
             result = subject
 
-            expect(result.dig(:data, :booking, :cancellationTerms)).to eq('Cancellation will result $0.10 penalty. $5.40 will be refunded')
+            expect(result.dig(:data, :booking, :cancellationTerms)).to eq('Cancellation will result РСД0.10 penalty. РСД5.40 will be refunded')
           end
         end
 
@@ -360,7 +360,7 @@ RSpec.describe Types::BookingsRelated::BookingType, type: :graphql_type do
           it 'success' do
             result = subject
 
-            expect(result.dig(:data, :booking, :cancellationTerms)).to eq('Cancellation will result $0.10 penalty. $3.56 will be refunded')
+            expect(result.dig(:data, :booking, :cancellationTerms)).to eq('Cancellation will result РСД0.10 penalty. РСД3.56 will be refunded')
           end
         end
 

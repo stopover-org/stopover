@@ -89,6 +89,9 @@ export function useSignInForm(onNextStep: (delay: number) => void) {
             id
             email
             phone
+            account {
+              ...TripsScene_AccountFragment
+            }
           }
           accessToken
           delay
