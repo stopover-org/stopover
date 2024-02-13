@@ -9,7 +9,6 @@ import { useCreateFirmForm_CreateFirmMutation } from "artifacts/useCreateFirmFor
 export interface CreateFirmFields {
   title: string;
   primaryEmail: string;
-  primaryPhone: string;
   paymentTypes: string[];
 }
 
@@ -18,7 +17,6 @@ function useDefaultValues(): CreateFirmFields {
     () => ({
       title: "",
       primaryEmail: "",
-      primaryPhone: "",
       paymentTypes: ["stripe", "cash"],
     }),
     []
@@ -27,7 +25,6 @@ function useDefaultValues(): CreateFirmFields {
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Required"),
-  country: Yup.string().required("Required"),
   primaryEmail: Yup.string().email().required("Required"),
   paymentTypes: Yup.array().required("Required"),
 });
