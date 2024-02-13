@@ -110,9 +110,6 @@ class Firm < ApplicationRecord
             format: { with: URI::MailTo::EMAIL_REGEXP,
                       message: 'is invalid',
                       allow_blank: true }
-  validates :primary_phone,
-            phone: { message: 'is invalid',
-                     allow_blank: true }, unless: :skip_phone_validation
 
   # CALLBACKS =============================================================
   before_validation :transform_phone
