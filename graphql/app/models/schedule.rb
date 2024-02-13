@@ -27,21 +27,21 @@ class Schedule < ApplicationRecord
   include Mixins::Indices
 
   # MONETIZE ==============================================================
-
+  #
   # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :event
 
   # HAS_ONE ASSOCIATIONS ==================================================
-
+  #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
-
+  #
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :bookings
   has_many :attendees
   has_many :attendee_options
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
-
+  #
   # AASM STATES ===========================================================
   aasm column: :status do
     state :active, initial: true
@@ -52,19 +52,19 @@ class Schedule < ApplicationRecord
   end
 
   # ENUMS =================================================================
-
+  #
   # SECURE TOKEN ==========================================================
-
+  #
   # SECURE PASSWORD =======================================================
-
+  #
   # ATTACHMENTS ===========================================================
-
+  #
   # RICH_TEXT =============================================================
-
+  #
   # VALIDATIONS ===========================================================
-
+  #
   # CALLBACKS =============================================================
-
+  #
   # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[active disabled]).order(scheduled_for: :asc) }
 
