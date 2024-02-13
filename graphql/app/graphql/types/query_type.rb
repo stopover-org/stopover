@@ -38,7 +38,7 @@ module Types
     end
 
     def events(**args)
-      firm_id = args[:filters][:firm].id if args[:filters][:firm]
+      firm_id = args[:filters][:firm].id if args[:filters] && (args[:filters][:firm])
       arguments = {
         query_type: ::EventsQuery,
         **(args[:filters] || {}),
