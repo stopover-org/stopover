@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_12_103048) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_13_101454) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -179,6 +179,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_12_103048) do
     t.bigint "schedule_id"
     t.bigint "stripe_integration_id"
     t.string "payment_type"
+    t.decimal "organizer_price_per_uom_cents", default: "0.0"
+    t.decimal "attendee_price_per_uom_cents", default: "0.0"
     t.index ["event_id"], name: "index_bookings_on_event_id"
     t.index ["schedule_id"], name: "index_bookings_on_schedule_id"
     t.index ["stripe_integration_id"], name: "index_bookings_on_stripe_integration_id"
