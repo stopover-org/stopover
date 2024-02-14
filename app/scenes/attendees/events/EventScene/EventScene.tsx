@@ -2,12 +2,12 @@ import React from "react";
 import { Grid } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import { FormProvider } from "react-hook-form";
+import { EventScene_EventFragment$key } from "artifacts/EventScene_EventFragment.graphql";
 import Breadcrumbs from "./components/Breadcrumbs";
 import { useBookEventForm } from "./useBookEventForm";
 import EventTitle from "./components/EventTitle";
 import LeftColumn from "./components/LeftColumn";
 import RightColumn from "./components/RightColumn";
-import { EventScene_EventFragment$key } from "../../../../artifacts/EventScene_EventFragment.graphql";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_EventFragment$key;
