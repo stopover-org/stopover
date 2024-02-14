@@ -104,19 +104,18 @@ const BalanceSection = ({
           ))}
         </Grid>
 
-        {firm?.paymentTypes?.includes("stripe") ||
-          (firm?.paymentTypes?.includes("crypto") && (
-            <>
-              <Grid xs={12}>
-                <Typography level="h4">
-                  {t("scenes.firms.dashboardScene.payoutSettings")}
-                </Typography>
-              </Grid>
-              <Grid xs={12}>
-                <ConnectStripeForm />
-              </Grid>
-            </>
-          ))}
+        {firm?.paymentTypes?.includes("stripe") && (
+          <>
+            <Grid xs={12}>
+              <Typography level="h4">
+                {t("scenes.firms.dashboardScene.payoutSettings")}
+              </Typography>
+            </Grid>
+            <Grid xs={12}>
+              <ConnectStripeForm />
+            </Grid>
+          </>
+        )}
 
         {firm?.paymentTypes?.includes("stripe") && (
           <>
