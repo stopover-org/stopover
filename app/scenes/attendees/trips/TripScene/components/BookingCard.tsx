@@ -13,18 +13,17 @@ import {
 import { useMediaQuery } from "@mui/material";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
-import Image from "next/image";
-import Typography from "../../../../../components/v2/Typography/Typography";
-import Link from "../../../../../components/v2/Link";
+import Typography from "components/v2/Typography";
+import Link from "components/v2/Link";
+import Tag from "components/v2/Tag/Tag";
+import { BookingCard_BookingFragment$key } from "artifacts/BookingCard_BookingFragment.graphql";
+import BookingSummary from "components/shared/BookingSummary";
+import { useBookingCancellable } from "lib/hooks/useBookingStates";
 import BookingTime from "./BookingTime";
 import BookingDescription from "./BookingDescription";
-import Tag from "../../../../../components/v2/Tag/Tag";
-import { BookingCard_BookingFragment$key } from "../../../../../artifacts/BookingCard_BookingFragment.graphql";
-import BookingSummary from "../../../../../components/shared/BookingSummary";
 import EditAttendeesModal from "./EditAttendeesModal";
 import EditBookingModal from "./EditBookingModal";
 import CancelBookingModal from "./CancelBookingModal";
-import { useBookingCancellable } from "../../../../../lib/hooks/useBookingStates";
 import CheckoutForm from "./CheckoutForm";
 
 interface BookingCardProps {
@@ -147,7 +146,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {booking.event.images.length > 0 && (
-              <Image src={booking.event.images[0]} loading="lazy" alt="" />
+              <img src={booking.event.images[0]} loading="lazy" alt="" />
             )}
           </AspectRatio>
           <Box

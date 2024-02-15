@@ -1,13 +1,13 @@
 import { Grid } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
+import { DashboardScene_FirmFragment$key } from "artifacts/DashboardScene_FirmFragment.graphql";
+import { DashboardScene_CurrentUserFragment$key } from "artifacts/DashboardScene_CurrentUserFragment.graphql";
 import FirmSection from "./components/FirmSection";
 import BookingsSection from "./components/BookingsSection";
 import BalanceSection from "./components/BalanceSection";
 import PaymentsSection from "./components/PaymentsSection";
 import SchedulesSection from "./components/SchedulesSection";
-import { DashboardScene_FirmFragment$key } from "../../../artifacts/DashboardScene_FirmFragment.graphql";
 import EventsSection from "./components/EventsSection";
-import { DashboardScene_CurrentUserFragment$key } from "../../../artifacts/DashboardScene_CurrentUserFragment.graphql";
 
 interface DashboardSceneProps {
   firmFragmentRef: DashboardScene_FirmFragment$key;

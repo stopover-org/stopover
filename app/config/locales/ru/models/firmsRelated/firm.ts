@@ -1,7 +1,7 @@
 export default {
   models: {
     firm: {
-      singular: "Компании",
+      singular: "Компания",
       plural: "Фирма",
       attributes: {
         id: "ID",

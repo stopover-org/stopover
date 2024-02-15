@@ -19,19 +19,13 @@ events_data.each do |event_data|
                           else
                             []
                           end
+
   next unless firm && event_data[:event_type]
   event.assign_attributes(
     **event_data.except(:firm_ref, :single_days_with_time, :recurring_days_with_time),
     ref_number: event_data[:ref_number] || event_data[:title].parameterize,
     firm: firm,
-    address: event.address.build(
-      country: firm&.country,
-      region: firm&.region,
-      city: firm&.city,
-      street: firm&.street,
-      house_number: firm&.house_number,
-      full_address: firm&.full_address,
-    ),
+    address: firm.address.dup,
     recurring_days_with_time: recurring_days_with_time,
     single_days_with_time: single_days_with_time
   )
