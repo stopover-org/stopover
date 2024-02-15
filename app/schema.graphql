@@ -651,6 +651,7 @@ type Event implements Node {
   durationTime: String!
   endDate: DateTime
   eventOptions: [EventOption!]!
+  eventPlacements: [EventPlacement!]!
   eventType: EventTypeEnum!
   externalId: String
   firm: Firm!
@@ -783,6 +784,19 @@ enum EventOptionStatusEnum {
   this option is not available for booking
   """
   not_available
+}
+
+type EventPlacement implements Node {
+  heightPlaces: Int!
+  id: ID!
+  places: [EventPlacementPlace!]!
+  title: String!
+  widthPlaces: Int!
+}
+
+type EventPlacementPlace {
+  available: Boolean
+  coordinates: [Int!]
 }
 
 enum EventTypeEnum {
