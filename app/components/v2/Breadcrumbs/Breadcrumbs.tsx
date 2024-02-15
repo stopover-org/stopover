@@ -22,14 +22,14 @@ const Breadcrumbs = ({ items, padding = 2 }: BreadcrumbsProps) => (
           <React.Fragment key={item}>
             <Box>
               <Typography fontSize="lg">{item}</Typography>
-              <Typography
-                fontSize="20px"
-                sx={{ paddingLeft: "10px", paddingRight: "10px" }}
-              >
-                {" "}
-                /{" "}
-              </Typography>
             </Box>
+            <Typography
+              fontSize="20px"
+              sx={{ paddingLeft: "10px", paddingRight: "10px" }}
+            >
+              {" "}
+              /{" "}
+            </Typography>
           </React.Fragment>
         ) : (
           <React.Fragment key={item.title}>
