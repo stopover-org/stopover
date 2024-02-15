@@ -31,7 +31,7 @@ export const Breadcrumbs = ({
         { title: event.firm.title, href: `/firms/${event.firm.id}` },
         ...event.interests.map((interest) => ({
           title: interest.title,
-          href: `/events?interests=${interest.slug}`,
+          href: `/events?interests=${JSON.stringify([interest.slug])}`,
         })),
       ]}
     />
