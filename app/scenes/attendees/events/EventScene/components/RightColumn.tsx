@@ -12,7 +12,7 @@ interface RightColumnProps {
 }
 
 const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
-  const event = useFragment(
+  const event = useFragment<RightColumn_EventFragment$key>(
     graphql`
       fragment RightColumn_EventFragment on Event {
         title
@@ -21,6 +21,8 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
           fullAddress
           latitude
           longitude
+          country
+          city
         }
         ...BookEvent_EventFragment
       }
@@ -35,12 +37,16 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
       <Box>
         {event.address && (
           <>
-            <Typography fontSize="lg-title">
+            <Divider sx={{ margin: 2 }} />
+            <Typography level="h4" fontSize="lg-title">
               {event.address?.fullAddress}
+            </Typography>
+            <Typography level="h4" fontSize="lg-title">
+              {event.address?.country}, {event.address?.city}
             </Typography>
             {event.address?.latitude && event.address?.longitude && (
               <>
-                <Divider margin={2} />
+                <Divider sx={{ margin: 2 }} />
                 <GoogleMap
                   center={{
                     lat: event.address?.latitude!,

@@ -1,10 +1,11 @@
 import { Box, Stack } from "@mui/joy";
 import React from "react";
-import Link from "../Link";
 import Typography from "../Typography";
+import Link from "../Link";
 
 interface IBreadcrumb {
   title: string;
+  subtitle?: string;
   href: string;
 }
 
@@ -18,19 +19,40 @@ const Breadcrumbs = ({ items, padding = 2 }: BreadcrumbsProps) => (
     <Stack flexDirection="row" flexWrap="wrap">
       {items.map((item) =>
         typeof item === "string" ? (
-          <Typography fontSize="sm" key={item}>
-            &nbsp;/&nbsp;{item}
-          </Typography>
+          <React.Fragment key={item}>
+            <Box>
+              <Typography fontSize="lg">{item}</Typography>
+              <Typography
+                fontSize="20px"
+                sx={{ paddingLeft: "10px", paddingRight: "10px" }}
+              >
+                {" "}
+                /{" "}
+              </Typography>
+            </Box>
+          </React.Fragment>
         ) : (
-          <Typography key={item.title} fontSize="sm">
-            &nbsp;/&nbsp;
-            <Link level="body-sm" href={item.href}>
-              {item.title}
-            </Link>
-          </Typography>
+          <React.Fragment key={item.title}>
+            <Box>
+              <Typography fontSize="lg">
+                <Link level="body-lg" href={item.href} target="_blank">
+                  {item.title}
+                </Link>
+              </Typography>
+              {item.subtitle && (
+                <Typography fontSize="12px">{item.subtitle}</Typography>
+              )}
+            </Box>
+            <Typography
+              fontSize="20px"
+              sx={{ paddingLeft: "10px", paddingRight: "10px" }}
+            >
+              {" "}
+              /{" "}
+            </Typography>
+          </React.Fragment>
         )
       )}
-      <Typography>&nbsp;/&nbsp;</Typography>
     </Stack>
   </Box>
 );
