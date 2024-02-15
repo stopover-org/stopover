@@ -9,7 +9,7 @@ module Types
       field :places, [Types::EventsRelated::EventPlacementPlaceType], null: false
 
       def places
-        object.places.values
+        object.places.values.flatten
       end
     end
   end

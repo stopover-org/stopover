@@ -348,11 +348,21 @@ RSpec.describe Mutations::EventsRelated::UpdateEvent, type: :mutation do
     context 'permissions' do
       context 'for removed firm' do
         before { event.firm.update(status: 'removed') }
+
         include_examples :fail, 'You are not authorized'
       end
 
       context 'as common user' do
         let(:current_user) { create(:active_user) }
+
+        include_examples :fail, 'You are not authorized'
+      end
+
+      context 'as different firm manager user' do
+        let(:firm) { create(:firm) }
+        let(:event) { create(:published_event, firm: firm) }
+        let(:current_user) { create(:published_event).firm.accounts.last.user }
+
         include_examples :fail, 'You are not authorized'
       end
     end

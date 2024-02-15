@@ -71,7 +71,8 @@ module Mutations
       private
 
       def authorized?(**inputs)
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
+        event = inputs[:event]
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless manager?(event)
 
         super
       end
