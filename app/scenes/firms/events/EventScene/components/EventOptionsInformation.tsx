@@ -1,12 +1,12 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { TabPanel } from "@mui/joy";
-import { EventOptionsInformation_EventFragment$key } from "../../../../../artifacts/EventOptionsInformation_EventFragment.graphql";
-import Table from "../../../../../components/v2/Table";
+import { EventOptionsInformation_EventFragment$key } from "artifacts/EventOptionsInformation_EventFragment.graphql";
+import Table from "components/v2/Table";
 import {
   useEventOptionsColumns,
   useEventOptionsHeaders,
-} from "../../../../../components/shared/tables/columns/eventOptions";
+} from "components/shared/tables/columns/eventOptions";
 
 interface EventOptionsInformationProps {
   eventFragmentRef: EventOptionsInformation_EventFragment$key;

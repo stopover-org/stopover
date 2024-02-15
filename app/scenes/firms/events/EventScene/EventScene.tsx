@@ -36,6 +36,7 @@ import SchedulesInformation from "./components/SchedulesInformation";
 import EventOptionsInformation from "./components/EventOptionsInformation";
 import GeneralInformation from "./components/GeneralInformation";
 import StripeIntegrationsInformation from "./components/StripeIntegrationsInformation";
+import EventPlacementsInformation from "./components/EventPlacementsInformation";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -76,6 +77,10 @@ const EventScene = ({
             id
           }
         }
+        eventPlacements {
+          id
+        }
+        ...EventPlacementsInformation_EventFragment
         ...GeneralInformation_EventFragment
         ...EventOptionsInformation_EventFragment
         ...SchedulesInformation_EventFragment
@@ -292,9 +297,15 @@ const EventScene = ({
                 {event.bookings?.total}
               </Chip>
             </Tab>
+            <Tab variant={tab === 4 ? "outlined" : "plain"}>
+              {t("models.eventPlacement.plural")}
+              <Chip size="sm" variant="soft">
+                {event.eventPlacements.length}
+              </Chip>
+            </Tab>
             {currentUser.serviceUser && (
               <Tab
-                variant={tab === 4 ? "outlined" : "plain"}
+                variant={tab === 5 ? "outlined" : "plain"}
                 sx={{ display: "block" }}
               >
                 {t("scenes.firms.events.eventScene.tabs.stripeIntegrations")}
@@ -313,10 +324,11 @@ const EventScene = ({
             <EventOptionsInformation index={1} eventFragmentRef={event} />
             <SchedulesInformation index={2} eventFragmentRef={event} />
             <BookingsInformation index={3} eventFragmentRef={event} />
+            <EventPlacementsInformation index={4} eventFragmentRef={event} />
 
             {currentUser.serviceUser && (
               <StripeIntegrationsInformation
-                index={4}
+                index={5}
                 eventFragmentRef={event}
               />
             )}
