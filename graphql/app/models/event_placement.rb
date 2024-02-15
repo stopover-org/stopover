@@ -1,17 +1,33 @@
-
-<% module_namespacing do -%>
 # frozen_string_literal: true
 
-class <%= class_name %> < <%= parent_class_name.classify %>
+# == Schema Information
+#
+# Table name: event_placements
+#
+#  id            :bigint           not null, primary key
+#  height_places :integer          default(0)
+#  places        :jsonb
+#  title         :string
+#  width_places  :integer          default(0)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  event_id      :bigint
+#  firm_id       :bigint
+#
+# Indexes
+#
+#  index_event_placements_on_event_id  (event_id)
+#  index_event_placements_on_firm_id   (firm_id)
+#
+class EventPlacement < ApplicationRecord
   # MODULES ===============================================================
   #
   # MONETIZE ==============================================================
   #
   # BELONGS_TO ASSOCIATIONS ===============================================
-<% attributes.select(&:reference?).each do |attribute| -%>
-  belongs_to :<%= attribute.name %><%= ", polymorphic: true" if attribute.polymorphic? %>
-<% end -%>
-  #
+  belongs_to :firm
+  belongs_to :event
+
   # HAS_ONE ASSOCIATIONS ==================================================
   #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
@@ -25,35 +41,42 @@ class <%= class_name %> < <%= parent_class_name.classify %>
   # ENUMS =================================================================
   #
   # SECURE TOKEN ==========================================================
-<% attributes.select(&:token?).each do |attribute| -%>
-  has_secure_token<% if attribute.name != "token" %> :<%= attribute.name %><% end %>
-<% end -%>
   #
   # SECURE PASSWORD =======================================================
-<% if attributes.any?(&:password_digest?) -%>
-  has_secure_password
-<% end -%>
   #
   # ATTACHMENTS ===========================================================
-<% attributes.select(&:attachment?).each do |attribute| -%>
-  has_one_attached :<%= attribute.name %>
-<% end -%>
-<% attributes.select(&:attachments?).each do |attribute| -%>
-  has_many_attached :<%= attribute.name %>
-<% end -%>
   #
   # RICH_TEXT =============================================================
-<% attributes.select(&:rich_text?).each do |attribute| -%>
-  has_rich_text :<%= attribute.name %>
-<% end -%>
   #
   # VALIDATIONS ===========================================================
-  #
+  validates :title, presence: true
+  validates :width_places, :height_places, presence: true
+
   # CALLBACKS =============================================================
-  #
+  before_validation :adjust_firm
+  before_validation :generate_places
+
   # SCOPES ================================================================
   #
   # DELEGATION ============================================================
-  #
+
+  private
+
+  def adjust_firm
+    self.firm = event.firm if event&.firm && !firm
+  end
+
+  def generate_places
+    return unless places.empty?
+
+    places_hash = {}
+    width_places.times do |row|
+      height_places.times do |column|
+        places_hash[row.to_s] = [] if places_hash[row.to_s].nil?
+        places_hash[row.to_s] << { available: true, coordinates: [row, column] }
+      end
+    end
+
+    self.places = places_hash
+  end
 end
-<% end -%>

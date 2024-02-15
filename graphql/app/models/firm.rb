@@ -40,7 +40,7 @@ class Firm < ApplicationRecord
   # BELONGS_TO ASSOCIATIONS ===============================================
 
   # HAS_ONE ASSOCIATIONS ==================================================
-  has_one :balance
+  has_one :balance, dependent: :nullify
 
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
 
@@ -54,6 +54,7 @@ class Firm < ApplicationRecord
   has_many :attendee_options, dependent: :nullify
   has_many :payments, dependent: :nullify
   has_many :addresses, dependent: :destroy
+  has_many :event_placements, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :accounts, through: :account_firms
@@ -183,6 +184,7 @@ class Firm < ApplicationRecord
   end
 
   def adjust_margin
+    return unless saved_change_to_attribute?(:margin)
     events.each do |event|
       event.adjust_prices
       event.save!
