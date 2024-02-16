@@ -1,20 +1,15 @@
 import React from "react";
 import {
   Autocomplete,
-  ButtonGroup,
   FormControl,
   FormLabel,
   Grid,
-  IconButton,
   Stack,
-  Tooltip,
   useTheme,
 } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import moment, { Moment } from "moment";
 import { useTranslation } from "react-i18next";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import { useMediaQuery } from "@mui/material";
 import DateCalendar from "components/v2/DateCalendar/DateCalendar";
 import { setTime, timeFormat } from "lib/utils/dates";
@@ -28,6 +23,7 @@ import Link from "components/v2/Link";
 import { BookEvent_EventFragment$key } from "artifacts/BookEvent_EventFragment.graphql";
 import SubmitButton from "components/shared/SubmitButton";
 import { capitalize } from "lib/utils/capitalize";
+import AttendeeCountFieldset from "./AttendeeCountFieldset";
 
 interface BookEventProps {
   eventFragmentRef: BookEvent_EventFragment$key;
@@ -149,40 +145,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
                 size="sm"
               />
             </FormControl>
-            <FormControl sx={{ margin: 0 }}>
-              <FormLabel>{t("models.attendee.plural")}</FormLabel>
-              <ButtonGroup>
-                <Tooltip title={t("forms.removeAttendee.action")}>
-                  <IconButton
-                    disabled={
-                      attendeesCountField.value.length === 1 || !!booking
-                    }
-                    onClick={() =>
-                      attendeesCountField.onChange(
-                        attendeesCountField.value - 1
-                      )
-                    }
-                    size="sm"
-                  >
-                    <RemoveIcon />
-                  </IconButton>
-                </Tooltip>
-                <IconButton size="sm">{attendeesCountField.value}</IconButton>
-                <Tooltip title={t("forms.addAttendee.action")}>
-                  <IconButton
-                    disabled={!!booking}
-                    onClick={() =>
-                      attendeesCountField.onChange(
-                        attendeesCountField.value + 1
-                      )
-                    }
-                    size="sm"
-                  >
-                    <AddIcon />
-                  </IconButton>
-                </Tooltip>
-              </ButtonGroup>
-            </FormControl>
+            <AttendeeCountFieldset booked={!!booking} />
           </Stack>
           <Typography textAlign="end" level="title-sm" width="240px">
             {getCurrencyFormat(
