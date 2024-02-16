@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { EventPlacementsInformation_EventFragment$key } from "artifacts/EventPlacementsInformation_EventFragment.graphql";
 import CreateEventPlacement from "components/shared/forms/eventPlacement/CreateEventPlacement";
 import EditEventPlacement from "components/shared/forms/eventPlacement/EditEventPlacement";
+import EventPlacementPreview from "../../../../../components/shared/EventPlacementPreview";
 
 interface EventPlacementsInformationProps {
   eventFragmentRef: EventPlacementsInformation_EventFragment$key;
@@ -28,6 +29,7 @@ const EventPlacementsInformation = ({
           places {
             available
           }
+          ...EventPlacementPreview_EventPlacementFragment
           ...EditEventPlacement_EventPlacementFragment
         }
       }
@@ -73,7 +75,7 @@ const EventPlacementsInformation = ({
         widthPlaces: placement.widthPlaces,
         heightPlaces: placement.heightPlaces,
         edit: <EditEventPlacement eventPlacementFragmentRef={placement} />,
-        places: "Places",
+        places: <EventPlacementPreview eventPlacementFragmentRef={placement} />,
       })),
     [event.eventPlacements]
   );

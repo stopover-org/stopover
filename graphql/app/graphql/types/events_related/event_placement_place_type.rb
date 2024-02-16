@@ -3,8 +3,8 @@
 module Types
   module EventsRelated
     class EventPlacementPlaceType < Types::BaseObject
-      field :available, Boolean
-      field :coordinates, [Integer]
+      field :available, Boolean, null: false
+      field :coordinates, [Integer], null: false
     end
   end
 end

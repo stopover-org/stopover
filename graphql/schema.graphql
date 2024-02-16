@@ -823,8 +823,8 @@ type EventPlacement implements Node {
 }
 
 type EventPlacementPlace {
-  available: Boolean
-  coordinates: [Int!]
+  available: Boolean!
+  coordinates: [Int!]!
 }
 
 enum EventTypeEnum {

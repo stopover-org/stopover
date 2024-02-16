@@ -12,6 +12,9 @@ export default {
               "Выбeрите дату для просмотра доступных бронирований",
             chosenScheduleAction: "Доступные бронирования на дату {{date}}",
           },
+          placementsInformation: {
+            placesPreview: "Просмотр доступных схемы размещения",
+          },
         },
       },
     },
