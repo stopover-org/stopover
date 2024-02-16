@@ -120,6 +120,7 @@ input BookEventInput {
   """
   clientMutationId: String
   eventId: ID!
+  places: [[Int!]!]
 }
 
 """

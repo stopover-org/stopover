@@ -6,6 +6,7 @@ module Mutations
       argument :event_id, ID, loads: Types::EventsRelated::EventType
       argument :booked_for, Types::DateTimeType
       argument :attendees_count, Integer, required: false
+      argument :places, [[Integer]], required: false
 
       field :booking, Types::BookingsRelated::BookingType
       field :access_token, String

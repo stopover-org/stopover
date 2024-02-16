@@ -72,14 +72,26 @@ const SelectPlacesModal = ({
   const selectedPlaces: number[][] = selectedPlacesField.value;
   const attendeesCountField = useFormField("attendeesCount");
   const findPlace = React.useCallback(
-    (placeCoordinates: number[], rowIndex: number, columnIndex: number) =>
+    (
+      placeCoordinates: number[] | readonly number[],
+      rowIndex: number,
+      columnIndex: number
+    ) =>
       placeCoordinates[0] === rowIndex && placeCoordinates[1] === columnIndex,
     [eventPlacement, schedule]
   );
 
+  const availablePlaces = React.useMemo(
+    () =>
+      schedule.availablePlacesPlacement?.map(
+        ({ coordinates }) => coordinates
+      ) || [],
+    [schedule]
+  );
+
   const setSelectedPlaces = React.useCallback(
     (rowIndex: number, columnIndex: number) => {
-      let places = selectedPlaces;
+      let places = [];
       if (
         !selectedPlaces.find((placeCoord) =>
           findPlace(placeCoord, rowIndex, columnIndex)
@@ -98,10 +110,8 @@ const SelectPlacesModal = ({
     [selectedPlaces]
   );
 
-  console.log(form);
-
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={onClose} disablePortal>
       <ModalDialog
         variant="outlined"
         role="alertdialog"
@@ -135,6 +145,9 @@ const SelectPlacesModal = ({
                       ? `var(--joy-palette-primary-${
                           selectedPlaces.find((placeCoord) =>
                             findPlace(placeCoord, rowIndex, columnIndex)
+                          ) ||
+                          !availablePlaces.find((placeCoord) =>
+                            findPlace(placeCoord, rowIndex, columnIndex)
                           )
                             ? 300
                             : 500
@@ -161,6 +174,7 @@ const SelectPlacesModal = ({
           <SubmitButton
             submitting={form.formState.isSubmitting}
             disabled={selectedPlaces.length === 0}
+            onClick={() => {}}
           >
             {t("scenes.attendees.events.eventScene.bookEvent")}
           </SubmitButton>

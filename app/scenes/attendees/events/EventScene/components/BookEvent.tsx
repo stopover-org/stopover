@@ -155,7 +155,8 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
               />
             </FormControl>
             {event.eventPlacements.length > 0
-              ? schedule && (
+              ? schedule &&
+                !booking && (
                   <PlacesFieldset
                     booked={!!booking}
                     eventFragmentRef={event}
