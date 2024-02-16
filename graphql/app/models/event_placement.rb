@@ -28,6 +28,7 @@ class EventPlacement < ApplicationRecord
   # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :firm
   belongs_to :event
+  has_many :attendees, dependent: :nullify
 
   # HAS_ONE ASSOCIATIONS ==================================================
   #

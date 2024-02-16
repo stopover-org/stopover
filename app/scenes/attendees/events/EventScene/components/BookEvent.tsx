@@ -23,6 +23,7 @@ import Link from "components/v2/Link";
 import { BookEvent_EventFragment$key } from "artifacts/BookEvent_EventFragment.graphql";
 import SubmitButton from "components/shared/SubmitButton";
 import { capitalize } from "lib/utils/capitalize";
+import PlacesFieldset from "./PlacesFieldset";
 import AttendeeCountFieldset from "./AttendeeCountFieldset";
 
 interface BookEventProps {
@@ -35,10 +36,18 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
       fragment BookEvent_EventFragment on Event {
         id
         availableDates
+        ...PlacesFieldset_EventFragment
+        eventPlacements {
+          id
+        }
         schedules {
           nodes {
+            ...PlacesFieldset_ScheduleFragment
             scheduledFor
             leftPlaces
+            availablePlacesPlacement {
+              coordinates
+            }
           }
         }
         myBookings {
@@ -145,7 +154,15 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
                 size="sm"
               />
             </FormControl>
-            <AttendeeCountFieldset booked={!!booking} />
+            {event.eventPlacements.length > 0
+              ? schedule && (
+                  <PlacesFieldset
+                    booked={!!booking}
+                    eventFragmentRef={event}
+                    scheduleFragmentRef={schedule}
+                  />
+                )
+              : schedule && <AttendeeCountFieldset booked={!!booking} />}
           </Stack>
           <Typography textAlign="end" level="title-sm" width="240px">
             {getCurrencyFormat(
@@ -162,7 +179,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
               event.attendeePricePerUom?.currency?.name
             )}
           </Typography>
-          {!booking && (
+          {!booking && event.eventPlacements.length === 0 && (
             <SubmitButton
               submitting={form.formState.isSubmitting}
               disabled={!dateField.value?.isValid() || !isValidTime}

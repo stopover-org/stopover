@@ -30,6 +30,8 @@ RSpec.describe EventPlacement, type: :model do
     it 'relations' do
       should belong_to(:firm)
       should belong_to(:event)
+
+      should have_many(:attendees)
     end
 
     it 'validations' do

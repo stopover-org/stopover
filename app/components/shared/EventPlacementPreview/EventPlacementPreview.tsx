@@ -2,6 +2,7 @@ import { EventPlacementPreview_EventPlacementFragment$key } from "artifacts/Even
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { Box } from "@mui/joy";
+import { useTranslation } from "react-i18next";
 import Typography from "../../v2/Typography/Typography";
 import EventPlacementPreviewModal from "./EventPlacementPreviewModal";
 
@@ -21,6 +22,7 @@ const EventPlacementPreview = ({
       `,
       eventPlacementFragmentRef
     );
+  const { t } = useTranslation();
   const [modalOpened, setModalOpened] = React.useState<boolean>(false);
 
   return (
@@ -32,7 +34,7 @@ const EventPlacementPreview = ({
           onClick={() => setModalOpened(true)}
           sx={{ cursor: "pointer" }}
         >
-          Places
+          {t("scenes.firms.events.eventScene.placementsInformation.places")}
         </Typography>
       </Box>
       {modalOpened && (

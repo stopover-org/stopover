@@ -13,6 +13,7 @@ export default {
           },
           placementsInformation: {
             placesPreview: "Placement schema preview",
+            places: "Places",
           },
         },
       },

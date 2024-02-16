@@ -6,6 +6,7 @@ export default {
           bookEvent: "Забронировать",
           chooseCount: "Сколько человек",
           details: "Посмотреть детали",
+          selectPlaces: "Выберите места",
         },
       },
     },

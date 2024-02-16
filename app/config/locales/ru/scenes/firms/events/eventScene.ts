@@ -14,6 +14,7 @@ export default {
           },
           placementsInformation: {
             placesPreview: "Просмотр доступных схемы размещения",
+            places: "Схема размещения",
           },
         },
       },
