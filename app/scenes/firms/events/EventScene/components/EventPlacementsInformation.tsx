@@ -4,7 +4,7 @@ import React from "react";
 import Table from "components/v2/Table/Table";
 import { useTranslation } from "react-i18next";
 import { EventPlacementsInformation_EventFragment$key } from "artifacts/EventPlacementsInformation_EventFragment.graphql";
-import Button from "components/v2/Button";
+import CreateEventPlacement from "components/shared/forms/eventPlacement/CreateEventPlacement";
 
 interface EventPlacementsInformationProps {
   eventFragmentRef: EventPlacementsInformation_EventFragment$key;
@@ -15,9 +15,10 @@ const EventPlacementsInformation = ({
   eventFragmentRef,
   index,
 }: EventPlacementsInformationProps) => {
-  const event = useFragment(
+  const event = useFragment<EventPlacementsInformation_EventFragment$key>(
     graphql`
       fragment EventPlacementsInformation_EventFragment on Event {
+        ...CreateEventPlacement_EventFragment
         eventPlacements {
           title
           id
@@ -66,7 +67,7 @@ const EventPlacementsInformation = ({
   return (
     <TabPanel value={index} size="sm" sx={{ paddingTop: "20px" }}>
       <Stack direction="row" justifyContent="flex-end">
-        <Button size="sm">Add new placement schema</Button>
+        <CreateEventPlacement eventFragmentRef={event} />
       </Stack>
       <Table data={data} headers={headers} />
     </TabPanel>

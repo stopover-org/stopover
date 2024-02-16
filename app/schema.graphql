@@ -814,6 +814,7 @@ enum EventOptionStatusEnum {
 }
 
 type EventPlacement implements Node {
+  event: Event!
   heightPlaces: Int!
   id: ID!
   places: [EventPlacementPlace!]!

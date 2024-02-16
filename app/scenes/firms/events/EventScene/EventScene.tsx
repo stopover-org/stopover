@@ -170,7 +170,9 @@ const EventScene = ({
         >
           {event.title}
         </Link>
-        <Typography level="h4">{event.firm.title}</Typography>
+        <Typography level="h4" sx={{ padding: "0 5px" }}>
+          {event.firm.title}
+        </Typography>
         <Tag color={tagColor} link={false}>
           {t(`statuses.${event.status}`)}
         </Tag>

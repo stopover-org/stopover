@@ -1,45 +1,44 @@
 import { graphql, useFragment } from "react-relay";
+import { useTranslation } from "react-i18next";
 import {
   DialogActions,
   DialogTitle,
   Divider,
-  Grid,
   Modal,
   ModalClose,
   ModalDialog,
   Stack,
 } from "@mui/joy";
-import React from "react";
 import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
-import { useTranslation } from "react-i18next";
-import AddressFieldset from "components/shared/AddressFieldset";
-import SubmitButton from "components/shared/SubmitButton";
-import Button from "components/v2/Button/Button";
+import React from "react";
 import { FormProvider } from "react-hook-form";
-import { EditEventAddressModal_EventFragment$key } from "artifacts/EditEventAddressModal_EventFragment.graphql";
-import { useEditEventAddressForm } from "./useEditEventAddressForm";
+import EventPlacementForm from "components/shared/EventPlacementForm";
+import { CreateEventPlacementModal_EventFragment$key } from "artifacts/CreateEventPlacementModal_EventFragment.graphql";
+import { useCreateEventPlacementForm } from "./useCreateEventPlacementForm";
+import SubmitButton from "../../../SubmitButton/SubmitButton";
+import Button from "../../../../v2/Button/Button";
 
-interface EditAddressModalProps {
-  eventFragmentRef: EditEventAddressModal_EventFragment$key;
+interface CreateEventPlacementModalProps {
+  eventFragmentRef: CreateEventPlacementModal_EventFragment$key;
   open: boolean;
   onClose: () => void;
 }
 
-const EditEventAddressModal = ({
+const CreateEventPlacementModal = ({
   eventFragmentRef,
   open,
   onClose,
-}: EditAddressModalProps) => {
-  const event = useFragment(
+}: CreateEventPlacementModalProps) => {
+  const event = useFragment<CreateEventPlacementModal_EventFragment$key>(
     graphql`
-      fragment EditEventAddressModal_EventFragment on Event {
-        ...useEditEventAddressForm_EventFragment
+      fragment CreateEventPlacementModal_EventFragment on Event {
+        ...useCreateEventPlacementForm_EventFragment
       }
     `,
     eventFragmentRef
   );
   const { t } = useTranslation();
-  const form = useEditEventAddressForm(event, onClose);
+  const form = useCreateEventPlacementForm(event, onClose);
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -48,18 +47,16 @@ const EditEventAddressModal = ({
         <DialogTitle sx={{ marginRight: "30px", marginLeft: "30px" }}>
           <Stack flexDirection="row" alignItems="center" useFlexGap spacing={1}>
             <BusinessRoundedIcon color="warning" />
-            {t("forms.editFirmAddress.modal.header")}
+            {t("forms.createEventPlacement.modal.header")}
           </Stack>
         </DialogTitle>
         <Divider />
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit()}>
-            <Grid container>
-              <AddressFieldset variant="plain" withHeader={false} />
-            </Grid>
+          <form onSubmit={form.handleSubmit()} style={{ width: "100%" }}>
+            <EventPlacementForm />
             <DialogActions>
               <SubmitButton size="sm" submitting={form.formState.isSubmitting}>
-                {t("forms.editFirmAddress.action")}
+                {t("general.save")}
               </SubmitButton>
               <Button variant="plain" color="neutral" onClick={() => onClose()}>
                 {t("general.cancel")}
@@ -72,4 +69,4 @@ const EditEventAddressModal = ({
   );
 };
 
-export default React.memo(EditEventAddressModal);
+export default React.memo(CreateEventPlacementModal);
