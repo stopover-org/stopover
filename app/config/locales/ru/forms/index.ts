@@ -20,6 +20,7 @@ import editEvent from "./editEvent";
 import editProfile from "./editProfile";
 import editFirmAddress from "./editFirmAddress";
 import createEventPlacement from "./createEventPlacement";
+import editEventPlacement from "./editEventPlacement";
 
 export default merge(
   verifyStripeConnect,
@@ -42,5 +43,6 @@ export default merge(
   editEvent,
   editProfile,
   editFirmAddress,
-  createEventPlacement
+  createEventPlacement,
+  editEventPlacement
 );

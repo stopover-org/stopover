@@ -3,6 +3,7 @@
 module Types
   module EventsRelated
     class EventPlacementType < Types::ModelObject
+      field :id, ID, null: false
       field :title, String, null: false
       field :height_places, Integer, null: false
       field :width_places, Integer, null: false

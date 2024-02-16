@@ -20,6 +20,7 @@
 #  index_event_placements_on_firm_id   (firm_id)
 #
 class EventPlacement < ApplicationRecord
+  GRAPHQL_TYPE = Types::EventsRelated::EventPlacementType
   # MODULES ===============================================================
   #
   # MONETIZE ==============================================================
@@ -67,7 +68,7 @@ class EventPlacement < ApplicationRecord
   end
 
   def generate_places
-    return unless places.empty?
+    return if !width_places_changed? && !height_places_changed?
 
     places_hash = {}
     width_places.times do |row|

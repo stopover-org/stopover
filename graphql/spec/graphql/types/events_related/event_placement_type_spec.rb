@@ -29,6 +29,9 @@ RSpec.describe Types::EventsRelated::EventPlacementPlaceType, type: :graphql_typ
       result = subject
       expect(result.dig(:data, :__type, :fields)).to eq([
                                                           {
+                                                            name: 'event'
+                                                          },
+                                                          {
                                                             name: 'heightPlaces'
                                                           },
                                                           {

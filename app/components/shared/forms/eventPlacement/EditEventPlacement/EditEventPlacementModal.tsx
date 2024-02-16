@@ -13,32 +13,33 @@ import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
 import React from "react";
 import { FormProvider } from "react-hook-form";
 import EventPlacementForm from "components/shared/EventPlacementForm";
-import { CreateEventPlacementModal_EventFragment$key } from "artifacts/CreateEventPlacementModal_EventFragment.graphql";
 import SubmitButton from "components/shared/SubmitButton";
-import Button from "components/v2/Button";
-import { useCreateEventPlacementForm } from "./useCreateEventPlacementForm";
+import Button from "components/v2/Button/Button";
+import { EditEventPlacementModal_EventPlacementFragment$key } from "artifacts/EditEventPlacementModal_EventPlacementFragment.graphql";
+import { useEditEventPlacementForm } from "./useEditEventPlacementForm";
 
-interface CreateEventPlacementModalProps {
-  eventFragmentRef: CreateEventPlacementModal_EventFragment$key;
+interface EditEventPlacementModalProps {
+  eventPlacementFragmentRef: EditEventPlacementModal_EventPlacementFragment$key;
   open: boolean;
   onClose: () => void;
 }
 
-const CreateEventPlacementModal = ({
-  eventFragmentRef,
+const EditEventPlacementModal = ({
+  eventPlacementFragmentRef,
   open,
   onClose,
-}: CreateEventPlacementModalProps) => {
-  const event = useFragment<CreateEventPlacementModal_EventFragment$key>(
-    graphql`
-      fragment CreateEventPlacementModal_EventFragment on Event {
-        ...useCreateEventPlacementForm_EventFragment
-      }
-    `,
-    eventFragmentRef
-  );
+}: EditEventPlacementModalProps) => {
+  const eventPlacement =
+    useFragment<EditEventPlacementModal_EventPlacementFragment$key>(
+      graphql`
+        fragment EditEventPlacementModal_EventPlacementFragment on EventPlacement {
+          ...useEditEventPlacementForm_EventPlacementFragment
+        }
+      `,
+      eventPlacementFragmentRef
+    );
   const { t } = useTranslation();
-  const form = useCreateEventPlacementForm(event, onClose);
+  const form = useEditEventPlacementForm(eventPlacement, onClose);
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -47,7 +48,7 @@ const CreateEventPlacementModal = ({
         <DialogTitle sx={{ marginRight: "30px", marginLeft: "30px" }}>
           <Stack flexDirection="row" alignItems="center" useFlexGap spacing={1}>
             <BusinessRoundedIcon color="warning" />
-            {t("forms.createEventPlacement.modal.header")}
+            {t("forms.editEventPlacement.modal.header")}
           </Stack>
         </DialogTitle>
         <Divider />
@@ -69,4 +70,4 @@ const CreateEventPlacementModal = ({
   );
 };
 
-export default React.memo(CreateEventPlacementModal);
+export default React.memo(EditEventPlacementModal);

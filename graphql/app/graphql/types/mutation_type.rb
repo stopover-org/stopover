@@ -17,6 +17,7 @@ module Types
     field :change_event_option_availability, mutation: Mutations::EventsRelated::ChangeEventOptionAvailability
 
     field :create_placement, mutation: Mutations::EventsRelated::CreatePlacement
+    field :update_placement, mutation: Mutations::EventsRelated::UpdatePlacement
 
     field :create_firm, mutation: Mutations::FirmsRelated::CreateFirm
     field :set_current_firm, mutation: Mutations::FirmsRelated::SetCurrentFirm

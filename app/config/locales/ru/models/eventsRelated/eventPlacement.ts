@@ -7,6 +7,7 @@ export default {
         title: "Название",
         widthPlaces: "Количество мест по ширине",
         heightPlaces: "Колчиество мест по высоте",
+        places: "Места",
       },
     },
   },

@@ -299,26 +299,35 @@ const EventScene = ({
                 {event.bookings?.total}
               </Chip>
             </Tab>
-            <Tab variant={tab === 4 ? "outlined" : "plain"}>
-              {t("models.eventPlacement.plural")}
-              <Chip size="sm" variant="soft">
-                {event.eventPlacements.length}
-              </Chip>
-            </Tab>
             {currentUser.serviceUser && (
-              <Tab
-                variant={tab === 5 ? "outlined" : "plain"}
-                sx={{ display: "block" }}
-              >
-                {t("scenes.firms.events.eventScene.tabs.stripeIntegrations")}
-                <Chip size="sm" variant="soft">
-                  {event.stripeIntegrations.nodes.length}
-                </Chip>
-                <br />
-                <Typography fontSize="xs">
-                  {t("models.user.attributes.serviceUser")}
-                </Typography>
-              </Tab>
+              <>
+                <Tab
+                  variant={tab === 4 ? "outlined" : "plain"}
+                  sx={{ display: "block" }}
+                >
+                  {t("models.eventPlacement.plural")}
+                  <Chip size="sm" variant="soft">
+                    {event.eventPlacements.length}
+                  </Chip>
+                  <br />
+                  <Typography fontSize="xs">
+                    {t("models.user.attributes.serviceUser")}
+                  </Typography>
+                </Tab>
+                <Tab
+                  variant={tab === 5 ? "outlined" : "plain"}
+                  sx={{ display: "block" }}
+                >
+                  {t("scenes.firms.events.eventScene.tabs.stripeIntegrations")}
+                  <Chip size="sm" variant="soft">
+                    {event.stripeIntegrations.nodes.length}
+                  </Chip>
+                  <br />
+                  <Typography fontSize="xs">
+                    {t("models.user.attributes.serviceUser")}
+                  </Typography>
+                </Tab>
+              </>
             )}
           </TabList>
           <Box sx={{ width: "calc(100% - 175px)" }}>
@@ -326,13 +335,18 @@ const EventScene = ({
             <EventOptionsInformation index={1} eventFragmentRef={event} />
             <SchedulesInformation index={2} eventFragmentRef={event} />
             <BookingsInformation index={3} eventFragmentRef={event} />
-            <EventPlacementsInformation index={4} eventFragmentRef={event} />
 
             {currentUser.serviceUser && (
-              <StripeIntegrationsInformation
-                index={5}
-                eventFragmentRef={event}
-              />
+              <>
+                <EventPlacementsInformation
+                  index={4}
+                  eventFragmentRef={event}
+                />
+                <StripeIntegrationsInformation
+                  index={5}
+                  eventFragmentRef={event}
+                />
+              </>
             )}
           </Box>
         </Tabs>

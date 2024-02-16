@@ -7,6 +7,7 @@ export default {
         title: "Title",
         widthPlaces: "Places amount (width)",
         heightPlaces: "Places amount (height)",
+        places: "Places",
       },
     },
   },

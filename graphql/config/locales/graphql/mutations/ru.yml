@@ -26,6 +26,9 @@ ru:
       create_placement:
         notifications:
           success: 'Вы создали схему размещения'
+      update_placement:
+        notifications:
+          success: 'Вы обновили схему размещения'
       set_current_firm:
         notifications:
           success: 'Фирма была изменена'

@@ -5,6 +5,7 @@ import Table from "components/v2/Table/Table";
 import { useTranslation } from "react-i18next";
 import { EventPlacementsInformation_EventFragment$key } from "artifacts/EventPlacementsInformation_EventFragment.graphql";
 import CreateEventPlacement from "components/shared/forms/eventPlacement/CreateEventPlacement";
+import EditEventPlacement from "components/shared/forms/eventPlacement/EditEventPlacement";
 
 interface EventPlacementsInformationProps {
   eventFragmentRef: EventPlacementsInformation_EventFragment$key;
@@ -27,6 +28,7 @@ const EventPlacementsInformation = ({
           places {
             available
           }
+          ...EditEventPlacement_EventPlacementFragment
         }
       }
     `,
@@ -50,16 +52,28 @@ const EventPlacementsInformation = ({
         width: 50,
         label: t("models.eventPlacement.attributes.heightPlaces"),
       },
+      {
+        key: "edit",
+        width: 50,
+        label: t("general.edit"),
+      },
+      {
+        key: "places",
+        width: 50,
+        label: t("models.eventPlacement.attributes.places"),
+      },
     ],
     []
   );
 
   const data = React.useMemo(
     () =>
-      event.eventPlacements.map(({ title, widthPlaces, heightPlaces }) => ({
-        title,
-        widthPlaces,
-        heightPlaces,
+      event.eventPlacements.map((placement) => ({
+        title: placement.title,
+        widthPlaces: placement.widthPlaces,
+        heightPlaces: placement.heightPlaces,
+        edit: <EditEventPlacement eventPlacementFragmentRef={placement} />,
+        places: "Places",
       })),
     [event.eventPlacements]
   );

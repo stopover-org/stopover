@@ -25,6 +25,9 @@ en:
       create_placement:
         notifications:
           success: "You've created event displacement"
+      update_placement:
+        notifications:
+          success: "You've updated event displacement"
       set_current_firm:
         notifications:
           success: 'Firm was changed'

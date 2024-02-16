@@ -3,8 +3,8 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { Box } from "@mui/joy";
 import { useTranslation } from "react-i18next";
+import Button from "components/v2/Button/Button";
 import CreateEventPlacementModal from "./CreateEventPlacementModal";
-import Button from "../../../../v2/Button/Button";
 
 interface CreateEventPlacementProps {
   eventFragmentRef: CreateEventPlacement_EventFragment$key;
