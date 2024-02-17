@@ -30,6 +30,9 @@ RSpec.describe Types::EventsRelated::InterestType, type: :graphql_type do
       result = subject
       expect(result.dig(:data, :__type, :fields)).to eq([
                                                           {
+                                                            name: 'availablePlacesPlacement'
+                                                          },
+                                                          {
                                                             name: 'bookedPlaces'
                                                           },
                                                           {
@@ -157,6 +160,9 @@ RSpec.describe Types::EventsRelated::InterestType, type: :graphql_type do
                 schedule(id: $scheduleId) {
                   bookedPlaces
                   leftPlaces
+                  availablePlacesPlacement {
+                    coordinates
+                  }
                 }
               }
             }
@@ -185,6 +191,95 @@ RSpec.describe Types::EventsRelated::InterestType, type: :graphql_type do
 
       expect(booking.attendees.where(status: 'removed').count).to eq(5)
       expect(result.dig(:data, :currentUser, :account, :firm, :schedule, :leftPlaces)).to eq(5)
+    end
+
+    context 'with placement' do
+      before { create(:event_placement, event: event) }
+      context 'without attendees' do
+        it 'available places placement' do
+          result = subject
+
+          expect(result.dig(:data, :currentUser, :account, :firm, :schedule, :availablePlacesPlacement)).to eq([{ coordinates: [0, 0] },
+                                                                                                                { coordinates: [0, 1] },
+                                                                                                                { coordinates: [0, 2] },
+                                                                                                                { coordinates: [0, 3] },
+                                                                                                                { coordinates: [0, 4] },
+                                                                                                                { coordinates: [1, 0] },
+                                                                                                                { coordinates: [1, 1] },
+                                                                                                                { coordinates: [1, 2] },
+                                                                                                                { coordinates: [1, 3] },
+                                                                                                                { coordinates: [1, 4] },
+                                                                                                                { coordinates: [2, 0] },
+                                                                                                                { coordinates: [2, 1] },
+                                                                                                                { coordinates: [2, 2] },
+                                                                                                                { coordinates: [2, 3] },
+                                                                                                                { coordinates: [2, 4] },
+                                                                                                                { coordinates: [3, 0] },
+                                                                                                                { coordinates: [3, 1] },
+                                                                                                                { coordinates: [3, 2] },
+                                                                                                                { coordinates: [3, 3] },
+                                                                                                                { coordinates: [3, 4] },
+                                                                                                                { coordinates: [4, 0] },
+                                                                                                                { coordinates: [4, 1] },
+                                                                                                                { coordinates: [4, 2] },
+                                                                                                                { coordinates: [4, 3] },
+                                                                                                                { coordinates: [4, 4] },
+                                                                                                                { coordinates: [5, 0] },
+                                                                                                                { coordinates: [5, 1] },
+                                                                                                                { coordinates: [5, 2] },
+                                                                                                                { coordinates: [5, 3] },
+                                                                                                                { coordinates: [5, 4] },
+                                                                                                                { coordinates: [6, 0] },
+                                                                                                                { coordinates: [6, 1] },
+                                                                                                                { coordinates: [6, 2] },
+                                                                                                                { coordinates: [6, 3] },
+                                                                                                                { coordinates: [6, 4] }])
+        end
+      end
+
+      context 'with attendees' do
+        before do
+          create(:attendee, place: [0, 0], schedule: event.schedules.last)
+        end
+        it 'available places placement' do
+          result = subject
+
+          expect(result.dig(:data, :currentUser, :account, :firm, :schedule, :availablePlacesPlacement)).to eq([{ coordinates: [0, 1] },
+                                                                                                                { coordinates: [0, 2] },
+                                                                                                                { coordinates: [0, 3] },
+                                                                                                                { coordinates: [0, 4] },
+                                                                                                                { coordinates: [1, 0] },
+                                                                                                                { coordinates: [1, 1] },
+                                                                                                                { coordinates: [1, 2] },
+                                                                                                                { coordinates: [1, 3] },
+                                                                                                                { coordinates: [1, 4] },
+                                                                                                                { coordinates: [2, 0] },
+                                                                                                                { coordinates: [2, 1] },
+                                                                                                                { coordinates: [2, 2] },
+                                                                                                                { coordinates: [2, 3] },
+                                                                                                                { coordinates: [2, 4] },
+                                                                                                                { coordinates: [3, 0] },
+                                                                                                                { coordinates: [3, 1] },
+                                                                                                                { coordinates: [3, 2] },
+                                                                                                                { coordinates: [3, 3] },
+                                                                                                                { coordinates: [3, 4] },
+                                                                                                                { coordinates: [4, 0] },
+                                                                                                                { coordinates: [4, 1] },
+                                                                                                                { coordinates: [4, 2] },
+                                                                                                                { coordinates: [4, 3] },
+                                                                                                                { coordinates: [4, 4] },
+                                                                                                                { coordinates: [5, 0] },
+                                                                                                                { coordinates: [5, 1] },
+                                                                                                                { coordinates: [5, 2] },
+                                                                                                                { coordinates: [5, 3] },
+                                                                                                                { coordinates: [5, 4] },
+                                                                                                                { coordinates: [6, 0] },
+                                                                                                                { coordinates: [6, 1] },
+                                                                                                                { coordinates: [6, 2] },
+                                                                                                                { coordinates: [6, 3] },
+                                                                                                                { coordinates: [6, 4] }])
+        end
+      end
     end
   end
 

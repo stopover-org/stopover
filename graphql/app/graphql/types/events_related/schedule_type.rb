@@ -37,6 +37,8 @@ module Types
       end
 
       def available_places_placement
+        return [] if object.event.event_placements.empty?
+
         object.event.event_placements.last.places.values.flatten
               .select { |place| place['available'] }
               .select { |place| object.attendees.pluck(:place).exclude?(place['coordinates']) }

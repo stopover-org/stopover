@@ -55,6 +55,9 @@ RSpec.describe Types::BookingsRelated::AttendeeType, type: :graphql_type do
                                                             name: 'phone'
                                                           },
                                                           {
+                                                            name: 'place'
+                                                          },
+                                                          {
                                                             name: 'status'
                                                           }
                                                         ])

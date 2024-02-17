@@ -73,6 +73,23 @@ RSpec.describe Mutations::BookingsRelated::AddAttendee, type: :mutation do
   end
 
   context 'book event' do
+    context 'with event placement' do
+      let!(:event_placement) { create(:event_placement, event: event) }
+      let(:input) do
+        { eventId: GraphqlSchema.id_from_object(event),
+          bookedFor: scheduled_for,
+          places: [[0, 0]],
+          attendeesCount: 1 }
+      end
+
+      include_examples :successful
+
+      it 'places stored' do
+        result = nil
+        expect { result = subject.to_h.deep_symbolize_keys }.to change { Booking.count }.by(1)
+        expect(Booking.last.attendees.last.place).to eq([0, 0])
+      end
+    end
     context 'as active user' do
       include_examples :successful
     end
