@@ -5,6 +5,7 @@ import { RightColumn_EventFragment$key } from "artifacts/RightColumn_EventFragme
 import Description from "components/v2/Description";
 import GoogleMap from "components/shared/GoogleMap/GoogleMap";
 import Typography from "components/v2/Typography";
+import { useTranslation } from "react-i18next";
 import BookEvent from "./BookEvent";
 
 interface RightColumnProps {
@@ -29,6 +30,7 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
     `,
     eventFragmentRef
   );
+  const { t } = useTranslation();
   return (
     <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
       <Box>
@@ -38,10 +40,13 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
         {event.address && (
           <>
             <Divider sx={{ margin: 2 }} />
-            <Typography level="h4" fontSize="lg-title">
+            <Typography level="h4">
+              {t("scenes.attendees.events.eventScene.meetPoint")}
+            </Typography>
+            <Typography fontSize="lg-title">
               {event.address?.fullAddress}
             </Typography>
-            <Typography level="h4" fontSize="lg-title">
+            <Typography fontSize="lg-title">
               {event.address?.country}, {event.address?.city}
             </Typography>
             {event.address?.latitude && event.address?.longitude && (

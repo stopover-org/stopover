@@ -7,6 +7,7 @@ export default {
           chooseCount: "Сколько человек",
           details: "Посмотреть детали",
           selectPlaces: "Выберите места",
+          meetPoint: "Где встречаемся?",
         },
       },
     },
