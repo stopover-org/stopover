@@ -74,6 +74,8 @@ class Event < ApplicationRecord
   has_many :attendee_options, dependent: :nullify
   has_many :booking_cancellation_options, dependent: :destroy
   has_many :event_placements, dependent: :destroy
+  has_many :tour_plans, dependent: :destroy
+  has_many :tour_places, dependent: :destroy
   has_many :stripe_integrations, as: :stripeable, dependent: :destroy
   has_many :dynamic_translations, as: :translatable, dependent: :destroy
 
