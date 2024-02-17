@@ -3,6 +3,7 @@ import { Grid } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
 import { FormProvider } from "react-hook-form";
 import { EventScene_EventFragment$key } from "artifacts/EventScene_EventFragment.graphql";
+import { EventScene_AccountFragment$key } from "artifacts/EventScene_AccountFragment.graphql";
 import Breadcrumbs from "./components/Breadcrumbs";
 import { useBookEventForm } from "./useBookEventForm";
 import EventTitle from "./components/EventTitle";
@@ -11,9 +12,22 @@ import RightColumn from "./components/RightColumn";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_EventFragment$key;
+  accountFragmentRef: EventScene_AccountFragment$key;
 }
 
-const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
+const EventScene = ({
+  eventFragmentRef,
+  accountFragmentRef,
+}: EventSceneProps) => {
+  const account = useFragment(
+    graphql`
+      fragment EventScene_AccountFragment on Account {
+        ...useBookEventForm_AccountFragment
+      }
+    `,
+    accountFragmentRef
+  );
+
   const event = useFragment(
     graphql`
       fragment EventScene_EventFragment on Event {
@@ -28,7 +42,7 @@ const EventScene = ({ eventFragmentRef }: EventSceneProps) => {
     `,
     eventFragmentRef
   );
-  const form = useBookEventForm(event);
+  const form = useBookEventForm(event, account);
   const showLeftColumn = React.useMemo(
     () => event?.images?.length > 0,
     [event]
