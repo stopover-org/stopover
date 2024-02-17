@@ -39,6 +39,7 @@ const translation = {
     copied: "Скопировано",
     statistics: "Статистика",
     settings: "Настройки",
+    privacy: "Конфиденциальность",
   },
   weekdays: {
     monday: "Понедельник",
