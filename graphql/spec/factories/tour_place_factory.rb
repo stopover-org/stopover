@@ -4,14 +4,15 @@
 #
 # Table name: tour_places
 #
-#  id           :bigint           not null, primary key
-#  description  :text
-#  title        :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  event_id     :bigint
-#  firm_id      :bigint
-#  tour_plan_id :bigint
+#  id            :bigint           not null, primary key
+#  description   :text
+#  duration_time :string
+#  title         :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  event_id      :bigint
+#  firm_id       :bigint
+#  tour_plan_id  :bigint
 #
 # Indexes
 #

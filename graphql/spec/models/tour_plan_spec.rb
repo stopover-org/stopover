@@ -22,7 +22,7 @@ require 'rails_helper'
 RSpec.describe TourPlan, type: :model do
   describe 'model setup' do
     it 'constants' do
-      # constant for gql
+      expect(TourPlan::GRAPHQL_TYPE).to eq(Types::TripsRelated::TourPlanType)
     end
 
     it 'relations' do
@@ -34,7 +34,6 @@ RSpec.describe TourPlan, type: :model do
     context 'validations' do
       it 'check' do
         should validate_presence_of(:title)
-        should validate_presence_of(:description)
       end
     end
     context 'callbacks' do

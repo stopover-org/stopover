@@ -6,6 +6,7 @@ class CreateTourPlaces < ActiveRecord::Migration[7.0]
       t.references :tour_plan
 
       t.string :title
+      t.string :duration_time
       t.text :description
 
       t.timestamps

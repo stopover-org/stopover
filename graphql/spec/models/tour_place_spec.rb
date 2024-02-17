@@ -4,14 +4,15 @@
 #
 # Table name: tour_places
 #
-#  id           :bigint           not null, primary key
-#  description  :text
-#  title        :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  event_id     :bigint
-#  firm_id      :bigint
-#  tour_plan_id :bigint
+#  id            :bigint           not null, primary key
+#  description   :text
+#  duration_time :string
+#  title         :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  event_id      :bigint
+#  firm_id       :bigint
+#  tour_plan_id  :bigint
 #
 # Indexes
 #
@@ -24,7 +25,7 @@ require 'rails_helper'
 RSpec.describe TourPlace, type: :model do
   describe 'model setup' do
     it 'constants' do
-      # constant for gql
+      expect(TourPlace::GRAPHQL_TYPE).to eq(Types::TripsRelated::TourPlaceType)
     end
 
     it 'relations' do
@@ -35,7 +36,6 @@ RSpec.describe TourPlace, type: :model do
     context 'validations' do
       it 'check' do
         should validate_presence_of(:title)
-        should validate_presence_of(:description)
       end
     end
     context 'callbacks' do

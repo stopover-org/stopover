@@ -18,6 +18,7 @@
 #  index_tour_plans_on_firm_id   (firm_id)
 #
 class TourPlan < ApplicationRecord
+  GRAPHQL_TYPE = Types::TripsRelated::TourPlanType
   # MODULES ===============================================================
   #
   # MONETIZE ==============================================================
@@ -44,11 +45,11 @@ class TourPlan < ApplicationRecord
   # SECURE PASSWORD =======================================================
   #
   # ATTACHMENTS ===========================================================
-  #
+  has_one_attached :image
   # RICH_TEXT =============================================================
   #
   # VALIDATIONS ===========================================================
-  validates :title, :description, presence: true
+  validates :title, presence: true
 
   # CALLBACKS =============================================================
   before_validation :adjust_references

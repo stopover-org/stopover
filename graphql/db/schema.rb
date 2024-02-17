@@ -442,6 +442,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_17_222502) do
     t.bigint "event_id"
     t.bigint "tour_plan_id"
     t.string "title"
+    t.string "duration_time"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
