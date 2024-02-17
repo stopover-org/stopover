@@ -8,17 +8,19 @@ module Mutations
       argument :attendees_count, Integer, required: false
       argument :places, [[Integer]], required: false
 
+      argument :email, String, required: false
+      argument :phone, String, required: false
+
       field :booking, Types::BookingsRelated::BookingType
       field :access_token, String
 
       def resolve(event:, **args)
         service = Stopover::BookingManagement::BookingCreator.new(context[:current_user])
         booking = if event.event_placements.count.zero?
-                    service.perform(event, args[:booked_for], args[:attendees_count])
+                    service.perform(event, args[:booked_for], args[:attendees_count], **args)
                   else
                     service.perform(event, args[:booked_for], args[:attendees_count], places: args[:places])
                   end
-        context[:current_user] = booking.account.user
 
         {
           booking: booking,

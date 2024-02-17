@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Autocomplete,
+  Box,
   FormControl,
   FormLabel,
   Grid,
@@ -25,6 +26,7 @@ import SubmitButton from "components/shared/SubmitButton";
 import { capitalize } from "lib/utils/capitalize";
 import PlacesFieldset from "./PlacesFieldset";
 import AttendeeCountFieldset from "./AttendeeCountFieldset";
+import Input from "../../../../../components/v2/Input";
 
 interface BookEventProps {
   eventFragmentRef: BookEvent_EventFragment$key;
@@ -126,6 +128,7 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
               dateField.onChange(date.startOf("day"));
             }}
           />
+
           <Stack
             direction="row"
             spacing={1}
@@ -165,6 +168,22 @@ const BookEvent = ({ eventFragmentRef }: BookEventProps) => {
                 )
               : schedule && <AttendeeCountFieldset booked={!!booking} />}
           </Stack>
+
+          <Stack spacing={1} useFlexGap>
+            <Box>
+              <Input
+                label={t("models.attendee.attributes.email")}
+                {...useFormField("email")}
+              />
+            </Box>
+            <Box>
+              <Input
+                label={t("models.attendee.attributes.phone")}
+                {...useFormField("phone")}
+              />
+            </Box>
+          </Stack>
+
           <Typography textAlign="end" level="title-sm" width="240px">
             {getCurrencyFormat(
               event.attendeePricePerUom?.cents,

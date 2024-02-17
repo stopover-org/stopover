@@ -15,6 +15,9 @@ export const Query = graphql`
   query scene_EventPage_Query($id: ID!) {
     currentUser {
       ...Layout_CurrentUserFragment
+      account {
+        ...EventScene_AccountFragment
+      }
     }
     event(id: $id) {
       id
@@ -38,7 +41,10 @@ const Scene = ({
     <SceneWrapper>
       <Layout currentUserFragment={data.currentUser}>
         <AuthGuard accessible={!!data.event?.id} noAccess={<NotFound />}>
-          <EventScene eventFragmentRef={data.event!} />
+          <EventScene
+            eventFragmentRef={data.event!}
+            accountFragmentRef={data.currentUser.account}
+          />
         </AuthGuard>
       </Layout>
     </SceneWrapper>
