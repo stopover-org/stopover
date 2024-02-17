@@ -27,7 +27,7 @@ module Stopover
                                        phone: args[:phone])
 
         if args[:places]&.any?
-          places.each_with_index do |place, index|
+          args[:places].each_with_index do |place, index|
             attendees[index].place = place
           end
         end
