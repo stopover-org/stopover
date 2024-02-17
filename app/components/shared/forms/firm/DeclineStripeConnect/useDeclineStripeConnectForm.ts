@@ -10,7 +10,7 @@ interface DeclineStripeConnectFields {
 }
 
 function useDefaultValues(
-  optionFragmentRef: useDeclineStripeConnectForm_StripeConnect$key
+  stripeConnectFragmentRef: useDeclineStripeConnectForm_StripeConnect$key
 ): DeclineStripeConnectFields {
   const stripeConnect = useFragment(
     graphql`
@@ -18,7 +18,7 @@ function useDefaultValues(
         id
       }
     `,
-    optionFragmentRef
+    stripeConnectFragmentRef
   );
 
   return React.useMemo(

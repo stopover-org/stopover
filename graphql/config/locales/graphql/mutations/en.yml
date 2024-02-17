@@ -3,30 +3,36 @@ en:
     errors:
       not_authorized: 'You are not authorized'
       general: 'Something went wrong'
-      
+
       firm_not_verified: 'Firm was not verified'
       firm_removed: 'Firm removed'
 
       booking_cancelled: 'Booking cancelled'
       booking_past: 'Booking past'
       booking_paid: 'Booking paid'
-      
+
       event_past: 'Event past'
       event_removed: 'Event removed'
       all_places_reserved: 'All places are reserved'
       already_booked: 'You are already booked this event'
       event_not_verified: "Event was not verified"
       event_published: 'Event published'
-      
+
       attendee_removed: 'Attendee removed'
       insufficient_funds: 'Insufficient funds'
 
     mutations:
+      create_placement:
+        notifications:
+          success: "You've created event displacement"
+      update_placement:
+        notifications:
+          success: "You've updated event displacement"
       set_current_firm:
         notifications:
           success: 'Firm was changed'
       sign_in:
-        errors: 
+        errors:
           confirmation_code_incorrect: 'Confirmation code is incorrect'
         notifications:
           success: 'You successfully signed in'
@@ -131,7 +137,7 @@ en:
       withdraw_balance:
         notifications:
           success: 'We sent money to your account!'
-      
+
       cancel_trip:
         notifications:
           success: ''

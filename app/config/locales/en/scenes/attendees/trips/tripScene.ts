@@ -18,6 +18,7 @@ export default {
           requireSignIn: "You need to sign in to continue",
           leftToPayLater:
             "When you will come you will need to pay {{leftToPayLater}} in cash",
+          places: "Places",
           cancelBookingModal: {
             title: "Booking cancellation",
             refundAmount: "Refund amount:",

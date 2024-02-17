@@ -3,7 +3,7 @@ ru:
     errors:
       not_authorized: 'У вас нет прав доступа'
       general: 'Что-то пошло не так'
-      
+
       firm_not_verified: 'Фирма должна быть верифицирована'
       firm_removed: 'Фирма была удалена'
       stripe_payment_method_required: 'Require stripe payment method'
@@ -11,7 +11,7 @@ ru:
       booking_cancelled: 'Бронирование было отменено'
       booking_past: 'Бронирование уже прошло'
       booking_paid: 'Бронирование было оплачено'
-      
+
       event_past: 'Мероприятие уже прошло'
       event_removed: 'Мероприятие было удалено'
       all_places_reserved: 'Нет мест'
@@ -23,11 +23,17 @@ ru:
       insufficient_funds: 'Недостаточно средств'
 
     mutations:
+      create_placement:
+        notifications:
+          success: 'Вы создали схему размещения'
+      update_placement:
+        notifications:
+          success: 'Вы обновили схему размещения'
       set_current_firm:
         notifications:
           success: 'Фирма была изменена'
       sign_in:
-        errors: 
+        errors:
           confirmation_code_incorrect: 'Код подтверждения неверен'
         notifications:
           success: 'Вы успешно вошли в систему'
@@ -132,7 +138,7 @@ ru:
       withdraw_balance:
         notifications:
           success: 'Мы отправили деньги на ваш аккаунт'
-      
+
       cancel_trip:
         notifications:
           success: ''

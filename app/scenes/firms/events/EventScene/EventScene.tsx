@@ -36,6 +36,7 @@ import SchedulesInformation from "./components/SchedulesInformation";
 import EventOptionsInformation from "./components/EventOptionsInformation";
 import GeneralInformation from "./components/GeneralInformation";
 import StripeIntegrationsInformation from "./components/StripeIntegrationsInformation";
+import EventPlacementsInformation from "./components/EventPlacementsInformation";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -76,6 +77,10 @@ const EventScene = ({
             id
           }
         }
+        eventPlacements {
+          id
+        }
+        ...EventPlacementsInformation_EventFragment
         ...GeneralInformation_EventFragment
         ...EventOptionsInformation_EventFragment
         ...SchedulesInformation_EventFragment
@@ -165,7 +170,9 @@ const EventScene = ({
         >
           {event.title}
         </Link>
-        <Typography level="h4">{event.firm.title}</Typography>
+        <Typography level="h4" sx={{ padding: "0 5px" }}>
+          {event.firm.title}
+        </Typography>
         <Tag color={tagColor} link={false}>
           {t(`statuses.${event.status}`)}
         </Tag>
@@ -293,19 +300,34 @@ const EventScene = ({
               </Chip>
             </Tab>
             {currentUser.serviceUser && (
-              <Tab
-                variant={tab === 4 ? "outlined" : "plain"}
-                sx={{ display: "block" }}
-              >
-                {t("scenes.firms.events.eventScene.tabs.stripeIntegrations")}
-                <Chip size="sm" variant="soft">
-                  {event.stripeIntegrations.nodes.length}
-                </Chip>
-                <br />
-                <Typography fontSize="xs">
-                  {t("models.user.attributes.serviceUser")}
-                </Typography>
-              </Tab>
+              <>
+                <Tab
+                  variant={tab === 4 ? "outlined" : "plain"}
+                  sx={{ display: "block" }}
+                >
+                  {t("models.eventPlacement.plural")}
+                  <Chip size="sm" variant="soft">
+                    {event.eventPlacements.length}
+                  </Chip>
+                  <br />
+                  <Typography fontSize="xs">
+                    {t("models.user.attributes.serviceUser")}
+                  </Typography>
+                </Tab>
+                <Tab
+                  variant={tab === 5 ? "outlined" : "plain"}
+                  sx={{ display: "block" }}
+                >
+                  {t("scenes.firms.events.eventScene.tabs.stripeIntegrations")}
+                  <Chip size="sm" variant="soft">
+                    {event.stripeIntegrations.nodes.length}
+                  </Chip>
+                  <br />
+                  <Typography fontSize="xs">
+                    {t("models.user.attributes.serviceUser")}
+                  </Typography>
+                </Tab>
+              </>
             )}
           </TabList>
           <Box sx={{ width: "calc(100% - 175px)" }}>
@@ -315,10 +337,16 @@ const EventScene = ({
             <BookingsInformation index={3} eventFragmentRef={event} />
 
             {currentUser.serviceUser && (
-              <StripeIntegrationsInformation
-                index={4}
-                eventFragmentRef={event}
-              />
+              <>
+                <EventPlacementsInformation
+                  index={4}
+                  eventFragmentRef={event}
+                />
+                <StripeIntegrationsInformation
+                  index={5}
+                  eventFragmentRef={event}
+                />
+              </>
             )}
           </Box>
         </Tabs>

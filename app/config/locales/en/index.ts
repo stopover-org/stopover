@@ -39,6 +39,7 @@ const translation = {
     copied: "Copied",
     statistics: "Statistics",
     settings: "Settings",
+    privacy: "Privacy",
   },
   weekdays: {
     monday: "Monday",

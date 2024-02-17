@@ -120,7 +120,7 @@ const GeneralInformation = ({
         <Section>
           <Grid xs={12}>
             <Stack direction="row" justifyContent="space-between">
-              <Typography level="h4">Address</Typography>
+              <Typography level="h4">{t("models.address.singular")}</Typography>
               <Box>
                 <EditEventAddress eventFragmentRef={event} />
               </Box>

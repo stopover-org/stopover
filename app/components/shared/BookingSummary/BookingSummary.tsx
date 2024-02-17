@@ -38,11 +38,17 @@ const BookingSummary = ({
             name
           }
         }
+        event {
+          eventPlacements {
+            id
+          }
+        }
 
         activeAttendees: attendees(
           filters: { status: [registered, not_registered] }
         ) {
           id
+          place
           ...useRemoveAttendeeForm_AttendeeFragment
         }
         ...useAddAttendeeForm_BookingFragment
@@ -117,6 +123,14 @@ const BookingSummary = ({
             )}
           </ButtonGroup>
         </Stack>
+        {booking.event.eventPlacements.length > 0 && (
+          <Stack direction="row" alignItems="flex-end">
+            {t("scenes.attendees.trips.tripScene.places")}:{" "}
+            {booking.activeAttendees
+              .map(({ place }) => place?.join(""))
+              .join(", ")}
+          </Stack>
+        )}
       </Grid>
       <Grid xs={6}>
         <Typography

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_13_101454) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_16_120932) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -130,8 +130,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_13_101454) do
     t.bigint "firm_id"
     t.bigint "event_id"
     t.bigint "schedule_id"
+    t.bigint "event_placement_id"
+    t.integer "place", default: [], array: true
     t.index ["booking_id"], name: "index_attendees_on_booking_id"
     t.index ["event_id"], name: "index_attendees_on_event_id"
+    t.index ["event_placement_id"], name: "index_attendees_on_event_placement_id"
     t.index ["firm_id"], name: "index_attendees_on_firm_id"
     t.index ["schedule_id"], name: "index_attendees_on_schedule_id"
   end
@@ -230,6 +233,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_13_101454) do
     t.string "status", default: "available"
     t.string "language", default: "en"
     t.index ["event_id"], name: "index_event_options_on_event_id"
+  end
+
+  create_table "event_placements", force: :cascade do |t|
+    t.bigint "firm_id"
+    t.bigint "event_id"
+    t.string "title"
+    t.integer "width_places", default: 0
+    t.integer "height_places", default: 0
+    t.jsonb "places", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_placements_on_event_id"
+    t.index ["firm_id"], name: "index_event_placements_on_firm_id"
   end
 
   create_table "events", force: :cascade do |t|

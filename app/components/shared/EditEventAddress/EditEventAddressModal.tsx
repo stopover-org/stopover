@@ -30,7 +30,7 @@ const EditEventAddressModal = ({
   open,
   onClose,
 }: EditAddressModalProps) => {
-  const address = useFragment(
+  const event = useFragment(
     graphql`
       fragment EditEventAddressModal_EventFragment on Event {
         ...useEditEventAddressForm_EventFragment
@@ -39,7 +39,7 @@ const EditEventAddressModal = ({
     eventFragmentRef
   );
   const { t } = useTranslation();
-  const form = useEditEventAddressForm(address, onClose);
+  const form = useEditEventAddressForm(event, onClose);
 
   return (
     <Modal open={open} onClose={onClose}>

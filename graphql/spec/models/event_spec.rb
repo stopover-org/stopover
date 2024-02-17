@@ -60,6 +60,8 @@ RSpec.describe Event, type: :model do
       should have_many(:attendees).dependent(:nullify)
       should have_many(:attendee_options).dependent(:nullify)
       should have_many(:booking_cancellation_options).dependent(:destroy)
+      should have_many(:event_placements).dependent(:destroy)
+
       should have_many(:stripe_integrations).dependent(:destroy)
       should have_many(:dynamic_translations).dependent(:destroy)
 

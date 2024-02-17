@@ -61,6 +61,9 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
           title
           description
           durationTime
+          eventPlacements {
+            id
+          }
         }
         ...EditAttendeesModal_BookingFragment
         ...BookingTime_BookingFragment
@@ -222,7 +225,10 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
               },
             })}
           >
-            <BookingSummary bookingFragmentRef={booking} />
+            <BookingSummary
+              bookingFragmentRef={booking}
+              readonly={booking.event.eventPlacements.length > 0}
+            />
           </CardOverflow>
         </Stack>
       </Card>

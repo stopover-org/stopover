@@ -12,6 +12,7 @@ module Types
       field :email, String
       field :full_name, String
       field :status, Types::Statuses::AttendeeStatusEnum, null: false
+      field :place, [Integer]
     end
   end
 end

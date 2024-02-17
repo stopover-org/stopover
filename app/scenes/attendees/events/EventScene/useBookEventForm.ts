@@ -15,6 +15,7 @@ interface BookEventFields {
   eventId: string;
   date: Moment | null | undefined;
   attendeesCount: number;
+  places: number[][];
 }
 
 function useDefaultValues(
@@ -61,6 +62,7 @@ function useDefaultValues(
       eventId: event.id,
       date: parsedDate,
       attendeesCount: 1,
+      places: [],
     }),
     [event]
   );

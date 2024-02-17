@@ -11,6 +11,7 @@ module Types
         argument :filters, Types::Filters::BookingsFilter, required: false
       end
       field :left_places, Integer
+      field :available_places_placement, [Types::EventsRelated::EventPlacementPlaceType]
       field :booked_places, Integer
       field :statistics, [Types::StatisticsType], null: false
 
@@ -33,6 +34,14 @@ module Types
         return left if left.positive?
 
         0
+      end
+
+      def available_places_placement
+        return [] if object.event.event_placements.empty?
+
+        object.event.event_placements.last.places.values.flatten
+              .select { |place| place['available'] }
+              .select { |place| object.attendees.pluck(:place).exclude?(place['coordinates']) }
       end
 
       def bookings(**args)

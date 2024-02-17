@@ -62,6 +62,9 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
                                                             name: 'eventOptions'
                                                           },
                                                           {
+                                                            name: 'eventPlacements'
+                                                          },
+                                                          {
                                                             name: 'eventType'
                                                           },
                                                           {

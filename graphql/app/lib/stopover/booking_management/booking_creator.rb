@@ -9,7 +9,7 @@ module Stopover
         @current_trip_service = Stopover::CurrentTripService.new(user: @user)
       end
 
-      def perform(event, booked_for, attendees_count = 1)
+      def perform(event, booked_for, attendees_count = 1, places: [])
         @current_trip = @current_trip_service.get_current_trip(booked_for)
         bookings = event.bookings.where.not(status: :cancelled)
                         .includes(:schedule)
@@ -20,9 +20,13 @@ module Stopover
         return bookings.first if bookings.any?
 
         attendees = (1..attendees_count).map { Attendee.new }
-        attendees[0].assign_attributes(first_name:  @account.name,
-                                       email:       @account.user.email,
-                                       phone:       @account.user.phone)
+        attendees[0].assign_attributes(first_name: @account.name,
+                                       email: @account.user.email,
+                                       phone: @account.user.phone)
+
+        places.each_with_index do |place, index|
+          attendees[index].place = place
+        end
 
         @current_trip.update!(status: 'active') if @current_trip.cancelled?
 

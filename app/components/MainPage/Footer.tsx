@@ -1,8 +1,9 @@
-import { Grid, Option, Sheet } from "@mui/joy";
+import { Grid, Option, Sheet, Stack } from "@mui/joy";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useCookies } from "react-cookie";
-import Select from "../v2/Select";
+import Select from "components/v2/Select";
+import Link from "components/v2/Link";
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
@@ -23,19 +24,27 @@ const Footer = () => {
   return (
     <Sheet sx={{ minHeight: "100px" }}>
       <Grid container>
-        <Grid md={4} sm={12} padding={4} />
-        <Grid md={4} sm={12} padding={4} />
         <Grid md={4} sm={12} padding={4}>
-          <Select
-            placeholder={t("languages.action")}
-            name={i18n.language}
-            sx={{ maxWidth: 200 }}
-            onChange={setLanguage}
-            value={cookies.i18next}
-          >
-            <Option value="ru">{t("languages.russian")}</Option>
-            <Option value="en">{t("languages.english")}</Option>
-          </Select>
+          <Stack direction="column" alignItems="flex-end">
+            <Link href="/pages/privacy">{t("general.privacy")}</Link>
+          </Stack>
+        </Grid>
+        <Grid md={4} sm={12} padding={4}>
+          <Stack direction="column" alignItems="center" />
+        </Grid>
+        <Grid md={4} sm={12} padding={4}>
+          <Stack direction="column" alignItems="flex-staft">
+            <Select
+              placeholder={t("languages.action")}
+              name={i18n.language}
+              sx={{ maxWidth: 200 }}
+              onChange={setLanguage}
+              value={cookies.i18next}
+            >
+              <Option value="ru">{t("languages.russian")}</Option>
+              <Option value="en">{t("languages.english")}</Option>
+            </Select>
+          </Stack>
         </Grid>
       </Grid>
     </Sheet>

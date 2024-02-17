@@ -5,14 +5,19 @@ module Mutations
     class BookEvent < BaseMutation
       argument :event_id, ID, loads: Types::EventsRelated::EventType
       argument :booked_for, Types::DateTimeType
-      argument :attendees_count, Integer
+      argument :attendees_count, Integer, required: false
+      argument :places, [[Integer]], required: false
 
       field :booking, Types::BookingsRelated::BookingType
       field :access_token, String
 
       def resolve(event:, **args)
         service = Stopover::BookingManagement::BookingCreator.new(context[:current_user])
-        booking = service.perform(event, args[:booked_for], args[:attendees_count])
+        booking = if event.event_placements.count.zero?
+                    service.perform(event, args[:booked_for], args[:attendees_count])
+                  else
+                    service.perform(event, args[:booked_for], args[:attendees_count], places: args[:places])
+                  end
         context[:current_user] = booking.account.user
 
         {

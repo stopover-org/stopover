@@ -6,7 +6,7 @@ include SendGrid
 module Stopover
   class MailProvider
     DEFAULT_SENDER = 'no-reply@stopoverx.com'
-    NOTIFICATION_EMAIL = 'stopover@dorokhovich.ru'
+    NOTIFICATION_EMAIL = 'mikhail@stopoverx.com'
 
     DEV_DOMAINS = %w[dorokhovich.ru stopoverx.com].freeze
 

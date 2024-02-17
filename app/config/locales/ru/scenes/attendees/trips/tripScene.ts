@@ -17,6 +17,7 @@ export default {
           requireSignIn: "Для продолжения необходимо зарегистрироваться",
           leftToPayLater:
             "На месте вам нужно будет доплатить {{leftToPayLater}} наличными",
+          places: "Места",
           cancelBookingModal: {
             title: "Отмена бронирования",
             refundAmount: "Вам вернется:",

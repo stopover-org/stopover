@@ -29,7 +29,7 @@ const NotFound = () => {
   return (
     <Layout currentUserFragment={data.currentUser}>
       <AuthGuard accessible>
-        <NotFound />
+        <NotFoundComponent />
       </AuthGuard>
     </Layout>
   );
@@ -38,7 +38,7 @@ const NotFound = () => {
 export default () => (
   <PageWrapper>
     <SceneWrapper>
-      <NotFoundComponent />
+      <NotFound />
     </SceneWrapper>
   </PageWrapper>
 );

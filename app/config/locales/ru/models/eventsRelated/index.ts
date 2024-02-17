@@ -5,6 +5,7 @@ import eventOptionTranslations from "./eventOption";
 import interestTranslations from "./interest";
 import scheduleTranslations from "./schedule";
 import stripeIntegrationTranslations from "./stripeIntegration";
+import eventPlacements from "./eventPlacement";
 
 export default merge(
   bookingCancellationOptionTranslations,
@@ -12,5 +13,6 @@ export default merge(
   eventOptionTranslations,
   interestTranslations,
   scheduleTranslations,
-  stripeIntegrationTranslations
+  stripeIntegrationTranslations,
+  eventPlacements
 );
