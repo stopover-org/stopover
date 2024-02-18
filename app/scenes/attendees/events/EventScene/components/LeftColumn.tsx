@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import { useTheme } from "@mui/joy";
+import { Box, useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
 import Gallery from "../../../../../components/v2/Gallery";
 import { LeftColumn_EventFragment$key } from "../../../../../artifacts/LeftColumn_EventFragment.graphql";
@@ -26,11 +26,19 @@ const LeftColumn = ({ eventFragmentRef }: LeftColumnProps) => {
   const theme = useTheme();
   const isMobileView = useMediaQuery(theme.breakpoints.down("md"));
   return (
-    <Gallery
-      images={images}
-      width="100%"
-      numberInRow={isMobileView || images.length < 4 ? 1 : 2}
-    />
+    <Box
+      sx={{
+        position: "sticky",
+        top: 0,
+        left: 0,
+      }}
+    >
+      <Gallery
+        images={images}
+        width="100%"
+        numberInRow={isMobileView || images.length < 4 ? 1 : 2}
+      />
+    </Box>
   );
 };
 
