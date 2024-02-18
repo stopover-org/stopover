@@ -54,7 +54,6 @@ const BookingCancellationOptionsFieldset = () => {
     [bookingCancellationOptionsField]
   );
   const { t } = useTranslation();
-  console.log(form);
 
   return (
     <Fieldset>
@@ -62,7 +61,7 @@ const BookingCancellationOptionsFieldset = () => {
         <Grid xs={12}>
           <Stack direction="row" justifyContent="space-between">
             <Typography level="title-lg">
-              Booking Cancellation Options
+              {t("models.bookingCancellationOption.plural")}
             </Typography>
             <Button size="sm" onClick={addBookingCancellationOption}>
               {t("forms.editEvent.addCancellationOption")}

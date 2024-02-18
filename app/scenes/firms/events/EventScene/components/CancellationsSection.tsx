@@ -36,7 +36,7 @@ const CancellationsSection = ({
   const { t } = useTranslation();
 
   return (
-    <Section>
+    <Section lg={8} md={12} sm={12} xs={12}>
       <Grid xs={12}>
         <Stack direction="row" justifyContent="space-between">
           <Typography level="h3">

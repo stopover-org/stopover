@@ -747,6 +747,7 @@ type Event implements Node {
     last: Int
   ): StripeIntegrationConnection!
   title: String!
+  tourPlan: TourPlan
   tourPlans: [TourPlan!]
 }
 

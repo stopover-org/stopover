@@ -1,7 +1,7 @@
 export default {
   forms: {
     editBookingCancellationsForm: {
-      action: "Сохранить",
+      action: "Измененить условия отмены бронирования",
       modal: {
         header: "Изменение условий отмены бронирования",
       },

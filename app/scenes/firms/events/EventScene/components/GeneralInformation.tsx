@@ -25,6 +25,7 @@ import GoogleMap from "components/shared/GoogleMap/GoogleMap";
 import DataRow from "scenes/firms/DashboardScene/components/DataRow";
 import EditEventAddress from "components/shared/EditEventAddress";
 import CancellationsSection from "./CancellationsSection";
+import TourPlanSection from "./TourPlanSection";
 
 interface GeneralInformationProps {
   eventFragmentRef: GeneralInformation_EventFragment$key;
@@ -35,7 +36,7 @@ const GeneralInformation = ({
   eventFragmentRef,
   index,
 }: GeneralInformationProps) => {
-  const event = useFragment(
+  const event = useFragment<GeneralInformation_EventFragment$key>(
     graphql`
       fragment GeneralInformation_EventFragment on Event {
         description
@@ -89,6 +90,7 @@ const GeneralInformation = ({
         }
         ...EditEventAddress_EventFragment
         ...CancellationsSection_EventFragment
+        ...TourPlanSection_EventFragment
       }
     `,
     eventFragmentRef
@@ -102,7 +104,7 @@ const GeneralInformation = ({
       sx={{ paddingTop: "20px", minWidth: "600px" }}
     >
       <Sheet>
-        <Grid lg={6} md={8} sm={12} xs={12}>
+        <Grid lg={6} md={12} sm={12} xs={12}>
           <Card>
             <Typography level="h4">{t("general.statistics")}</Typography>
             <CardContent>
@@ -117,7 +119,7 @@ const GeneralInformation = ({
           </Card>
         </Grid>
 
-        <Section>
+        <Section lg={8} md={12} sm={12} xs={12}>
           <Grid xs={12}>
             <Stack direction="row" justifyContent="space-between">
               <Typography level="h4">{t("models.address.singular")}</Typography>
@@ -152,7 +154,9 @@ const GeneralInformation = ({
           )}
         </Section>
 
-        <Section>
+        <TourPlanSection eventFragmentRef={event} />
+
+        <Section lg={8} md={12} sm={12} xs={12}>
           <Grid container xs={12} spacing={2}>
             <Grid xs={12}>
               <DataRow

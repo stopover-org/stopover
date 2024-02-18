@@ -3,20 +3,18 @@ import { useTranslation } from "react-i18next";
 import React from "react";
 import { Box, IconButton, Tooltip } from "@mui/joy";
 import EditNoteIcon from "@mui/icons-material/Edit";
-import { EditEventCancellations_EventFragment$key } from "artifacts/EditEventCancellations_EventFragment.graphql";
-import EditEventCancellationsModal from "./EditEventCancellationsModal";
+import { EditEventTourPlan_EventFragment$key } from "artifacts/EditEventTourPlan_EventFragment.graphql";
+import EditEventTourPlanModal from "./EditEventTourPlanModal";
 
-interface EditEventCancellationProps {
-  eventFragmentRef: EditEventCancellations_EventFragment$key;
+interface EditEventTourPlanProps {
+  eventFragmentRef: EditEventTourPlan_EventFragment$key;
 }
 
-const EditEventCancellations = ({
-  eventFragmentRef,
-}: EditEventCancellationProps) => {
-  const event = useFragment(
+const EditEventTourPlan = ({ eventFragmentRef }: EditEventTourPlanProps) => {
+  const event = useFragment<EditEventTourPlan_EventFragment$key>(
     graphql`
-      fragment EditEventCancellations_EventFragment on Event {
-        ...EditEventCancellationsModal_EventFragment
+      fragment EditEventTourPlan_EventFragment on Event {
+        ...EditEventTourPlanModal_EventFragment
       }
     `,
     eventFragmentRef
@@ -26,7 +24,7 @@ const EditEventCancellations = ({
   return (
     <>
       <Box>
-        <Tooltip title={t("forms.editBookingCancellationsForm.action")}>
+        <Tooltip title={t("forms.editEventTourPlan.action")}>
           <IconButton
             size="sm"
             color="primary"
@@ -37,7 +35,7 @@ const EditEventCancellations = ({
           </IconButton>
         </Tooltip>
       </Box>
-      <EditEventCancellationsModal
+      <EditEventTourPlanModal
         eventFragmentRef={event}
         open={modalOpened}
         onClose={() => setModalOpened(false)}
@@ -46,4 +44,4 @@ const EditEventCancellations = ({
   );
 };
 
-export default React.memo(EditEventCancellations);
+export default React.memo(EditEventTourPlan);

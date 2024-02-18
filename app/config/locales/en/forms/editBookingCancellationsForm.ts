@@ -1,7 +1,7 @@
 export default {
   forms: {
     editBookingCancellationsForm: {
-      action: "Save",
+      action: "Change booking cancellation policies",
       modal: {
         header: "Change booking cancellation policies",
       },

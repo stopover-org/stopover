@@ -79,5 +79,9 @@ module Fields
 
       integrations
     end
+
+    def tour_plan
+      object.tour_plans.last
+    end
   end
 end
