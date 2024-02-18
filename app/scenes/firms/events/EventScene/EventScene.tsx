@@ -96,7 +96,7 @@ const EventScene = ({
 
   return (
     <Grid container spacing={2} sm={12} md={12}>
-      <Grid lg={8} sm={12}>
+      <Grid lg={8} md={8} sm={12} xs={12}>
         <Link
           href={`/events/${event.id}`}
           underline={false}

@@ -101,10 +101,15 @@ const FirmEventActions = ({
   );
 
   return (
-    <Grid lg={4} sm={12}>
+    <Grid lg={4} md={4} sm={12} xs={12}>
       <Stack
         direction="row"
-        justifyContent={{ lg: "flex-end", sm: "flex-start" }}
+        justifyContent={{
+          lg: "flex-end",
+          md: "flex-end",
+          sm: "flex-start",
+          xs: "flex-start",
+        }}
         flexWrap="wrap"
         useFlexGap
         spacing={1}
