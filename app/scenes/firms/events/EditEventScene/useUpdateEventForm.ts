@@ -158,7 +158,7 @@ const validationSchema = Yup.object().shape({
     .min(0)
     .integer()
     .transform(numberTransform)
-    .required("Required"),
+    .nullable(),
   depositAmountCents: Yup.number().min(0).integer().transform(numberTransform),
   recurringDates: Yup.array()
     .of(

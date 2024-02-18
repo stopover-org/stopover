@@ -90,7 +90,7 @@ const validationSchema = Yup.object().shape({
     .transform(numberTransform)
     .min(0)
     .integer()
-    .required("Required"),
+    .nullable(),
   depositAmountCents: Yup.number()
     .min(0)
     .lessThan(
