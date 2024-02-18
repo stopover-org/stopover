@@ -11,7 +11,7 @@ class EventsQuery
   )
     @backend = backend
     @params = params
-    @conditions = { dates: { gte: Time.current }, status: backend ? Event.aasm.state_machine.states.map(&:name) : [:published] }
+    @conditions = { status: backend ? Event.aasm.state_machine.states.map(&:name) : [:published] }
     @offset = after
     @limit = limit
   end
@@ -33,6 +33,7 @@ class EventsQuery
   end
 
   def conditions
+    @conditions[:dates] = { gte: Time.current } unless @backend
     @conditions[:dates] = { gte: @params[:start_date], lte: @params[:end_date] } if @params[:start_date].present? && @params[:end_date].present?
     @conditions[:price] = { gte: @params[:min_price] * 100, lte: @params[:max_price] * 100 } if @params[:min_price].present? && @params[:max_price].present?
     @conditions[:city] = @params[:city] if @params[:city].present? && !@params[:city].empty?
