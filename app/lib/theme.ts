@@ -8,7 +8,7 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
     values: {
       xs: 0,
       sm: 600,
-      md: 1440,
+      md: 1280,
       lg: 1600,
       xl: 1980,
     },
