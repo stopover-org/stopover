@@ -2061,6 +2061,7 @@ input UpdateEventInput {
   singleDates: [String!]
   street: String
   title: String
+  tourPlan: UpdateTourPlanInput
 }
 
 input UpdateEventOptionInput {
@@ -2154,6 +2155,22 @@ type UpdatePlacementPayload {
   errors: [String!]
   eventPlacement: EventPlacement
   notification: String
+}
+
+input UpdateTourPlaceInput {
+  description: String
+  durationTime: String
+  id: ID
+  image: String
+  title: String!
+}
+
+input UpdateTourPlanInput {
+  description: String
+  id: ID
+  image: String
+  title: String!
+  tourPlaces: [UpdateTourPlaceInput!]!
 }
 
 type User implements Node {

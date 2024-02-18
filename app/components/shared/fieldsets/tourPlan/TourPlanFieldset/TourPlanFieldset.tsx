@@ -8,13 +8,13 @@ import TextArea from "components/v2/TextArea";
 import {
   EditEventTourPlanFormFields,
   TourPlace,
-} from "forms/tourPlan/EditEventTourPlan/useEditEventTourPlanForm";
+} from "components/shared/forms/tourPlan/EditEventTourPlan/useEditEventTourPlanForm";
 import Button from "components/v2/Button/Button";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Typography from "components/v2/Typography";
 
 const TourPlanFieldset = () => {
-  const form = useFormContext();
+  const form = useFormContext<EditEventTourPlanFormFields>();
   const { t } = useTranslation();
   const tourPlacesField =
     form.useFormField<EditEventTourPlanFormFields["tourPlaces"]>("tourPlaces");
@@ -51,7 +51,7 @@ const TourPlanFieldset = () => {
     (index: number, field: string, value: string) => {
       const updPlaces = [...tourPlacesField.value];
 
-      updPlaces[index][field] = value;
+      updPlaces[index][field as keyof TourPlace] = value;
 
       tourPlacesField.onChange(updPlaces);
     },
@@ -100,6 +100,7 @@ const TourPlanFieldset = () => {
                 onChange={(value: string) =>
                   changeTourPlace(index, "title", value)
                 }
+                error={form.formState.errors?.tourPlaces?.[index]?.title}
               />
             </Grid>
             <Grid xs={12}>
@@ -110,6 +111,7 @@ const TourPlanFieldset = () => {
                 onChange={(value: string) =>
                   changeTourPlace(index, "description", value)
                 }
+                error={form.formState.errors?.tourPlaces?.[index]?.description}
               />
             </Grid>
             <Grid xs={12}>
@@ -119,6 +121,7 @@ const TourPlanFieldset = () => {
                 onChange={(value: string) =>
                   changeTourPlace(index, "durationTime", value)
                 }
+                error={form.formState.errors?.tourPlaces?.[index]?.durationTime}
               />
             </Grid>
             <Grid xs={12}>

@@ -11,7 +11,7 @@ module Stopover
         Event.transaction do
           args[:country] = ISO3166::Country.find_country_by_any_name(args[:country]).iso_short_name if args[:country]
           unless @event.address
-            @event.address = Address.new(firm:    @event.firm,
+            @event.address = Address.new(firm: @event.firm,
                                          country: @event.firm.address&.country)
           end
           @event.address.assign_attributes(args.slice(:full_address,
@@ -36,7 +36,8 @@ module Stopover
                                                :street,
                                                :house_number,
                                                :latitude,
-                                               :longitude))
+                                               :longitude,
+                                               :tour_plan))
 
           if args[:event_options].present?
             args[:event_options].map do |option|
@@ -91,6 +92,9 @@ module Stopover
           end
 
           @event.save!
+
+          Stopover::EventManagement::TourPlanUpdater.new(@event)
+                                                    .execute(**args)
         end
 
         @event

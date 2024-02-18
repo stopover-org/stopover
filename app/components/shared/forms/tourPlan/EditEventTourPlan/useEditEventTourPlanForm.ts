@@ -71,6 +71,13 @@ function useDefaultValues(
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Required"),
   description: Yup.string().nullable(),
+  tourPlaces: Yup.array().of(
+    Yup.object().shape({
+      title: Yup.string().required("Required"),
+      description: Yup.string().nullable(),
+      durationTime: Yup.string().nullable(),
+    })
+  ),
 });
 
 export function useEditEventTourPlanForm(
@@ -87,12 +94,29 @@ export function useEditEventTourPlanForm(
       ) {
         updateEvent(input: $input) {
           event {
-            id
+            ...TourPlanSection_EventFragment
           }
         }
       }
     `,
-    (values) => ({ input: values }),
+    (values) => ({
+      input: {
+        eventId: values.eventId,
+        tourPlan: {
+          id: values.tourPlanId,
+          title: values.title!,
+          description: values.description,
+          image: values.image,
+          tourPlaces: values.tourPlaces.map((place) => ({
+            id: place.id,
+            title: place.title,
+            description: place.description,
+            durationTime: place.durationTime,
+            image: place.image,
+          })),
+        },
+      },
+    }),
     {
       defaultValues: useDefaultValues(eventFragmentRef),
       resolver: yupResolver(validationSchema),

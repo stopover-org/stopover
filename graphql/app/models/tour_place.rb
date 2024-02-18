@@ -53,7 +53,7 @@ class TourPlace < ApplicationRecord
   # RICH_TEXT =============================================================
   #
   # VALIDATIONS ===========================================================
-  validates :title, :description, presence: true
+  validates :title, presence: true
 
   # CALLBACKS =============================================================
   before_validation :adjust_references
