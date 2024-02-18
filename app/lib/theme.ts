@@ -4,6 +4,15 @@ import { experimental_extendTheme as extendMuiTheme } from "@mui/material/styles
 import { deepmerge } from "@mui/utils";
 
 const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 1440,
+      lg: 1600,
+      xl: 1980,
+    },
+  },
   components: {
     JoyButton: {
       styleOverrides: {

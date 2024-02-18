@@ -132,6 +132,12 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
                                                           },
                                                           {
                                                             name: 'title'
+                                                          },
+                                                          {
+                                                            name: 'tourPlan'
+                                                          },
+                                                          {
+                                                            name: 'tourPlans'
                                                           }
                                                         ])
     end
@@ -286,10 +292,11 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
 
       before do
         event.bookings.last(5).each do |booking|
-          booking.update(schedule: create(:schedule, event: event, scheduled_for: Time.zone.now.at_beginning_of_hour + 3.days))
+          booking.update!(schedule: create(:schedule, event: event, scheduled_for: Time.zone.now.at_beginning_of_hour + 3.days))
         end
 
         Booking.reindex_test
+        Event.reindex_test
       end
 
       it 'success' do

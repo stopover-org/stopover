@@ -12,7 +12,7 @@ export default {
       },
       terms: {
         withPenalty:
-          "Cancellation up to {{deadline}} hours prior to event will resul {{penalty}} penalty",
+          "Cancellation up to {{deadline}} hours prior to event will result {{penalty}} penalty",
         withoutPenalty:
           "Cancellation prior to {{deadline}} hours prior to event will result {{penalty}} penalty",
         withoutCancellationTerms: "Booking cancellation is free",

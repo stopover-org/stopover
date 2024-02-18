@@ -2,12 +2,12 @@ import React from "react";
 import { Grid, IconButton, Stack } from "@mui/joy";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useTranslation } from "react-i18next";
-import useFormContext from "../../../../lib/hooks/useFormContext";
-import Button from "../../../v2/Button/Button";
-import Fieldset from "../../../v2/Fieldset";
-import Checkbox from "../../../v2/Checkbox";
-import Input from "../../../v2/Input";
-import { UpdateEventFields } from "../../../../scenes/firms/events/EditEventScene/useUpdateEventForm";
+import useFormContext from "lib/hooks/useFormContext";
+import Button from "components/v2/Button/Button";
+import Fieldset from "components/v2/Fieldset";
+import Checkbox from "components/v2/Checkbox";
+import Input from "components/v2/Input";
+import { UpdateEventFields } from "scenes/firms/events/EditEventScene/useUpdateEventForm";
 
 const EventOptionsFieldset = () => {
   const form = useFormContext<UpdateEventFields>();

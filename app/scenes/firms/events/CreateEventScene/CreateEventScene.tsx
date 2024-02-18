@@ -4,11 +4,11 @@ import { FormProvider } from "react-hook-form";
 import { Step, StepLabel, Stepper } from "@mui/material";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
+import Breadcrumbs from "components/v2/Breadcrumbs/Breadcrumbs";
+import { useSteps } from "lib/hooks/useSteps";
+import EditEventForm from "components/shared/EditEventForm";
+import { CreateEventScene_FirmFragment$key } from "artifacts/CreateEventScene_FirmFragment.graphql";
 import { useCreateEventForm } from "./useCreateEventForm";
-import Breadcrumbs from "../../../../components/v2/Breadcrumbs/Breadcrumbs";
-import { useSteps } from "../../../../lib/hooks/useSteps";
-import EditEventForm from "../../../../components/shared/EditEventForm";
-import { CreateEventScene_FirmFragment$key } from "../../../../artifacts/CreateEventScene_FirmFragment.graphql";
 
 interface CreateEventSceneProps {
   firmFragmentRef: CreateEventScene_FirmFragment$key;

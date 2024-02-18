@@ -43,18 +43,11 @@ export interface CreateEventFields {
   }>;
   endDate: Moment | null;
   title: string;
-  bookingCancellationOptions: Array<{
-    penaltyPriceCents: number;
-    description: string;
-    deadline: number;
-    status: string;
-  }>;
 }
 
 function useDefaultValues(): Partial<CreateEventFields> {
   return React.useMemo(
     () => ({
-      bookingCancellationOptions: [],
       depositAmountCents: 0,
       durationTime: "",
       endDate: null,
@@ -130,13 +123,6 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
   endDate: Yup.date().transform(momentTransform).nullable(),
   title: Yup.string().required("Required"),
-  bookingCancellationOptions: Yup.array().of(
-    Yup.object().shape({
-      deadline: Yup.number().transform(numberTransform).required("Required"),
-      description: Yup.string().required("Required"),
-      penaltyPriceCents: Yup.number().required("Required"),
-    })
-  ),
 });
 
 export function useCreateEventForm() {
@@ -165,7 +151,6 @@ export function useCreateEventForm() {
       recurringDates,
       eventOptions,
       depositAmountCents,
-      bookingCancellationOptions,
       requiresDeposit,
       ...values
     }) => ({
@@ -195,11 +180,6 @@ export function useCreateEventForm() {
         requiresDeposit: requiresDeposit
           ? depositAmountCents !== 0
           : requiresDeposit,
-        bookingCancellationOptions: bookingCancellationOptions.map((opt) => ({
-          penaltyPriceCents: opt.penaltyPriceCents * 100,
-          deadline: opt.deadline,
-          description: opt.description,
-        })),
         language: "en",
       },
     }),

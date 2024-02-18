@@ -14,7 +14,7 @@ export default {
       depositExplanation:
         "Deposit will be used only if attendee will pay by cash",
       depositPaymentTypeExplanation: "Deposit will be paid via Stripe",
-      addCancellationOption: "Add new Cancellation option",
+      addCancellationOption: "Add",
       ifYouSkipCancellationOptionHint:
         "If you skip this values, then booking can be cancelled at any time",
       steps: {

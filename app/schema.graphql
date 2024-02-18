@@ -119,7 +119,9 @@ input BookEventInput {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  email: String
   eventId: ID!
+  phone: String
   places: [[Int!]!]
 }
 
@@ -745,6 +747,8 @@ type Event implements Node {
     last: Int
   ): StripeIntegrationConnection!
   title: String!
+  tourPlan: TourPlan
+  tourPlans: [TourPlan!]
 }
 
 """
@@ -1869,6 +1873,22 @@ type SyncStripePayload {
   notification: String
 }
 
+type TourPlace implements Node {
+  description: String
+  durationTime: String
+  id: ID!
+  image: String
+  title: String!
+}
+
+type TourPlan implements Node {
+  description: String
+  id: ID!
+  image: String
+  title: String!
+  tourPlaces: [TourPlace!]
+}
+
 type Trip implements Node {
   account: Account!
   attendeesCount: Int!
@@ -2041,6 +2061,7 @@ input UpdateEventInput {
   singleDates: [String!]
   street: String
   title: String
+  tourPlan: UpdateTourPlanInput
 }
 
 input UpdateEventOptionInput {
@@ -2134,6 +2155,22 @@ type UpdatePlacementPayload {
   errors: [String!]
   eventPlacement: EventPlacement
   notification: String
+}
+
+input UpdateTourPlaceInput {
+  description: String
+  durationTime: String
+  id: ID
+  image: String
+  title: String!
+}
+
+input UpdateTourPlanInput {
+  description: String
+  id: ID
+  image: String
+  title: String!
+  tourPlaces: [UpdateTourPlaceInput!]!
 }
 
 type User implements Node {

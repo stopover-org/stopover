@@ -46,13 +46,6 @@ export interface UpdateEventFields {
     minute: number | null;
   }>;
   title: string;
-  bookingCancellationOptions: Array<{
-    id?: string;
-    penaltyPriceCents: number;
-    description: string;
-    deadline: number;
-    status: string;
-  }>;
 }
 
 function useDefaultValues(
@@ -82,15 +75,6 @@ function useDefaultValues(
         requiresDeposit
         singleDaysWithTime
         title
-        bookingCancellationOptions {
-          id
-          penaltyPrice {
-            cents
-          }
-          deadline
-          status
-          description
-        }
         eventOptions {
           builtIn
           forAttendee
@@ -130,15 +114,6 @@ function useDefaultValues(
           minute: date.minute(),
         };
       }),
-      bookingCancellationOptions: event.bookingCancellationOptions.map(
-        (opt) => ({
-          id: opt.id,
-          description: opt.description,
-          deadline: opt.deadline,
-          penaltyPriceCents: opt.penaltyPrice.cents / 100,
-          status: opt.status,
-        })
-      ),
       description: event.description,
       durationTime: event.durationTime,
       endDate: event.endDate ? moment(event.endDate) : null,
@@ -207,15 +182,6 @@ const validationSchema = Yup.object().shape({
     )
     .required("Required"),
   title: Yup.string().required("Required"),
-  bookingCancellationOptions: Yup.array().of(
-    Yup.object().shape({
-      deadline: Yup.number().transform(numberTransform).required("Required"),
-      description: Yup.string().required("Required"),
-      penaltyPriceCents: Yup.number()
-        .transform(numberTransform)
-        .required("Required"),
-    })
-  ),
 });
 
 export function useUpdateEventForm(
@@ -247,7 +213,6 @@ export function useUpdateEventForm(
       recurringDates,
       id,
       eventOptions,
-      bookingCancellationOptions,
       requiresDeposit,
       ...values
     }) => ({
@@ -278,12 +243,6 @@ export function useUpdateEventForm(
         requiresDeposit: requiresDeposit
           ? depositAmountCents !== 0
           : requiresDeposit,
-        bookingCancellationOptions: bookingCancellationOptions.map((opt) => ({
-          id: opt.id,
-          penaltyPriceCents: opt.penaltyPriceCents * 100,
-          deadline: opt.deadline,
-          description: opt.description,
-        })),
       },
     }),
     {

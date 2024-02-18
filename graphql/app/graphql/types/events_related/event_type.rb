@@ -39,6 +39,8 @@ module Types
       field :stripe_integrations, Types::EventsRelated::StripeIntegrationType.connection_type, null: false
       field :statistics, [Types::StatisticsType], null: false
       field :address, Types::FirmsRelated::AddressType
+      field :tour_plans, [Types::TripsRelated::TourPlanType]
+      field :tour_plan, Types::TripsRelated::TourPlanType
 
       field :bookings, Types::BookingsRelated::BookingType.connection_type do
         argument :filters, Types::Filters::BookingsFilter, required: false

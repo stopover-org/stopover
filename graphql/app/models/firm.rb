@@ -55,6 +55,8 @@ class Firm < ApplicationRecord
   has_many :payments, dependent: :nullify
   has_many :addresses, dependent: :destroy
   has_many :event_placements, dependent: :destroy
+  has_many :tour_plans, dependent: :destroy
+  has_many :tour_places, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :accounts, through: :account_firms

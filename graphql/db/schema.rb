@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_16_120932) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_17_222502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -435,6 +435,31 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_16_120932) do
     t.string "status"
     t.integer "version", default: 1
     t.index ["stripeable_id", "stripeable_type"], name: "index_stripe_integrations_on_stripeable_id_and_stripeable_type"
+  end
+
+  create_table "tour_places", force: :cascade do |t|
+    t.bigint "firm_id"
+    t.bigint "event_id"
+    t.bigint "tour_plan_id"
+    t.string "title"
+    t.string "duration_time"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_tour_places_on_event_id"
+    t.index ["firm_id"], name: "index_tour_places_on_firm_id"
+    t.index ["tour_plan_id"], name: "index_tour_places_on_tour_plan_id"
+  end
+
+  create_table "tour_plans", force: :cascade do |t|
+    t.bigint "firm_id"
+    t.bigint "event_id"
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_tour_plans_on_event_id"
+    t.index ["firm_id"], name: "index_tour_plans_on_firm_id"
   end
 
   create_table "trips", force: :cascade do |t|

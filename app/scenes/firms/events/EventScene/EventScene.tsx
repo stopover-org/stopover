@@ -1,35 +1,13 @@
-import {
-  Box,
-  Chip,
-  Dropdown,
-  Grid,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  Stack,
-  Tab,
-  TabList,
-  Tabs,
-  Tooltip,
-} from "@mui/joy";
+import { Box, Chip, Grid, Tab, TabList, Tabs } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import { MoreVert } from "@mui/icons-material";
 import { EventScene_FirmEventFragment$key } from "artifacts/EventScene_FirmEventFragment.graphql";
 import Typography from "components/v2/Typography";
 import Tag from "components/v2/Tag";
 import { EventScene_CurrentUserFragment$key } from "artifacts/EventScene_CurrentUserFragment.graphql";
-import VerifyEvent from "components/shared/VerifyEvent";
 import useStatusColor from "lib/hooks/useStatusColor";
 import Link from "components/v2/Link";
-import Button from "components/v2/Button";
-import PublishEvent from "components/shared/PublishEvent";
-import UnpublishEvent from "components/shared/UnpublishEvent";
-import RemoveEvent from "components/shared/RemoveEvent";
-import RescheduleEvent from "components/shared/RescheduleEvent";
-import SyncStripe from "components/shared/SyncStripe";
 import { parseValue, useQuery, useUpdateQuery } from "lib/hooks/useQuery";
 import BookingsInformation from "./components/BookingsInformation";
 import SchedulesInformation from "./components/SchedulesInformation";
@@ -37,6 +15,7 @@ import EventOptionsInformation from "./components/EventOptionsInformation";
 import GeneralInformation from "./components/GeneralInformation";
 import StripeIntegrationsInformation from "./components/StripeIntegrationsInformation";
 import EventPlacementsInformation from "./components/EventPlacementsInformation";
+import FirmEventActions from "./components/FirmEventActions";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -50,6 +29,13 @@ const EventScene = ({
   const event = useFragment<EventScene_FirmEventFragment$key>(
     graphql`
       fragment EventScene_FirmEventFragment on Event {
+        ...FirmEventActions_EventFragment
+        ...StripeIntegrationsInformation_EventFragment
+        ...EventPlacementsInformation_EventFragment
+        ...GeneralInformation_EventFragment
+        ...EventOptionsInformation_EventFragment
+        ...SchedulesInformation_EventFragment
+        ...BookingsInformation_EventFragment
         firm {
           title
         }
@@ -80,18 +66,6 @@ const EventScene = ({
         eventPlacements {
           id
         }
-        ...EventPlacementsInformation_EventFragment
-        ...GeneralInformation_EventFragment
-        ...EventOptionsInformation_EventFragment
-        ...SchedulesInformation_EventFragment
-        ...VerifyEventInformation_EventFragment
-        ...BookingsInformation_EventFragment
-        ...PublishEvent_EventFragment
-        ...UnpublishEvent_EventFragment
-        ...RemoveEvent_EventFragment
-        ...RescheduleEvent_EventFragment
-        ...SyncStripe_EventFragment
-        ...StripeIntegrationsInformation_EventFragment
         id
         status
         title
@@ -104,6 +78,7 @@ const EventScene = ({
     graphql`
       fragment EventScene_CurrentUserFragment on User {
         serviceUser
+        ...FirmEventActions_UserFragment
       }
     `,
     currentUserFragmentRef
@@ -118,44 +93,6 @@ const EventScene = ({
     status: event.status,
   });
   const { t } = useTranslation();
-  const canEdit = React.useMemo(() => event.status !== "removed", [event]);
-  const canReschedule = React.useMemo(
-    () =>
-      currentUser.serviceUser &&
-      event.status === "published" &&
-      event.firm.status === "active",
-    [event, currentUser]
-  );
-
-  const canPublish = React.useMemo(
-    () => event.status === "unpublished" && event.firm.status === "active",
-    [event]
-  );
-
-  const canArchive = React.useMemo(
-    () =>
-      event.status === "published" &&
-      event.firm.status === "active" &&
-      event.firm.paymentTypes.length > 0,
-    [event]
-  );
-  const canRemove = React.useMemo(() => event.status !== "removed", [event]);
-  const canVerify = React.useMemo(
-    () =>
-      currentUser.serviceUser &&
-      event.status === "draft" &&
-      event.firm.status === "active",
-    [event, currentUser]
-  );
-
-  const canSync = React.useMemo(
-    () =>
-      currentUser.serviceUser &&
-      ["published", "unpublished"].includes(event.status) &&
-      event.firm.status === "active" &&
-      event.firm.paymentTypes.includes("stripe"),
-    [event, currentUser]
-  );
 
   return (
     <Grid container spacing={2} sm={12} md={12}>
@@ -177,97 +114,10 @@ const EventScene = ({
           {t(`statuses.${event.status}`)}
         </Tag>
       </Grid>
-      <Grid lg={4} sm={12}>
-        <Stack
-          direction="row"
-          justifyContent={{ lg: "flex-end", sm: "flex-start" }}
-          flexWrap="wrap"
-          useFlexGap
-          spacing={1}
-        >
-          {canEdit && (
-            <Link href={`/my-firm/events/${event.id}/edit`} underline={false}>
-              <Button size="sm" variant="plain">
-                {t("general.edit")}
-              </Button>
-            </Link>
-          )}
-          <Dropdown>
-            <Tooltip title={t("general.additional")}>
-              <MenuButton
-                slots={{ root: IconButton }}
-                slotProps={{
-                  root: { variant: "solid", color: "primary", size: "sm" },
-                }}
-              >
-                <MoreVert />
-              </MenuButton>
-            </Tooltip>
-            <Menu
-              variant="plain"
-              placement="bottom-end"
-              onItemsChange={() => {}}
-              disablePortal
-              keepMounted
-            >
-              {canReschedule && (
-                <MenuItem>
-                  <RescheduleEvent
-                    variant="plain"
-                    color="neutral"
-                    eventFragmentRef={event}
-                  />
-                </MenuItem>
-              )}
-              {canPublish && (
-                <MenuItem>
-                  <PublishEvent
-                    variant="plain"
-                    color="neutral"
-                    eventFragmentRef={event}
-                  />
-                </MenuItem>
-              )}
-              {canArchive && (
-                <MenuItem>
-                  <UnpublishEvent
-                    variant="plain"
-                    color="neutral"
-                    eventFragmentRef={event}
-                  />
-                </MenuItem>
-              )}
-              {canRemove && (
-                <MenuItem>
-                  <RemoveEvent
-                    variant="plain"
-                    color="neutral"
-                    eventFragmentRef={event}
-                  />
-                </MenuItem>
-              )}
-              {canVerify && (
-                <MenuItem>
-                  <VerifyEvent
-                    variant="plain"
-                    color="neutral"
-                    eventFragmentRef={event}
-                  />
-                </MenuItem>
-              )}
-              {canSync && (
-                <MenuItem>
-                  <SyncStripe
-                    variant="plain"
-                    color="neutral"
-                    eventFragmentRef={event}
-                  />
-                </MenuItem>
-              )}
-            </Menu>
-          </Dropdown>
-        </Stack>
-      </Grid>
+      <FirmEventActions
+        eventFragmentRef={event}
+        currentUserFragmentRef={currentUser}
+      />
       <Grid xs={12}>
         <Tabs
           size="sm"

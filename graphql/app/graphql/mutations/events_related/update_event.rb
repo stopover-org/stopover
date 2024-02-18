@@ -51,6 +51,10 @@ module Mutations
 
       argument :images, [String], required: false
 
+      argument :tour_plan,
+               Types::Inputs::UpdateTourPlanInput,
+               required: false
+
       def resolve(event:, **args)
         event = Stopover::EventManagement::EventUpdater.new(event).execute(**args)
 
@@ -64,7 +68,7 @@ module Mutations
 
         {
           event: nil,
-          errors: [e.message]
+          errors: [message]
         }
       end
 

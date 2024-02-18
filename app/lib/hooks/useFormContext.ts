@@ -36,6 +36,7 @@ function useFormContext<FieldsType extends FieldValues>() {
       ...form,
       formState: {
         ...form.formState,
+        ...form.control._formState,
         isSubmitting:
           form.control._formState.isSubmitting || form.formState.isSubmitting,
       },
