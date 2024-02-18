@@ -15,7 +15,7 @@ export default {
       depositExplanation:
         "Депозит будет использоваться только для оплаты наличными",
       depositPaymentTypeExplanation: "Депозит может быть оплачен только онлайн",
-      addCancellationOption: "Добавить еще одно условие отмены бронирования",
+      addCancellationOption: "Добавить",
       ifYouSkipCancellationOptionHint:
         "Если вы не укажете ни одного условия отмены бронирования, то бронирование может быть завершено в любой момент времени",
       steps: {

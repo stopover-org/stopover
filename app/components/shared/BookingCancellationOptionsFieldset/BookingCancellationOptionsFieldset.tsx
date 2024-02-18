@@ -2,25 +2,25 @@ import { FormLabel, Grid, IconButton, Stack } from "@mui/joy";
 import React from "react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useTranslation } from "react-i18next";
-import useFormContext from "../../../../lib/hooks/useFormContext";
-import Fieldset from "../../../v2/Fieldset";
-import Typography from "../../../v2/Typography";
-import Input from "../../../v2/Input/Input";
-import TextArea from "../../../v2/TextArea";
-import Button from "../../../v2/Button/Button";
-import { UpdateEventFields } from "../../../../scenes/firms/events/EditEventScene/useUpdateEventForm";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
+import useFormContext from "lib/hooks/useFormContext";
+import Fieldset from "components/v2/Fieldset";
+import Typography from "components/v2/Typography";
+import Input from "components/v2/Input/Input";
+import TextArea from "components/v2/TextArea";
+import Button from "components/v2/Button/Button";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import { EditEventCancellationFormFields } from "components/shared/forms/eventCancellationOption/EditEventCancellations/useEditEventCancellationsForm";
 
 const BookingCancellationOptionsFieldset = () => {
-  const form = useFormContext<UpdateEventFields>();
+  const form = useFormContext<EditEventCancellationFormFields>();
   const bookingCancellationOptionsField = form.useFormField<
-    UpdateEventFields["bookingCancellationOptions"]
+    EditEventCancellationFormFields["bookingCancellationOptions"]
   >("bookingCancellationOptions");
 
   const addBookingCancellationOption = React.useCallback(() => {
     bookingCancellationOptionsField.onChange([
       ...bookingCancellationOptionsField.value,
-      { penaltyPriceCents: 0, description: "", deadline: "12h" },
+      { penaltyPriceCents: 0, description: "", deadline: 0 },
     ]);
   }, [bookingCancellationOptionsField]);
 
@@ -54,17 +54,20 @@ const BookingCancellationOptionsFieldset = () => {
     [bookingCancellationOptionsField]
   );
   const { t } = useTranslation();
+  console.log(form);
 
   return (
     <Fieldset>
       <Grid container>
-        <Grid xs={8}>
-          <Typography level="title-lg">Booking Cancellation Options</Typography>
-        </Grid>
-        <Grid xs={4}>
-          <Button size="sm" onClick={addBookingCancellationOption}>
-            {t("forms.editEvent.addCancellationOption")}
-          </Button>
+        <Grid xs={12}>
+          <Stack direction="row" justifyContent="space-between">
+            <Typography level="title-lg">
+              Booking Cancellation Options
+            </Typography>
+            <Button size="sm" onClick={addBookingCancellationOption}>
+              {t("forms.editEvent.addCancellationOption")}
+            </Button>
+          </Stack>
         </Grid>
         <FormLabel>
           {t("forms.editEvent.ifYouSkipCancellationOptionHint")}
@@ -139,7 +142,7 @@ const BookingCancellationOptionsFieldset = () => {
                   justifyContent="flex-start"
                   alignItems="flex-end"
                   height="100%"
-                  sx={{ paddingTop: "2em" }}
+                  sx={{ paddingTop: "1.25em" }}
                 >
                   <IconButton
                     size="sm"
@@ -153,11 +156,15 @@ const BookingCancellationOptionsFieldset = () => {
                 </Stack>
               </Grid>
             )}
-            {opt.deadline && (
+            {parseInt(opt.deadline.toString(), 10) > 0 && (
               <Grid xs={12}>
                 {t("models.bookingCancellationOption.terms.withPenalty", {
                   deadline: parseInt(opt.deadline.toString(), 10),
-                  penalty: getCurrencyFormat(opt.penaltyPriceCents, "usd"),
+                  penalty: getCurrencyFormat(
+                    opt.penaltyPriceCents,
+                    "usd",
+                    false
+                  ),
                 })}
               </Grid>
             )}

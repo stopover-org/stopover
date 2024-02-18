@@ -1,11 +1,12 @@
 import { graphql, useFragment } from "react-relay";
-import { Grid } from "@mui/joy";
+import { Grid, Stack } from "@mui/joy";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Section from "../../../../../components/v2/Section";
-import Typography from "../../../../../components/v2/Typography";
-import { CancellationsSection_EventFragment$key } from "../../../../../artifacts/CancellationsSection_EventFragment.graphql";
-import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
+import Section from "components/v2/Section";
+import Typography from "components/v2/Typography";
+import { CancellationsSection_EventFragment$key } from "artifacts/CancellationsSection_EventFragment.graphql";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import EditEventCancellations from "components/shared/forms/eventCancellationOption/EditEventCancellations";
 
 interface CancellationsSectionProps {
   eventFragmentRef: CancellationsSection_EventFragment$key;
@@ -17,6 +18,7 @@ const CancellationsSection = ({
   const event = useFragment<CancellationsSection_EventFragment$key>(
     graphql`
       fragment CancellationsSection_EventFragment on Event {
+        ...EditEventCancellations_EventFragment
         bookingCancellationOptions {
           penaltyPrice {
             cents
@@ -36,9 +38,12 @@ const CancellationsSection = ({
   return (
     <Section>
       <Grid xs={12}>
-        <Typography level="h3">
-          {t("models.bookingCancellationOption.plural")}
-        </Typography>
+        <Stack direction="row" justifyContent="space-between">
+          <Typography level="h3">
+            {t("models.bookingCancellationOption.plural")}
+          </Typography>
+          <EditEventCancellations eventFragmentRef={event} />
+        </Stack>
       </Grid>
       {event.bookingCancellationOptions.length === 0 && (
         <Grid xs={12}>
