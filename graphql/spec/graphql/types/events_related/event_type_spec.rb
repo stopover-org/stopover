@@ -134,6 +134,9 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
                                                             name: 'title'
                                                           },
                                                           {
+                                                            name: 'tourPlan'
+                                                          },
+                                                          {
                                                             name: 'tourPlans'
                                                           }
                                                         ])
