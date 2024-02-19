@@ -89,6 +89,9 @@ export function useBookEventForm(
             event {
               ...EventScene_EventFragment
             }
+            trip {
+              ...TripScene_TripFragment
+            }
           }
           notification
           errors

@@ -40,6 +40,8 @@ export function useCreateFirmForm() {
         createFirm(input: $input) {
           firm {
             id
+            ...FirmScene_FirmFragment
+            ...FirmScene_CurrentFirmFragment
           }
           notification
           errors

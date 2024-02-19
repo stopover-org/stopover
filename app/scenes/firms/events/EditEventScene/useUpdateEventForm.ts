@@ -199,6 +199,8 @@ export function useUpdateEventForm(
         updateEvent(input: $input) {
           event {
             id
+            ...EventScene_FirmEventFragment
+            ...EventScene_EventFragment
           }
           notification
           errors
