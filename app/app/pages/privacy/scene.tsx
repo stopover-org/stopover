@@ -7,6 +7,7 @@ import Layout from "components/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard/AuthGuard";
 import Typography from "components/v2/Typography/Typography";
 import { scene_PrivacyQuery } from "artifacts/scene_PrivacyQuery.graphql";
+import Link from "components/v2/Link";
 
 const Privacy = () => {
   const [server, setServer] = React.useState(true);
@@ -35,6 +36,7 @@ const Privacy = () => {
       <AuthGuard accessible>
         <Sheet sx={{ margin: "0 auto", maxWidth: "1024px" }}>
           <Typography level="h3">PRIVACY AND COOKIES STATEMENT</Typography>
+          <br />
           <Typography level="h4">Effective: February 17, 2024</Typography>
 
           <Typography>
@@ -348,8 +350,10 @@ const Privacy = () => {
             You have options with respect to the processing and use of your
             information by us. You can access, update, and even deactivate your
             account by writing to our tech support{" "}
-            <a href="mailto:mikhail@stopoverx.com">mikhail@stopoverx.com</a>. In
-            addition, you can do the following:
+            <Link href="mailto:mikhail@stopoverx.com" primary>
+              mikhail@stopoverx.com
+            </Link>
+            . In addition, you can do the following:
           </Typography>
           <Typography>Choose the way we communicate with you.</Typography>
           <Typography>

@@ -1,6 +1,6 @@
 import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import React from "react";
-import { Grid } from "@mui/joy";
+import { Divider, Grid } from "@mui/joy";
 import { FirmScene_CurrentFirmFragment$key } from "artifacts/FirmScene_CurrentFirmFragment.graphql";
 import Typography from "components/v2/Typography/Typography";
 import Description from "components/v2/Description/Description";
@@ -9,6 +9,9 @@ import Pagination from "scenes/attendees/events/EventsScene/components/Paginatio
 import EventCardCompact from "scenes/attendees/events/EventsScene/components/EventCardCompact";
 import { FirmScenePaginationQuery } from "artifacts/FirmScenePaginationQuery.graphql";
 import { FirmScene_EventPaginationFragment$key } from "artifacts/FirmScene_EventPaginationFragment.graphql";
+import { useTranslation } from "react-i18next";
+import GoogleMap from "components/shared/GoogleMap/GoogleMap";
+import Link from "components/v2/Link";
 
 interface Props {
   firmFragmentRef: FirmScene_CurrentFirmFragment$key;
@@ -22,6 +25,7 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
         title
         description
         image
+        website
         address {
           fullAddress
           country
@@ -29,6 +33,8 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
           city
           street
           houseNumber
+          latitude
+          longitude
         }
         ...FirmScene_EventPaginationFragment
       }
@@ -63,12 +69,18 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
     );
   const [currentPage, setCurrentPage] = React.useState(1);
   const events = usePagedEdges(data.events, currentPage, 12);
+  const { t } = useTranslation();
 
   return (
     <Grid container padding={2} spacing={2} sm={12} md={12}>
-      <Grid lg={12} sm={12}>
+      <Grid lg={12} md={12} sm={12} xs={12}>
         <Typography level="h3">{firm.title}</Typography>
         <Typography>{firm.address?.fullAddress}</Typography>
+        {firm.website && (
+          <Link href={firm.website} target="_blank">
+            Website
+          </Link>
+        )}
       </Grid>
       <Grid lg={3} md={3} sm={12} xs={12}>
         {firm.image && (
@@ -77,6 +89,38 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
       </Grid>
       <Grid lg={6} md={9} sm={12} xs={12}>
         {firm.description && <Description html={firm.description} />}
+        {firm.address && (
+          <>
+            <Divider sx={{ margin: 2 }} />
+            <Typography level="h4">{t("models.address.singular")}</Typography>
+            <Typography fontSize="lg-title">
+              {firm.address?.fullAddress}
+            </Typography>
+            <Typography fontSize="lg-title">
+              {firm.address?.country}, {firm.address?.city}
+            </Typography>
+            {firm.address?.latitude && firm.address?.longitude && (
+              <>
+                <Divider sx={{ margin: 2 }} />
+                <GoogleMap
+                  center={{
+                    lat: firm.address?.latitude!,
+                    lng: firm.address?.longitude!,
+                  }}
+                  markers={[
+                    {
+                      lat: firm.address?.latitude!,
+                      lng: firm.address?.longitude!,
+                    },
+                  ]}
+                />
+              </>
+            )}
+          </>
+        )}
+      </Grid>
+      <Grid container padding={2} spacing={2} sm={12} md={12}>
+        <Typography level="h3">{t("models.event.plural")}</Typography>
       </Grid>
       <Grid lg={9} md={12} sm={12} xs={12} container>
         {events.map((event) => (

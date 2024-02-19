@@ -40,6 +40,8 @@ const translation = {
     statistics: "Statistics",
     settings: "Settings",
     privacy: "Privacy",
+    whatDoWeOffer: "What do we offer",
+    refundTerms: "Refund terms",
   },
   weekdays: {
     monday: "Monday",

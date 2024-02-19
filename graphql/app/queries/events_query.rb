@@ -32,7 +32,7 @@ class EventsQuery
   end
 
   def conditions
-    @conditions[:dates] = { gte: Time.current } unless @backend
+    @conditions[:dates] = { gte: Time.zone.now } if @params[:firm_id].blank?
     @conditions[:dates] = { gte: @params[:start_date], lte: @params[:end_date] } if @params[:start_date].present? && @params[:end_date].present?
     @conditions[:price] = { gte: @params[:min_price] * 100, lte: @params[:max_price] * 100 } if @params[:min_price].present? && @params[:max_price].present?
     @conditions[:city] = @params[:city] if @params[:city].present? && !@params[:city].empty?

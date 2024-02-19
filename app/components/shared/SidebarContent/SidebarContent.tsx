@@ -87,6 +87,11 @@ const SidebarContent = ({
         title: t("layout.header.firmSettings"),
         href: "/my-firm/settings",
       });
+
+      array.push({
+        title: t("layout.header.registerFirm"),
+        href: "/firms/new",
+      });
     }
 
     return array;

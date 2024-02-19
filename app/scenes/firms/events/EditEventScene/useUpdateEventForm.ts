@@ -158,7 +158,7 @@ const validationSchema = Yup.object().shape({
     .min(0)
     .integer()
     .transform(numberTransform)
-    .required("Required"),
+    .nullable(),
   depositAmountCents: Yup.number().min(0).integer().transform(numberTransform),
   recurringDates: Yup.array()
     .of(
@@ -199,6 +199,8 @@ export function useUpdateEventForm(
         updateEvent(input: $input) {
           event {
             id
+            ...EventScene_FirmEventFragment
+            ...EventScene_EventFragment
           }
           notification
           errors

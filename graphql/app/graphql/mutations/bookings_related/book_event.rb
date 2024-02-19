@@ -48,7 +48,7 @@ module Mutations
         return false, { errors: [I18n.t('graphql.errors.event_past')] } if inputs[:booked_for].past?
         return false, { errors: [I18n.t('graphql.errors.general')] } if schedules.empty?
         return false, { errors: [I18n.t('graphql.errors.already_booked')] } if already_booked
-        return false, { errors: [I18n.t('graphql.errors.all_places_reserved')] } if inputs[:event].max_attendees && potential_attendees_count > inputs[:event].max_attendees
+        return false, { errors: [I18n.t('graphql.errors.all_places_reserved')] } if inputs[:event].max_attendees&.positive? && potential_attendees_count > inputs[:event].max_attendees
 
         super
       end

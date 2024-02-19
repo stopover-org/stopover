@@ -232,12 +232,12 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
           </CardOverflow>
         </Stack>
       </Card>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} paddingLeft="15px">
         <Grid xs={12} sm={12} md={9} lg={9}>
           <CheckoutForm bookingFragmentRef={booking} />
         </Grid>
         <Grid xs={12} sm={12} md={3} lg={3}>
-          <Box width="100%" pl="10px">
+          <Box width="100%">
             <Typography
               alignItems="flex-end"
               color="primary"
@@ -252,7 +252,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
               {t("scenes.attendees.trips.tripScene.adjustAttendees")}
             </Typography>
           </Box>
-          <Box width="100%" pl="10px">
+          <Box width="100%">
             <Typography
               fontSize="12px"
               alignItems="flex-end"
@@ -269,7 +269,7 @@ const BookingCard = ({ bookingFragmentRef }: BookingCardProps) => {
             </Typography>
           </Box>
           {cancellable && (
-            <Box width="100%" pl="10px">
+            <Box width="100%">
               <Typography
                 fontSize="12px"
                 alignItems="flex-end"
