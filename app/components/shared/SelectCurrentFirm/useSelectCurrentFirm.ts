@@ -42,6 +42,7 @@ export function useSelectCurrentFirm(
       ) {
         setCurrentFirm(input: $input) {
           account {
+            ...SidebarContent_AccountFragment
             firm {
               id
               title
