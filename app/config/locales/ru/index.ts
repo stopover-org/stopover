@@ -40,6 +40,8 @@ const translation = {
     statistics: "Статистика",
     settings: "Настройки",
     privacy: "Конфиденциальность",
+    whatDoWeOffer: "Что мы предлагаем",
+    refundTerms: "Условия отмены бронирования",
   },
   weekdays: {
     monday: "Понедельник",

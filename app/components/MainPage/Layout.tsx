@@ -57,14 +57,14 @@ const Layout = ({
 
   return (
     <GlobalSidebarProvider firmFragmentRef={currentUser?.account?.firm!}>
-      <Sheet>
+      <Sheet sx={{ minHeight: "calc(100vh - 150px)" }}>
         <Header
           currentUserFragment={currentUser}
           showRegisterFirm={showRegisterFirm}
         />
         {children}
-        <Footer />
       </Sheet>
+      <Footer />
     </GlobalSidebarProvider>
   );
 };

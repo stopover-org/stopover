@@ -27,10 +27,13 @@ const Footer = () => {
         <Grid md={4} sm={12} padding={4}>
           <Stack direction="column" alignItems="flex-end">
             <Link href="/pages/privacy">{t("general.privacy")}</Link>
+            <Link href="/pages/refund-terms">{t("general.refundTerms")}</Link>
           </Stack>
         </Grid>
         <Grid md={4} sm={12} padding={4}>
-          <Stack direction="column" alignItems="center" />
+          <Stack direction="column" alignItems="center">
+            <Link href="/firms/landing">{t("general.whatDoWeOffer")}</Link>
+          </Stack>
         </Grid>
         <Grid md={4} sm={12} padding={4}>
           <Stack direction="column" alignItems="flex-staft">

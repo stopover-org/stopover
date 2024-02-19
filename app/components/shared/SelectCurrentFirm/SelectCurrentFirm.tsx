@@ -38,7 +38,7 @@ const SelectCurrentFirm = ({ accountFragmentRef }: SelectCurrentFirmProps) => {
       account?.firms?.map(({ id, title, address }) => ({
         firmId: id,
         label: title,
-        secondary: `${address?.country}, ${address?.city}`,
+        secondary: address ? `${address?.country}, ${address?.city}` : null,
       })) || [],
     [account]
   );
