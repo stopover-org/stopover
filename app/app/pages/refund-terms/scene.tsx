@@ -2,17 +2,17 @@ import { graphql, useLazyLoadQuery } from "react-relay";
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
-import { scene_PrivacyQuery } from "artifacts/scene_PrivacyQuery.graphql";
 import Layout from "components/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import { Sheet, Typography } from "@mui/joy";
 import Link from "components/v2/Link/Link";
+import { scene_RefundTermsQuery } from "artifacts/scene_RefundTermsQuery.graphql";
 
 const RefundTerms = () => {
   const [server, setServer] = React.useState(true);
-  const data = useLazyLoadQuery<scene_PrivacyQuery>(
+  const data = useLazyLoadQuery<scene_RefundTermsQuery>(
     graphql`
-      query scene_PrivacyQuery {
+      query scene_RefundTermsQuery {
         currentUser {
           ...Layout_CurrentUserFragment
         }

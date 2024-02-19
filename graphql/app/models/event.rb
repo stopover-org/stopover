@@ -143,6 +143,7 @@ class Event < ApplicationRecord
   before_validation :set_prices, unless: :removed?
   before_validation :adjust_prices, unless: :removed?
   before_validation :adjust_category, unless: :removed?
+  before_validation :adjust_min_max_attendees
   before_validation :adjust_address
   after_create :created_notify
   after_commit :sync_stripe, unless: :removed?
@@ -282,6 +283,10 @@ class Event < ApplicationRecord
   end
 
   private
+
+  def adjust_min_max_attendees
+    self.max_attendees = nil if max_attendees&.zero?
+  end
 
   def adjust_address
     return if address

@@ -21,22 +21,47 @@ const Footer = () => {
     },
     [setCookie, i18n]
   );
+
   return (
     <Sheet sx={{ minHeight: "100px" }}>
       <Grid container>
         <Grid md={4} sm={12} padding={4}>
-          <Stack direction="column" alignItems="flex-end">
+          <Stack
+            direction="column"
+            alignItems={{
+              sx: "center",
+              sm: "center",
+              md: "flex-end",
+              lg: "flex-end",
+            }}
+          >
             <Link href="/pages/privacy">{t("general.privacy")}</Link>
             <Link href="/pages/refund-terms">{t("general.refundTerms")}</Link>
           </Stack>
         </Grid>
         <Grid md={4} sm={12} padding={4}>
-          <Stack direction="column" alignItems="center">
+          <Stack
+            direction="column"
+            alignItems={{
+              sx: "center",
+              sm: "center",
+              md: "center",
+              lg: "center",
+            }}
+          >
             <Link href="/firms/landing">{t("general.whatDoWeOffer")}</Link>
           </Stack>
         </Grid>
         <Grid md={4} sm={12} padding={4}>
-          <Stack direction="column" alignItems="flex-staft">
+          <Stack
+            direction="column"
+            alignItems={{
+              sx: "center",
+              sm: "center",
+              md: "flex-start",
+              lg: "flex-start",
+            }}
+          >
             <Select
               placeholder={t("languages.action")}
               name={i18n.language}

@@ -24,9 +24,9 @@ import Link from "components/v2/Link";
 import { BookEvent_EventFragment$key } from "artifacts/BookEvent_EventFragment.graphql";
 import SubmitButton from "components/shared/SubmitButton";
 import { capitalize } from "lib/utils/capitalize";
+import Input from "components/v2/Input";
 import PlacesFieldset from "./PlacesFieldset";
 import AttendeeCountFieldset from "./AttendeeCountFieldset";
-import Input from "../../../../../components/v2/Input";
 
 interface BookEventProps {
   eventFragmentRef: BookEvent_EventFragment$key;

@@ -34,10 +34,13 @@ module Stopover
 
         @current_trip.update!(status: 'active') if @current_trip.cancelled?
 
+        payment_type = event.firm.payment_types == ['cash'] ? 'cash' : nil
+
         event.bookings.create!(
           schedule: event.schedules.find_by(scheduled_for: booked_for),
           attendees: attendees,
-          trip: @current_trip
+          trip: @current_trip,
+          payment_type: payment_type
         )
       end
     end
