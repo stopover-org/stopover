@@ -42,6 +42,9 @@ export function useCreateFirmForm() {
             id
             ...FirmScene_FirmFragment
             ...FirmScene_CurrentFirmFragment
+            accounts {
+              ...SidebarContent_AccountFragment
+            }
           }
           notification
           errors

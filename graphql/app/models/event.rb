@@ -11,6 +11,7 @@
 #  duration_time                 :string
 #  end_date                      :datetime
 #  event_type                    :string           not null
+#  featured                      :boolean          default(FALSE)
 #  landmark                      :string
 #  language                      :string           default("en")
 #  max_attendees                 :integer
@@ -225,7 +226,8 @@ class Event < ApplicationRecord
       interests: interests.map(&:slug),
       price: attendee_price_per_uom_cents,
       status: status,
-      firm_id: firm.id
+      firm_id: firm.id,
+      featured: true
     }
   end
 

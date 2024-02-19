@@ -41,6 +41,7 @@ module Types
       field :address, Types::FirmsRelated::AddressType
       field :tour_plans, [Types::TripsRelated::TourPlanType]
       field :tour_plan, Types::TripsRelated::TourPlanType
+      field :featured, Boolean
 
       field :bookings, Types::BookingsRelated::BookingType.connection_type do
         argument :filters, Types::Filters::BookingsFilter, required: false

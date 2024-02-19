@@ -71,6 +71,9 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
                                                             name: 'externalId'
                                                           },
                                                           {
+                                                            name: 'featured'
+                                                          },
+                                                          {
                                                             name: 'firm'
                                                           },
                                                           {
