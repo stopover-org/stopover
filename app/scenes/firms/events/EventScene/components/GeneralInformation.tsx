@@ -53,6 +53,7 @@ const GeneralInformation = ({
         requiresPassport
         singleDaysWithTime
         title
+        featured
         address {
           fullAddress
           country
@@ -272,6 +273,20 @@ const GeneralInformation = ({
               <DataRow
                 label={t("models.event.attributes.eventType")}
                 value={t(`models.event.enums.eventType.${event.eventType}`)}
+              />
+            </Grid>
+
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.featured")}
+                value={
+                  <Checkbox
+                    checked={Boolean(event.featured)}
+                    color="primary"
+                    readOnly
+                    label=""
+                  />
+                }
               />
             </Grid>
 

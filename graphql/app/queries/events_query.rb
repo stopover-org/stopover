@@ -38,6 +38,7 @@ class EventsQuery
     @conditions[:city] = @params[:city] if @params[:city].present? && !@params[:city].empty?
     @conditions[:interests] = @params[:interests] if @params[:interests]&.any?
     @conditions[:firm_id] = @params[:firm_id] if @params[:firm_id].present?
+    @conditions[:featured] = @params[:featured] unless @params[:featured].nil?
 
     @conditions[:title] = query if @backend && query
 

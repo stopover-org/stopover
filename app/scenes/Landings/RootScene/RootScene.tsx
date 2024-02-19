@@ -16,14 +16,16 @@ import { useTranslation } from "react-i18next";
 import Typography from "components/v2/Typography";
 import { RootScene_QueryFragment$key } from "artifacts/RootScene_QueryFragment.graphql";
 import RegisterFirmCTA from "components/shared/RegisterFirmCTA";
-import SearchBar from "../../attendees/events/EventsScene/components/SearchBar";
+import SearchBar from "scenes/attendees/events/EventsScene/components/SearchBar";
+import useEdges from "lib/hooks/useEdges";
+import EventCardCompact from "scenes/attendees/events/EventsScene/components/EventCardCompact";
 
 interface Props {
   queryFragmentRef: any;
 }
 
 const RootScene = ({ queryFragmentRef }: Props) => {
-  const { interests } = useFragment<RootScene_QueryFragment$key>(
+  const data = useFragment<RootScene_QueryFragment$key>(
     graphql`
       fragment RootScene_QueryFragment on Query {
         interests {
@@ -31,13 +33,22 @@ const RootScene = ({ queryFragmentRef }: Props) => {
           slug
           preview
         }
+        events(filters: { featured: true }) {
+          edges {
+            node {
+              ...EventCardCompacts_EventFragment
+            }
+          }
+        }
       }
     `,
     queryFragmentRef
   );
+  const { interests } = data;
   const theme = useTheme();
   const isMobileView = useMediaQuery(theme.breakpoints.down("md"));
   const { t } = useTranslation();
+  const events = useEdges(data.events);
 
   return (
     <>
@@ -68,12 +79,29 @@ const RootScene = ({ queryFragmentRef }: Props) => {
               padding: isMobileView ? "5px 25px" : "5px",
             }}
           >
-            <Typography fontSize="28px" level="title-lg" sx={{}}>
+            <Typography fontSize="28px" level="title-lg">
               {t("scenes.rootScene.lookingFor")}
             </Typography>
             <SearchBar redirect />
           </Box>
         </Grid>
+      </Grid>
+      <Grid container spacing={2} sx={{ paddingLeft: "15px" }}>
+        <Grid xs={12}>
+          <Typography
+            fontSize="28px"
+            level="title-lg"
+            sx={{ paddingTop: "20px" }}
+          >
+            {t("models.event.plural")}
+          </Typography>
+        </Grid>
+        {events.map((event) => (
+          <EventCardCompact
+            eventFragmentRef={event!}
+            includeInterests={false}
+          />
+        ))}
       </Grid>
       <Grid
         container
@@ -82,6 +110,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
         maxWidth="1440px"
         paddingTop="150px"
         margin="0 auto"
+        sx={{ paddingLeft: "15px" }}
       >
         <Grid xs={12}>
           <Typography fontSize="32px" level="title-lg">

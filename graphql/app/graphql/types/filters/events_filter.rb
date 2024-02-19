@@ -11,6 +11,7 @@ module Types
       argument :query, String, required: false
       argument :interests, [String], required: false
       argument :firm_id, ID, loads: Types::FirmsRelated::FirmType, required: false
+      argument :featured, Boolean, required: false
     end
   end
 end

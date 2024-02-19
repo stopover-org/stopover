@@ -11,6 +11,7 @@
 #  duration_time                 :string
 #  end_date                      :datetime
 #  event_type                    :string           not null
+#  featured                      :boolean          default(FALSE)
 #  landmark                      :string
 #  language                      :string           default("en")
 #  max_attendees                 :integer

@@ -685,6 +685,7 @@ type Event implements Node {
   eventPlacements: [EventPlacement!]!
   eventType: EventTypeEnum!
   externalId: String
+  featured: Boolean
   firm: Firm!
   id: ID!
   images: [String!]!
@@ -864,6 +865,7 @@ type EventsAutocomplete {
 input EventsFilter {
   city: String
   endDate: DateTime
+  featured: Boolean
   firmId: ID
   interests: [String!]
   maxPrice: Int
