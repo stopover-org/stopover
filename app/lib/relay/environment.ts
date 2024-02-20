@@ -14,10 +14,10 @@ import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 export const IS_SERVER = typeof window === typeof undefined;
 const CACHE_TTL = 5 * 1000; // 5 seconds, to resolve preloaded results
-const getGraphQLBaseUrl = () =>
+export const getGraphQLBaseUrl = () =>
   process.env.GRAPHQL_API_URL || "http://localhost:8080/graphql";
 
-const getCookiesString = (cookiesObj: RequestCookie[] = []) =>
+export const getCookiesString = (cookiesObj: RequestCookie[] = []) =>
   cookiesObj.map(({ name, value }) => `${name}=${value}`).join(";");
 
 export async function networkFetch(
