@@ -17,19 +17,21 @@ module Types
 
       def statistics
         [{ name: 'bookings',
-           value: object.bookings.count },
+           value: object.bookings.where.not(status: :cancelled).count },
          { name: 'paid',
            value: object.bookings.where(status: :paid).count }]
       end
 
       def booked_places
-        object.attendees.where.not(status: :removed).count
+        object.attendees.joins(:booking).where.not(booking: { status: :cancelled }).where.not(status: :removed).count
       end
 
       def left_places
         return unless object.event.max_attendees
 
-        left = object.event.max_attendees - object.attendees.where.not(status: :removed).count
+        left = object.event.max_attendees - object.attendees
+                                                  .joins(:booking).where.not(booking: { status: :cancelled })
+                                                  .where.not(status: :removed).count
 
         return left if left.positive?
 

@@ -6,10 +6,14 @@ class ScheduleEventJob < ApplicationJob
   def perform(*args)
     event = Event.find args[0][:event_id]
 
-    Schedule.where(event_id: event.id)
-            .where('schedules.scheduled_for > ?', Time.zone.now)
-            .where.not(id: Schedule.joins(:bookings))
-            .destroy_all
+    event.schedules.where(event_id: event.id)
+         .where('schedules.scheduled_for > ?', Time.zone.now)
+         .where.not(id: event.schedules.joins(:bookings))
+         .destroy_all
+
+    event.schedules.where(event_id: event.id)
+         .where('schedules.scheduled_for > ?', Time.zone.now)
+         .update_all(status: :disabled)
 
     Stopover::EventSupport.schedule(event)
   end
