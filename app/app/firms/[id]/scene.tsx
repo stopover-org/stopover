@@ -32,7 +32,7 @@ const Scene = ({
   const data = usePreloadedQuery(Query, queryRef);
   const { t } = useTranslation();
 
-  useDocumentTitle(`${t("models.firm.singular")} ${data.firm?.title}`);
+  useDocumentTitle(data.firm?.title || t("general.404"));
 
   return (
     <SceneWrapper>

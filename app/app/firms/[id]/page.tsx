@@ -8,6 +8,7 @@ import defaultMetadata, {
   sharedEmails,
   sharedImages,
   sharedPhones,
+  translate,
 } from "lib/utils/defaultMetadata";
 import { merge } from "lodash";
 import fetchQuery from "lib/relay/fetchQuery";
@@ -33,7 +34,7 @@ export default Page;
 export const revalidate = 0;
 
 const PageQuery = `
-  query page_AttendeeFirmMetadataQuery($id: ID!) {
+  query PageQuery($id: ID!) {
     firm(id: $id) {
       title
       image
@@ -53,17 +54,19 @@ export const generateMetadata = async ({
   params: { id: string };
 }): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, { id: unescape(params.id) });
+  const defaultTitle = await translate("models.firm.singular");
 
   return merge(defaultMetadata, {
-    title: response.firm.title,
+    title: response?.firm?.title || defaultTitle,
+    description: response?.firm?.description?.replace(/<[^>]*>?/gm, ""),
     openGraph: {
       type: "profile",
-      title: response.firm.title,
-      description: response.firm.description,
-      phoneNumbers: [response.firm.primaryPhone, ...sharedPhones],
-      emails: [response.firm.primaryPhone, ...sharedEmails],
-      images: [response.firm.image, sharedImages],
-      countryName: response.firm.address.country,
+      title: response?.firm?.title || defaultTitle,
+      description: response?.firm?.description?.replace(/<[^>]*>?/gm, ""),
+      phoneNumbers: [response?.firm?.primaryPhone, ...sharedPhones],
+      emails: [response?.firm?.primaryEmail, ...sharedEmails],
+      images: [response?.firm?.image, ...sharedImages],
+      countryName: response?.firm?.address.country,
     },
   });
 };

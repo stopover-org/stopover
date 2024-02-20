@@ -54,4 +54,18 @@ export const revalidate = 0;
 
 export const generateMetadata = () => ({
   title: "Bookings",
+  robots: {
+    follow: false,
+    index: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+      nocache: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 });

@@ -3,7 +3,7 @@ export default {
     attendees: {
       firms: {
         newFirmScene: {
-          title: "Registered new Firm",
+          title: "Register new Firm",
         },
       },
     },

@@ -1,25 +1,33 @@
 import { Metadata } from "next";
+import i18n from "i18next";
+import englishTranslations from "config/locales/en";
+import russianTranslations from "config/locales/ru";
+import { cookies } from "next/headers";
+
+export const sharedPhones = ["+381621496696"];
+export const sharedEmails = ["mikhail@stopoverx.com", "maxim@stopoverx.com"];
+export const sharedImages = [
+  "https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx+(1).png",
+  "https://s3.eu-north-1.amazonaws.com/stopoverx.production/orange_onion.png",
+];
 
 const defaultMetadata: Metadata = {
   title: "Stopover | Event Management",
   verification: {
     other: {
-      me: ["mikhail@stopoverx.com"],
+      me: [...sharedEmails, ...sharedPhones],
     },
   },
   openGraph: {
     title: "Stopover | Event Management",
     siteName: "Stopoverx",
-    alt: "Stopoverx Logo",
-    image: {
-      url: "https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx.jpg",
-      width: 170,
-      height: 153,
-      alo: "logo",
-    },
+    images: sharedImages,
+    emails: sharedEmails,
+    phoneNumbers: sharedPhones,
     locale: "en_US",
     // @ts-ignore
     type: "website",
+    countryName: "Serbia",
   },
   robots: {
     follow: true,
@@ -44,11 +52,27 @@ const defaultMetadata: Metadata = {
     },
   },
 };
-export const sharedPhones = ["+381621496696"];
-export const sharedEmails = ["mikhail@stopoverx.com", "maxim@stopoverx.com"];
-export const sharedImages = [
-  "https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx+(1).png",
-  "https://s3.eu-north-1.amazonaws.com/stopoverx.production/orange_onion.png",
-];
+
+export const translate = async (key: string) => {
+  const language = (await cookies().get("i18next")?.value) || "en";
+  const translator = await i18n.init({
+    resources: {
+      en: {
+        translation: englishTranslations,
+      },
+      ru: {
+        translation: russianTranslations,
+      },
+    },
+    lng: language,
+    fallbackLng: "en",
+
+    interpolation: {
+      escapeValue: true,
+    },
+  });
+
+  return translator(key);
+};
 
 export default defaultMetadata;

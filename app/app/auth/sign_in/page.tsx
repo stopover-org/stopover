@@ -4,6 +4,9 @@ import scene_SignIn_QueryNode, {
   scene_SignIn_Query,
 } from "artifacts/scene_SignIn_Query.graphql";
 import { cookies } from "next/headers";
+import { Metadata } from "next";
+import { merge } from "lodash";
+import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
 import QueryWrapper from "./query";
 
 const Page = async () => {
@@ -24,6 +27,12 @@ export default Page;
 
 export const revalidate = 0;
 
-export const generateMetadata = () => ({
-  title: "Sign In",
-});
+export const generateMetadata = async (): Promise<Metadata> => {
+  const title = await translate("scenes.signInScene.signInAction");
+  return merge(defaultMetadata, {
+    title,
+    openGraph: {
+      title,
+    },
+  });
+};

@@ -1,16 +1,15 @@
 import React from "react";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
-import scene_Profile_QueryNode, {
-  scene_Profile_Query,
-} from "artifacts/scene_Profile_Query.graphql";
-import { cookies } from "next/headers";
+import scene_Profile_QueryNode, {scene_Profile_Query,} from "artifacts/scene_Profile_Query.graphql";
+import {cookies} from "next/headers";
+import {Metadata} from "next";
+import {merge} from "lodash";
 import QueryWrapper from "./query";
+import defaultMetadata, {translate} from "lib/utils/defaultMetadata";
 
 const Page = async () => {
-  const preloadedQuery = await loadSerializableQuery<
-    typeof scene_Profile_QueryNode,
-    scene_Profile_Query
-  >(scene_Profile_QueryNode.params, {});
+  const preloadedQuery = await loadSerializableQuery<typeof scene_Profile_QueryNode,
+    scene_Profile_Query>(scene_Profile_QueryNode.params, {});
 
   return (
     <QueryWrapper
@@ -24,6 +23,12 @@ export default Page;
 
 export const revalidate = 0;
 
-export const generateMetadata = () => ({
-  title: "Profile",
-});
+export const generateMetadata = async (): Promise<Metadata> => {
+  const title = await translate("models.account.singular");
+  return merge(defaultMetadata, {
+    title,
+    openGraph: {
+      title,
+    },
+  });
+};
