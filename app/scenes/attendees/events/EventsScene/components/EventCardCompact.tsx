@@ -151,16 +151,22 @@ const EventCardCompact = ({
             useFlexGap
           >
             <Typography fontSize="lg">
-              {getCurrencyFormat(
-                event?.attendeePricePerUom?.cents,
-                event?.attendeePricePerUom?.currency?.name
-              )}
+              {event?.attendeePricePerUom?.cents === 0
+                ? t("general.free")
+                : getCurrencyFormat(
+                    event?.attendeePricePerUom?.cents,
+                    event?.attendeePricePerUom?.currency?.name
+                  )}
             </Typography>
-            <DateAutocomplete
-              value={date}
-              onChange={setDate}
-              eventFragmentRef={event}
-            />
+            {event.availableDates?.length > 0 ? (
+              <DateAutocomplete
+                value={date}
+                onChange={setDate}
+                eventFragmentRef={event}
+              />
+            ) : (
+              t("general.noData")
+            )}
             {date?.isValid() && !booking && (
               <SubmitButton
                 submitting={submitting}

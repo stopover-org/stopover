@@ -42,6 +42,7 @@ const translation = {
     privacy: "Privacy",
     whatDoWeOffer: "What do we offer",
     refundTerms: "Refund terms",
+    free: "Free",
   },
   weekdays: {
     monday: "Monday",
@@ -96,6 +97,7 @@ const translation = {
     not_registered: "Not registered",
     available: "Available",
     not_available: "Not available",
+    disabled: "Cancelled",
   },
   address: {
     title: "Address",

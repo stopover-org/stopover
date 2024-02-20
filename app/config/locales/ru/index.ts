@@ -42,6 +42,7 @@ const translation = {
     privacy: "Конфиденциальность",
     whatDoWeOffer: "Что мы предлагаем",
     refundTerms: "Условия отмены бронирования",
+    free: "Бесплатно",
   },
   weekdays: {
     monday: "Понедельник",
@@ -96,6 +97,7 @@ const translation = {
     not_registered: "Не зарегистрировано",
     available: "Доступно для заказа",
     not_available: "Не доступно для заказа",
+    disabled: "Отменено",
   },
   address: {
     title: "Адрес",
