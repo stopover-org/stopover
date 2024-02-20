@@ -53,7 +53,7 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
               organizerPriceField.onChange(0);
             }
           }}
-          value={organizerPriceField.value.toString()}
+          value={organizerPriceField.value?.toString()}
         />
       </Grid>
       <Grid lg={3} md={12} sm={12}>
@@ -65,7 +65,7 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
           type="number"
           value={(organizerPriceField.value * (1 + firm.margin! / 100))
             .toFixed(0)
-            .toString()}
+            ?.toString()}
           hint={t("forms.editEvent.computedValue")}
           readOnly
         />
@@ -96,7 +96,7 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
                 sx={{ width: 300 }}
                 type="number"
                 {...depositAmountField}
-                value={depositAmountField.value.toString()}
+                value={depositAmountField.value?.toString()}
               />
             </Grid>
           )}
