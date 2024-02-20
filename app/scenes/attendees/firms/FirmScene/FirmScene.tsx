@@ -1,15 +1,15 @@
-import {graphql, useFragment, usePaginationFragment} from "react-relay";
+import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import React from "react";
-import {Divider, Stack, Grid} from "@mui/joy";
-import {FirmScene_CurrentFirmFragment$key} from "artifacts/FirmScene_CurrentFirmFragment.graphql";
+import { Divider, Grid, Stack } from "@mui/joy";
+import { FirmScene_CurrentFirmFragment$key } from "artifacts/FirmScene_CurrentFirmFragment.graphql";
 import Typography from "components/v2/Typography/Typography";
 import Description from "components/v2/Description/Description";
-import {usePagedEdges} from "lib/hooks/usePagedEdges";
+import { usePagedEdges } from "lib/hooks/usePagedEdges";
 import Pagination from "scenes/attendees/events/EventsScene/components/Pagination";
 import EventCardCompact from "scenes/attendees/events/EventsScene/components/EventCardCompact";
-import {FirmScenePaginationQuery} from "artifacts/FirmScenePaginationQuery.graphql";
-import {FirmScene_EventPaginationFragment$key} from "artifacts/FirmScene_EventPaginationFragment.graphql";
-import {useTranslation} from "react-i18next";
+import { FirmScenePaginationQuery } from "artifacts/FirmScenePaginationQuery.graphql";
+import { FirmScene_EventPaginationFragment$key } from "artifacts/FirmScene_EventPaginationFragment.graphql";
+import { useTranslation } from "react-i18next";
 import GoogleMap from "components/shared/GoogleMap/GoogleMap";
 import Link from "components/v2/Link";
 
@@ -17,9 +17,9 @@ interface Props {
   firmFragmentRef: FirmScene_CurrentFirmFragment$key;
 }
 
-export const FirmScene = ({firmFragmentRef}: Props) => {
-    const firm = useFragment<FirmScene_CurrentFirmFragment$key>(
-      graphql`
+export const FirmScene = ({ firmFragmentRef }: Props) => {
+  const firm = useFragment<FirmScene_CurrentFirmFragment$key>(
+    graphql`
       fragment FirmScene_CurrentFirmFragment on Firm {
         id
         title
@@ -39,12 +39,14 @@ export const FirmScene = ({firmFragmentRef}: Props) => {
         ...FirmScene_EventPaginationFragment
       }
     `,
-      firmFragmentRef
-    );
+    firmFragmentRef
+  );
 
-    const {data, hasPrevious, hasNext, loadPrevious, loadNext} =
-    usePaginationFragment<FirmScenePaginationQuery,
-      FirmScene_EventPaginationFragment$key>(
+  const { data, hasPrevious, hasNext, loadPrevious, loadNext } =
+    usePaginationFragment<
+      FirmScenePaginationQuery,
+      FirmScene_EventPaginationFragment$key
+    >(
       graphql`
         fragment FirmScene_EventPaginationFragment on Firm
         @refetchable(queryName: "FirmScenePaginationQuery")
@@ -67,7 +69,7 @@ export const FirmScene = ({firmFragmentRef}: Props) => {
     );
   const [currentPage, setCurrentPage] = React.useState(1);
   const events = usePagedEdges(data.events, currentPage, 12);
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Grid container padding={2} spacing={2} sm={12} md={12}>
@@ -82,16 +84,16 @@ export const FirmScene = ({firmFragmentRef}: Props) => {
       </Grid>
       {firm.image && (
         <Grid lg={3} md={3} sm={12} xs={12}>
-          <Stack sx={{position: "sticky", top: "0", right: "0"}}>
-            <img width="100%" src={firm.image} alt={`${firm.title}-logo`}/>
+          <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
+            <img width="100%" src={firm.image} alt={`${firm.title}-logo`} />
           </Stack>
         </Grid>
       )}
       <Grid lg={6} md={9} sm={12} xs={12}>
-        {firm.description && <Description html={firm.description}/>}
+        {firm.description && <Description html={firm.description} />}
         {firm.address && (
           <>
-            <Divider sx={{margin: 2}}/>
+            <Divider sx={{ margin: 2 }} />
             <Typography level="h4">{t("models.address.singular")}</Typography>
             <Typography fontSize="lg-title">
               {firm.address?.fullAddress}
@@ -101,7 +103,7 @@ export const FirmScene = ({firmFragmentRef}: Props) => {
             </Typography>
             {firm.address?.latitude && firm.address?.longitude && (
               <>
-                <Divider sx={{margin: 2}}/>
+                <Divider sx={{ margin: 2 }} />
                 <GoogleMap
                   center={{
                     lat: firm.address?.latitude!,
