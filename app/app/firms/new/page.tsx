@@ -1,15 +1,19 @@
 import React from "react";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
-import scene_NewFirm_QueryNode, {scene_NewFirm_Query,} from "artifacts/scene_NewFirm_Query.graphql";
-import {cookies} from "next/headers";
-import {Metadata} from "next";
-import {merge} from "lodash";
+import scene_NewFirm_QueryNode, {
+  scene_NewFirm_Query,
+} from "artifacts/scene_NewFirm_Query.graphql";
+import { cookies } from "next/headers";
+import { Metadata } from "next";
+import { merge } from "lodash";
+import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
 import QueryWrapper from "./query";
-import defaultMetadata, {translate} from "lib/utils/defaultMetadata";
 
 const Page = async () => {
-  const preloadedQuery = await loadSerializableQuery<typeof scene_NewFirm_QueryNode,
-    scene_NewFirm_Query>(scene_NewFirm_QueryNode.params, {});
+  const preloadedQuery = await loadSerializableQuery<
+    typeof scene_NewFirm_QueryNode,
+    scene_NewFirm_Query
+  >(scene_NewFirm_QueryNode.params, {});
 
   return (
     <QueryWrapper

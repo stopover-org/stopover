@@ -1,16 +1,16 @@
 import React from "react";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
-import moment, {Moment} from "moment";
+import moment, { Moment } from "moment";
 import scene_EventsPage_QueryNode, {
   EventsFilter,
   scene_EventsPage_Query,
 } from "artifacts/scene_EventsPage_Query.graphql";
-import {parseValue} from "lib/hooks/useQuery";
-import {cookies} from "next/headers";
-import {Metadata} from "next";
-import {merge} from "lodash";
+import { parseValue } from "lib/hooks/useQuery";
+import { cookies } from "next/headers";
+import { Metadata } from "next";
+import { merge } from "lodash";
+import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
 import QueryWrapper from "./query";
-import defaultMetadata, {translate} from "lib/utils/defaultMetadata";
 
 const filterParsers = {
   query: (value: string) => parseValue(value),
@@ -20,8 +20,8 @@ const filterParsers = {
 };
 
 const Page = async ({
-                      searchParams,
-                    }: {
+  searchParams,
+}: {
   searchParams: Record<string, string>;
 }) => {
   const filters: EventsFilter = React.useMemo(() => {
@@ -53,8 +53,10 @@ const Page = async ({
     return query;
   }, [searchParams]);
 
-  const preloadedQuery = await loadSerializableQuery<typeof scene_EventsPage_QueryNode,
-    scene_EventsPage_Query>(scene_EventsPage_QueryNode.params, {
+  const preloadedQuery = await loadSerializableQuery<
+    typeof scene_EventsPage_QueryNode,
+    scene_EventsPage_Query
+  >(scene_EventsPage_QueryNode.params, {
     filters,
   });
 
