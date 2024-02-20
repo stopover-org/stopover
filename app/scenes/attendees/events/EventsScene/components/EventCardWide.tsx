@@ -159,17 +159,23 @@ const EventCardCompact = ({ eventFragmentRef }: Props) => {
             }}
           >
             <Typography fontSize="lg">
-              {getCurrencyFormat(
-                event?.attendeePricePerUom?.cents,
-                event?.attendeePricePerUom?.currency?.name
-              )}
+              {event?.attendeePricePerUom?.cents === 0
+                ? t("general.free")
+                : getCurrencyFormat(
+                    event?.attendeePricePerUom?.cents,
+                    event?.attendeePricePerUom?.currency?.name
+                  )}
             </Typography>
-            <DateAutocomplete
-              value={date}
-              onChange={setDate}
-              eventFragmentRef={event}
-              sx={{ width: "150px" }}
-            />
+            {event.availableDates?.length > 0 ? (
+              <DateAutocomplete
+                value={date}
+                onChange={setDate}
+                eventFragmentRef={event}
+                sx={{ width: "150px" }}
+              />
+            ) : (
+              t("general.noData")
+            )}
             {date?.isValid() && !booking && (
               <SubmitButton
                 submitting={submitting}

@@ -148,11 +148,19 @@ export const SignIn = () => {
                   )}
                 </Grid>
               )}
+              <Grid>
+                {t("scenes.signInScene.acceptTerms")}{" "}
+                <Link href="/pages/privacy" target="_blank" primary>
+                  {t("scenes.signInScene.policy")}
+                </Link>
+              </Grid>
 
               <Grid container justifyContent="flex-end">
-                <SubmitButton submitting={form.formState.isSubmitting}>
-                  {t("scenes.signInScene.signInAction")}
-                </SubmitButton>
+                <Grid>
+                  <SubmitButton submitting={form.formState.isSubmitting}>
+                    {t("scenes.signInScene.signInAction")}
+                  </SubmitButton>
+                </Grid>
               </Grid>
             </form>
           </Grid>

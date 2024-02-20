@@ -27,6 +27,7 @@ const FirmSection = ({
   const firm = useFragment(
     graphql`
       fragment FirmSection_FirmFragment on Firm {
+        id
         title
         contactPerson
         status
@@ -65,9 +66,14 @@ const FirmSection = ({
   return (
     <Section>
       <Grid md={10} sm={12}>
-        <Typography level="h3" sx={{ display: "inline" }}>
+        <Link
+          level="h3"
+          sx={{ display: "inline" }}
+          target="_blank"
+          href={`/firms/${firm.id}`}
+        >
           {firm.title.toUpperCase()}
-        </Typography>
+        </Link>
         <Tag link={false} color={tagColor}>
           {t(`statuses.${firm.status?.toLowerCase()}`)}
         </Tag>

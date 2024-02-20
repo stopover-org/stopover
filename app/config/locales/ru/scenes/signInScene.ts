@@ -10,6 +10,8 @@ export default {
       enterPhone: "Введите телефон",
       useType: "Использовать {{type}}",
       signInAction: "Вход",
+      acceptTerms: "Регистрируясь на сайте я соглашаюсь с",
+      policy: "политикой конфиденциальности",
     },
   },
 };
