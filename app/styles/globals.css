@@ -80,3 +80,33 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+
+.description-class h1 {
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.description-class h2 {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.description-class h3 {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.description-class h4 {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.description-class h5 {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.description-class h6 {
+    font-size: 12px;
+    font-weight: 400;
+}
