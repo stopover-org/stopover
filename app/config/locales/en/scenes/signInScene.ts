@@ -10,6 +10,8 @@ export default {
       enterPhone: "Enter телефон",
       useType: "Use {{type}}",
       signInAction: "Sign In",
+      acceptTerms: "Registering on this side I accept",
+      policy: "Privacy Policy",
     },
   },
 };
