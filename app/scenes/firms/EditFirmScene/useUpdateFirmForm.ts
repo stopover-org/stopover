@@ -70,7 +70,7 @@ const validationSchema = Yup.object().shape({
   primaryEmail: Yup.string().email().required("Required"),
   primaryPhone: Yup.string()
     .test("validate-phone", "Invalid", validatePhone)
-    .required("Required"),
+    .nullable(),
   contacts: Yup.string().nullable(),
   website: Yup.string().nullable(),
   description: Yup.string().nullable(),

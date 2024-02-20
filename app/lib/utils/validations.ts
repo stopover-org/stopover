@@ -1,8 +1,11 @@
 import { isValidPhoneNumber } from "libphonenumber-js";
 
 export function validatePhone(value: string | undefined, ctx: any) {
-  return (
-    isValidPhoneNumber(value as string) ||
-    ctx.createError({ message: "Invalid" })
-  );
+  if (value) {
+    return (
+      isValidPhoneNumber(value as string) ||
+      ctx.createError({ message: "Invalid" })
+    );
+  }
+  return true;
 }
