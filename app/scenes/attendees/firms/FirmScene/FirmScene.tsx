@@ -3,15 +3,15 @@ import React from "react";
 import { Divider, Grid, Stack } from "@mui/joy";
 import { FirmScene_CurrentFirmFragment$key } from "artifacts/FirmScene_CurrentFirmFragment.graphql";
 import Typography from "components/v2/Typography/Typography";
-import Description from "components/v2/Description/Description";
 import { usePagedEdges } from "lib/hooks/usePagedEdges";
-import Pagination from "scenes/attendees/events/EventsScene/components/Pagination";
-import EventCardCompact from "scenes/attendees/events/EventsScene/components/EventCardCompact";
 import { FirmScenePaginationQuery } from "artifacts/FirmScenePaginationQuery.graphql";
 import { FirmScene_EventPaginationFragment$key } from "artifacts/FirmScene_EventPaginationFragment.graphql";
 import { useTranslation } from "react-i18next";
-import GoogleMap from "components/shared/GoogleMap/GoogleMap";
 import Link from "components/v2/Link";
+import Description from "components/v2/Description";
+import GoogleMap from "components/shared/GoogleMap";
+import EventCardCompact from "scenes/attendees/events/EventsScene/components/EventCardCompact";
+import Pagination from "scenes/attendees/events/EventsScene/components/Pagination";
 
 interface Props {
   firmFragmentRef: FirmScene_CurrentFirmFragment$key;
@@ -26,6 +26,8 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
         description
         image
         website
+        primaryEmail
+        primaryPhone
         address {
           fullAddress
           country
@@ -70,6 +72,10 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const events = usePagedEdges(data.events, currentPage, 12);
   const { t } = useTranslation();
+  const isStopover = React.useMemo(
+    () => firm.title.toLowerCase() === "stopoverx",
+    [firm]
+  );
 
   return (
     <Grid container padding={2} spacing={2} sm={12} md={12}>
@@ -81,11 +87,14 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
             Website
           </Link>
         )}
+        {firm.primaryEmail && (
+          <Link href={`mailto:${firm.primaryEmail}`}>E-Mail</Link>
+        )}
       </Grid>
       {firm.image && (
         <Grid lg={3} md={3} sm={12} xs={12}>
           <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
-            <img width="100%" src={firm.image} alt={`${firm.title}-logo`} />
+            <img width="100%" src={firm.image} alt={`${firm.title} - logo`} />
           </Stack>
         </Grid>
       )}
@@ -121,45 +130,49 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
           </>
         )}
       </Grid>
-      <Grid container padding={2} spacing={2} sm={12} md={12}>
-        <Typography level="h3">{t("models.event.plural")}</Typography>
-      </Grid>
-      <Grid lg={9} md={12} sm={12} xs={12} container>
-        {events.map((event) => (
-          <EventCardCompact
-            key={event!.id}
-            eventFragmentRef={event!}
-            includeInterests={false}
-          />
-        ))}
-      </Grid>
-      <Grid xs={12}>
-        <Pagination
-          showPrev={hasPrevious}
-          showNext={hasNext}
-          onPrev={() => {
-            if (hasPrevious) {
-              loadPrevious(12, {
-                onComplete: () => setCurrentPage(currentPage - 1),
-              });
-              return;
-            }
-            setCurrentPage(currentPage - 1);
-          }}
-          onNext={() => {
-            if (hasNext) {
-              loadNext(12, {
-                onComplete: () => setCurrentPage(currentPage + 1),
-              });
-              return;
-            }
-            setCurrentPage(currentPage + 1);
-          }}
-          currentPage={currentPage}
-          perPage={12}
-          total={data.events.edges.length}
-        />
-      </Grid>
+      {!isStopover && (
+        <>
+          <Grid container padding={2} spacing={2} sm={12} md={12}>
+            <Typography level="h3">{t("models.event.plural")}</Typography>
+          </Grid>
+          <Grid lg={9} md={12} sm={12} xs={12} container>
+            {events.map((event) => (
+              <EventCardCompact
+                key={event!.id}
+                eventFragmentRef={event!}
+                includeInterests={false}
+              />
+            ))}
+          </Grid>
+          <Grid xs={12}>
+            <Pagination
+              showPrev={hasPrevious}
+              showNext={hasNext}
+              onPrev={() => {
+                if (hasPrevious) {
+                  loadPrevious(12, {
+                    onComplete: () => setCurrentPage(currentPage - 1),
+                  });
+                  return;
+                }
+                setCurrentPage(currentPage - 1);
+              }}
+              onNext={() => {
+                if (hasNext) {
+                  loadNext(12, {
+                    onComplete: () => setCurrentPage(currentPage + 1),
+                  });
+                  return;
+                }
+                setCurrentPage(currentPage + 1);
+              }}
+              currentPage={currentPage}
+              perPage={12}
+              total={data.events.edges.length}
+            />
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 };
