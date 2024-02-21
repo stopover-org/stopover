@@ -1,9 +1,5 @@
-import { Box, Drawer, Grid } from "@mui/joy";
+import { Drawer } from "@mui/joy";
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { graphql, useFragment } from "react-relay";
-import { GlobalSidebarProvider_FirmFragment$key } from "artifacts/GlobalSidebarProvider_FirmFragment.graphql";
-import Link from "components/v2/Link";
 
 export const GlobalSidebarContext = React.createContext<{
   opened: boolean;
@@ -29,13 +25,9 @@ interface GlobalSidebarProviderProps {
     | React.ReactElement[]
     | React.ReactNode
     | React.ReactNode[];
-  firmFragmentRef: GlobalSidebarProvider_FirmFragment$key;
 }
 
-const GlobalSidebarProvider = ({
-  children,
-  firmFragmentRef,
-}: GlobalSidebarProviderProps) => {
+const GlobalSidebarProvider = ({ children }: GlobalSidebarProviderProps) => {
   const [opened, setOpened] = React.useState<boolean>(false);
   const [content, setContent] = React.useState<
     | React.ReactElement
@@ -43,15 +35,6 @@ const GlobalSidebarProvider = ({
     | React.ReactNode
     | React.ReactNode[]
   >(null);
-
-  const firm = useFragment<GlobalSidebarProvider_FirmFragment$key>(
-    graphql`
-      fragment GlobalSidebarProvider_FirmFragment on Firm {
-        id
-      }
-    `,
-    firmFragmentRef
-  );
 
   const value = React.useMemo(
     () => ({
@@ -62,29 +45,11 @@ const GlobalSidebarProvider = ({
     }),
     [opened, setOpened, content, setContent]
   );
-  const { t } = useTranslation();
   return (
     <GlobalSidebarContext.Provider value={value}>
       {children}
       <Drawer open={opened} onClose={value.close}>
         {content}
-        {!firm && (
-          <Grid xs={12}>
-            <Box
-              sx={{
-                display: "flex",
-                position: "sticky",
-                bottom: "0",
-                gap: 1,
-                p: 1.5,
-                pb: 2,
-                width: "90%",
-              }}
-            >
-              <Link href="/firms/new">{t("layout.header.registerFirm")}</Link>
-            </Box>
-          </Grid>
-        )}
       </Drawer>
     </GlobalSidebarContext.Provider>
   );

@@ -42,6 +42,7 @@ const translation = {
     privacy: "Privacy",
     whatDoWeOffer: "What do we offer",
     refundTerms: "Refund terms",
+    termsOfUsage: "Terms of Usage",
     free: "Free",
   },
   weekdays: {

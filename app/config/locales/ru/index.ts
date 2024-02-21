@@ -42,6 +42,7 @@ const translation = {
     privacy: "Конфиденциальность",
     whatDoWeOffer: "Что мы предлагаем",
     refundTerms: "Условия отмены бронирования",
+    termsOfUsage: "Условия пользования сервисом",
     free: "Бесплатно",
   },
   weekdays: {

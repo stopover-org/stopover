@@ -29,11 +29,6 @@ const Layout = ({
     graphql`
       fragment Layout_CurrentUserFragment on User {
         ...Header_CurrentUserFragment
-        account {
-          firm {
-            ...GlobalSidebarProvider_FirmFragment
-          }
-        }
       }
     `,
     currentUserFragment
@@ -56,7 +51,7 @@ const Layout = ({
   }, [chatraApiKey]);
 
   return (
-    <GlobalSidebarProvider firmFragmentRef={currentUser?.account?.firm!}>
+    <GlobalSidebarProvider>
       <Sheet sx={{ minHeight: "calc(100vh - 150px)" }}>
         <Header
           currentUserFragment={currentUser}

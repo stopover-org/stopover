@@ -37,6 +37,7 @@ const Footer = () => {
           >
             <Link href="/pages/privacy">{t("general.privacy")}</Link>
             <Link href="/pages/refund-terms">{t("general.refundTerms")}</Link>
+            <Link href="/pages/terms">{t("general.termsOfUsage")}</Link>
           </Stack>
         </Grid>
         <Grid md={4} sm={12} padding={4}>
@@ -68,6 +69,7 @@ const Footer = () => {
               sx={{ maxWidth: 200 }}
               onChange={setLanguage}
               value={cookies.i18next}
+              defaultValue="ru"
             >
               <Option value="ru">{t("languages.russian")}</Option>
               <Option value="en">{t("languages.english")}</Option>

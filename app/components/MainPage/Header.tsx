@@ -70,10 +70,10 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
 
   const imageSize = React.useMemo(
     () => ({
-      width: !isMediumDisplay && !isServer ? 150 : 250,
-      height: !isMediumDisplay && !isServer ? 45 : 75,
+      width: isSmallDisplay && !isServer ? 150 : 250,
+      height: isSmallDisplay && !isServer ? 45 : 75,
     }),
-    [isMediumDisplay]
+    [isSmallDisplay]
   );
 
   return (
@@ -88,7 +88,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
           justifyContent="flex-start"
           alignItems="center"
         >
-          {!isMediumDisplay && (
+          {isSmallDisplay && (
             <Box sx={{ margin: "5px" }} onClick={open}>
               <Menu />
             </Box>
