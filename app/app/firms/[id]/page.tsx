@@ -1,16 +1,25 @@
 import React from "react";
-import scene_AttendeesFirm_QueryNode, {scene_AttendeesFirm_Query,} from "artifacts/scene_AttendeesFirm_Query.graphql";
+import scene_AttendeesFirm_QueryNode, {
+  scene_AttendeesFirm_Query,
+} from "artifacts/scene_AttendeesFirm_Query.graphql";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
-import {cookies} from "next/headers";
-import defaultMetadata, {sharedEmails, sharedImages, sharedPhones, translate,} from "lib/utils/defaultMetadata";
-import {merge} from "lodash";
+import { cookies } from "next/headers";
+import defaultMetadata, {
+  sharedEmails,
+  sharedImages,
+  sharedPhones,
+  translate,
+} from "lib/utils/defaultMetadata";
+import { merge } from "lodash";
 import fetchQuery from "lib/relay/fetchQuery";
-import {Metadata} from "next";
+import { Metadata } from "next";
 import QueryWrapper from "./query";
 
-const Page = async ({params}: { params: Record<string, string> }) => {
-  const preloadedQuery = await loadSerializableQuery<typeof scene_AttendeesFirm_QueryNode,
-    scene_AttendeesFirm_Query>(scene_AttendeesFirm_QueryNode.params, {id: unescape(params.id)});
+const Page = async ({ params }: { params: Record<string, string> }) => {
+  const preloadedQuery = await loadSerializableQuery<
+    typeof scene_AttendeesFirm_QueryNode,
+    scene_AttendeesFirm_Query
+  >(scene_AttendeesFirm_QueryNode.params, { id: unescape(params.id) });
 
   return (
     <QueryWrapper
@@ -40,11 +49,11 @@ const PageQuery = `
 `;
 
 export const generateMetadata = async ({
-                                         params,
-                                       }: {
+  params,
+}: {
   params: { id: string };
 }): Promise<Metadata> => {
-  const response = await fetchQuery(PageQuery, {id: unescape(params.id)});
+  const response = await fetchQuery(PageQuery, { id: unescape(params.id) });
   const defaultTitle = await translate("models.firm.singular");
 
   return merge(defaultMetadata, {
