@@ -74,7 +74,7 @@ export function useSignInForm(onNextStep: (delay: number) => void) {
           } else if (result.signIn?.user?.id) {
             toast.success(result.signIn?.notification!);
 
-            (window as any).location.refresh();
+            (window as any).location.reload();
           }
         },
       });
