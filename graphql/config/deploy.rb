@@ -1,5 +1,5 @@
 # config valid for current version and patch releases of Capistrano
-lock "~> 3.17.3"
+lock "~> 3.18"
 
 set :application, "stopover"
 set :repo_url, "git@github.com:stopover-org/stopover.git"
@@ -53,7 +53,6 @@ set :rbenv_ruby, "3.1.0"
 set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 set :rbenv_map_bins, %w{rake gem bundle ruby rails puma pumactl}
 set :rbenv_roles, :all # default value
-
 
 # PUMA SETUP
 set :puma_enable_socket_service, true
