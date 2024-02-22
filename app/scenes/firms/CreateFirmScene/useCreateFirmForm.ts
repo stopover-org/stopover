@@ -42,9 +42,6 @@ export function useCreateFirmForm() {
             id
             ...FirmScene_FirmFragment
             ...FirmScene_CurrentFirmFragment
-            accounts {
-              ...SidebarContent_AccountFragment
-            }
           }
           notification
           errors
@@ -62,6 +59,8 @@ export function useCreateFirmForm() {
       onCompleted(result) {
         if (result.createFirm?.firm?.id) {
           router.replace("/my-firm/dashboard");
+
+          (window as any).location.reload();
         }
       },
     }

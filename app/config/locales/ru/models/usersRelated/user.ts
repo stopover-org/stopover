@@ -1,8 +1,8 @@
 export default {
   models: {
     user: {
-      single: "",
-      plural: "",
+      singular: "Пользователь",
+      plural: "Пользователи",
       attributes: {
         id: "ID",
         email: "Email",

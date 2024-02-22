@@ -52,7 +52,7 @@ module Types
 
       field :margin, Integer
 
-      field :accounts, [Types::UsersRelated::AccountType]
+      field :accounts, Types::UsersRelated::AccountType.connection_type
 
       field :event, Types::EventsRelated::EventType do
         argument :id, ID, required: true, loads: Types::EventsRelated::EventType

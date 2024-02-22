@@ -10,8 +10,8 @@ import { toast } from "sonner";
 import {
   SignInInput,
   useSignInForm_AuthLoginMutation,
-} from "../../artifacts/useSignInForm_AuthLoginMutation.graphql";
-import useMutationForm from "../../lib/hooks/useMutationForm";
+} from "artifacts/useSignInForm_AuthLoginMutation.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
 
 interface SignInFields {
   username: string;
@@ -101,7 +101,7 @@ export function useSignInForm(onNextStep: (delay: number) => void) {
       }
     `,
     (input: SignInFields) => ({
-      input,
+      input: { ...input, username: input.username.toLowerCase() },
     }),
     {
       resolver: yupResolver(validationSchema),
