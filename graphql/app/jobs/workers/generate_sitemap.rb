@@ -2,6 +2,8 @@
 
 module Workers
   class GenerateSitemap
-    Rake::Task['rake generate_sitemap'].execute
+    def perform
+      Rake::Task['rake generate_sitemap'].execute
+    end
   end
 end
