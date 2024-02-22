@@ -18,7 +18,7 @@ task generate_sitemap: :environment do
       static_routes.each do |static_route|
         xml.url do
           xml.loc "#{base_url}#{static_route}"
-          xml.lastmod Time.zone.now
+          xml.lastmod Time.zone.now.iso8601
           xml.changefreq 'weekly'
           xml.priority 0.5
         end
@@ -26,7 +26,7 @@ task generate_sitemap: :environment do
           30.times.each do |d|
             xml.url do
               xml.loc "#{base_url}/events?dates=%5B\"#{Time.zone.now.to_date}\"%2C\"#{(Time.zone.now + (d + 1).day).to_date}\"%5D"
-              xml.lastmod Time.zone.now
+              xml.lastmod Time.zone.now.iso8601
               xml.changefreq 'daily'
               xml.priority 0.7
             end
@@ -37,7 +37,7 @@ task generate_sitemap: :environment do
       Firm.active.each do |firm|
         xml.url do
           xml.loc "#{base_url}/firms/#{GraphqlSchema.id_from_object(firm)}"
-          xml.lastmod Time.zone.now
+          xml.lastmod Time.zone.now.iso8601
           xml.changefreq 'weekly'
           xml.priority 0.7
         end
@@ -46,7 +46,7 @@ task generate_sitemap: :environment do
       Event.published.each do |event|
         xml.url do
           xml.loc "#{base_url}/events/#{GraphqlSchema.id_from_object(event)}"
-          xml.lastmod Time.zone.now
+          xml.lastmod Time.zone.now.iso8601
           xml.changefreq 'weekly'
           xml.priority 0.7
         end
@@ -55,14 +55,14 @@ task generate_sitemap: :environment do
       Interest.all.each do |interest|
         xml.url do
           xml.loc "#{base_url}/events?interests=%5B\"#{interest.slug}\"%5D"
-          xml.lastmod Time.zone.now
+          xml.lastmod Time.zone.now.iso8601
           xml.changefreq 'daily'
           xml.priority 0.7
         end
         xml.url do
           30.times.each do |d|
             xml.loc "#{base_url}/events?interests=%5B\"#{interest.slug}\"%5D&dates=%5B\"#{Time.zone.now.to_date}\"%2C\"#{(Time.zone.now + (d + 1).day).to_date}\"%5D"
-            xml.lastmod Time.zone.now
+            xml.lastmod Time.zone.now.iso8601
             xml.changefreq 'daily'
             xml.priority 0.7
           end

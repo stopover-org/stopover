@@ -39,7 +39,7 @@ class EventsQuery
     @conditions[:interests] = @params[:interests] if @params[:interests]&.any?
     @conditions[:firm_id] = @params[:firm_id] if @params[:firm_id].present?
     @conditions[:featured] = @params[:featured] unless @params[:featured].nil?
-    @conditions[:today] = { gte: Time.zone.now.at_beginning_of_day, lte: 1.day.from_now.at_end_of_day } unless @params[:today].nil?
+    @conditions[:dates] = { gte: Time.zone.now.at_beginning_of_day, lte: 1.day.from_now.at_end_of_day } unless @params[:today].nil?
 
     @conditions[:title] = query if @backend && query
 
