@@ -872,6 +872,7 @@ input EventsFilter {
   minPrice: Int
   query: String
   startDate: DateTime
+  today: Boolean
 }
 
 type Firm implements Node {

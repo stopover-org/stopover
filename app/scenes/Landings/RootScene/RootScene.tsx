@@ -19,6 +19,7 @@ import RegisterFirmCTA from "components/shared/RegisterFirmCTA";
 import SearchBar from "scenes/attendees/events/EventsScene/components/SearchBar";
 import useEdges from "lib/hooks/useEdges";
 import EventCardCompact from "scenes/attendees/events/EventsScene/components/EventCardCompact";
+import Link from "components/v2/Link";
 
 interface Props {
   queryFragmentRef: any;
@@ -33,7 +34,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
           slug
           preview
         }
-        events(filters: { featured: true }) {
+        events(filters: { today: true }) {
           edges {
             node {
               ...EventCardCompacts_EventFragment
@@ -88,13 +89,14 @@ const RootScene = ({ queryFragmentRef }: Props) => {
       </Grid>
       <Grid container spacing={2} sx={{ paddingLeft: "15px" }}>
         <Grid xs={12}>
-          <Typography
+          <Link
+            href="/events"
             fontSize="28px"
             level="title-lg"
             sx={{ paddingTop: "20px" }}
           >
-            {t("models.event.plural")}
-          </Typography>
+            {t("general.all")} {t("models.event.plural")} &gt;
+          </Link>
         </Grid>
         {events.map((event) => (
           <EventCardCompact

@@ -12,6 +12,7 @@ module Types
       argument :interests, [String], required: false
       argument :firm_id, ID, loads: Types::FirmsRelated::FirmType, required: false
       argument :featured, Boolean, required: false
+      argument :today, Boolean, required: false
     end
   end
 end
