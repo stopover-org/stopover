@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Link from "components/v2/Link";
 import useStatusColor from "lib/hooks/useStatusColor";
 import Tag from "components/v2/Tag/Tag";
 import useEdges from "lib/hooks/useEdges";
@@ -27,11 +26,6 @@ export function useAccountsHeaders() {
   return React.useMemo(
     () => [
       {
-        label: t("models.account.attributes.id"),
-        width: 150,
-        key: "account",
-      },
-      {
         label: t("models.account.attributes.status"),
         width: 300,
         key: "status",
@@ -40,6 +34,11 @@ export function useAccountsHeaders() {
         label: t("models.account.attributes.primaryEmail"),
         width: 150,
         key: "primaryEmail",
+      },
+      {
+        label: t("models.account.attributes.primaryPhone"),
+        width: 150,
+        key: "primaryPhone",
       },
       {
         label: t("models.account.attributes.name"),
@@ -67,6 +66,7 @@ export function useAccountsColumns(
               status
               name
               primaryEmail
+              primaryPhone
             }
           }
         }
@@ -77,14 +77,10 @@ export function useAccountsColumns(
   return React.useMemo(
     () =>
       accountsData.map((account) => ({
-        account: (
-          <Link primary fontSize="sm" href={`/my-firm/users/${account.id}`}>
-            {account.id}
-          </Link>
-        ),
         status: <TagColor status={account.user.status} />,
         name: account.name,
         primaryEmail: account.primaryEmail,
+        primaryPhone: account.primaryPhone,
       })),
     [accounts]
   );
