@@ -6,7 +6,7 @@ en:
 
       firm_not_verified: 'Firm was not verified'
       firm_removed: 'Firm removed'
-      user_already_invited: 'User already invited',
+      user_already_invited: 'User already invited'
       stripe_payment_method_required: 'Require stripe payment method'
 
       booking_cancelled: 'Booking cancelled'
@@ -24,6 +24,9 @@ en:
       insufficient_funds: 'Insufficient funds'
 
     mutations:
+      invite_user:
+        notifications:
+          success: "Invitation was sent"
       create_placement:
         notifications:
           success: "You've created event displacement"

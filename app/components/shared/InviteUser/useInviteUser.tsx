@@ -26,6 +26,8 @@ export function useInviteUser(onComplete?: () => void) {
               status
             }
           }
+          errors
+          notification
         }
       }
     `,
@@ -33,7 +35,11 @@ export function useInviteUser(onComplete?: () => void) {
     {
       defaultValues: useDefaultValues(),
       resolver: yupResolver(validationSchema),
-      onCompleted: onComplete,
+      onCompleted: (result: any) => {
+        if (result.inviteUser.account) {
+          onComplete();
+        }
+      },
     }
   );
 }
