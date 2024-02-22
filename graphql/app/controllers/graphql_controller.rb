@@ -25,6 +25,8 @@ class GraphqlController < ApplicationController
     status_code = result&.dig('errors', 0, 'extensions', 'statusCode') || 200
     cookies[Stopover::AuthorizationSupport::COOKIE_KEY] = context[:current_user]&.access_token
 
+    ::Rack::Utils.set_cookie_header!(cookies, Stopover::AuthorizationSupport::COOKIE_KEY, context[:current_user]&.access_token)
+
     render json: result, status_code: status_code
   rescue StandardError => e
     Sentry.capture_exception(e) if Rails.env.production?

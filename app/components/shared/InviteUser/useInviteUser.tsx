@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email().required(),
 });
 
-export function useInviteUser(onComplete?: () => void) {
+export function useInviteUser(onComplete: () => void) {
   return useMutationForm(
     graphql`
       mutation useInviteUser_InviteUserMutation($input: InviteUserInput!) {
