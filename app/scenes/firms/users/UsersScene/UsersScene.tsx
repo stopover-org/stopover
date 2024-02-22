@@ -3,13 +3,14 @@ import { useTranslation } from "react-i18next";
 import React from "react";
 import Typography from "components/v2/Typography/Typography";
 import Table from "components/v2/Table/Table";
-import { Grid } from "@mui/joy";
+import { Grid, Stack } from "@mui/joy";
 import {
   useAccountsColumns,
   useAccountsHeaders,
 } from "components/shared/tables/columns/accounts";
 import { UsersSceneFirmFragment } from "artifacts/UsersSceneFirmFragment.graphql";
 import { UsersScene_FirmFragment$key } from "artifacts/UsersScene_FirmFragment.graphql";
+import InviteUser from "components/shared/InviteUser";
 
 interface PaymentsSceneProps {
   firmFragmentRef: UsersScene_FirmFragment$key;
@@ -47,7 +48,11 @@ const UsersScene = ({ firmFragmentRef }: PaymentsSceneProps) => {
   return (
     <Grid xs={12} container suppressHydrationWarning>
       <Grid sm={12}>
-        <Typography level="h4">{t("models.payment.plural")}</Typography>
+        <Stack direction="row" justifyContent="space-between">
+          <Typography level="h4">{t("models.payment.plural")}</Typography>
+
+          <InviteUser />
+        </Stack>
       </Grid>
       <Grid sm={12}>
         <Table

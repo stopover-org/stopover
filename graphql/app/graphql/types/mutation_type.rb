@@ -15,6 +15,7 @@ module Types
     field :reschedule_event, mutation: Mutations::EventsRelated::RescheduleEvent
     field :sync_stripe, mutation: Mutations::EventsRelated::SyncStripe
     field :change_event_option_availability, mutation: Mutations::EventsRelated::ChangeEventOptionAvailability
+    field :invite_user, mutation: Mutations::FirmsRelated::InviteUser
 
     field :create_placement, mutation: Mutations::EventsRelated::CreatePlacement
     field :update_placement, mutation: Mutations::EventsRelated::UpdatePlacement
