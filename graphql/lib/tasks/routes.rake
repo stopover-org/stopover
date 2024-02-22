@@ -78,7 +78,7 @@ task generate_sitemap: :environment do
     file.close
   end
 
-  file = File.open(Rails.root + '..' + 'app' + 'public' + 'sitemap.xml', 'r+') do |f|
+  file = File.open(sitemap_path, 'r+') do |f|
     f.rewind
     f.write builder.to_xml
     f.truncate f.pos
