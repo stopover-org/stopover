@@ -22,3 +22,7 @@ refresh_searchkick_indices_job:
   cron: '0 */2 * * *'
   class: 'Workers::RefreshSearchkickIndicesJob'
   queue: 'searchkick_queue'
+generate_sitemap:
+  cron: '0 */2 * * *'
+  class: 'Workers::GenerateSitemap'
+  queue: 'searchkick_queue'

@@ -227,7 +227,7 @@ class Event < ApplicationRecord
       price: attendee_price_per_uom_cents,
       status: status,
       firm_id: firm.id,
-      featured: true
+      featured: featured
     }
   end
 
