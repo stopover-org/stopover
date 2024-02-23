@@ -1,16 +1,16 @@
 import React from "react";
-import scene_FirmPayments_QueryNode, {
-  scene_FirmPayments_Query,
-} from "artifacts/scene_FirmPayments_Query.graphql";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
+import scene_FirmUsers_QueryNode, {
+  scene_FirmUsers_Query,
+} from "artifacts/scene_FirmUsers_Query.graphql";
 import QueryWrapper from "./query";
 
 const Page = async () => {
   const preloadedQuery = await loadSerializableQuery<
-    typeof scene_FirmPayments_QueryNode,
-    scene_FirmPayments_Query
-  >(scene_FirmPayments_QueryNode.params, {});
+    typeof scene_FirmUsers_QueryNode,
+    scene_FirmUsers_Query
+  >(scene_FirmUsers_QueryNode.params, {});
 
   return (
     <QueryWrapper

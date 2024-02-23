@@ -1,9 +1,9 @@
 "use client";
 
 import { PreloadedQuery, RelayEnvironmentProvider } from "react-relay";
-import scene_FirmPayments_QueryNode, {
-  scene_FirmPayments_Query,
-} from "artifacts/scene_FirmPayments_Query.graphql";
+import scene_FirmUsers_QueryNode, {
+  scene_FirmUsers_Query,
+} from "artifacts/scene_FirmUsers_Query.graphql";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { getCurrentEnvironment } from "lib/relay/environment";
 import useSerializablePreloadedQuery from "lib/relay/useSerializablePreloadedQuery";
@@ -16,13 +16,13 @@ const QueryWrapper = ({
   cookies,
 }: {
   preloadedQuery: SerializablePreloadedQuery<
-    typeof scene_FirmPayments_QueryNode,
-    scene_FirmPayments_Query
+    typeof scene_FirmUsers_QueryNode,
+    scene_FirmUsers_Query
   >;
   cookies: RequestCookie[];
 }) => {
   const environment = getCurrentEnvironment(cookies);
-  const queryRef: PreloadedQuery<scene_FirmPayments_Query> =
+  const queryRef: PreloadedQuery<scene_FirmUsers_Query> =
     useSerializablePreloadedQuery(environment, preloadedQuery);
 
   return (
