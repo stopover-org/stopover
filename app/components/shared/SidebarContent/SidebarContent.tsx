@@ -80,6 +80,10 @@ const SidebarContent = ({
         title: t("models.payment.plural"),
         href: "/my-firm/payments",
       },
+      {
+        title: t("models.user.plural"),
+        href: "/my-firm/users",
+      },
     ];
 
     if (account.user.serviceUser) {

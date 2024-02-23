@@ -41,17 +41,41 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       expected = { data:
                      { __schema: {
                        queryType: {
-                         fields: [{ name: 'booking' },
-                                  { name: 'currentUser' },
-                                  { name: 'event' },
-                                  { name: 'eventFilters' },
-                                  { name: 'events' },
-                                  { name: 'eventsAutocomplete' },
-                                  { name: 'firm' },
-                                  { name: 'interests' },
-                                  { name: 'node' },
-                                  { name: 'nodes' },
-                                  { name: 'trips' }]
+                         fields: [
+                           {
+                             name: 'booking'
+                           },
+                           {
+                             name: 'currentUser'
+                           },
+                           {
+                             name: 'event'
+                           },
+                           {
+                             name: 'eventFilters'
+                           },
+                           {
+                             name: 'events'
+                           },
+                           {
+                             name: 'eventsAutocomplete'
+                           },
+                           {
+                             name: 'firm'
+                           },
+                           {
+                             name: 'interests'
+                           },
+                           {
+                             name: 'node'
+                           },
+                           {
+                             name: 'nodes'
+                           },
+                           {
+                             name: 'trips'
+                           }
+                         ]
                        },
                        mutationType: {
                          fields: [
@@ -96,6 +120,9 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                            },
                            {
                              name: 'deregisterAttendee'
+                           },
+                           {
+                             name: 'inviteUser'
                            },
                            {
                              name: 'publishEvent'

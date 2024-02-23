@@ -195,7 +195,11 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
             }
             margin
             accounts {
-              id
+              edges {
+                node {
+                  id
+                }
+              }
             }
           }
         }

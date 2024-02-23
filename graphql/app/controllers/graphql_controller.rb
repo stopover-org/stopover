@@ -23,7 +23,7 @@ class GraphqlController < ApplicationController
     update_user_locale
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     status_code = result&.dig('errors', 0, 'extensions', 'statusCode') || 200
-    cookies[Stopover::AuthorizationSupport::COOKIE_KEY] = context[:current_user]&.access_token
+    cookies.permanent[Stopover::AuthorizationSupport::COOKIE_KEY] = context[:current_user]&.access_token
 
     render json: result, status_code: status_code
   rescue StandardError => e

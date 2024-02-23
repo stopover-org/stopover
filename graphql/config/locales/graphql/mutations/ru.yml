@@ -6,7 +6,8 @@ ru:
 
       firm_not_verified: 'Фирма должна быть верифицирована'
       firm_removed: 'Фирма была удалена'
-      stripe_payment_method_required: 'Require stripe payment method'
+      user_already_invited: 'Пользователь уже добавлен'
+      stripe_payment_method_required: 'Страйп должен быть активирован'
 
       booking_cancelled: 'Бронирование было отменено'
       booking_past: 'Бронирование уже прошло'
@@ -23,6 +24,9 @@ ru:
       insufficient_funds: 'Недостаточно средств'
 
     mutations:
+      invite_user:
+        notifications:
+          success: "Приглашение было отправлено"
       create_placement:
         notifications:
           success: 'Вы создали схему размещения'

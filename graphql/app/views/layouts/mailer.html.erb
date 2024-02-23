@@ -6,53 +6,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Page Title</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #0c0c0c;
-    }
+      body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          color: #0c0c0c;
+      }
 
-    header {
-      background-color: #eaeaea;
-      padding: 10px;
-      text-align: center;
-    }
-    main {
-      padding: 50px;
-    }
-    .main {
-      text-align: center;
-      background-color: #eaeaea;
-      padding: 50px 150px 50px 150px;
-    }
+      header {
+          background-color: #eaeaea;
+          padding: 10px;
+          text-align: center;
+      }
 
-    footer {
-      background-color: #333;
-      color: #fff;
-      padding: 10px;
-      text-align: center;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
+      main {
+          padding: 50px;
+      }
+
+      .main {
+          text-align: center;
+          background-color: #eaeaea;
+          padding: 50px 150px 50px 150px;
+      }
+
+      footer {
+          background-color: #333;
+          color: #fff;
+          padding: 10px;
+          text-align: center;
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+      }
   </style>
 </head>
 
 <body>
-  <header>
-    <img width='200px' src="https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx.png" />
-  </header>
+<header>
+  <img width='200px' src="https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx.png"/>
+</header>
 
-  <main>
-    <div class="main">
-      <%= yield %>
-    </div>
-  </main>
+<main>
+  <div class="main">
+    <%= yield %>
+  </div>
+</main>
 
-  <footer>
-    &copy; 2023 Your Website. All rights reserved.
-  </footer>
+<footer>
+  &copy; 2024 Stopoverx. All rights reserved.
+</footer>
 </body>
 
 </html>
