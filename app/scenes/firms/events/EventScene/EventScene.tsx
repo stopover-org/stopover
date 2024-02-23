@@ -180,25 +180,27 @@ const EventScene = ({
               </>
             )}
           </TabList>
-          <Box sx={{ width: "calc(100% - 175px)" }}>
-            <GeneralInformation index={0} eventFragmentRef={event} />
-            <EventOptionsInformation index={1} eventFragmentRef={event} />
-            <SchedulesInformation index={2} eventFragmentRef={event} />
-            <BookingsInformation index={3} eventFragmentRef={event} />
+          <React.Suspense>
+            <Box sx={{ width: "calc(100% - 175px)" }}>
+              <GeneralInformation index={0} eventFragmentRef={event} />
+              <EventOptionsInformation index={1} eventFragmentRef={event} />
+              <SchedulesInformation index={2} eventFragmentRef={event} />
+              <BookingsInformation index={3} eventFragmentRef={event} />
 
-            {currentUser.serviceUser && (
-              <>
-                <EventPlacementsInformation
-                  index={4}
-                  eventFragmentRef={event}
-                />
-                <StripeIntegrationsInformation
-                  index={5}
-                  eventFragmentRef={event}
-                />
-              </>
-            )}
-          </Box>
+              {currentUser.serviceUser && (
+                <>
+                  <EventPlacementsInformation
+                    index={4}
+                    eventFragmentRef={event}
+                  />
+                  <StripeIntegrationsInformation
+                    index={5}
+                    eventFragmentRef={event}
+                  />
+                </>
+              )}
+            </Box>
+          </React.Suspense>
         </Tabs>
       </Grid>
     </Grid>

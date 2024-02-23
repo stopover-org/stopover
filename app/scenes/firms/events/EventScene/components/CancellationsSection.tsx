@@ -20,6 +20,7 @@ const CancellationsSection = ({
       fragment CancellationsSection_EventFragment on Event {
         ...EditEventCancellations_EventFragment
         bookingCancellationOptions {
+          id
           penaltyPrice {
             cents
             currency {
@@ -65,7 +66,7 @@ const CancellationsSection = ({
             </Typography>
           </Grid>
           {event.bookingCancellationOptions.map((opt) => (
-            <Grid xs={12}>
+            <Grid xs={12} key={opt.id}>
               <Typography>
                 {t("models.bookingCancellationOption.terms.withPenalty", {
                   deadline: opt.deadline,

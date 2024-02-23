@@ -10,7 +10,9 @@ interface DataRowProps {
 const DataRow = ({ label, value }: DataRowProps) => (
   <Stack direction="row" spacing={1} useFlexGap alignItems="flex-end">
     <Typography level="title-lg">{label}:</Typography>
-    <Typography level="title-sm">{value}</Typography>
+    <Typography component="span" level="title-sm">
+      {value}
+    </Typography>
   </Stack>
 );
 

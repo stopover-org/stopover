@@ -21,7 +21,6 @@ export interface CreateEventFields {
     builtIn: boolean;
     forAttendee: boolean;
   }>;
-  eventType: EventTypeEnum;
   images?: string[];
   maxAttendees?: number;
   minAttendees?: number;
@@ -43,6 +42,8 @@ export interface CreateEventFields {
   }>;
   endDate: Moment | null;
   title: string;
+  eventType: EventTypeEnum;
+  interestIds: string[];
 }
 
 function useDefaultValues(): Partial<CreateEventFields> {
@@ -52,7 +53,6 @@ function useDefaultValues(): Partial<CreateEventFields> {
       durationTime: "",
       endDate: null,
       eventOptions: [],
-      eventType: "excursion",
       images: [],
       organizerPricePerUomCents: 0,
       recurringDates: [{ day: null, hour: null, minute: null }],
@@ -60,7 +60,9 @@ function useDefaultValues(): Partial<CreateEventFields> {
       requiresContract: false,
       requiresDeposit: false,
       requiresPassport: false,
+      eventType: "in_town",
       singleDates: [],
+      interestIds: [],
     }),
     []
   );
@@ -81,7 +83,6 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  eventType: Yup.string(),
   houseNumber: Yup.string().nullable(),
   images: Yup.array(),
   maxAttendees: Yup.number().transform(numberTransform),
@@ -115,6 +116,8 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
   endDate: Yup.date().transform(momentTransform).nullable(),
   title: Yup.string().required("Required"),
+  eventType: Yup.string().required("Required"),
+  interestIds: Yup.array().of(Yup.string()),
 });
 
 export function useCreateEventForm() {

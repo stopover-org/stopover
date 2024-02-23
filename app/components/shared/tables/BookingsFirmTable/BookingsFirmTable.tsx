@@ -109,11 +109,13 @@ const BookingsFirmTable = ({
   return (
     <>
       {withFilters && (
-        <Filters
-          availableFilters={filters}
-          defaultFilters={["eventIds"]}
-          scope="bookings"
-        />
+        <React.Suspense>
+          <Filters
+            availableFilters={filters}
+            defaultFilters={["eventIds"]}
+            scope="bookings"
+          />
+        </React.Suspense>
       )}
       <Table
         data={bookings}

@@ -41,7 +41,11 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
   );
   const { t } = useTranslation();
   return (
-    <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
+    <Stack
+      sx={{ position: "sticky", top: "0", right: "0" }}
+      spacing={2}
+      useFlexGap
+    >
       <Box>
         <Description html={event.description} />
       </Box>

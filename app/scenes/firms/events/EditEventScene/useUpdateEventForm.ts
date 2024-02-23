@@ -46,6 +46,7 @@ export interface UpdateEventFields {
     minute: number | null;
   }>;
   title: string;
+  interestIds: string[];
 }
 
 function useDefaultValues(
@@ -67,6 +68,9 @@ function useDefaultValues(
         }
         depositAmount {
           cents
+        }
+        interests {
+          id
         }
         recurringDaysWithTime
         requiresCheckIn
@@ -129,6 +133,7 @@ function useDefaultValues(
       requiresPassport: Boolean(event.requiresPassport),
       requiresDeposit: Boolean(event.requiresDeposit),
       title: event.title,
+      interestIds: event.interests.map((interest) => interest.id),
     }),
     [event]
   );
@@ -182,6 +187,7 @@ const validationSchema = Yup.object().shape({
     )
     .required("Required"),
   title: Yup.string().required("Required"),
+  interestIds: Yup.array().of(Yup.string()),
 });
 
 export function useUpdateEventForm(

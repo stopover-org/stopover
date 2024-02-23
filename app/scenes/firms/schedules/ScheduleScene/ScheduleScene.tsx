@@ -211,11 +211,13 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
         <Typography level="h4">{t("models.booking.plural")}</Typography>
       </Grid>
       <Grid xs={12}>
-        <Filters
-          availableFilters={filters}
-          defaultFilters={["eventIds"]}
-          scope="bookings"
-        />
+        <React.Suspense>
+          <Filters
+            availableFilters={filters}
+            defaultFilters={["eventIds"]}
+            scope="bookings"
+          />
+        </React.Suspense>
         <Table
           data={actualBookings}
           headers={headers}

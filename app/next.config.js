@@ -1,5 +1,5 @@
 // Injected content via Sentry wizard below
-const { withSentryConfig } = require("@sentry/nextjs");
+const {withSentryConfig} = require("@sentry/nextjs");
 const path = require("path");
 
 /** @type {import('next').NextConfig} */
@@ -7,7 +7,7 @@ const path = require("path");
 const nextConfig = {
     reactStrictMode: true,
     experimental: {
-        windowHistorySupport: true
+        missingSuspenseWithCSRBailout: false,
     },
     compiler: {
         relay: {
@@ -28,12 +28,11 @@ const nextConfig = {
         SENTRY_DSN: process.env.SENTRY_DSN,
     },
     webpack: (config) => {
-        config.resolve.fallback = { fs: false };
+        config.resolve.fallback = {fs: false};
 
         return config;
     },
 }
-
 
 
 module.exports = nextConfig

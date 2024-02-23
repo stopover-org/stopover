@@ -34,6 +34,7 @@ export default {
         street: "Улица",
         title: "Название",
         endDate: "Дата окончания проведения",
+        featured: "Выводить на главном экране",
       },
       enums: {
         eventType: {

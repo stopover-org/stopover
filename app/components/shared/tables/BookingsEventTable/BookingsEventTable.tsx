@@ -102,11 +102,13 @@ const BookingsEventTable = ({
 
   return (
     <>
-      <Filters
-        availableFilters={filters}
-        defaultFilters={["bookedFor"]}
-        scope="bookings"
-      />
+      <React.Suspense>
+        <Filters
+          availableFilters={filters}
+          defaultFilters={["bookedFor"]}
+          scope="bookings"
+        />
+      </React.Suspense>
       <Table
         data={actualBookings}
         headers={headers}

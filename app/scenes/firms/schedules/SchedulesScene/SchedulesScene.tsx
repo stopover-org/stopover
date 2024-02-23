@@ -106,11 +106,13 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
         <Typography level="h4">{t("models.schedule.plural")}</Typography>
       </Grid>
       <Grid sm={12}>
-        <Filters
-          availableFilters={filters}
-          defaultFilters={["eventIds", "scheduledFor"]}
-          scope="schedules"
-        />
+        <React.Suspense>
+          <Filters
+            availableFilters={filters}
+            defaultFilters={["eventIds", "scheduledFor"]}
+            scope="schedules"
+          />
+        </React.Suspense>
         <Table
           data={schedulesData}
           headers={schedulesHeaders}

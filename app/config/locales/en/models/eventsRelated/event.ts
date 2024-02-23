@@ -38,6 +38,7 @@ export default {
         street: "Street",
         title: "Title",
         endDate: "Event will be ended",
+        featured: "Show on the root page",
       },
       enums: {
         eventType: {

@@ -20,6 +20,7 @@ const TourPlanSection = ({ eventFragmentRef }: TourPlanSectionProps) => {
           title
           description
           tourPlaces {
+            id
             title
             description
             durationTime
@@ -46,7 +47,7 @@ const TourPlanSection = ({ eventFragmentRef }: TourPlanSectionProps) => {
             <Typography>{event.tourPlan.description}</Typography>
           </Grid>
           {event.tourPlan?.tourPlaces?.map((place, index) => (
-            <>
+            <React.Fragment key={place.id}>
               <Grid xs={12}>
                 <Stack direction="row">
                   <Box
@@ -70,7 +71,7 @@ const TourPlanSection = ({ eventFragmentRef }: TourPlanSectionProps) => {
                   <Typography fontSize="lg" sx={{ marginLeft: "10px" }}>
                     {place.title}{" "}
                     {place.durationTime && (
-                      <Typography sx={{ fontStyle: "italic" }}>
+                      <Typography component="span" sx={{ fontStyle: "italic" }}>
                         ({place.durationTime})
                       </Typography>
                     )}
@@ -82,7 +83,7 @@ const TourPlanSection = ({ eventFragmentRef }: TourPlanSectionProps) => {
                   {place.description}
                 </Typography>
               </Grid>
-            </>
+            </React.Fragment>
           ))}
         </>
       )}

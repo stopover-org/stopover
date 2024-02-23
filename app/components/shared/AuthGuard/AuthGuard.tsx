@@ -13,6 +13,7 @@ interface AuthGuardProps {
     | React.ReactNode[];
   accessible: boolean;
 }
+
 const AuthGuard = ({
   children,
   redirectTo,
@@ -21,7 +22,7 @@ const AuthGuard = ({
 }: AuthGuardProps): React.ReactElement | null => {
   const router = useRouter();
   if (accessible) {
-    return children;
+    return <React.Suspense>{children}</React.Suspense>;
   }
 
   if (redirectTo) {
@@ -47,11 +48,13 @@ const AuthGuard = ({
   }
 
   return (
-    <Grid container xs={12}>
-      <Grid xs={12}>
-        <Sheet sx={{ padding: "60px 20px" }}>{noAccess}</Sheet>
+    <React.Suspense>
+      <Grid container xs={12}>
+        <Grid xs={12}>
+          <Sheet sx={{ padding: "60px 20px" }}>{noAccess}</Sheet>
+        </Grid>
       </Grid>
-    </Grid>
+    </React.Suspense>
   );
 };
 

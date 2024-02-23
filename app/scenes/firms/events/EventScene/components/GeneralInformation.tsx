@@ -54,6 +54,9 @@ const GeneralInformation = ({
         singleDaysWithTime
         title
         featured
+        interests {
+          title
+        }
         address {
           fullAddress
           country
@@ -111,7 +114,7 @@ const GeneralInformation = ({
             <CardContent>
               <Stack direction="row" useFlexGap spacing={2}>
                 {event.statistics.map((stat) => (
-                  <Box>
+                  <Box key={stat.name}>
                     {t(`models.event.statistics.${stat.name}`)}: {stat.value}
                   </Box>
                 ))}
@@ -182,9 +185,9 @@ const GeneralInformation = ({
                 <Typography level="title-lg">
                   {t("models.event.attributes.description")}:
                 </Typography>
-                <Typography level="title-sm">
+                <Box>
                   <Description html={event.description} />
-                </Typography>
+                </Box>
               </Stack>
             </Grid>
 
@@ -197,6 +200,17 @@ const GeneralInformation = ({
                 label={t("models.event.attributes.eventType")}
                 value={t(`models.event.enums.eventType.${event.eventType}`)}
               />
+            </Grid>
+
+            <Grid xs={12}>
+              <React.Suspense>
+                <DataRow
+                  label={t("models.interest.plural")}
+                  value={event.interests
+                    .map((interest) => interest.title)
+                    .join(", ")}
+                />
+              </React.Suspense>
             </Grid>
 
             <Grid xs={12}>

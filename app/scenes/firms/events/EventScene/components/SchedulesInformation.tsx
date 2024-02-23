@@ -10,9 +10,9 @@ import {
   useSchedulesHeaders,
 } from "components/shared/tables/columns/schedules";
 import { SchedulesSectionEventFragment } from "artifacts/SchedulesSectionEventFragment.graphql";
-import DateQueryInput from "../../../../../components/shared/DateQueryInput/DateQueryInput";
-import { parseValue, useQuery } from "../../../../../lib/hooks/useQuery";
-import Filters from "../../../../../components/shared/Filters/Filters";
+import DateQueryInput from "components/shared/DateQueryInput/DateQueryInput";
+import { parseValue, useQuery } from "lib/hooks/useQuery";
+import Filters from "components/shared/Filters/Filters";
 
 interface SchedulesInformationProps {
   eventFragmentRef: SchedulesInformation_EventFragment$key;
@@ -106,11 +106,13 @@ const SchedulesInformation = ({
           <Typography level="h4">
             {t("general.all")} {t("models.schedule.plural")}
           </Typography>
-          <Filters
-            availableFilters={filters}
-            defaultFilters={["scheduledFor"]}
-            scope="schedules"
-          />
+          <React.Suspense>
+            <Filters
+              availableFilters={filters}
+              defaultFilters={["scheduledFor"]}
+              scope="schedules"
+            />
+          </React.Suspense>
           <Table
             data={schedulesData}
             headers={schedulesHeaders}

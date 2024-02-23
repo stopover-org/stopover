@@ -52,8 +52,8 @@ const EventScene = ({
       <form onSubmit={form.handleSubmit()}>
         <Grid
           container
-          spacing={{ md: 2, sm: 1 }}
-          padding={{ md: 2, sm: 1 }}
+          spacing={{ md: 2, sm: 1, xs: 1 }}
+          padding={{ md: 2, sm: 1, xs: 1 }}
           sx={{
             maxWidth: showLeftColumn ? "unset" : "1440px",
             margin: showLeftColumn ? "unset" : "0 auto",
