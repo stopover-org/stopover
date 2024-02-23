@@ -1,11 +1,11 @@
 import { Metadata } from "next";
-import i18n from "i18next";
+import { createInstance } from "i18next";
 import englishTranslations from "config/locales/en";
 import russianTranslations from "config/locales/ru";
 import { cookies } from "next/headers";
 
 export const sharedPhones = ["+381621496696"];
-export const sharedEmails = ["mikhail@stopoverx.com", "maxim@stopoverx.com"];
+export const sharedEmails = ["mikhail@stopoverx.com"];
 export const sharedImages = [
   "https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx+(1).png",
   "https://s3.eu-north-1.amazonaws.com/stopoverx.production/orange_onion.png",
@@ -53,9 +53,10 @@ const defaultMetadata: Metadata = {
   },
 };
 
-export const translate = async (key: string) => {
+export const translate = async (key: string, opts?: any) => {
   const language = (await cookies().get("i18next")?.value) || "en";
-  const translator = await i18n.init({
+  const translator = createInstance();
+  translator.init({
     resources: {
       en: {
         translation: englishTranslations,
@@ -72,7 +73,7 @@ export const translate = async (key: string) => {
     },
   });
 
-  return translator(key);
+  return translator.t(key, opts);
 };
 
 export default defaultMetadata;

@@ -28,11 +28,18 @@ export default Page;
 export const revalidate = 0;
 
 export const generateMetadata = async (): Promise<Metadata> => {
-  const title = await translate("general.whatDoWeOffer");
+  const title = await translate("seo.root.title");
+  const description = await translate("seo.root.description");
+  const keywords = await translate("seo.root.keywords");
+
   return merge(defaultMetadata, {
     title,
+    description,
+    keywords,
     openGraph: {
       title,
+      description,
+      keywords,
     },
   });
 };

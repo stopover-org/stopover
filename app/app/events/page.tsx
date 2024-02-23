@@ -72,12 +72,35 @@ export default Page;
 
 export const revalidate = 0;
 
-export const generateMetadata = async (): Promise<Metadata> => {
-  const title = await translate("models.event.plural");
+export const generateMetadata = async (params: any): Promise<Metadata> => {
+  let city: string = "";
+  let dates: string[] = [];
+  let interests: string[] = [];
+  try {
+    city = JSON.parse(params.searchParams.city) as string;
+
+    dates = JSON.parse(params.searchParams.dates) as string[];
+
+    interests = JSON.parse(params.searchParams.interests) as string[];
+  } catch (err) {}
+  const opts = {
+    city: city || "",
+    startDate: dates[0] || "",
+    endDate: dates[1] || "",
+    categories: (interests || []).join(", "),
+  };
+  const title = await translate("seo.events.title", opts);
+  const description = await translate("seo.events.description", opts);
+  const keywords = await translate("seo.events.keywords", opts);
+
   return merge(defaultMetadata, {
     title,
+    description,
+    keywords,
     openGraph: {
       title,
+      description,
+      keywords,
     },
   });
 };

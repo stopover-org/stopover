@@ -37,6 +37,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
         events(filters: { today: true }) {
           edges {
             node {
+              id
               ...EventCardCompacts_EventFragment
             }
           }
@@ -100,6 +101,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
         </Grid>
         {events.map((event) => (
           <EventCardCompact
+            key={event!.id}
             eventFragmentRef={event!}
             includeInterests={false}
           />

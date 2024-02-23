@@ -3,6 +3,7 @@ import translations from "./models";
 import scenesTranslations from "./scenes";
 import formsTranslations from "./forms";
 import filtersTranslations from "./filters";
+import seo from "./seo";
 
 const translation = {
   general: {
@@ -128,5 +129,6 @@ export default merge(
   formsTranslations,
   scenesTranslations,
   filtersTranslations,
-  translation
+  translation,
+  seo
 );

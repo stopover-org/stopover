@@ -39,8 +39,19 @@ const PageQuery = `
       title
       description
       images
+      availableDates
+      firm {
+        title
+        address {
+          country
+          city
+          street
+        }
+      }
       address {
         country
+        city
+        street
       }
     }
   }
@@ -53,11 +64,24 @@ export const generateMetadata = async ({
 }): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, { id: unescape(params.id) });
   const defaultTitle = await translate("models.event.singular");
+  const keywords = [
+    response?.event?.title,
+    response?.event?.firm?.title,
+    response?.event?.firm?.address?.country,
+    response?.event?.firm?.address?.city,
+    response?.event?.firm?.address?.street,
+    response?.event?.address?.country,
+    response?.event?.address?.city,
+    response?.event?.address?.street,
+    ...(response?.event?.availableDates as string[]),
+  ];
 
   return merge(defaultMetadata, {
     title: response?.event?.title || defaultTitle,
     description: response?.event?.description?.replace(/<[^>]*>?/gm, ""),
+    keywords,
     openGraph: {
+      keywords,
       type: "profile",
       title: response?.event?.title || defaultTitle,
       description: response?.event?.description?.replace(/<[^>]*>?/gm, ""),
