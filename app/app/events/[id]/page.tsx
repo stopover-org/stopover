@@ -82,13 +82,12 @@ export const generateMetadata = async ({
     keywords,
     openGraph: {
       keywords,
-      type: "profile",
       title: response?.event?.title || defaultTitle,
       description: response?.event?.description?.replace(/<[^>]*>?/gm, ""),
       phoneNumbers: [response?.event?.firm?.primaryPhone, ...sharedPhones],
       emails: [response?.event?.firm?.primaryEmail, ...sharedEmails],
       images: [...(response?.event?.images || []), ...sharedImages],
-      countryName: response?.event?.address.country,
+      countryName: response?.event?.address?.country,
     },
   });
 };

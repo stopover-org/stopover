@@ -10,6 +10,7 @@ import { cookies } from "next/headers";
 import { Metadata } from "next";
 import { merge } from "lodash";
 import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
+import { captureException } from "@sentry/nextjs";
 import QueryWrapper from "./query";
 
 const filterParsers = {
@@ -82,7 +83,9 @@ export const generateMetadata = async (params: any): Promise<Metadata> => {
     dates = JSON.parse(params.searchParams.dates) as string[];
 
     interests = JSON.parse(params.searchParams.interests) as string[];
-  } catch (err) {}
+  } catch (e) {
+    captureException(e);
+  }
   const opts = {
     city: city || "",
     startDate: dates[0] || "",
