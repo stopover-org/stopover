@@ -73,16 +73,24 @@ export default Page;
 
 export const revalidate = 0;
 
-export const generateMetadata = async (params: any): Promise<Metadata> => {
+export const generateMetadata = async ({
+  searchParams,
+}: any): Promise<Metadata> => {
   let city: string = "";
   let dates: string[] = [];
   let interests: string[] = [];
   try {
-    city = JSON.parse(params.searchParams.city) as string;
+    if (searchParams.city) {
+      city = JSON.parse(searchParams.city) as string;
+    }
 
-    dates = JSON.parse(params.searchParams.dates) as string[];
+    if (searchParams.dates) {
+      dates = JSON.parse(searchParams.dates) as string[];
+    }
 
-    interests = JSON.parse(params.searchParams.interests) as string[];
+    if (searchParams.interests) {
+      interests = JSON.parse(searchParams.interests) as string[];
+    }
   } catch (e) {
     captureException(e);
   }
@@ -92,9 +100,24 @@ export const generateMetadata = async (params: any): Promise<Metadata> => {
     endDate: dates[1] || "",
     categories: (interests || []).join(", "),
   };
-  const title = await translate("seo.events.title", opts);
-  const description = await translate("seo.events.description", opts);
-  const keywords = await translate("seo.events.keywords", opts);
+
+  const title = await translate(
+    "seo.events.title",
+    opts,
+    searchParams.language
+  );
+
+  const description = await translate(
+    "seo.events.description",
+    opts,
+    searchParams.language
+  );
+
+  const keywords = await translate(
+    "seo.events.keywords",
+    opts,
+    searchParams.language
+  );
 
   return merge(defaultMetadata, {
     title,

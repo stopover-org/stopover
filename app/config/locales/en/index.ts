@@ -116,6 +116,7 @@ const translation = {
     action: "🌐 Choose language",
     russian: "🇷🇺 Русский",
     english: "🇺🇸 English",
+    serbian: "🇷🇸 Srpski",
   },
   components: {
     link: {

@@ -59,11 +59,13 @@ const PageQuery = `
 
 export const generateMetadata = async ({
   params,
+  searchParams: { language },
 }: {
   params: { id: string };
+  searchParams: { language?: string };
 }): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, { id: unescape(params.id) });
-  const defaultTitle = await translate("models.event.singular");
+  const defaultTitle = await translate("models.event.singular", {}, language);
   const keywords = [
     response?.event?.title,
     response?.event?.firm?.title,

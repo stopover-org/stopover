@@ -117,7 +117,9 @@ const EventCardCompact = ({
       <Card variant="outlined" sx={{ width: "100%", margin: "0px" }}>
         <CardOverflow>
           <AspectRatio ratio="2">
-            <img src={event.images[0]} loading="lazy" alt="" />
+            {event.images[0] && (
+              <img src={event.images[0]} alt={event.title} loading="lazy" />
+            )}
           </AspectRatio>
         </CardOverflow>
         <CardContent>

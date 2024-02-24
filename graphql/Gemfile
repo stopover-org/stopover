@@ -125,9 +125,10 @@ gem 'opensearch-ruby'
 gem 'searchkick'
 gem 'sidekiq-cron'
 gem 'timecop', '~> 0.9.8'
-gem 'deepl-rb', require: 'deepl'
 
 gem 'aws-sdk-s3'
 gem "faraday_middleware-aws-sigv4"
 
 gem 'rspec_junit_formatter'
+
+gem "google-cloud-translate", "~> 3.5"

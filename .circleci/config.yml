@@ -128,7 +128,6 @@ images:
       DATABASE_HOST: 127.0.0.1
       DATABASE_USERNAME: root
       RAILS_ENV: test
-      DEEPL_AUTH_KEY: ${DEEPL_AUTH_KEY}
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
 
   postgres: &_postgres

@@ -21,7 +21,7 @@ module Graphql
     #
     config.time_zone = 'Belgrade'
     I18n.available_locales = [:en, :ru]
-    config.i18n.default_locale = Rails.env.development? ? :ru : :en
+    config.i18n.default_locale = :en
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.api_only = true

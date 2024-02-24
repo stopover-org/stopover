@@ -5,12 +5,9 @@ module TranslationManagement
     queue_as :default
 
     def perform(dynamic_translation_id:)
-      enabled = false
-      if enabled
-        translation = DynamicTranslation.find(dynamic_translation_id)
+      translation = DynamicTranslation.find(dynamic_translation_id)
 
-        Stopover::TranslationManagement::TranslationManager.new(dynamic_translation: translation).translate
-      end
+      Stopover::TranslationManagement::TranslationManager.new(dynamic_translation: translation).translate
     end
   end
 end

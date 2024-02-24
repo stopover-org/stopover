@@ -53,10 +53,11 @@ const defaultMetadata: Metadata = {
   },
 };
 
-export const translate = async (key: string, opts?: any) => {
-  const language = (await cookies().get("i18next")?.value) || "en";
+export const translate = async (key: string, opts?: any, lang?: string) => {
+  const language = lang || (await cookies().get("i18next")?.value) || "en";
   const translator = createInstance();
-  translator.init({
+
+  await translator.init({
     resources: {
       en: {
         translation: englishTranslations,
