@@ -54,11 +54,13 @@ const PageQuery = `
 
 export const generateMetadata = async ({
   params,
+  searchParams: { language },
 }: {
   params: { id: string };
+  searchParams: { language: string };
 }): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, { id: unescape(params.id) });
-  const defaultTitle = await translate("models.trip.singular");
+  const defaultTitle = await translate("models.trip.singular", {}, language);
   const images = response?.currentUser?.account?.trip?.bookings
     ?.map((booking: any) => booking?.event.images)
     ?.flat();

@@ -8,13 +8,16 @@ module Stopover
       end
 
       def translate
-        disabled = true
+        disabled = Rails.env.test?
         return if disabled
-        translation = DeepL.translate(@dynamic_translation.source,
-                                      @dynamic_translation.translatable.language,
-                                      @dynamic_translation.target_language)
 
-        @dynamic_translation.update!(translation: translation.text)
+        client = ::Google::Cloud::Translate::V3::TranslationService::Client.new
+        parent = Rails.application.credentials.google_translate_parent
+        request = Google::Cloud::Translate::V3::TranslateTextRequest.new(contents: [@dynamic_translation.source],
+                                                                         target_language_code: @dynamic_translation.target_language, parent: parent)
+        result = client.translate_text request
+
+        @dynamic_translation.update!(translation: result.translations[0].translated_text) if result.translations.size.positive?
       end
     end
   end

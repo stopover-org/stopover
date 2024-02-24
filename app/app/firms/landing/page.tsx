@@ -27,9 +27,20 @@ export default Page;
 
 export const revalidate = 0;
 
-export const generateMetadata = async (): Promise<Metadata> => {
-  const title = await translate("scenes.firms.firmLandingScene.subtitle");
-  const description = await translate("scenes.firms.firmLandingScene.points");
+export const generateMetadata = async ({
+  searchParams: { language },
+}: any): Promise<Metadata> => {
+  const title = await translate(
+    "scenes.firms.firmLandingScene.subtitle",
+    {},
+    language
+  );
+
+  const description = await translate(
+    "scenes.firms.firmLandingScene.points",
+    {},
+    language
+  );
 
   return merge(defaultMetadata, {
     title,

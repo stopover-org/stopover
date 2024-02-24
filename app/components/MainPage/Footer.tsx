@@ -69,7 +69,7 @@ const Footer = () => {
               sx={{ maxWidth: 200 }}
               onChange={setLanguage}
               value={cookies.i18next}
-              defaultValue="ru"
+              defaultValue="en"
             >
               <Option value="ru">{t("languages.russian")}</Option>
               <Option value="en">{t("languages.english")}</Option>

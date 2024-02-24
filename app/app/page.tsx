@@ -27,10 +27,12 @@ export default Page;
 
 export const revalidate = 0;
 
-export const generateMetadata = async (): Promise<Metadata> => {
-  const title = await translate("seo.root.title");
-  const description = await translate("seo.root.description");
-  const keywords = await translate("seo.root.keywords");
+export const generateMetadata = async ({
+  searchParams: { language },
+}: any): Promise<Metadata> => {
+  const title = await translate("seo.root.title", {}, language);
+  const description = await translate("seo.root.description", {}, language);
+  const keywords = await translate("seo.root.keywords", {}, language);
 
   return merge(defaultMetadata, {
     title,

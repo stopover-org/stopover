@@ -48,7 +48,7 @@ class DynamicTranslation < ApplicationRecord
   #
   # VALIDATIONS ===========================================================
   validates :source, :source_field,
-            :target_language, :translation, presence: true
+            :target_language, presence: true
   # CALLBACKS =============================================================
   #
   # SCOPES ================================================================

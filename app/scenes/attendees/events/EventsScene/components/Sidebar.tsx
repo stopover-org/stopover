@@ -116,7 +116,7 @@ const Sidebar = ({
           </Link>
         </Grid>
       )}
-      <Grid xs={12}>
+      <Grid xs={12} pb={2}>
         <QueryInput
           queryName="city"
           label={t("scenes.attendees.events.eventsScene.sidebar.city")}

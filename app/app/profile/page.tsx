@@ -27,8 +27,10 @@ export default Page;
 
 export const revalidate = 0;
 
-export const generateMetadata = async (): Promise<Metadata> => {
-  const title = await translate("models.account.singular");
+export const generateMetadata = async ({
+  searchParams: { language },
+}: any): Promise<Metadata> => {
+  const title = await translate("models.account.singular", {}, language);
   return merge(defaultMetadata, {
     title,
     openGraph: {

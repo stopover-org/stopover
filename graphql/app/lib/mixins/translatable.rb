@@ -9,8 +9,6 @@ module Mixins
     end
 
     def adjust_translations
-      return if Rails&.env
-
       self.class::TRANSLATABLE_FIELDS.each do |field|
         self.class::AVAILABLE_LANGUAGES.each do |language|
           next if self.language.to_s == language.to_s
@@ -18,6 +16,7 @@ module Mixins
           dynamic_translation = dynamic_translations.find_or_initialize_by(source_field: field, target_language: language)
           next if dynamic_translation.source == self[field]
           dynamic_translation.source = self[field] || ''
+          dynamic_translation.translation = ''
           dynamic_translation.save!
           dynamic_translation.refresh
         end
