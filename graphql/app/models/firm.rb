@@ -30,9 +30,12 @@
 #
 class Firm < ApplicationRecord
   GRAPHQL_TYPE = Types::FirmsRelated::FirmType
+  TRANSLATABLE_FIELDS = %i[title description].freeze
+  AVAILABLE_LANGUAGES = %i[en ru].freeze
 
   # MODULES ===============================================================
   include AASM
+  include Mixins::Translatable
 
   # MONETIZE ==============================================================
   belongs_to :address, optional: true

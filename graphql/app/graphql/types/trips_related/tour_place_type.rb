@@ -11,6 +11,22 @@ module Types
       def image
         object.image&.url
       end
+
+      def title
+        if current_firm == object.firm
+          object.title
+        else
+          object.translate(:title)
+        end
+      end
+
+      def description
+        if current_firm == object.firm
+          object.description
+        else
+          object.translate(:description)
+        end
+      end
     end
   end
 end
