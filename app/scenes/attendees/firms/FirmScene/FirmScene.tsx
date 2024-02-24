@@ -87,9 +87,12 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
             Website
           </Link>
         )}
+        <br />
         {firm.primaryEmail && (
           <Link href={`mailto:${firm.primaryEmail}`}>E-Mail</Link>
         )}
+        <br />
+        {firm.primaryPhone && <Typography>{firm.primaryPhone}</Typography>}
       </Grid>
       {firm.image && (
         <Grid lg={3} md={3} sm={12} xs={12}>
@@ -135,7 +138,7 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
           <Grid container padding={2} spacing={2} sm={12} md={12}>
             <Typography level="h3">{t("models.event.plural")}</Typography>
           </Grid>
-          <Grid lg={9} md={12} sm={12} xs={12} container>
+          <Grid lg={9} md={12} sm={12} xs={12} container spacing={2}>
             {events.map((event) => (
               <EventCardCompact
                 key={event!.id}

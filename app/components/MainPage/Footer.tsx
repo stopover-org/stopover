@@ -51,6 +51,9 @@ const Footer = () => {
             }}
           >
             <Link href="/firms/landing">{t("general.whatDoWeOffer")}</Link>
+            <Link href="https://stopoverx.com/firms/ZmlybXMtMQ==">
+              {t("general.contacts")}
+            </Link>
           </Stack>
         </Grid>
         <Grid md={4} sm={12} padding={4}>

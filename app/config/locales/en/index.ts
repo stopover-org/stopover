@@ -45,6 +45,7 @@ const translation = {
     refundTerms: "Refund terms",
     termsOfUsage: "Terms of Usage",
     free: "Free",
+    contacts: "Contacts",
   },
   weekdays: {
     monday: "Monday",

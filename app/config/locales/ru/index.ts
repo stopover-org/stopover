@@ -45,6 +45,7 @@ const translation = {
     refundTerms: "Условия отмены бронирования",
     termsOfUsage: "Условия пользования сервисом",
     free: "Бесплатно",
+    contacts: "Контакты",
   },
   weekdays: {
     monday: "Понедельник",
