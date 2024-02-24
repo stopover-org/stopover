@@ -557,7 +557,6 @@ DEPENDENCIES
   foreman
   geocoder
   google-cloud-translate (~> 3.5)
-  google-cloud-translate-v2 (~> 0.4.1)
   graphiql-rails!
   graphql
   image_processing (>= 1.2)
