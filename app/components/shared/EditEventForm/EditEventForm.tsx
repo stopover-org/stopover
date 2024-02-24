@@ -2,15 +2,15 @@ import { Grid, Stack } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import Fieldset from "../../v2/Fieldset/Fieldset";
-import Button from "../../v2/Button/Button";
-import useFormContext from "../../../lib/hooks/useFormContext";
+import Fieldset from "components/v2/Fieldset/Fieldset";
+import Button from "components/v2/Button/Button";
+import useFormContext from "lib/hooks/useFormContext";
+import { EditEventForm_FirmFragment$key } from "artifacts/EditEventForm_FirmFragment.graphql";
 import GeneralStep from "./components/GeneralStep";
 import DatesStep from "./components/DatesStep";
 import EventOptionsStep from "./components/EventOptionsStep";
 import SubmitButton from "../SubmitButton";
 import PaymentSettingsStep from "./components/PaymentSettingsStep";
-import { EditEventForm_FirmFragment$key } from "../../../artifacts/EditEventForm_FirmFragment.graphql";
 
 interface EditEventFormProps {
   steps: string[];

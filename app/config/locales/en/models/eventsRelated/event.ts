@@ -39,6 +39,7 @@ export default {
         title: "Title",
         endDate: "Event will be ended",
         featured: "Show on the root page",
+        language: "Event's language",
       },
       enums: {
         eventType: {

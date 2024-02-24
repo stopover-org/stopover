@@ -54,6 +54,7 @@ module Mutations
       argument :tour_plan,
                Types::Inputs::UpdateTourPlanInput,
                required: false
+      argument :language, String, required: false
 
       def resolve(event:, **args)
         event = Stopover::EventManagement::EventUpdater.new(event).execute(**args)

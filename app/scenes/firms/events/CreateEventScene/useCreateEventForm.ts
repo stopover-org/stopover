@@ -44,6 +44,7 @@ export interface CreateEventFields {
   title: string;
   eventType: EventTypeEnum;
   interestIds: string[];
+  language: string;
 }
 
 function useDefaultValues(): Partial<CreateEventFields> {
@@ -63,6 +64,7 @@ function useDefaultValues(): Partial<CreateEventFields> {
       eventType: "in_town",
       singleDates: [],
       interestIds: [],
+      language: "en",
     }),
     []
   );

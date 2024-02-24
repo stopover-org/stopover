@@ -35,6 +35,7 @@ export default {
         title: "Название",
         endDate: "Дата окончания проведения",
         featured: "Выводить на главном экране",
+        language: "Язык мероприятия",
       },
       enums: {
         eventType: {
