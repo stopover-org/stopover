@@ -49,7 +49,6 @@ module Mutations
       argument :deposit_amount_cents, Integer
 
       argument :images, [String], required: false
-      argument :language, String, required: false
 
       def resolve(**args)
         event = Stopover::EventManagement::EventCreator.new(context).execute(**args)
