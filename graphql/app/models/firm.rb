@@ -42,12 +42,12 @@ class Firm < ApplicationRecord
   belongs_to :address, optional: true
 
   # BELONGS_TO ASSOCIATIONS ===============================================
-
+  #
   # HAS_ONE ASSOCIATIONS ==================================================
   has_one :balance, dependent: :nullify
 
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
-
+  #
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :account_firms, dependent: :destroy
   has_many :events, dependent: :destroy

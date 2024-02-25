@@ -59,6 +59,8 @@ RSpec.describe Firm, type: :model do
       should have_many(:accounts).through(:account_firms)
       should have_many(:bookings).through(:events)
       should have_many(:schedules).through(:events)
+
+      should have_many(:dynamic_translations).dependent(:destroy)
     end
 
     it 'attachments' do

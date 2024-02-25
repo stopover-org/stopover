@@ -32,6 +32,7 @@ RSpec.describe TourPlace, type: :model do
       should belong_to(:firm)
       should belong_to(:event)
       should belong_to(:tour_plan)
+      should have_many(:dynamic_translations).dependent(:destroy)
     end
     context 'validations' do
       it 'check' do

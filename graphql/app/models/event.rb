@@ -126,15 +126,14 @@ class Event < ApplicationRecord
 
   # VALIDATIONS ================================================================
   validates :title,
-            length: { maximum: 100 }, unless: :draft?
-
+            length: { maximum: 100 }
   validates :title,
             :description, presence: true
   validates :event_type,
             :duration_time,
             :language,
             :status,
-            presence: true, unless: :draft?
+            presence: true
   validates :ref_number,
             uniqueness: { scope: :firm_id },
             allow_blank: true
