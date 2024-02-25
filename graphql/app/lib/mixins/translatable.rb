@@ -5,6 +5,7 @@ module Mixins
     extend ActiveSupport::Concern
 
     included do
+      has_many :dynamic_translations, as: :translatable, dependent: :destroy
       after_commit :adjust_translations
     end
 

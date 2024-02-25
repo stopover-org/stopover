@@ -81,7 +81,7 @@ module Fields
     end
 
     def title
-      if current_firm == object.firm
+      if current_firm == object
         object.title
       else
         object.translate(:title)
@@ -89,7 +89,7 @@ module Fields
     end
 
     def description
-      if current_firm == object.firm
+      if current_firm == object
         object.description
       else
         object.translate(:description)

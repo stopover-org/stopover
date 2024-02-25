@@ -78,7 +78,6 @@ class Event < ApplicationRecord
   has_many :tour_plans, dependent: :destroy
   has_many :tour_places, dependent: :destroy
   has_many :stripe_integrations, as: :stripeable, dependent: :destroy
-  has_many :dynamic_translations, as: :translatable, dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :interests, through: :event_interests

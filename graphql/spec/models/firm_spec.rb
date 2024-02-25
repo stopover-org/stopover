@@ -11,6 +11,7 @@
 #  contacts                  :text
 #  contract_address          :string
 #  description               :text
+#  language                  :string           default("en")
 #  margin                    :integer          default(0)
 #  payment_types             :string           default([]), not null, is an Array
 #  postal_code               :string

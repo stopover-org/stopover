@@ -60,7 +60,7 @@ class TourPlan < ApplicationRecord
   # SCOPES ================================================================
   #
   # DELEGATION ============================================================
-  #
+  delegate :language, :event
 
   private
 
