@@ -147,6 +147,7 @@ class Event < ApplicationRecord
   before_validation :adjust_address
   after_create :created_notify
   after_commit :sync_stripe, unless: :removed?
+  after_commit :adjust_options
 
   # SCOPES =====================================================================
   default_scope { in_order_of(:status, %w[draft published unpublished removed]).order(created_at: :desc) }
@@ -217,7 +218,7 @@ class Event < ApplicationRecord
 
   def search_data
     {
-      title: title,
+      title: [title, *dynamic_translations.where(source_field: 'title').map(&:translation)],
       country: address&.country,
       city: address&.city,
       dates: schedules.map(&:scheduled_for).map(&:to_time),
@@ -311,6 +312,12 @@ class Event < ApplicationRecord
     unless interests.find_by(slug: event_type.humanize.parameterize)
       target_interest = Interest.find_by(slug: event_type.humanize.parameterize)
       interests << target_interest if target_interest
+    end
+  end
+
+  def adjust_options
+    event_options.each do |opt|
+      opt.update!(language: language) if language != opt.language
     end
   end
 end

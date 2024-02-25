@@ -64,7 +64,7 @@ class TourPlace < ApplicationRecord
   # SCOPES ================================================================
   #
   # DELEGATION ============================================================
-  delegate :language, :event
+  delegate :language, to: :event
 
   private
 
