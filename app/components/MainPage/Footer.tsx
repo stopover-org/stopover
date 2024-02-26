@@ -4,11 +4,14 @@ import { useTranslation } from "react-i18next";
 import { useCookies } from "react-cookie";
 import Select from "components/v2/Select";
 import Link from "components/v2/Link";
+import { useSearchParams } from "next/navigation";
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [cookies, setCookie] = useCookies(["i18next"]);
+  const searchParams = useSearchParams();
+  const queryLanguage = searchParams.get("language");
   const setLanguage = React.useCallback(
     (language: string) => {
       i18n.changeLanguage(language);
@@ -68,10 +71,10 @@ const Footer = () => {
           >
             <Select
               placeholder={t("languages.action")}
-              name={i18n.language}
+              name={queryLanguage || i18n.language || "en"}
               sx={{ maxWidth: 200 }}
               onChange={setLanguage}
-              value={cookies.i18next}
+              value={queryLanguage || i18n.language || "en"}
               defaultValue="en"
             >
               <Option value="ru">{t("languages.russian")}</Option>

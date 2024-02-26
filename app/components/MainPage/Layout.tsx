@@ -13,8 +13,8 @@ import ReactGA from "react-ga4";
 import i18n, { changeLanguage } from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { useSearchParams } from "next/navigation";
-import englishTranslations from "../../config/locales/en";
-import russianTranslations from "../../config/locales/ru";
+import englishTranslations from "config/locales/en";
+import russianTranslations from "config/locales/ru";
 
 type LayoutProps = {
   children:
@@ -65,12 +65,14 @@ const Layout = ({
   const searchParams = useSearchParams();
   const language = searchParams.get("language");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setCookie] = useCookies(["i18next"]);
+  const [cookieValue, setCookie] = useCookies(["i18next"]);
 
   React.useEffect(() => {
-    changeLanguage(language || value.i18next || "en");
+    if (language !== cookieValue.i18next) {
+      changeLanguage(language || value.i18next || "en");
 
-    setCookie("i18next", language || value.i18next || "en");
+      setCookie("i18next", language || value.i18next || "en");
+    }
   }, []);
 
   const chatraApiKey = process.env.NEXT_PUBLIC_CHATRA_API_KEY;
