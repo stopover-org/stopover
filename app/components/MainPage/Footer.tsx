@@ -4,23 +4,28 @@ import { useTranslation } from "react-i18next";
 import { useCookies } from "react-cookie";
 import Select from "components/v2/Select";
 import Link from "components/v2/Link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [cookies, setCookie] = useCookies(["i18next"]);
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const queryLanguage = searchParams.get("language");
+  console.log(queryLanguage);
+
   const setLanguage = React.useCallback(
     (language: string) => {
       i18n.changeLanguage(language);
 
       setCookie("i18next", language);
 
-      const w = window as any;
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("language", language);
 
-      w.location.reload();
+      router.push(`${pathname}?${params.toString()}`);
     },
     [setCookie, i18n]
   );
