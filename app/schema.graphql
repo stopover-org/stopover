@@ -727,6 +727,7 @@ type Event implements Node {
   images: [String!]!
   interests: [Interest!]!
   landmarks: String
+  language: String!
   maxAttendees: Int
   minAttendees: Int
   myBookings: [Booking!]!
@@ -2137,6 +2138,7 @@ input UpdateEventInput {
   houseNumber: String
   images: [String!]
   interestIds: [ID!]
+  language: String
   latitude: Float
   longitude: Float
   maxAttendees: Int

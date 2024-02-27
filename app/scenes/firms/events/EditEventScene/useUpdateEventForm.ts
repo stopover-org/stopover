@@ -47,6 +47,7 @@ export interface UpdateEventFields {
   }>;
   title: string;
   interestIds: string[];
+  language: string;
 }
 
 function useDefaultValues(
@@ -79,6 +80,7 @@ function useDefaultValues(
         requiresDeposit
         singleDaysWithTime
         title
+        language
         eventOptions {
           builtIn
           forAttendee
@@ -134,6 +136,7 @@ function useDefaultValues(
       requiresDeposit: Boolean(event.requiresDeposit),
       title: event.title,
       interestIds: event.interests.map((interest) => interest.id),
+      language: event.language,
     }),
     [event]
   );

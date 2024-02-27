@@ -19,8 +19,11 @@
 #
 class TourPlan < ApplicationRecord
   GRAPHQL_TYPE = Types::TripsRelated::TourPlanType
+  TRANSLATABLE_FIELDS = %i[title description].freeze
+  AVAILABLE_LANGUAGES = %i[en ru].freeze
   # MODULES ===============================================================
-  #
+  include Mixins::Translatable
+
   # MONETIZE ==============================================================
   #
   # BELONGS_TO ASSOCIATIONS ===============================================
@@ -57,7 +60,7 @@ class TourPlan < ApplicationRecord
   # SCOPES ================================================================
   #
   # DELEGATION ============================================================
-  #
+  delegate :language, to: :event
 
   private
 

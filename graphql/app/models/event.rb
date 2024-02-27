@@ -78,7 +78,6 @@ class Event < ApplicationRecord
   has_many :tour_plans, dependent: :destroy
   has_many :tour_places, dependent: :destroy
   has_many :stripe_integrations, as: :stripeable, dependent: :destroy
-  has_many :dynamic_translations, as: :translatable, dependent: :destroy
 
   # HAS_MANY :THROUGH ASSOCIATIONS ================================================
   has_many :interests, through: :event_interests
@@ -127,15 +126,14 @@ class Event < ApplicationRecord
 
   # VALIDATIONS ================================================================
   validates :title,
-            length: { maximum: 100 }, unless: :draft?
-
+            length: { maximum: 100 }
   validates :title,
             :description, presence: true
   validates :event_type,
             :duration_time,
             :language,
             :status,
-            presence: true, unless: :draft?
+            presence: true
   validates :ref_number,
             uniqueness: { scope: :firm_id },
             allow_blank: true
@@ -148,6 +146,7 @@ class Event < ApplicationRecord
   before_validation :adjust_address
   after_create :created_notify
   after_commit :sync_stripe, unless: :removed?
+  after_commit :adjust_options
 
   # SCOPES =====================================================================
   default_scope { in_order_of(:status, %w[draft published unpublished removed]).order(created_at: :desc) }
@@ -218,7 +217,7 @@ class Event < ApplicationRecord
 
   def search_data
     {
-      title: title,
+      title: [title, *dynamic_translations.where(source_field: 'title').map(&:translation)],
       country: address&.country,
       city: address&.city,
       dates: schedules.map(&:scheduled_for).map(&:to_time),
@@ -312,6 +311,12 @@ class Event < ApplicationRecord
     unless interests.find_by(slug: event_type.humanize.parameterize)
       target_interest = Interest.find_by(slug: event_type.humanize.parameterize)
       interests << target_interest if target_interest
+    end
+  end
+
+  def adjust_options
+    event_options.each do |opt|
+      opt.update!(language: language) if language != opt.language
     end
   end
 end

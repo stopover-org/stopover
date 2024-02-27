@@ -1,7 +1,7 @@
 import React from "react";
 import { Sheet } from "@mui/joy";
 import { graphql, useFragment } from "react-relay";
-import { initReactI18next } from "react-i18next";
+import { I18nextProvider, initReactI18next } from "react-i18next";
 import { useCookies } from "react-cookie";
 // @ts-ignore
 import Chatra from "@chatra/chatra";
@@ -13,8 +13,8 @@ import ReactGA from "react-ga4";
 import i18n, { changeLanguage } from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { useSearchParams } from "next/navigation";
-import englishTranslations from "../../config/locales/en";
-import russianTranslations from "../../config/locales/ru";
+import englishTranslations from "config/locales/en";
+import russianTranslations from "config/locales/ru";
 
 type LayoutProps = {
   children:
@@ -63,15 +63,23 @@ const Layout = ({
   );
   const [value] = useCookies();
   const searchParams = useSearchParams();
-  const language = searchParams.get("language");
+  const queryLanguage = searchParams.get("language");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setCookie] = useCookies(["i18next"]);
+  const [cookieValue, setCookie] = useCookies(["i18next"]);
+  const language = React.useMemo(
+    () => queryLanguage || value.i18next || "en",
+    [queryLanguage, value]
+  );
 
   React.useEffect(() => {
-    changeLanguage(language || value.i18next || "en");
+    if (queryLanguage !== value.i18next || !value.i18next) {
+      changeLanguage(language);
 
-    setCookie("i18next", language || value.i18next || "en");
-  }, []);
+      setCookie("i18next", language);
+
+      window.location.reload();
+    }
+  }, [language, changeLanguage, setCookie]);
 
   const chatraApiKey = process.env.NEXT_PUBLIC_CHATRA_API_KEY;
 
@@ -90,7 +98,7 @@ const Layout = ({
           currentUserFragment={currentUser}
           showRegisterFirm={showRegisterFirm}
         />
-        {children}
+        <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
       </Sheet>
       <Footer />
     </GlobalSidebarProvider>

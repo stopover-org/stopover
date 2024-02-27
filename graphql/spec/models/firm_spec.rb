@@ -11,6 +11,7 @@
 #  contacts                  :text
 #  contract_address          :string
 #  description               :text
+#  language                  :string           default("en")
 #  margin                    :integer          default(0)
 #  payment_types             :string           default([]), not null, is an Array
 #  postal_code               :string
@@ -58,6 +59,8 @@ RSpec.describe Firm, type: :model do
       should have_many(:accounts).through(:account_firms)
       should have_many(:bookings).through(:events)
       should have_many(:schedules).through(:events)
+
+      should have_many(:dynamic_translations).dependent(:destroy)
     end
 
     it 'attachments' do

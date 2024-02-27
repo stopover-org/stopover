@@ -38,31 +38,30 @@ class EventOption < ApplicationRecord
   belongs_to :event
 
   # HAS_ONE ASSOCIATIONS ==================================================
-
+  #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
-
+  #
   # HAS_MANY ASSOCIATIONS =================================================
-  has_many :booking_options,  dependent: :nullify
+  has_many :booking_options, dependent: :nullify
   has_many :attendee_options, dependent: :nullify
-  has_many :stripe_integrations,  as: :stripeable,    dependent: :destroy
-  has_many :dynamic_translations, as: :translatable,  dependent: :destroy
+  has_many :stripe_integrations, as: :stripeable, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
-  has_many :attendees,  through: :attendee_options
-  has_many :bookings,   through: :booking_options
+  has_many :attendees, through: :attendee_options
+  has_many :bookings, through: :booking_options
 
   # AASM STATES ===========================================================
-
+  #
   # ENUMS =================================================================
-
+  #
   # SECURE TOKEN ==========================================================
-
+  #
   # SECURE PASSWORD =======================================================
-
+  #
   # ATTACHMENTS ===========================================================
-
+  #
   # RICH_TEXT =============================================================
-
+  #
   # VALIDATIONS ===========================================================
   validates :organizer_price_cents,
             :attendee_price_cents,

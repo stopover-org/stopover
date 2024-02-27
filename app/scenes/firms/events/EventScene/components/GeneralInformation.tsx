@@ -54,6 +54,7 @@ const GeneralInformation = ({
         singleDaysWithTime
         title
         featured
+        language
         interests {
           title
         }
@@ -166,6 +167,12 @@ const GeneralInformation = ({
               <DataRow
                 label={t("models.event.attributes.title")}
                 value={event.title}
+              />
+            </Grid>
+            <Grid xs={12}>
+              <DataRow
+                label={t("models.event.attributes.language")}
+                value={event.language}
               />
             </Grid>
 

@@ -42,6 +42,7 @@ module Types
       field :tour_plans, [Types::TripsRelated::TourPlanType]
       field :tour_plan, Types::TripsRelated::TourPlanType
       field :featured, Boolean
+      field :language, String, null: false
 
       field :bookings, Types::BookingsRelated::BookingType.connection_type do
         argument :filters, Types::Filters::BookingsFilter, required: false

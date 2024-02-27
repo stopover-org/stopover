@@ -32,6 +32,7 @@ const GeneralStep = () => {
   const requiresPassport = form.useFormField("requiresPassport");
   const interestIds = form.useFormField("interestIds");
   const descriptionField = form.useFormField("description");
+  const languageField = form.useFormField("language");
   const { t } = useTranslation();
 
   return (
@@ -43,10 +44,20 @@ const GeneralStep = () => {
           </Typography>
         </Grid>
         <Grid xs={12}>
-          <Input
-            {...form.useFormField("title")}
-            label={t("models.event.attributes.title")}
-          />
+          <Stack direction="row" alignItems="center">
+            <Input {...form.useFormField("title")} fullWidth={false} />
+            <Select
+              placeholder={t("languages.action")}
+              sx={{ maxWidth: 200 }}
+              name={languageField.value}
+              onChange={languageField.onChange}
+              value={languageField.value}
+              defaultValue="en"
+            >
+              <Option value="ru">{t("languages.russian")}</Option>
+              <Option value="en">{t("languages.english")}</Option>
+            </Select>
+          </Stack>
         </Grid>
 
         <Grid xs={12}>

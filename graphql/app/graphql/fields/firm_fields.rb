@@ -79,5 +79,21 @@ module Fields
     def schedule(**args)
       args[:id]
     end
+
+    def title
+      if current_firm == object
+        object.title
+      else
+        object.translate(:title)
+      end
+    end
+
+    def description
+      if current_firm == object
+        object.description
+      else
+        object.translate(:description)
+      end
+    end
   end
 end

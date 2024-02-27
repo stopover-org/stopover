@@ -11,6 +11,7 @@
 #  contacts                  :text
 #  contract_address          :string
 #  description               :text
+#  language                  :string           default("en")
 #  margin                    :integer          default(0)
 #  payment_types             :string           default([]), not null, is an Array
 #  postal_code               :string
@@ -30,20 +31,23 @@
 #
 class Firm < ApplicationRecord
   GRAPHQL_TYPE = Types::FirmsRelated::FirmType
+  TRANSLATABLE_FIELDS = %i[title description].freeze
+  AVAILABLE_LANGUAGES = %i[en ru].freeze
 
   # MODULES ===============================================================
   include AASM
+  include Mixins::Translatable
 
   # MONETIZE ==============================================================
   belongs_to :address, optional: true
 
   # BELONGS_TO ASSOCIATIONS ===============================================
-
+  #
   # HAS_ONE ASSOCIATIONS ==================================================
   has_one :balance, dependent: :nullify
 
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
-
+  #
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :account_firms, dependent: :destroy
   has_many :events, dependent: :destroy

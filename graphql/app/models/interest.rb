@@ -37,7 +37,6 @@ class Interest < ApplicationRecord
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :account_interests, dependent: :destroy
   has_many :event_interests, dependent: :destroy
-  has_many :dynamic_translations, as: :translatable, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :accounts, through: :account_interests
@@ -69,7 +68,7 @@ class Interest < ApplicationRecord
 
   def search_data
     {
-      title: title
+      title: [title, *dynamic_translations.where(source_field: 'title').map(&:translation)]
     }
   end
 
