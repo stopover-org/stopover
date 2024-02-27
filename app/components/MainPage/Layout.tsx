@@ -77,7 +77,9 @@ const Layout = ({
 
       setCookie("i18next", language);
 
-      window.location.reload();
+      if (queryLanguage || !value.i18next) {
+        window.location.reload();
+      }
     }
   }, [language, changeLanguage, setCookie]);
 

@@ -14,8 +14,6 @@ const Footer = () => {
   const router = useRouter();
   const pathname = usePathname();
   const queryLanguage = searchParams.get("language");
-  console.log(queryLanguage);
-
   const setLanguage = React.useCallback(
     (language: string) => {
       i18n.changeLanguage(language);

@@ -37,7 +37,8 @@ module Stopover
                                                :house_number,
                                                :latitude,
                                                :longitude,
-                                               :tour_plan))
+                                               :tour_plan,
+                                               :interests))
 
           if args[:event_options].present?
             args[:event_options].map do |option|
@@ -89,6 +90,11 @@ module Stopover
               booking_cancellation_option.assign_attributes(**option.to_h.except(:id))
               booking_cancellation_option.save!
             end
+          end
+
+          if args[:interests]
+            @event.event_interests.destroy_all
+            @event.interests = args[:interests]
           end
 
           @event.save!
