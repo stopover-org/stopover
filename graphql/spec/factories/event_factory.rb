@@ -45,7 +45,7 @@
 FactoryBot.define do
   factory :event do
     title { Faker::App.name }
-    description { Faker::Hipster.paragraphs }
+    description { Faker::Hipster.paragraphs.join(' ') }
     event_type { :excursion }
     firm { create(:firm) }
     organizer_price_per_uom_cents { 500 }

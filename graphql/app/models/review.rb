@@ -2,34 +2,39 @@
 
 # == Schema Information
 #
-# Table name: ratings
+# Table name: reviews
 #
-#  id           :bigint           not null, primary key
-#  rating_value :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  account_id   :bigint
-#  event_id     :bigint
-#  review_id    :bigint
+#  id              :bigint           not null, primary key
+#  attendees_count :integer
+#  author          :string
+#  description     :text
+#  language        :string
+#  title           :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  account_id      :bigint
+#  event_id        :bigint
+#  firm_id         :bigint
 #
 # Indexes
 #
-#  index_ratings_on_account_id  (account_id)
-#  index_ratings_on_event_id    (event_id)
-#  index_ratings_on_review_id   (review_id)
+#  index_reviews_on_account_id  (account_id)
+#  index_reviews_on_event_id    (event_id)
+#  index_reviews_on_firm_id     (firm_id)
 #
-class Rating < ApplicationRecord
+class Review < ApplicationRecord
   # MODULES ===============================================================
   #
   # MONETIZE ==============================================================
   #
   # BELONGS_TO ASSOCIATIONS ===============================================
   belongs_to :event
+  belongs_to :firm
   belongs_to :account, optional: true
-  belongs_to :review
 
   # HAS_ONE ASSOCIATIONS ==================================================
-  #
+  has_one :rating
+
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
   #
   # HAS_MANY ASSOCIATIONS =================================================
@@ -49,21 +54,22 @@ class Rating < ApplicationRecord
   # RICH_TEXT =============================================================
   #
   # VALIDATIONS ===========================================================
-  validates :rating_value, presence: true
-  validates :rating_value, numericality: { in: 1..5 }
+  validates :title, :language,
+            :author, presence: true
 
   # CALLBACKS =============================================================
-  before_validation :adjust_event
-  before_validation :adjust_account
+  before_validation :adjust_firm
+  before_validation :adjust_author
+
   # SCOPES ================================================================
   #
   # DELEGATION ============================================================
 
-  def adjust_event
-    self.event = review&.event unless event
+  def adjust_firm
+    self.firm = event&.firm unless firm
   end
 
-  def adjust_account
-    self.account = review&.account unless account
+  def adjust_author
+    self.author = account&.name unless author
   end
 end

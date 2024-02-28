@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_25_103726) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_27_221126) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -381,8 +381,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_25_103726) do
     t.bigint "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "review_id"
     t.index ["account_id"], name: "index_ratings_on_account_id"
     t.index ["event_id"], name: "index_ratings_on_event_id"
+    t.index ["review_id"], name: "index_ratings_on_review_id"
   end
 
   create_table "refunds", force: :cascade do |t|
@@ -406,6 +408,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_25_103726) do
     t.index ["firm_id"], name: "index_refunds_on_firm_id"
     t.index ["payment_id"], name: "index_refunds_on_payment_id"
     t.index ["refund_id"], name: "index_refunds_on_refund_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.bigint "event_id"
+    t.bigint "firm_id"
+    t.bigint "account_id"
+    t.integer "attendees_count"
+    t.string "language"
+    t.string "author"
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_reviews_on_account_id"
+    t.index ["event_id"], name: "index_reviews_on_event_id"
+    t.index ["firm_id"], name: "index_reviews_on_firm_id"
   end
 
   create_table "schedules", force: :cascade do |t|
