@@ -34,6 +34,7 @@ RSpec.describe Account, type: :model do
       should have_many(:trips).dependent(:destroy)
       should have_many(:account_firms).dependent(:destroy)
       should have_many(:ratings).dependent(:nullify)
+      should have_many(:reviews).dependent(:nullify)
       should have_many(:refunds).dependent(:nullify)
 
       should have_many(:interests).through(:account_interests)

@@ -52,6 +52,8 @@ module Types
         argument :filters, Types::Filters::SchedulesFilter, required: false
       end
 
+      field :reviews, Types::EventsRelated::ReviewType.connection_type
+
       field :event_placements, [Types::EventsRelated::EventPlacementType], null: false
     end
   end

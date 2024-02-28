@@ -57,6 +57,7 @@ RSpec.describe Event, type: :model do
       should have_many(:event_options).dependent(:destroy)
       should have_many(:bookings).dependent(:destroy)
       should have_many(:ratings).dependent(:destroy)
+      should have_many(:reviews).dependent(:destroy)
       should have_many(:schedules).dependent(:destroy)
       should have_many(:attendees).dependent(:nullify)
       should have_many(:attendee_options).dependent(:nullify)

@@ -23,6 +23,7 @@
 #  index_reviews_on_firm_id     (firm_id)
 #
 class Review < ApplicationRecord
+  GRAPHQL_TYPE = Types::EventsRelated::ReviewType
   # MODULES ===============================================================
   #
   # MONETIZE ==============================================================

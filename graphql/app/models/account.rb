@@ -48,6 +48,7 @@ class Account < ApplicationRecord
   has_many :account_firms, dependent: :destroy
   has_many :ratings, dependent: :nullify
   has_many :refunds, dependent: :nullify
+  has_many :reviews, dependent: :nullify
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :interests, through: :account_interests

@@ -70,6 +70,7 @@ class Event < ApplicationRecord
   has_many :event_options, dependent: :destroy
   has_many :bookings, dependent: :destroy
   has_many :ratings, dependent: :destroy
+  has_many :reviews, dependent: :destroy
   has_many :schedules, dependent: :destroy
   has_many :attendees, dependent: :nullify
   has_many :attendee_options, dependent: :nullify

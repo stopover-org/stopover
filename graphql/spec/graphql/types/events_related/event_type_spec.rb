@@ -122,6 +122,9 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
                                                             name: 'requiresPassport'
                                                           },
                                                           {
+                                                            name: 'reviews'
+                                                          },
+                                                          {
                                                             name: 'schedules'
                                                           },
                                                           {
