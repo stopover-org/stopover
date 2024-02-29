@@ -41,6 +41,7 @@ const translation = {
     statistics: "Статистика",
     settings: "Настройки",
     privacy: "Конфиденциальность",
+    firmWorkflow: "Как принимать платежи",
     whatDoWeOffer: "Что мы предлагаем",
     refundTerms: "Условия отмены бронирования",
     termsOfUsage: "Условия пользования сервисом",

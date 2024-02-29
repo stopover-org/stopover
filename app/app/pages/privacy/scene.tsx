@@ -5,7 +5,7 @@ import React from "react";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import Layout from "components/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard/AuthGuard";
-import Typography from "components/v2/Typography/Typography";
+import Typography from "components/v2/Typography";
 import { scene_PrivacyQuery } from "artifacts/scene_PrivacyQuery.graphql";
 import Link from "components/v2/Link";
 
