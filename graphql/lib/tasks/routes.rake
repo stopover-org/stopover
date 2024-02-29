@@ -10,7 +10,7 @@ end
 
 desc 'generate sitemap for frontend app'
 task generate_sitemap: :environment do
-  static_routes = %w[/ /events /firms /pages/privacy /pages/privacy /pages/refund-terms /pages/terms /firms/landing]
+  static_routes = %w[/ /events /firms /pages/privacy /pages/privacy /pages/refund-terms /pages/terms /firms/landing /firms/workflow]
   base_url = Rails.application.credentials.frontend_url[0..-1]
 
   builder = Nokogiri::XML::Builder.new do |xml|
