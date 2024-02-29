@@ -1,8 +1,8 @@
 import React from "react";
-import { FormProvider } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import EditFirmForm from "components/shared/EditFirmForm";
 import Typography from "components/v2/Typography";
+import { FormProvider } from "react-hook-form";
+import EditFirmForm from "components/shared/EditFirmForm";
 import { useCreateFirmForm } from "./useCreateFirmForm";
 
 const CreateFirmScene = () => {
@@ -11,8 +11,8 @@ const CreateFirmScene = () => {
 
   return (
     <>
-      <Typography level="h1" component="h1" paddingLeft={2}>
-        {t("forms.editFirm.createYourFirm")}
+      <Typography level="h3" component="h1" paddingLeft={2}>
+        {t("forms.editFirm.newFirm")}
       </Typography>
       <FormProvider {...form}>
         <form onSubmit={form.handleSubmit()}>

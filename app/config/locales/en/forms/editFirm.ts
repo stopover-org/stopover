@@ -5,6 +5,7 @@ export default {
       contactInformation: "Contact Information",
       paymentInformation: "Payment Information",
       createYourFirm: "Create your Company",
+      newFirm: "New Company",
     },
   },
 };
