@@ -57,6 +57,7 @@ const Footer = () => {
             }}
           >
             <Link href="/firms/landing">{t("general.whatDoWeOffer")}</Link>
+            <Link href="/firms/workflow">{t("general.firmWorkflow")}</Link>
             <Link href="https://stopoverx.com/firms/ZmlybXMtMQ==">
               {t("general.contacts")}
             </Link>

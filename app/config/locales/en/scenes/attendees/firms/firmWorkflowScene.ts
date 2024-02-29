@@ -16,7 +16,7 @@ export default {
           action: "Create Event",
         },
         allowBookings: {
-          header: "3. After each booking, you will receive a notification.",
+          header: "3. Receive notifications for each booking.",
           subheader: "Limit the number of available seats if necessary.",
           description:
             "Bookings can be paid online via Stripe or in cash on-site.",

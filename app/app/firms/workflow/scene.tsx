@@ -225,17 +225,17 @@ const Workflow = () => {
                     <Stack alignItems={isMobileView ? "center" : "flex-start"}>
                       <Typography level="h3" component="h2">
                         {t(
-                          "scenes.firms.firmWorkflowScene.allowBookings.header"
+                          "scenes.firms.firmWorkflowScene.manageBookings.header"
                         )}
                       </Typography>
                       <Typography level="body-md">
                         {t(
-                          "scenes.firms.firmWorkflowScene.allowBookings.subheader"
+                          "scenes.firms.firmWorkflowScene.manageBookings.subheader"
                         )}
                       </Typography>
                       <Typography level="body-md">
                         {t(
-                          "scenes.firms.firmWorkflowScene.allowBookings.description"
+                          "scenes.firms.firmWorkflowScene.manageBookings.description"
                         )}
                       </Typography>
                     </Stack>
