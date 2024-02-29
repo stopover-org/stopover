@@ -9,12 +9,14 @@ import { useTranslation } from "react-i18next";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_NewFirm_Query } from "artifacts/scene_NewFirm_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent";
-import CreateFirmScene from "../../../scenes/firms/CreateFirmScene";
+import AttendeeSidebar from "components/shared/AttendeeSidebar";
+import CreateFirmScene from "scenes/firms/CreateFirmScene";
 
 const Query = graphql`
   query scene_NewFirm_Query {
     currentUser {
       ...Layout_CurrentUserFragment
+      ...AttendeeSidebar_CurrentUserFragment
       serviceUser
       status
       account {
@@ -45,7 +47,9 @@ const Scene = ({
         {children}
       </SidebarContent>
     ) : (
-      children
+      <AttendeeSidebar currentUserFragmentRef={data.currentUser}>
+        {children}
+      </AttendeeSidebar>
     );
 
   useDocumentTitle(`${t("scenes.attendees.firms.newFirmScene.title")}`);
