@@ -10,9 +10,11 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import {
   Card,
+  CardActions,
   CardContent,
   CircularProgress,
   Grid,
+  IconButton,
   Sheet,
   Stack,
   useTheme,
@@ -22,6 +24,8 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { useMediaQuery } from "@mui/material";
+import Button from "components/v2/Button";
+import Link from "components/v2/Link";
 
 const Workflow = () => {
   const [server, setServer] = React.useState(true);
@@ -86,12 +90,25 @@ const Workflow = () => {
                       </Typography>
                     </Stack>
                   </CardContent>
+                  <CardActions />
                 </CardContent>
               </Card>
             </Grid>
             <Grid xs={12} padding={2} paddingLeft={4}>
-              <Stack alignItems={isMobileView ? "center" : "flex-start"}>
-                <ArrowDownwardIcon />
+              <Stack
+                direction="row"
+                justifyContent={isMobileView ? "center" : "flex-start"}
+                spacing={2}
+                useFlexGap
+              >
+                <IconButton>
+                  <ArrowDownwardIcon />
+                </IconButton>
+                <Link href="/firms/new">
+                  <Button>
+                    {t("scenes.firms.firmWorkflowScene.createCompany.action")}
+                  </Button>
+                </Link>
               </Stack>
             </Grid>
             <Grid xs={12} padding={1}>
@@ -131,8 +148,20 @@ const Workflow = () => {
               </Card>
             </Grid>
             <Grid xs={12} padding={2} paddingLeft={4}>
-              <Stack alignItems={isMobileView ? "center" : "flex-start"}>
-                <ArrowDownwardIcon />
+              <Stack
+                direction="row"
+                justifyContent={isMobileView ? "center" : "flex-start"}
+                spacing={2}
+                useFlexGap
+              >
+                <IconButton>
+                  <ArrowDownwardIcon />
+                </IconButton>
+                <Link href="/my-firm/events/new">
+                  <Button>
+                    {t("scenes.firms.firmWorkflowScene.createEvents.action")}
+                  </Button>
+                </Link>
               </Stack>
             </Grid>
             <Grid xs={12} padding={1}>
@@ -173,7 +202,9 @@ const Workflow = () => {
             </Grid>
             <Grid xs={12} padding={2} paddingLeft={4}>
               <Stack alignItems={isMobileView ? "center" : "flex-start"}>
-                <ArrowDownwardIcon />
+                <IconButton>
+                  <ArrowDownwardIcon />
+                </IconButton>
               </Stack>
             </Grid>
             <Grid xs={12} padding={1}>
@@ -214,7 +245,9 @@ const Workflow = () => {
             </Grid>
             <Grid xs={12} padding={2} paddingLeft={4}>
               <Stack alignItems={isMobileView ? "center" : "flex-start"}>
-                <ArrowDownwardIcon />
+                <IconButton>
+                  <ArrowDownwardIcon />
+                </IconButton>
               </Stack>
             </Grid>
             <Grid xs={12} padding={1}>
