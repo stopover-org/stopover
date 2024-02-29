@@ -41,6 +41,7 @@ const translation = {
     statistics: "Statistics",
     settings: "Settings",
     privacy: "Privacy",
+    firmWorkflow: "How to accept payments",
     whatDoWeOffer: "What do we offer",
     refundTerms: "Refund terms",
     termsOfUsage: "Terms of Usage",
