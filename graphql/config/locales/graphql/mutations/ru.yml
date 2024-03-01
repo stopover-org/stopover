@@ -52,6 +52,9 @@ ru:
       book_event:
         notifications:
           success: 'Вы забронировали мероприятие'
+      create_notification:
+        notifications:
+          success: 'Уведомление было создано и отправлено'
       cancel_booking:
         notifications:
           success: 'Бронирование отменено'

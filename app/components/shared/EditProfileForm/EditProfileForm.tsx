@@ -4,11 +4,11 @@ import { FormProvider } from "react-hook-form";
 import { Grid } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
+import { EditProfileForm_AccountFragment$key } from "artifacts/EditProfileForm_AccountFragment.graphql";
+import Fieldset from "components/v2/Fieldset";
+import Input from "components/v2/Input";
+import DatePicker from "components/v2/DatePicker";
 import { useEditProfileForm } from "./components/useEditProfileForm";
-import { EditProfileForm_AccountFragment$key } from "../../../artifacts/EditProfileForm_AccountFragment.graphql";
-import Fieldset from "../../v2/Fieldset";
-import Input from "../../v2/Input";
-import DatePicker from "../../v2/DatePicker";
 
 interface EditProfileFormProps {
   accountFragmentRef: EditProfileForm_AccountFragment$key;

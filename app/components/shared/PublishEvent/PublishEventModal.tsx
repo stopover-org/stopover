@@ -11,10 +11,10 @@ import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
-import Button from "../../v2/Button";
-import SubmitButton from "../SubmitButton/SubmitButton";
+import Button from "components/v2/Button";
+import SubmitButton from "components/shared/SubmitButton";
+import { PublishEventModal_EventFragment$key } from "artifacts/PublishEventModal_EventFragment.graphql";
 import { usePublishEventForm } from "./usePublishEventForm";
-import { PublishEventModal_EventFragment$key } from "../../../artifacts/PublishEventModal_EventFragment.graphql";
 
 interface PublishEventModalProps {
   eventFragmentRef: PublishEventModal_EventFragment$key;

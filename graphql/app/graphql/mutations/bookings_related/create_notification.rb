@@ -1,0 +1,50 @@
+# frozen_string_literal: true
+
+module Mutations
+  module BookingsRelated
+    class CreateNotification < BaseMutation
+      argument :booking_id, ID, loads: Types::BookingsRelated::BookingType
+      argument :subject, String
+      argument :content, String
+
+      field :booking, Types::BookingsRelated::BookingType
+
+      def resolve(booking:, **args)
+        booking.notifications.create!(subject: args[:subject],
+                                      content: Stopover::MailProvider.prepare_content(
+                                        file: 'mailer/firms/bookings/custom_notification',
+                                        locals: {
+                                          content: args[:content]
+                                        }
+                                      ),
+                                      notification_type: 'custom',
+                                      delivery_method: 'email',
+                                      to: booking.account.primary_email)
+        {
+          booking: booking.reload,
+          notification: I18n.t('graphql.mutations.create_notification.notifications.success')
+        }
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+        message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
+
+        {
+          booking: nil,
+          errors: [message]
+        }
+      end
+
+      private
+
+      def authorized?(**inputs)
+        booking = inputs[:booking]
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !current_user || current_user&.inactive?
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !owner?(booking) && !manager?(booking)
+
+        return false, { errors: [I18n.t('graphql.errors.booking_past')] } if booking.past?
+        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
+        super
+      end
+    end
+  end
+end

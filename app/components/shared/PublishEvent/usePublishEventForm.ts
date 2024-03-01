@@ -2,8 +2,8 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { usePublishEventForm_EventFragment$key } from "../../../artifacts/usePublishEventForm_EventFragment.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { usePublishEventForm_EventFragment$key } from "artifacts/usePublishEventForm_EventFragment.graphql";
 
 interface PublishEventFields {
   eventId: string;

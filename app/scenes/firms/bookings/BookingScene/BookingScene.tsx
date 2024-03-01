@@ -1,7 +1,7 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import moment from "moment/moment";
-import { Box, Divider, Grid, Stack } from "@mui/joy";
+import { Box, Divider, Grid, Stack, useTheme } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import Typography from "components/v2/Typography";
 import { BookingScene_FirmBookingFragment$key } from "artifacts/BookingScene_FirmBookingFragment.graphql";
@@ -22,6 +22,8 @@ import {
 import Button from "components/v2/Button";
 import useSubscription from "lib/hooks/useSubscription";
 import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import { useMediaQuery } from "@mui/material";
+import CreateNotification from "components/shared/CreateNotification";
 import AddAttendeeModal from "./components/AddAttendeeModal";
 import RefundBookingModal from "./components/RefundBookingModal";
 import AttendeesTable from "./components/AttendeesTable";
@@ -31,6 +33,7 @@ import BookingInformation from "./components/BookingInformation";
 interface BookingSceneProps {
   bookingFragmentRef: BookingScene_FirmBookingFragment$key;
 }
+
 const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
   const booking = useFragment<BookingScene_FirmBookingFragment$key>(
     graphql`
@@ -95,6 +98,7 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
             }
           }
         }
+        ...CreateNotification_BookingFragment
         ...EventOptionsTable_BookingFragment
         ...AttendeesTable_BookingFragment
         ...AddAttendeeModal_BookingFragment
@@ -127,11 +131,13 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
   const paymentsData = usePaymentsColumns(booking.payments);
   const refundsHeaders = useRefundsHeaders();
   const refundsData = useRefundsColumns(booking.refunds);
+  const theme = useTheme();
+  const isMobileView = useMediaQuery(theme.breakpoints.down("md"));
   const { t } = useTranslation();
 
   return (
     <>
-      <Grid container>
+      <Grid container spacing={2}>
         <Grid xs={12}>
           <Breadcrumbs
             padding={0}
@@ -145,7 +151,10 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
         </Grid>
 
         <Grid xs={12}>
-          <Stack direction="row" justifyContent="space-between">
+          <Stack
+            direction={isMobileView ? "column" : "row"}
+            justifyContent="space-between"
+          >
             <Box>
               <Typography>
                 <Link level="h3" href={`/my-firm/events/${booking.event.id}`}>
@@ -168,15 +177,20 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
               </Typography>
             </Box>
             {booking.status !== "cancelled" && (
-              <Box>
-                <Button
-                  size="sm"
-                  color="danger"
-                  onClick={() => setRefundModal(true)}
-                >
-                  {t("scenes.firms.bookings.bookingScene.refundBooking")}
-                </Button>
-              </Box>
+              <Stack direction="row" spacing={1} useFlexGap>
+                <Box>
+                  <Button
+                    size="sm"
+                    color="danger"
+                    onClick={() => setRefundModal(true)}
+                  >
+                    {t("scenes.firms.bookings.bookingScene.refundBooking")}
+                  </Button>
+                </Box>
+                <Box>
+                  <CreateNotification bookingFragmentRef={booking} />
+                </Box>
+              </Stack>
             )}
           </Stack>
         </Grid>

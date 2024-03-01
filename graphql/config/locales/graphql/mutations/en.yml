@@ -52,6 +52,9 @@ en:
       book_event:
         notifications:
           success: 'You booked this event'
+      create_notification:
+        notifications:
+          success: 'Notification was created and sent'
       cancel_booking:
         notifications:
           success: 'Booking cancelled'

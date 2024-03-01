@@ -59,6 +59,7 @@ class Booking < ApplicationRecord
   has_many :payments, dependent: :nullify
   has_many :refunds, dependent: :nullify
   has_many :attendee_options, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :booking_cancellation_options, through: :event
@@ -114,6 +115,7 @@ class Booking < ApplicationRecord
   # DELEGATION ============================================================
 
   def check_max_attendees
+    return true unless event
     return true if event.max_attendees.nil?
     reached_max_attendees = if schedule
                               Attendee.where.not(status: 'removed')
@@ -122,7 +124,7 @@ class Booking < ApplicationRecord
                                                                 .where.not(id: id))
                                       .count + attendees.where.not(status: 'removed').count > event.max_attendees
                             else
-                              attendees.where.not(status: 'removed').count > event.max_attendees
+                              attendees.where.not(status: 'removed').count > event&.max_attendees
                             end
     errors.add(:attendees, 'all places reserved') if reached_max_attendees
   end
