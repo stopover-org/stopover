@@ -8,7 +8,6 @@ import useFormContext from "lib/hooks/useFormContext";
 import { EditEventForm_FirmFragment$key } from "artifacts/EditEventForm_FirmFragment.graphql";
 import GeneralStep from "./components/GeneralStep";
 import DatesStep from "./components/DatesStep";
-import EventOptionsStep from "./components/EventOptionsStep";
 import SubmitButton from "../SubmitButton";
 import PaymentSettingsStep from "./components/PaymentSettingsStep";
 
@@ -40,9 +39,6 @@ const EditEventForm = ({
     () => [
       [
         "images",
-        "requiresCheckIn",
-        "requiresContract",
-        "requiresPassport",
         "eventType",
         "description",
         "maxAttendees",
@@ -50,7 +46,6 @@ const EditEventForm = ({
         "title",
       ],
       ["recurringDates", "singleDates", "durationTime", "endDate"],
-      ["eventOptions"],
       [
         "organizerPricePerUomCents",
         "depositAmountCents",
@@ -65,8 +60,7 @@ const EditEventForm = ({
     <Grid container spacing={2} md={10} sm={12}>
       {currentStep === 0 && <GeneralStep />}
       {currentStep === 1 && <DatesStep />}
-      {currentStep === 2 && <EventOptionsStep />}
-      {currentStep === 3 && <PaymentSettingsStep firmFragmentRef={firm} />}
+      {currentStep === 2 && <PaymentSettingsStep firmFragmentRef={firm} />}
       <Fieldset>
         <Grid xs={12}>
           {currentStep === steps.length - 1 ? (

@@ -33,7 +33,6 @@ const CreateEventScene = ({ eventFragmentRef }: EditEventSceneProps) => {
   const { steps, currentStep, setNextStep, setPreviousStep } = useSteps([
     t("forms.editEvent.steps.eventData"),
     t("forms.editEvent.steps.dates"),
-    t("forms.editEvent.steps.eventOptions"),
     t("forms.editEvent.steps.paymentSettings"),
   ]);
 

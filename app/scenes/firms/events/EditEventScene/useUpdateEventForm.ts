@@ -31,9 +31,6 @@ export interface UpdateEventFields {
   minAttendees?: number | null;
   organizerPricePerUomCents: number;
   depositAmountCents: number;
-  requiresCheckIn: boolean;
-  requiresContract: boolean;
-  requiresPassport: boolean;
   requiresDeposit: boolean;
   recurringDates: Array<{
     day: string | null;
@@ -74,9 +71,6 @@ function useDefaultValues(
           id
         }
         recurringDaysWithTime
-        requiresCheckIn
-        requiresContract
-        requiresPassport
         requiresDeposit
         singleDaysWithTime
         title
@@ -130,9 +124,6 @@ function useDefaultValues(
       minAttendees: event.minAttendees,
       organizerPricePerUomCents: event.organizerPricePerUom!.cents! / 100,
       depositAmountCents: event.depositAmount!.cents! / 100,
-      requiresCheckIn: Boolean(event.requiresCheckIn),
-      requiresContract: Boolean(event.requiresContract),
-      requiresPassport: Boolean(event.requiresPassport),
       requiresDeposit: Boolean(event.requiresDeposit),
       title: event.title,
       interestIds: event.interests.map((interest) => interest.id),
@@ -177,9 +168,6 @@ const validationSchema = Yup.object().shape({
       })
     )
     .required("Required"),
-  requiresCheckIn: Yup.boolean(),
-  requiresContract: Yup.boolean(),
-  requiresPassport: Yup.boolean(),
   singleDates: Yup.array()
     .of(
       Yup.object().shape({

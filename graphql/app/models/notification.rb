@@ -89,6 +89,7 @@ class Notification < ApplicationRecord
   end
 
   def adjust_firm
+    return unless booking
     self.firm = booking.firm unless firm
   end
 end

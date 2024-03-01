@@ -25,9 +25,6 @@ export interface CreateEventFields {
   maxAttendees?: number;
   minAttendees?: number;
   organizerPricePerUomCents?: number;
-  requiresCheckIn: boolean;
-  requiresContract: boolean;
-  requiresPassport: boolean;
   recurringDates: Array<{
     day: string | null;
     hour: number | null;
@@ -57,10 +54,7 @@ function useDefaultValues(): Partial<CreateEventFields> {
       images: [],
       organizerPricePerUomCents: 0,
       recurringDates: [{ day: null, hour: null, minute: null }],
-      requiresCheckIn: false,
-      requiresContract: false,
       requiresDeposit: false,
-      requiresPassport: false,
       eventType: "in_town",
       singleDates: [],
       interestIds: [],

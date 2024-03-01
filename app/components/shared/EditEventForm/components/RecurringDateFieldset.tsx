@@ -84,7 +84,11 @@ const RecurringDateFieldset = () => {
         </Grid>
         <Grid xs={12} container>
           <Grid xs={4}>
-            <Input label="" {...durationTimeField} />
+            <Input
+              label=""
+              {...durationTimeField}
+              hint={t("forms.editEvent.hints.durationTime")}
+            />
           </Grid>
         </Grid>
       </Fieldset>
