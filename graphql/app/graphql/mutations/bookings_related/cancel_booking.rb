@@ -3,6 +3,9 @@
 module Mutations
   module BookingsRelated
     class CancelBooking < BaseMutation
+      include Mutations::Authorizations::ManagerOrOwnerAuthorized
+      include Mutations::BookingsRelated::Authorizations::BookingAuthorized
+
       field :booking, Types::BookingsRelated::BookingType
       field :trip, Types::TripsRelated::TripType
 
@@ -24,7 +27,7 @@ module Mutations
           errors: [message]
         }
       end
-
+      
       private
 
       def authorized?(**inputs)

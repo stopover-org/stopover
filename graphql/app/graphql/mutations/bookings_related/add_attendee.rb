@@ -3,6 +3,9 @@
 module Mutations
   module BookingsRelated
     class AddAttendee < BaseMutation
+      include Mutations::Authorizations::ManagerOrOwnerAuthorized
+      include Mutations::BookingsRelated::Authorizations::BookingAuthorized
+
       field :booking, Types::BookingsRelated::BookingType
 
       argument :booking_id, ID, loads: Types::BookingsRelated::BookingType
