@@ -5,6 +5,7 @@ module Mutations
     class ChangeAttendeeOptionAvailability < BaseMutation
       AUTHORIZATION_FIELD = 'attendee_option'
       include Mutations::Authorizations::ManagerAuthorized
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
       include Mutations::BookingsRelated::Authorizations::BookingAuthorized
 
       field :attendee_option, Types::BookingsRelated::AttendeeOptionType

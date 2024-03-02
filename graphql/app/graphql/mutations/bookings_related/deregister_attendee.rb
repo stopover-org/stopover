@@ -5,6 +5,7 @@ module Mutations
     class DeregisterAttendee < BaseMutation
       AUTHORIZATION_FIELD = 'attendee'
       include Mutations::Authorizations::ManagerAuthorized
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
       include Mutations::BookingsRelated::Authorizations::BookingAuthorized
       include Mutations::BookingsRelated::Authorizations::AttendeeAuthorized
 

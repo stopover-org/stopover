@@ -5,6 +5,7 @@ module Mutations
     class UpdateBooking < BaseMutation
       AUTHORIZATION_FIELD = 'booking'
       include Mutations::Authorizations::ManagerOrOwnerAuthorized
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
       include Mutations::BookingsRelated::Authorizations::BookingAuthorized
 
       argument :booking_id, ID, loads: Types::BookingsRelated::BookingType

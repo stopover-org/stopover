@@ -36,6 +36,7 @@ FactoryBot.define do
     primary_email { Faker::Internet.email }
     margin { 10 }
     address { build(:address) }
+    status { 'active' }
 
     transient do
       accounts { create_list(:account, 1) }

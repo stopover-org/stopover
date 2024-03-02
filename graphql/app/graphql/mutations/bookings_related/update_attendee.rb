@@ -6,6 +6,7 @@ module Mutations
       AUTHORIZATION_FIELD = 'attendee'
 
       include Mutations::Authorizations::ManagerOrOwnerAuthorized
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
       include Mutations::BookingsRelated::Authorizations::BookingAuthorized
       include Mutations::BookingsRelated::Authorizations::AttendeeAuthorized
 

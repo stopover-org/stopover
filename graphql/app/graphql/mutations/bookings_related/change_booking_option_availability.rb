@@ -5,6 +5,7 @@ module Mutations
     class ChangeBookingOptionAvailability < BaseMutation
       AUTHORIZATION_FIELD = 'booking_option'
       include Mutations::Authorizations::ManagerAuthorized
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
       include Mutations::BookingsRelated::Authorizations::BookingAuthorized
 
       field :booking_option, Types::BookingsRelated::BookingOptionType

@@ -3,6 +3,12 @@
 module Mutations
   module EventsRelated
     class SyncStripe < BaseMutation
+      AUTHORIZATION_FIELD = 'event'
+
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
+      include Mutations::EventsRelated::Authorizations::ActiveEventAuthorized
+      include Mutations::Authorizations::ManagerAuthorized
+
       field :event, Types::EventsRelated::EventType
 
       argument :event_id, ID, loads: Types::EventsRelated::EventType
@@ -33,9 +39,6 @@ module Mutations
       def authorized?(**inputs)
         event = inputs[:event]
 
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
-        return false, { errors: [I18n.t('graphql.errors.event_removed')] } if event.removed?
-        return false, { errors: [I18n.t('graphql.errors.event_not_verified')] } if event.draft?
         return false, { errors: [I18n.t('graphql.errors.stripe_payment_method_required')] } unless event.firm.payment_types.include?('stripe')
 
         super

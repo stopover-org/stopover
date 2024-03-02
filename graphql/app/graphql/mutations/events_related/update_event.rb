@@ -3,6 +3,12 @@
 module Mutations
   module EventsRelated
     class UpdateEvent < BaseMutation
+      AUTHORIZATION_FIELD = 'event'
+
+      include Mutations::FirmsRelated::Authorizations::FirmAuthorized
+      include Mutations::EventsRelated::Authorizations::EventAuthorized
+      include Mutations::Authorizations::ManagerAuthorized
+
       field :event, Types::EventsRelated::EventType
 
       argument :event_id, ID, loads: Types::EventsRelated::EventType
@@ -71,15 +77,6 @@ module Mutations
           event: nil,
           errors: [message]
         }
-      end
-
-      private
-
-      def authorized?(**inputs)
-        event = inputs[:event]
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless manager?(event)
-
-        super
       end
     end
   end

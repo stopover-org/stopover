@@ -5,6 +5,7 @@ module Mutations
     class CancelBooking < BaseMutation
       AUTHORIZATION_FIELD = 'booking'
       include Mutations::Authorizations::ManagerOrOwnerAuthorized
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
       include Mutations::BookingsRelated::Authorizations::BookingAuthorized
 
       field :booking, Types::BookingsRelated::BookingType

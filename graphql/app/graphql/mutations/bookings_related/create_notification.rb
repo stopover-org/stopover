@@ -5,6 +5,7 @@ module Mutations
     class CreateNotification < BaseMutation
       AUTHORIZATION_FIELD = 'booking'
       include Mutations::Authorizations::ManagerAuthorized
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
       include Mutations::BookingsRelated::Authorizations::BookingAuthorized
 
       argument :booking_id, ID, loads: Types::BookingsRelated::BookingType

@@ -5,6 +5,7 @@ module Mutations
     class BookEvent < BaseMutation
       AUTHORIZATION_FIELD = 'event'
       include Mutations::EventsRelated::Authorizations::ActiveEventAuthorized
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
       include Mutations::BookingsRelated::Authorizations::PotentialBookingAuthorized
 
       argument :event_id, ID, loads: Types::EventsRelated::EventType
