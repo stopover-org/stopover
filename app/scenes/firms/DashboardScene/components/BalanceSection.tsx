@@ -112,20 +112,20 @@ const BalanceSection = ({
           ))}
         </Grid>
 
-        {firm?.status === "active" &&
-          firm?.paymentTypes?.includes("stripe") &&
-          activeStripeConnects.length <= 0 && (
-            <>
-              <Grid xs={12}>
-                <Typography level="h4">
-                  {t("scenes.firms.dashboardScene.payoutSettings")}
-                </Typography>
-              </Grid>
+        {firm?.paymentTypes?.includes("stripe") && (
+          <>
+            <Grid xs={12}>
+              <Typography level="h4">
+                {t("scenes.firms.dashboardScene.payoutSettings")}
+              </Typography>
+            </Grid>
+            {activeStripeConnects.length === 0 && (
               <Grid xs={12} pb={2}>
                 <ConnectStripeForm />
               </Grid>
-            </>
-          )}
+            )}
+          </>
+        )}
 
         {firm?.paymentTypes?.includes("stripe") && (
           <>

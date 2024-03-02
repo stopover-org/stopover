@@ -2,7 +2,6 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
 import useMutationForm from "../../../lib/hooks/useMutationForm";
 import { useSelectCurrentFirm_AccountFragment$key } from "../../../artifacts/useSelectCurrentFirm_AccountFragment.graphql";
 
@@ -34,7 +33,6 @@ const validationSchema = Yup.object().shape({
 export function useSelectCurrentFirm(
   accountFragmentRef: useSelectCurrentFirm_AccountFragment$key
 ) {
-  const router = useRouter();
   return useMutationForm(
     graphql`
       mutation useSelectCurrentFirm_SetCurrentFirmMutation(
@@ -58,7 +56,7 @@ export function useSelectCurrentFirm(
       resolver: yupResolver(validationSchema),
       autosave: true,
       onCompleted() {
-        router.refresh();
+        window.location.reload();
       },
     }
   );

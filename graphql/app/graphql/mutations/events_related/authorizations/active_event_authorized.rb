@@ -5,10 +5,11 @@ module Mutations
     module Authorizations
       module ActiveEventAuthorized
         def authorized?(**inputs)
-          event = authorization_field(inputs)
+          record = authorization_field(inputs)
+          record = record.try(:event) unless record.is_a?(Event)
 
-          return false, { errors: [I18n.t('graphql.errors.event_not_verified')] } if event.draft?
-          return false, { errors: [I18n.t('graphql.errors.event_removed')] } if event.removed?
+          return false, { errors: [I18n.t('graphql.errors.event_not_verified')] } if record.draft?
+          return false, { errors: [I18n.t('graphql.errors.event_removed')] } if record.removed?
           super
         end
       end

@@ -12,7 +12,7 @@ module PayoutManagement
 
       transfer = Stripe::Transfer.create({
                                            amount: payout.total_amount.cents,
-                                           currency: 'usd',
+                                           currency: 'rsd',
                                            destination: stripe_connect.stripe_connect_id
                                          })
 

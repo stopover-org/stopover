@@ -3,6 +3,13 @@
 module Mutations
   module PaymentsRelated
     class CreateCheckout < BaseMutation
+      AUTHORIZATION_FIELD = 'booking'
+
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
+      include Mutations::EventsRelated::Authorizations::ActiveEventAuthorized
+      include Mutations::BookingsRelated::Authorizations::BookingAuthorized
+      include Mutations::Authorizations::OwnerAuthorized
+
       field :booking, Types::BookingsRelated::BookingType
       field :url, String
       field :payment, Types::PaymentsRelated::PaymentType
@@ -24,20 +31,6 @@ module Mutations
           payment: nil,
           errors: [message]
         }
-      end
-
-      private
-
-      def authorized?(**inputs)
-        booking = inputs[:booking]
-
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless owner?(booking)
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_user&.active?
-        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
-        return false, { errors: [I18n.t('graphql.errors.firm_removed')] } if booking.firm.removed?
-        return false, { errors: [I18n.t('graphql.errors.event_removed')] } if booking.event.removed?
-
-        super
       end
     end
   end
