@@ -110,6 +110,9 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                              name: 'createFirm'
                            },
                            {
+                             name: 'createNotification'
+                           },
+                           {
                              name: 'createPlacement'
                            },
                            {
