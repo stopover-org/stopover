@@ -3,6 +3,9 @@
 module Mutations
   module BookingsRelated
     class CreateNotification < BaseMutation
+      include Mutations::Authorizations::ManagerAuthorized
+      include Mutations::BookingsRelated::Authorizations::BookingAuthorized
+
       argument :booking_id, ID, loads: Types::BookingsRelated::BookingType
       argument :subject, String
       argument :content, String
@@ -34,16 +37,8 @@ module Mutations
         }
       end
 
-      private
-
-      def authorized?(**inputs)
-        booking = inputs[:booking]
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !current_user || current_user&.inactive?
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !owner?(booking) && !manager?(booking)
-
-        return false, { errors: [I18n.t('graphql.errors.booking_past')] } if booking.past?
-        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
-        super
+      def authorization_field(inputs)
+        inputs[:booking]
       end
     end
   end

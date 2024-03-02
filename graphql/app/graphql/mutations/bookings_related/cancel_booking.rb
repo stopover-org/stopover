@@ -27,17 +27,9 @@ module Mutations
           errors: [message]
         }
       end
-      
-      private
 
-      def authorized?(**inputs)
-        booking = inputs[:booking]
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !current_user || current_user&.inactive?
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !owner?(booking) && !manager?(booking)
-
-        return false, { errors: [I18n.t('graphql.errors.booking_past')] } if booking.past?
-        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
-        super
+      def authorization_field(inputs)
+        inputs[:booking]
       end
     end
   end

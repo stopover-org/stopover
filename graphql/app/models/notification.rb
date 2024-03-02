@@ -4,15 +4,23 @@
 #
 # Table name: notifications
 #
-#  id              :bigint           not null, primary key
-#  content         :string           not null
-#  delivery_method :string           not null
-#  from            :string
-#  sent_at         :datetime
-#  subject         :string
-#  to              :string           not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                :bigint           not null, primary key
+#  content           :string           not null
+#  delivery_method   :string           not null
+#  from              :string
+#  notification_type :string           default("system")
+#  sent_at           :datetime
+#  subject           :string
+#  to                :string           not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  booking_id        :bigint
+#  firm_id           :bigint
+#
+# Indexes
+#
+#  index_notifications_on_booking_id  (booking_id)
+#  index_notifications_on_firm_id     (firm_id)
 #
 class Notification < ApplicationRecord
   # MODULES ===============================================================

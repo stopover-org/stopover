@@ -5,6 +5,7 @@ module Mutations
     class AddAttendee < BaseMutation
       include Mutations::Authorizations::ManagerOrOwnerAuthorized
       include Mutations::BookingsRelated::Authorizations::BookingAuthorized
+      include Mutations::EventsRelated::Authorizations::PlacesAuthorized
 
       field :booking, Types::BookingsRelated::BookingType
 
@@ -27,17 +28,8 @@ module Mutations
         }
       end
 
-      def authorized?(**inputs)
-        booking = inputs[:booking]
-
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !owner?(booking) && !manager?(booking)
-        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
-        return false, { errors: [I18n.t('graphql.errors.booking_past')] } if booking.past?
-        return false, { errors: [I18n.t('graphql.errors.all_places_reserved')] } if booking.event.max_attendees && Attendee.where(booking_id: booking.id)
-                                                                                                                           .where.not(status: 'removed')
-                                                                                                                           .count >= booking.event.max_attendees
-
-        super
+      def authorization_field(inputs)
+        inputs[:booking]
       end
     end
   end
