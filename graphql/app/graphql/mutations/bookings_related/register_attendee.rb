@@ -3,6 +3,10 @@
 module Mutations
   module BookingsRelated
     class RegisterAttendee < BaseMutation
+      include Mutations::Authorizations::ManagerAuthorized
+      include Mutations::BookingsRelated::Authorizations::BookingAuthorized
+      include Mutations::BookingsRelated::Authorizations::AttendeeAuthorized
+
       field :attendee, Types::BookingsRelated::AttendeeType
 
       argument :attendee_id, ID, loads: Types::BookingsRelated::AttendeeType
@@ -22,17 +26,15 @@ module Mutations
         }
       end
 
-      private
+      def authorization_field(inputs)
+        inputs[:attendee]
+      end
 
       def authorized?(**inputs)
-        attendee = inputs[:attendee]
+        record = authorization_field(inputs)
 
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless manager?(attendee)
+        return false, { errors: [I18n.t('graphql.errors.general')] } if record.registered?
 
-        return false, { errors: [I18n.t('graphql.errors.attendee_removed')] } if attendee.removed?
-        return false, { errors: [I18n.t('graphql.errors.general')] } if attendee.registered?
-        return false, { errors: [I18n.t('graphql.errors.event_past')] } if attendee.booking.past?
-        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if attendee.booking.cancelled?
         super
       end
     end

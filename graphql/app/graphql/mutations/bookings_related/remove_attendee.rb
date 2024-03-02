@@ -3,6 +3,10 @@
 module Mutations
   module BookingsRelated
     class RemoveAttendee < BaseMutation
+      include Mutations::Authorizations::ManagerAuthorized
+      include Mutations::BookingsRelated::Authorizations::BookingAuthorized
+      include Mutations::BookingsRelated::Authorizations::AttendeeAuthorized
+
       field :attendee, Types::BookingsRelated::AttendeeType
       field :booking,  Types::BookingsRelated::BookingType
 
@@ -26,15 +30,15 @@ module Mutations
         }
       end
 
-      private
+      def authorization_field(inputs)
+        inputs[:attendee]
+      end
 
       def authorized?(**inputs)
-        attendee = inputs[:attendee]
+        record = authorization_field(inputs)
 
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !owner?(attendee) && !manager?(attendee)
-        return false, { errors: [I18n.t('graphql.errors.attendee_removed')] } if attendee.removed?
-        return false, { errors: [I18n.t('graphql.errors.event_past')] } if attendee.booking.past?
-        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if attendee.booking.cancelled?
+        return false, { errors: [I18n.t('graphql.errors.attendee_removed')] } if record.removed?
+
         super
       end
     end

@@ -4,7 +4,7 @@ module Mutations
   module BookingsRelated
     class ChangeAttendeeOptionAvailability < BaseMutation
       include Mutations::Authorizations::ManagerAuthorized
-      include Mutations::BookingsRelated::Authorizations::AttendeeOptionAuthorized
+      include Mutations::BookingsRelated::Authorizations::BookingAuthorized
 
       field :attendee_option, Types::BookingsRelated::AttendeeOptionType
 
