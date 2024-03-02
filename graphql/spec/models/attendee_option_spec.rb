@@ -46,16 +46,17 @@ RSpec.describe AttendeeOption, type: :model do
 
     context 'callback' do
       let(:event) { create(:recurring_event) }
-      let(:attendee) { create(:attendee, event: event) }
+      let(:booking) { create(:booking, event: event) }
+      let(:attendee) { create(:attendee, event: event, booking: booking) }
       let(:event_option) { create(:event_option, built_in: true, for_attendee: true, event: event, organizer_price: Money.new(1000)) }
       let(:attendee_option) do
         create(:attendee_option,
                attendee: attendee,
                event_option: event_option,
-               booking: nil,
-               firm: nil,
-               event: nil,
-               schedule: nil,
+               booking: attendee.booking,
+               firm: attendee.booking.firm,
+               event: attendee.booking.event,
+               schedule: attendee.booking.schedule,
                stripe_integration: nil)
       end
 

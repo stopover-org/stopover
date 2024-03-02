@@ -71,6 +71,9 @@ RSpec.describe Types::BookingsRelated::BookingType, type: :graphql_type do
                                                             name: 'leftToPayPrice'
                                                           },
                                                           {
+                                                            name: 'notifications'
+                                                          },
+                                                          {
                                                             name: 'organizerTotalPrice'
                                                           },
                                                           {
