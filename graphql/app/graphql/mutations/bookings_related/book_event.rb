@@ -3,6 +3,7 @@
 module Mutations
   module BookingsRelated
     class BookEvent < BaseMutation
+      AUTHORIZATION_FIELD = 'event'
       include Mutations::EventsRelated::Authorizations::ActiveEventAuthorized
       include Mutations::BookingsRelated::Authorizations::PotentialBookingAuthorized
 
@@ -39,10 +40,6 @@ module Mutations
           access_token: nil,
           errors: [message]
         }
-      end
-
-      def authorization_field(inputs)
-        inputs[:event]
       end
     end
   end

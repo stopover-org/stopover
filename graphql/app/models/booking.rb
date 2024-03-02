@@ -100,6 +100,7 @@ class Booking < ApplicationRecord
   #
   # VALIDATIONS ===========================================================
   validate :check_max_attendees
+  validate :validate_booking_options
 
   # CALLBACKS =============================================================
   before_validation :create_attendee
@@ -263,6 +264,10 @@ class Booking < ApplicationRecord
       content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/not_paid_successfully',
                                                       locals: { booking: self })
     )
+  end
+
+  def validate_booking_options
+    errors.add(:booking_options, 'wrong event options') if booking_options.filter { |opt| opt.event_option.for_attendee }.any?
   end
 
   def adjust_user

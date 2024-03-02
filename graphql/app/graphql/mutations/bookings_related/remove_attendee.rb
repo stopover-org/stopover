@@ -3,14 +3,16 @@
 module Mutations
   module BookingsRelated
     class RemoveAttendee < BaseMutation
+      AUTHORIZATION_FIELD = 'attendee'
       include Mutations::Authorizations::ManagerAuthorized
       include Mutations::BookingsRelated::Authorizations::BookingAuthorized
       include Mutations::BookingsRelated::Authorizations::AttendeeAuthorized
 
       field :attendee, Types::BookingsRelated::AttendeeType
-      field :booking,  Types::BookingsRelated::BookingType
+      field :booking, Types::BookingsRelated::BookingType
 
       argument :attendee_id, ID, loads: Types::BookingsRelated::AttendeeType
+
       def resolve(attendee:, **_args)
         Stopover::AttendeeManagement::RemoveAttendeeService.new(attendee, current_user).perform
 
@@ -28,10 +30,6 @@ module Mutations
           attendee: nil,
           booking: nil
         }
-      end
-
-      def authorization_field(inputs)
-        inputs[:attendee]
       end
 
       def authorized?(**inputs)

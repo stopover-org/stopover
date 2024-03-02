@@ -3,6 +3,7 @@
 module Mutations
   module BookingsRelated
     class RegisterAttendee < BaseMutation
+      AUTHORIZATION_FIELD = 'attendee'
       include Mutations::Authorizations::ManagerAuthorized
       include Mutations::BookingsRelated::Authorizations::BookingAuthorized
       include Mutations::BookingsRelated::Authorizations::AttendeeAuthorized
@@ -10,6 +11,7 @@ module Mutations
       field :attendee, Types::BookingsRelated::AttendeeType
 
       argument :attendee_id, ID, loads: Types::BookingsRelated::AttendeeType
+
       def resolve(attendee:, **_args)
         attendee.register!
         {
@@ -24,10 +26,6 @@ module Mutations
           errors: [message],
           attendee: nil
         }
-      end
-
-      def authorization_field(inputs)
-        inputs[:attendee]
       end
 
       def authorized?(**inputs)

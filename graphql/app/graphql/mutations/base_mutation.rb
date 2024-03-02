@@ -40,5 +40,9 @@ module Mutations
 
       false
     end
+
+    def authorization_field(inputs)
+      inputs[self.class::AUTHORIZATION_FIELD.to_sym]
+    end
   end
 end

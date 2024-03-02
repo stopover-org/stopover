@@ -52,12 +52,13 @@ class BookingOption < ApplicationRecord
 
   has_one :firm, through: :booking
 
-  # AASM STATES ================================================================d
-
+  # AASM STATES ================================================================
+  #
   # ENUMS =======================================================================
   #
   # VALIDATIONS ================================================================
-  validate :has_same_event
+  validate :validate_event
+  validate :validate_option_type
 
   # CALLBACKS ================================================================
   before_validation :adjust_prices
@@ -81,8 +82,12 @@ class BookingOption < ApplicationRecord
 
   private
 
-  def has_same_event
-    errors.add(:event_option, 'booking and event option belongs to different event') if event_option.event.id != booking.event.id
+  def validate_option_type
+    errors.add(:event_option, 'wrong type') if event_option.for_attendee
+  end
+
+  def validate_event
+    errors.add(:event_option, 'belongs to different event') if event_option&.event&.id != booking&.event&.id
   end
 
   def adjust_stripe_integration

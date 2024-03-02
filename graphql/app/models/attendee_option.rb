@@ -52,26 +52,27 @@ class AttendeeOption < ApplicationRecord
   belongs_to :stripe_integration
 
   # HAS_ONE ASSOCIATIONS ==================================================
-
+  #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
-
+  #
   # HAS_MANY ASSOCIATIONS =================================================
-
+  #
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
-
+  #
   # AASM STATES ===========================================================
-
+  #
   # ENUMS =================================================================
-
+  #
   # SECURE TOKEN ==========================================================
-
+  #
   # SECURE PASSWORD =======================================================
-
+  #
   # ATTACHMENTS ===========================================================
-
+  #
   # RICH_TEXT =============================================================
-
+  #
   # VALIDATIONS ===========================================================
+  validate :validate_event
   validate :validate_option_type
 
   # CALLBACKS =============================================================
@@ -82,9 +83,6 @@ class AttendeeOption < ApplicationRecord
   default_scope { in_order_of(:status, %w[available not_available]).order(created_at: :desc) }
 
   # DELEGATION ============================================================
-  def validate_option_type
-    errors.add(:attendee_option, 'event option is not for attendee') unless event_option&.for_attendee
-  end
 
   def adjust_prices
     self.attendee_price = event_option&.attendee_price
@@ -98,6 +96,14 @@ class AttendeeOption < ApplicationRecord
   end
 
   private
+
+  def validate_option_type
+    errors.add(:attendee_option, 'event option is not for attendee') unless event_option&.for_attendee
+  end
+
+  def validate_event
+    errors.add(:event_option, 'belongs to different event') if event_option&.event&.id != booking&.event&.id
+  end
 
   def adjust_event_option_info
     self.booking = attendee&.booking unless booking

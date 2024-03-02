@@ -3,6 +3,10 @@
 module Mutations
   module BookingsRelated
     class UpdateBooking < BaseMutation
+      AUTHORIZATION_FIELD = 'booking'
+      include Mutations::Authorizations::ManagerOrOwnerAuthorized
+      include Mutations::BookingsRelated::Authorizations::BookingAuthorized
+
       argument :booking_id, ID, loads: Types::BookingsRelated::BookingType
       argument :booked_for, Types::DateTimeType, required: false
       argument :event_option_ids, [ID],
@@ -10,6 +14,7 @@ module Mutations
                required: false
 
       field :booking, Types::BookingsRelated::BookingType
+
       def resolve(booking:, **args)
         Stopover::BookingManagement::BookingUpdater.new(booking, current_user).perform(**args)
 
@@ -25,19 +30,6 @@ module Mutations
           booking: nil,
           errors: [message]
         }
-      end
-
-      def authorized?(**inputs)
-        booking = inputs[:booking]
-
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !owner?(booking) && !manager?(booking)
-        return false, { errors: [I18n.t('graphql.errors.booking_paid')] } if owner?(booking) && booking.payments.successful.any?
-        return false, { errors: [I18n.t('graphql.errors.general')] } if booking.past?
-        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
-        return false, { errors: [I18n.t('graphql.errors.event_past')] } if inputs[:booked_for]&.past?
-        return false, { errors: [I18n.t('graphql.errors.general')] } if inputs[:event_options]&.select { |opt| opt.for_attendee }&.any?
-
-        super
       end
     end
   end

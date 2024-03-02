@@ -6,6 +6,8 @@ module Mutations
       module AttendeeAuthorized
         def authorized?(**inputs)
           record = authorization_field(inputs)
+          record = inputs[:attendee] unless record.is_a?(Attendee)
+
           return false, { errors: [I18n.t('graphql.errors.attendee_removed')] } if record.removed?
           super
         end

@@ -3,6 +3,7 @@
 module Mutations
   module BookingsRelated
     class CreateNotification < BaseMutation
+      AUTHORIZATION_FIELD = 'booking'
       include Mutations::Authorizations::ManagerAuthorized
       include Mutations::BookingsRelated::Authorizations::BookingAuthorized
 
@@ -35,10 +36,6 @@ module Mutations
           booking: nil,
           errors: [message]
         }
-      end
-
-      def authorization_field(inputs)
-        inputs[:booking]
       end
     end
   end

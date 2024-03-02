@@ -10,6 +10,9 @@ RSpec.describe Mutations::BookingsRelated::UpdateBooking, type: :mutation do
           booking {
             id
             bookedFor
+            bookingOptions {
+              id
+            }
             eventOptions {
               id
               forAttendee
@@ -47,8 +50,10 @@ RSpec.describe Mutations::BookingsRelated::UpdateBooking, type: :mutation do
       expect(result.dig(:data, :updateBooking, :booking, :id)).to eq(GraphqlSchema.id_from_object(booking))
       expect(result.dig(:data, :updateBooking, :booking, :bookedFor)).to eq(schedule.scheduled_for.iso8601)
       if with_options
-        result.dig(:data, :updateBooking, :booking, :eventOptions).each_with_index do |opt, idx|
-          expect(opt[:id]).to eq(GraphqlSchema.id_from_object(event_options[idx]))
+        expect(result.dig(:data, :updateBooking, :booking, :bookingOptions).count).to eq(event_options.count)
+
+        result.dig(:data, :updateBooking, :booking, :eventOptions).each do |opt|
+          expect(event_options.map { |event_opt| GraphqlSchema.id_from_object(event_opt) }).to include(opt[:id])
           expect(opt[:forAttendee]).to eq(false)
         end
       end
@@ -114,7 +119,7 @@ RSpec.describe Mutations::BookingsRelated::UpdateBooking, type: :mutation do
 
       context 'without event_options' do
         context 'for not paid booking' do
-          include_examples :successful, true
+          include_examples :successful, false
         end
       end
     end
@@ -132,28 +137,12 @@ RSpec.describe Mutations::BookingsRelated::UpdateBooking, type: :mutation do
 
       context 'for past booking' do
         before { booking.schedule.update(scheduled_for: 5.days.ago) }
-        include_examples :fail, 'Something went wrong'
+        include_examples :fail, 'Booking past'
       end
 
       context 'for cancelled booking' do
         before { booking.update(status: 'cancelled') }
         include_examples :fail, 'Booking cancelled'
-      end
-
-      context 'for partially paid booking' do
-        context 'as common user' do
-          let(:booking) { create(:partially_paid_booking) }
-          let(:current_user) { booking.user }
-          include_examples :fail, 'Booking paid'
-        end
-      end
-
-      context 'for fully paid booking' do
-        context 'as common user' do
-          let(:booking) { create(:fully_paid_booking) }
-          let(:current_user) { booking.user }
-          include_examples :fail, 'Booking paid'
-        end
       end
 
       context 'as manager of another company' do

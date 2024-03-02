@@ -14,6 +14,9 @@ RSpec.describe Mutations::BookingsRelated::UpdateAttendee, type: :mutation do
             lastName
             email
             phone
+            attendeeOptions {
+              id
+            }
             eventOptions {
               id
               forAttendee
@@ -56,9 +59,12 @@ RSpec.describe Mutations::BookingsRelated::UpdateAttendee, type: :mutation do
       expect(result.dig(:data, :updateAttendee, :attendee, :email)).to eq('some@mail.com')
       expect(result.dig(:data, :updateAttendee, :attendee, :phone)).to eq('+8 88888 88 88')
       if with_options
-        result.dig(:data, :updateAttendee, :attendee, :eventOptions).each_with_index do |opt, idx|
-          expect(opt[:id]).to eq(GraphqlSchema.id_from_object(event_options[idx]))
-          expect(opt[:forAttendee]).to eq(true)
+        expect(result.dig(:data, :updateAttendee, :attendee, :attendeeOptions).count).to eq(event_options.count)
+
+        expect(result.dig(:data, :updateAttendee, :attendee, :eventOptions).count).to eq(event_options.count)
+
+        result.dig(:data, :updateAttendee, :attendee, :eventOptions).each do |opt|
+          expect(event_options.to_a.map { |event_opt| GraphqlSchema.id_from_object(event_opt) }).to include(opt[:id])
         end
       end
       expect(result.dig(:data, :updateAttendee, :notification)).to eq('Attendee updated')
@@ -146,7 +152,7 @@ RSpec.describe Mutations::BookingsRelated::UpdateAttendee, type: :mutation do
 
       context 'for past booking' do
         before { attendee.booking.schedule.update(scheduled_for: 5.days.ago) }
-        include_examples :fail, 'Event past'
+        include_examples :fail, 'Booking past'
       end
 
       context 'for cancelled booking' do

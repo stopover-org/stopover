@@ -3,6 +3,7 @@
 module Mutations
   module BookingsRelated
     class CancelBooking < BaseMutation
+      AUTHORIZATION_FIELD = 'booking'
       include Mutations::Authorizations::ManagerOrOwnerAuthorized
       include Mutations::BookingsRelated::Authorizations::BookingAuthorized
 
@@ -26,10 +27,6 @@ module Mutations
           trip: booking.trip,
           errors: [message]
         }
-      end
-
-      def authorization_field(inputs)
-        inputs[:booking]
       end
     end
   end

@@ -43,7 +43,8 @@ class Attendee < ApplicationRecord
   belongs_to :event_placement, optional: true
 
   # HAS_ONE ASSOCIATIONS ==================================================
-  #
+  has_one :account, through: :booking
+
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
   #
   # HAS_MANY ASSOCIATIONS =================================================
@@ -88,7 +89,8 @@ class Attendee < ApplicationRecord
   default_scope { in_order_of(:status, %w[registered not_registered removed]).order(created_at: :desc) }
 
   # VALIDATIONS ===========================================================
-  #
+  validate :validate_attendee_options
+
   # CALLBACKS =============================================================
   before_validation :adjust_booking_info
   before_create :create_attendee_options
@@ -107,6 +109,10 @@ class Attendee < ApplicationRecord
       content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/registered_attendee',
                                                       locals: { attendee: self })
     )
+  end
+
+  def validate_attendee_options
+    errors.add(:booking_options, 'wrong event options') if attendee_options.filter { |opt| !opt.event_option.for_attendee }.any?
   end
 
   def adjust_booking_info

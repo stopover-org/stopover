@@ -38,6 +38,8 @@ RSpec.describe Attendee, type: :model do
       should belong_to(:schedule)
       should belong_to(:event_placement).optional(true)
 
+      should have_one(:account).through(:booking)
+
       should have_many(:attendee_options).dependent(:destroy)
 
       should have_many(:event_options).conditions(for_attendee: true)

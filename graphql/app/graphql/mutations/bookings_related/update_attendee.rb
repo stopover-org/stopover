@@ -3,6 +3,12 @@
 module Mutations
   module BookingsRelated
     class UpdateAttendee < BaseMutation
+      AUTHORIZATION_FIELD = 'attendee'
+
+      include Mutations::Authorizations::ManagerOrOwnerAuthorized
+      include Mutations::BookingsRelated::Authorizations::BookingAuthorized
+      include Mutations::BookingsRelated::Authorizations::AttendeeAuthorized
+
       field :attendee, Types::BookingsRelated::AttendeeType
 
       argument :attendee_id, ID, loads: Types::BookingsRelated::AttendeeType
@@ -16,9 +22,12 @@ module Mutations
 
       def resolve(attendee:, **args)
         if args[:event_options].is_a? Array
-          attendee.attendee_options.destroy_all
+          attendee.attendee_options.each do |option|
+            option.destroy! unless args[:event_options].include?(option.event_option)
+          end
+
           args[:event_options].each do |option|
-            option.attendee_options.create!(attendee: attendee, event_option: option)
+            option.attendee_options.create!(attendee: attendee, event_option: option) unless attendee.attendee_options.map(&:event_option).include?(option)
           end
         end
 
@@ -27,7 +36,7 @@ module Mutations
         attendee.booking.payments.processing.destroy_all
 
         {
-          attendee: attendee,
+          attendee: attendee.reload,
           notification: I18n.t('graphql.mutations.update_attendee.notifications.success')
         }
       rescue StandardError => e
@@ -38,19 +47,6 @@ module Mutations
           errors: [message],
           attendee: nil
         }
-      end
-
-      def authorized?(**inputs)
-        attendee = inputs[:attendee]
-        booking = attendee.booking
-
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !owner?(booking) && !manager?(booking)
-        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
-        return false, { errors: [I18n.t('graphql.errors.event_past')] } if booking.past?
-        return false, { errors: [I18n.t('graphql.errors.attendee_removed')] } if attendee.removed?
-        return false, { errors: [I18n.t('graphql.errors.general')] } if inputs[:event_options]&.reject { |opt| opt.for_attendee }&.any?
-
-        super
       end
     end
   end
