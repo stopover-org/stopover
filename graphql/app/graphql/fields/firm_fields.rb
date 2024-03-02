@@ -80,13 +80,7 @@ module Fields
       args[:id]
     end
 
-    def title
-      if current_firm == object
-        object.title
-      else
-        object.translate(:title)
-      end
-    end
+    delegate :title, to: :object
 
     def description
       if current_firm == object

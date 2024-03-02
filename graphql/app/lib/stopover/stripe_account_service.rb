@@ -26,15 +26,25 @@ module Stopover
       raise StandardError('Account has\'t firm') unless user.account.current_firm
       firm = user.account.current_firm
       country_code = ISO3166::Country.find_country_by_iso_short_name(firm.address.country)&.alpha2 || 'DE'
-      account = Stripe::Account.create({
-                                         type: 'express',
-                                         country: country_code,
-                                         email: firm.primary_email,
-                                         capabilities: {
-                                           card_payments: { requested: true },
-                                           transfers: { requested: true }
-                                         }
-                                       })
+      account = if country_code == 'RS'
+                  Stripe::Account.create({
+                                           type: 'custom',
+                                                     country: country_code,
+                                                     email: firm.primary_email,
+                                                     capabilities: { transfers: { requested: true } },
+                                                     tos_acceptance: { service_agreement: 'recipient' }
+                                         })
+                else
+                  Stripe::Account.create({
+                                           type: 'custom',
+                                                     country: country_code,
+                                                     email: firm.primary_email,
+                                                     capabilities: {
+                                                       card_payments: { requested: true },
+                                                       transfers: { requested: true }
+                                                     }
+                                         })
+                end
 
       # Prefil company details before sending url to the customer
       if user.account.current_firm.individual?

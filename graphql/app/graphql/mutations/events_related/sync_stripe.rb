@@ -30,7 +30,7 @@ module Mutations
 
         {
           event: nil,
-          errors: [e.message]
+          errors: [message]
         }
       end
 

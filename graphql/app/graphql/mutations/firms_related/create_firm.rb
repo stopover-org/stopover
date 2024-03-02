@@ -3,6 +3,8 @@
 module Mutations
   module FirmsRelated
     class CreateFirm < BaseMutation
+      include Mutations::Authorizations::ActiveUserAuthorized
+
       field :firm, Types::FirmsRelated::FirmType
 
       argument :primary_email, String, required: false
@@ -32,9 +34,6 @@ module Mutations
       end
 
       def authorized?(**inputs)
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_user
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if current_user&.temporary?
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if current_user&.inactive?
         return false, { errors: [I18n.t('graphql.errors.general')] } if current_firm && !current_user.service_user
 
         super

@@ -3,6 +3,11 @@
 module Mutations
   module FirmsRelated
     class InviteUser < BaseMutation
+      AUTHORIZATION_FIELD = 'current_firm'
+
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
+      include Mutations::Authorizations::ManagerAuthorized
+
       field :account, Types::UsersRelated::AccountType
 
       argument :email, String, required: true
