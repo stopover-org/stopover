@@ -98,7 +98,7 @@ module Stopover
                    else
                      [
                        {
-                         price_data: { currency: 'usd',
+                         price_data: { currency: 'rsd',
                                        product_data: { name: @booking.event.title },
                                        unit_amount: @booking.left_to_pay_price.cents },
                          quantity: 1
@@ -125,7 +125,7 @@ module Stopover
     def generate_session_deposit
       line_items = [
         {
-          price_data: { currency: 'usd',
+          price_data: { currency: 'rsd',
                         product_data: { name: @booking.event.title },
                         unit_amount: @booking.left_to_pay_deposit_price.cents },
           quantity: 1

@@ -17,23 +17,23 @@ RSpec.describe EventsQuery, type: :query do
       # this event will be out of scope by default
       # because it's in the past
       create(:published_event,
-             organizer_price_per_uom: Money.new(13, :usd),
+             organizer_price_per_uom: Money.new(13, :rsd),
              single_days_with_time: [past_date],
              schedules: [build(:schedule, scheduled_for: past_date)])
       create(:published_event,
-             organizer_price_per_uom: Money.new(130, :usd),
+             organizer_price_per_uom: Money.new(130, :rsd),
              single_days_with_time: [future_2_day],
              schedules: [build(:schedule, scheduled_for: future_2_day)])
       create(:published_event,
-             organizer_price_per_uom: Money.new(1300, :usd),
+             organizer_price_per_uom: Money.new(1300, :rsd),
              single_days_with_time: [future_4_day],
              schedules: [build(:schedule, scheduled_for: future_4_day)])
       create(:published_event,
-             organizer_price_per_uom: Money.new(13_000, :usd),
+             organizer_price_per_uom: Money.new(13_000, :rsd),
              single_days_with_time: [future_6_day],
              schedules: [build(:schedule, scheduled_for: future_6_day)])
       create(:published_event,
-             organizer_price_per_uom: Money.new(130_000, :usd),
+             organizer_price_per_uom: Money.new(130_000, :rsd),
              single_days_with_time: [future_8_day],
              schedules: [build(:schedule, scheduled_for: future_8_day)])
     end

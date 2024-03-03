@@ -6,7 +6,7 @@ export const getCurrencyFormat = (
   if (!value) {
     value = 0;
   }
-  if (!currency) currency = "usd";
+  if (!currency) currency = "rsd";
   const language = "de-DE";
 
   if (cents) {

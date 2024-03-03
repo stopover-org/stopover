@@ -61,7 +61,7 @@ const CancellationsSection = ({
             <Typography>
               {t("models.bookingCancellationOption.terms.withoutPenalty", {
                 deadline: event.bookingCancellationOptions[0]?.deadline,
-                penalty: getCurrencyFormat(0, "usd"),
+                penalty: getCurrencyFormat(0, "rsd"),
               })}
             </Typography>
           </Grid>
