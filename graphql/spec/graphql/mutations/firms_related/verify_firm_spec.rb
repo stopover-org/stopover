@@ -17,7 +17,7 @@ RSpec.describe Mutations::FirmsRelated::VerifyFirm, type: :mutation do
       }
     "
   end
-  let(:current_firm) { create(:firm) }
+  let(:current_firm) { create(:firm, status: 'pending') }
   let(:current_user) { create(:service_user, with_account: true) }
   let!(:firm_account) { current_user&.account&.account_firms&.create(firm: current_firm) }
 

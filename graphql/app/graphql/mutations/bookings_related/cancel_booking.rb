@@ -3,6 +3,11 @@
 module Mutations
   module BookingsRelated
     class CancelBooking < BaseMutation
+      AUTHORIZATION_FIELD = 'booking'
+      include Mutations::Authorizations::ManagerOrOwnerAuthorized
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
+      include Mutations::BookingsRelated::Authorizations::BookingAuthorized
+
       field :booking, Types::BookingsRelated::BookingType
       field :trip, Types::TripsRelated::TripType
 
@@ -23,18 +28,6 @@ module Mutations
           trip: booking.trip,
           errors: [message]
         }
-      end
-
-      private
-
-      def authorized?(**inputs)
-        booking = inputs[:booking]
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !current_user || current_user&.inactive?
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if !owner?(booking) && !manager?(booking)
-
-        return false, { errors: [I18n.t('graphql.errors.booking_past')] } if booking.past?
-        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if booking.cancelled?
-        super
       end
     end
   end

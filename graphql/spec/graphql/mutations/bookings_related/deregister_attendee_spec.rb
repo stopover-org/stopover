@@ -71,7 +71,7 @@ RSpec.describe Mutations::BookingsRelated::DeregisterAttendee, type: :mutation d
 
       context 'for past booking' do
         before { attendee.booking.schedule.update(scheduled_for: 5.days.ago) }
-        include_examples :fail, 'Event past'
+        include_examples :fail, 'Booking past'
       end
 
       context 'for cancelled booking' do

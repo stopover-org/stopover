@@ -30,7 +30,11 @@ module Mutations
     end
 
     def manager?(record)
-      return record.firm == current_firm if record.respond_to?(:firm)
+      if record.is_a?(Firm)
+        return record == current_firm
+      elsif record.respond_to?(:firm)
+        return record.firm == current_firm
+      end
 
       false
     end
@@ -39,6 +43,14 @@ module Mutations
       return record.account == current_account if record.respond_to?(:account)
 
       false
+    end
+
+    def authorization_field(inputs)
+      if self.class.instance_methods.include?(self.class::AUTHORIZATION_FIELD.to_sym)
+        send(self.class::AUTHORIZATION_FIELD.to_sym)
+      elsif self.class.const_defined? :AUTHORIZATION_FIELD
+        inputs[self.class::AUTHORIZATION_FIELD.to_sym]
+      end
     end
   end
 end

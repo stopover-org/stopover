@@ -25,6 +25,7 @@ module Types
       field :cancellation_terms, String, null: false
       field :contact_email, String
       field :contact_phone, String
+      field :notifications, [Types::UsersRelated::NotificationType]
 
       field :attendees, [Types::BookingsRelated::AttendeeType], null: false do
         argument :filters, Types::Filters::AttendeesFilter, required: false

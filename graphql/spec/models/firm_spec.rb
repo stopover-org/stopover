@@ -55,6 +55,7 @@ RSpec.describe Firm, type: :model do
       should have_many(:event_placements).dependent(:destroy)
       should have_many(:tour_plans).dependent(:destroy)
       should have_many(:tour_places).dependent(:destroy)
+      should have_many(:notifications).dependent(:destroy)
 
       should have_many(:accounts).through(:account_firms)
       should have_many(:bookings).through(:events)

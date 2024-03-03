@@ -3,6 +3,11 @@
 module Mutations
   module EventsRelated
     class CreateEvent < BaseMutation
+      AUTHORIZATION_FIELD = 'current_firm'
+
+      include Mutations::Authorizations::ManagerAuthorized
+      include Mutations::FirmsRelated::Authorizations::FirmAuthorized
+
       field :event, Types::EventsRelated::EventType
 
       argument :interest_ids, [ID],

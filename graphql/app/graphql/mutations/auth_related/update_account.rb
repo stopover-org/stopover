@@ -7,10 +7,10 @@ module Mutations
 
       argument :primary_email, String
       argument :primary_phone, String
-      argument :name,          String
-      argument :country,       String
-      argument :city,          String
-      argument :region,        String
+      argument :name, String
+      argument :country, String
+      argument :city, String
+      argument :region, String
       argument :date_of_birth, Types::DateTimeType, required: false
 
       def resolve(**args)
@@ -26,6 +26,12 @@ module Mutations
           account: nil,
           errors: [message]
         }
+      end
+
+      def authorized?(**inputs)
+        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_account
+
+        super
       end
     end
   end

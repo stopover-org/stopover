@@ -3,6 +3,12 @@
 module Mutations
   module EventsRelated
     class ChangeEventOptionAvailability < BaseMutation
+      AUTHORIZATION_FIELD = 'event_option'
+
+      include Mutations::Authorizations::ManagerAuthorized
+      include Mutations::FirmsRelated::Authorizations::FirmAuthorized
+      include Mutations::EventsRelated::Authorizations::EventAuthorized
+
       field :event_option, Types::EventsRelated::EventOptionType
 
       argument :event_option_id, ID, loads: Types::EventsRelated::EventOptionType
@@ -30,17 +36,6 @@ module Mutations
           event_option: nil,
           errors: [message]
         }
-      end
-
-      private
-
-      def authorized?(**inputs)
-        event = inputs[:event_option].event
-
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless manager?(event)
-        return false, { errors: [I18n.t('graphql.errors.event_removed')] } if event.removed?
-
-        super
       end
     end
   end

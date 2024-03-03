@@ -3,6 +3,12 @@
 module Mutations
   module FirmsRelated
     class VerifyStripeConnect < BaseMutation
+      AUTHORIZATION_FIELD = 'current_firm'
+
+      include Mutations::FirmsRelated::Authorizations::FirmAuthorized
+      include Mutations::Authorizations::ServiceUserAuthorized
+      include Mutations::Authorizations::ManagerAuthorized
+
       field :stripe_connect, Types::FirmsRelated::StripeConnectType
 
       argument :stripe_connect_id, ID, loads: Types::FirmsRelated::StripeConnectType
@@ -20,15 +26,6 @@ module Mutations
           stripe_connect: nil,
           errors: [message]
         }
-      end
-
-      def authorized?(**_inputs)
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_user&.active?
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_user&.service_user
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
-        return false, { errors: [I18n.t('graphql.errors.general')] } if current_firm.stripe_connects.active.any?
-
-        super
       end
     end
   end

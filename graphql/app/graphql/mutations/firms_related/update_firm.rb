@@ -3,6 +3,11 @@
 module Mutations
   module FirmsRelated
     class UpdateFirm < BaseMutation
+      AUTHORIZATION_FIELD = 'current_firm'
+
+      include Mutations::FirmsRelated::Authorizations::FirmAuthorized
+      include Mutations::Authorizations::ManagerAuthorized
+
       field :firm, Types::FirmsRelated::FirmType
 
       argument :city, String, required: false
@@ -68,14 +73,6 @@ module Mutations
         message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         { errors: [message], firm: nil }
-      end
-
-      def authorized?(**inputs)
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_user
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if current_user&.temporary?
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } if current_user&.inactive?
-        return false, { errors: [I18n.t('graphql.errors.general')] } unless current_firm
-        super
       end
     end
   end

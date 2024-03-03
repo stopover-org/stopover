@@ -15,9 +15,12 @@ module Stopover
         end
 
         if args[:event_options].is_a? Array
-          @booking.booking_options.destroy_all
+          @booking.booking_options.each do |option|
+            option.destroy unless args[:event_options].include?(option.event_option)
+          end
+
           args[:event_options].each do |option|
-            @booking.booking_options.create!(booking: @booking, event_option: option)
+            option.booking_options.create!(booking: @booking, event_option: option) unless @booking.booking_options.map(&:event_option).include?(option)
           end
         end
 

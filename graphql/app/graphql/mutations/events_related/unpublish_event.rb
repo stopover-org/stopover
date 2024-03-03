@@ -3,6 +3,12 @@
 module Mutations
   module EventsRelated
     class UnpublishEvent < BaseMutation
+      AUTHORIZATION_FIELD = 'event'
+
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
+      include Mutations::EventsRelated::Authorizations::ActiveEventAuthorized
+      include Mutations::Authorizations::ManagerAuthorized
+
       field :event, Types::EventsRelated::EventType
 
       argument :event_id, ID, loads: Types::EventsRelated::EventType
@@ -11,7 +17,7 @@ module Mutations
         publisher = Stopover::EventManagement::EventPublisher.new(event, context[:current_user])
 
         {
-          event:        publisher.unpublish,
+          event: publisher.unpublish,
           notification: I18n.t('graphql.mutations.unpublish_event.notifications.success')
         }
       rescue StandardError => e
@@ -19,22 +25,9 @@ module Mutations
         message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
-          event:  nil,
+          event: nil,
           errors: [message]
         }
-      end
-
-      private
-
-      def authorized?(**inputs)
-        event = inputs[:event]
-
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
-        return false, { errors: [I18n.t('graphql.errors.event_removed')] } if event.removed?
-        return false, { errors: [I18n.t('graphql.errors.event_not_verified')] } if event.draft?
-        return false, { errors: [I18n.t('graphql.errors.general')] } if event.unpublished?
-
-        super
       end
     end
   end

@@ -3,6 +3,12 @@
 module Mutations
   module EventsRelated
     class CreatePlacement < BaseMutation
+      AUTHORIZATION_FIELD = 'event'
+
+      include Mutations::Authorizations::ManagerAuthorized
+      include Mutations::FirmsRelated::Authorizations::FirmAuthorized
+      include Mutations::EventsRelated::Authorizations::EventAuthorized
+
       field :event_placement, Types::EventsRelated::EventPlacementType
 
       argument :event_id, ID, loads: Types::EventsRelated::EventType

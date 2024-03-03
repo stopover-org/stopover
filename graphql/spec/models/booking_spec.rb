@@ -31,6 +31,40 @@
 require 'rails_helper'
 
 RSpec.describe Booking, type: :model do
+  describe 'model setup' do
+    subject { create(:booking, event: create(:recurring_event, max_attendees: 100)) }
+    it 'constants' do
+      expect(Booking::GRAPHQL_TYPE).to eq(Types::BookingsRelated::BookingType)
+    end
+
+    it 'relations' do
+      should belong_to(:event)
+      should belong_to(:trip)
+      should belong_to(:schedule)
+      should belong_to(:stripe_integration)
+
+      should have_one(:firm).through(:event)
+      should have_one(:account).through(:trip)
+      should have_one(:user).through(:account)
+
+      should have_many(:booking_options).dependent(:destroy)
+      should have_many(:attendees).dependent(:destroy)
+      should have_many(:payments).dependent(:nullify)
+      should have_many(:refunds).dependent(:nullify)
+      should have_many(:attendee_options).dependent(:destroy)
+      should have_many(:notifications).dependent(:destroy)
+
+      should have_many(:booking_cancellation_options).through(:event)
+      should have_many(:event_options).through(:event)
+    end
+
+    it 'enums' do
+      should define_enum_for(:payment_type).with_values(cash: 'cash',
+                                                        stripe: 'stripe')
+                                           .backed_by_column_of_type(:string)
+    end
+  end
+
   describe 'booking' do
     let!(:event) { create(:recurring_event, event_options: [create(:built_in_attendee_option), create(:built_in_event_option)]) }
     let!(:booking) { create(:booking, event: event) }

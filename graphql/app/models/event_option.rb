@@ -40,7 +40,8 @@ class EventOption < ApplicationRecord
   # HAS_ONE ASSOCIATIONS ==================================================
   #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
-  #
+  has_one :firm, through: :event
+
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :booking_options, dependent: :nullify
   has_many :attendee_options, dependent: :nullify

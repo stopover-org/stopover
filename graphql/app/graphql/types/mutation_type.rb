@@ -36,6 +36,8 @@ module Types
     field :update_booking, mutation: Mutations::BookingsRelated::UpdateBooking
     field :cancel_booking, mutation: Mutations::BookingsRelated::CancelBooking
 
+    field :create_notification, mutation: Mutations::BookingsRelated::CreateNotification
+
     field :update_attendee, mutation: Mutations::BookingsRelated::UpdateAttendee
     field :register_attendee, mutation: Mutations::BookingsRelated::RegisterAttendee
     field :remove_attendee, mutation: Mutations::BookingsRelated::RemoveAttendee

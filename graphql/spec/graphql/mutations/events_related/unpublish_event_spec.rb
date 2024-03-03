@@ -28,7 +28,7 @@ RSpec.describe Mutations::EventsRelated::UnpublishEvent, type: :mutation do
   subject do
     GraphqlSchema.execute(mutation, variables: {
                             input: input
-                          }, context:                                { current_user: current_user })
+                          }, context: { current_user: current_user })
   end
 
   shared_examples :successful do
@@ -74,7 +74,7 @@ RSpec.describe Mutations::EventsRelated::UnpublishEvent, type: :mutation do
     end
 
     context 'permissions' do
-      context 'for removed fir' do
+      context 'for removed firm' do
         before { event.firm.update(status: 'removed') }
         include_examples :fail, 'You are not authorized'
       end

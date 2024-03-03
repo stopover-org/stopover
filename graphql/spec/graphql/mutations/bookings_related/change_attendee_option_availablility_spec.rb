@@ -18,7 +18,9 @@ RSpec.describe Mutations::BookingsRelated::ChangeAttendeeOptionAvailability, typ
       }
     "
   end
-  let!(:attendee_option) { create(:attendee_option) }
+  let(:event) { create(:recurring_event) }
+  let(:booking) { create(:booking, event: event) }
+  let!(:attendee_option) { create(:attendee_option, event_option: create(:for_attendee_event_option, event: event), event: event, booking: booking) }
   let(:current_user) { attendee_option.firm.accounts.last.user }
 
   let(:input) do
@@ -101,7 +103,7 @@ RSpec.describe Mutations::BookingsRelated::ChangeAttendeeOptionAvailability, typ
     context 'permissions' do
       context 'for past booking' do
         before { attendee_option.schedule.update(scheduled_for: 5.days.ago) }
-        include_examples :fail, 'Event past'
+        include_examples :fail, 'Booking past'
       end
 
       context 'for cancelled booking' do

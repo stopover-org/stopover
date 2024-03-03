@@ -39,6 +39,8 @@ RSpec.describe EventOption, type: :model do
       should have_many(:attendees).through(:attendee_options)
       should have_many(:bookings).through(:booking_options)
 
+      should have_one(:firm).through(:event)
+
       should belong_to(:event)
     end
 
@@ -51,8 +53,8 @@ RSpec.describe EventOption, type: :model do
     end
 
     it 'monetize' do
-      expect(EventOption.monetized_attributes).to eq({  'attendee_price' => 'attendee_price_cents',
-                                                        'organizer_price' => 'organizer_price_cents' })
+      expect(EventOption.monetized_attributes).to eq({ 'attendee_price' => 'attendee_price_cents',
+                                                       'organizer_price' => 'organizer_price_cents' })
     end
 
     it 'callbacks' do

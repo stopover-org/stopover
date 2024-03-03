@@ -38,6 +38,10 @@ RSpec.describe Mutations::FirmsRelated::InviteUser, type: :mutation do
       expect { subject }.to change { Notification.where(to: input[:email]).count }.by(1)
     end
 
+    it 'user was connected to firm' do
+      expect { subject }.to change { firm.accounts.count }.by(1)
+    end
+
     it 'successfully' do
       firm
       result = nil

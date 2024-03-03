@@ -3,6 +3,12 @@
 module Mutations
   module EventsRelated
     class PublishEvent < BaseMutation
+      AUTHORIZATION_FIELD = 'event'
+
+      include Mutations::Authorizations::ManagerAuthorized
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
+      include Mutations::EventsRelated::Authorizations::ActiveEventAuthorized
+
       field :event, Types::EventsRelated::EventType
 
       argument :event_id, ID, loads: Types::EventsRelated::EventType
@@ -24,16 +30,10 @@ module Mutations
         }
       end
 
-      private
-
       def authorized?(**inputs)
-        event = inputs[:event]
+        event = authorization_field(inputs)
 
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
-        return false, { errors: [I18n.t('graphql.errors.firm_not_verified')] } if current_firm.pending?
-        return false, { errors: [I18n.t('graphql.errors.event_not_verified')] } if event.draft?
         return false, { errors: [I18n.t('graphql.errors.event_published')] } if event.published?
-        return false, { errors: [I18n.t('graphql.errors.event_removed')] } if event.removed?
 
         super
       end

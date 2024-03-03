@@ -138,7 +138,7 @@ RSpec.describe Mutations::PaymentsRelated::CreateCheckout, type: :mutation do
 
       context 'for removed firm' do
         before { booking.firm.update(status: 'removed') }
-        include_examples :fail, 'Firm removed'
+        include_examples :fail, 'Firm was not verified'
       end
 
       context 'as common user' do

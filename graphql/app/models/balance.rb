@@ -34,29 +34,29 @@ class Balance < ApplicationRecord
 
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :payments, dependent: :nullify
-  has_many :payouts,  dependent: :nullify
-  has_many :refunds,  dependent: :nullify
+  has_many :payouts, dependent: :nullify
+  has_many :refunds, dependent: :nullify
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
-
+  #
   # AASM STATES ===========================================================
-
+  #
   # ENUMS =================================================================
-
+  #
   # SECURE TOKEN ==========================================================
-
+  #
   # SECURE PASSWORD =======================================================
-
+  #
   # ATTACHMENTS ===========================================================
-
+  #
   # RICH_TEXT =============================================================
-
+  #
   # VALIDATIONS ===========================================================
-
+  #
   # CALLBACKS =============================================================
-
+  #
   # SCOPES ================================================================
-
+  #
   # DELEGATION ============================================================
 
   def successful_payments

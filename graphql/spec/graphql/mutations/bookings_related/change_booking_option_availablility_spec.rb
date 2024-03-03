@@ -101,7 +101,7 @@ RSpec.describe Mutations::BookingsRelated::ChangeBookingOptionAvailability, type
     context 'permissions' do
       context 'for past booking' do
         before { booking_option.booking.schedule.update(scheduled_for: 5.days.ago) }
-        include_examples :fail, 'Event past'
+        include_examples :fail, 'Booking past'
       end
 
       context 'for cancelled booking' do

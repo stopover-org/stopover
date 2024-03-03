@@ -74,7 +74,7 @@ RSpec.describe Mutations::FirmsRelated::UpdateFirm, type: :mutation do
       expect(result.dig(:data, :updateFirm, :firm, :title)).to eq(firm.title)
       expect(result.dig(:data, :updateFirm, :firm, :description)).to eq(firm.description)
       expect(result.dig(:data, :updateFirm, :firm, :image)).to_not be_nil
-      expect(result.dig(:data, :updateFirm, :firm, :status)).to eq('pending')
+      expect(result.dig(:data, :updateFirm, :firm, :status)).to eq('active')
       expect(result.dig(:data, :updateFirm, :firm, :paymentTypes)).to eq(firm.payment_types)
       expect(result.dig(:data, :updateFirm, :firm, :primaryEmail)).to eq(firm.primary_email)
       expect(result.dig(:data, :updateFirm, :firm, :primaryPhone)).to eq(firm.primary_phone)
@@ -134,7 +134,7 @@ RSpec.describe Mutations::FirmsRelated::UpdateFirm, type: :mutation do
         result = nil
         expect { result = subject.to_h.deep_symbolize_keys }.to change { Firm.count }.by(0)
         expect(result.dig(:data, :updateFirm, :firm)).to be_nil
-        expect(result.dig(:data, :updateFirm, :errors)).to include('Something went wrong')
+        expect(result.dig(:data, :updateFirm, :errors)).to include('You are not authorized')
       end
     end
 

@@ -25,6 +25,7 @@ const BalanceSection = ({
       fragment BalanceSection_FirmFragment on Firm {
         paymentTypes
         contractAddress
+        status
         balance {
           totalAmount {
             cents
@@ -58,6 +59,13 @@ const BalanceSection = ({
     currentUserFragmentRef
   );
   const { t } = useTranslation();
+  const activeStripeConnects = React.useMemo(
+    () =>
+      firm?.stripeConnects?.filter(
+        (stripeConnect) => stripeConnect?.status === "active"
+      ) || [],
+    [firm]
+  );
 
   return (
     <Section>
@@ -111,9 +119,11 @@ const BalanceSection = ({
                 {t("scenes.firms.dashboardScene.payoutSettings")}
               </Typography>
             </Grid>
-            <Grid xs={12}>
-              <ConnectStripeForm />
-            </Grid>
+            {activeStripeConnects.length === 0 && (
+              <Grid xs={12} pb={2}>
+                <ConnectStripeForm />
+              </Grid>
+            )}
           </>
         )}
 

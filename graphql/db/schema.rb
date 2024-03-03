@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_25_103726) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_29_230044) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -333,6 +333,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_25_103726) do
     t.datetime "sent_at", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "notification_type", default: "system"
+    t.bigint "firm_id"
+    t.bigint "booking_id"
+    t.index ["booking_id"], name: "index_notifications_on_booking_id"
+    t.index ["firm_id"], name: "index_notifications_on_firm_id"
   end
 
   create_table "payment_connections", force: :cascade do |t|

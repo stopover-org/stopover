@@ -3,7 +3,13 @@
 module Mutations
   module FirmsRelated
     class CreateStripeAccount < BaseMutation
+      AUTHORIZATION_FIELD = 'current_firm'
+
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
+      include Mutations::Authorizations::ManagerAuthorized
+
       field :setup_account_url, String
+
       def resolve
         stripe_connect = context[:current_user].account.current_firm.stripe_connects.create!
         account_link = Stopover::StripeAccountService.create_stripe_account(context[:current_user], stripe_connect)
@@ -23,9 +29,7 @@ module Mutations
       end
 
       def authorized?(**_inputs)
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_user&.active?
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless current_firm
-        return false, { errors: [I18n.t('graphql.errors.general')] } if current_firm.stripe_connects.active.any?
+        return false, { errors: [I18n.t('graphql.errors.general')] } if current_firm&.stripe_connects&.active&.any?
 
         super
       end

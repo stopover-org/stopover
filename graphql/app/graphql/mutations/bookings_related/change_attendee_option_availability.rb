@@ -3,6 +3,11 @@
 module Mutations
   module BookingsRelated
     class ChangeAttendeeOptionAvailability < BaseMutation
+      AUTHORIZATION_FIELD = 'attendee_option'
+      include Mutations::Authorizations::ManagerAuthorized
+      include Mutations::FirmsRelated::Authorizations::ActiveFirmAuthorized
+      include Mutations::BookingsRelated::Authorizations::BookingAuthorized
+
       field :attendee_option, Types::BookingsRelated::AttendeeOptionType
 
       argument :attendee_option_id, ID, loads: Types::BookingsRelated::AttendeeOptionType
@@ -33,17 +38,6 @@ module Mutations
           errors: [message],
           attendee_option: nil
         }
-      end
-
-      private
-
-      def authorized?(**inputs)
-        attendee_option = inputs[:attendee_option]
-        return false, { errors: [I18n.t('graphql.errors.not_authorized')] } unless manager?(attendee_option)
-
-        return false, { errors: [I18n.t('graphql.errors.event_past')] } if attendee_option.booking.past?
-        return false, { errors: [I18n.t('graphql.errors.booking_cancelled')] } if attendee_option.booking.cancelled?
-        super
       end
     end
   end
