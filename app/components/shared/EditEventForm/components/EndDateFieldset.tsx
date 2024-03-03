@@ -14,7 +14,7 @@ const EndDateFieldset = () => {
   return (
     <Fieldset>
       <Grid xs={12} container>
-        <Grid xs={4}>
+        <Grid xs={12} sm={12} md={6} lg={4}>
           <DatePicker
             label={t("models.event.attributes.endDate")}
             value={endDate.value}
