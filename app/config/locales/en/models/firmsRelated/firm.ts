@@ -34,6 +34,21 @@ export default {
           crypto: "Crypto",
         },
       },
+      statusExplanations: {
+        pending: [
+          "The company is awaiting verification. Please ensure that the contact email is correct. We will contact you shortly to clarify the details.",
+          "You can create events including dates, images, and other relevant information, but it will not be published until the company's verification is complete.",
+          "If you have any questions, please email {{email}} or chat on the website.",
+        ],
+        active: [
+          "The company has been verified. You can create any events.",
+          "If you have any questions, please email {{email}} or chat on the website.",
+        ],
+        removed: [
+          "The company has been removed. All events have been unpublished, all incomplete bookings have been canceled, and money has been refunded to participants according to the refund policies.",
+          "If you have any questions, please email {{email}} or chat on the website.",
+        ],
+      },
     },
   },
 };

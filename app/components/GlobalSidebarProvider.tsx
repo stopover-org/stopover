@@ -42,15 +42,18 @@ const GlobalSidebarProvider = ({ children }: GlobalSidebarProviderProps) => {
       close: () => setOpened(false),
       open: () => setOpened(true),
       setContent,
+      content,
     }),
     [opened, setOpened, content, setContent]
   );
   return (
     <GlobalSidebarContext.Provider value={value}>
       {children}
-      <Drawer open={opened} onClose={value.close}>
-        {content}
-      </Drawer>
+      {content && (
+        <Drawer open={opened} onClose={value.close}>
+          {content}
+        </Drawer>
+      )}
     </GlobalSidebarContext.Provider>
   );
 };

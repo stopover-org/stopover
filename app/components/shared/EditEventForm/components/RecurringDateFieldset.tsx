@@ -104,7 +104,7 @@ const RecurringDateFieldset = () => {
           ({ day, hour, minute }, index: number) => (
             <Grid xs={12} container key={index}>
               <Grid xs={4}>
-                <FormControl>
+                <FormControl sx={{ margin: 0 }}>
                   <FormLabel>{t("forms.editEvent.recurringStartAt")}</FormLabel>
                   <Stack
                     direction="row"
@@ -144,11 +144,22 @@ const RecurringDateFieldset = () => {
                 )}
               </Grid>
               <Grid xs={4}>
-                <TimeAutocomplete
-                  onDateChange={(value) => onDateChange(value, index)}
-                  hour={hour?.toString()}
-                  minute={minute?.toString()}
-                />
+                <FormControl sx={{ margin: 0 }}>
+                  <TimeAutocomplete
+                    onDateChange={(value) => onDateChange(value, index)}
+                    hour={hour?.toString()}
+                    minute={minute?.toString()}
+                  />
+                  {(!!form.formState.errors?.recurringDates?.[index]?.hour ||
+                    !!form.formState.errors?.recurringDates?.[index]
+                      ?.minute) && (
+                    <FormHelperText>
+                      <Typography color="danger" fontSize="sm">
+                        {t("general.required")}
+                      </Typography>
+                    </FormHelperText>
+                  )}
+                </FormControl>
               </Grid>
 
               <Grid xs={1}>

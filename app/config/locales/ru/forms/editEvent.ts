@@ -6,7 +6,7 @@ export default {
       eventRequirements: "Условия регистрации",
       selectType: "Выберите категорию",
       recurringStartAt: "Мероприятие будет проходить каждый",
-      onetimeStartAt: "Мероприятие пройдет",
+      oneTimeStartAt: "Мероприятие пройдет",
       addNewRecurringDate: "Добавить еще одну повторяющуюся дату",
       addNewSingleDate: "Добавить еще одну дату",
       addNewOption: "Добавить еще одну опцию",

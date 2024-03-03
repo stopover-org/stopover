@@ -16,6 +16,7 @@ import GeneralInformation from "./components/GeneralInformation";
 import StripeIntegrationsInformation from "./components/StripeIntegrationsInformation";
 import EventPlacementsInformation from "./components/EventPlacementsInformation";
 import FirmEventActions from "./components/FirmEventActions";
+import Section from "../../../../components/v2/Section/Section";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;
@@ -118,6 +119,21 @@ const EventScene = ({
         eventFragmentRef={event}
         currentUserFragmentRef={currentUser}
       />
+      <Grid xs={12} padding={0}>
+        <Section variant="soft" color="primary" margin={0} padding={0}>
+          {t(`models.event.statusExplanations.${event.status}`, {
+            returnObjects: true,
+            email: "mikhail@stopoverx.com",
+          }).map((translation: string) => (
+            <React.Fragment key={translation}>
+              <Typography fontSize="sm" level="body-sm" sx={{ width: "100%" }}>
+                {translation}{" "}
+              </Typography>
+              <br />
+            </React.Fragment>
+          ))}
+        </Section>
+      </Grid>
       <Grid xs={12}>
         <Tabs
           size="sm"

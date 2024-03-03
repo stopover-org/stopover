@@ -22,7 +22,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
   const router = useRouter();
   const theme = useTheme();
   const { t } = useTranslation();
-  const { open } = React.useContext(GlobalSidebarContext);
+  const { open, content } = React.useContext(GlobalSidebarContext);
   const isSmallDisplay = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
   const currentUser = useFragment(
@@ -88,12 +88,12 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
           justifyContent="flex-start"
           alignItems="center"
         >
-          {isSmallDisplay && (
+          {isSmallDisplay && content && (
             <Box sx={{ margin: "5px" }} onClick={open}>
               <Menu />
             </Box>
           )}
-          <Link href="/">
+          <Link href="/" sx={{ marginLeft: content ? 0 : "5px" }}>
             <Image
               src="https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx.svg"
               alt="logo"

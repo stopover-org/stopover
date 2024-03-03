@@ -6,6 +6,7 @@ export default {
       eventRequirements: "Registration requirements",
       selectType: "Select main category",
       recurringStartAt: "Recurring event starts at",
+      oneTimeStartAt: "Event's date",
       addNewRecurringDate: "Add recurring date",
       addNewSingleDate: "Add single date",
       addNewOption: "Add option",
