@@ -92,6 +92,11 @@ RSpec.describe Firm, type: :model do
         firm = create(:firm)
         expect(firm.balance).not_to be_nil
       end
+
+      it 'default available payment methods' do
+        firm = create(:firm, available_payment_methods: [])
+        expect(firm.available_payment_methods).to eq(['cash'])
+      end
     end
   end
 

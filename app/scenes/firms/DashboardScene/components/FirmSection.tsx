@@ -66,14 +66,18 @@ const FirmSection = ({
   return (
     <Section>
       <Grid md={10} sm={12}>
-        <Link
-          level="h3"
-          sx={{ display: "inline" }}
-          target="_blank"
-          href={`/firms/${firm.id}`}
-        >
-          {firm.title.toUpperCase()}
-        </Link>
+        {firm.status === "active" ? (
+          <Link
+            level="h3"
+            sx={{ display: "inline" }}
+            target="_blank"
+            href={`/firms/${firm.id}`}
+          >
+            {firm.title.toUpperCase()}
+          </Link>
+        ) : (
+          <Typography level="h3">{firm.title.toUpperCase()}</Typography>
+        )}
         <Tag link={false} color={tagColor}>
           {t(`statuses.${firm.status?.toLowerCase()}`)}
         </Tag>
@@ -101,6 +105,18 @@ const FirmSection = ({
             <VerifyFirm />
           )}
         </Stack>
+      </Grid>
+      <Grid xs={12}>
+        <Section variant="soft" color="primary">
+          {t(`models.firm.statusExplanations.${firm.status}`, {
+            returnObjects: true,
+            email: "mikhail@stopoverx.com",
+          }).map((translation: string) => (
+            <Typography fontSize="sm" level="body-sm" sx={{ width: "100%" }}>
+              {translation}{" "}
+            </Typography>
+          ))}
+        </Section>
       </Grid>
       <Grid xs={12}>{firm.contactPerson}</Grid>
 

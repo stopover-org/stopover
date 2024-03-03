@@ -17,7 +17,7 @@ function useDefaultValues(): CreateFirmFields {
     () => ({
       title: "",
       primaryEmail: "",
-      paymentTypes: ["stripe", "cash"],
+      paymentTypes: ["cash"],
     }),
     []
   );

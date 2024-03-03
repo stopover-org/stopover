@@ -60,6 +60,30 @@ export default {
         bookings: "Qty bookings",
         paid: "Qty paid bookings",
       },
+      statusExplanations: {
+        draft: [
+          "The event has been created but has not yet been verified.",
+          "The event will not be published until it passes verification.",
+          "We need to confirm the address, time, and duration of the event.",
+          "Verification usually takes from several minutes to one working day.",
+          "If you have any questions, please email {{email}} or chat on the website.",
+        ],
+        published: [
+          "The event has been published, and all participants have access to it.",
+          "If the event has upcoming dates, anyone can book a spot and attend.",
+          "If you have any questions, please email {{email}} or chat on the website.",
+        ],
+        unpublished: [
+          "The event has been unpublished.",
+          "The schedule with future dates has been cleared. All unfulfilled bookings must be cleared manually.",
+          "If you have any questions, please email {{email}} or chat on the website.",
+        ],
+        removed: [
+          "The event has been removed.",
+          "The schedule with future dates has been cleared. All unfulfilled bookings must be cleared manually.",
+          "If you have any questions, please email {{email}} or chat on the website.",
+        ],
+      },
     },
   },
 };

@@ -121,9 +121,10 @@ class Firm < ApplicationRecord
 
   # CALLBACKS =============================================================
   before_validation :transform_phone
+  before_validation :adjust_available_payment_methods
   after_create :create_balance
   after_create :created_notify
-  after_commit :adjust_margin
+  after_commit :adjust_events_margin
 
   # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[pending active removed]) }
@@ -186,11 +187,15 @@ class Firm < ApplicationRecord
 
   private
 
+  def adjust_available_payment_methods
+    self.available_payment_methods = ['cash'] if available_payment_methods.empty?
+  end
+
   def skip_phone_validation
     $skip_phone_validation || false
   end
 
-  def adjust_margin
+  def adjust_events_margin
     return unless saved_change_to_attribute?(:margin)
     events.each do |event|
       event.adjust_prices
