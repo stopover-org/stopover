@@ -40,7 +40,7 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
       <Grid lg={3} md={12} sm={12}>
         <Input
           placeholder={t("models.event.attributes.organizerPricePerUom")}
-          startDecorator="$"
+          startDecorator="RSD"
           label={t("models.event.attributes.organizerPricePerUom")}
           sx={{ maxWidth: 300 }}
           type="number"
@@ -59,7 +59,7 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
       <Grid lg={3} md={12} sm={12}>
         <Input
           placeholder={t("models.event.attributes.attendeePricePerUom")}
-          startDecorator="$"
+          startDecorator="RSD"
           label={t("models.event.attributes.attendeePricePerUom")}
           sx={{ maxWidth: 300 }}
           type="number"
@@ -91,7 +91,7 @@ const PaymentSettingsStep = ({ firmFragmentRef }: PaymentSettingsStepProps) => {
             <Grid xs={12}>
               <Input
                 placeholder={t("models.event.attributes.depositAmount")}
-                startDecorator="$"
+                startDecorator="RSD"
                 label={t("models.event.attributes.depositAmount")}
                 sx={{ width: 300 }}
                 type="number"

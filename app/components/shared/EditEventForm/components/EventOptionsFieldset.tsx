@@ -74,7 +74,7 @@ const EventOptionsFieldset = () => {
             <Grid xs={4}>
               <Input
                 placeholder={t("models.eventOption.attributes.organizerPrice")}
-                startDecorator="$"
+                startDecorator="RSD"
                 value={eventOption.organizerPriceCents.toString()}
                 onChange={(value) =>
                   onEventOptionChange(value, index, "organizerPriceCents")

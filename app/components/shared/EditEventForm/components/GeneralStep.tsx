@@ -78,7 +78,7 @@ const GeneralStep = () => {
             {t("models.interest.singular")}
           </Typography>
         </Grid>
-        <Grid xs={4}>
+        <Grid xs={12} sm={12} md={8} lg={6}>
           <Select
             placeholder={t("forms.editEvent.selectType")}
             onChange={(value) => {

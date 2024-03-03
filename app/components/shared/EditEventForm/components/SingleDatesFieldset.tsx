@@ -64,7 +64,7 @@ const SingleDatesFieldset = () => {
         </Grid>
         {singleDates.value.map(({ date, hour, minute }, index) => (
           <React.Fragment key={index}>
-            <Grid xs={4}>
+            <Grid xs={12} sm={12} md={5} lg={5}>
               <FormControl sx={{ margin: 0 }}>
                 <DatePicker
                   label={t("forms.editEvent.oneTimeStartAt")}
@@ -86,7 +86,7 @@ const SingleDatesFieldset = () => {
                 )}
               </FormControl>
             </Grid>
-            <Grid xs={4}>
+            <Grid xs={10} sm={10} md={5} lg={5}>
               <FormControl sx={{ margin: 0 }}>
                 <TimeAutocomplete
                   onDateChange={(value) => changeSingleDate(value, index)}
@@ -103,10 +103,10 @@ const SingleDatesFieldset = () => {
                 )}
               </FormControl>
             </Grid>
-            <Grid xs={1}>
+            <Grid xs={2} sm={2} md={2} lg={2}>
               <Stack
                 justifyContent="flex-start"
-                alignItems="flex-end"
+                alignItems="flex-start"
                 height="100%"
                 sx={{ paddingTop: "2em" }}
               >
@@ -121,7 +121,6 @@ const SingleDatesFieldset = () => {
                 </IconButton>
               </Stack>
             </Grid>
-            <Grid xs={2} />
           </React.Fragment>
         ))}
       </Grid>

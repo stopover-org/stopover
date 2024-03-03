@@ -1,8 +1,6 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import { Divider, Grid, useTheme } from "@mui/joy";
-import { useMediaQuery } from "@mui/material";
-import { useTranslation } from "react-i18next";
+import { Divider, Grid } from "@mui/joy";
 import { BookingEditForm_BookingFragment$key } from "../../../../../artifacts/BookingEditForm_BookingFragment.graphql";
 import BookingOptionsEditForm from "./BookingOptionsEditForm";
 import BookingDatesEditForm from "./BookingDatesEditForm";
@@ -14,9 +12,6 @@ interface BookingEditFormProps {
 }
 
 const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const { t } = useTranslation();
   const booking = useFragment(
     graphql`
       fragment BookingEditForm_BookingFragment on Booking {
@@ -55,24 +50,32 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
       }
     `,
   });
-  const disabled = useBookingDisabled(booking)
-
-  const eventOptions = React.useMemo(() => booking.eventOptions.filter(({ status }) => status === 'available'), [booking])
+  const disabled = useBookingDisabled(booking);
+  const eventOptions = React.useMemo(
+    () => booking.eventOptions.filter(({ status }) => status === "available"),
+    [booking]
+  );
 
   return (
     <Grid container spacing={0}>
       <Grid lg={12} md={12}>
-        {eventOptions.length > 0 && <>
-          <Grid xs={12}>
-            <BookingOptionsEditForm bookingFragmentRef={booking} />
+        {eventOptions.length > 0 && (
+          <>
+            <Grid xs={12}>
+              <BookingOptionsEditForm bookingFragmentRef={booking} />
+            </Grid>
+            {!disabled && (
+              <Grid xs={12}>
+                <Divider sx={{ margin: 2 }} />
+              </Grid>
+            )}
+          </>
+        )}
+        {!disabled && (
+          <Grid xs={12} paddingTop={1}>
+            <BookingDatesEditForm bookingFragmentRef={booking} />
           </Grid>
-          {!disabled && <Grid xs={12}>
-            <Divider sx={{ margin: 2}} />
-          </Grid>}
-        </>}
-        {!disabled && <Grid xs={12} paddingTop={1}>
-          <BookingDatesEditForm bookingFragmentRef={booking} />
-        </Grid>}
+        )}
       </Grid>
     </Grid>
   );

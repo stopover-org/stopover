@@ -46,10 +46,10 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
       spacing={2}
       useFlexGap
     >
-      <Box>
+      <Box width="100%">
         <Description html={event.description} />
       </Box>
-      <Box>
+      <Box width="100%">
         {event.tourPlan && (
           <>
             <Grid xs={12}>
@@ -98,7 +98,7 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
           </>
         )}
       </Box>
-      <Box>
+      <Box width="100%">
         {event.address && (
           <>
             <Divider sx={{ margin: 2 }} />
@@ -131,7 +131,7 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
           </>
         )}
       </Box>
-      <Box>
+      <Box width="100%">
         <BookEvent eventFragmentRef={event} />
       </Box>
     </Stack>

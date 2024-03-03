@@ -78,7 +78,7 @@ const BookingCancellationOptionsFieldset = () => {
                 placeholder={t(
                   "models.bookingCancellationOption.attributes.penaltyPrice"
                 )}
-                startDecorator="$"
+                startDecorator="RSD"
                 label={t(
                   "models.bookingCancellationOption.attributes.penaltyPrice"
                 )}

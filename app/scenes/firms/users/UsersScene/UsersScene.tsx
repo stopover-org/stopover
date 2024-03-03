@@ -47,10 +47,9 @@ const UsersScene = ({ firmFragmentRef }: PaymentsSceneProps) => {
 
   return (
     <Grid xs={12} container suppressHydrationWarning>
-      <Grid sm={12}>
+      <Grid xs={12}>
         <Stack direction="row" justifyContent="space-between">
-          <Typography level="h4">{t("models.payment.plural")}</Typography>
-
+          <Typography level="h4">{t("models.user.plural")}</Typography>
           <InviteUser />
         </Stack>
       </Grid>
