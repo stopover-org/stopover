@@ -3,13 +3,12 @@ import React from "react";
 import Table from "components/v2/Table/Table";
 import { BookingsFirmTable_BookingsFirmPaginationFragment$key } from "artifacts/BookingsFirmTable_BookingsFirmPaginationFragment.graphql";
 import { BookingsFirmTableFirmPaginationQuery } from "artifacts/BookingsFirmTableFirmPaginationQuery.graphql";
-import { parseValue, useQuery } from "lib/hooks/useQuery";
+import { useQuery } from "lib/hooks/useQuery";
 import Filters from "components/shared/Filters";
 import { useTranslation } from "react-i18next";
 import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
 import ContactEmailInput from "./components/ContactEmailInput";
 import ContactPhoneInput from "./components/ContactPhoneInput";
-import EventsAutocomplete from "./components/EventsAutocomplete";
 import DateQueryInput from "../../DateQueryInput";
 
 interface BookingFirmTableProps {
@@ -55,9 +54,6 @@ const BookingsFirmTable = ({
   const contactEmail = useQuery("contactEmail", "");
   const contactPhone = useQuery("contactPhone", "");
   const date = useQuery("bookedFor", null);
-  const eventIds = useQuery("eventIds", [], (value) =>
-    Array.from(parseValue(value))
-  );
 
   React.useEffect(() => {
     if (queryRef.current) {
@@ -69,7 +65,6 @@ const BookingsFirmTable = ({
         bookingsFilter: {
           contactEmail,
           contactPhone,
-          eventIds,
           bookedFor: date,
         },
         cursor: "0",
@@ -82,7 +77,7 @@ const BookingsFirmTable = ({
         },
       }
     );
-  }, [contactEmail, contactPhone, eventIds, date, setCurrentPage]);
+  }, [contactEmail, contactPhone, date, setCurrentPage]);
 
   const bookings = useBookingsColumns(data.bookings!);
   const headers = useBookingsHeaders();
@@ -90,12 +85,6 @@ const BookingsFirmTable = ({
     () => ({
       contactEmail: <ContactEmailInput />,
       contactPhone: <ContactPhoneInput />,
-      eventIds: (
-        <EventsAutocomplete
-          queryKey="eventIds"
-          label={t("filters.bookings.eventIds")}
-        />
-      ),
       bookedFor: (
         <DateQueryInput
           queryKey="bookedFor"
@@ -112,7 +101,7 @@ const BookingsFirmTable = ({
         <React.Suspense>
           <Filters
             availableFilters={filters}
-            defaultFilters={["eventIds"]}
+            defaultFilters={[]}
             scope="bookings"
           />
         </React.Suspense>

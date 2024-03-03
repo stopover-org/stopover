@@ -4,7 +4,7 @@ import Table from "components/v2/Table/Table";
 import { BookingsEventTableBookingsPaginationQuery } from "artifacts/BookingsEventTableBookingsPaginationQuery.graphql";
 import { BookingsEventTable_BookingsPaginationFragment$key } from "artifacts/BookingsEventTable_BookingsPaginationFragment.graphql";
 import { useTranslation } from "react-i18next";
-import { parseValue, useQuery } from "lib/hooks/useQuery";
+import { useQuery } from "lib/hooks/useQuery";
 import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
 import Filters from "../../Filters";
 import ContactEmailInput from "../BookingsFirmTable/components/ContactEmailInput";
@@ -55,9 +55,6 @@ const BookingsEventTable = ({
   const contactEmail = useQuery("contactEmail", "");
   const contactPhone = useQuery("contactPhone", "");
   const date = useQuery("bookedFor", null);
-  const eventIds = useQuery("eventIds", [], (value) =>
-    Array.from(parseValue(value))
-  );
 
   React.useEffect(() => {
     if (queryRef.current) {
@@ -69,7 +66,6 @@ const BookingsEventTable = ({
         filters: {
           contactEmail,
           contactPhone,
-          eventIds,
           bookedFor: date,
         },
         cursor: "0",
@@ -82,7 +78,7 @@ const BookingsEventTable = ({
         },
       }
     );
-  }, [contactEmail, contactPhone, eventIds, date, setCurrentPage]);
+  }, [contactEmail, contactPhone, date, setCurrentPage]);
   const actualBookings = useBookingsColumns(data.paginatedBookings!);
   const headers = useBookingsHeaders();
   const { t } = useTranslation();

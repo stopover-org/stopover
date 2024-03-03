@@ -1,4 +1,5 @@
 import {
+  Box,
   Dropdown,
   IconButton,
   Menu,
@@ -80,7 +81,7 @@ const Filters = ({
   return (
     <Stack direction="row" alignItems="flex-end" flexWrap="wrap">
       <Dropdown>
-        <MenuButton size="sm" variant="soft" sx={{ marginBottom: "5px" }}>
+        <MenuButton size="sm" variant="soft" sx={{ marginRight: "5px" }}>
           <FilterAltIcon />
         </MenuButton>
         {selectableFilters.length > 0 && (
@@ -92,8 +93,8 @@ const Filters = ({
         )}
       </Dropdown>
       {selectedFilters.map((key: string) => (
-        <>
-          {availableFilters[key]}
+        <Stack direction="row" alignItems="flex-end">
+          <Box>{availableFilters[key]}</Box>
           <IconButton
             size="sm"
             sx={{ marginBottom: "5px" }}
@@ -101,7 +102,7 @@ const Filters = ({
           >
             <CloseIcon />
           </IconButton>
-        </>
+        </Stack>
       ))}
     </Stack>
   );

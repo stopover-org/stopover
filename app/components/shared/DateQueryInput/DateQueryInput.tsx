@@ -18,9 +18,12 @@ const DateQueryInput = ({ queryKey, label }: DateQueryInputProps) => {
     return null;
   });
 
-  const updateDate = useUpdateQuery(queryKey, (dt: Moment) =>
-    JSON.stringify(dt.format("YYYY-MM-DD"))
-  );
+  const updateDate = useUpdateQuery(queryKey, (dt: Moment) => {
+    if (dt.isValid()) {
+      return JSON.stringify(dt.format("YYYY-MM-DD"));
+    }
+    return "";
+  });
 
   return (
     <DatePicker
