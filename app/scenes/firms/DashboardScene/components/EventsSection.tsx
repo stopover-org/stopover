@@ -33,7 +33,7 @@ const EventsSection = ({ firmFragmentRef }: EventsSectionProps) => {
       </Grid>
 
       <Grid xs={12}>
-        <Link href="/my-firm/events">
+        <Link href="/my-firm/events" fontSize="sm">
           {t("general.all")} {t("models.event.plural")}
         </Link>
       </Grid>

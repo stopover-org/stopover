@@ -172,7 +172,7 @@ const GeneralInformation = ({
             <Grid xs={12}>
               <DataRow
                 label={t("models.event.attributes.language")}
-                value={event.language}
+                value={t(`languages.${event.language}`)}
               />
             </Grid>
 
@@ -187,9 +187,9 @@ const GeneralInformation = ({
                 direction="row"
                 spacing={1}
                 useFlexGap
-                alignItems="flex-end"
+                alignItems="flex-start"
               >
-                <Typography level="title-lg">
+                <Typography level="title-sm">
                   {t("models.event.attributes.description")}:
                 </Typography>
                 <Box>

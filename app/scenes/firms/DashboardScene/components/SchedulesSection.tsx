@@ -58,7 +58,7 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
       </Grid>
 
       <Grid xs={12}>
-        <Link href="/my-firm/schedules">
+        <Link href="/my-firm/schedules" fontSize="sm">
           {t("general.all")} {t("models.schedule.plural")}
         </Link>
       </Grid>

@@ -119,6 +119,9 @@ const translation = {
     russian: "🇷🇺 Русский",
     english: "🇺🇸 English",
     serbian: "🇷🇸 Srpski",
+    en: "🇺🇸",
+    ru: "🇷🇺",
+    sr: "🇷🇸",
   },
   components: {
     link: {

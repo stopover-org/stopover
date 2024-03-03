@@ -65,7 +65,7 @@ const FirmSection = ({
 
   return (
     <Section>
-      <Grid md={10} sm={12}>
+      <Grid xs={12} sm={12} md={12} lg={10} paddingBottom={2}>
         {firm.status === "active" ? (
           <Link
             level="h3"
@@ -82,17 +82,20 @@ const FirmSection = ({
           {t(`statuses.${firm.status?.toLowerCase()}`)}
         </Tag>
       </Grid>
-      <Grid md={2} sm={12}>
+      <Grid xs={12} sm={12} md={12} lg={2}>
         <Stack
-          direction={{ sm: "column", md: "row" }}
-          justifyContent="flex-end"
+          direction={{ sm: "row", md: "row" }}
+          justifyContent={{
+            lg: "flex-end",
+            sm: "flex-start",
+            sx: "flex-start",
+            md: "flex-start",
+          }}
           spacing={1}
           useFlexGap
         >
           <Link href="/my-firm" underline={false} sx={{ paddingBottom: "5px" }}>
-            <Button size="sm" variant="outlined">
-              {t("scenes.firms.dashboardScene.view")}
-            </Button>
+            <Button size="sm">{t("scenes.firms.dashboardScene.view")}</Button>
           </Link>
           <Link
             href="/my-firm/edit"
