@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Option } from "@mui/joy";
+import { Autocomplete, Grid, Option } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import Fieldset from "components/v2/Fieldset";
 import Input from "components/v2/Input";
@@ -30,6 +30,22 @@ const GeneralStep = () => {
   const descriptionField = form.useFormField("description");
   const languageField = form.useFormField("language");
   const { t } = useTranslation();
+  const selectedInterests = React.useMemo(
+    () =>
+      interestIds.value.map((id: string) => ({
+        value: id,
+        label: data?.interests.find((interest) => interest.id === id)?.title,
+      })),
+    [interestIds, data?.interests]
+  );
+
+  const availableInterests = React.useMemo(
+    () =>
+      data?.interests?.filter(
+        (interest) => !interestIds.value.includes(interest.id)
+      ),
+    [interestIds.value, data?.interests]
+  );
 
   return (
     <>
@@ -79,19 +95,19 @@ const GeneralStep = () => {
           </Typography>
         </Grid>
         <Grid xs={12} sm={12} md={8} lg={6}>
-          <Select
+          <Autocomplete
+            disableClearable
+            multiple
             placeholder={t("forms.editEvent.selectType")}
-            onChange={(value) => {
-              interestIds.onChange([value]);
+            onChange={(event, values) => {
+              interestIds.onChange(values.map(({ value }) => value));
             }}
-            value={interestIds.value[0]}
-          >
-            {data?.interests?.map((interest) => (
-              <Option key={interest.id} value={interest.id}>
-                {interest.title}
-              </Option>
-            ))}
-          </Select>
+            options={availableInterests?.map((interest) => ({
+              value: interest.id,
+              label: interest.title,
+            }))}
+            value={selectedInterests}
+          />
         </Grid>
       </Fieldset>
       <Fieldset>
