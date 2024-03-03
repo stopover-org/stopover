@@ -5,6 +5,11 @@ export const GlobalSidebarContext = React.createContext<{
   opened: boolean;
   close: () => void;
   open: () => void;
+  content:
+    | React.ReactElement
+    | React.ReactElement[]
+    | React.ReactNode
+    | React.ReactNode[];
   setContent: (
     value:
       | React.ReactElement
@@ -17,6 +22,7 @@ export const GlobalSidebarContext = React.createContext<{
   open: () => {},
   close: () => {},
   setContent: () => {},
+  content: null,
 });
 
 interface GlobalSidebarProviderProps {
