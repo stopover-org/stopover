@@ -106,7 +106,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
       </Grid>
 
       <Grid xs={6} sm={6}>
-        <Stack flexDirection="row" justifyContent="flex-end">
+        <Stack flexDirection="row" justifyContent="flex-end" paddingRight="5px">
           {isMediumDisplay && (
             <Link
               href="/trips"

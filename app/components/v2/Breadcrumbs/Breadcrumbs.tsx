@@ -23,12 +23,12 @@ const Breadcrumbs = ({ items, padding = 2 }: BreadcrumbsProps) => (
             <Box>
               <Typography fontSize="lg">{item}</Typography>
             </Box>
+            &nbsp;
             <Typography
               fontSize="20px"
               sx={{ paddingLeft: "10px", paddingRight: "10px" }}
             >
-              {" "}
-              /{" "}
+              /
             </Typography>
           </React.Fragment>
         ) : (
@@ -43,12 +43,12 @@ const Breadcrumbs = ({ items, padding = 2 }: BreadcrumbsProps) => (
                 <Typography fontSize="12px">{item.subtitle}</Typography>
               )}
             </Box>
+            &nbsp;
             <Typography
               fontSize="20px"
               sx={{ paddingLeft: "10px", paddingRight: "10px" }}
             >
-              {" "}
-              /{" "}
+              /
             </Typography>
           </React.Fragment>
         )
