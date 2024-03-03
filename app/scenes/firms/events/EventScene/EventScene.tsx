@@ -119,8 +119,8 @@ const EventScene = ({
         eventFragmentRef={event}
         currentUserFragmentRef={currentUser}
       />
-      <Grid xs={12}>
-        <Section variant="soft" color="primary">
+      <Grid xs={12} padding={0}>
+        <Section variant="soft" color="primary" margin={0} padding={0}>
           {t(`models.event.statusExplanations.${event.status}`, {
             returnObjects: true,
             email: "mikhail@stopoverx.com",

@@ -106,8 +106,9 @@ const FirmSection = ({
           )}
         </Stack>
       </Grid>
-      <Grid xs={12}>
-        <Section variant="soft" color="primary">
+      <Grid xs={12}>{firm.contactPerson}</Grid>
+      <Grid xs={12} padding={0} margin={0}>
+        <Section variant="soft" color="primary" margin={0} padding={0}>
           {t(`models.firm.statusExplanations.${firm.status}`, {
             returnObjects: true,
             email: "mikhail@stopoverx.com",
@@ -118,7 +119,6 @@ const FirmSection = ({
           ))}
         </Section>
       </Grid>
-      <Grid xs={12}>{firm.contactPerson}</Grid>
 
       <Grid xs={12}>
         <Divider sx={{ margin: 2 }} />
