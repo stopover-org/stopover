@@ -70,7 +70,12 @@ const EventScene = ({
               <LeftColumn eventFragmentRef={event} />
             </Grid>
           )}
-          <Grid md={showLeftColumn ? 5 : 12} sm={12}>
+          <Grid
+            xs={12}
+            sm={12}
+            md={showLeftColumn ? 5 : 12}
+            lg={showLeftColumn ? 5 : 12}
+          >
             <RightColumn eventFragmentRef={event} />
           </Grid>
         </Grid>
