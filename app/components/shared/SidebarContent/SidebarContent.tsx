@@ -50,18 +50,20 @@ const SidebarContent = ({
   const { setContent } = React.useContext(GlobalSidebarContext);
   const { t } = useTranslation();
   const items = React.useMemo(() => {
-    let array: Array<{ slot: JSX.Element } | { title: string; href: string }> =
-      account.user.serviceUser
-        ? [{ slot: <SelectCurrentFirm accountFragmentRef={account} /> }]
-        : [
-            {
-              slot: (
-                <Typography pl="15px" level="h4">
-                  {account?.firm?.title}
-                </Typography>
-              ),
-            },
-          ];
+    let array: Array<
+      | { slot: JSX.Element }
+      | { title: string; href: string; serviceUser?: boolean }
+    > = account.user.serviceUser
+      ? [{ slot: <SelectCurrentFirm accountFragmentRef={account} /> }]
+      : [
+          {
+            slot: (
+              <Typography pl="15px" level="h4">
+                {account?.firm?.title}
+              </Typography>
+            ),
+          },
+        ];
 
     array = [
       ...array,
@@ -90,11 +92,19 @@ const SidebarContent = ({
       array.push({
         title: t("layout.header.firmSettings"),
         href: "/my-firm/settings",
+        serviceUser: true,
       });
 
       array.push({
         title: t("layout.header.registerFirm"),
         href: "/firms/new",
+        serviceUser: true,
+      });
+
+      array.push({
+        title: t("models.interest.plural"),
+        href: "/interests",
+        serviceUser: true,
       });
     }
 
