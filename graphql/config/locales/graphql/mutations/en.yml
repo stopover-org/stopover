@@ -93,6 +93,9 @@ en:
       create_event:
         notifications:
           success: 'Event created'
+      create_interest:
+        notifications:
+          success: 'Category created'
       publish_event:
         notifications:
           success: 'Event published'

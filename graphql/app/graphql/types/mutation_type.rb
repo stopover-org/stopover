@@ -47,5 +47,8 @@ module Types
     field :create_checkout, mutation: Mutations::PaymentsRelated::CreateCheckout
     field :create_stripe_account, mutation: Mutations::FirmsRelated::CreateStripeAccount
     field :withdraw_balance, mutation: Mutations::PaymentsRelated::WithdrawBalance
+
+    field :create_interest, mutation: Mutations::EventsRelated::CreateInterest
+    field :update_interest, mutation: Mutations::EventsRelated::UpdateInterest
   end
 end

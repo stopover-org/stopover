@@ -1,5 +1,9 @@
 import React from "react";
 import * as Yup from "yup";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { graphql } from "react-relay";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useCreateInterestForm_CreateInterestMutation } from "artifacts/useCreateInterestForm_CreateInterestMutation.graphql";
 
 export interface CreateInterestFormFields {
   title: string;
@@ -18,6 +22,30 @@ const validationSchema = Yup.object().shape({
 });
 
 export function useCreateInterestForm(onComplete: () => void) {
-  console.log(useDefaultValues, validationSchema, onComplete);
-  return null;
+  return useMutationForm<
+    CreateInterestFormFields,
+    useCreateInterestForm_CreateInterestMutation
+  >(
+    graphql`
+      mutation useCreateInterestForm_CreateInterestMutation(
+        $input: CreateInterestInput!
+      ) {
+        createInterest(input: $input) {
+          interest {
+            title
+            slug
+            preview
+          }
+          notification
+          errors
+        }
+      }
+    `,
+    (values) => ({ input: values }),
+    {
+      defaultValues: useDefaultValues(),
+      resolver: yupResolver(validationSchema),
+      onCompleted: onComplete,
+    }
+  );
 }

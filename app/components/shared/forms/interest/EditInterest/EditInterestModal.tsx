@@ -17,17 +17,32 @@ import Button from "components/v2/Button/Button";
 import Input from "components/v2/Input";
 import FileUploader from "components/v2/FileUploader/FileUploader";
 import { FormProvider } from "react-hook-form";
-import { useCreateInterestForm } from "./useCreateInterestForm";
-import ImagePreviewFields from "../../../ImagePreviewFields/ImagePreviewFields";
+import ImagePreviewFields from "components/shared/ImagePreviewFields";
+import { graphql, useFragment } from "react-relay";
+import { EditInterestModal_InterestFragment$key } from "artifacts/EditInterestModal_InterestFragment.graphql";
+import { useEditInterestForm } from "./useEditInterestForm";
 
 interface CreateInterestModalProps {
+  interestFragmentRef: EditInterestModal_InterestFragment$key;
   open: boolean;
   onClose: () => void;
 }
 
-const CreateInterestModal = ({ open, onClose }: CreateInterestModalProps) => {
+const EditInterestModal = ({
+  interestFragmentRef,
+  open,
+  onClose,
+}: CreateInterestModalProps) => {
+  const interest = useFragment(
+    graphql`
+      fragment EditInterestModal_InterestFragment on Interest {
+        ...useEditInterestForm_InterestFragment
+      }
+    `,
+    interestFragmentRef
+  );
   const { t } = useTranslation();
-  const form = useCreateInterestForm(onClose);
+  const form = useEditInterestForm(interest, onClose);
   const imageField = form.useFormField("preview");
 
   return (
@@ -87,4 +102,4 @@ const CreateInterestModal = ({ open, onClose }: CreateInterestModalProps) => {
   );
 };
 
-export default React.memo(CreateInterestModal);
+export default React.memo(EditInterestModal);

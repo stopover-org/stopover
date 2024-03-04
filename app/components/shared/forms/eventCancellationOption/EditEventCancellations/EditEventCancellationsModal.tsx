@@ -12,7 +12,7 @@ import {
 import { FormProvider } from "react-hook-form";
 import React from "react";
 import SubmitButton from "components/shared/SubmitButton";
-import Button from "components/v2/Button/Button";
+import Button from "components/v2/Button";
 import BookingCancellationOptionsFieldset from "components/shared/BookingCancellationOptionsFieldset";
 import { EditEventCancellationsModal_EventFragment$key } from "artifacts/EditEventCancellationsModal_EventFragment.graphql";
 import { useEditEventCancellationsForm } from "./useEditEventCancellationsForm";

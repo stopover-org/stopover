@@ -11,6 +11,7 @@ import Link from "components/v2/Link";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import RemoveDoneIcon from "@mui/icons-material/RemoveDone";
 import CreateInterest from "components/shared/forms/interest/CreateInterest";
+import EditInterest from "../../../components/shared/forms/interest/EditInterest";
 
 interface InterestsSceneProps {
   queryFragmentRef: InterestsScene_QueryFragment$key;
@@ -42,6 +43,7 @@ const InterestsScene = ({ queryFragmentRef }: InterestsSceneProps) => {
               title
               slug
               preview
+              ...EditInterest_InterestFragment
             }
           }
         }
@@ -70,14 +72,14 @@ const InterestsScene = ({ queryFragmentRef }: InterestsSceneProps) => {
           <Typography fontSize="sm">
             {interest.preview ? (
               <>
-                <IconButton>
+                <IconButton size="sm">
                   <DoneAllIcon />
                 </IconButton>{" "}
                 With Preview
               </>
             ) : (
               <>
-                <IconButton>
+                <IconButton size="sm">
                   <RemoveDoneIcon />
                 </IconButton>{" "}
                 Preview missed
@@ -85,6 +87,7 @@ const InterestsScene = ({ queryFragmentRef }: InterestsSceneProps) => {
             )}
           </Typography>
         ),
+        actions: <EditInterest interestFragmentRef={interest} />,
       })),
     [pagedInterests]
   );
@@ -105,6 +108,11 @@ const InterestsScene = ({ queryFragmentRef }: InterestsSceneProps) => {
         key: "preview",
         width: 100,
         label: t("models.interest.attributes.preview"),
+      },
+      {
+        key: "actions",
+        width: 100,
+        label: "",
       },
     ],
     []

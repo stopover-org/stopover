@@ -92,7 +92,10 @@ ru:
           unavailable: 'Опция теперь недоступна'
       create_event:
         notifications:
-          success: 'Мероприятие создано '
+          success: 'Мероприятие создано'
+      create_interest:
+        notifications:
+          success: 'Категория создана'
       publish_event:
         notifications:
           success: 'Мероприятие опубликовано'
