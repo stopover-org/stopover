@@ -31,13 +31,13 @@ RSpec.describe Types::EventsRelated::InterestType, type: :graphql_type do
                                                             name: 'id'
                                                           },
                                                           {
+                                                            name: 'originalTitle'
+                                                          },
+                                                          {
                                                             name: 'preview'
                                                           },
                                                           {
                                                             name: 'slug'
-                                                          },
-                                                          {
-                                                            name: 'sourceTitle'
                                                           },
                                                           {
                                                             name: 'title'
@@ -54,7 +54,7 @@ RSpec.describe Types::EventsRelated::InterestType, type: :graphql_type do
           interests {
             nodes {
               title
-              sourceTitle
+              originalTitle
             }
           }
         }
@@ -67,7 +67,7 @@ RSpec.describe Types::EventsRelated::InterestType, type: :graphql_type do
       result = subject
 
       expect(result.dig(:data, :interests, :nodes, 0, :title)).to eq('Translated Title')
-      expect(result.dig(:data, :interests, :nodes, 0, :sourceTitle)).to eq('Source Title')
+      expect(result.dig(:data, :interests, :nodes, 0, :originalTitle)).to eq('Source Title')
     end
   end
 end

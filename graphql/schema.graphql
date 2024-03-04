@@ -1106,7 +1106,6 @@ type Interest implements Node {
   originalTitle: String!
   preview: String
   slug: String!
-  sourceTitle: String!
   title: String!
 }
 

@@ -5,7 +5,6 @@ module Types
     class InterestType < Types::ModelObject
       field :id, ID, null: false
       field :title, String, null: false
-      field :source_title, String, null: false
       field :slug, String, null: false
       field :preview, String
       field :original_title, String, null: false
@@ -16,10 +15,6 @@ module Types
 
       def title
         object.translate(:title)
-      end
-
-      def source_title
-        object.title
       end
 
       def preview
