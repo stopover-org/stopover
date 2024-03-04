@@ -40,7 +40,7 @@ const InterestsScene = ({ queryFragmentRef }: InterestsSceneProps) => {
           edges {
             node {
               id
-              title
+              originalTitle
               slug
               preview
               ...EditInterest_InterestFragment
@@ -57,7 +57,7 @@ const InterestsScene = ({ queryFragmentRef }: InterestsSceneProps) => {
   const data = useMemo(
     () =>
       pagedInterests.map((interest) => ({
-        title: <Typography fontSize="sm">{interest.title}</Typography>,
+        title: <Typography fontSize="sm">{interest.originalTitle}</Typography>,
         slug: (
           <Link
             href={`/events?interests=${JSON.stringify([interest.slug])}`}

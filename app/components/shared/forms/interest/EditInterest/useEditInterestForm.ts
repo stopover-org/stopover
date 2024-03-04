@@ -19,7 +19,7 @@ function useDefaultValues(
   const interest = useFragment<useEditInterestForm_InterestFragment$key>(
     graphql`
       fragment useEditInterestForm_InterestFragment on Interest {
-        title
+        originalTitle
         slug
         preview
         id
@@ -29,7 +29,7 @@ function useDefaultValues(
   );
   return React.useMemo(
     () => ({
-      title: interest.title,
+      title: interest.originalTitle,
       slug: interest.slug,
       preview: interest.preview || "",
       interestId: interest.id,

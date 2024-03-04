@@ -8,6 +8,11 @@ module Types
       field :source_title, String, null: false
       field :slug, String, null: false
       field :preview, String
+      field :original_title, String, null: false
+
+      def original_title
+        object.title
+      end
 
       def title
         object.translate(:title)

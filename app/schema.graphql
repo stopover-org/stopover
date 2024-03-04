@@ -1103,6 +1103,7 @@ type Firm implements Node {
 
 type Interest implements Node {
   id: ID!
+  originalTitle: String!
   preview: String
   slug: String!
   sourceTitle: String!
