@@ -32,18 +32,20 @@ class User < ApplicationRecord
   # MODULES ===============================================================
   include AASM
 
-  # ATTACHMENTS ===========================================================
+  # MONETIZE ==============================================================
   #
-  # HAS_ONE ASSOCIATIONS ==========================================================
+  # BELONGS_TO ASSOCIATIONS ===============================================
+  #
+  # HAS_ONE ASSOCIATIONS ==================================================
   has_one :account, dependent: :destroy
 
-  # HAS_MANY ASSOCIATIONS =========================================================
+  # HAS_ONE THROUGH ASSOCIATIONS ==========================================
   #
-  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  # HAS_MANY ASSOCIATIONS =================================================
   #
-  # BELONGS_TO ASSOCIATIONS =======================================================
+  # HAS_MANY THROUGH ASSOCIATIONS =========================================
   #
-  # AASM STATES ================================================================
+  # AASM STATES ===========================================================
   aasm column: :status do
     state :inactive, initial: true
     state :temporary
@@ -55,19 +57,28 @@ class User < ApplicationRecord
     end
   end
 
-  # ENUMS =======================================================================
-
-  # VALIDATIONS ================================================================
+  # ENUMS =================================================================
+  #
+  # SECURE TOKEN ==========================================================
+  #
+  # SECURE PASSWORD =======================================================
+  #
+  # ATTACHMENTS ===========================================================
+  #
+  # RICH_TEXT =============================================================
+  #
+  # VALIDATIONS ===========================================================
   validates :email, uniqueness: { message: 'is taken', allow_blank: true }
   validates :phone, uniqueness: { message: 'is taken', allow_blank: true }
   validates :phone, phone: { message: 'is invalid', allow_blank: true }, unless: :skip_phone_validation
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is invalid', allow_blank: true }
 
-  # CALLBACKS ================================================================
+  # CALLBACKS =============================================================
+  before_validation :transform_email
 
-  # SCOPES =====================================================================
+  # SCOPES ================================================================
   #
-  # DELEGATIONS ==============================================================
+  # DELEGATION ============================================================
 
   def self.create_temporary
     user = create(status: :temporary, session_password: SecureRandom.hex(50))
@@ -161,6 +172,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def transform_email
+    self.email = email.downcase
+  end
 
   def skip_phone_validation
     $skip_phone_validation || false

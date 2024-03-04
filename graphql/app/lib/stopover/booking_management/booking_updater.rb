@@ -24,6 +24,16 @@ module Stopover
           end
         end
 
+        if @current_user != @booking.account.user && @booking.account.primary_email
+          @booking.notifications.create!(
+            delivery_method: 'email',
+            to: @booking.account.primary_email,
+            subject: "Your booking was changed #{event.title}",
+            content: Stopover::MailProvider.prepare_content(file: 'mailer/trips/bookings/booking_updated',
+                                                            locals: { booking: @booking })
+          )
+        end
+
         @booking.payments.processing.destroy_all
 
         GraphqlSchema.subscriptions.trigger(:booking_changed, { bookingId: @booking.id }, { booking: @booking.reload })

@@ -1,0 +1,14 @@
+<div>
+  Your
+  <a href="<%= Rails.application.credentials.frontend_url %>/trips/<%= GraphqlSchema.id_from_object(booking.trip) %>#<%= GraphqlSchema.id_from_object(booking) %>">booking</a>
+  was updated by event's manager. You can check the information in your
+  <a href="<%= Rails.application.credentials.frontend_url %>/trips/<%= GraphqlSchema.id_from_object(booking.trip) %>">trip</a>.
+</div>
+
+<div>
+  You can also change it manually, add or remove attendees.
+</div>
+
+<div>
+  You can select various options for every attendee
+</div>
