@@ -98,16 +98,27 @@ const EventScene = ({
   return (
     <Grid container spacing={2} sm={12} md={12}>
       <Grid lg={8} md={8} sm={12} xs={12}>
-        <Link
-          href={`/events/${event.id}`}
-          underline={false}
-          sx={{ padding: "0 5px" }}
-          target="_blank"
-          level="h3"
-          primary
-        >
-          {event.title}
-        </Link>
+        {event.status === "published" ? (
+          <Link
+            href={`/events/${event.id}`}
+            underline={false}
+            sx={{ padding: "0 5px" }}
+            target="_blank"
+            level="h3"
+            primary
+          >
+            {event.title}
+          </Link>
+        ) : (
+          <Typography
+            underline={false}
+            sx={{ padding: "0 5px" }}
+            level="h3"
+            color="primary"
+          >
+            {event.title}
+          </Typography>
+        )}
         <Typography level="h4" sx={{ padding: "0 5px" }}>
           {event.firm.title}
         </Typography>
