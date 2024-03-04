@@ -27,6 +27,7 @@ interface Props {
 }
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
+  marginLeft: "10px",
   [theme.breakpoints.up("md")]: {
     maxWidth: "calc(100vw - 270px)",
   },
@@ -154,7 +155,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
   }, [data, interestsQuery]);
 
   return (
-    <Grid container>
+    <Grid container spacing={2}>
       {showSidebar && (
         <Grid xs={2} container width="250px" padding="10px">
           <Sidebar
@@ -171,7 +172,7 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         container
         sx={{
           paddingTop: showSidebar ? "7px" : "20px",
-          paddingLeft: showSidebar ? "60px" : "0",
+          paddingLeft: showSidebar ? "60px" : "10px",
           flexDirection: "column",
         }}
       >
