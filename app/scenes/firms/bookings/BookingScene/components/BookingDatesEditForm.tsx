@@ -4,36 +4,38 @@ import { Autocomplete, Box, Stack } from "@mui/joy";
 import { Moment } from "moment";
 import moment from "moment/moment";
 import { useTranslation } from "react-i18next";
-import { BookingDatesEditForm_BookingFragment$key } from "artifacts/BookingDatesEditForm_BookingFragment.graphql";
 import ButtonDatePicker from "components/v2/ButtonDatePicker/ButtonDatePicker";
 import { getDate, setTime, timeFormat } from "lib/utils/dates";
 import useUniqueMomentDates from "lib/hooks/useUniqueMomentDates";
 import useTimeFromDate from "lib/hooks/useTimeFromDate";
 import SubmitButton from "components/shared/SubmitButton";
+import { BookingDatesEditForm_FirmBookingFragment$key } from "artifacts/BookingDatesEditForm_FirmBookingFragment.graphql";
 import { useBookingDatesEditForm } from "./useBookingDatesEditForm";
 
 interface BookingDatesEditFormProps {
-  bookingFragmentRef: BookingDatesEditForm_BookingFragment$key;
+  bookingFragmentRef: BookingDatesEditForm_FirmBookingFragment$key;
+  onClose: () => void;
 }
 
 const BookingDatesEditForm = ({
   bookingFragmentRef,
+  onClose,
 }: BookingDatesEditFormProps) => {
-  const booking = useFragment(
+  const booking = useFragment<BookingDatesEditForm_FirmBookingFragment$key>(
     graphql`
-      fragment BookingDatesEditForm_BookingFragment on Booking {
+      fragment BookingDatesEditForm_FirmBookingFragment on Booking {
         status
         bookedFor
         event {
           availableDates
         }
-        ...useBookingDatesEditForm_BookingFragment
+        ...useBookingDatesEditForm_FirmBookingFragment
       }
     `,
     bookingFragmentRef
   );
   const { t } = useTranslation();
-  const form = useBookingDatesEditForm(booking);
+  const form = useBookingDatesEditForm(booking, onClose);
   const dateField = form.useFormField<Moment>("date");
   const timeField = form.useFormField("time");
   const availableDates = useUniqueMomentDates(
@@ -46,6 +48,8 @@ const BookingDatesEditForm = ({
       moment(booking.bookedFor).isBefore(new Date()),
     [booking.status, booking.bookedFor]
   );
+
+  console.log(timeField, dateField);
   return (
     <form onSubmit={form.handleSubmit()}>
       <Stack

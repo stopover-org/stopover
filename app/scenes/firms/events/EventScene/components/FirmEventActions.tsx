@@ -76,10 +76,7 @@ const FirmEventActions = ({
   );
 
   const canArchive = React.useMemo(
-    () =>
-      event.status === "published" &&
-      event.firm.status === "active" &&
-      event.firm.paymentTypes.length > 0,
+    () => event.status === "published" && event.firm.status === "active",
     [event]
   );
   const canRemove = React.useMemo(() => event.status !== "removed", [event]);

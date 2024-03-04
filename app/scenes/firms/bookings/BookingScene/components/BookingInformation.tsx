@@ -1,4 +1,12 @@
-import { Box, Card, CardContent, Grid, Stack } from "@mui/joy";
+import {
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  IconButton,
+  Stack,
+  Tooltip,
+} from "@mui/joy";
 import Typography from "components/v2/Typography/Typography";
 import CopyToClipboard from "components/shared/CopyToClipboard/CopyToClipboard";
 import moment from "moment/moment";
@@ -10,6 +18,8 @@ import { graphql, useFragment } from "react-relay";
 import { BookingInformation_BookingFragment$key } from "artifacts/BookingInformation_BookingFragment.graphql";
 import { getCurrencyFormat } from "lib/utils/currencyFormatter";
 import Scrollbars from "react-custom-scrollbars-2";
+import EventIcon from "@mui/icons-material/Event";
+import EditBookingModal from "./EditBookingModal";
 
 interface BookingInformationProps {
   bookingFragmentRef: BookingInformation_BookingFragment$key;
@@ -56,10 +66,12 @@ const BookingInformation = ({
           to
           from
         }
+        ...EditBookingModal_FirmBookingFragment
       }
     `,
     bookingFragmentRef
   );
+  const [opened, setOpened] = React.useState(false);
   const { t } = useTranslation();
 
   return (
@@ -77,7 +89,25 @@ const BookingInformation = ({
               </Grid>
               <Grid xs={4}>{t("models.booking.attributes.bookedFor")}</Grid>
               <Grid xs={8}>
-                {moment(booking.bookedFor).format(dateTimeFormat)}
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  useFlexGap
+                  alignItems="center"
+                >
+                  <Typography>
+                    {moment(booking.bookedFor).format(dateTimeFormat)}
+                  </Typography>
+                  <Tooltip title="Move booking to another date">
+                    <IconButton
+                      size="sm"
+                      color="danger"
+                      onClick={() => setOpened(true)}
+                    >
+                      <EventIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Stack>
               </Grid>
               <Grid xs={4}>{t("models.event.singular")}</Grid>
               <Grid xs={8}>
@@ -145,32 +175,39 @@ const BookingInformation = ({
           <Typography level="title-lg">
             {t("models.notification.plural")}
           </Typography>
-          <Box sx={{ overflow: "relative" }}>
-            <Scrollbars
-              autoHeight
-              style={{
-                width: "100%",
-                height: "100%",
-                overflow: "hidden",
-                minHeight: "200px",
-              }}
-            >
-              {booking?.notifications?.map((notification) => (
-                <Stack
-                  direction="row"
-                  key={notification.id}
-                  spacing={2}
-                  useFlexGap
-                  padding={1}
-                >
-                  <Box sx={{ width: "300px" }}>{notification.subject}</Box>
-                  <Box sx={{ width: "150px" }}>{notification.to}</Box>
-                </Stack>
-              ))}
-            </Scrollbars>
-          </Box>
+          {booking?.notifications?.length !== 0 && (
+            <Box sx={{ overflow: "relative" }}>
+              <Scrollbars
+                autoHeight
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  overflow: "hidden",
+                  minHeight: "200px",
+                }}
+              >
+                {booking?.notifications?.map((notification) => (
+                  <Stack
+                    direction="row"
+                    key={notification.id}
+                    spacing={2}
+                    useFlexGap
+                    padding={1}
+                  >
+                    <Box sx={{ width: "300px" }}>{notification.subject}</Box>
+                    <Box sx={{ width: "150px" }}>{notification.to}</Box>
+                  </Stack>
+                ))}
+              </Scrollbars>
+            </Box>
+          )}
         </Card>
       </Grid>
+      <EditBookingModal
+        bookingFragmentRef={booking}
+        opened={opened}
+        onClose={() => setOpened(false)}
+      />
     </>
   );
 };

@@ -25,9 +25,8 @@ import CopyToClipboard from "components/shared/CopyToClipboard/CopyToClipboard";
 import Filters from "components/shared/Filters/Filters";
 import ContactEmailInput from "components/shared/tables/BookingsFirmTable/components/ContactEmailInput";
 import ContactPhoneInput from "components/shared/tables/BookingsFirmTable/components/ContactPhoneInput";
-import EventsAutocomplete from "components/shared/tables/BookingsFirmTable/components/EventsAutocomplete";
 import DateQueryInput from "components/shared/DateQueryInput/DateQueryInput";
-import { parseValue, useQuery } from "lib/hooks/useQuery";
+import { useQuery } from "lib/hooks/useQuery";
 
 interface ScheduleSceneProps {
   scheduleFragmentRef: ScheduleScene_FirmScheduleFragment$key;
@@ -98,9 +97,6 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
   const contactEmail = useQuery("contactEmail", "");
   const contactPhone = useQuery("contactPhone", "");
   const date = useQuery("bookedFor", null);
-  const eventIds = useQuery("eventIds", [], (value) =>
-    Array.from(parseValue(value))
-  );
 
   React.useEffect(() => {
     if (queryRef.current) {
@@ -112,7 +108,6 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
         filters: {
           contactEmail,
           contactPhone,
-          eventIds,
           bookedFor: date,
         },
         cursor: "0",
@@ -125,18 +120,12 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
         },
       }
     );
-  }, [contactEmail, contactPhone, eventIds, date, setCurrentPage]);
+  }, [contactEmail, contactPhone, date, setCurrentPage]);
 
   const filters = React.useMemo(
     () => ({
       contactEmail: <ContactEmailInput />,
       contactPhone: <ContactPhoneInput />,
-      eventIds: (
-        <EventsAutocomplete
-          queryKey="eventIds"
-          label={t("filters.bookings.eventIds")}
-        />
-      ),
       bookedFor: (
         <DateQueryInput
           queryKey="bookedFor"
@@ -214,7 +203,7 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
         <React.Suspense>
           <Filters
             availableFilters={filters}
-            defaultFilters={["eventIds"]}
+            defaultFilters={[]}
             scope="bookings"
           />
         </React.Suspense>

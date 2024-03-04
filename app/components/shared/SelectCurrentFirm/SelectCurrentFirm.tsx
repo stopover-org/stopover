@@ -2,6 +2,7 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { FormProvider } from "react-hook-form";
 import { Autocomplete, AutocompleteOption, Stack } from "@mui/joy";
+import { useSearchParams } from "next/navigation";
 import { useSelectCurrentFirm } from "./useSelectCurrentFirm";
 import Typography from "../../v2/Typography";
 import { SelectCurrentFirm_AccountFragment$key } from "../../../artifacts/SelectCurrentFirm_AccountFragment.graphql";
@@ -47,6 +48,14 @@ const SelectCurrentFirm = ({ accountFragmentRef }: SelectCurrentFirmProps) => {
     () => options.find(({ firmId }) => firmId === selectedFirmField.value),
     [selectedFirmField, options]
   );
+  const searchParams = useSearchParams();
+  const firmIdQueryValue = searchParams.get("firmId");
+
+  React.useEffect(() => {
+    if (firmIdQueryValue && selectedFirmField.value !== firmIdQueryValue) {
+      selectedFirmField.onChange(firmIdQueryValue);
+    }
+  }, [firmIdQueryValue]);
 
   return (
     <FormProvider {...form}>
