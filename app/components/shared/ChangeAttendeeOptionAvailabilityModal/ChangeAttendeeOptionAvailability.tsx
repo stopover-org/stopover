@@ -1,14 +1,15 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key } from "artifacts/ChangeAttendeeOptionAvailability_AttendeeOptionFragment.graphql";
 import { useChangeAttendeeOptionAvailabilityForm } from "./useChangeAttendeeOptionAvailabilityForm";
-import { ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key } from "../../../artifacts/ChangeAttendeeOptionAvailability_AttendeeOptionFragment.graphql";
 import SubmitButton from "../SubmitButton";
 
 interface RegisterAttendeeProps {
   optionFragmentRef: ChangeAttendeeOptionAvailability_AttendeeOptionFragment$key;
   onSuccess: () => void;
 }
+
 const ChangeAttendeeOptionAvailability = ({
   optionFragmentRef,
   onSuccess,

@@ -40,6 +40,7 @@ RSpec.describe Interest, type: :model do
       should validate_presence_of(:language)
       should validate_presence_of(:active)
       should validate_uniqueness_of(:slug).case_insensitive
+      should validate_uniqueness_of(:title).case_insensitive
     end
 
     it 'attachments' do

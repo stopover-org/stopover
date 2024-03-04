@@ -8,8 +8,8 @@ import SceneWrapper from "components/shared/SceneWrapper";
 import { useTranslation } from "react-i18next";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_FirmEvents_Query } from "artifacts/scene_FirmEvents_Query.graphql";
-import SidebarContent from "../../../components/shared/SidebarContent/SidebarContent";
-import EventsScene from "../../../scenes/firms/events/EventsScene/EventsScene";
+import SidebarContent from "components/shared/SidebarContent/SidebarContent";
+import EventsScene from "scenes/firms/events/EventsScene/EventsScene";
 
 const Query = graphql`
   query scene_FirmEvents_Query {

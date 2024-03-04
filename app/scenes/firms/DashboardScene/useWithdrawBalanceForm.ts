@@ -2,9 +2,9 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useWithdrawBalanceForm_WithdrawBalanceMutation } from "../../../artifacts/useWithdrawBalanceForm_WithdrawBalanceMutation.graphql";
-import { useWithdrawBalanceForm_BalanceFragment$key } from "../../../artifacts/useWithdrawBalanceForm_BalanceFragment.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { useWithdrawBalanceForm_WithdrawBalanceMutation } from "artifacts/useWithdrawBalanceForm_WithdrawBalanceMutation.graphql";
+import { useWithdrawBalanceForm_BalanceFragment$key } from "artifacts/useWithdrawBalanceForm_BalanceFragment.graphql";
 
 interface WithdrawBalanceFields {}
 

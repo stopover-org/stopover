@@ -16,7 +16,7 @@ import { graphql, useFragment } from "react-relay";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
 import { useTranslation } from "react-i18next";
-import Button from "../../v2/Button";
+import Button from "components/v2/Button";
 import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 import ChangeBookingOptionAvailability from "./ChangeBookingOptionAvailability";
 import { ChangeBookingOptionAvailabilityModal_BookingOptionFragment$key } from "../../../artifacts/ChangeBookingOptionAvailabilityModal_BookingOptionFragment.graphql";

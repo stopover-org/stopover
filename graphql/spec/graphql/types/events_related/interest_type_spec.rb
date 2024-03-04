@@ -52,8 +52,10 @@ RSpec.describe Types::EventsRelated::InterestType, type: :graphql_type do
       <<-GRAPHQL
         query {
           interests {
-            title
-            sourceTitle
+            nodes {
+              title
+              sourceTitle
+            }
           }
         }
       GRAPHQL
@@ -64,8 +66,8 @@ RSpec.describe Types::EventsRelated::InterestType, type: :graphql_type do
                                                              .and_return('Translated Title')
       result = subject
 
-      expect(result.dig(:data, :interests, 0, :title)).to eq('Translated Title')
-      expect(result.dig(:data, :interests, 0, :sourceTitle)).to eq('Source Title')
+      expect(result.dig(:data, :interests, :nodes, 0, :title)).to eq('Translated Title')
+      expect(result.dig(:data, :interests, :nodes, 0, :sourceTitle)).to eq('Source Title')
     end
   end
 end

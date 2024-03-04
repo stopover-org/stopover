@@ -9,6 +9,7 @@ import { EventScene_CurrentUserFragment$key } from "artifacts/EventScene_Current
 import useStatusColor from "lib/hooks/useStatusColor";
 import Link from "components/v2/Link";
 import { parseValue, useQuery, useUpdateQuery } from "lib/hooks/useQuery";
+import Section from "components/v2/Section/Section";
 import BookingsInformation from "./components/BookingsInformation";
 import SchedulesInformation from "./components/SchedulesInformation";
 import EventOptionsInformation from "./components/EventOptionsInformation";
@@ -16,7 +17,6 @@ import GeneralInformation from "./components/GeneralInformation";
 import StripeIntegrationsInformation from "./components/StripeIntegrationsInformation";
 import EventPlacementsInformation from "./components/EventPlacementsInformation";
 import FirmEventActions from "./components/FirmEventActions";
-import Section from "../../../../components/v2/Section/Section";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_FirmEventFragment$key;

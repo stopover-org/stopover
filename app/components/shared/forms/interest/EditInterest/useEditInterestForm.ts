@@ -1,0 +1,77 @@
+import React from "react";
+import * as Yup from "yup";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { graphql, useFragment } from "react-relay";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useEditInterestForm_UpdateInterestMutation } from "artifacts/useEditInterestForm_UpdateInterestMutation.graphql";
+import { useEditInterestForm_InterestFragment$key } from "artifacts/useEditInterestForm_InterestFragment.graphql";
+
+export interface CreateInterestFormFields {
+  title: string;
+  slug: string;
+  preview: string;
+  interestId: string;
+}
+
+function useDefaultValues(
+  interestFragmentRef: useEditInterestForm_InterestFragment$key
+): CreateInterestFormFields {
+  const interest = useFragment<useEditInterestForm_InterestFragment$key>(
+    graphql`
+      fragment useEditInterestForm_InterestFragment on Interest {
+        title
+        slug
+        preview
+        id
+      }
+    `,
+    interestFragmentRef
+  );
+  return React.useMemo(
+    () => ({
+      title: interest.title,
+      slug: interest.slug,
+      preview: interest.preview || "",
+      interestId: interest.id,
+    }),
+    []
+  );
+}
+
+const validationSchema = Yup.object().shape({
+  title: Yup.string().required(),
+  slug: Yup.string().required(),
+  preview: Yup.string().required(),
+});
+
+export function useEditInterestForm(
+  interestFragmentRef: useEditInterestForm_InterestFragment$key,
+  onComplete: () => void
+) {
+  return useMutationForm<
+    CreateInterestFormFields,
+    useEditInterestForm_UpdateInterestMutation
+  >(
+    graphql`
+      mutation useEditInterestForm_UpdateInterestMutation(
+        $input: UpdateInterestInput!
+      ) {
+        updateInterest(input: $input) {
+          interest {
+            title
+            slug
+            preview
+          }
+          notification
+          errors
+        }
+      }
+    `,
+    (values) => ({ input: values }),
+    {
+      defaultValues: useDefaultValues(interestFragmentRef),
+      resolver: yupResolver(validationSchema),
+      onCompleted: onComplete,
+    }
+  );
+}

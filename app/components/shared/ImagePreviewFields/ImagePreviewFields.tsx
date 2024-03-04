@@ -3,9 +3,9 @@ import React from "react";
 import useFormContext from "../../../lib/hooks/useFormContext";
 import ImagesPreview from "../ImagesPreview";
 
-const ImagePreviewFields = () => {
+const ImagePreviewFields = ({ field = "image" }: { field?: string }) => {
   const form = useFormContext();
-  const imageField = form.useFormField<string>("image");
+  const imageField = form.useFormField<string>(field);
   return (
     <Grid xs={12}>
       <Stack flexDirection="row" flexWrap="wrap">

@@ -7,7 +7,7 @@ import useStatusColor from "lib/hooks/useStatusColor";
 import Tag from "components/v2/Tag/Tag";
 import Link from "components/v2/Link";
 import { schedules_useSchedulesColumns_SchedulesConnectionFragment$key } from "artifacts/schedules_useSchedulesColumns_SchedulesConnectionFragment.graphql";
-import useEdges from "../../../../lib/hooks/useEdges";
+import useEdges from "lib/hooks/useEdges";
 
 const TagColor = ({ status }: { status: string }) => {
   const color = useStatusColor({

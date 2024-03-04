@@ -15,8 +15,8 @@ import SubmitButton from "components/shared/SubmitButton";
 import Button from "components/v2/Button/Button";
 import { FormProvider } from "react-hook-form";
 import { EditEventTourPlanModal_EventFragment$key } from "artifacts/EditEventTourPlanModal_EventFragment.graphql";
+import TourPlanFieldset from "components/shared/fieldsets/tourPlan/TourPlanFieldset";
 import { useEditEventTourPlanForm } from "./useEditEventTourPlanForm";
-import TourPlanFieldset from "../../../fieldsets/tourPlan/TourPlanFieldset";
 
 interface EditEventTourPlanModalProps {
   eventFragmentRef: EditEventTourPlanModal_EventFragment$key;

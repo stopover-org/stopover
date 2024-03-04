@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import FirmScene from "scenes/attendees/firms/FirmScene";
 import { scene_AttendeesFirm_Query } from "artifacts/scene_AttendeesFirm_Query.graphql";
-import NotFound from "../../../components/shared/NotFound/NotFound";
+import NotFound from "components/shared/NotFound/NotFound";
 
 const Query = graphql`
   query scene_AttendeesFirm_Query($id: ID!) {

@@ -58,6 +58,7 @@ class Interest < ApplicationRecord
   # VALIDATIONS ===========================================================
   validates :title, :language, :active, presence: true
   validates :slug, uniqueness: { case_sensitive: false }
+  validates :title, uniqueness: { case_sensitive: false }
 
   # CALLBACKS =============================================================
   before_validation :set_slug

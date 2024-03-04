@@ -8,7 +8,7 @@ module Types
 
     field :current_user, Types::UsersRelated::UserType, null: false
 
-    field :interests, [Types::EventsRelated::InterestType], null: false
+    field :interests, Types::EventsRelated::InterestType.connection_type, null: false
 
     field :events, Types::EventsRelated::EventType.connection_type, null: false do
       argument :filters, Types::Filters::EventsFilter, required: false

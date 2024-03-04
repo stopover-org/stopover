@@ -1,9 +1,9 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import SubmitButton from "../../../../components/shared/SubmitButton";
+import SubmitButton from "components/shared/SubmitButton";
+import { WithdrawBalanceForm_BalanceFragment$key } from "artifacts/WithdrawBalanceForm_BalanceFragment.graphql";
 import { useWithdrawBalanceForm } from "../useWithdrawBalanceForm";
-import { WithdrawBalanceForm_BalanceFragment$key } from "../../../../artifacts/WithdrawBalanceForm_BalanceFragment.graphql";
 
 const WithdrawBalanceForm = ({
   balanceFragmentRef,
