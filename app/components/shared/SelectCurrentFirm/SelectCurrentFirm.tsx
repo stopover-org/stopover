@@ -32,7 +32,6 @@ const SelectCurrentFirm = ({ accountFragmentRef }: SelectCurrentFirmProps) => {
     `,
     accountFragmentRef
   );
-  const formRef = React.useRef<HTMLFormElement>(null);
   const form = useSelectCurrentFirm(account);
   const selectedFirmField = form.useFormField("firmId");
   const options = React.useMemo(
@@ -53,16 +52,14 @@ const SelectCurrentFirm = ({ accountFragmentRef }: SelectCurrentFirmProps) => {
   const firmIdQueryValue = searchParams.get("firmId");
 
   React.useEffect(() => {
-    if (firmIdQueryValue && formRef.current) {
+    if (firmIdQueryValue && selectedFirmField.value !== firmIdQueryValue) {
       selectedFirmField.onChange(firmIdQueryValue);
-
-      formRef.current.submit();
     }
-  }, [firmIdQueryValue, formRef.current]);
+  }, [firmIdQueryValue]);
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit()} ref={formRef}>
+      <form onSubmit={form.handleSubmit()}>
         <Autocomplete
           variant="plain"
           disableClearable
