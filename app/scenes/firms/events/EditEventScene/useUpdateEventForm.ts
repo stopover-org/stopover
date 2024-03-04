@@ -18,13 +18,6 @@ export interface UpdateEventFields {
   description: string;
   durationTime: string;
   endDate: Moment | null;
-  eventOptions: Array<{
-    id?: string;
-    title: string;
-    organizerPriceCents: number;
-    builtIn: boolean;
-    forAttendee: boolean;
-  }>;
   eventType: EventTypeEnum;
   images?: string[];
   maxAttendees?: number | null;
@@ -75,29 +68,12 @@ function useDefaultValues(
         singleDaysWithTime
         title
         language
-        eventOptions {
-          builtIn
-          forAttendee
-          id
-          title
-          description
-          organizerPrice {
-            cents
-          }
-        }
       }
     `,
     eventFragmentRef
   );
   return React.useMemo(
     () => ({
-      eventOptions: event.eventOptions.map((opt) => ({
-        builtIn: opt.builtIn,
-        forAttendee: opt.forAttendee,
-        id: opt.id,
-        organizerPriceCents: opt.organizerPrice!.cents! / 100,
-        title: opt.title,
-      })),
       recurringDates: event.recurringDaysWithTime.map((dt) => {
         const splittedDt = dt.split(" ");
         return {
@@ -137,18 +113,6 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().required("Required"),
   durationTime: Yup.string().required("Required"),
   endDate: Yup.date().transform(momentTransform).nullable(),
-  eventOptions: Yup.array()
-    .of(
-      Yup.object().shape({
-        title: Yup.string().required("Required"),
-        organizerPriceCents: Yup.number()
-          .transform(numberTransform)
-          .required("Required"),
-        builtIn: Yup.boolean().required("Required"),
-        forAttendee: Yup.boolean().required("Required"),
-      })
-    )
-    .required("Required"),
   eventType: Yup.string(),
   images: Yup.array(),
   maxAttendees: Yup.number().transform(numberTransform),
@@ -211,7 +175,6 @@ export function useUpdateEventForm(
       singleDates,
       recurringDates,
       id,
-      eventOptions,
       requiresDeposit,
       ...values
     }) => ({
@@ -233,10 +196,6 @@ export function useUpdateEventForm(
               .padStart(2, "0")}`
           ).format(dateTimeFormat)
         ),
-        eventOptions: eventOptions.map(({ organizerPriceCents, ...opt }) => ({
-          organizerPriceCents: organizerPriceCents * 100,
-          ...opt,
-        })),
         organizerPricePerUomCents: organizerPricePerUomCents! * 100,
         depositAmountCents: depositAmountCents! * 100,
         requiresDeposit: requiresDeposit

@@ -15,12 +15,6 @@ import { momentTransform, numberTransform } from "lib/utils/transforms";
 export interface CreateEventFields {
   description: string;
   durationTime: string;
-  eventOptions: Array<{
-    title: string;
-    organizerPriceCents: number;
-    builtIn: boolean;
-    forAttendee: boolean;
-  }>;
   images?: string[];
   maxAttendees?: number;
   minAttendees?: number;
@@ -50,7 +44,6 @@ function useDefaultValues(): Partial<CreateEventFields> {
       depositAmountCents: 0,
       durationTime: "",
       endDate: null,
-      eventOptions: [],
       images: [],
       organizerPricePerUomCents: 0,
       recurringDates: [{ day: null, hour: null, minute: null }],
@@ -67,18 +60,6 @@ function useDefaultValues(): Partial<CreateEventFields> {
 const validationSchema = Yup.object().shape({
   description: Yup.string().required("Required"),
   durationTime: Yup.string().required("Required"),
-  eventOptions: Yup.array()
-    .of(
-      Yup.object().shape({
-        title: Yup.string().required("Required"),
-        organizerPriceCents: Yup.number()
-          .transform(numberTransform)
-          .required("Required"),
-        builtIn: Yup.boolean().required("Required"),
-        forAttendee: Yup.boolean().required("Required"),
-      })
-    )
-    .required("Required"),
   houseNumber: Yup.string().nullable(),
   images: Yup.array(),
   maxAttendees: Yup.number().transform(numberTransform),
@@ -140,7 +121,6 @@ export function useCreateEventForm() {
       organizerPricePerUomCents,
       singleDates,
       recurringDates,
-      eventOptions,
       depositAmountCents,
       requiresDeposit,
       ...values
@@ -162,10 +142,6 @@ export function useCreateEventForm() {
               .padStart(2, "0")}`
           ).format(dateTimeFormat)
         ),
-        eventOptions: eventOptions.map(({ organizerPriceCents, ...opt }) => ({
-          organizerPriceCents: organizerPriceCents * 100,
-          ...opt,
-        })),
         organizerPricePerUomCents: organizerPricePerUomCents! * 100,
         depositAmountCents: (depositAmountCents || 0) * 100,
         requiresDeposit: requiresDeposit
