@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_InterestsScene_Query } from "artifacts/scene_InterestsScene_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent/SidebarContent";
+import InterestsScene from "scenes/firms/interests";
 
 const Query = graphql`
   query scene_InterestsScene_Query {
@@ -19,6 +20,7 @@ const Query = graphql`
         ...SidebarContent_AccountFragment
       }
     }
+    ...InterestsScene_QueryFragment
   }
 `;
 
@@ -30,7 +32,7 @@ const Scene = ({
   const data = usePreloadedQuery(Query, queryRef);
   const { t } = useTranslation();
 
-  useDocumentTitle(`${t("layout.header.firmSettings")}`);
+  useDocumentTitle(`${t("models.interest.plural")}`);
 
   return (
     <SceneWrapper>
@@ -40,7 +42,7 @@ const Scene = ({
           redirectTo="/firms/new"
         >
           <SidebarContent accountFragmentRef={data.currentUser.account}>
-            whatever
+            <InterestsScene queryFragmentRef={data} />
           </SidebarContent>
         </AuthGuard>
       </Layout>

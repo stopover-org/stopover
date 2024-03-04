@@ -1,6 +1,6 @@
 import React from "react";
-import Typography from "../../Typography";
-import { useIds } from "../../../../lib/hooks/useIds";
+import Typography from "components/v2/Typography";
+import { useIds } from "lib/hooks/useIds";
 
 export interface TableBodyCellValue
   extends Record<

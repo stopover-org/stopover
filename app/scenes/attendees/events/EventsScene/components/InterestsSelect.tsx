@@ -26,10 +26,12 @@ const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
     graphql`
       fragment InterestsSelect_InterestsFragment on Query {
         interests {
-          id
-          title
-          slug
-          preview
+          nodes {
+            id
+            title
+            slug
+            preview
+          }
         }
       }
     `,
@@ -53,9 +55,11 @@ const InterestsSelect = ({ queryFragmentRef }: InterestsSelectProps) => {
         {t("scenes.attendees.events.eventsScene.sidebar.categoriesSubheader")}
       </Typography>
       <List sx={{ height: "500px", overflow: "auto" }}>
-        {interests?.map((interest, index) => (
+        {interests?.nodes?.map((interest, index) => (
           <React.Fragment key={interest.id}>
-            {index !== 0 && index !== interests.length && <ListDivider />}
+            {index !== 0 && index !== interests?.nodes?.length && (
+              <ListDivider />
+            )}
             <ListItem
               onClick={onClick(interest.slug)}
               color={

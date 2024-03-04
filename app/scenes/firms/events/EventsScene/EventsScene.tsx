@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
-import EventsTable from "../../../../components/shared/tables/EventsTable";
-import { EventsScene_FirmFragment$key } from "../../../../artifacts/EventsScene_FirmFragment.graphql";
+import EventsTable from "components/shared/tables/EventsTable";
+import { EventsScene_FirmFragment$key } from "artifacts/EventsScene_FirmFragment.graphql";
 
 interface EventsSceneProps {
   firmFragmentRef: EventsScene_FirmFragment$key;

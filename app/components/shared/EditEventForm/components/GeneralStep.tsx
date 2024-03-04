@@ -17,8 +17,10 @@ const GeneralStep = () => {
     graphql`
       query GeneralStep_InterestsQuery {
         interests {
-          title
-          id
+          nodes {
+            title
+            id
+          }
         }
       }
     `,
@@ -34,14 +36,15 @@ const GeneralStep = () => {
     () =>
       interestIds.value.map((id: string) => ({
         value: id,
-        label: data?.interests.find((interest) => interest.id === id)?.title,
+        label: data?.interests?.nodes?.find((interest) => interest.id === id)
+          ?.title,
       })),
-    [interestIds, data?.interests]
+    [interestIds, data?.interests?.nodes]
   );
 
   const availableInterests = React.useMemo(
     () =>
-      data?.interests?.filter(
+      data?.interests?.nodes?.filter(
         (interest) => !interestIds.value.includes(interest.id)
       ),
     [interestIds.value, data?.interests]

@@ -1,11 +1,11 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import Table from "../../../../../components/v2/Table";
-import { AttendeesTable_BookingFragment$key } from "../../../../../artifacts/AttendeesTable_BookingFragment.graphql";
+import Table from "components/v2/Table";
+import { AttendeesTable_BookingFragment$key } from "artifacts/AttendeesTable_BookingFragment.graphql";
 import {
   useAttendeesColumns,
   useAttendeesHeaders,
-} from "../../../../../components/shared/tables/columns/attendees";
+} from "components/shared/tables/columns/attendees";
 
 interface AttendeesTableProps {
   bookingFragmentRef: AttendeesTable_BookingFragment$key;

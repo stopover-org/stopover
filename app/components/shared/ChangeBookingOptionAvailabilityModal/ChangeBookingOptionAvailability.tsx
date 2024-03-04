@@ -1,8 +1,8 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { ChangeBookingOptionAvailability_BookingOptionFragment$key } from "artifacts/ChangeBookingOptionAvailability_BookingOptionFragment.graphql";
 import { useChangeBookingOptionAvailabilityForm } from "./useChangeBookingOptionAvailabilityForm";
-import { ChangeBookingOptionAvailability_BookingOptionFragment$key } from "../../../artifacts/ChangeBookingOptionAvailability_BookingOptionFragment.graphql";
 import SubmitButton from "../SubmitButton";
 
 interface RegisterAttendeeProps {

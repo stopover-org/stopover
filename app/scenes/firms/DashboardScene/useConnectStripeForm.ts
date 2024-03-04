@@ -3,8 +3,8 @@ import * as Yup from "yup";
 import { graphql } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useConnectStripeForm_CreateStripeAccountMutation } from "../../../artifacts/useConnectStripeForm_CreateStripeAccountMutation.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { useConnectStripeForm_CreateStripeAccountMutation } from "artifacts/useConnectStripeForm_CreateStripeAccountMutation.graphql";
 
 interface ConnectStripeFields {}
 

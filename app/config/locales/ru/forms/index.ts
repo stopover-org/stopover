@@ -25,8 +25,10 @@ import editBookingCancellationsForm from "./editBookingCancellationsForm";
 import editEventTourPlan from "./editEventTourPlan";
 import inviteUser from "./inviteUser";
 import createNotification from "./createNotification";
+import createInterest from "./createInterest";
 
 export default merge(
+  createInterest,
   createNotification,
   verifyStripeConnect,
   declineStripeConnect,

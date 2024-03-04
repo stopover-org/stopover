@@ -2,13 +2,13 @@ import { Chip, Divider, Grid } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import Section from "../../../../components/v2/Section";
-import { BalanceSection_FirmFragment$key } from "../../../../artifacts/BalanceSection_FirmFragment.graphql";
-import Typography from "../../../../components/v2/Typography";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
-import { capitalize } from "../../../../lib/utils/capitalize";
+import Section from "components/v2/Section";
+import { BalanceSection_FirmFragment$key } from "artifacts/BalanceSection_FirmFragment.graphql";
+import Typography from "components/v2/Typography";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import { capitalize } from "lib/utils/capitalize";
+import StripeConnectsTable from "components/shared/tables/StripeConnectsTable";
 import ConnectStripeForm from "./ConnectStripeForm";
-import StripeConnectsTable from "../../../../components/shared/tables/StripeConnectsTable";
 import WithdrawBalanceForm from "./WithdrawBalanceForm";
 
 interface BalanceSectionProps {

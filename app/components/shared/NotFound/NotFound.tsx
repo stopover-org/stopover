@@ -2,7 +2,7 @@ import { Grid } from "@mui/joy";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
-import Typography from "../../v2/Typography/Typography";
+import Typography from "components/v2/Typography/Typography";
 
 const NotFound = () => {
   const pathname = usePathname();

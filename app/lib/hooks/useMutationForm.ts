@@ -101,6 +101,7 @@ function useMutationForm<
         }
 
         if (completedRest[0]) {
+          form.reset();
           if (onCompleted instanceof Function) {
             // @ts-ignore
             onCompleted(...completedRest);

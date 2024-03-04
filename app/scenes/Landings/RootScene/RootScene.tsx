@@ -30,9 +30,11 @@ const RootScene = ({ queryFragmentRef }: Props) => {
     graphql`
       fragment RootScene_QueryFragment on Query {
         interests {
-          title
-          slug
-          preview
+          nodes {
+            title
+            slug
+            preview
+          }
         }
         events(filters: { today: true }) {
           edges {
@@ -129,8 +131,8 @@ const RootScene = ({ queryFragmentRef }: Props) => {
             }}
           >
             {interests
-              ? interests
-                  .slice(0, interests.length / 3)
+              ? interests.nodes
+                  .slice(0, interests.nodes.length / 3)
                   .map(({ title, slug, preview }) => (
                     <React.Fragment key={slug}>
                       <ListItem
@@ -163,8 +165,11 @@ const RootScene = ({ queryFragmentRef }: Props) => {
             }}
           >
             {interests
-              ? interests
-                  .slice(interests.length / 3, (interests.length / 3) * 2)
+              ? interests.nodes
+                  .slice(
+                    interests.nodes.length / 3,
+                    (interests.nodes.length / 3) * 2
+                  )
                   .map(({ title, slug, preview }) => (
                     <React.Fragment key={slug}>
                       <ListItem
@@ -196,8 +201,11 @@ const RootScene = ({ queryFragmentRef }: Props) => {
             }}
           >
             {interests
-              ? interests
-                  .slice((interests.length / 3) * 2, interests.length)
+              ? interests.nodes
+                  .slice(
+                    (interests.nodes.length / 3) * 2,
+                    interests.nodes.length
+                  )
                   .map(({ title, slug, preview }) => (
                     <React.Fragment key={slug}>
                       <ListItem

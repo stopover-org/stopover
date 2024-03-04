@@ -1,7 +1,6 @@
 import React from "react";
-import Button from "../../../../components/v2/Button";
+import SubmitButton from "components/shared/SubmitButton";
 import { useConnectStripeForm } from "../useConnectStripeForm";
-import SubmitButton from "../../../../components/shared/SubmitButton";
 
 const ConnectStripeForm = () => {
   const form = useConnectStripeForm();

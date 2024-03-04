@@ -1,8 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Button from "../../../../components/v2/Button";
-import { useRemoveFirm } from "../useRemoveFirm";
-import SubmitButton from "../../../../components/shared/SubmitButton";
+import Button from "components/v2/Button";
 import RemoveFirmModal from "./RemoveFirmModal";
 
 const RemoveFirm = () => {

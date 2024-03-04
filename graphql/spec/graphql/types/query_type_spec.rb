@@ -220,7 +220,9 @@ RSpec.describe Types::QueryType, type: :graphql_type do
             }
           }
           interests {
-            id
+            nodes {
+              id
+            }
           }
           eventFilters {
             city
@@ -265,7 +267,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
 
       assert_equal GraphqlSchema.id_from_object(current_user), result.dig(:data, :currentUser, :id)
       assert_equal GraphqlSchema.id_from_object(event), result.dig(:data, :events, :edges, 0, :node, :id)
-      assert_equal GraphqlSchema.id_from_object(interest), result.dig(:data, :interests, 0, :id)
+      assert_equal GraphqlSchema.id_from_object(interest), result.dig(:data, :interests, :nodes, 0, :id)
       assert_equal({ city: '',
                      startDate: Time.zone.now.at_beginning_of_day.iso8601,
                      endDate: (Time.zone.now.at_end_of_day + 1.year).iso8601,
@@ -349,8 +351,10 @@ RSpec.describe Types::QueryType, type: :graphql_type do
       <<-GRAPHQL
         query {
           interests {
-            id
-            slug
+              nodes {
+                id
+                slug
+              }
           }
         }
       GRAPHQL
@@ -363,7 +367,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     it 'success' do
       result = subject
 
-      expect(result.dig(:data, :interests).count).to eq(50)
+      expect(result.dig(:data, :interests, :nodes).count).to eq(50)
     end
   end
 

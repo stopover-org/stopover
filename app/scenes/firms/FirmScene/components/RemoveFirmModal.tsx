@@ -1,19 +1,10 @@
-import {
-  Box,
-  DialogActions,
-  DialogContent,
-  Divider,
-  Modal,
-  ModalDialog,
-  Stack,
-} from "@mui/joy";
+import { DialogActions, Divider, Modal, ModalDialog, Stack } from "@mui/joy";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { graphql, useFragment } from "react-relay";
+import SubmitButton from "components/shared/SubmitButton/SubmitButton";
+import Button from "components/v2/Button";
 import { useRemoveFirm } from "../useRemoveFirm";
-import SubmitButton from "../../../../components/shared/SubmitButton/SubmitButton";
-import Button from "../../../../components/v2/Button";
 
 interface RemoveFirmModalProps {
   open: boolean;
