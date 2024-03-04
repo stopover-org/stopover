@@ -174,7 +174,7 @@ class User < ApplicationRecord
   private
 
   def transform_email
-    self.email = email.downcase
+    self.email = email&.downcase
   end
 
   def skip_phone_validation

@@ -25,6 +25,22 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  describe 'model setup' do
+    it 'relations' do
+      should have_one(:account).dependent(:destroy)
+    end
+
+    it 'monetize' do
+      # PASS
+    end
+
+    context 'callbacks' do
+      it 'transform email' do
+        user = User.create!(email: 'MAIL@mail.com')
+        expect(user.email).to eq('mail@mail.com')
+      end
+    end
+  end
   describe 'create user from scratch' do
     before(:each) do
       allow(Stopover::SmsProvider).to receive(:deliver)
