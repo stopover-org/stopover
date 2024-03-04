@@ -26,8 +26,10 @@ import editEventTourPlan from "./editEventTourPlan";
 import inviteUser from "./inviteUser";
 import createNotification from "./createNotification";
 import createInterest from "./createInterest";
+import createEventOption from "./createEventOption";
 
 export default merge(
+  createEventOption,
   createInterest,
   createNotification,
   verifyStripeConnect,

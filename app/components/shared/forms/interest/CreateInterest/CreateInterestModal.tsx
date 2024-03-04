@@ -34,7 +34,7 @@ const CreateInterestModal = ({ open, onClose }: CreateInterestModalProps) => {
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">
         <ModalClose />
-        <DialogTitle sx={{ marginRight: "30px", marginLeft: "30px" }}>
+        <DialogTitle>
           <Stack flexDirection="row" alignItems="center" useFlexGap spacing={1}>
             {t("forms.createInterest.modal.header")}
           </Stack>

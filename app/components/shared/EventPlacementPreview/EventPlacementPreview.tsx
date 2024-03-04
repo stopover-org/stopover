@@ -3,7 +3,7 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { Box } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import Typography from "../../v2/Typography/Typography";
+import Typography from "components/v2/Typography/Typography";
 import EventPlacementPreviewModal from "./EventPlacementPreviewModal";
 
 interface EventPlacementPreviewProps {
