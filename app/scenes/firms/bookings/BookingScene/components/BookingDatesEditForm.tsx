@@ -49,7 +49,6 @@ const BookingDatesEditForm = ({
     [booking.status, booking.bookedFor]
   );
 
-  console.log(timeField, dateField);
   return (
     <form onSubmit={form.handleSubmit()}>
       <Stack
@@ -93,7 +92,7 @@ const BookingDatesEditForm = ({
 
                 timeField.onChange(value);
               }}
-              sx={{ margin: 0, maxWidth: "125px" }}
+              sx={{ margin: 0 }}
             />
           </Box>
         )}

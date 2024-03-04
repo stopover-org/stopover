@@ -8,10 +8,13 @@ import Typography from "components/v2/Typography/Typography";
 import Section from "components/v2/Section";
 import Link from "components/v2/Link";
 import BookingsFirmTable from "components/shared/tables/BookingsFirmTable/BookingsFirmTable";
+import moment from "moment";
+import { dateFormat } from "lib/utils/dates";
 
 interface BookingSectionProps {
   firmFragmentRef: BookingsSection_FirmFragment$key;
 }
+
 const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
   const firm = useFragment(
     graphql`
@@ -26,7 +29,9 @@ const BookingsSection = ({ firmFragmentRef }: BookingSectionProps) => {
   return (
     <Section>
       <Grid xs={12}>
-        <Typography level="h3">{t("models.booking.plural")}</Typography>
+        <Typography level="h3">
+          {t("models.booking.plural")} - {moment().format(dateFormat)}
+        </Typography>
       </Grid>
       <Grid xs={12}>
         <BookingsFirmTable withFilters={false} firmFragmentRef={firm} />

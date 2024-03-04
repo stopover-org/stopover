@@ -25,7 +25,6 @@ import CopyToClipboard from "components/shared/CopyToClipboard/CopyToClipboard";
 import Filters from "components/shared/Filters/Filters";
 import ContactEmailInput from "components/shared/tables/BookingsFirmTable/components/ContactEmailInput";
 import ContactPhoneInput from "components/shared/tables/BookingsFirmTable/components/ContactPhoneInput";
-import DateQueryInput from "components/shared/DateQueryInput/DateQueryInput";
 import { useQuery } from "lib/hooks/useQuery";
 
 interface ScheduleSceneProps {
@@ -96,7 +95,6 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
   const queryRef = React.useRef<Disposable>();
   const contactEmail = useQuery("contactEmail", "");
   const contactPhone = useQuery("contactPhone", "");
-  const date = useQuery("bookedFor", null);
 
   React.useEffect(() => {
     if (queryRef.current) {
@@ -108,7 +106,6 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
         filters: {
           contactEmail,
           contactPhone,
-          bookedFor: date,
         },
         cursor: "0",
       },
@@ -120,18 +117,12 @@ const ScheduleScene = ({ scheduleFragmentRef }: ScheduleSceneProps) => {
         },
       }
     );
-  }, [contactEmail, contactPhone, date, setCurrentPage]);
+  }, [contactEmail, contactPhone, setCurrentPage]);
 
   const filters = React.useMemo(
     () => ({
       contactEmail: <ContactEmailInput />,
       contactPhone: <ContactPhoneInput />,
-      bookedFor: (
-        <DateQueryInput
-          queryKey="bookedFor"
-          label={t("filters.bookings.bookedFor")}
-        />
-      ),
     }),
     []
   );

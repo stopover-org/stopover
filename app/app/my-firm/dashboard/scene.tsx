@@ -12,7 +12,10 @@ import DashboardScene from "scenes/firms/DashboardScene";
 import { scene_Dashboard_Query } from "artifacts/scene_Dashboard_Query.graphql";
 
 const Query = graphql`
-  query scene_Dashboard_Query($bookingsFilter: BookingsFilter) {
+  query scene_Dashboard_Query(
+    $bookingsFilter: BookingsFilter
+    $schedulesFilter: SchedulesFilter
+  ) {
     currentUser {
       ...Layout_CurrentUserFragment
       ...DashboardScene_CurrentUserFragment

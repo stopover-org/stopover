@@ -6,10 +6,10 @@ import { BookingsFirmTableFirmPaginationQuery } from "artifacts/BookingsFirmTabl
 import { useQuery } from "lib/hooks/useQuery";
 import Filters from "components/shared/Filters";
 import { useTranslation } from "react-i18next";
+import DateQueryInput from "components/shared/DateQueryInput";
 import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
 import ContactEmailInput from "./components/ContactEmailInput";
 import ContactPhoneInput from "./components/ContactPhoneInput";
-import DateQueryInput from "../../DateQueryInput";
 
 interface BookingFirmTableProps {
   firmFragmentRef: BookingsFirmTable_BookingsFirmPaginationFragment$key;

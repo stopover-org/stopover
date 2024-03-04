@@ -5,7 +5,6 @@ import { DashboardScene_CurrentUserFragment$key } from "artifacts/DashboardScene
 import FirmSection from "./components/FirmSection";
 import BookingsSection from "./components/BookingsSection";
 import BalanceSection from "./components/BalanceSection";
-import PaymentsSection from "./components/PaymentsSection";
 import SchedulesSection from "./components/SchedulesSection";
 import EventsSection from "./components/EventsSection";
 
@@ -70,15 +69,6 @@ const DashboardScene = ({
 
       <Grid lg={8} md={8} sm={12} xs={12}>
         <SchedulesSection firmFragmentRef={firm} />
-      </Grid>
-      <Grid
-        lg={4}
-        md={4}
-        display={{ xs: "none", sm: "none", md: "block", lg: "block" }}
-      />
-
-      <Grid lg={8} md={8} sm={12} xs={12}>
-        <PaymentsSection firmFragmentRef={firm} />
       </Grid>
       <Grid
         lg={4}

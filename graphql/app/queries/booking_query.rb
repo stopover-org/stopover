@@ -16,9 +16,9 @@ class BookingQuery
 
   def execute(offset: 0, limit: @limit)
     if query
-      Booking.search(query, where: conditions, offset: offset, limit: limit)
+      Booking.search(query, order: { booked_for: :asc }, where: conditions, offset: offset, limit: limit)
     else
-      Booking.search(where: conditions, offset: offset, limit: limit)
+      Booking.search(order: { booked_for: :asc }, where: conditions, offset: offset, limit: limit)
     end
   end
 

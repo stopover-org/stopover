@@ -4,13 +4,17 @@ import scene_Dashboard_QueryNode, {
 } from "artifacts/scene_Dashboard_Query.graphql";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
+import moment from "moment";
 import QueryWrapper from "./query";
 
 const Page = async () => {
   const preloadedQuery = await loadSerializableQuery<
     typeof scene_Dashboard_QueryNode,
     scene_Dashboard_Query
-  >(scene_Dashboard_QueryNode.params, {});
+  >(scene_Dashboard_QueryNode.params, {
+    bookingsFilter: { bookedFor: moment() },
+    schedulesFilter: { scheduledFor: moment() },
+  });
 
   return (
     <QueryWrapper
