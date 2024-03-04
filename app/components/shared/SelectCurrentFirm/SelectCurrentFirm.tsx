@@ -2,6 +2,7 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { FormProvider } from "react-hook-form";
 import { Autocomplete, AutocompleteOption, Stack } from "@mui/joy";
+import { useSearchParams } from "next/navigation";
 import { useSelectCurrentFirm } from "./useSelectCurrentFirm";
 import Typography from "../../v2/Typography";
 import { SelectCurrentFirm_AccountFragment$key } from "../../../artifacts/SelectCurrentFirm_AccountFragment.graphql";
@@ -31,6 +32,7 @@ const SelectCurrentFirm = ({ accountFragmentRef }: SelectCurrentFirmProps) => {
     `,
     accountFragmentRef
   );
+  const formRef = React.useRef<HTMLFormElement>(null);
   const form = useSelectCurrentFirm(account);
   const selectedFirmField = form.useFormField("firmId");
   const options = React.useMemo(
@@ -47,10 +49,20 @@ const SelectCurrentFirm = ({ accountFragmentRef }: SelectCurrentFirmProps) => {
     () => options.find(({ firmId }) => firmId === selectedFirmField.value),
     [selectedFirmField, options]
   );
+  const searchParams = useSearchParams();
+  const firmIdQueryValue = searchParams.get("firmId");
+
+  React.useEffect(() => {
+    if (firmIdQueryValue && formRef.current) {
+      selectedFirmField.onChange(firmIdQueryValue);
+
+      formRef.current.submit();
+    }
+  }, [firmIdQueryValue, formRef.current]);
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit()}>
+      <form onSubmit={form.handleSubmit()} ref={formRef}>
         <Autocomplete
           variant="plain"
           disableClearable
