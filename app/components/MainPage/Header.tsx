@@ -15,10 +15,9 @@ import { GlobalSidebarContext } from "components/GlobalSidebarProvider";
 
 interface HeaderProps {
   currentUserFragment: Header_CurrentUserFragment$key;
-  showRegisterFirm: boolean;
 }
 
-const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
+const Header = ({ currentUserFragment }: HeaderProps) => {
   const router = useRouter();
   const theme = useTheme();
   const { t } = useTranslation();
@@ -130,7 +129,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
               {t("layout.header.logIn")}
             </Link>
           )}
-          {isAuthorized && showRegisterFirm && (
+          {isAuthorized && (
             <>
               {currentUser.account?.firm?.id && (
                 <Link

@@ -23,7 +23,6 @@ type LayoutProps = {
     | React.ReactNode
     | React.ReactNode[];
   currentUserFragment: Layout_CurrentUserFragment$key;
-  showRegisterFirm?: boolean;
 };
 
 ReactGA.initialize(process.env.NEXT_PUBLIC_GA_ID!);
@@ -48,11 +47,7 @@ i18n
     },
   });
 
-const Layout = ({
-  children,
-  currentUserFragment,
-  showRegisterFirm = true,
-}: LayoutProps) => {
+const Layout = ({ children, currentUserFragment }: LayoutProps) => {
   const currentUser = useFragment(
     graphql`
       fragment Layout_CurrentUserFragment on User {
@@ -96,10 +91,7 @@ const Layout = ({
   return (
     <GlobalSidebarProvider>
       <Sheet sx={{ minHeight: "calc(100vh - 150px)" }}>
-        <Header
-          currentUserFragment={currentUser}
-          showRegisterFirm={showRegisterFirm}
-        />
+        <Header currentUserFragment={currentUser} />
         <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
       </Sheet>
       <Footer />
