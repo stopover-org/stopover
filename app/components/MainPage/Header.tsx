@@ -131,18 +131,16 @@ const Header = ({ currentUserFragment }: HeaderProps) => {
           )}
           {isAuthorized && (
             <>
-              {currentUser.account?.firm?.id && (
-                <Link
-                  href="/profile"
-                  textAlign="right"
-                  level={isSmallDisplay ? "body-sm" : "body-md"}
-                  lineHeight={`${imageSize.height}px`}
-                  paddingRight={isSmallDisplay ? "3px" : "10px"}
-                  target="_blank"
-                >
-                  {t("models.account.singular")}
-                </Link>
-              )}
+              <Link
+                href="/profile"
+                textAlign="right"
+                level={isSmallDisplay ? "body-sm" : "body-md"}
+                lineHeight={`${imageSize.height}px`}
+                paddingRight={isSmallDisplay ? "3px" : "10px"}
+                target="_blank"
+              >
+                {t("models.account.singular")}
+              </Link>
 
               <Link
                 href="?#sign-out"
