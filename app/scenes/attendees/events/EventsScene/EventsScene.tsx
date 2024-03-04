@@ -27,9 +27,8 @@ interface Props {
 }
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
-  marginLeft: "10px",
   [theme.breakpoints.up("md")]: {
-    maxWidth: "calc(100vw - 270px)",
+    maxWidth: "calc(100vw - 260px)",
   },
 }));
 
@@ -150,14 +149,15 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
       <Sidebar
         eventFiltersFragment={data?.eventFilters}
         interestsQueryFragmentRef={interestsQuery}
+        sidebar
       />
     );
   }, [data, interestsQuery]);
 
   return (
-    <Grid container spacing={2}>
+    <Grid container>
       {showSidebar && (
-        <Grid xs={2} container width="250px" padding="10px">
+        <Grid xs={2} container width="240px">
           <Sidebar
             eventFiltersFragment={data?.eventFilters}
             interestsQueryFragmentRef={interestsQuery}
@@ -176,12 +176,12 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
           flexDirection: "column",
         }}
       >
-        <Grid xl={9} lg={12} xs={12}>
+        <Grid xl={9} lg={12} xs={12} paddingRight={2}>
           <SearchBar />
         </Grid>
         {interests.length > 0 && (
           <Grid xl={9} lg={12} xs={12} p={1}>
-            <Stack direction="row" useFlexGap spacing={2}>
+            <Stack direction="row" useFlexGap>
               {interests.map((interest: string) =>
                 interest ? (
                   <Chip

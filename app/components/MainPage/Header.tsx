@@ -24,7 +24,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
   const { t } = useTranslation();
   const { open, content } = React.useContext(GlobalSidebarContext);
   const isSmallDisplay = useMediaQuery(theme.breakpoints.down("sm"));
-  const isMediumDisplay = useMediaQuery(theme.breakpoints.up("md"));
+  const isMediumDisplay = useMediaQuery(theme.breakpoints.down("md"));
   const currentUser = useFragment(
     graphql`
       fragment Header_CurrentUserFragment on User {
@@ -88,7 +88,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
           justifyContent="flex-start"
           alignItems="center"
         >
-          {isSmallDisplay && content && (
+          {isMediumDisplay && content && (
             <Box sx={{ margin: "5px" }} onClick={open}>
               <Menu />
             </Box>
@@ -107,7 +107,7 @@ const Header = ({ currentUserFragment, showRegisterFirm }: HeaderProps) => {
 
       <Grid xs={6} sm={6}>
         <Stack flexDirection="row" justifyContent="flex-end" paddingRight="5px">
-          {isMediumDisplay && (
+          {!isSmallDisplay && (
             <Link
               href="/trips"
               textAlign="right"

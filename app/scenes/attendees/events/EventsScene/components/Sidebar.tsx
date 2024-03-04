@@ -102,21 +102,27 @@ const Sidebar = ({
     <Grid
       container
       flexDirection="column"
-      sx={{ marginBottom: sidebar ? "10px" : 0 }}
+      sx={{
+        marginBottom: sidebar ? "10px" : 0,
+        paddingLeft: "10px",
+        width: sidebar ? "240px" : "unset",
+      }}
     >
       {!isMediumDisplay && (
-        <Grid xs={12}>
+        <Grid xs={12} padding="5px">
           <Link href="/">
             <Image
-              src="https://placehold.co/250x75"
+              src="https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx.svg"
               alt="logo"
-              width={300}
-              height={90}
+              priority
+              width={220}
+              height={(56 / 300) * 220}
+              suppressHydrationWarning
             />
           </Link>
         </Grid>
       )}
-      <Grid xs={12} pb={2}>
+      <Grid xs={12} pb={2} container>
         <QueryInput
           queryName="city"
           label={t("scenes.attendees.events.eventsScene.sidebar.city")}
@@ -169,7 +175,7 @@ const Sidebar = ({
           label={t("scenes.attendees.events.eventsScene.sidebar.priceRance")}
         />
       </Grid>
-      <Grid xs={12} container sx={{ paddingBottom: "10px" }}>
+      <Grid xs={12} container sx={{ paddingBottom: "10px" }} spacing={1}>
         <Grid xs={6}>
           <Input
             size="sm"
@@ -213,8 +219,10 @@ const Sidebar = ({
           />
         </Grid>
       </Grid>
-      <Grid xs={12}>
-        <Divider />
+      <Grid xs={12} container>
+        <Grid xs={12}>
+          <Divider />
+        </Grid>
       </Grid>
       <Grid xs={12} container>
         <InterestsSelect queryFragmentRef={interestsQuery} />
