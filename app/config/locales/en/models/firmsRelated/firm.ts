@@ -26,6 +26,7 @@ export default {
         primaryPhone: "Phone for notifications",
         primaryEmail: "Email for notifications",
         contractAddress: "Contract address for crypto payments",
+        firmType: "Type of firm",
       },
       enums: {
         paymentTypes: {
@@ -33,11 +34,11 @@ export default {
           cash: "Cash",
           crypto: "Crypto",
         },
-        businessType: {
+        businessTypes: {
           individual: "Individual Enterpreneur",
           company: "Legal Entity",
         },
-        firmType: {
+        firmTypes: {
           onboarding: "Onboarding",
           live: "Live",
         },

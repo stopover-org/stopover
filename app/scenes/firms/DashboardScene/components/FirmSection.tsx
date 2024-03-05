@@ -24,13 +24,14 @@ const FirmSection = ({
   currentUserFragmentRef,
 }: FirmSectionProps) => {
   const { t } = useTranslation();
-  const firm = useFragment(
+  const firm = useFragment<FirmSection_FirmFragment$key>(
     graphql`
       fragment FirmSection_FirmFragment on Firm {
         id
         title
         contactPerson
         status
+        firmType
         address {
           ...EditFirmAddress_AddressFragment
           fullAddress
@@ -47,7 +48,7 @@ const FirmSection = ({
     firmFragmentRef
   );
 
-  const currentUser = useFragment(
+  const currentUser = useFragment<FirmSection_CurrentUserFragment$key>(
     graphql`
       fragment FirmSection_CurrentUserFragment on User {
         serviceUser
@@ -84,6 +85,11 @@ const FirmSection = ({
         <Tag link={false} color={tagColor}>
           {t(`statuses.${firm.status?.toLowerCase()}`)}
         </Tag>
+        {currentUser.serviceUser && (
+          <Tag link={false} color="neutral">
+            {t(`models.firm.enums.firmTypes.${firm.firmType?.toLowerCase()}`)}
+          </Tag>
+        )}
       </Grid>
       <Grid xs={12} sm={12} md={12} lg={2}>
         <Stack

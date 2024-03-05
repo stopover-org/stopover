@@ -1044,7 +1044,7 @@ type Firm implements Node {
     last: Int
   ): EventConnection!
   eventsAutocomplete(ids: [ID!], query: String!): EventsAutocomplete!
-  firmType: String
+  firmType: String!
   id: ID!
   image: String
   margin: Int
@@ -2333,6 +2333,7 @@ input UpdateFirmInput {
   contractAddress: String
   country: String
   description: String
+  firmType: String
   fullAddress: String
   houseNumber: String
   image: String

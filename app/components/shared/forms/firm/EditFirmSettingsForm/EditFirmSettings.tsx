@@ -13,6 +13,7 @@ const EditFirmSettingsForm = () => {
   const availablePaymentMethodsField = form.useFormField(
     "availablePaymentMethods"
   );
+  const firmTypeField = form.useFormField("firmType");
 
   return (
     <Grid container spacing={2} lg={6} md={12} sm={12} xs={12}>
@@ -55,6 +56,27 @@ const EditFirmSettingsForm = () => {
                 label: capitalize(val),
                 value: val.toLowerCase(),
               }))}
+            />
+          </FormControl>
+        </Grid>
+        <Grid xs={12}>
+          <FormControl>
+            <FormLabel>{t("models.firm.attributes.firmType")}</FormLabel>
+            <Autocomplete
+              disableClearable
+              placeholder={t("models.firm.attributes.firmType")}
+              options={["Onboarding", "Live"].map((v) => ({
+                label: capitalize(v),
+                value: v.toLowerCase(),
+              }))}
+              onChange={(event, value: { label: string; value: string }) => {
+                firmTypeField.onChange(value.value);
+              }}
+              getOptionLabel={(option) => option.label}
+              value={{
+                label: capitalize(firmTypeField.value),
+                value: firmTypeField.value.toLowerCase(),
+              }}
             />
           </FormControl>
         </Grid>
