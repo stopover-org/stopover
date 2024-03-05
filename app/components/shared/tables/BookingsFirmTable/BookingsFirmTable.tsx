@@ -7,6 +7,7 @@ import { useQuery } from "lib/hooks/useQuery";
 import Filters from "components/shared/Filters";
 import { useTranslation } from "react-i18next";
 import DateQueryInput from "components/shared/DateQueryInput";
+import moment from "moment";
 import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
 import ContactEmailInput from "./components/ContactEmailInput";
 import ContactPhoneInput from "./components/ContactPhoneInput";
@@ -53,7 +54,7 @@ const BookingsFirmTable = ({
   const queryRef = React.useRef<Disposable>();
   const contactEmail = useQuery("contactEmail", "");
   const contactPhone = useQuery("contactPhone", "");
-  const date = useQuery("bookedFor", null);
+  const date = useQuery("bookedFor", moment());
 
   React.useEffect(() => {
     if (queryRef.current) {
@@ -88,6 +89,7 @@ const BookingsFirmTable = ({
       bookedFor: (
         <DateQueryInput
           queryKey="bookedFor"
+          defaultValue={date}
           label={t("filters.bookings.bookedFor")}
         />
       ),
@@ -101,7 +103,7 @@ const BookingsFirmTable = ({
         <React.Suspense>
           <Filters
             availableFilters={filters}
-            defaultFilters={[]}
+            defaultFilters={["bookedFor"]}
             scope="bookings"
           />
         </React.Suspense>

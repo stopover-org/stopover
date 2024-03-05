@@ -7,10 +7,15 @@ import React from "react";
 interface DateQueryInputProps {
   queryKey: string;
   label: string;
+  defaultValue?: Moment;
 }
 
-const DateQueryInput = ({ queryKey, label }: DateQueryInputProps) => {
-  const date = useQuery(queryKey, null, (dateStr) => {
+const DateQueryInput = ({
+  queryKey,
+  label,
+  defaultValue,
+}: DateQueryInputProps) => {
+  const date = useQuery(queryKey, defaultValue, (dateStr) => {
     const parsedDt = moment(parseValue(dateStr));
     if (parsedDt.isValid()) {
       return parsedDt;
