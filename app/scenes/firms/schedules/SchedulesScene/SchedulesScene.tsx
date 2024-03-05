@@ -10,10 +10,9 @@ import {
   useSchedulesHeaders,
 } from "components/shared/tables/columns/schedules";
 import { SchedulesSceneFirmFragment } from "artifacts/SchedulesSceneFirmFragment.graphql";
-import EventsAutocomplete from "components/shared/tables/BookingsFirmTable/components/EventsAutocomplete";
 import DateQueryInput from "components/shared/DateQueryInput/DateQueryInput";
 import Filters from "components/shared/Filters/Filters";
-import { parseValue, useQuery } from "lib/hooks/useQuery";
+import { useQuery } from "lib/hooks/useQuery";
 
 interface SchedulesSceneProps {
   firmFragmentRef: SchedulesScene_FirmFragment$key;
@@ -51,9 +50,6 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
     );
   const [currentPage, setCurrentPage] = React.useState(1);
   const date = useQuery("scheduledFor", null);
-  const eventIds = useQuery("eventIds", [], (value) =>
-    Array.from(parseValue(value))
-  );
   const schedulesData = useSchedulesColumns(data.pagedSchedules!);
   const schedulesHeaders = useSchedulesHeaders();
   const { t } = useTranslation();
@@ -68,7 +64,6 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
       {
         filters: {
           scheduledFor: date,
-          eventIds,
         },
         cursor: "0",
       },
@@ -80,16 +75,10 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
         },
       }
     );
-  }, [eventIds, date, setCurrentPage]);
+  }, [date, setCurrentPage]);
 
   const filters = React.useMemo(
     () => ({
-      eventIds: (
-        <EventsAutocomplete
-          queryKey="eventIds"
-          label={t("filters.schedules.eventIds")}
-        />
-      ),
       scheduledFor: (
         <DateQueryInput
           queryKey="scheduledFor"
@@ -109,7 +98,7 @@ const SchedulesScene = ({ firmFragmentRef }: SchedulesSceneProps) => {
         <React.Suspense>
           <Filters
             availableFilters={filters}
-            defaultFilters={["eventIds", "scheduledFor"]}
+            defaultFilters={["scheduledFor"]}
             scope="schedules"
           />
         </React.Suspense>

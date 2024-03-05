@@ -227,7 +227,7 @@ const EventsTable = ({
   return (
     <Grid container spacing={2}>
       {withSearchBar && (
-        <Grid xs={3}>
+        <Grid xs={12} sm={12} md={6} lg={4}>
           <Input
             value={value}
             onChange={(val) => {
