@@ -45,7 +45,7 @@ const EditFirmAddressModal = ({
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">
         <ModalClose />
-        <DialogTitle sx={{ marginRight: "30px", marginLeft: "30px" }}>
+        <DialogTitle sx={{ marginRight: "10px", marginLeft: "10px" }}>
           <Stack flexDirection="row" alignItems="center" useFlexGap spacing={1}>
             <BusinessRoundedIcon color="warning" />
             {t("forms.editFirmAddress.modal.header")}

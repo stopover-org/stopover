@@ -81,14 +81,14 @@ const AddressFieldset = ({
   const { t } = useTranslation();
 
   return (
-    <Fieldset variant={variant}>
+    <Fieldset variant={variant} margin={0}>
       {withHeader && (
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={12} lg={12}>
           <Typography level="title-lg">{t("address.title")}</Typography>
         </Grid>
       )}
       {!simple && (
-        <Grid xs={12}>
+        <Grid xs={12} sm={12} md={12} lg={12}>
           <AddressAutocomplete
             countries={gMapCountryCode ? [gMapCountryCode] : undefined}
             value={fullAddressField.value}
@@ -116,7 +116,7 @@ const AddressFieldset = ({
         />
       </Grid>
       {!simple && (
-        <Grid md={6} sm={12}>
+        <Grid xs={12} sm={12} md={6} lg={6}>
           <AddressAutocomplete
             types={[
               "administrative_area_level_1",
@@ -130,7 +130,7 @@ const AddressFieldset = ({
         </Grid>
       )}
       {!simple && (
-        <Grid md={6} sm={12}>
+        <Grid xs={12} sm={12} md={6} lg={6}>
           <AddressAutocomplete
             types={["locality", "administrative_area_level_3"]}
             countries={gMapCountryCode ? [gMapCountryCode] : undefined}
@@ -140,7 +140,7 @@ const AddressFieldset = ({
         </Grid>
       )}
       {!simple && (
-        <Grid md={6} sm={12}>
+        <Grid xs={12} sm={12} md={6} lg={6}>
           <AddressAutocomplete
             types={["address"]}
             countries={gMapCountryCode ? [gMapCountryCode] : undefined}
@@ -150,7 +150,7 @@ const AddressFieldset = ({
         </Grid>
       )}
       {!simple && (
-        <Grid md={6} sm={12}>
+        <Grid xs={12} sm={12} md={6} lg={6}>
           <Input
             {...houseNumberField}
             label={t("models.address.attributes.houseNumber")}
@@ -158,7 +158,7 @@ const AddressFieldset = ({
         </Grid>
       )}
       {!simple && latitudeField.value && longitudeField.value && (
-        <Grid md={12} sm={12}>
+        <Grid xs={12} sm={12} md={6} lg={6}>
           <GoogleMap
             center={{ lat: latitudeField.value, lng: longitudeField.value }}
             markers={[{ lat: latitudeField.value, lng: longitudeField.value }]}
