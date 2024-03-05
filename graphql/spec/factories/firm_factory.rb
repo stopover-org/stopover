@@ -11,6 +11,7 @@
 #  contacts                  :text
 #  contract_address          :string
 #  description               :text
+#  firm_type                 :string           default("onboarding")
 #  language                  :string           default("en")
 #  margin                    :integer          default(0)
 #  payment_types             :string           default([]), not null, is an Array
@@ -37,6 +38,7 @@ FactoryBot.define do
     margin { 10 }
     address { build(:address) }
     status { 'active' }
+    firm_type { 'onboarding' }
 
     transient do
       accounts { create_list(:account, 1) }

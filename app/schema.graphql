@@ -1044,6 +1044,7 @@ type Firm implements Node {
     last: Int
   ): EventConnection!
   eventsAutocomplete(ids: [ID!], query: String!): EventsAutocomplete!
+  firmType: String
   id: ID!
   image: String
   margin: Int

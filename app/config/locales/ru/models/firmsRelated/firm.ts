@@ -33,6 +33,14 @@ export default {
           cash: "Наличными",
           crypto: "Криптовалюта",
         },
+        businessType: {
+          individual: "Индвидуальный Предприниматель",
+          company: "Организация (ООО, или иная организацонная форма)",
+        },
+        firmType: {
+          onboarding: "Onboarding",
+          live: "Live",
+        },
       },
       statusExplanations: {
         pending: [

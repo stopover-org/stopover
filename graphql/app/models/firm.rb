@@ -11,6 +11,7 @@
 #  contacts                  :text
 #  contract_address          :string
 #  description               :text
+#  firm_type                 :string           default("onboarding")
 #  language                  :string           default("en")
 #  margin                    :integer          default(0)
 #  payment_types             :string           default([]), not null, is an Array
@@ -85,10 +86,12 @@ class Firm < ApplicationRecord
   # ENUMS =================================================================
   enum business_type: {
     individual: 'individual',
-    company: 'company',
-    non_profit: 'non_profit',
-    # US only
-    government_entity: 'government_entity'
+    company: 'company'
+  }
+
+  enum firm_type: {
+    onboarding: 'onboarding',
+    live: 'live'
   }
 
   # SECURE TOKEN ==========================================================

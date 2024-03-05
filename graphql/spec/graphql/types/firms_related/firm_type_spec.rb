@@ -67,6 +67,9 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
                                                             name: 'eventsAutocomplete'
                                                           },
                                                           {
+                                                            name: 'firmType'
+                                                          },
+                                                          {
                                                             name: 'id'
                                                           },
                                                           {
@@ -208,6 +211,7 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
 
     context 'for not authorized user' do
       it 'success' do
+        Event.reindex_test
         result = subject
 
         expect(result.dig(:data, :firm)).not_to be_nil

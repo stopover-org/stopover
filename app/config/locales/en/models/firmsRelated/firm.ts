@@ -33,6 +33,14 @@ export default {
           cash: "Cash",
           crypto: "Crypto",
         },
+        businessType: {
+          individual: "Individual Enterpreneur",
+          company: "Legal Entity",
+        },
+        firmType: {
+          onboarding: "Onboarding",
+          live: "Live",
+        },
       },
       statusExplanations: {
         pending: [
