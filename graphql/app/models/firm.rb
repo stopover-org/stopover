@@ -92,7 +92,7 @@ class Firm < ApplicationRecord
   enum firm_type: {
     onboarding: 'onboarding',
     live: 'live'
-  }
+  }, _prefix: true
 
   # SECURE TOKEN ==========================================================
   #

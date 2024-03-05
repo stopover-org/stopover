@@ -74,10 +74,11 @@ RSpec.describe Firm, type: :model do
         individual: 'individual',
         company: 'company'
       ).backed_by_column_of_type(:string)
-      should define_enum_for(:firm_type).with_values(
-        onboarding: 'onboarding',
-        live: 'live'
-      ).backed_by_column_of_type(:string)
+
+      should define_enum_for(:firm_type).with_values(onboarding: 'onboarding',
+                                                     live: 'live')
+                                        .backed_by_column_of_type(:string)
+                                        .with_prefix(true)
     end
 
     context 'validations' do

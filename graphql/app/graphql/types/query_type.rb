@@ -48,6 +48,8 @@ module Types
     end
 
     def firm(id:)
+      return nil if id.firm_type_onboarding? && id.accounts.exclude?(current_account)
+
       id if id.active?
     end
 
@@ -80,6 +82,8 @@ module Types
     end
 
     def event(id:)
+      return nil if id.firm.firm_type_onboarding? && id.event.accounts.exclude?(current_account)
+
       id if id.published?
     end
 

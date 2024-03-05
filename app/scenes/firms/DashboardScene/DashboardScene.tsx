@@ -49,6 +49,7 @@ const DashboardScene = ({
           currentUserFragmentRef={currentUser}
         />
       </Grid>
+
       <Grid
         lg={4}
         md={4}
