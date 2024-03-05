@@ -53,7 +53,7 @@ const EditEventAddressModal = ({
         </DialogTitle>
         <Divider />
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit()}>
+          <form onSubmit={form.handleSubmit()} style={{ overflow: "auto" }}>
             <Grid container>
               <AddressFieldset variant="plain" withHeader={false} />
             </Grid>
