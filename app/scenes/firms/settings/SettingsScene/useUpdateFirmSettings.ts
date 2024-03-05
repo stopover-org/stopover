@@ -57,6 +57,7 @@ export function useUpdateFirmSettings(
         updateFirm(input: $input) {
           firm {
             id
+            ...useUpdateFirmSettings_FirmFragment
           }
           notification
           errors

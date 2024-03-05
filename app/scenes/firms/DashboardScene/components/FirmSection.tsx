@@ -116,6 +116,9 @@ const FirmSection = ({
           {currentUser.serviceUser && firm.status === "pending" && (
             <VerifyFirm />
           )}
+          {currentUser.serviceUser && firm.firmType === "onboarding" && (
+            <VerifyFirm />
+          )}
         </Stack>
       </Grid>
       <Grid xs={12}>{firm.contactPerson}</Grid>
