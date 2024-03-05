@@ -116,9 +116,6 @@ const FirmSection = ({
           {currentUser.serviceUser && firm.status === "pending" && (
             <VerifyFirm />
           )}
-          {currentUser.serviceUser && firm.firmType === "onboarding" && (
-            <VerifyFirm />
-          )}
         </Stack>
       </Grid>
       <Grid xs={12}>{firm.contactPerson}</Grid>
@@ -128,7 +125,12 @@ const FirmSection = ({
             returnObjects: true,
             email: "mikhail@stopoverx.com",
           }).map((translation: string) => (
-            <Typography fontSize="sm" level="body-sm" sx={{ width: "100%" }}>
+            <Typography
+              fontSize="sm"
+              level="body-sm"
+              sx={{ width: "100%" }}
+              key={translation}
+            >
               {translation}{" "}
             </Typography>
           ))}

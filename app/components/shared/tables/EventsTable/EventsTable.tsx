@@ -3,17 +3,17 @@ import { Disposable, graphql, usePaginationFragment } from "react-relay";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { Grid } from "@mui/joy";
-import Table from "../../../v2/Table/Table";
-import Link from "../../../v2/Link/Link";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
-import Tag from "../../../v2/Tag/Tag";
-import { dateTimeFormat } from "../../../../lib/utils/dates";
-import useStatusColor from "../../../../lib/hooks/useStatusColor";
-import Checkbox from "../../../v2/Checkbox";
-import { EventsTableFirmFragment } from "../../../../artifacts/EventsTableFirmFragment.graphql";
-import { EventsTable_FirmFragment$key } from "../../../../artifacts/EventsTable_FirmFragment.graphql";
-import useEdges from "../../../../lib/hooks/useEdges";
-import Input from "../../../v2/Input";
+import Table from "components/v2/Table/Table";
+import Link from "components/v2/Link/Link";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import Tag from "components/v2/Tag/Tag";
+import { dateTimeFormat } from "lib/utils/dates";
+import useStatusColor from "lib/hooks/useStatusColor";
+import Checkbox from "components/v2/Checkbox";
+import { EventsTableFirmFragment } from "artifacts/EventsTableFirmFragment.graphql";
+import { EventsTable_FirmFragment$key } from "artifacts/EventsTable_FirmFragment.graphql";
+import useEdges from "lib/hooks/useEdges";
+import Input from "components/v2/Input";
 
 interface EventsTableProps {
   firmFragmentRef: any;
@@ -113,30 +113,48 @@ const EventsTable = ({
           event.attendeePricePerUom?.cents,
           event.attendeePricePerUom?.currency.name
         ),
-        recurringDaysWithTime: event.recurringDaysWithTime.map(
-          (date: string, index: number) => (
-            <Tag
-              key={`${index}-${date}`}
-              link={false}
-              sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
-            >
-              {date}
-            </Tag>
-          )
-        ),
-        singleDaysWithTime: event.singleDaysWithTime.map(
-          (date: string, index: number) => (
-            <React.Fragment key={`${index}-${date}`}>
+        recurringDaysWithTime: event.recurringDaysWithTime
+          .slice(0, 3)
+          .map((date: string, index: number) =>
+            index === 2 ? (
+              <Tag
+                key={`${index}-${date}`}
+                link={false}
+                sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+              >
+                ...
+              </Tag>
+            ) : (
+              <Tag
+                key={`${index}-${date}`}
+                link={false}
+                sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+              >
+                {date}
+              </Tag>
+            )
+          ),
+        singleDaysWithTime: event.singleDaysWithTime
+          .slice(0, 3)
+          .map((date: string, index: number) =>
+            index === 2 ? (
+              <Tag
+                key={`${index}-${date}`}
+                link={false}
+                sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
+              >
+                ...
+              </Tag>
+            ) : (
               <Tag
                 key={`${index}-${date}`}
                 link={false}
                 sx={{ whiteSpace: "nowrap", marginBottom: "2px" }}
               >
                 {moment(date).format(dateTimeFormat)}
-              </Tag>{" "}
-            </React.Fragment>
-          )
-        ),
+              </Tag>
+            )
+          ),
         status: <TagColor status={event.status} />,
         durationTime: event.durationTime,
         minAttendees: event.minAttendees,

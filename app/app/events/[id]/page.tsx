@@ -75,7 +75,7 @@ export const generateMetadata = async ({
     response?.event?.address?.country,
     response?.event?.address?.city,
     response?.event?.address?.street,
-    ...(response?.event?.availableDates as string[]),
+    ...((response?.event?.availableDates as string[]) || []),
   ];
 
   return merge(defaultMetadata, {

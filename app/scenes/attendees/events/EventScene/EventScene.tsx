@@ -4,11 +4,13 @@ import { graphql, useFragment } from "react-relay";
 import { FormProvider } from "react-hook-form";
 import { EventScene_EventFragment$key } from "artifacts/EventScene_EventFragment.graphql";
 import { EventScene_AccountFragment$key } from "artifacts/EventScene_AccountFragment.graphql";
+import { useTranslation } from "react-i18next";
 import Breadcrumbs from "./components/Breadcrumbs";
 import { useBookEventForm } from "./useBookEventForm";
 import EventTitle from "./components/EventTitle";
 import LeftColumn from "./components/LeftColumn";
 import RightColumn from "./components/RightColumn";
+import Section from "../../../../components/v2/Section";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_EventFragment$key;
@@ -38,6 +40,9 @@ const EventScene = ({
         ...RightColumn_EventFragment
         ...useBookEventForm_EventFragment
         images
+        firm {
+          firmType
+        }
       }
     `,
     eventFragmentRef
@@ -47,6 +52,7 @@ const EventScene = ({
     () => event?.images?.length > 0,
     [event]
   );
+  const { t } = useTranslation();
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit()}>
@@ -59,6 +65,13 @@ const EventScene = ({
             margin: showLeftColumn ? "unset" : "0 auto",
           }}
         >
+          {event.firm.firmType === "onboarding" && (
+            <Grid lg={12} md={12} sm={12} xs={12}>
+              <Section variant="soft" color="primary" margin={0} padding={0}>
+                {t(`models.firm.firmTypeExplanations.onboarding`)}
+              </Section>
+            </Grid>
+          )}
           <Grid xs={12}>
             <Breadcrumbs eventFragmentRef={event} />
           </Grid>

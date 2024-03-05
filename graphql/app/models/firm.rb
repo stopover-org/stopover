@@ -55,8 +55,8 @@ class Firm < ApplicationRecord
   has_many :stripe_connects, dependent: :nullify
   has_many :refunds, dependent: :nullify
   has_many :payouts, dependent: :nullify
-  has_many :attendees, dependent: :nullify
-  has_many :attendee_options, dependent: :nullify
+  has_many :attendees, dependent: :destroy
+  has_many :attendee_options, dependent: :destroy
   has_many :payments, dependent: :nullify
   has_many :addresses, dependent: :destroy
   has_many :event_placements, dependent: :destroy

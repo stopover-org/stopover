@@ -71,8 +71,8 @@ class Event < ApplicationRecord
   has_many :bookings, dependent: :destroy
   has_many :ratings, dependent: :destroy
   has_many :schedules, dependent: :destroy
-  has_many :attendees, dependent: :nullify
-  has_many :attendee_options, dependent: :nullify
+  has_many :attendees, dependent: :destroy
+  has_many :attendee_options, dependent: :destroy
   has_many :booking_cancellation_options, dependent: :destroy
   has_many :event_placements, dependent: :destroy
   has_many :tour_plans, dependent: :destroy
@@ -218,6 +218,7 @@ class Event < ApplicationRecord
   def search_data
     {
       title: [title, *dynamic_translations.where(source_field: 'title').map(&:translation)],
+      source_title: title,
       country: address&.country,
       city: address&.city,
       dates: schedules.map(&:scheduled_for).map(&:to_time),

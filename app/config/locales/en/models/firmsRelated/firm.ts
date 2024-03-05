@@ -43,6 +43,11 @@ export default {
           live: "Live",
         },
       },
+      firmTypeExplanations: {
+        live: "This event has been published and is now available for booking",
+        onboarding:
+          "This event is only displayed for you. Users who do not have access to the firm will not see this page until the firm is switched to Live mode",
+      },
       statusExplanations: {
         pending: [
           "The company is awaiting verification. Please ensure that the contact email is correct. We will contact you shortly to clarify the details.",

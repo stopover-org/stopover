@@ -1,19 +1,12 @@
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
 import useFormContext from "lib/hooks/useFormContext";
-import {
-  Box,
-  DialogTitle,
-  Divider,
-  Modal,
-  ModalClose,
-  ModalDialog,
-  Stack,
-} from "@mui/joy";
+import { Box, DialogTitle, Divider, Modal, ModalDialog, Stack } from "@mui/joy";
 import React from "react";
 import { SelectPlacesModal_EventPlacementFragment$key } from "artifacts/SelectPlacesModal_EventPlacementFragment.graphql";
 import { SelectPlacesModal_ScheduleFragment$key } from "artifacts/SelectPlacesModal_ScheduleFragment.graphql";
 import SubmitButton from "components/shared/SubmitButton/SubmitButton";
+import Input from "../../../../../components/v2/Input/Input";
 
 interface SelectPlacesModalProps {
   eventPlacementFragmentRef: SelectPlacesModal_EventPlacementFragment$key;
@@ -117,20 +110,38 @@ const SelectPlacesModal = ({
         role="alertdialog"
         sx={{
           overflow: "scroll",
+          position: "relative",
         }}
       >
-        <ModalClose />
-        <DialogTitle sx={{ marginRight: "30px", marginLeft: "30px" }}>
-          <Stack flexDirection="row" alignItems="center" useFlexGap spacing={1}>
-            {t("scenes.attendees.events.eventScene.selectPlaces")}
-          </Stack>
-        </DialogTitle>
-        <Divider />
+        <Box
+          sx={{
+            position: "sticky",
+            left: 0,
+          }}
+        >
+          <DialogTitle
+            sx={{
+              marginRight: "30px",
+              marginLeft: "30px",
+            }}
+          >
+            <Stack
+              flexDirection="row"
+              alignItems="center"
+              useFlexGap
+              spacing={1}
+            >
+              {t("scenes.attendees.events.eventScene.selectPlaces")}
+            </Stack>
+          </DialogTitle>
+          <Divider />
+        </Box>
         <Box
           sx={{
             minWidth: `${schema[0].length * 60}px`,
             minHeight: `${schema.length + 60}px`,
             margin: "auto",
+            position: "relative",
           }}
         >
           {schema.map((row, rowIndex) => (
@@ -170,14 +181,29 @@ const SelectPlacesModal = ({
             </Stack>
           ))}
         </Box>
+        <Box sx={{ position: "sticky", left: 0 }}>
+          <Input
+            label={t("models.attendee.attributes.email")}
+            {...useFormField("email")}
+          />
+        </Box>
+        <Box sx={{ position: "sticky", left: 0 }}>
+          <Input
+            label={t("models.attendee.attributes.phone")}
+            {...useFormField("phone")}
+          />
+        </Box>
         {!readonly && (
-          <SubmitButton
-            submitting={form.formState.isSubmitting}
-            disabled={selectedPlaces.length === 0}
-            onClick={() => {}}
-          >
-            {t("scenes.attendees.events.eventScene.bookEvent")}
-          </SubmitButton>
+          <Box sx={{ position: "sticky", left: 0 }}>
+            <SubmitButton
+              submitting={form.formState.isSubmitting}
+              disabled={selectedPlaces.length === 0}
+              onClick={() => {}}
+              sx={{ width: "100%" }}
+            >
+              {t("scenes.attendees.events.eventScene.bookEvent")}
+            </SubmitButton>
+          </Box>
         )}
       </ModalDialog>
     </Modal>
