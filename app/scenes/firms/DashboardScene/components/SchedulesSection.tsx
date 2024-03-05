@@ -11,13 +11,15 @@ import {
   useSchedulesColumns,
   useSchedulesHeaders,
 } from "components/shared/tables/columns/schedules";
+import moment from "moment";
+import { dateFormat } from "../../../../lib/utils/dates";
 
 interface ScheduleSectionProps {
   firmFragmentRef: SchedulesSection_FirmFragment$key;
 }
 
 const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
-  const { data } = usePaginationFragment(
+  const { data, refetch } = usePaginationFragment(
     graphql`
       fragment SchedulesSection_FirmFragment on Firm
       @refetchable(queryName: "SchedulesSectionFirmFragment")
@@ -25,7 +27,7 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
         count: { type: "Int", defaultValue: 5 }
         cursor: { type: "String", defaultValue: "" }
       ) {
-        schedules(first: $count, after: $cursor)
+        schedules(first: $count, after: $cursor, filters: $schedulesFilter)
           @connection(key: "DashboardScene_query_schedules") {
           ...schedules_useSchedulesColumns_SchedulesConnectionFragment
           edges {
@@ -46,7 +48,9 @@ const SchedulesSection = ({ firmFragmentRef }: ScheduleSectionProps) => {
   return (
     <Section>
       <Grid xs={12}>
-        <Typography level="h3">{t("models.schedule.plural")}</Typography>
+        <Typography level="h3">
+          {t("models.schedule.plural")} - {moment().format(dateFormat)}
+        </Typography>
       </Grid>
 
       <Grid xs={12}>

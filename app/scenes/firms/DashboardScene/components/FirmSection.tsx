@@ -72,11 +72,14 @@ const FirmSection = ({
             sx={{ display: "inline" }}
             target="_blank"
             href={`/firms/${firm.id}`}
+            color="primary"
           >
             {firm.title.toUpperCase()}
           </Link>
         ) : (
-          <Typography level="h3">{firm.title.toUpperCase()}</Typography>
+          <Typography level="h3" color="primary">
+            {firm.title.toUpperCase()}
+          </Typography>
         )}
         <Tag link={false} color={tagColor}>
           {t(`statuses.${firm.status?.toLowerCase()}`)}
