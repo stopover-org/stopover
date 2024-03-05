@@ -81,7 +81,8 @@ module FirmManagement
       firm.schedules.reindex
 
       USER_EMAILS.each do |email|
-        User.create!(email: email, status: 'active', confirmation_code: '1234')
+        user = User.new(email: email, status: 'active', confirmation_code: '1234')
+        user.save!
         user.activate!(code: '1234')
 
         firm.schedules.where('scheduled_for > NOW()').first(4).each do |schedule|
