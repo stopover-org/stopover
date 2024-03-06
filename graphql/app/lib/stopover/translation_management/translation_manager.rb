@@ -8,7 +8,7 @@ module Stopover
       end
 
       def translate
-        disabled = Rails.env.test? || $skip_translation
+        disabled = !Rails.env.production? || $skip_translation
         return if disabled
 
         client = ::Google::Cloud::Translate::V3::TranslationService::Client.new
