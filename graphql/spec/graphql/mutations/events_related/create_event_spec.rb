@@ -177,7 +177,6 @@ RSpec.describe Mutations::EventsRelated::CreateEvent, type: :mutation do
 
   shared_examples :successful do
     it 'send notification to firm owner' do
-      firm
       expect { subject }.to change { Notification.where(to: current_user.account.firm.primary_email).count }.by(1)
     end
 
@@ -259,6 +258,14 @@ RSpec.describe Mutations::EventsRelated::CreateEvent, type: :mutation do
   end
 
   context 'create event' do
+    before do
+      firm
+      Event.reindex_test
+      Booking.reindex_test
+      Interest.reindex_test
+      Schedule.reindex_test
+    end
+
     context 'as manager' do
       context 'with deposit' do
         include_examples :successful

@@ -44,6 +44,7 @@ module FirmManagement
       firm.notifications.destroy_all
       firm.attendees.destroy_all
       firm.attendee_options.destroy_all
+      firm.bookings.destroy_all
       firm.events.each do |event|
         event.dynamic_translations.destroy_all
       end
