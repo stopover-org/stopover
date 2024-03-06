@@ -38,7 +38,7 @@ FactoryBot.define do
     margin { 10 }
     address { build(:address) }
     status { 'active' }
-    firm_type { 'onboarding' }
+    firm_type { 'live' }
 
     transient do
       accounts { create_list(:account, 1) }
