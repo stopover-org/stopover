@@ -26,6 +26,7 @@ export default {
         primaryPhone: "Phone for notifications",
         primaryEmail: "Email for notifications",
         contractAddress: "Contract address for crypto payments",
+        firmType: "Type of firm",
       },
       enums: {
         paymentTypes: {
@@ -33,6 +34,19 @@ export default {
           cash: "Cash",
           crypto: "Crypto",
         },
+        businessTypes: {
+          individual: "Individual Enterpreneur",
+          company: "Legal Entity",
+        },
+        firmTypes: {
+          onboarding: "Onboarding",
+          live: "Live",
+        },
+      },
+      firmTypeExplanations: {
+        live: "This event has been published and is now available for booking",
+        onboarding:
+          "This event is only displayed for you. Users who do not have access to the firm will not see this page until the firm is switched to Live mode",
       },
       statusExplanations: {
         pending: [

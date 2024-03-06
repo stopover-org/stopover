@@ -17,9 +17,9 @@ class EventsQuery
 
   def execute(offset: 0, limit: @limit)
     if query && !@backend
-      Event.search(query, order: { title: :asc }, where: conditions, offset: offset, limit: limit)
+      Event.search(query, order: { source_title: :asc }, where: conditions, offset: offset, limit: limit)
     else
-      Event.search(order: { title: :asc }, where: conditions, offset: offset, limit: limit)
+      Event.search(order: { source_title: :asc }, where: conditions, offset: offset, limit: limit)
     end
   end
 

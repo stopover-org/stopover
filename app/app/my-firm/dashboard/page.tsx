@@ -12,8 +12,8 @@ const Page = async () => {
     typeof scene_Dashboard_QueryNode,
     scene_Dashboard_Query
   >(scene_Dashboard_QueryNode.params, {
-    bookingsFilter: { bookedFor: moment() },
-    schedulesFilter: { scheduledFor: moment() },
+    bookingsFilter: { bookedFor: moment().toDate() },
+    schedulesFilter: { scheduledFor: moment().toDate() },
   });
 
   return (

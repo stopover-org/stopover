@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_03_235429) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_05_153535) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -300,6 +300,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_03_235429) do
     t.bigint "address_id"
     t.string "available_payment_methods", default: [], null: false, array: true
     t.string "language", default: "en"
+    t.string "firm_type", default: "onboarding"
     t.index ["address_id"], name: "index_firms_on_address_id"
     t.index ["ref_number"], name: "index_firms_on_ref_number", unique: true
   end

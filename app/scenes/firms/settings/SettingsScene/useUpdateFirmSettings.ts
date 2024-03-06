@@ -5,10 +5,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import useMutationForm from "lib/hooks/useMutationForm";
 import { useUpdateFirmSettings_FirmFragment$key } from "artifacts/useUpdateFirmSettings_FirmFragment.graphql";
 import { useUpdateFirmSettings_UpdateFirmMutation } from "artifacts/useUpdateFirmSettings_UpdateFirmMutation.graphql";
+import { useRouter } from "next/navigation";
 
 interface UpdateFirmSettingsFields {
   margin: string;
   availablePaymentMethods: string[];
+  firmType: string;
 }
 
 function useDefaultValues(
@@ -19,6 +21,7 @@ function useDefaultValues(
       fragment useUpdateFirmSettings_FirmFragment on Firm {
         margin
         availablePaymentMethods
+        firmType
       }
     `,
     firmFragmentRef
@@ -28,6 +31,7 @@ function useDefaultValues(
     () => ({
       margin: firm.margin!.toString(),
       availablePaymentMethods: firm.availablePaymentMethods as string[],
+      firmType: firm.firmType || "onboarding",
     }),
     [firm]
   );
@@ -41,6 +45,7 @@ const validationSchema = Yup.object().shape({
 export function useUpdateFirmSettings(
   firmFragmentRef: useUpdateFirmSettings_FirmFragment$key
 ) {
+  const router = useRouter();
   return useMutationForm<
     UpdateFirmSettingsFields,
     useUpdateFirmSettings_UpdateFirmMutation
@@ -52,6 +57,7 @@ export function useUpdateFirmSettings(
         updateFirm(input: $input) {
           firm {
             id
+            ...useUpdateFirmSettings_FirmFragment
           }
           notification
           errors
@@ -67,6 +73,9 @@ export function useUpdateFirmSettings(
     {
       defaultValues: useDefaultValues(firmFragmentRef),
       resolver: yupResolver(validationSchema),
+      onCompleted: () => {
+        router.push("/my-firm/dashboard");
+      },
     }
   );
 }

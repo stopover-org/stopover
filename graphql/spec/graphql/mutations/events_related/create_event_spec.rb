@@ -258,6 +258,14 @@ RSpec.describe Mutations::EventsRelated::CreateEvent, type: :mutation do
   end
 
   context 'create event' do
+    before do
+      firm
+      Event.reindex_test
+      Booking.reindex_test
+      Interest.reindex_test
+      Schedule.reindex_test
+    end
+
     context 'as manager' do
       context 'with deposit' do
         include_examples :successful

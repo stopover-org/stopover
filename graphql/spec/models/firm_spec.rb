@@ -11,6 +11,7 @@
 #  contacts                  :text
 #  contract_address          :string
 #  description               :text
+#  firm_type                 :string           default("onboarding")
 #  language                  :string           default("en")
 #  margin                    :integer          default(0)
 #  payment_types             :string           default([]), not null, is an Array
@@ -48,8 +49,8 @@ RSpec.describe Firm, type: :model do
       should have_many(:stripe_connects).dependent(:nullify)
       should have_many(:refunds).dependent(:nullify)
       should have_many(:payouts).dependent(:nullify)
-      should have_many(:attendees).dependent(:nullify)
-      should have_many(:attendee_options).dependent(:nullify)
+      should have_many(:attendees).dependent(:destroy)
+      should have_many(:attendee_options).dependent(:destroy)
       should have_many(:payments).dependent(:nullify)
       should have_many(:addresses).dependent(:destroy)
       should have_many(:event_placements).dependent(:destroy)
@@ -71,10 +72,13 @@ RSpec.describe Firm, type: :model do
     it 'enum' do
       should define_enum_for(:business_type).with_values(
         individual: 'individual',
-        company: 'company',
-        non_profit: 'non_profit',
-        government_entity: 'government_entity'
+        company: 'company'
       ).backed_by_column_of_type(:string)
+
+      should define_enum_for(:firm_type).with_values(onboarding: 'onboarding',
+                                                     live: 'live')
+                                        .backed_by_column_of_type(:string)
+                                        .with_prefix(true)
     end
 
     context 'validations' do

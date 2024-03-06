@@ -13,6 +13,7 @@ import { FirmSection_CurrentUserFragment$key } from "artifacts/FirmSection_Curre
 import useStatusColor from "lib/hooks/useStatusColor";
 import EditFirmAddress from "components/shared/EditFirmAddress";
 import GoogleMap from "components/shared/GoogleMap";
+import ResetOnboardingFirm from "../../../../components/shared/forms/firm/ResetOnboardingFirm";
 
 interface FirmSectionProps {
   firmFragmentRef: FirmSection_FirmFragment$key;
@@ -24,13 +25,15 @@ const FirmSection = ({
   currentUserFragmentRef,
 }: FirmSectionProps) => {
   const { t } = useTranslation();
-  const firm = useFragment(
+  const firm = useFragment<FirmSection_FirmFragment$key>(
     graphql`
       fragment FirmSection_FirmFragment on Firm {
         id
         title
         contactPerson
         status
+        firmType
+        ...ResetOnboardingFirm_FirmFragment
         address {
           ...EditFirmAddress_AddressFragment
           fullAddress
@@ -47,7 +50,7 @@ const FirmSection = ({
     firmFragmentRef
   );
 
-  const currentUser = useFragment(
+  const currentUser = useFragment<FirmSection_CurrentUserFragment$key>(
     graphql`
       fragment FirmSection_CurrentUserFragment on User {
         serviceUser
@@ -84,6 +87,11 @@ const FirmSection = ({
         <Tag link={false} color={tagColor}>
           {t(`statuses.${firm.status?.toLowerCase()}`)}
         </Tag>
+        {currentUser.serviceUser && (
+          <Tag link={false} color="neutral">
+            {t(`models.firm.enums.firmTypes.${firm.firmType?.toLowerCase()}`)}
+          </Tag>
+        )}
       </Grid>
       <Grid xs={12} sm={12} md={12} lg={2}>
         <Stack
@@ -110,6 +118,9 @@ const FirmSection = ({
           {currentUser.serviceUser && firm.status === "pending" && (
             <VerifyFirm />
           )}
+          {currentUser.serviceUser && firm.firmType === "onboarding" && (
+            <ResetOnboardingFirm firmFragmentRef={firm} />
+          )}
         </Stack>
       </Grid>
       <Grid xs={12}>{firm.contactPerson}</Grid>
@@ -119,7 +130,12 @@ const FirmSection = ({
             returnObjects: true,
             email: "mikhail@stopoverx.com",
           }).map((translation: string) => (
-            <Typography fontSize="sm" level="body-sm" sx={{ width: "100%" }}>
+            <Typography
+              fontSize="sm"
+              level="body-sm"
+              sx={{ width: "100%" }}
+              key={translation}
+            >
               {translation}{" "}
             </Typography>
           ))}

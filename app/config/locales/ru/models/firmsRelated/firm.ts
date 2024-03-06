@@ -26,6 +26,7 @@ export default {
         primaryPhone: "Телефон для уведомлений",
         primaryEmail: "Email для уведомлений",
         contractAddress: "Адрес контракта для проведения криптоплатежей",
+        firmType: "Тип фирмы",
       },
       enums: {
         paymentTypes: {
@@ -33,6 +34,18 @@ export default {
           cash: "Наличными",
           crypto: "Криптовалюта",
         },
+        businessTypes: {
+          individual: "Индвидуальный Предприниматель",
+          company: "Организация (ООО, или иная организацонная форма)",
+        },
+        firmTypes: {
+          onboarding: "Onboarding",
+          live: "Live",
+        },
+      },
+      firmTypeExplanations: {
+        onboarding:
+          "Это страница отображается только для администраторов вашей фирмы. Данная страница будет доступна для всех остальных только после того когда фирма будет переведена в Live mode",
       },
       statusExplanations: {
         pending: [

@@ -18,6 +18,7 @@ module Types
       field :payment_types, [String], null: false
       field :address, Types::FirmsRelated::AddressType
       field :contract_address, String # Crypto Wallet address
+      field :firm_type, String, null: false
 
       field :balance, Types::FirmsRelated::BalanceType
 

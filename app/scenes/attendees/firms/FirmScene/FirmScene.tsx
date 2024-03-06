@@ -12,6 +12,7 @@ import Description from "components/v2/Description";
 import GoogleMap from "components/shared/GoogleMap";
 import EventCardCompact from "scenes/attendees/events/EventsScene/components/EventCardCompact";
 import Pagination from "scenes/attendees/events/EventsScene/components/Pagination";
+import Section from "components/v2/Section/Section";
 
 interface Props {
   firmFragmentRef: FirmScene_CurrentFirmFragment$key;
@@ -28,6 +29,7 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
         website
         primaryEmail
         primaryPhone
+        firmType
         address {
           fullAddress
           country
@@ -79,6 +81,13 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
 
   return (
     <Grid container padding={2} spacing={2} sm={12} md={12}>
+      {firm.firmType === "onboarding" && (
+        <Grid lg={12} md={12} sm={12} xs={12}>
+          <Section variant="soft" color="primary" margin={0} padding={0}>
+            {t(`models.firm.firmTypeExplanations.onboarding`)}
+          </Section>
+        </Grid>
+      )}
       <Grid lg={12} md={12} sm={12} xs={12}>
         <Typography level="h3">{firm.title}</Typography>
         <Typography>{firm.address?.fullAddress}</Typography>

@@ -67,6 +67,9 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
                                                             name: 'eventsAutocomplete'
                                                           },
                                                           {
+                                                            name: 'firmType'
+                                                          },
+                                                          {
                                                             name: 'id'
                                                           },
                                                           {
@@ -208,6 +211,8 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
 
     context 'for not authorized user' do
       it 'success' do
+        event
+        Event.reindex_test
         result = subject
 
         expect(result.dig(:data, :firm)).not_to be_nil
@@ -222,6 +227,10 @@ RSpec.describe Types::FirmsRelated::FirmType, type: :graphql_type do
       let(:current_user) { firm.accounts.last.user }
 
       it 'success' do
+        event
+        booking
+        Event.reindex_test
+        Booking.reindex_test
         result = subject
 
         FirmPolicy::MANAGER_PROTECTED_FIELDS.each do |field|

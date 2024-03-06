@@ -48,6 +48,8 @@ module Types
     end
 
     def firm(id:)
+      return nil if id.firm_type_onboarding? && id.accounts.exclude?(current_account)
+
       id if id.active?
     end
 
@@ -71,6 +73,10 @@ module Types
       context[:current_user]
     end
 
+    def current_account
+      current_user&.account
+    end
+
     def event_filters(**args)
       ::EventFiltersQuery.new({ city: args[:city] }).filters
     end
@@ -80,6 +86,8 @@ module Types
     end
 
     def event(id:)
+      return nil if id.firm.firm_type_onboarding? && id.firm.accounts.exclude?(current_account)
+
       id if id.published?
     end
 

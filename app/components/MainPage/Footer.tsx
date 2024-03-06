@@ -29,7 +29,7 @@ const Footer = () => {
   );
 
   return (
-    <Sheet sx={{ minHeight: "100px" }}>
+    <Sheet sx={{ minHeight: "100px", zIndex: "-1" }}>
       <Grid container>
         <Grid md={4} sm={12} padding={4}>
           <Stack

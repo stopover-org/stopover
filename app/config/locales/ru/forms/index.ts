@@ -27,8 +27,10 @@ import inviteUser from "./inviteUser";
 import createNotification from "./createNotification";
 import createInterest from "./createInterest";
 import createEventOption from "./createEventOption";
+import resetOnboardingFirm from "./resetOnboardingFirm";
 
 export default merge(
+  resetOnboardingFirm,
   createEventOption,
   createInterest,
   createNotification,

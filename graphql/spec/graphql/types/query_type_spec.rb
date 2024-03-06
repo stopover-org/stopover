@@ -131,6 +131,9 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                              name: 'inviteUser'
                            },
                            {
+                             name: 'populateDummy'
+                           },
+                           {
                              name: 'publishEvent'
                            },
                            {

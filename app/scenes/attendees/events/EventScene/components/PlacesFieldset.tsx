@@ -1,7 +1,6 @@
 import { Box } from "@mui/joy";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import useFormContext from "lib/hooks/useFormContext";
 import { graphql, useFragment } from "react-relay";
 import { PlacesFieldset_EventFragment$key } from "artifacts/PlacesFieldset_EventFragment.graphql";
 import Typography from "components/v2/Typography/Typography";
@@ -39,7 +38,6 @@ const PlacesFieldset = ({
     scheduleFragmentRef
   );
   const eventPlacement = React.useMemo(() => event.eventPlacements[0], [event]);
-  const { useFormField } = useFormContext();
   const { t } = useTranslation();
   const [modalOpened, setModalOpened] = React.useState<boolean>(false);
 

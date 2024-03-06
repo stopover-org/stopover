@@ -31,6 +31,7 @@ module Mutations
       argument :website, String, required: false
       argument :margin, Integer, required: false
       argument :available_payment_methods, [String], required: false
+      argument :firm_type, String, required: false
 
       def resolve(**args)
         firm = context[:current_user].account.current_firm

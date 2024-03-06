@@ -11,6 +11,7 @@
 #  contacts                  :text
 #  contract_address          :string
 #  description               :text
+#  firm_type                 :string           default("onboarding")
 #  language                  :string           default("en")
 #  margin                    :integer          default(0)
 #  payment_types             :string           default([]), not null, is an Array
@@ -54,8 +55,8 @@ class Firm < ApplicationRecord
   has_many :stripe_connects, dependent: :nullify
   has_many :refunds, dependent: :nullify
   has_many :payouts, dependent: :nullify
-  has_many :attendees, dependent: :nullify
-  has_many :attendee_options, dependent: :nullify
+  has_many :attendees, dependent: :destroy
+  has_many :attendee_options, dependent: :destroy
   has_many :payments, dependent: :nullify
   has_many :addresses, dependent: :destroy
   has_many :event_placements, dependent: :destroy
@@ -85,11 +86,13 @@ class Firm < ApplicationRecord
   # ENUMS =================================================================
   enum business_type: {
     individual: 'individual',
-    company: 'company',
-    non_profit: 'non_profit',
-    # US only
-    government_entity: 'government_entity'
+    company: 'company'
   }
+
+  enum firm_type: {
+    onboarding: 'onboarding',
+    live: 'live'
+  }, _prefix: true
 
   # SECURE TOKEN ==========================================================
   #

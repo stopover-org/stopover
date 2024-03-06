@@ -25,7 +25,11 @@ interface ISectionProps
 
 const Section = ({ children, color, variant, ...props }: ISectionProps) => (
   <Grid xs={12} {...props}>
-    <Card variant={variant || "outlined"} color={color}>
+    <Card
+      variant={variant || "outlined"}
+      color={color}
+      sx={{ margin: props.margin }}
+    >
       <CardContent>
         <Grid container spacing={0}>
           {children}
