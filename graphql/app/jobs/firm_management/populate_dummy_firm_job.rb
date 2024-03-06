@@ -109,7 +109,7 @@ module FirmManagement
                           with_tour_plan: with_tour_plan,
                           images_count: images_count)
 
-      event.recurring_days_with_time = %w[Monday Tuesday Wednesday Thursday Friday Saturday Sunday].map { |weekday| "#{weekday} 12:00" }
+      event.recurring_days_with_time = %w[Monday Tuesday Wednesday Thursday Friday Saturday Sunday].map { |weekday| "#{weekday} #{index + 4}:00" }
 
       event.save!
     end
@@ -121,7 +121,7 @@ module FirmManagement
                           with_tour_plan: with_tour_plan,
                           images_count: images_count)
 
-      event.recurring_days_with_time = %w[Monday].map { |weekday| "#{weekday} 14:00" }
+      event.recurring_days_with_time = %w[Monday].map { |weekday| "#{weekday} #{index + 4}:00" }
 
       event.save!
     end

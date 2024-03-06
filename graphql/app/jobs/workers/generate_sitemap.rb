@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Workers
-  class GenerateSitemap
+  class GenerateSitemap < ApplicationJob
     queue_as :default
 
     def perform
