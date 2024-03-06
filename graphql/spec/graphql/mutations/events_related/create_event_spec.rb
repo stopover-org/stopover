@@ -177,6 +177,7 @@ RSpec.describe Mutations::EventsRelated::CreateEvent, type: :mutation do
 
   shared_examples :successful do
     it 'send notification to firm owner' do
+      firm
       expect { subject }.to change { Notification.where(to: current_user.account.firm.primary_email).count }.by(1)
     end
 

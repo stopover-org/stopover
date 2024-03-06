@@ -25,6 +25,7 @@ module Types
     field :update_firm, mutation: Mutations::FirmsRelated::UpdateFirm
     field :remove_firm, mutation: Mutations::FirmsRelated::RemoveFirm
     field :verify_firm, mutation: Mutations::FirmsRelated::VerifyFirm
+    field :populate_dummy, mutation: Mutations::FirmsRelated::PopulateDummy
 
     field :sign_in, mutation: Mutations::AuthRelated::SignIn
     field :sign_out, mutation: Mutations::AuthRelated::SignOut

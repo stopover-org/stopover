@@ -17,7 +17,7 @@ module Stopover
                                                                          target_language_code: @dynamic_translation.target_language, parent: parent)
         result = client.translate_text request
 
-        @dynamic_translation.update!(translation: result.translations[0].translated_text) if result.translations.size.positive?
+        @dynamic_translation.update!(translation: result.translations[0].translated_text) if result.translations.size.positive? && result.translations[0].translated_text
       end
     end
   end

@@ -13,6 +13,7 @@ import { FirmSection_CurrentUserFragment$key } from "artifacts/FirmSection_Curre
 import useStatusColor from "lib/hooks/useStatusColor";
 import EditFirmAddress from "components/shared/EditFirmAddress";
 import GoogleMap from "components/shared/GoogleMap";
+import ResetOnboardingFirm from "../../../../components/shared/forms/firm/ResetOnboardingFirm";
 
 interface FirmSectionProps {
   firmFragmentRef: FirmSection_FirmFragment$key;
@@ -32,6 +33,7 @@ const FirmSection = ({
         contactPerson
         status
         firmType
+        ...ResetOnboardingFirm_FirmFragment
         address {
           ...EditFirmAddress_AddressFragment
           fullAddress
@@ -115,6 +117,9 @@ const FirmSection = ({
           </Link>
           {currentUser.serviceUser && firm.status === "pending" && (
             <VerifyFirm />
+          )}
+          {currentUser.serviceUser && firm.firmType === "onboarding" && (
+            <ResetOnboardingFirm firmFragmentRef={firm} />
           )}
         </Stack>
       </Grid>

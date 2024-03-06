@@ -134,6 +134,9 @@ en:
       update_firm:
         notifications:
           success: 'Firm updated'
+      populate_dummy:
+        notifications:
+          success: "Resetting the firm is in progress. This may take some time."
       verify_firm:
         notifications:
           success: 'Firm verified'

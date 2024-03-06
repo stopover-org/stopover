@@ -131,6 +131,9 @@ ru:
       remove_firm:
         notifications:
           success: 'Фирма удалена'
+      populate_dummy:
+        notifications:
+          success: 'Сброс фирмы выполняется. Это может занять некоторое время'
       update_firm:
         notifications:
           success: 'Фирма обновлена'

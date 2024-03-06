@@ -2,6 +2,8 @@
 
 module FirmManagement
   class PopulateDummyFirmJob < ApplicationJob
+    queue_as :default
+
     DEFAULT_IMAGES = %w[
       https://s3.eu-north-1.amazonaws.com/stopoverx.production/pickapictour-sesion-de-fotos-barcelona6-e1566567507553.jpg
       https://s3.eu-north-1.amazonaws.com/stopoverx.production/145.jpg
@@ -27,7 +29,6 @@ module FirmManagement
       return unless firm.firm_type_onboarding?
 
       $skip_delivery = true
-      $skip_translation = true
 
       USER_EMAILS.each do |email|
         user = User.find_by(email: email)
@@ -43,7 +44,11 @@ module FirmManagement
       firm.notifications.destroy_all
       firm.attendees.destroy_all
       firm.attendee_options.destroy_all
+      firm.events.each do |event|
+        event.dynamic_translations.destroy_all
+      end
       firm.events.destroy_all
+      firm.dynamic_translations.destroy_all
 
       firm.activate! unless firm.active?
 
@@ -91,10 +96,8 @@ module FirmManagement
       end
 
       $skip_delivery = false
-      $skip_translation = false
     rescue StandardError => e
       $skip_delivery = false
-      $skip_translation = false
 
       raise e
     end
