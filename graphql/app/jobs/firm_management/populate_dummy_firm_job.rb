@@ -272,6 +272,8 @@ Experience the warmth and hospitality of the Serbian people as you dine with loc
                                 language: 'en',
                                 event_type: 'tour')
 
+      event.interests << Interest.last
+
       event.images.attach(DEFAULT_IMAGES[0...images_count].map { |url| Stopover::FilesSupport.url_to_io(url) }) if images_count.positive?
 
       event.event_placements.build(title: 'Placement Schema', width_places: 6, height_places: 8) if with_placements

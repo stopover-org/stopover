@@ -5,12 +5,12 @@ import { FormProvider } from "react-hook-form";
 import { EventScene_EventFragment$key } from "artifacts/EventScene_EventFragment.graphql";
 import { EventScene_AccountFragment$key } from "artifacts/EventScene_AccountFragment.graphql";
 import { useTranslation } from "react-i18next";
+import Section from "components/v2/Section";
 import Breadcrumbs from "./components/Breadcrumbs";
 import { useBookEventForm } from "./useBookEventForm";
 import EventTitle from "./components/EventTitle";
 import LeftColumn from "./components/LeftColumn";
 import RightColumn from "./components/RightColumn";
-import Section from "../../../../components/v2/Section";
 
 interface EventSceneProps {
   eventFragmentRef: EventScene_EventFragment$key;
