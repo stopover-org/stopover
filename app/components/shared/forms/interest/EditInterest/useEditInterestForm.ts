@@ -21,9 +21,9 @@ function useDefaultValues(
     graphql`
       fragment useEditInterestForm_InterestFragment on Interest {
         originalTitle
+        originalDescription
         slug
         preview
-        description
         id
       }
     `,
@@ -34,7 +34,7 @@ function useDefaultValues(
       title: interest.originalTitle,
       slug: interest.slug,
       preview: interest.preview || "",
-      description: interest.description || "",
+      description: interest.originalDescription || "",
       interestId: interest.id,
     }),
     []

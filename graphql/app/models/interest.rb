@@ -20,7 +20,7 @@
 #
 class Interest < ApplicationRecord
   GRAPHQL_TYPE = Types::EventsRelated::InterestType
-  TRANSLATABLE_FIELDS = [:title].freeze
+  TRANSLATABLE_FIELDS = %i[title description].freeze
   AVAILABLE_LANGUAGES = %i[en ru].freeze
 
   # MODULES ===============================================================

@@ -38,7 +38,7 @@ export const Breadcrumbs = ({
         ...event.interests.map((interest) => ({
           title: interest.title,
           subtitle: t("models.interest.singular"),
-          href: `/interests/${slug}`,
+          href: `/interests/${interest.slug}`,
         })),
       ]}
     />

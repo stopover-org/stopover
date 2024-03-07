@@ -9,6 +9,7 @@ module Types
       field :preview, String
       field :original_title, String, null: false
       field :description, String, null: false
+      field :original_description, String, null: false
 
       def original_title
         object.title
@@ -16,6 +17,14 @@ module Types
 
       def title
         object.translate(:title)
+      end
+
+      def original_description
+        object.description
+      end
+
+      def description
+        object.translate(:description)
       end
 
       def preview
