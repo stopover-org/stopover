@@ -41,6 +41,7 @@ const PageQuery = `
     interest(id: $id) {
       title
       slug
+      description
       preview
     }
   }

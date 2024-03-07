@@ -130,7 +130,9 @@ const InterestScene = ({
         lg={interest.preview ? 8 : 12}
       >
         <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
-          <Typography level="h3">{interest.title}</Typography>
+          <Typography level="h3" component="h1">
+            {interest.title}
+          </Typography>
           <Description html={interest.description} />
         </Stack>
       </Grid>
