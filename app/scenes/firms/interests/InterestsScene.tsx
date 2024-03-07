@@ -60,7 +60,7 @@ const InterestsScene = ({ queryFragmentRef }: InterestsSceneProps) => {
         title: <Typography fontSize="sm">{interest.originalTitle}</Typography>,
         slug: (
           <Link
-            href={`/events?interests=${JSON.stringify([interest.slug])}`}
+            href={`/interests/${interest.slug}`}
             fontSize="sm"
             target="_blank"
             primary

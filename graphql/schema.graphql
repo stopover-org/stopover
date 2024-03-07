@@ -1630,6 +1630,7 @@ type Query {
   ): EventConnection!
   eventsAutocomplete(ids: [ID!], query: String!): EventsAutocomplete!
   firm(id: ID!): Firm
+  interest(id: ID!): Interest
   interests(
     """
     Returns the elements in the list that come after the specified cursor.

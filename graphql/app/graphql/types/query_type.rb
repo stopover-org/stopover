@@ -10,6 +10,10 @@ module Types
 
     field :interests, Types::EventsRelated::InterestType.connection_type, null: false
 
+    field :interest, Types::EventsRelated::InterestType do
+      argument :id, ID, required: true
+    end
+
     field :events, Types::EventsRelated::EventType.connection_type, null: false do
       argument :filters, Types::Filters::EventsFilter, required: false
     end
@@ -61,7 +65,7 @@ module Types
       end
 
       { bookings: Booking.search(args[:query], where: { trip_id: current_user&.account&.trips&.ids }, limit: 5).to_a,
-        events: Event.search(args[:query], where: { status: [:published] }, limit: 5).to_a,
+        events: Event.search(args[:query], where: { status: [:published], onboarding: false }, limit: 5).to_a,
         interests: Interest.search(args[:query], limit: 5).to_a }
     end
 
@@ -83,6 +87,13 @@ module Types
 
     def interests(**_args)
       Interest.all
+    end
+
+    def interest(id:)
+      interest = Interest.find_by(id: id)
+      interest ||= Interest.find_by(slug: id)
+
+      interest
     end
 
     def event(id:)

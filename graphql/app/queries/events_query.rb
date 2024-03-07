@@ -42,6 +42,7 @@ class EventsQuery
     @conditions[:dates] = { gte: Time.zone.now.at_beginning_of_day, lte: 1.day.from_now.at_end_of_day } unless @params[:today].nil?
 
     @conditions[:title] = query if @backend && query
+    @conditions[:onboarding] = false unless @backend
 
     @conditions
   end
