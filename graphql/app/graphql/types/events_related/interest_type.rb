@@ -8,6 +8,7 @@ module Types
       field :slug, String, null: false
       field :preview, String
       field :original_title, String, null: false
+      field :description, String, null: false
 
       def original_title
         object.title

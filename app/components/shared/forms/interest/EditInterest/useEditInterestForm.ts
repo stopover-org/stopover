@@ -6,22 +6,24 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEditInterestForm_UpdateInterestMutation } from "artifacts/useEditInterestForm_UpdateInterestMutation.graphql";
 import { useEditInterestForm_InterestFragment$key } from "artifacts/useEditInterestForm_InterestFragment.graphql";
 
-export interface CreateInterestFormFields {
+export interface EditInterestFormFields {
   title: string;
   slug: string;
   preview: string;
+  description: string;
   interestId: string;
 }
 
 function useDefaultValues(
   interestFragmentRef: useEditInterestForm_InterestFragment$key
-): CreateInterestFormFields {
+): EditInterestFormFields {
   const interest = useFragment<useEditInterestForm_InterestFragment$key>(
     graphql`
       fragment useEditInterestForm_InterestFragment on Interest {
         originalTitle
         slug
         preview
+        description
         id
       }
     `,
@@ -32,6 +34,7 @@ function useDefaultValues(
       title: interest.originalTitle,
       slug: interest.slug,
       preview: interest.preview || "",
+      description: interest.description || "",
       interestId: interest.id,
     }),
     []
@@ -41,6 +44,7 @@ function useDefaultValues(
 const validationSchema = Yup.object().shape({
   title: Yup.string().required(),
   slug: Yup.string().required(),
+  description: Yup.string().required(),
   preview: Yup.string().required(),
 });
 
@@ -49,7 +53,7 @@ export function useEditInterestForm(
   onComplete: () => void
 ) {
   return useMutationForm<
-    CreateInterestFormFields,
+    EditInterestFormFields,
     useEditInterestForm_UpdateInterestMutation
   >(
     graphql`
@@ -58,9 +62,7 @@ export function useEditInterestForm(
       ) {
         updateInterest(input: $input) {
           interest {
-            title
-            slug
-            preview
+            ...useEditInterestForm_InterestFragment
           }
           notification
           errors

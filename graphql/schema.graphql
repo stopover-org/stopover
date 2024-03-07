@@ -1103,6 +1103,7 @@ type Firm implements Node {
 }
 
 type Interest implements Node {
+  description: String!
   id: ID!
   originalTitle: String!
   preview: String
@@ -2401,6 +2402,7 @@ input UpdateInterestInput {
   A unique identifier for the client performing the mutation.
   """
   clientMutationId: String
+  description: String!
   interestId: ID!
   preview: String!
   slug: String!

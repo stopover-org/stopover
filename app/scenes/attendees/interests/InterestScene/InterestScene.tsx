@@ -5,7 +5,7 @@ import {
   usePaginationFragment,
 } from "react-relay";
 import React from "react";
-import { Divider, Grid } from "@mui/joy";
+import { AspectRatio, Divider, Grid, Stack } from "@mui/joy";
 import { useParams } from "next/navigation";
 import { useQuery } from "lib/hooks/useQuery";
 import { usePagedEdges } from "lib/hooks/usePagedEdges";
@@ -15,6 +15,7 @@ import { InterestScene_EventsPaginationFragment$key } from "artifacts/InterestSc
 import { InterestScenePaginationQuery } from "artifacts/InterestScenePaginationQuery.graphql";
 import Typography from "components/v2/Typography/Typography";
 import { InterestScene_InterestFragment$key } from "artifacts/InterestScene_InterestFragment.graphql";
+import Description from "../../../../components/v2/Description";
 
 interface InterestSceneProps {
   eventsFragmentRef: InterestScene_EventsPaginationFragment$key;
@@ -40,7 +41,7 @@ const InterestScene = ({
           cursor: { type: "String", defaultValue: "0" }
         ) {
           events(first: $count, after: $cursor, filters: $filters)
-            @connection(key: "EventsScene_query_events") {
+            @connection(key: "InterestScene_query_events") {
             edges {
               node {
                 id
@@ -101,6 +102,7 @@ const InterestScene = ({
       fragment InterestScene_InterestFragment on Interest {
         title
         preview
+        description
       }
     `,
     interestFragmentRef
@@ -110,11 +112,15 @@ const InterestScene = ({
     <Grid container padding={2} spacing={2} sm={12} md={12}>
       {interest.preview && (
         <Grid xs={12} sm={12} md={4} lg={4}>
-          <img
-            width="100%"
-            src={interest.preview}
-            alt={`${interest.title} - logo`}
-          />
+          <Stack sx={{ position: "sticky", top: "0", left: "0" }}>
+            <AspectRatio sx={{ width: "100%" }}>
+              <img
+                width="100%"
+                src={interest.preview}
+                alt={`${interest.title} - logo`}
+              />
+            </AspectRatio>
+          </Stack>
         </Grid>
       )}
       <Grid
@@ -123,7 +129,10 @@ const InterestScene = ({
         md={interest.preview ? 8 : 12}
         lg={interest.preview ? 8 : 12}
       >
-        <Typography level="h3">{interest.title}</Typography>
+        <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
+          <Typography level="h3">{interest.title}</Typography>
+          <Description html={interest.description} />
+        </Stack>
       </Grid>
       <Divider />
       {events.map((event) => (

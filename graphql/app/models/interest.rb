@@ -4,13 +4,14 @@
 #
 # Table name: interests
 #
-#  id         :bigint           not null, primary key
-#  active     :boolean          default(TRUE)
-#  language   :string           default("en")
-#  slug       :string           not null
-#  title      :string           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :bigint           not null, primary key
+#  active      :boolean          default(TRUE)
+#  description :text             default("")
+#  language    :string           default("en")
+#  slug        :string           not null
+#  title       :string           not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 # Indexes
 #
@@ -59,6 +60,7 @@ class Interest < ApplicationRecord
   validates :title, :language, :active, presence: true
   validates :slug, uniqueness: { case_sensitive: false }
   validates :title, uniqueness: { case_sensitive: false }
+  validates :description, presence: true
 
   # CALLBACKS =============================================================
   before_validation :set_slug
