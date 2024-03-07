@@ -5,8 +5,23 @@ import { useCookies } from "react-cookie";
 import Select from "components/v2/Select";
 import Link from "components/v2/Link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { graphql, useLazyLoadQuery } from "react-relay";
+import { Footer_InterestsQuery } from "artifacts/Footer_InterestsQuery.graphql";
 
 const Footer = () => {
+  const data = useLazyLoadQuery<Footer_InterestsQuery>(
+    graphql`
+      query Footer_InterestsQuery {
+        interests {
+          nodes {
+            slug
+            title
+          }
+        }
+      }
+    `,
+    {}
+  );
   const { t, i18n } = useTranslation();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [cookies, setCookie] = useCookies(["i18next"]);
@@ -66,6 +81,8 @@ const Footer = () => {
         <Grid md={4} sm={12} padding={4}>
           <Stack
             direction="column"
+            spacing={1}
+            useFlexGap
             alignItems={{
               sx: "center",
               sm: "center",
@@ -84,6 +101,11 @@ const Footer = () => {
               <Option value="ru">{t("languages.russian")}</Option>
               <Option value="en">{t("languages.english")}</Option>
             </Select>
+            {data.interests.nodes.map((interest) => (
+              <Link key={interest.slug} href={`/interests/${interest.slug}`}>
+                {interest.title}
+              </Link>
+            ))}
           </Stack>
         </Grid>
       </Grid>
