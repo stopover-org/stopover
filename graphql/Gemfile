@@ -63,6 +63,8 @@ group :development, :test do
   gem 'faker', git: 'https://github.com/faker-ruby/faker.git', branch: 'master'
   gem 'rails-erd'
   gem 'rspec-rails'
+  gem 'rspec_junit_formatter'
+  gem 'timecop', '~> 0.9.8'
 end
 
 group :development do
@@ -91,44 +93,70 @@ group :test do
   gem 'webdrivers'
 end
 
-gem 'aasm'
-gem 'after_commit_everywhere', '~> 1.0'
-gem 'geocoder'
-gem 'graphiql-rails', git: 'https://github.com/rmosolgo/graphiql-rails.git', branch: 'master'
-gem 'graphql'
-gem 'jwt'
-gem 'phonelib'
 gem 'rack-cors', require: 'rack/cors'
-gem 'sendgrid-ruby'
-gem 'twilio-ruby'
-
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'api-pagination'
 gem 'image_processing', '>= 1.2'
 gem 'kaminari'
-
-gem 'bcrypt_pbkdf'
-gem 'ed25519'
 gem 'foreman'
 gem 'net-sftp'
-gem 'sidekiq', '~> 6.5'
 
+# GraphQL
+gem 'graphiql-rails', git: 'https://github.com/rmosolgo/graphiql-rails.git', branch: 'master'
+gem 'graphql'
+
+# Validations
+# Phone Validation
+gem 'phonelib'
+# Countries
+gem 'countries', '~> 5.5'
+# Geocoder. Psql Adapter
+gem 'geocoder'
+
+# Mail Sender
+gem 'sendgrid-ruby'
+
+# Sms Sender
+gem 'twilio-ruby'
+
+# State Management
+gem 'after_commit_everywhere', '~> 1.0'
+gem 'aasm'
+
+# Auth, Encryption
+gem 'jwt'
+gem 'bcrypt_pbkdf'
+gem 'ed25519'
+
+# Jobs, Workers
+gem 'sidekiq', '~> 6.5'
+gem 'sidekiq-cron'
+
+# Payments APIs
+# Stripe
 gem 'stripe', '~> 8.3'
 
+# Third party Files Adapter
+# Excel
 gem 'roo', '~> 2.10.0'
 
-gem 'countries', '~> 5.5'
+# Issue Trackers
+# Sentry
 gem 'sentry-rails'
 gem 'sentry-ruby'
 
+# OpenSearch
 gem 'opensearch-ruby'
 gem 'searchkick'
-gem 'sidekiq-cron'
-gem 'timecop', '~> 0.9.8'
 
+# AWS Cloud APIs
 gem 'aws-sdk-s3'
 gem "faraday_middleware-aws-sigv4"
 
-gem 'rspec_junit_formatter'
-
+# Google Cloud APIs
 gem "google-cloud-translate", "~> 3.5"
+
+# Configuration migration
+gem 'flipper'
+gem 'flipper-active_record'
+gem "flipper-ui", "~> 0.28.3"

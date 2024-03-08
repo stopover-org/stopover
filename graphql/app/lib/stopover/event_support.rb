@@ -2,6 +2,8 @@
 
 module Stopover
   class EventSupport
+    SCHEDULE_DAYS_IN_ADVANCE = Rails.env.test? ? 28 : 365
+
     def self.prepare_dates(event_type, dates = [])
       case event_type
       when 'recurrent'
@@ -25,10 +27,10 @@ module Stopover
 
         dates.map do |date|
           day, month, year, hours, minutes = date.match(regexp).captures
-          year    = year.to_i
-          month   = month.to_i
-          day     = day.to_i
-          hours   = hours.to_i
+          year = year.to_i
+          month = month.to_i
+          day = day.to_i
+          hours = hours.to_i
           minutes = minutes.to_i
 
           Time.zone.local(year, month, day, hours, minutes).to_time
@@ -37,7 +39,7 @@ module Stopover
     end
 
     def self.schedule(event)
-      ::Configuration.get_value('SCHEDULE_DAYS_IN_ADVANCE').value.to_i.times do |i|
+      SCHEDULE_DAYS_IN_ADVANCE.times do |i|
         date = (Time.current + i.days)
         break if event.end_date && event.end_date < date
 
