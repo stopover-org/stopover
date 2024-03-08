@@ -24,6 +24,8 @@
 #
 class Address < ApplicationRecord
   DEFAULT_COUNTRY = ISO3166::Country.find_country_by_any_name('Serbia').iso_short_name
+  GRAPHQL_TYPE = Types::FirmsRelated::AddressType
+
   # MODULES ===============================================================
   #
   # MONETIZE ==============================================================
@@ -56,6 +58,7 @@ class Address < ApplicationRecord
   # VALIDATIONS ===========================================================
   validates :country,
             inclusion: { in: ISO3166::Country.all.map(&:iso_short_name) }
+  validates :country, presence: true
   #
   # CALLBACKS =============================================================
   before_validation :adjust_country

@@ -29,6 +29,10 @@ require 'rails_helper'
 
 RSpec.describe Account, type: :model do
   describe 'model setup' do
+    it 'constants' do
+      expect(Account::GRAPHQL_TYPE).to be(Types::UsersRelated::AccountType)
+    end
+
     it 'relations' do
       should have_many(:account_interests).dependent(:destroy)
       should have_many(:trips).dependent(:destroy)
@@ -42,6 +46,7 @@ RSpec.describe Account, type: :model do
 
       should belong_to(:user).optional(false)
       should belong_to(:firm).optional(true)
+      should belong_to(:address).optional(true)
     end
 
     it 'enums' do
