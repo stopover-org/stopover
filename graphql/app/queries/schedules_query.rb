@@ -15,7 +15,7 @@ class SchedulesQuery
   end
 
   def execute(offset: 0, limit: @limit)
-    Schedule.search(order: { scheduled_for: :asc }, where: conditions, offset: offset, limit: limit)
+    Schedule.search('*', order: { scheduled_for: { order: :asc, unmapped_type: :date } }, where: conditions, offset: offset, limit: limit)
   end
 
   def all

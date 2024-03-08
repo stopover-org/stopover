@@ -15,7 +15,7 @@ class RefundsQuery
   end
 
   def execute(offset: 0, limit: @limit)
-    Refund.search(where: conditions, offset: offset, limit: limit)
+    Refund.search('*', where: conditions, offset: offset, limit: limit)
   end
 
   def all

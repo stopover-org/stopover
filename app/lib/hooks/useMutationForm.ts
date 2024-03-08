@@ -82,25 +82,17 @@ function useMutationForm<
         // eslint-disable-next-line prefer-destructuring
         if (!targetName) targetName = Object.keys(completedRest[0])[0];
 
-        if (
-          targetName &&
-          completedRest[0][targetName] &&
-          completedRest[0][targetName].notification
-        ) {
+        if (completedRest?.[0]?.[targetName]?.notification) {
           toast.message(completedRest[0][targetName].notification);
         }
 
-        if (
-          targetName &&
-          completedRest[0][targetName] &&
-          completedRest[0][targetName].errors
-        ) {
+        if (completedRest?.[0]?.[targetName]?.errors) {
           completedRest[0][targetName].errors.forEach((err: any) => {
             toast.error(err);
           });
         }
 
-        if (completedRest[0]) {
+        if (!completedRest?.[0]?.[targetName]?.errors) {
           form.reset();
           if (onCompleted instanceof Function) {
             // @ts-ignore

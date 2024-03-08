@@ -17,9 +17,9 @@ class EventsQuery
 
   def execute(offset: 0, limit: @limit)
     if query && !@backend
-      Event.search(query, order: { source_title: :asc }, where: conditions, offset: offset, limit: limit)
+      Event.search(query, order: { source_title: { order: :asc, unmapped_type: :text } }, where: conditions, offset: offset, limit: limit)
     else
-      Event.search(order: { source_title: :asc }, where: conditions, offset: offset, limit: limit)
+      Event.search('*', order: { source_title: { order: :asc, unmapped_type: :text } }, where: conditions, offset: offset, limit: limit)
     end
   end
 
@@ -41,7 +41,8 @@ class EventsQuery
     @conditions[:featured] = @params[:featured] unless @params[:featured].nil?
     @conditions[:dates] = { gte: Time.zone.now.at_beginning_of_day, lte: 1.day.from_now.at_end_of_day } unless @params[:today].nil?
 
-    @conditions[:title] = query if @backend && query
+    @conditions[:title] = { like: "%#{query}%" } if @backend && query
+    @conditions[:onboarding] = false unless @backend
 
     @conditions
   end

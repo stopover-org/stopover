@@ -4,13 +4,14 @@
 #
 # Table name: interests
 #
-#  id         :bigint           not null, primary key
-#  active     :boolean          default(TRUE)
-#  language   :string           default("en")
-#  slug       :string           not null
-#  title      :string           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :bigint           not null, primary key
+#  active      :boolean          default(TRUE)
+#  description :text             default("")
+#  language    :string           default("en")
+#  slug        :string           not null
+#  title       :string           not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 # Indexes
 #
@@ -19,11 +20,12 @@
 #
 class Interest < ApplicationRecord
   GRAPHQL_TYPE = Types::EventsRelated::InterestType
-  TRANSLATABLE_FIELDS = [:title].freeze
+  TRANSLATABLE_FIELDS = %i[title description].freeze
   AVAILABLE_LANGUAGES = %i[en ru].freeze
 
   # MODULES ===============================================================
   include Mixins::Translatable
+  include Mixins::Indices::InterestMappings
   include Mixins::Indices
 
   # MONETIZE ==============================================================
@@ -59,6 +61,7 @@ class Interest < ApplicationRecord
   validates :title, :language, :active, presence: true
   validates :slug, uniqueness: { case_sensitive: false }
   validates :title, uniqueness: { case_sensitive: false }
+  validates :description, presence: true
 
   # CALLBACKS =============================================================
   before_validation :set_slug
@@ -66,12 +69,6 @@ class Interest < ApplicationRecord
   # SCOPES ================================================================
   #
   # DELEGATION ============================================================
-
-  def search_data
-    {
-      title: [title, *dynamic_translations.where(source_field: 'title').map(&:translation)]
-    }
-  end
 
   def should_index?
     active

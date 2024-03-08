@@ -137,7 +137,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
                     <React.Fragment key={slug}>
                       <ListItem
                         component="a"
-                        href={`/events?interests=${JSON.stringify([slug])}`}
+                        href={`/interests/${slug}`}
                         sx={{
                           "&:hover": {
                             cursor: "pointer",
@@ -174,7 +174,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
                     <React.Fragment key={slug}>
                       <ListItem
                         component="a"
-                        href={`/events?interests=${JSON.stringify([slug])}`}
+                        href={`/interests/${slug}`}
                         sx={{
                           "&:hover": {
                             cursor: "pointer",
@@ -210,7 +210,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
                     <React.Fragment key={slug}>
                       <ListItem
                         component="a"
-                        href={`/events?interests=${JSON.stringify([slug])}`}
+                        href={`/interests/${slug}`}
                         sx={{
                           "&:hover": {
                             cursor: "pointer",

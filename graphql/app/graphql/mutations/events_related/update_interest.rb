@@ -9,6 +9,7 @@ module Mutations
       argument :title, String, required: true
       argument :slug, String, required: true
       argument :preview, String, required: true
+      argument :description, String, required: true
 
       field :interest, Types::EventsRelated::InterestType
 

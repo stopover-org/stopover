@@ -15,7 +15,7 @@ class PaymentsQuery
   end
 
   def execute(offset: 0, limit: @limit)
-    Payment.search(where: conditions, offset: offset, limit: limit)
+    Payment.search('*', where: conditions, offset: offset, limit: limit)
   end
 
   def all

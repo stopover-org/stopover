@@ -24,6 +24,7 @@ class Schedule < ApplicationRecord
 
   # MODULES ===============================================================
   include AASM
+  include Mixins::Indices::ScheduleMappings
   include Mixins::Indices
 
   # MONETIZE ==============================================================
@@ -69,15 +70,6 @@ class Schedule < ApplicationRecord
   default_scope { in_order_of(:status, %w[active disabled]).order(scheduled_for: :asc) }
 
   # DELEGATION ============================================================
-
-  def search_data
-    {
-      scheduled_for: scheduled_for,
-      status: status,
-      event_id: event.id,
-      firm_id: event.firm.id
-    }
-  end
 
   private
 

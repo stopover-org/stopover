@@ -20,6 +20,7 @@ import { FormProvider } from "react-hook-form";
 import ImagePreviewFields from "components/shared/ImagePreviewFields";
 import { graphql, useFragment } from "react-relay";
 import { EditInterestModal_InterestFragment$key } from "artifacts/EditInterestModal_InterestFragment.graphql";
+import Editor from "components/v2/Editor/Editor";
 import { useEditInterestForm } from "./useEditInterestForm";
 
 interface CreateInterestModalProps {
@@ -44,6 +45,7 @@ const EditInterestModal = ({
   const { t } = useTranslation();
   const form = useEditInterestForm(interest, onClose);
   const imageField = form.useFormField("preview");
+  const descriptionField = form.useFormField("description");
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -85,6 +87,14 @@ const EditInterestModal = ({
               </Grid>
               <Grid xs={12}>
                 <ImagePreviewFields field="preview" />
+              </Grid>
+              <Grid xs={12}>
+                <Editor
+                  errorMessage={descriptionField.error?.message}
+                  value={descriptionField.value}
+                  onChange={descriptionField.onChange}
+                  placeholder={t("models.event.attributes.description")}
+                />
               </Grid>
             </Grid>
             <DialogActions>

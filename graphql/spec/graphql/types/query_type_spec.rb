@@ -64,6 +64,9 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                              name: 'firm'
                            },
                            {
+                             name: 'interest'
+                           },
+                           {
                              name: 'interests'
                            },
                            {

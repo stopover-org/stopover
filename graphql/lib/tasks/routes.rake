@@ -62,6 +62,13 @@ task generate_sitemap: :environment do
             xml.priority 0.7
           end
 
+          xml.url do
+            xml.loc "#{base_url}/interests/#{interest.slug}&language=#{language}"
+            xml.lastmod Time.zone.now.iso8601
+            xml.changefreq 'daily'
+            xml.priority 0.7
+          end
+
           30.times.each do |d|
             xml.url do
               xml.loc "#{base_url}/events?interests=%5B\"#{interest.slug}\"%5D&dates=%5B\"#{Time.zone.now.to_date}\"%2C\"#{(Time.zone.now + (d + 1).day).to_date}\"%5D&language=#{language}"

@@ -33,6 +33,7 @@ class Booking < ApplicationRecord
 
   # MODULES ===============================================================
 
+  include Mixins::Indices::BookingMappings
   include Mixins::Indices
   include AASM
 
@@ -201,20 +202,6 @@ class Booking < ApplicationRecord
 
     refund = refunds.create!(firm: firm, refund_amount: already_paid_price - attendee_total_price, penalty_amount: Money.new(0))
     Stopover::RefundManagement::RefundCreator.new(self, user, refund).perform
-  end
-
-  def search_data
-    {
-      title: event.title,
-      booked_for: schedule.scheduled_for,
-      contact_email: account.primary_email,
-      contact_phone: account.primary_phone,
-
-      trip_id: trip.id,
-      event_id: event.id,
-      schedule_id: schedule.id,
-      firm_id: firm.id
-    }
   end
 
   def copy_price

@@ -1,5 +1,14 @@
 import { graphql, useFragment } from "react-relay";
-import { Box, Divider, Grid, Stack } from "@mui/joy";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionGroup,
+  AccordionSummary,
+  Box,
+  Divider,
+  Grid,
+  Stack,
+} from "@mui/joy";
 import React from "react";
 import { RightColumn_EventFragment$key } from "artifacts/RightColumn_EventFragment.graphql";
 import Description from "components/v2/Description";
@@ -33,6 +42,11 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
             description
             durationTime
           }
+        }
+        interests {
+          id
+          title
+          description
         }
         ...BookEvent_EventFragment
       }
@@ -130,6 +144,18 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
             )}
           </>
         )}
+      </Box>
+      <Box width="100%">
+        <AccordionGroup size="sm">
+          {event.interests.map((interest) => (
+            <Accordion key={interest.id}>
+              <AccordionSummary>{interest.title}</AccordionSummary>
+              <AccordionDetails>
+                <Description html={interest.description} />
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </AccordionGroup>
       </Box>
       <Box width="100%">
         <BookEvent eventFragmentRef={event} />
