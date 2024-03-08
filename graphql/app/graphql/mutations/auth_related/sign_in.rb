@@ -17,6 +17,7 @@ module Mutations
 
       def resolve(username:, type:, **args)
         type = type.downcase
+        username = username.downcase
 
         case type
         when 'phone'
@@ -29,7 +30,7 @@ module Mutations
           end
         when 'email'
           if current_user
-            existing_user = User.find_by(email: username)
+            existing_user = User.find_by(email: username.downcase)
             user = existing_user || current_user
             user.update!(email: username)
           else

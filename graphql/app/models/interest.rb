@@ -25,6 +25,7 @@ class Interest < ApplicationRecord
 
   # MODULES ===============================================================
   include Mixins::Translatable
+  include Mixins::Indices::InterestMappings
   include Mixins::Indices
 
   # MONETIZE ==============================================================
@@ -68,12 +69,6 @@ class Interest < ApplicationRecord
   # SCOPES ================================================================
   #
   # DELEGATION ============================================================
-
-  def search_data
-    {
-      title: [title, *dynamic_translations.where(source_field: 'title').map(&:translation)]
-    }
-  end
 
   def should_index?
     active

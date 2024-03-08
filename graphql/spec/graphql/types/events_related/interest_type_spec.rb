@@ -28,7 +28,13 @@ RSpec.describe Types::EventsRelated::InterestType, type: :graphql_type do
       result = subject
       expect(result.dig(:data, :__type, :fields)).to eq([
                                                           {
+                                                            name: 'description'
+                                                          },
+                                                          {
                                                             name: 'id'
+                                                          },
+                                                          {
+                                                            name: 'originalDescription'
                                                           },
                                                           {
                                                             name: 'originalTitle'

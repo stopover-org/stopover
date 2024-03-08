@@ -34,6 +34,7 @@ class Refund < ApplicationRecord
 
   # MODULES ===============================================================
   include Mixins::PaymentStatuses
+  include Mixins::Indices::RefundMappings
   include Mixins::Indices
 
   # MONETIZE ==============================================================
@@ -82,26 +83,13 @@ class Refund < ApplicationRecord
   default_scope { in_order_of(:status, %w[pending processing successful canceled]).order(created_at: :desc) }
 
   # DELEGATION ============================================================
+
   def total_amount
     refund_amount + penalty_amount
   end
 
   def top_up_balance
     balance.update!(total_amount: firm.balance.total_amount - refund_amount) if parent_refund && successful?
-  end
-
-  def search_data
-    {
-      penalty_amount_cents: penalty_amount_cents,
-      refund_amount_cents: refund_amount_cents,
-      status: status,
-      booking_cancellation_option_id: booking_cancellation_option_id,
-      booking_id: booking_id,
-      firm_id: firm_id,
-      payment_id: payment_id,
-      refund_id: refund_id,
-      stripe_refund_id: stripe_refund_id
-    }
   end
 
   private

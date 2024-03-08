@@ -48,7 +48,9 @@ RSpec.describe EventsQuery, type: :query do
       Event.reindex_test
       Timecop.freeze(Time.current) do
         query = EventsQuery.new
-        expect(query.conditions).to eq({ dates: { gte: Time.current }, status: [:published] })
+        expect(query.conditions).to eq({ dates: { gte: Time.current },
+                                         status: [:published],
+                                         onboarding: false })
         expect(query.total).to eq(4)
       end
     end
@@ -60,7 +62,10 @@ RSpec.describe EventsQuery, type: :query do
         Event.reindex_test
         Timecop.freeze(Time.current) do
           query = EventsQuery.new({ min_price: 125, max_price: 1295 })
-          expect(query.conditions).to eq({ dates: { gte: Time.current }, price: { gte: 12_500, lte: 129_500 }, status: [:published] })
+          expect(query.conditions).to eq({ dates: { gte: Time.current },
+                                           price: { gte: 12_500, lte: 129_500 },
+                                           status: [:published],
+                                           onboarding: false })
           expect(query.total).to eq(1)
 
           event = query.execute.to_a.last
@@ -76,7 +81,9 @@ RSpec.describe EventsQuery, type: :query do
         Event.reindex_test
         Timecop.freeze(Time.current) do
           query = EventsQuery.new({ start_date: now, end_date: now + 3.days })
-          expect(query.conditions).to eq({ dates: { gte: now, lte: now + 3.days }, status: [:published] })
+          expect(query.conditions).to eq({ dates: { gte: now, lte: now + 3.days },
+                                           status: [:published],
+                                           onboarding: false })
           expect(query.total).to eq(1)
 
           event = query.execute.to_a.last
@@ -91,7 +98,9 @@ RSpec.describe EventsQuery, type: :query do
         Timecop.freeze(Time.current) do
           query = EventsQuery.new({ start_date: now + 3.days,
                                     end_date: now + 5.days })
-          expect(query.conditions).to eq({ dates: { gte: now + 3.days, lte: now + 5.days }, status: [:published] })
+          expect(query.conditions).to eq({ dates: { gte: now + 3.days, lte: now + 5.days },
+                                           status: [:published],
+                                           onboarding: false })
           expect(query.total).to eq(1)
 
           event = query.execute.to_a.last

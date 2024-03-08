@@ -19,7 +19,7 @@ class EventsQuery
     if query && !@backend
       Event.search(query, order: { source_title: :asc }, where: conditions, offset: offset, limit: limit)
     else
-      Event.search(order: { source_title: :asc }, where: conditions, offset: offset, limit: limit)
+      Event.search('*', order: { source_title: :asc }, where: conditions, offset: offset, limit: limit)
     end
   end
 

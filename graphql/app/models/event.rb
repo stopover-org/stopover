@@ -52,6 +52,7 @@ class Event < ApplicationRecord
 
   # MODULES ===============================================================
   include Mixins::Translatable
+  include Mixins::Indices::EventMappings
   include Mixins::Indices
   include AASM
 
@@ -213,23 +214,6 @@ class Event < ApplicationRecord
   def current_stripe_integration
     stripe_integrations.active
                        .last
-  end
-
-  def search_data
-    {
-      title: [title, *dynamic_translations.where(source_field: 'title').map(&:translation)],
-      source_title: title,
-      country: address&.country,
-      city: address&.city,
-      dates: schedules.map(&:scheduled_for).map(&:to_time),
-      organizer: firm&.title,
-      interests: interests.map(&:slug),
-      price: attendee_price_per_uom_cents,
-      status: status,
-      firm_id: firm.id,
-      featured: featured,
-      onboarding: firm.firm_type_onboarding?
-    }
   end
 
   def archived_notify
