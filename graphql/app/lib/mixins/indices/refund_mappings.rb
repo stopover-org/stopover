@@ -18,24 +18,6 @@ module Mixins
           stripe_refund_id: stripe_refund_id
         }
       end
-
-      included do
-        def self.searchkick_mappings
-          {
-            properties: {
-              penalty_amount_cents: { type: 'integer' },
-              refund_amount_cents: { type: 'integer' },
-              status: { type: 'keyword' },
-              booking_cancellation_option_id: { type: 'integer' },
-              booking_id: { type: 'integer' },
-              firm_id: { type: 'integer' },
-              payment_id: { type: 'integer' },
-              refund_id: { type: 'integer' },
-              stripe_refund_id: { type: 'keyword' }
-            }
-          }
-        end
-      end
     end
   end
 end

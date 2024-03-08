@@ -20,9 +20,7 @@ module Mixins
         }
       end
 
-      searchkick merge_mappings: true,
-                 callbacks: !Rails.env.test?,
-                 mappings: searchkick_mappings,
+      searchkick callbacks: !Rails.env.test?,
                  settings: searchkick_settings
     end
   end

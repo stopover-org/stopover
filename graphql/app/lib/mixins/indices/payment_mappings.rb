@@ -17,23 +17,6 @@ module Mixins
           stripe_checkout_session_id: stripe_checkout_session_id
         }
       end
-
-      included do
-        def self.searchkick_mappings
-          {
-            properties: {
-              payment_type: { type: 'keyword' },
-              provider: { type: 'keyword' },
-              status: { type: 'keyword' },
-              total_price_cents: { type: 'integer' },
-              booking_id: { type: 'integer' },
-              firm_id: { type: 'integer' },
-              payment_intent_id: { type: 'keyword' },
-              stripe_checkout_session_id: { type: 'keyword' }
-            }
-          }
-        end
-      end
     end
   end
 end

@@ -21,27 +21,6 @@ module Mixins
           onboarding: firm.firm_type_onboarding?
         }
       end
-
-      included do
-        def self.searchkick_mappings
-          {
-            properties: {
-              title: { type: 'text', index: false },
-              source_title: { type: 'text' },
-              country: { type: 'text' },
-              city: { type: 'text' },
-              dates: { type: 'date' },
-              organizer: { type: 'text' },
-              interests: { type: 'keyword' },
-              price: { type: 'integer' },
-              status: { type: 'keyword' },
-              firm_id: { type: 'integer' },
-              featured: { type: 'boolean' },
-              onboarding: { type: 'boolean' }
-            }
-          }
-        end
-      end
     end
   end
 end
