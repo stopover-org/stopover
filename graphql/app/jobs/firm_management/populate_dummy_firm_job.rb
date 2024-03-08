@@ -39,14 +39,26 @@ module FirmManagement
       firm.refunds.destroy_all
       firm.payments.destroy_all
       firm.event_placements.destroy_all
+      firm.tour_places.each do |place|
+        place.dynamic_translations.destroy_all
+      end
       firm.tour_places.destroy_all
+      firm.tour_plans.each do |plan|
+        plan.dynamic_translations.destroy_all
+      end
       firm.tour_plans.destroy_all
       firm.notifications.destroy_all
       firm.attendees.destroy_all
       firm.attendee_options.destroy_all
-      firm.bookings.destroy_all
       firm.events.each do |event|
+        event.bookings.each do |booking|
+          booking.booking_options.destroy_all
+        end
+        event.bookings.destroy_all
         event.dynamic_translations.destroy_all
+        event.event_options.each do |opt|
+          opt.dynamic_translations.destroy_all
+        end
       end
       firm.events.destroy_all
       firm.dynamic_translations.destroy_all
