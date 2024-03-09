@@ -5,7 +5,8 @@ class BookingQuery
 
   def initialize(
     params = {},
-    limit:, after: 0
+    limit: PER_PAGE,
+    after: 0
   )
     @params = params
     @conditions = {}

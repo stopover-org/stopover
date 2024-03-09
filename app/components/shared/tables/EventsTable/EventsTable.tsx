@@ -219,27 +219,34 @@ const EventsTable = ({
     []
   );
   const queryRef = React.useRef<Disposable>();
+  const timeoutRef = React.useRef<NodeJS.Timeout>();
 
   React.useEffect(() => {
-    if (queryRef.current) {
-      queryRef.current.dispose();
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
 
-    queryRef.current = refetch(
-      {
-        filters: {
-          query: value,
-        },
-        cursor: "0",
-      },
-      {
-        onComplete: () => {
-          if (currentPage !== 1) {
-            setCurrentPage(1);
-          }
-        },
+    timeoutRef.current = setTimeout(() => {
+      if (queryRef.current) {
+        queryRef.current.dispose();
       }
-    );
+
+      queryRef.current = refetch(
+        {
+          filters: {
+            query: value,
+          },
+          cursor: "0",
+        },
+        {
+          onComplete: () => {
+            if (currentPage !== 1) {
+              setCurrentPage(1);
+            }
+          },
+        }
+      );
+    }, 500);
   }, [value, setCurrentPage]);
 
   return (

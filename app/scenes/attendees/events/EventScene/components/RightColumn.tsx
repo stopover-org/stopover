@@ -145,11 +145,14 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
           </>
         )}
       </Box>
+
       <Box width="100%">
         <AccordionGroup size="sm">
           {event.interests.map((interest) => (
             <Accordion key={interest.id}>
-              <AccordionSummary>{interest.title}</AccordionSummary>
+              <AccordionSummary>
+                <Typography fontSize="lg">{interest.title}</Typography>
+              </AccordionSummary>
               <AccordionDetails>
                 <Description html={interest.description} />
               </AccordionDetails>
@@ -157,6 +160,7 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
           ))}
         </AccordionGroup>
       </Box>
+
       <Box width="100%">
         <BookEvent eventFragmentRef={event} />
       </Box>

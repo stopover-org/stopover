@@ -139,6 +139,9 @@ const Timetable = ({
           </Box>
         </Stack>
       </Grid>
+      <Grid xs={12} sm={12} md={12} lg={12} padding="10px 0">
+        <Divider />
+      </Grid>
       {Object.entries(timetable).map(([datetime, events], index: number) => {
         const momentDatetime = moment(datetime);
         if (!momentDatetime.isValid()) {
