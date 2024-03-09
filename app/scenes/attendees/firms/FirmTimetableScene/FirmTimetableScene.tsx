@@ -1,14 +1,14 @@
 import { Divider, Grid, Stack } from "@mui/joy";
 import Section from "components/v2/Section/Section";
 import React from "react";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
 import { FirmTimetableScene_FirmFragment$key } from "artifacts/FirmTimetableScene_FirmFragment.graphql";
 import Description from "components/v2/Description/Description";
 import Typography from "components/v2/Typography/Typography";
 import GoogleMap from "components/shared/GoogleMap/GoogleMap";
-import Timetable from "../../../../components/shared/Timetable";
+import Timetable from "components/shared/Timetable";
 
 interface FirmTimetableSceneProps {
   firmFragmentRef: FirmTimetableScene_FirmFragment$key;
@@ -51,6 +51,11 @@ const FirmTimetableScene = ({
           </Section>
         </Grid>
       )}
+      <Grid lg={12} md={12} sm={12} xs={12}>
+        <Typography component="h1" level="h2">
+          {t("models.schedule.plural")} - {moment(date).calendar("day")}
+        </Typography>
+      </Grid>
       <Grid lg={3} md={3} sm={12} xs={12}>
         <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
           {firm.image && (

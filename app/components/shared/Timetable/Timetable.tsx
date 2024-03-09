@@ -1,4 +1,4 @@
-import { graphql, useFragment, useMutation } from "react-relay";
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay";
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { Timetable_EventsConnectionFragment$key } from "artifacts/Timetable_EventsConnectionFragment.graphql";
@@ -8,10 +8,9 @@ import moment from "moment";
 import { dateTimeFormat, timeFormat } from "lib/utils/dates";
 import Link from "components/v2/Link";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { Timetable_BookEventMutation } from "artifacts/Timetable_BookEventMutation.graphql";
-import SubmitButton from "components/shared/SubmitButton";
-import Typography from "components/v2/Typography";
-import Button from "../../v2/Button/Button";
+import Button from "components/v2/Button";
+import { Timetable_AccountQuery } from "artifacts/Timetable_AccountQuery.graphql";
+import TimetableBookEvent from "./TimetableBookEvent";
 
 interface TimetableProps {
   eventsConnectionFragmentRef: Timetable_EventsConnectionFragment$key;
@@ -19,6 +18,19 @@ interface TimetableProps {
 
 const Timetable = ({ eventsConnectionFragmentRef }: TimetableProps) => {
   const timetableDate = moment();
+  const dataAccount = useLazyLoadQuery<Timetable_AccountQuery>(
+    graphql`
+      query Timetable_AccountQuery {
+        currentUser {
+          account {
+            ...TimetableBookEvent_AccountFragment
+          }
+        }
+      }
+    `,
+    {}
+  );
+
   const data = useFragment<Timetable_EventsConnectionFragment$key>(
     graphql`
       fragment Timetable_EventsConnectionFragment on EventConnection {
@@ -27,6 +39,7 @@ const Timetable = ({ eventsConnectionFragmentRef }: TimetableProps) => {
           availableDates
           title
           description
+          ...TimetableBookEvent_EventFragment
           myBookings {
             bookedFor
             trip {
@@ -54,34 +67,6 @@ const Timetable = ({ eventsConnectionFragmentRef }: TimetableProps) => {
     return eventsBookings;
   }, [data.nodes, timetableDate]);
   const { t } = useTranslation();
-  const [mutation, submitting] =
-    useMutation<Timetable_BookEventMutation>(graphql`
-      mutation Timetable_BookEventMutation($input: BookEventInput!) {
-        bookEvent(input: $input) {
-          accessToken
-          booking {
-            id
-            event {
-              id
-            }
-          }
-          notification
-          errors
-        }
-      }
-    `);
-
-  const bookEvent = (eventId: string, bookedFor: Date) => {
-    mutation({
-      variables: {
-        input: {
-          eventId,
-          bookedFor,
-          attendeesCount: 1,
-        },
-      },
-    });
-  };
 
   return (
     <Grid container spacing={2}>
@@ -122,31 +107,11 @@ const Timetable = ({ eventsConnectionFragmentRef }: TimetableProps) => {
                             </Button>
                           </Link>
                         ) : (
-                          <Box>
-                            <Stack
-                              direction="row"
-                              spacing={2}
-                              useFlexGap
-                              alignItems="flex-end"
-                            >
-                              <SubmitButton
-                                submitting={submitting}
-                                size="sm"
-                                color="primary"
-                                onClick={() =>
-                                  bookEvent(event.id, momentDatetime.toDate())
-                                }
-                                disabled={momentDatetime.isBefore(new Date())}
-                              >
-                                {t("event.book")}
-                              </SubmitButton>
-                              {momentDatetime.isBefore(new Date()) && (
-                                <Typography fontSize="sm">
-                                  {t("models.booking.reasons.past")}
-                                </Typography>
-                              )}
-                            </Stack>
-                          </Box>
+                          <TimetableBookEvent
+                            accountFragmentRef={dataAccount.currentUser.account}
+                            eventFragmentRef={event}
+                            timetableDate={momentDatetime}
+                          />
                         )}
                         <Divider />
                       </Stack>
