@@ -68,7 +68,7 @@ function useDefaultValues(
   );
 }
 
-const validationSchema = Yup.object().shape({
+const defaultValidationSchema = Yup.object().shape({
   eventId: Yup.string().required(),
   date: Yup.date().required("Required"),
   attendeesCount: Yup.number().required("Required"),
@@ -78,7 +78,8 @@ const validationSchema = Yup.object().shape({
 
 export function useBookEventForm(
   eventFragmentRef: useBookEventForm_EventFragment$key,
-  accountFragmentRef: useBookEventForm_AccountFragment$key
+  accountFragmentRef: useBookEventForm_AccountFragment$key,
+  validationSchema = defaultValidationSchema
 ) {
   return useMutationForm(
     graphql`

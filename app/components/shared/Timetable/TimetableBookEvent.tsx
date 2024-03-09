@@ -1,15 +1,11 @@
 import { graphql, useFragment } from "react-relay";
-import { Box, Stack } from "@mui/joy";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Moment } from "moment";
-import Typography from "components/v2/Typography";
-import { useBookEventForm } from "scenes/attendees/events/EventScene/useBookEventForm";
 import { TimetableBookEvent_EventFragment$key } from "artifacts/TimetableBookEvent_EventFragment.graphql";
 import { TimetableBookEvent_AccountFragment$key } from "artifacts/TimetableBookEvent_AccountFragment.graphql";
 import Link from "components/v2/Link";
 import Button from "components/v2/Button";
-import SubmitButton from "components/shared/SubmitButton";
 
 interface TimetableBookEventProps {
   eventFragmentRef: TimetableBookEvent_EventFragment$key;
@@ -26,6 +22,7 @@ const TimetableBookEvent = ({
     graphql`
       fragment TimetableBookEvent_EventFragment on Event {
         ...useBookEventForm_EventFragment
+        id
         myBookings {
           id
           bookedFor
@@ -38,7 +35,7 @@ const TimetableBookEvent = ({
     eventFragmentRef
   );
 
-  const account = useFragment(
+  const account = useFragment<TimetableBookEvent_AccountFragment$key>(
     graphql`
       fragment TimetableBookEvent_AccountFragment on Account {
         ...useBookEventForm_AccountFragment
@@ -47,17 +44,11 @@ const TimetableBookEvent = ({
     accountFragmentRef
   );
   const { t } = useTranslation();
-  const isPast = React.useMemo(
-    () => timetableDate.isBefore(new Date()),
-    [timetableDate]
-  );
-
   const booking = React.useMemo(
     () =>
       event.myBookings.find((b) => timetableDate.isSame(b.bookedFor, "minute")),
     [event, account, timetableDate]
   );
-  const form = useBookEventForm(event, account);
 
   return booking ? (
     <Link href={`/trips/${booking.trip.id}#${booking.id}`} underline={false}>
@@ -66,25 +57,9 @@ const TimetableBookEvent = ({
       </Button>
     </Link>
   ) : (
-    <Box>
-      <Stack direction="row" spacing={2} useFlexGap alignItems="flex-end">
-        <form onSubmit={form.handleSubmit()}>
-          <SubmitButton
-            submitting={form.formState.isSubmitting}
-            size="sm"
-            color="primary"
-            disabled={isPast}
-          >
-            {t("event.book")}
-          </SubmitButton>
-        </form>
-        {isPast && (
-          <Typography fontSize="sm">
-            {t("models.booking.reasons.past")}
-          </Typography>
-        )}
-      </Stack>
-    </Box>
+    <Link href={`/events/${event.id}`} underline={false}>
+      <Button size="sm">{t("event.book")}</Button>
+    </Link>
   );
 };
 

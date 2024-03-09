@@ -24,8 +24,8 @@ const Page = async ({ params }: { params: Record<string, string> }) => {
     id: unescape(params.id),
     filters: {
       firmId: unescape(params.id),
-      startDate: moment().startOf("day").toISOString(),
-      endDate: moment().endOf("day").toISOString(),
+      startDate: moment(params.date).startOf("day").toISOString(),
+      endDate: moment(params.date).endOf("day").toISOString(),
     },
   });
 

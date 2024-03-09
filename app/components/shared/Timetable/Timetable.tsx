@@ -1,23 +1,24 @@
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay";
-import { useTranslation } from "react-i18next";
 import React from "react";
 import { Timetable_EventsConnectionFragment$key } from "artifacts/Timetable_EventsConnectionFragment.graphql";
 import { Box, Divider, Grid, IconButton, Stack } from "@mui/joy";
 import { useTimetable } from "lib/hooks/useTimetable";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { dateTimeFormat, timeFormat } from "lib/utils/dates";
 import Link from "components/v2/Link";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import Button from "components/v2/Button";
 import { Timetable_AccountQuery } from "artifacts/Timetable_AccountQuery.graphql";
 import TimetableBookEvent from "./TimetableBookEvent";
 
 interface TimetableProps {
   eventsConnectionFragmentRef: Timetable_EventsConnectionFragment$key;
+  timetableDate?: Moment;
 }
 
-const Timetable = ({ eventsConnectionFragmentRef }: TimetableProps) => {
-  const timetableDate = moment();
+const Timetable = ({
+  eventsConnectionFragmentRef,
+  timetableDate = moment(),
+}: TimetableProps) => {
   const dataAccount = useLazyLoadQuery<Timetable_AccountQuery>(
     graphql`
       query Timetable_AccountQuery {
@@ -52,21 +53,6 @@ const Timetable = ({ eventsConnectionFragmentRef }: TimetableProps) => {
     eventsConnectionFragmentRef
   );
   const timetable = useTimetable(data?.nodes, timetableDate);
-  const timetableBookings = React.useMemo(() => {
-    const eventsBookings: Record<string, any> = {};
-
-    data.nodes.forEach((node) => {
-      node.myBookings.forEach((booking) => {
-        const bookedFor = moment(booking.bookedFor);
-        if (timetableDate.isSame(bookedFor)) {
-          eventsBookings[node.id] = booking;
-        }
-      });
-    });
-
-    return eventsBookings;
-  }, [data.nodes, timetableDate]);
-  const { t } = useTranslation();
 
   return (
     <Grid container spacing={2}>
@@ -95,24 +81,11 @@ const Timetable = ({ eventsConnectionFragmentRef }: TimetableProps) => {
                             {event.title}
                           </Link>
                         </Box>
-                        {timetableBookings[event.id] ? (
-                          <Link
-                            href={`/trips/${
-                              timetableBookings[event.id].trip.id
-                            }#${timetableBookings[event.id].id}`}
-                            underline={false}
-                          >
-                            <Button size="sm">
-                              {t("scenes.attendees.events.eventsScene.details")}
-                            </Button>
-                          </Link>
-                        ) : (
-                          <TimetableBookEvent
-                            accountFragmentRef={dataAccount.currentUser.account}
-                            eventFragmentRef={event}
-                            timetableDate={momentDatetime}
-                          />
-                        )}
+                        <TimetableBookEvent
+                          accountFragmentRef={dataAccount.currentUser.account}
+                          eventFragmentRef={event}
+                          timetableDate={momentDatetime}
+                        />
                         <Divider />
                       </Stack>
                     </Box>

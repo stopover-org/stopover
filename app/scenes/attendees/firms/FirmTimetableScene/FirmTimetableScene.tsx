@@ -94,7 +94,10 @@ const FirmTimetableScene = ({
         </Stack>
       </Grid>
       <Grid lg={9} md={9} sm={12} xs={12}>
-        <Timetable eventsConnectionFragmentRef={firm.events} />
+        <Timetable
+          eventsConnectionFragmentRef={firm.events}
+          timetableDate={date}
+        />
       </Grid>
     </Grid>
   );
