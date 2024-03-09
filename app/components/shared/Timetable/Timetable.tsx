@@ -4,11 +4,15 @@ import { Timetable_EventsConnectionFragment$key } from "artifacts/Timetable_Even
 import { Box, Divider, Grid, IconButton, Stack } from "@mui/joy";
 import { useTimetable } from "lib/hooks/useTimetable";
 import moment, { Moment } from "moment";
-import { dateTimeFormat, timeFormat } from "lib/utils/dates";
+import { dateTimeFormat, timeFormat, urlSafeDateFormat } from "lib/utils/dates";
 import Link from "components/v2/Link";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Timetable_AccountQuery } from "artifacts/Timetable_AccountQuery.graphql";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import TimetableBookEvent from "./TimetableBookEvent";
+import Button from "../../v2/Button";
+import DatePicker from "../../v2/DatePicker/DatePicker";
 
 interface TimetableProps {
   eventsConnectionFragmentRef: Timetable_EventsConnectionFragment$key;
@@ -53,9 +57,88 @@ const Timetable = ({
     eventsConnectionFragmentRef
   );
   const timetable = useTimetable(data?.nodes, timetableDate);
+  const pathname = usePathname();
+  const params = useParams();
+  const basePathname = React.useMemo(() => {
+    if (params.date) {
+      return pathname.split("/").slice(0, -1).join("/");
+    }
+    return pathname;
+  }, [pathname, params]);
+  const { t } = useTranslation();
+  const router = useRouter();
+  const isToday = React.useMemo(() => {
+    if (params.date) {
+      return moment().isSame(moment(params.date, urlSafeDateFormat), "day");
+    }
+    return true;
+  }, [params]);
+
+  const isTomorrow = React.useMemo(() => {
+    if (params.date) {
+      return moment()
+        .add(1, "days")
+        .isSame(moment(params.date, urlSafeDateFormat), "day");
+    }
+    return false;
+  }, [params]);
 
   return (
     <Grid container spacing={2}>
+      <Grid xs={12} sm={12} md={12} lg={12}>
+        <Stack
+          direction="row"
+          spacing={2}
+          useFlexGap
+          flexWrap="wrap"
+          alignItems="flex-end"
+        >
+          <Box>
+            <Link href={basePathname} underline={false}>
+              <Button
+                size="lg"
+                color="primary"
+                variant={isToday ? "solid" : "outlined"}
+              >
+                Today
+              </Button>
+            </Link>
+          </Box>
+          <Box>
+            <Link
+              href={`${basePathname}/${moment()
+                .add(1, "days")
+                .format(urlSafeDateFormat)}`}
+              underline={false}
+            >
+              <Button
+                size="lg"
+                color="primary"
+                variant={isTomorrow ? "solid" : "outlined"}
+              >
+                Tomorrow
+              </Button>
+            </Link>
+          </Box>
+          <Divider orientation="vertical" sx={{ margin: "0 10px" }} />
+          <Box>
+            <DatePicker
+              label={t("datepicker.selectDate")}
+              value={
+                params.date ? moment(params.date, urlSafeDateFormat) : null
+              }
+              onChange={(dt) => {
+                if (dt && dt.isValid()) {
+                  router.push(
+                    `${basePathname}/${dt.format(urlSafeDateFormat)}`
+                  );
+                }
+              }}
+              disablePast
+            />
+          </Box>
+        </Stack>
+      </Grid>
       {Object.entries(timetable).map(([datetime, events], index: number) => {
         const momentDatetime = moment(datetime);
         if (!momentDatetime.isValid()) {

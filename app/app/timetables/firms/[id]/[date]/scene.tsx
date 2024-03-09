@@ -38,11 +38,15 @@ const Scene = ({
   const title = `${data?.firm?.title} - ${t("models.schedule.plural")}`;
   useDocumentTitle(data?.firm?.title ? title : t("general.404"));
   const params = useParams();
+  const date = moment(params.date);
 
   return (
     <SceneWrapper>
       <Layout currentUserFragment={data.currentUser}>
-        <AuthGuard accessible={!!data.firm?.id} noAccess={<NotFound />}>
+        <AuthGuard
+          accessible={!!data.firm?.id && date.isValid()}
+          noAccess={<NotFound />}
+        >
           <FirmTimetableScene
             firmFragmentRef={data.firm!}
             date={moment(params.date)}
