@@ -55,7 +55,7 @@ const EventsTable = ({
       fragment EventsTable_FirmFragment on Firm
       @refetchable(queryName: "EventsTableFirmFragment")
       @argumentDefinitions(
-        count: { type: "Int", defaultValue: 30 }
+        count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String", defaultValue: "" }
         filters: { type: "EventsFilter", defaultValue: {} }
       ) {

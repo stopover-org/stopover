@@ -33,7 +33,7 @@ const BookingsFirmTable = ({
         fragment BookingsFirmTable_BookingsFirmPaginationFragment on Firm
         @refetchable(queryName: "BookingsFirmTableFirmPaginationQuery")
         @argumentDefinitions(
-          count: { type: "Int", defaultValue: 30 }
+          count: { type: "Int", defaultValue: 10 }
           cursor: { type: "String", defaultValue: "" }
         ) {
           bookings(first: $count, after: $cursor, filters: $bookingsFilter)
