@@ -7,7 +7,7 @@ import useMutationForm from "lib/hooks/useMutationForm";
 import useClosestDate from "lib/hooks/useClosestDate";
 import useMomentDates from "lib/hooks/useMomentDates";
 import { useBookEventForm_EventFragment$key } from "artifacts/useBookEventForm_EventFragment.graphql";
-import { useBookEventForm_AccountFragment$key } from "../../../../artifacts/useBookEventForm_AccountFragment.graphql";
+import { useBookEventForm_AccountFragment$key } from "artifacts/useBookEventForm_AccountFragment.graphql";
 
 interface BookEventFields {
   eventId: string;

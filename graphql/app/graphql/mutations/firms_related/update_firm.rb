@@ -58,9 +58,8 @@ module Mutations
                                                        :latitude,
                                                        :longitude))
 
-          firm.image.purge if args[:image].nil?
-
-          if args[:image].present?
+          if args.key?(:image)
+            firm.image.purge
             io_object = Stopover::FilesSupport.url_to_io(args[:image])
 
             firm.image.attach(io_object)

@@ -24,30 +24,6 @@ const Query = graphql`
       description
       image
     }
-    events(filters: $filters) {
-      ...FirmTimetableScene_EventsConnectionFragment
-      nodes {
-        availableDates
-        title
-        durationTime
-        description
-        myBookings {
-          bookedFor
-          alreadyPaidPrice {
-            cents
-            currency {
-              name
-            }
-          }
-          leftToPayPrice {
-            cents
-            currency {
-              name
-            }
-          }
-        }
-      }
-    }
   }
 `;
 
@@ -65,11 +41,7 @@ const Scene = ({
     <SceneWrapper>
       <Layout currentUserFragment={data.currentUser}>
         <AuthGuard accessible={!!data.firm?.id} noAccess={<NotFound />}>
-          <FirmTimetableScene
-            eventsConnectionFragmentRef={data.events}
-            firmFragmentRef={data.firm!}
-            date={moment()}
-          />
+          <FirmTimetableScene firmFragmentRef={data.firm!} date={moment()} />
         </AuthGuard>
       </Layout>
     </SceneWrapper>

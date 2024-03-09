@@ -110,7 +110,7 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
           </Stack>
         </Grid>
       )}
-      <Grid lg={6} md={9} sm={12} xs={12}>
+      <Grid lg={firm.image ? 6 : 9} md={9} sm={12} xs={12}>
         {firm.description && <Description html={firm.description} />}
         {firm.address && (
           <>

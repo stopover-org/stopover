@@ -67,7 +67,7 @@ module Stopover
                                                                                 args[:single_dates])
           end
 
-          if args[:images].present?
+          if args.key?(:images)
             purge_images!(args)
 
             images_to_attach = []

@@ -1,40 +1,41 @@
-import { Grid, Stack } from "@mui/joy";
+import { Divider, Grid, Stack } from "@mui/joy";
 import Section from "components/v2/Section/Section";
 import React from "react";
 import { Moment } from "moment";
 import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
-import { FirmTimetableScene_EventsConnectionFragment$key } from "artifacts/FirmTimetableScene_EventsConnectionFragment.graphql";
 import { FirmTimetableScene_FirmFragment$key } from "artifacts/FirmTimetableScene_FirmFragment.graphql";
+import Description from "components/v2/Description/Description";
+import Typography from "components/v2/Typography/Typography";
+import GoogleMap from "components/shared/GoogleMap/GoogleMap";
+import Timetable from "../../../../components/shared/Timetable";
 
 interface FirmTimetableSceneProps {
-  eventsConnectionFragmentRef: FirmTimetableScene_EventsConnectionFragment$key;
   firmFragmentRef: FirmTimetableScene_FirmFragment$key;
   date: Moment;
 }
 
 const FirmTimetableScene = ({
-  eventsConnectionFragmentRef,
   firmFragmentRef,
   date,
 }: FirmTimetableSceneProps) => {
-  const events = useFragment(
-    graphql`
-      fragment FirmTimetableScene_EventsConnectionFragment on EventConnection {
-        nodes {
-          id
-        }
-      }
-    `,
-    eventsConnectionFragmentRef
-  );
-
   const firm = useFragment(
     graphql`
       fragment FirmTimetableScene_FirmFragment on Firm {
         firmType
         image
         title
+        description
+        address {
+          fullAddress
+          country
+          city
+          latitude
+          longitude
+        }
+        events(first: 999, filters: $filters) {
+          ...Timetable_EventsConnectionFragment
+        }
       }
     `,
     firmFragmentRef
@@ -50,13 +51,46 @@ const FirmTimetableScene = ({
           </Section>
         </Grid>
       )}
-      {firm.image && (
-        <Grid lg={3} md={3} sm={12} xs={12}>
-          <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
+      <Grid lg={3} md={3} sm={12} xs={12}>
+        <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
+          {firm.image && (
             <img width="100%" src={firm.image} alt={`${firm.title} - logo`} />
-          </Stack>
-        </Grid>
-      )}
+          )}
+          {firm.description && <Description html={firm.description} />}
+          {firm.address && (
+            <>
+              <Divider sx={{ margin: 2 }} />
+              <Typography level="h4">{t("models.address.singular")}</Typography>
+              <Typography fontSize="lg-title">
+                {firm.address?.fullAddress}
+              </Typography>
+              <Typography fontSize="lg-title">
+                {firm.address?.country}, {firm.address?.city}
+              </Typography>
+              {firm.address?.latitude && firm.address?.longitude && (
+                <>
+                  <Divider sx={{ margin: 2 }} />
+                  <GoogleMap
+                    center={{
+                      lat: firm.address?.latitude!,
+                      lng: firm.address?.longitude!,
+                    }}
+                    markers={[
+                      {
+                        lat: firm.address?.latitude!,
+                        lng: firm.address?.longitude!,
+                      },
+                    ]}
+                  />
+                </>
+              )}
+            </>
+          )}
+        </Stack>
+      </Grid>
+      <Grid lg={9} md={9} sm={12} xs={12}>
+        <Timetable eventsConnectionFragmentRef={firm.events} />
+      </Grid>
     </Grid>
   );
 };

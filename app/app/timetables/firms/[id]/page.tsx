@@ -13,6 +13,7 @@ import { Metadata } from "next";
 import scene_FirmTimetable_QueryNode, {
   scene_FirmTimetable_Query,
 } from "artifacts/scene_FirmTimetable_Query.graphql";
+import moment from "moment";
 import QueryWrapper from "./query";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {
@@ -21,7 +22,11 @@ const Page = async ({ params }: { params: Record<string, string> }) => {
     scene_FirmTimetable_Query
   >(scene_FirmTimetable_QueryNode.params, {
     id: unescape(params.id),
-    filters: { firmId: unescape(params.id) },
+    filters: {
+      firmId: unescape(params.id),
+      startDate: moment().startOf("day"),
+      endDate: moment().endOf("day"),
+    },
   });
 
   return (
