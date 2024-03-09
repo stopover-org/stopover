@@ -449,7 +449,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
           expect(result.dig(:data, :events, :pageInfo, :hasNextPage)).to eq(true)
           expect(result.dig(:data, :events, :pageInfo, :hasPreviousPage)).to eq(false)
           expect(result.dig(:data, :events, :pageInfo, :startCursor)).to eq('0')
-          expect(result.dig(:data, :events, :pageInfo, :endCursor)).to eq('45')
+          expect(result.dig(:data, :events, :pageInfo, :endCursor)).to eq('10')
 
           expect(result.dig(:data, :events, :edges).count).to eq(10)
           expect(result.dig(:data, :events, :total)).to eq(45)
@@ -481,7 +481,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
             expect(result.dig(:data, :events, :pageInfo, :hasNextPage)).to eq(true)
             expect(result.dig(:data, :events, :pageInfo, :hasPreviousPage)).to eq(false)
             expect(result.dig(:data, :events, :pageInfo, :startCursor)).to eq('0')
-            expect(result.dig(:data, :events, :pageInfo, :endCursor)).to eq('45')
+            expect(result.dig(:data, :events, :pageInfo, :endCursor)).to eq('20')
 
             expect(result.dig(:data, :events, :nodes).count).to eq(20)
             expect(result.dig(:data, :events, :total)).to eq(45)
@@ -516,7 +516,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
             expect(result.dig(:data, :events, :pageInfo, :hasNextPage)).to eq(true)
             expect(result.dig(:data, :events, :pageInfo, :hasPreviousPage)).to eq(false)
             expect(result.dig(:data, :events, :pageInfo, :startCursor)).to eq('0')
-            expect(result.dig(:data, :events, :pageInfo, :endCursor)).to eq('45')
+            expect(result.dig(:data, :events, :pageInfo, :endCursor)).to eq('20')
 
             expect(result.dig(:data, :events, :edges).count).to eq(20)
             expect(result.dig(:data, :events, :total)).to eq(45)
@@ -552,7 +552,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
           expect(result.dig(:data, :events, :pageInfo, :hasNextPage)).to eq(true)
           expect(result.dig(:data, :events, :pageInfo, :hasPreviousPage)).to eq(true)
           expect(result.dig(:data, :events, :pageInfo, :startCursor)).to eq('0')
-          expect(result.dig(:data, :events, :pageInfo, :endCursor)).to eq('45')
+          expect(result.dig(:data, :events, :pageInfo, :endCursor)).to eq('30')
 
           expect(result.dig(:data, :events, :edges).count).to eq(20)
           expect(result.dig(:data, :events, :total)).to eq(45)

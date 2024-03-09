@@ -284,7 +284,7 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
         expect(result.dig(:data, :event, :bookings, :pageInfo, :hasNextPage)).to eq(true)
         expect(result.dig(:data, :event, :bookings, :pageInfo, :hasPreviousPage)).to eq(false)
         expect(result.dig(:data, :event, :bookings, :pageInfo, :startCursor)).to eq('0')
-        expect(result.dig(:data, :event, :bookings, :pageInfo, :endCursor)).to eq('70')
+        expect(result.dig(:data, :event, :bookings, :pageInfo, :endCursor)).to eq('10')
 
         expect(result.dig(:data, :event, :bookings, :edges).count).to eq(10)
         expect(result.dig(:data, :event, :bookings, :total)).to eq(70)
@@ -318,7 +318,7 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
           expect(result.dig(:data, :event, :bookings, :pageInfo, :hasNextPage)).to eq(true)
           expect(result.dig(:data, :event, :bookings, :pageInfo, :hasPreviousPage)).to eq(false)
           expect(result.dig(:data, :event, :bookings, :pageInfo, :startCursor)).to eq('0')
-          expect(result.dig(:data, :event, :bookings, :pageInfo, :endCursor)).to eq('70')
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :endCursor)).to eq('20')
 
           expect(result.dig(:data, :event, :bookings, :nodes).count).to eq(20)
           expect(result.dig(:data, :event, :bookings, :total)).to eq(70)
@@ -356,7 +356,7 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
           expect(result.dig(:data, :event, :bookings, :pageInfo, :hasNextPage)).to eq(true)
           expect(result.dig(:data, :event, :bookings, :pageInfo, :hasPreviousPage)).to eq(false)
           expect(result.dig(:data, :event, :bookings, :pageInfo, :startCursor)).to eq('0')
-          expect(result.dig(:data, :event, :bookings, :pageInfo, :endCursor)).to eq('70')
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :endCursor)).to eq('20')
 
           expect(result.dig(:data, :event, :bookings, :edges).count).to eq(20)
           expect(result.dig(:data, :event, :bookings, :total)).to eq(70)
@@ -394,7 +394,7 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
           expect(result.dig(:data, :event, :bookings, :pageInfo, :hasNextPage)).to eq(true)
           expect(result.dig(:data, :event, :bookings, :pageInfo, :hasPreviousPage)).to eq(true)
           expect(result.dig(:data, :event, :bookings, :pageInfo, :startCursor)).to eq('0')
-          expect(result.dig(:data, :event, :bookings, :pageInfo, :endCursor)).to eq('70')
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :endCursor)).to eq('30')
 
           expect(result.dig(:data, :event, :bookings, :edges).count).to eq(20)
           expect(result.dig(:data, :event, :bookings, :total)).to eq(70)
@@ -547,7 +547,7 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
         expect(result.dig(:data, :event, :schedules, :pageInfo, :hasNextPage)).to eq(true)
         expect(result.dig(:data, :event, :schedules, :pageInfo, :hasPreviousPage)).to eq(false)
         expect(result.dig(:data, :event, :schedules, :pageInfo, :startCursor)).to eq('0')
-        expect(result.dig(:data, :event, :schedules, :pageInfo, :endCursor)).to eq('156')
+        expect(result.dig(:data, :event, :schedules, :pageInfo, :endCursor)).to eq('100')
 
         expect(result.dig(:data, :event, :schedules, :edges).count).to eq(100)
         expect(result.dig(:data, :event, :schedules, :total)).to eq(156)
@@ -581,7 +581,7 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
           expect(result.dig(:data, :event, :schedules, :pageInfo, :hasNextPage)).to eq(true)
           expect(result.dig(:data, :event, :schedules, :pageInfo, :hasPreviousPage)).to eq(false)
           expect(result.dig(:data, :event, :schedules, :pageInfo, :startCursor)).to eq('0')
-          expect(result.dig(:data, :event, :schedules, :pageInfo, :endCursor)).to eq('156')
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :endCursor)).to eq('20')
 
           expect(result.dig(:data, :event, :schedules, :nodes).count).to eq(20)
           expect(result.dig(:data, :event, :schedules, :total)).to eq(156)
@@ -618,7 +618,7 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
           expect(result.dig(:data, :event, :schedules, :pageInfo, :hasNextPage)).to eq(true)
           expect(result.dig(:data, :event, :schedules, :pageInfo, :hasPreviousPage)).to eq(false)
           expect(result.dig(:data, :event, :schedules, :pageInfo, :startCursor)).to eq('0')
-          expect(result.dig(:data, :event, :schedules, :pageInfo, :endCursor)).to eq('156')
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :endCursor)).to eq('20')
 
           expect(result.dig(:data, :event, :schedules, :edges).count).to eq(20)
           expect(result.dig(:data, :event, :schedules, :total)).to eq(156)
@@ -655,7 +655,7 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
           expect(result.dig(:data, :event, :schedules, :pageInfo, :hasNextPage)).to eq(true)
           expect(result.dig(:data, :event, :schedules, :pageInfo, :hasPreviousPage)).to eq(true)
           expect(result.dig(:data, :event, :schedules, :pageInfo, :startCursor)).to eq('0')
-          expect(result.dig(:data, :event, :schedules, :pageInfo, :endCursor)).to eq('156')
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :endCursor)).to eq('30')
 
           expect(result.dig(:data, :event, :schedules, :edges).count).to eq(20)
           expect(result.dig(:data, :event, :schedules, :total)).to eq(156)

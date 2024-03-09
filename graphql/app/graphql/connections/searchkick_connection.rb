@@ -32,7 +32,7 @@ module Connections
     end
 
     def end_cursor
-      query.total
+      offset + nodes.count
     end
 
     def cursor_for(item)
