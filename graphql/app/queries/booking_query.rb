@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 class BookingQuery
-  PER_PAGE = 30
+  PER_PAGE = 10
 
   def initialize(
     params = {},
-    after: 0,
-    limit: PER_PAGE
+    limit:, after: 0
   )
     @params = params
     @conditions = {}

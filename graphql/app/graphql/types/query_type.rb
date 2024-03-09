@@ -90,7 +90,7 @@ module Types
     end
 
     def interest(id:)
-      interest = Interest.find_by(id: id)
+      interest = GraphqlSchema.object_from_id(id)
       interest ||= Interest.find_by(slug: id)
 
       interest

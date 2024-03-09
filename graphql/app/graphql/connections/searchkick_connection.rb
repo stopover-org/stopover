@@ -5,8 +5,14 @@ module Connections
     def initialize(**args)
       @arguments = args[:arguments]
       @query_type = @arguments[:query_type]
-      @per_page = @arguments[:per_page] || @query_type::PER_PAGE
-      super([], default_page_size: @per_page, max_page_size: @per_page, **args)
+      @per_page = @query_type::PER_PAGE
+      @max_per_page = defined?(@query_type::MAX_PER_PAGE) ? @query_type::MAX_PER_PAGE : 1000
+      super([], default_page_size: @per_page, max_page_size: @max_page_size, **args)
+    end
+
+    def per_page
+      return @max_page_size if @first_value && @max_page_size && @first_value.to_i > @max_page_size
+      @first_value || @per_page || @max_page_size
     end
 
     def nodes
@@ -14,34 +20,33 @@ module Connections
     end
 
     def has_next_page
-      query.total > after_value + @per_page
+      query.total > start_cursor + per_page
     end
 
     def has_previous_page
-      after_value != 1
+      offset != 0
     end
 
     def start_cursor
-      after_value
+      0
     end
 
     def end_cursor
-      after_value + nodes.count
+      query.total
     end
 
     def cursor_for(item)
       index = nodes.find_index { |node| node.id == item.id }
 
-      (after_value + index).to_s
+      (offset + index).to_s
     end
 
     def query
-      @query ||= @query_type.new(@arguments.except(:query_type), limit: @per_page, after: after_value)
+      @query ||= @query_type.new(@arguments.except(:query_type), limit: per_page, after: offset)
     end
 
-    def after_value
-      raw_cursor = context&.query&.provided_variables ? context.query.provided_variables['cursor'] : nil
-      raw_cursor.to_i || @first_value || 0
+    def offset
+      @after_value.to_i || 0
     end
 
     delegate :total, to: :query

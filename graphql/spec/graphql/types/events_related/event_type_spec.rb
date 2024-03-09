@@ -249,6 +249,12 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
                     bookedFor
                   }
                 }
+                pageInfo {
+                  hasNextPage
+                  hasPreviousPage
+                  startCursor
+                  endCursor
+                }
                 total
               }
             }
@@ -261,6 +267,139 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
       create_list(:booking, 10)
 
       Booking.reindex_test
+    end
+
+    context 'connection type' do
+      let(:variables) { { eventId: GraphqlSchema.id_from_object(event), filters: {} } }
+
+      before do
+        create_list(:booking, 60, event: event)
+        Booking.reindex_test
+      end
+
+      it 'default limit' do
+        expect(BookingQuery::PER_PAGE).to eq(10)
+        result = subject
+
+        expect(result.dig(:data, :event, :bookings, :pageInfo, :hasNextPage)).to eq(true)
+        expect(result.dig(:data, :event, :bookings, :pageInfo, :hasPreviousPage)).to eq(false)
+        expect(result.dig(:data, :event, :bookings, :pageInfo, :startCursor)).to eq('0')
+        expect(result.dig(:data, :event, :bookings, :pageInfo, :endCursor)).to eq('70')
+
+        expect(result.dig(:data, :event, :bookings, :edges).count).to eq(10)
+        expect(result.dig(:data, :event, :bookings, :total)).to eq(70)
+      end
+
+      context 'nodes' do
+        let(:query) do
+          <<-GRAPHQL
+            query($eventId: ID!, $filters: BookingsFilter!) {
+              event(id: $eventId) {
+                bookings(first: 20, filters: $filters) {
+                  nodes {
+                    id
+                  }
+                  pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                    startCursor
+                    endCursor
+                  }
+                  total
+                }
+              }
+            }
+          GRAPHQL
+        end
+
+        it 'N elements' do
+          result = subject
+
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :hasNextPage)).to eq(true)
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :hasPreviousPage)).to eq(false)
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :startCursor)).to eq('0')
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :endCursor)).to eq('70')
+
+          expect(result.dig(:data, :event, :bookings, :nodes).count).to eq(20)
+          expect(result.dig(:data, :event, :bookings, :total)).to eq(70)
+        end
+      end
+
+      context 'custom limit' do
+        let(:query) do
+          <<-GRAPHQL
+          query($eventId: ID!, $filters: BookingsFilter!) {
+            event(id: $eventId) {
+              bookings(first: 20, filters: $filters) {
+                edges {
+                  node {
+                    id
+                    bookedFor
+                  }
+                }
+                pageInfo {
+                  hasNextPage
+                  hasPreviousPage
+                  startCursor
+                  endCursor
+                }
+                total
+              }
+            }
+          }
+          GRAPHQL
+        end
+
+        it 'custom N elements' do
+          result = subject
+
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :hasNextPage)).to eq(true)
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :hasPreviousPage)).to eq(false)
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :startCursor)).to eq('0')
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :endCursor)).to eq('70')
+
+          expect(result.dig(:data, :event, :bookings, :edges).count).to eq(20)
+          expect(result.dig(:data, :event, :bookings, :total)).to eq(70)
+        end
+      end
+
+      context 'offset' do
+        let(:query) do
+          <<-GRAPHQL
+          query($eventId: ID!, $filters: BookingsFilter!) {
+            event(id: $eventId) {
+              bookings(after: "10", first: 20, filters: $filters) {
+                edges {
+                  node {
+                    id
+                    bookedFor
+                  }
+                }
+                pageInfo {
+                  hasNextPage
+                  hasPreviousPage
+                  startCursor
+                  endCursor
+                }
+                total
+              }
+            }
+          }
+          GRAPHQL
+        end
+
+        it 'N elements' do
+          result = subject
+
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :hasNextPage)).to eq(true)
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :hasPreviousPage)).to eq(true)
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :startCursor)).to eq('0')
+          expect(result.dig(:data, :event, :bookings, :pageInfo, :endCursor)).to eq('70')
+
+          expect(result.dig(:data, :event, :bookings, :edges).count).to eq(20)
+          expect(result.dig(:data, :event, :bookings, :total)).to eq(70)
+        end
+      end
     end
 
     context 'for the common user' do
@@ -364,11 +503,17 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
       <<-GRAPHQL
         query($eventId: ID!, $filters: SchedulesFilter!) {
           event(id: $eventId) {
-            schedules(filters: $filters) {
+            schedules(first: 100, filters: $filters) {
               edges {
                 node {
                   scheduledFor
                 }
+              }
+              pageInfo {
+                hasNextPage
+                hasPreviousPage
+                startCursor
+                endCursor
               }
               total
             }
@@ -378,18 +523,151 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
     end
 
     before do
-      event
       event.schedules.first(5).each_with_index do |schedule, index|
         schedule.update!(scheduled_for: Time.zone.now - index.days)
       end
       Schedule.reindex_test
     end
 
+    context 'connection type' do
+      let(:variables) { { eventId: GraphqlSchema.id_from_object(event), filters: { includePast: true } } }
+
+      before do
+        100.times.each do |n|
+          event.schedules.create!(scheduled_for: Time.zone.now + n.days, status: :active)
+        end
+
+        Schedule.reindex_test
+      end
+
+      it 'default limit' do
+        expect(BookingQuery::PER_PAGE).to eq(10)
+        result = subject
+
+        expect(result.dig(:data, :event, :schedules, :pageInfo, :hasNextPage)).to eq(true)
+        expect(result.dig(:data, :event, :schedules, :pageInfo, :hasPreviousPage)).to eq(false)
+        expect(result.dig(:data, :event, :schedules, :pageInfo, :startCursor)).to eq('0')
+        expect(result.dig(:data, :event, :schedules, :pageInfo, :endCursor)).to eq('156')
+
+        expect(result.dig(:data, :event, :schedules, :edges).count).to eq(100)
+        expect(result.dig(:data, :event, :schedules, :total)).to eq(156)
+      end
+
+      context 'nodes' do
+        let(:query) do
+          <<-GRAPHQL
+            query($eventId: ID!, $filters: SchedulesFilter!) {
+              event(id: $eventId) {
+                schedules(first: 20, filters: $filters) {
+                  nodes {
+                    id
+                  }
+                  pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                    startCursor
+                    endCursor
+                  }
+                  total
+                }
+              }
+            }
+          GRAPHQL
+        end
+
+        it 'N elements' do
+          result = subject
+
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :hasNextPage)).to eq(true)
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :hasPreviousPage)).to eq(false)
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :startCursor)).to eq('0')
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :endCursor)).to eq('156')
+
+          expect(result.dig(:data, :event, :schedules, :nodes).count).to eq(20)
+          expect(result.dig(:data, :event, :schedules, :total)).to eq(156)
+        end
+      end
+
+      context 'custom limit' do
+        let(:query) do
+          <<-GRAPHQL
+          query($eventId: ID!, $filters: SchedulesFilter!) {
+            event(id: $eventId) {
+              schedules(first: 20, filters: $filters) {
+                edges {
+                  node {
+                    id
+                  }
+                }
+                pageInfo {
+                  hasNextPage
+                  hasPreviousPage
+                  startCursor
+                  endCursor
+                }
+                total
+              }
+            }
+          }
+          GRAPHQL
+        end
+
+        it 'custom N elements' do
+          result = subject
+
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :hasNextPage)).to eq(true)
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :hasPreviousPage)).to eq(false)
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :startCursor)).to eq('0')
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :endCursor)).to eq('156')
+
+          expect(result.dig(:data, :event, :schedules, :edges).count).to eq(20)
+          expect(result.dig(:data, :event, :schedules, :total)).to eq(156)
+        end
+      end
+
+      context 'offset' do
+        let(:query) do
+          <<-GRAPHQL
+          query($eventId: ID!, $filters: SchedulesFilter!) {
+            event(id: $eventId) {
+              schedules(after: "10", first: 20, filters: $filters) {
+                edges {
+                  node {
+                    id
+                  }
+                }
+                pageInfo {
+                  hasNextPage
+                  hasPreviousPage
+                  startCursor
+                  endCursor
+                }
+                total
+              }
+            }
+          }
+          GRAPHQL
+        end
+
+        it 'N elements' do
+          result = subject
+
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :hasNextPage)).to eq(true)
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :hasPreviousPage)).to eq(true)
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :startCursor)).to eq('0')
+          expect(result.dig(:data, :event, :schedules, :pageInfo, :endCursor)).to eq('156')
+
+          expect(result.dig(:data, :event, :schedules, :edges).count).to eq(20)
+          expect(result.dig(:data, :event, :schedules, :total)).to eq(156)
+        end
+      end
+    end
+
     it 'only future schedules' do
       result = subject
 
       expect(result.dig(:data, :event, :schedules, :total)).to eq(52)
-      expect(result.dig(:data, :event, :schedules, :edges).count).to eq(30)
+      expect(result.dig(:data, :event, :schedules, :edges).count).to eq(52)
     end
 
     context 'filter by date' do
@@ -410,7 +688,7 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
         result = subject
 
         expect(result.dig(:data, :event, :schedules, :total)).to eq(56)
-        expect(result.dig(:data, :event, :schedules, :edges).count).to eq(30)
+        expect(result.dig(:data, :event, :schedules, :edges).count).to eq(56)
       end
     end
   end
