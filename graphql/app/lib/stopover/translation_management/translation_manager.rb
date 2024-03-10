@@ -8,7 +8,7 @@ module Stopover
       end
 
       def translate
-        disabled = !Rails.env.production? || $skip_translation
+        disabled = !Rails.env.production? || Flipper.enabled?(:global_translations)
         return if disabled
 
         client = ::Google::Cloud::Translate::V3::TranslationService::Client.new
