@@ -23,12 +23,14 @@
 #  title                     :string           not null
 #  website                   :string
 #  address_id                :bigint
+#  seo_metadata_id           :bigint
 #  stripe_account_id         :string
 #
 # Indexes
 #
-#  index_firms_on_address_id  (address_id)
-#  index_firms_on_ref_number  (ref_number) UNIQUE
+#  index_firms_on_address_id       (address_id)
+#  index_firms_on_ref_number       (ref_number) UNIQUE
+#  index_firms_on_seo_metadata_id  (seo_metadata_id)
 #
 class Firm < ApplicationRecord
   GRAPHQL_TYPE = Types::FirmsRelated::FirmType
@@ -46,6 +48,7 @@ class Firm < ApplicationRecord
   #
   # HAS_ONE ASSOCIATIONS ==================================================
   has_one :balance, dependent: :nullify
+  has_one :seo_metadatum, dependent: :destroy
 
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
   #
@@ -128,6 +131,7 @@ class Firm < ApplicationRecord
   after_create :create_balance
   after_create :created_notify
   after_commit :adjust_events_margin
+  after_commit :adjust_seo_metadata
 
   # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[pending active removed]) }
@@ -208,5 +212,9 @@ class Firm < ApplicationRecord
 
   def transform_phone
     self.primary_phone = primary_phone.gsub(/[\s()\-]/, '') if primary_phone
+  end
+
+  def adjust_seo_metadata
+    seo_metadatum.create!(title: title, description: description, keywords: '')
   end
 end

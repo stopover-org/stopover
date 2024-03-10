@@ -23,12 +23,14 @@
 #  title                     :string           not null
 #  website                   :string
 #  address_id                :bigint
+#  seo_metadata_id           :bigint
 #  stripe_account_id         :string
 #
 # Indexes
 #
-#  index_firms_on_address_id  (address_id)
-#  index_firms_on_ref_number  (ref_number) UNIQUE
+#  index_firms_on_address_id       (address_id)
+#  index_firms_on_ref_number       (ref_number) UNIQUE
+#  index_firms_on_seo_metadata_id  (seo_metadata_id)
 #
 require 'rails_helper'
 
@@ -43,6 +45,7 @@ RSpec.describe Firm, type: :model do
       should belong_to(:address).optional(true)
 
       should have_one(:balance).dependent(:nullify)
+      should have_one(:seo_metadatum).dependent(:destroy)
 
       should have_many(:account_firms).dependent(:destroy)
       should have_many(:events).dependent(:destroy)

@@ -30,6 +30,7 @@
 #  updated_at                    :datetime         not null
 #  address_id                    :bigint
 #  firm_id                       :bigint
+#  seo_metadata_id               :bigint
 #
 # Indexes
 #
@@ -37,6 +38,7 @@
 #  index_events_on_event_type              (event_type)
 #  index_events_on_firm_id                 (firm_id)
 #  index_events_on_ref_number_and_firm_id  (ref_number,firm_id) UNIQUE
+#  index_events_on_seo_metadata_id         (seo_metadata_id)
 #
 # Foreign Keys
 #

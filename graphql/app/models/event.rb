@@ -30,6 +30,7 @@
 #  updated_at                    :datetime         not null
 #  address_id                    :bigint
 #  firm_id                       :bigint
+#  seo_metadata_id               :bigint
 #
 # Indexes
 #
@@ -37,6 +38,7 @@
 #  index_events_on_event_type              (event_type)
 #  index_events_on_firm_id                 (firm_id)
 #  index_events_on_ref_number_and_firm_id  (ref_number,firm_id) UNIQUE
+#  index_events_on_seo_metadata_id         (seo_metadata_id)
 #
 # Foreign Keys
 #
@@ -65,7 +67,8 @@ class Event < ApplicationRecord
   has_many_attached :images
 
   # HAS_ONE ASSOCIATIONS ==========================================================
-  #
+  has_one :seo_metadatum, dependent: :destroy
+
   # HAS_MANY ASSOCIATIONS =========================================================
   has_many :event_interests, dependent: :destroy
   has_many :event_options, dependent: :destroy
@@ -148,6 +151,7 @@ class Event < ApplicationRecord
   after_create :created_notify
   after_commit :sync_stripe, unless: :removed?
   after_commit :adjust_options
+  after_commit :adjust_seo_metadata
 
   # SCOPES =====================================================================
   default_scope { in_order_of(:status, %w[draft published unpublished removed]).order(created_at: :desc) }
@@ -304,5 +308,9 @@ class Event < ApplicationRecord
     event_options.each do |opt|
       opt.update!(language: language) if language != opt.language
     end
+  end
+
+  def adjust_seo_metadata
+    seo_metadatum.create!(title: title, description: description, keywords: '')
   end
 end

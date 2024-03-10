@@ -65,6 +65,9 @@ module Types
       end
 
       field :available_payment_methods, [String]
+
+      # SEO RELATED
+      field :seo_metadatum, Types::SeoRelated::SeoMetadatum
     end
   end
 end
