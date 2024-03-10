@@ -7,6 +7,7 @@
 #  id          :bigint           not null, primary key
 #  description :string           default("")
 #  keywords    :string           default("")
+#  language    :string           default("en")
 #  title       :string           default("")
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

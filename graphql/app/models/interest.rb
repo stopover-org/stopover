@@ -4,21 +4,21 @@
 #
 # Table name: interests
 #
-#  id              :bigint           not null, primary key
-#  active          :boolean          default(TRUE)
-#  description     :text             default("")
-#  language        :string           default("en")
-#  slug            :string           not null
-#  title           :string           not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  seo_metadata_id :bigint
+#  id               :bigint           not null, primary key
+#  active           :boolean          default(TRUE)
+#  description      :text             default("")
+#  language         :string           default("en")
+#  slug             :string           not null
+#  title            :string           not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  seo_metadatum_id :bigint
 #
 # Indexes
 #
-#  index_interests_on_seo_metadata_id  (seo_metadata_id)
-#  index_interests_on_slug             (slug) UNIQUE
-#  index_interests_on_title            (title) UNIQUE
+#  index_interests_on_seo_metadatum_id  (seo_metadatum_id)
+#  index_interests_on_slug              (slug) UNIQUE
+#  index_interests_on_title             (title) UNIQUE
 #
 class Interest < ApplicationRecord
   GRAPHQL_TYPE = Types::EventsRelated::InterestType
@@ -33,10 +33,10 @@ class Interest < ApplicationRecord
   # MONETIZE ==============================================================
   #
   # BELONGS_TO ASSOCIATIONS ===============================================
-  #
-  # HAS_ONE ASSOCIATIONS ==================================================
-  has_one :seo_metadatum, dependent: :destroy
+  belongs_to :seo_metadatum, optional: true
 
+  # HAS_ONE ASSOCIATIONS ==================================================
+  #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
   #
   # HAS_MANY ASSOCIATIONS =================================================
@@ -50,7 +50,11 @@ class Interest < ApplicationRecord
   # AASM STATES ===========================================================
   #
   # ENUMS =================================================================
-  #
+  enum language: {
+    ru: 'ru',
+    en: 'en'
+  }, _prefix: true
+
   # SECURE TOKEN ==========================================================
   #
   # SECURE PASSWORD =======================================================
@@ -86,6 +90,12 @@ class Interest < ApplicationRecord
   end
 
   def adjust_seo_metadata
-    seo_metadatum.create!(title: title, description: description, keywords: '')
+    unless seo_metadatum
+      update(seo_metadatum: SeoMetadatum.create!(interest: self,
+                                                 language: language,
+                                                 title: title,
+                                                 description: description,
+                                                 keywords: ''))
+    end
   end
 end

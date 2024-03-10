@@ -125,6 +125,9 @@ RSpec.describe Types::EventsRelated::EventType, type: :graphql_type do
                                                             name: 'schedules'
                                                           },
                                                           {
+                                                            name: 'seoMetadatum'
+                                                          },
+                                                          {
                                                             name: 'singleDaysWithTime'
                                                           },
                                                           {

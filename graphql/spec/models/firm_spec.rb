@@ -23,14 +23,14 @@
 #  title                     :string           not null
 #  website                   :string
 #  address_id                :bigint
-#  seo_metadata_id           :bigint
+#  seo_metadatum_id          :bigint
 #  stripe_account_id         :string
 #
 # Indexes
 #
-#  index_firms_on_address_id       (address_id)
-#  index_firms_on_ref_number       (ref_number) UNIQUE
-#  index_firms_on_seo_metadata_id  (seo_metadata_id)
+#  index_firms_on_address_id        (address_id)
+#  index_firms_on_ref_number        (ref_number) UNIQUE
+#  index_firms_on_seo_metadatum_id  (seo_metadatum_id)
 #
 require 'rails_helper'
 
@@ -43,9 +43,9 @@ RSpec.describe Firm, type: :model do
 
     it 'relations' do
       should belong_to(:address).optional(true)
+      should belong_to(:seo_metadatum).optional(true)
 
       should have_one(:balance).dependent(:nullify)
-      should have_one(:seo_metadatum).dependent(:destroy)
 
       should have_many(:account_firms).dependent(:destroy)
       should have_many(:events).dependent(:destroy)
@@ -82,6 +82,11 @@ RSpec.describe Firm, type: :model do
                                                      live: 'live')
                                         .backed_by_column_of_type(:string)
                                         .with_prefix(true)
+
+      should define_enum_for(:language).with_values(en: 'en',
+                                                    ru: 'ru')
+                                       .backed_by_column_of_type(:string)
+                                       .with_prefix(true)
     end
 
     context 'validations' do

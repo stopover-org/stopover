@@ -12,7 +12,7 @@ module Types
       field :original_description, String, null: false
 
       # SEO RELATED
-      field :seo_metadatum, Types::SeoRelated::SeoMetadatum
+      field :seo_metadatum, Types::SeoRelated::SeoMetadatumType
 
       def original_title
         object.title

@@ -4,21 +4,21 @@
 #
 # Table name: interests
 #
-#  id              :bigint           not null, primary key
-#  active          :boolean          default(TRUE)
-#  description     :text             default("")
-#  language        :string           default("en")
-#  slug            :string           not null
-#  title           :string           not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  seo_metadata_id :bigint
+#  id               :bigint           not null, primary key
+#  active           :boolean          default(TRUE)
+#  description      :text             default("")
+#  language         :string           default("en")
+#  slug             :string           not null
+#  title            :string           not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  seo_metadatum_id :bigint
 #
 # Indexes
 #
-#  index_interests_on_seo_metadata_id  (seo_metadata_id)
-#  index_interests_on_slug             (slug) UNIQUE
-#  index_interests_on_title            (title) UNIQUE
+#  index_interests_on_seo_metadatum_id  (seo_metadatum_id)
+#  index_interests_on_slug              (slug) UNIQUE
+#  index_interests_on_title             (title) UNIQUE
 #
 FactoryBot.define do
   factory :interest do

@@ -266,12 +266,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_10_154433) do
     t.string "language", default: "en"
     t.bigint "address_id"
     t.boolean "featured", default: false
-    t.bigint "seo_metadata_id"
+    t.bigint "seo_metadatum_id"
     t.index ["address_id"], name: "index_events_on_address_id"
     t.index ["event_type"], name: "index_events_on_event_type"
     t.index ["firm_id"], name: "index_events_on_firm_id"
     t.index ["ref_number", "firm_id"], name: "index_events_on_ref_number_and_firm_id", unique: true
-    t.index ["seo_metadata_id"], name: "index_events_on_seo_metadata_id"
+    t.index ["seo_metadatum_id"], name: "index_events_on_seo_metadatum_id"
   end
 
   create_table "firms", force: :cascade do |t|
@@ -294,10 +294,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_10_154433) do
     t.string "available_payment_methods", default: [], null: false, array: true
     t.string "language", default: "en"
     t.string "firm_type", default: "onboarding"
-    t.bigint "seo_metadata_id"
+    t.bigint "seo_metadatum_id"
     t.index ["address_id"], name: "index_firms_on_address_id"
     t.index ["ref_number"], name: "index_firms_on_ref_number", unique: true
-    t.index ["seo_metadata_id"], name: "index_firms_on_seo_metadata_id"
+    t.index ["seo_metadatum_id"], name: "index_firms_on_seo_metadatum_id"
   end
 
   create_table "flipper_features", force: :cascade do |t|
@@ -324,8 +324,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_10_154433) do
     t.datetime "updated_at", null: false
     t.string "language", default: "en"
     t.text "description", default: ""
-    t.bigint "seo_metadata_id"
-    t.index ["seo_metadata_id"], name: "index_interests_on_seo_metadata_id"
+    t.bigint "seo_metadatum_id"
+    t.index ["seo_metadatum_id"], name: "index_interests_on_seo_metadatum_id"
     t.index ["slug"], name: "index_interests_on_slug", unique: true
     t.index ["title"], name: "index_interests_on_title", unique: true
   end
@@ -460,6 +460,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_10_154433) do
     t.string "title", default: ""
     t.string "description", default: ""
     t.string "keywords", default: ""
+    t.string "language", default: "en"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

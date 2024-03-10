@@ -30,7 +30,7 @@
 #  updated_at                    :datetime         not null
 #  address_id                    :bigint
 #  firm_id                       :bigint
-#  seo_metadata_id               :bigint
+#  seo_metadatum_id              :bigint
 #
 # Indexes
 #
@@ -38,7 +38,7 @@
 #  index_events_on_event_type              (event_type)
 #  index_events_on_firm_id                 (firm_id)
 #  index_events_on_ref_number_and_firm_id  (ref_number,firm_id) UNIQUE
-#  index_events_on_seo_metadata_id         (seo_metadata_id)
+#  index_events_on_seo_metadatum_id        (seo_metadatum_id)
 #
 # Foreign Keys
 #
@@ -55,7 +55,9 @@ RSpec.describe Event, type: :model do
     end
 
     it 'relations' do
-      should have_one(:seo_metadatum).dependent(:destroy)
+      should belong_to(:firm).optional(false)
+      should belong_to(:address).optional(true)
+      should belong_to(:seo_metadatum).optional(true)
 
       should have_many(:event_interests).dependent(:destroy)
       should have_many(:event_options).dependent(:destroy)
@@ -73,8 +75,6 @@ RSpec.describe Event, type: :model do
       should have_many(:dynamic_translations).dependent(:destroy)
 
       should have_many(:interests).through(:event_interests)
-
-      should belong_to(:firm).optional(false)
     end
 
     it 'attachments' do
@@ -100,6 +100,11 @@ RSpec.describe Event, type: :model do
         sport_activity: 'sport_activity',
         gastronomic: 'gastronomic'
       ).backed_by_column_of_type(:string)
+
+      should define_enum_for(:language).with_values(en: 'en',
+                                                    ru: 'ru')
+                                       .backed_by_column_of_type(:string)
+                                       .with_prefix(true)
     end
 
     context 'validations' do

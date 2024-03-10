@@ -7,19 +7,25 @@
 #  id          :bigint           not null, primary key
 #  description :string           default("")
 #  keywords    :string           default("")
+#  language    :string           default("en")
 #  title       :string           default("")
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 class SeoMetadatum < ApplicationRecord
+  GRAPHQL_TYPE = Types::SeoRelated::SeoMetadatumType
+  TRANSLATABLE_FIELDS = %i[title description keywords].freeze
+  AVAILABLE_LANGUAGES = %i[en ru].freeze
+
   # MODULES ===============================================================
-  #
+  include Mixins::Translatable
+
   # MONETIZE ==============================================================
   #
   # BELONGS_TO ASSOCIATIONS ===============================================
-  belongs_to :event, optional: true
-  belongs_to :interest, optional: true
-  belongs_to :firm, optional: true
+  has_one :event
+  has_one :interest
+  has_one :firm
 
   # HAS_ONE ASSOCIATIONS ==================================================
   #
@@ -32,7 +38,11 @@ class SeoMetadatum < ApplicationRecord
   # AASM STATES ===========================================================
   #
   # ENUMS =================================================================
-  #
+  enum language: {
+    ru: 'ru',
+    en: 'en'
+  }, _prefix: true
+
   # SECURE TOKEN ==========================================================
   #
   # SECURE PASSWORD =======================================================

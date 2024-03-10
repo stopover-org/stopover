@@ -55,7 +55,7 @@ module Types
       field :event_placements, [Types::EventsRelated::EventPlacementType], null: false
 
       # SEO RELATED
-      field :seo_metadatum, Types::SeoRelated::SeoMetadatum
+      field :seo_metadatum, Types::SeoRelated::SeoMetadatumType
     end
   end
 end

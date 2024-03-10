@@ -4,21 +4,21 @@
 #
 # Table name: interests
 #
-#  id              :bigint           not null, primary key
-#  active          :boolean          default(TRUE)
-#  description     :text             default("")
-#  language        :string           default("en")
-#  slug            :string           not null
-#  title           :string           not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  seo_metadata_id :bigint
+#  id               :bigint           not null, primary key
+#  active           :boolean          default(TRUE)
+#  description      :text             default("")
+#  language         :string           default("en")
+#  slug             :string           not null
+#  title            :string           not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  seo_metadatum_id :bigint
 #
 # Indexes
 #
-#  index_interests_on_seo_metadata_id  (seo_metadata_id)
-#  index_interests_on_slug             (slug) UNIQUE
-#  index_interests_on_title            (title) UNIQUE
+#  index_interests_on_seo_metadatum_id  (seo_metadatum_id)
+#  index_interests_on_slug              (slug) UNIQUE
+#  index_interests_on_title             (title) UNIQUE
 #
 require 'rails_helper'
 
@@ -30,7 +30,7 @@ RSpec.describe Interest, type: :model do
     end
 
     it 'relations' do
-      should have_one(:seo_metadatum).dependent(:destroy)
+      should belong_to(:seo_metadatum).optional(true)
 
       should have_many(:account_interests).dependent(:destroy)
       should have_many(:event_interests).dependent(:destroy)
@@ -50,6 +50,13 @@ RSpec.describe Interest, type: :model do
 
     it 'attachments' do
       should have_one_attached(:preview)
+    end
+
+    it 'enums' do
+      should define_enum_for(:language).with_values(en: 'en',
+                                                    ru: 'ru')
+                                       .backed_by_column_of_type(:string)
+                                       .with_prefix(true)
     end
 
     it 'callbacks' do

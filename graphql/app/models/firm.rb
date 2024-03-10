@@ -23,14 +23,14 @@
 #  title                     :string           not null
 #  website                   :string
 #  address_id                :bigint
-#  seo_metadata_id           :bigint
+#  seo_metadatum_id          :bigint
 #  stripe_account_id         :string
 #
 # Indexes
 #
-#  index_firms_on_address_id       (address_id)
-#  index_firms_on_ref_number       (ref_number) UNIQUE
-#  index_firms_on_seo_metadata_id  (seo_metadata_id)
+#  index_firms_on_address_id        (address_id)
+#  index_firms_on_ref_number        (ref_number) UNIQUE
+#  index_firms_on_seo_metadatum_id  (seo_metadatum_id)
 #
 class Firm < ApplicationRecord
   GRAPHQL_TYPE = Types::FirmsRelated::FirmType
@@ -43,12 +43,12 @@ class Firm < ApplicationRecord
 
   # MONETIZE ==============================================================
   belongs_to :address, optional: true
+  belongs_to :seo_metadatum, optional: true
 
   # BELONGS_TO ASSOCIATIONS ===============================================
   #
   # HAS_ONE ASSOCIATIONS ==================================================
   has_one :balance, dependent: :nullify
-  has_one :seo_metadatum, dependent: :destroy
 
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
   #
@@ -95,6 +95,11 @@ class Firm < ApplicationRecord
   enum firm_type: {
     onboarding: 'onboarding',
     live: 'live'
+  }, _prefix: true
+
+  enum language: {
+    ru: 'ru',
+    en: 'en'
   }, _prefix: true
 
   # SECURE TOKEN ==========================================================
@@ -215,6 +220,12 @@ class Firm < ApplicationRecord
   end
 
   def adjust_seo_metadata
-    seo_metadatum.create!(title: title, description: description, keywords: '')
+    unless seo_metadatum
+      update(seo_metadatum: SeoMetadatum.create!(firm: self,
+                                                 language: language,
+                                                 title: title,
+                                                 description: description,
+                                                 keywords: ''))
+    end
   end
 end
