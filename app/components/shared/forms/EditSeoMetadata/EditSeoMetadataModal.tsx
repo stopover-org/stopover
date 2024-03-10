@@ -46,7 +46,10 @@ const EditSeoMetadataModal = ({
         </DialogTitle>
         <Divider />
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit()}>
+          <form
+            onSubmit={form.handleSubmit()}
+            style={{ overflowY: "auto", width: "768px", maxWidth: "100%" }}
+          >
             <Grid xs={12} sm={12} md={8} lg={8}>
               <Input
                 {...form.useFormField("title")}

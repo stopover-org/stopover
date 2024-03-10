@@ -22,6 +22,7 @@ import SyncStripe from "components/shared/SyncStripe/SyncStripe";
 import { FirmEventActions_EventFragment$key } from "artifacts/FirmEventActions_EventFragment.graphql";
 import { FirmEventActions_UserFragment$key } from "artifacts/FirmEventActions_UserFragment.graphql";
 import { useTranslation } from "react-i18next";
+import EditSeoMetadata from "../../../../../components/shared/forms/EditSeoMetadata";
 
 interface FirmEventActionsProps {
   eventFragmentRef: FirmEventActions_EventFragment$key;
@@ -46,6 +47,9 @@ const FirmEventActions = ({
         firm {
           status
           paymentTypes
+        }
+        seoMetadatum {
+          ...EditSeoMetadata_MetadataFragment
         }
       }
     `,
@@ -187,6 +191,14 @@ const FirmEventActions = ({
                   variant="plain"
                   color="neutral"
                   eventFragmentRef={event}
+                />
+              </MenuItem>
+            )}
+            {currentUser.serviceUser && (
+              <MenuItem>
+                <EditSeoMetadata
+                  seoMetadatumFragmentRef={event.seoMetadatum!}
+                  menuItem
                 />
               </MenuItem>
             )}

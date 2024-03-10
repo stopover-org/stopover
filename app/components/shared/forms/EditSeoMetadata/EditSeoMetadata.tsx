@@ -8,10 +8,12 @@ import EditSeoMetadataModal from "./EditSeoMetadataModal";
 
 interface EditEventTourPlanProps {
   seoMetadatumFragmentRef: EditSeoMetadata_MetadataFragment$key;
+  menuItem: boolean;
 }
 
 const EditSeoMetadata = ({
   seoMetadatumFragmentRef,
+  menuItem = false,
 }: EditEventTourPlanProps) => {
   const metadata = useFragment<EditSeoMetadata_MetadataFragment$key>(
     graphql`
@@ -26,7 +28,12 @@ const EditSeoMetadata = ({
   return (
     <>
       <Box>
-        <Button size="sm" color="primary" onClick={() => setModalOpened(true)}>
+        <Button
+          size="sm"
+          color={menuItem ? "neutral" : "primary"}
+          variant={menuItem ? "plain" : "solid"}
+          onClick={() => setModalOpened(true)}
+        >
           {t("forms.editSeoMetadata.action")}
         </Button>
       </Box>
