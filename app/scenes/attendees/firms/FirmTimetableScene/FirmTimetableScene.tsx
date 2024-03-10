@@ -9,6 +9,7 @@ import Description from "components/v2/Description/Description";
 import Typography from "components/v2/Typography/Typography";
 import GoogleMap from "components/shared/GoogleMap/GoogleMap";
 import Timetable from "components/shared/Timetable";
+import Link from "../../../../components/v2/Link";
 
 interface FirmTimetableSceneProps {
   firmFragmentRef: FirmTimetableScene_FirmFragment$key;
@@ -22,6 +23,7 @@ const FirmTimetableScene = ({
   const firm = useFragment(
     graphql`
       fragment FirmTimetableScene_FirmFragment on Firm {
+        id
         firmType
         image
         title
@@ -52,9 +54,9 @@ const FirmTimetableScene = ({
         </Grid>
       )}
       <Grid lg={12} md={12} sm={12} xs={12}>
-        <Typography component="h1" level="h2">
+        <Link href={`/first/${firm.id}`} component="h1" level="h2">
           {firm.title}
-        </Typography>
+        </Link>
         <Typography component="h2" level="h4">
           {t("models.schedule.plural")} - {moment(date).calendar("day")}
         </Typography>

@@ -123,6 +123,10 @@ const translation = {
     ru: "🇷🇺",
     sr: "🇷🇸",
   },
+  dates: {
+    today: "Today",
+    tomorrow: "Tomorrow",
+  },
   components: {
     link: {
       _blank: "Will be opened in new tab",

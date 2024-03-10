@@ -8,6 +8,7 @@ import Typography from "components/v2/Typography/Typography";
 import Timetable from "components/shared/Timetable";
 import { InterestTimetableScene_InterestFragment$key } from "artifacts/InterestTimetableScene_InterestFragment.graphql";
 import { InterestTimetableScene_EventsConnectionFragment$key } from "artifacts/InterestTimetableScene_EventsConnectionFragment.graphql";
+import Link from "components/v2/Link";
 
 interface FirmTimetableSceneProps {
   interestFragmentRef: InterestTimetableScene_InterestFragment$key;
@@ -26,6 +27,7 @@ const InterestTimetableScene = ({
         title
         description
         preview
+        slug
       }
     `,
     interestFragmentRef
@@ -44,9 +46,9 @@ const InterestTimetableScene = ({
   return (
     <Grid container padding={2} spacing={2} sm={12} md={12}>
       <Grid lg={12} md={12} sm={12} xs={12}>
-        <Typography component="h1" level="h2">
+        <Link href={`/interests/${interest.slug}`} component="h1" level="h2">
           {interest.title}
-        </Typography>
+        </Link>
         <Typography component="h2" level="h2">
           {t("models.schedule.plural")} - {moment(date).calendar("day")}
         </Typography>

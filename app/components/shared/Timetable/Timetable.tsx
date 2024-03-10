@@ -179,7 +179,8 @@ const Timetable = ({
                     <Box
                       id={isFuture ? "event-startview-from" : undefined}
                       sx={{
-                        width: "40px",
+                        width: "50px",
+                        minWidth: "50px",
                       }}
                     >
                       {i === 0 && momentDatetime.format(timeFormat)}

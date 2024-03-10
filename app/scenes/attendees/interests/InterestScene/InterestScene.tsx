@@ -18,7 +18,8 @@ import { InterestScene_InterestFragment$key } from "artifacts/InterestScene_Inte
 import Description from "components/v2/Description";
 import Link from "components/v2/Link";
 import moment from "moment";
-import { urlSafeDateFormat } from "../../../../lib/utils/dates";
+import { urlSafeDateFormat } from "lib/utils/dates";
+import { useTranslation } from "react-i18next";
 
 interface InterestSceneProps {
   eventsFragmentRef: InterestScene_EventsPaginationFragment$key;
@@ -40,7 +41,7 @@ const InterestScene = ({
         fragment InterestScene_EventsPaginationFragment on Query
         @refetchable(queryName: "InterestScenePaginationQuery")
         @argumentDefinitions(
-          count: { type: "Int", defaultValue: 10 }
+          count: { type: "Int", defaultValue: 12 }
           cursor: { type: "String", defaultValue: "0" }
         ) {
           events(first: $count, after: $cursor, filters: $filters)
@@ -69,7 +70,7 @@ const InterestScene = ({
       eventsFragmentRef
     );
   const query = useQuery("query", "");
-  const events = usePagedEdges(data.events, currentPage, 10);
+  const events = usePagedEdges(data.events, currentPage, 12);
   const queryRef = React.useRef<Disposable>();
   const params = useParams();
 
@@ -111,6 +112,7 @@ const InterestScene = ({
     `,
     interestFragmentRef
   );
+  const { t } = useTranslation();
 
   return (
     <Grid container padding={2} spacing={2} sm={12} md={12}>
@@ -138,12 +140,14 @@ const InterestScene = ({
           spacing={2}
           useFlexGap
         >
-          <Typography level="h3" component="h1">
+          <Typography level="h2" component="h1">
             {interest.title}
           </Typography>
           <Description html={interest.description} />
           <Link href={`/timetables/interests/${interest.slug}`} primary>
-            Today timetable
+            {t("scenes.attendees.timetables.firmTimetableScene.title", {
+              date: t("dates.today"),
+            })}
           </Link>
           <Link
             href={`/timetables/interests/${interest.slug}/${moment()
@@ -151,7 +155,9 @@ const InterestScene = ({
               .format(urlSafeDateFormat)}`}
             primary
           >
-            Tomorrow timetable
+            {t("scenes.attendees.timetables.firmTimetableScene.title", {
+              date: t("dates.tomorrow"),
+            })}
           </Link>
         </Stack>
       </Grid>
