@@ -89,6 +89,12 @@ module FirmManagement
         event.unpublish!
         event.publish!
         ScheduleEventJob.perform_now(event_id: event.id)
+        if event.recurring_days_with_time.size == 7
+          4.times.each do |n|
+            time = Time.zone.now.at_beginning_of_day - n.days + 13.hours + n.hours
+            event.schedules.create!(scheduled_for: time, status: :active)
+          end
+        end
         Stopover::StripeIntegrator.sync(event)
         event.event_options.each do |event_option|
           Stopover::StripeIntegrator.sync(event_option)

@@ -1,6 +1,6 @@
 import { graphql, useFragment, usePaginationFragment } from "react-relay";
 import React from "react";
-import { Divider, Grid, Stack } from "@mui/joy";
+import { Box, Divider, Grid, Stack } from "@mui/joy";
 import { FirmScene_CurrentFirmFragment$key } from "artifacts/FirmScene_CurrentFirmFragment.graphql";
 import Typography from "components/v2/Typography/Typography";
 import { usePagedEdges } from "lib/hooks/usePagedEdges";
@@ -13,6 +13,8 @@ import GoogleMap from "components/shared/GoogleMap";
 import EventCardCompact from "scenes/attendees/events/EventsScene/components/EventCardCompact";
 import Pagination from "scenes/attendees/events/EventsScene/components/Pagination";
 import Section from "components/v2/Section/Section";
+import moment from "moment";
+import { urlSafeDateFormat } from "lib/utils/dates";
 
 interface Props {
   firmFragmentRef: FirmScene_CurrentFirmFragment$key;
@@ -110,7 +112,10 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
           </Stack>
         </Grid>
       )}
-      <Grid lg={6} md={9} sm={12} xs={12}>
+      <Grid lg={firm.image ? 6 : 9} md={9} sm={12} xs={12}>
+        <Link fontSize="lg" href={`/timetables/firms/${firm.id}`}>
+          {t("models.schedule.plural")}
+        </Link>
         {firm.description && <Description html={firm.description} />}
         {firm.address && (
           <>
@@ -141,6 +146,27 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
             )}
           </>
         )}
+        <Stack spacing={2} useFlexGap>
+          <Box pt={2}>
+            <Link href={`/timetables/firms/${firm.id}`} primary>
+              {t("scenes.attendees.timetables.firmTimetableScene.title", {
+                date: t("dates.today"),
+              })}
+            </Link>
+          </Box>
+          <Box>
+            <Link
+              href={`/timetables/firms/${firm.id}/${moment()
+                .add(1, "days")
+                .format(urlSafeDateFormat)}`}
+              primary
+            >
+              {t("scenes.attendees.timetables.firmTimetableScene.title", {
+                date: t("dates.tomorrow"),
+              })}
+            </Link>
+          </Box>
+        </Stack>
       </Grid>
       {!isStopover && (
         <>

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AttendeesQuery
+  PER_PAGE = 10
+
   def initialize(
     params = {},
     relations = Attendee.joins(booking: [:schedule]).where('schedules.scheduled_for > ?', Time.zone.now),

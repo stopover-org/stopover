@@ -90,7 +90,11 @@ module Types
     end
 
     def interest(id:)
-      interest = Interest.find_by(id: id)
+      interest = begin
+        GraphqlSchema.object_from_id(id)
+      rescue StandardError
+        nil
+      end
       interest ||= Interest.find_by(slug: id)
 
       interest

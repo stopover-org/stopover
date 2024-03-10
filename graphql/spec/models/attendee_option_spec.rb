@@ -37,11 +37,13 @@ require 'rails_helper'
 RSpec.describe AttendeeOption, type: :model do
   describe 'model setup' do
     it 'relations' do
+      should belong_to(:attendee)
       should belong_to(:booking)
-      should belong_to(:firm)
-      should belong_to(:event)
       should belong_to(:event_option)
+      should belong_to(:event)
+      should belong_to(:firm)
       should belong_to(:schedule)
+      should belong_to(:stripe_integration)
     end
 
     context 'callback' do

@@ -388,7 +388,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     let(:query) do
       <<-GRAPHQL
         query($filters: EventsFilter!) {
-          events(filters: $filters) {
+          events(first: 10, filters: $filters) {
             edges {
               node {
                 id
@@ -419,6 +419,12 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                 }
               }
             }
+            pageInfo {
+              hasNextPage
+              hasPreviousPage
+              startCursor
+              endCursor
+            }
             total
           }
         }
@@ -426,6 +432,132 @@ RSpec.describe Types::QueryType, type: :graphql_type do
     end
     before do
       create_list(:recurring_event, 4)
+    end
+
+    context 'events connection type check' do
+      before do
+        create_list(:recurring_event, 40)
+        Event.reindex_test
+      end
+
+      context 'limit' do
+        let(:variables) { { 'filters' => {} } }
+        it 'default limit' do
+          expect(EventsQuery::PER_PAGE).to eq(10)
+          result = subject
+
+          expect(result.dig(:data, :events, :pageInfo, :hasNextPage)).to eq(true)
+          expect(result.dig(:data, :events, :pageInfo, :hasPreviousPage)).to eq(false)
+          expect(result.dig(:data, :events, :pageInfo, :startCursor)).to eq('0')
+          expect(result.dig(:data, :events, :pageInfo, :endCursor)).to eq('10')
+
+          expect(result.dig(:data, :events, :edges).count).to eq(10)
+          expect(result.dig(:data, :events, :total)).to eq(45)
+        end
+
+        context 'nodes' do
+          let(:query) do
+            <<-GRAPHQL
+              query {
+                events(first: 20) {
+                  nodes {
+                    id
+                  }
+                  pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                    startCursor
+                    endCursor
+                  }
+                  total
+                }
+              }
+            GRAPHQL
+          end
+
+          it 'N elements' do
+            result = subject
+
+            expect(result.dig(:data, :events, :pageInfo, :hasNextPage)).to eq(true)
+            expect(result.dig(:data, :events, :pageInfo, :hasPreviousPage)).to eq(false)
+            expect(result.dig(:data, :events, :pageInfo, :startCursor)).to eq('0')
+            expect(result.dig(:data, :events, :pageInfo, :endCursor)).to eq('20')
+
+            expect(result.dig(:data, :events, :nodes).count).to eq(20)
+            expect(result.dig(:data, :events, :total)).to eq(45)
+          end
+        end
+
+        context 'custom limit' do
+          let(:query) do
+            <<-GRAPHQL
+              query {
+                events(first: 20) {
+                  edges {
+                    node {
+                      id
+                    }
+                  }
+                  pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                    startCursor
+                    endCursor
+                  }
+                  total
+                }
+              }
+            GRAPHQL
+          end
+
+          it 'N elements' do
+            result = subject
+
+            expect(result.dig(:data, :events, :pageInfo, :hasNextPage)).to eq(true)
+            expect(result.dig(:data, :events, :pageInfo, :hasPreviousPage)).to eq(false)
+            expect(result.dig(:data, :events, :pageInfo, :startCursor)).to eq('0')
+            expect(result.dig(:data, :events, :pageInfo, :endCursor)).to eq('20')
+
+            expect(result.dig(:data, :events, :edges).count).to eq(20)
+            expect(result.dig(:data, :events, :total)).to eq(45)
+          end
+        end
+      end
+
+      context 'offset' do
+        let(:query) do
+          <<-GRAPHQL
+              query {
+                events(after: "10", first: 20) {
+                  edges {
+                    node {
+                      id
+                    }
+                  }
+                  pageInfo {
+                    hasNextPage
+                    hasPreviousPage
+                    startCursor
+                    endCursor
+                  }
+                  total
+                }
+              }
+          GRAPHQL
+        end
+
+        it 'with previous and next elements' do
+          result = subject
+
+          expect(result.dig(:data, :events, :pageInfo, :hasNextPage)).to eq(true)
+          expect(result.dig(:data, :events, :pageInfo, :hasPreviousPage)).to eq(true)
+          expect(result.dig(:data, :events, :pageInfo, :startCursor)).to eq('0')
+          expect(result.dig(:data, :events, :pageInfo, :endCursor)).to eq('30')
+
+          expect(result.dig(:data, :events, :edges).count).to eq(20)
+          expect(result.dig(:data, :events, :total)).to eq(45)
+        end
+      end
     end
 
     context 'without filters' do

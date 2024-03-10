@@ -7,7 +7,7 @@ import useMutationForm from "lib/hooks/useMutationForm";
 import useClosestDate from "lib/hooks/useClosestDate";
 import useMomentDates from "lib/hooks/useMomentDates";
 import { useBookEventForm_EventFragment$key } from "artifacts/useBookEventForm_EventFragment.graphql";
-import { useBookEventForm_AccountFragment$key } from "../../../../artifacts/useBookEventForm_AccountFragment.graphql";
+import { useBookEventForm_AccountFragment$key } from "artifacts/useBookEventForm_AccountFragment.graphql";
 
 interface BookEventFields {
   eventId: string;
@@ -68,7 +68,7 @@ function useDefaultValues(
   );
 }
 
-const validationSchema = Yup.object().shape({
+const defaultValidationSchema = Yup.object().shape({
   eventId: Yup.string().required(),
   date: Yup.date().required("Required"),
   attendeesCount: Yup.number().required("Required"),
@@ -78,7 +78,8 @@ const validationSchema = Yup.object().shape({
 
 export function useBookEventForm(
   eventFragmentRef: useBookEventForm_EventFragment$key,
-  accountFragmentRef: useBookEventForm_AccountFragment$key
+  accountFragmentRef: useBookEventForm_AccountFragment$key,
+  validationSchema = defaultValidationSchema
 ) {
   return useMutationForm(
     graphql`

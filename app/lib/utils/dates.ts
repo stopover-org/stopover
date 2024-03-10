@@ -6,6 +6,7 @@ export const timeFormat = "HH:mm";
 export const shortDayMonthFormat = "DD/MM";
 export const dayMonthFormat = "D MMMM";
 export const dayMonthTimeFormat = "D MMM HH:mm";
+export const urlSafeDateFormat = "DD.MM.YYYY";
 
 export const calculateDate = (
   initialDate: Moment,

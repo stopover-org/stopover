@@ -17,8 +17,7 @@ module Fields
     def payments(**_args)
       arguments = {
         query_type: ::PaymentsQuery,
-        firm_id: object.id,
-        per_page: 30
+        firm_id: object.id
       }
 
       Connections::SearchkickConnection.new(arguments: arguments)
@@ -33,7 +32,6 @@ module Fields
         query_type: ::EventsQuery,
         **(args[:filters] || {}),
         firm_id: object.id,
-        per_page: 30,
         backend: args[:backend].nil? ? true : args[:backend]
       }
       Connections::SearchkickConnection.new(arguments: arguments)

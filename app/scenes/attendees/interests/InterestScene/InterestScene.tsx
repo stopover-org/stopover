@@ -15,7 +15,11 @@ import { InterestScene_EventsPaginationFragment$key } from "artifacts/InterestSc
 import { InterestScenePaginationQuery } from "artifacts/InterestScenePaginationQuery.graphql";
 import Typography from "components/v2/Typography/Typography";
 import { InterestScene_InterestFragment$key } from "artifacts/InterestScene_InterestFragment.graphql";
-import Description from "../../../../components/v2/Description";
+import Description from "components/v2/Description";
+import Link from "components/v2/Link";
+import moment from "moment";
+import { urlSafeDateFormat } from "lib/utils/dates";
+import { useTranslation } from "react-i18next";
 
 interface InterestSceneProps {
   eventsFragmentRef: InterestScene_EventsPaginationFragment$key;
@@ -37,7 +41,7 @@ const InterestScene = ({
         fragment InterestScene_EventsPaginationFragment on Query
         @refetchable(queryName: "InterestScenePaginationQuery")
         @argumentDefinitions(
-          count: { type: "Int", defaultValue: 10 }
+          count: { type: "Int", defaultValue: 12 }
           cursor: { type: "String", defaultValue: "0" }
         ) {
           events(first: $count, after: $cursor, filters: $filters)
@@ -66,7 +70,7 @@ const InterestScene = ({
       eventsFragmentRef
     );
   const query = useQuery("query", "");
-  const events = usePagedEdges(data.events, currentPage, 10);
+  const events = usePagedEdges(data.events, currentPage, 12);
   const queryRef = React.useRef<Disposable>();
   const params = useParams();
 
@@ -103,10 +107,12 @@ const InterestScene = ({
         title
         preview
         description
+        slug
       }
     `,
     interestFragmentRef
   );
+  const { t } = useTranslation();
 
   return (
     <Grid container padding={2} spacing={2} sm={12} md={12}>
@@ -129,11 +135,30 @@ const InterestScene = ({
         md={interest.preview ? 8 : 12}
         lg={interest.preview ? 8 : 12}
       >
-        <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
-          <Typography level="h3" component="h1">
+        <Stack
+          sx={{ position: "sticky", top: "0", right: "0" }}
+          spacing={2}
+          useFlexGap
+        >
+          <Typography level="h2" component="h1">
             {interest.title}
           </Typography>
           <Description html={interest.description} />
+          <Link href={`/timetables/interests/${interest.slug}`} primary>
+            {t("scenes.attendees.timetables.firmTimetableScene.title", {
+              date: t("dates.today"),
+            })}
+          </Link>
+          <Link
+            href={`/timetables/interests/${interest.slug}/${moment()
+              .add(1, "days")
+              .format(urlSafeDateFormat)}`}
+            primary
+          >
+            {t("scenes.attendees.timetables.firmTimetableScene.title", {
+              date: t("dates.tomorrow"),
+            })}
+          </Link>
         </Stack>
       </Grid>
       <Divider />

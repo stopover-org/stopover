@@ -55,8 +55,15 @@
 # Routes for GraphiQL::Rails::Engine:
 #        GET  /           graphiql/rails/editors#show
 
+flipper_app = Flipper::UI.app do |builder|
+  builder.use Rack::Auth::Basic do |username, password|
+    username == Rails.application.credentials.flipper.username && password == Rails.application.credentials.flipper.password
+  end
+end
+
 Rails.application.routes.draw do
   mount GraphiQL::Rails::Engine, at: '/graphiql', graphql_path: '/graphql' if Rails.env.development?
+  mount flipper_app, at: '/flipper'
   mount ActionCable.server, at: '/cable'
 
   post '/graphql', to: 'graphql#execute'

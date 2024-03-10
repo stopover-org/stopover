@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SchedulesQuery
-  PER_PAGE = 30
+  PER_PAGE = 10
 
   def initialize(
     params = {},
