@@ -14,6 +14,7 @@ import scene_FirmTimetable_QueryNode, {
   scene_FirmTimetable_Query,
 } from "artifacts/scene_FirmTimetable_Query.graphql";
 import moment from "moment";
+import { urlSafeDateFormat } from "lib/utils/dates";
 import QueryWrapper from "./query";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {
@@ -24,8 +25,12 @@ const Page = async ({ params }: { params: Record<string, string> }) => {
     id: unescape(params.id),
     filters: {
       firmId: unescape(params.id),
-      startDate: moment(params.date).startOf("day").toISOString(),
-      endDate: moment(params.date).endOf("day").toISOString(),
+      startDate: moment(params.date, urlSafeDateFormat)
+        .startOf("day")
+        .toISOString(),
+      endDate: moment(params.date, urlSafeDateFormat)
+        .endOf("day")
+        .toISOString(),
     },
   });
 
@@ -60,7 +65,7 @@ export const generateMetadata = async ({
   params,
   searchParams: { language },
 }: {
-  params: { id: string };
+  params: { id: string; date: string };
   searchParams: { language?: string };
 }): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, { id: unescape(params.id) });
@@ -75,15 +80,18 @@ export const generateMetadata = async ({
     {},
     language
   );
-  const defaultTitle = `${defaultFirmTitle} (${defaultScheduleTitle})`;
+  const defaultTitle = `${defaultFirmTitle} (${defaultScheduleTitle} - ${params.date})`;
 
   return merge(defaultMetadata, {
-    title: `${response?.firm?.title} - ${defaultScheduleTitle}` || defaultTitle,
+    title:
+      `${response?.firm?.title} - ${defaultScheduleTitle} - ${params.date}` ||
+      defaultTitle,
     description: response?.firm?.description?.replace(/<[^>]*>?/gm, ""),
     openGraph: {
       type: "profile",
       title:
-        `${response?.firm?.title} - ${defaultScheduleTitle}` || defaultTitle,
+        `${response?.firm?.title} - ${defaultScheduleTitle} - ${params.date}` ||
+        defaultTitle,
       description: response?.firm?.description?.replace(/<[^>]*>?/gm, ""),
       phoneNumbers: [response?.firm?.primaryPhone, ...sharedPhones],
       emails: [response?.firm?.primaryEmail, ...sharedEmails],
