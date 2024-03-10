@@ -3,10 +3,10 @@
 module Types
   module SeoRelated
     class SeoMetadatumType < Types::ModelObject
-      field :title, String
-      field :description, String
-      field :keywords, String
-      field :language, String
+      field :title, String, null: false
+      field :description, String, null: false
+      field :keywords, String, null: false
+      field :language, String, null: false
     end
   end
 end

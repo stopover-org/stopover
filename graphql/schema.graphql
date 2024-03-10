@@ -1933,11 +1933,11 @@ input SchedulesFilter {
 }
 
 type SeoMetadatum implements Node {
-  description: String
+  description: String!
   id: ID!
-  keywords: String
-  language: String
-  title: String
+  keywords: String!
+  language: String!
+  title: String!
 }
 
 """

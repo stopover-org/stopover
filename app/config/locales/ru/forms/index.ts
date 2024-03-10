@@ -28,8 +28,10 @@ import createNotification from "./createNotification";
 import createInterest from "./createInterest";
 import createEventOption from "./createEventOption";
 import resetOnboardingFirm from "./resetOnboardingFirm";
+import editSeoMetadata from "./editSeoMetadata";
 
 export default merge(
+  editSeoMetadata,
   resetOnboardingFirm,
   createEventOption,
   createInterest,

@@ -9,10 +9,14 @@ export interface CreateInterestFormFields {
   title: string;
   slug: string;
   preview: string;
+  description: string;
 }
 
 function useDefaultValues(): CreateInterestFormFields {
-  return React.useMemo(() => ({ title: "", slug: "", preview: "" }), []);
+  return React.useMemo(
+    () => ({ title: "", slug: "", preview: "", description: "" }),
+    []
+  );
 }
 
 const validationSchema = Yup.object().shape({
