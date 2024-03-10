@@ -36,7 +36,7 @@ const RootScene = ({ queryFragmentRef }: Props) => {
             preview
           }
         }
-        events(filters: { today: true }) {
+        events(first: 12, filters: { today: true, featured: true }) {
           edges {
             node {
               id

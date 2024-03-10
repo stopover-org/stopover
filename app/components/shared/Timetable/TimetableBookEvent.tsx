@@ -1,11 +1,12 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 import { TimetableBookEvent_EventFragment$key } from "artifacts/TimetableBookEvent_EventFragment.graphql";
 import { TimetableBookEvent_AccountFragment$key } from "artifacts/TimetableBookEvent_AccountFragment.graphql";
 import Link from "components/v2/Link";
 import Button from "components/v2/Button";
+import { Stack } from "@mui/joy";
 
 interface TimetableBookEventProps {
   eventFragmentRef: TimetableBookEvent_EventFragment$key;
@@ -50,16 +51,29 @@ const TimetableBookEvent = ({
     [event, account, timetableDate]
   );
 
-  return booking ? (
-    <Link href={`/trips/${booking.trip.id}#${booking.id}`} underline={false}>
-      <Button size="sm">
-        {t("scenes.attendees.events.eventsScene.details")}
-      </Button>
-    </Link>
-  ) : (
-    <Link href={`/events/${event.id}`} underline={false}>
-      <Button size="sm">{t("event.book")}</Button>
-    </Link>
+  const isPast = React.useMemo(
+    () => moment(timetableDate).isBefore(new Date()),
+    [timetableDate]
+  );
+
+  return (
+    <Stack direction="row" spacing={2} useFlexGap alignItems="flex-end">
+      {booking ? (
+        <Link
+          href={`/trips/${booking.trip.id}#${booking.id}`}
+          underline={false}
+        >
+          <Button size="sm">
+            {t("scenes.attendees.events.eventsScene.details")}
+          </Button>
+        </Link>
+      ) : (
+        <Link href={`/events/${event.id}`} underline={false}>
+          <Button size="sm">{t("event.book")}</Button>
+        </Link>
+      )}
+      {isPast && t("models.booking.reasons.past")}
+    </Stack>
   );
 };
 

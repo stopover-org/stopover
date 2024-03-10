@@ -15,7 +15,10 @@ import { InterestScene_EventsPaginationFragment$key } from "artifacts/InterestSc
 import { InterestScenePaginationQuery } from "artifacts/InterestScenePaginationQuery.graphql";
 import Typography from "components/v2/Typography/Typography";
 import { InterestScene_InterestFragment$key } from "artifacts/InterestScene_InterestFragment.graphql";
-import Description from "../../../../components/v2/Description";
+import Description from "components/v2/Description";
+import Link from "components/v2/Link";
+import moment from "moment";
+import { urlSafeDateFormat } from "../../../../lib/utils/dates";
 
 interface InterestSceneProps {
   eventsFragmentRef: InterestScene_EventsPaginationFragment$key;
@@ -103,6 +106,7 @@ const InterestScene = ({
         title
         preview
         description
+        slug
       }
     `,
     interestFragmentRef
@@ -129,11 +133,26 @@ const InterestScene = ({
         md={interest.preview ? 8 : 12}
         lg={interest.preview ? 8 : 12}
       >
-        <Stack sx={{ position: "sticky", top: "0", right: "0" }}>
+        <Stack
+          sx={{ position: "sticky", top: "0", right: "0" }}
+          spacing={2}
+          useFlexGap
+        >
           <Typography level="h3" component="h1">
             {interest.title}
           </Typography>
           <Description html={interest.description} />
+          <Link href={`/timetables/interests/${interest.slug}`} primary>
+            Today timetable
+          </Link>
+          <Link
+            href={`/timetables/interests/${interest.slug}/${moment()
+              .add(1, "days")
+              .format(urlSafeDateFormat)}`}
+            primary
+          >
+            Tomorrow timetable
+          </Link>
         </Stack>
       </Grid>
       <Divider />

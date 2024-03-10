@@ -53,6 +53,9 @@ const FirmTimetableScene = ({
       )}
       <Grid lg={12} md={12} sm={12} xs={12}>
         <Typography component="h1" level="h2">
+          {firm.title}
+        </Typography>
+        <Typography component="h2" level="h4">
           {t("models.schedule.plural")} - {moment(date).calendar("day")}
         </Typography>
       </Grid>

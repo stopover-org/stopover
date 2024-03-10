@@ -56,6 +56,22 @@ const Timetable = ({
     `,
     eventsConnectionFragmentRef
   );
+  const [serverSide, setServerSide] = React.useState(true);
+  React.useEffect(() => {
+    setServerSide(false);
+  }, []);
+
+  React.useEffect(() => {
+    if (serverSide) {
+      return;
+    }
+
+    const domNode = window.document.getElementById("event-startview-from");
+
+    if (domNode) {
+      domNode.scrollIntoView();
+    }
+  }, [serverSide]);
   const timetable = useTimetable(data?.nodes, timetableDate);
   const pathname = usePathname();
   const params = useParams();
@@ -144,13 +160,14 @@ const Timetable = ({
       </Grid>
       {Object.entries(timetable).map(([datetime, events], index: number) => {
         const momentDatetime = moment(datetime);
+        const isFuture = momentDatetime.isAfter(new Date(), "minute");
         if (!momentDatetime.isValid()) {
           return null;
         }
 
         return (
           <React.Fragment key={momentDatetime.format(dateTimeFormat)}>
-            {events.map((event: any) => (
+            {events.map((event: any, i: number) => (
               <React.Fragment key={event.id}>
                 <Grid xs={12} sm={12} md={12} lg={12}>
                   <Stack
@@ -159,7 +176,14 @@ const Timetable = ({
                     spacing={2}
                     useFlexGap
                   >
-                    <Box>{momentDatetime.format(timeFormat)}</Box>
+                    <Box
+                      id={isFuture ? "event-startview-from" : undefined}
+                      sx={{
+                        width: "40px",
+                      }}
+                    >
+                      {i === 0 && momentDatetime.format(timeFormat)}
+                    </Box>
                     <Box>
                       <Stack spacing={2} useFlexGap>
                         <Box>
