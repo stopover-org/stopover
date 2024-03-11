@@ -150,7 +150,7 @@ const RightColumn = ({ eventFragmentRef }: RightColumnProps) => {
         <AccordionGroup size="sm">
           {event.interests.map((interest) => (
             <Accordion key={interest.id}>
-              <AccordionSummary>
+              <AccordionSummary slotProps={{ button: { type: "button" } }}>
                 <Typography fontSize="lg">{interest.title}</Typography>
               </AccordionSummary>
               <AccordionDetails>
