@@ -13,7 +13,8 @@ import { FirmSection_CurrentUserFragment$key } from "artifacts/FirmSection_Curre
 import useStatusColor from "lib/hooks/useStatusColor";
 import EditFirmAddress from "components/shared/EditFirmAddress";
 import GoogleMap from "components/shared/GoogleMap";
-import ResetOnboardingFirm from "../../../../components/shared/forms/firm/ResetOnboardingFirm";
+import ResetOnboardingFirm from "components/shared/forms/firm/ResetOnboardingFirm";
+import EditSeoMetadataFirm from "components/shared/forms/EditSeoMetadata";
 
 interface FirmSectionProps {
   firmFragmentRef: FirmSection_FirmFragment$key;
@@ -44,6 +45,9 @@ const FirmSection = ({
           houseNumber
           latitude
           longitude
+        }
+        seoMetadatum {
+          ...EditSeoMetadata_MetadataFragment
         }
       }
     `,
@@ -117,6 +121,9 @@ const FirmSection = ({
           </Link>
           {currentUser.serviceUser && firm.status === "pending" && (
             <VerifyFirm />
+          )}
+          {currentUser.serviceUser && (
+            <EditSeoMetadataFirm seoMetadatumFragmentRef={firm.seoMetadatum!} />
           )}
           {currentUser.serviceUser && firm.firmType === "onboarding" && (
             <ResetOnboardingFirm firmFragmentRef={firm} />

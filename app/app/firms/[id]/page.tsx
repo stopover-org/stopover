@@ -44,6 +44,11 @@ const PageQuery = `
       address {
         country
       }
+      seoMetadatum {
+        title
+        description
+        keywords
+      }
     }
   }
 `;
@@ -59,12 +64,18 @@ export const generateMetadata = async ({
   const defaultTitle = await translate("models.firm.singular", {}, language);
 
   return merge(defaultMetadata, {
-    title: response?.firm?.title || defaultTitle,
-    description: response?.firm?.description?.replace(/<[^>]*>?/gm, ""),
+    title: response?.firm?.seoMetadatum?.title || defaultTitle,
+    description: response?.firm?.seoMetadatum?.description?.replace(
+      /<[^>]*>?/gm,
+      ""
+    ),
     openGraph: {
       type: "profile",
-      title: response?.firm?.title || defaultTitle,
-      description: response?.firm?.description?.replace(/<[^>]*>?/gm, ""),
+      title: response?.firm?.seoMetadatum?.title || defaultTitle,
+      description: response?.firm?.seoMetadatum?.description?.replace(
+        /<[^>]*>?/gm,
+        ""
+      ),
       phoneNumbers: [response?.firm?.primaryPhone, ...sharedPhones],
       emails: [response?.firm?.primaryEmail, ...sharedEmails],
       images: [response?.firm?.image, ...sharedImages],

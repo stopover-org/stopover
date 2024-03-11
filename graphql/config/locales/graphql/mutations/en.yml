@@ -155,3 +155,7 @@ en:
       cancel_trip:
         notifications:
           success: 'Trip was cancelled'
+
+      update_seo_metadata:
+        notifications:
+          success: 'Seo Metadata was updated'

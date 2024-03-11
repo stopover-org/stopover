@@ -30,6 +30,7 @@
 #  updated_at                    :datetime         not null
 #  address_id                    :bigint
 #  firm_id                       :bigint
+#  seo_metadatum_id              :bigint
 #
 # Indexes
 #
@@ -37,6 +38,7 @@
 #  index_events_on_event_type              (event_type)
 #  index_events_on_firm_id                 (firm_id)
 #  index_events_on_ref_number_and_firm_id  (ref_number,firm_id) UNIQUE
+#  index_events_on_seo_metadatum_id        (seo_metadatum_id)
 #
 # Foreign Keys
 #
@@ -56,17 +58,21 @@ class Event < ApplicationRecord
   include Mixins::Indices
   include AASM
 
-  # MONETIZE =====================================================================
+  # MONETIZE ==============================================================
   monetize :attendee_price_per_uom_cents
   monetize :organizer_price_per_uom_cents
   monetize :deposit_amount_cents
 
-  # ATTACHMENTS ===========================================================
-  has_many_attached :images
+  # BELONGS_TO ASSOCIATIONS ===============================================
+  belongs_to :firm, optional: false
+  belongs_to :address, optional: true
+  belongs_to :seo_metadatum, optional: true
 
-  # HAS_ONE ASSOCIATIONS ==========================================================
+  # HAS_ONE ASSOCIATIONS ==================================================
   #
-  # HAS_MANY ASSOCIATIONS =========================================================
+  # HAS_ONE THROUGH ASSOCIATIONS ==========================================
+  #
+  # HAS_MANY ASSOCIATIONS =================================================
   has_many :event_interests, dependent: :destroy
   has_many :event_options, dependent: :destroy
   has_many :bookings, dependent: :destroy
@@ -80,14 +86,10 @@ class Event < ApplicationRecord
   has_many :tour_places, dependent: :destroy
   has_many :stripe_integrations, as: :stripeable, dependent: :destroy
 
-  # HAS_MANY :THROUGH ASSOCIATIONS ================================================
+  # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :interests, through: :event_interests
 
-  # BELONGS_TO ASSOCIATIONS =======================================================
-  belongs_to :firm, optional: false
-  belongs_to :address
-
-  # AASM STATES ================================================================
+  # AASM STATES ===========================================================
   aasm column: :status do
     state :draft, initial: true
     state :published
@@ -110,7 +112,7 @@ class Event < ApplicationRecord
     end
   end
 
-  # ENUMS =======================================================================
+  # ENUMS =================================================================
   enum event_type: {
     excursion: 'excursion',
     tour: 'tour',
@@ -125,7 +127,21 @@ class Event < ApplicationRecord
     gastronomic: 'gastronomic'
   }
 
-  # VALIDATIONS ================================================================
+  enum language: {
+    ru: 'ru',
+    en: 'en'
+  }, _prefix: true
+
+  # SECURE TOKEN ==========================================================
+  #
+  # SECURE PASSWORD =======================================================
+  #
+  # ATTACHMENTS ===========================================================
+  has_many_attached :images
+
+  # RICH_TEXT =============================================================
+  #
+  # VALIDATIONS ===========================================================
   validates :title,
             length: { maximum: 100 }
   validates :title,
@@ -139,7 +155,7 @@ class Event < ApplicationRecord
             uniqueness: { scope: :firm_id },
             allow_blank: true
 
-  # CALLBACKS ================================================================
+  # CALLBACKS =============================================================
   before_validation :set_prices, unless: :removed?
   before_validation :adjust_prices, unless: :removed?
   before_validation :adjust_category, unless: :removed?
@@ -148,12 +164,13 @@ class Event < ApplicationRecord
   after_create :created_notify
   after_commit :sync_stripe, unless: :removed?
   after_commit :adjust_options
+  after_commit :adjust_seo_metadata
 
-  # SCOPES =====================================================================
+  # SCOPES ================================================================
   default_scope { in_order_of(:status, %w[draft published unpublished removed]).order(created_at: :desc) }
   scope :by_city, ->(city) { where(city: city) }
 
-  # DELEGATIONS ==============================================================
+  # DELEGATION ============================================================
   delegate :count, to: :ratings, prefix: true, allow_nil: true
   delegate :margin, to: :firm, allow_nil: true
 
@@ -277,7 +294,7 @@ class Event < ApplicationRecord
 
   def adjust_address
     return if address
-    self.address = firm.address
+    self.address = firm&.address
   end
 
   def sync_stripe
@@ -303,6 +320,16 @@ class Event < ApplicationRecord
   def adjust_options
     event_options.each do |opt|
       opt.update!(language: language) if language != opt.language
+    end
+  end
+
+  def adjust_seo_metadata
+    unless seo_metadatum
+      update(seo_metadatum: SeoMetadatum.create!(event: self,
+                                                 language: language,
+                                                 title: title,
+                                                 description: description,
+                                                 keywords: ''))
     end
   end
 end

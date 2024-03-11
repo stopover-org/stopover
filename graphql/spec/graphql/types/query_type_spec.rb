@@ -191,6 +191,9 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                              name: 'updatePlacement'
                            },
                            {
+                             name: 'updateSeoMetadata'
+                           },
+                           {
                              name: 'verifyEvent'
                            },
                            {

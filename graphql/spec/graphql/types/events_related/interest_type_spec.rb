@@ -43,6 +43,9 @@ RSpec.describe Types::EventsRelated::InterestType, type: :graphql_type do
                                                             name: 'preview'
                                                           },
                                                           {
+                                                            name: 'seoMetadatum'
+                                                          },
+                                                          {
                                                             name: 'slug'
                                                           },
                                                           {

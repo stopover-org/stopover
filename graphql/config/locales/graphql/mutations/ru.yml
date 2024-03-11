@@ -155,3 +155,7 @@ ru:
       cancel_trip:
         notifications:
           success: ''
+
+      update_seo_metadata:
+        notifications:
+          success: 'Метадата была обновлена'

@@ -17,8 +17,9 @@ import Button from "components/v2/Button/Button";
 import Input from "components/v2/Input";
 import FileUploader from "components/v2/FileUploader/FileUploader";
 import { FormProvider } from "react-hook-form";
+import ImagePreviewFields from "components/shared/ImagePreviewFields";
+import Editor from "components/v2/Editor";
 import { useCreateInterestForm } from "./useCreateInterestForm";
-import ImagePreviewFields from "../../../ImagePreviewFields/ImagePreviewFields";
 
 interface CreateInterestModalProps {
   open: boolean;
@@ -29,6 +30,7 @@ const CreateInterestModal = ({ open, onClose }: CreateInterestModalProps) => {
   const { t } = useTranslation();
   const form = useCreateInterestForm(onClose);
   const imageField = form.useFormField("preview");
+  const descriptionField = form.useFormField("description");
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -70,6 +72,14 @@ const CreateInterestModal = ({ open, onClose }: CreateInterestModalProps) => {
               </Grid>
               <Grid xs={12}>
                 <ImagePreviewFields field="preview" />
+              </Grid>
+              <Grid xs={12}>
+                <Editor
+                  errorMessage={descriptionField.error?.message}
+                  value={descriptionField.value}
+                  onChange={descriptionField.onChange}
+                  placeholder={t("models.event.attributes.description")}
+                />
               </Grid>
             </Grid>
             <DialogActions>

@@ -45,11 +45,16 @@ module Types
     field :deregister_attendee, mutation: Mutations::BookingsRelated::DeregisterAttendee
     field :add_attendee, mutation: Mutations::BookingsRelated::AddAttendee
 
+    # PAYMENTS RELATED
     field :create_checkout, mutation: Mutations::PaymentsRelated::CreateCheckout
     field :create_stripe_account, mutation: Mutations::FirmsRelated::CreateStripeAccount
     field :withdraw_balance, mutation: Mutations::PaymentsRelated::WithdrawBalance
 
+    # INTERESTS RELATED
     field :create_interest, mutation: Mutations::EventsRelated::CreateInterest
     field :update_interest, mutation: Mutations::EventsRelated::UpdateInterest
+
+    # SEO RELATED
+    field :update_seo_metadata, mutation: Mutations::SeoRelated::UpdateSeoMetadata
   end
 end

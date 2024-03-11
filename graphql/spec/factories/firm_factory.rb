@@ -23,12 +23,14 @@
 #  title                     :string           not null
 #  website                   :string
 #  address_id                :bigint
+#  seo_metadatum_id          :bigint
 #  stripe_account_id         :string
 #
 # Indexes
 #
-#  index_firms_on_address_id  (address_id)
-#  index_firms_on_ref_number  (ref_number) UNIQUE
+#  index_firms_on_address_id        (address_id)
+#  index_firms_on_ref_number        (ref_number) UNIQUE
+#  index_firms_on_seo_metadatum_id  (seo_metadatum_id)
 #
 
 FactoryBot.define do

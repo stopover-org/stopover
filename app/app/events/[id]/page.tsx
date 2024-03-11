@@ -53,6 +53,11 @@ const PageQuery = `
         city
         street
       }
+      seoMetadatum {
+        title
+        description
+        keywords
+      }
     }
   }
 `;
@@ -75,17 +80,24 @@ export const generateMetadata = async ({
     response?.event?.address?.country,
     response?.event?.address?.city,
     response?.event?.address?.street,
+    response?.event?.seoMetadatum?.keywords,
     ...((response?.event?.availableDates as string[]) || []),
   ];
 
   return merge(defaultMetadata, {
-    title: response?.event?.title || defaultTitle,
-    description: response?.event?.description?.replace(/<[^>]*>?/gm, ""),
+    title: response?.event?.seoMetadatum?.title || defaultTitle,
+    description: response?.event?.seoMetadatum?.description?.replace(
+      /<[^>]*>?/gm,
+      ""
+    ),
     keywords,
     openGraph: {
       keywords,
-      title: response?.event?.title || defaultTitle,
-      description: response?.event?.description?.replace(/<[^>]*>?/gm, ""),
+      title: response?.event?.seoMetadatum?.title || defaultTitle,
+      description: response?.event?.seoMetadatum?.description?.replace(
+        /<[^>]*>?/gm,
+        ""
+      ),
       phoneNumbers: [response?.event?.firm?.primaryPhone, ...sharedPhones],
       emails: [response?.event?.firm?.primaryEmail, ...sharedEmails],
       images: [...(response?.event?.images || []), ...sharedImages],

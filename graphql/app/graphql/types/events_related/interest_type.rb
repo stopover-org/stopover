@@ -11,6 +11,9 @@ module Types
       field :description, String, null: false
       field :original_description, String, null: false
 
+      # SEO RELATED
+      field :seo_metadatum, Types::SeoRelated::SeoMetadatumType
+
       def original_title
         object.title
       end

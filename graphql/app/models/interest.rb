@@ -4,19 +4,21 @@
 #
 # Table name: interests
 #
-#  id          :bigint           not null, primary key
-#  active      :boolean          default(TRUE)
-#  description :text             default("")
-#  language    :string           default("en")
-#  slug        :string           not null
-#  title       :string           not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id               :bigint           not null, primary key
+#  active           :boolean          default(TRUE)
+#  description      :text             default("")
+#  language         :string           default("en")
+#  slug             :string           not null
+#  title            :string           not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  seo_metadatum_id :bigint
 #
 # Indexes
 #
-#  index_interests_on_slug   (slug) UNIQUE
-#  index_interests_on_title  (title) UNIQUE
+#  index_interests_on_seo_metadatum_id  (seo_metadatum_id)
+#  index_interests_on_slug              (slug) UNIQUE
+#  index_interests_on_title             (title) UNIQUE
 #
 class Interest < ApplicationRecord
   GRAPHQL_TYPE = Types::EventsRelated::InterestType
@@ -31,7 +33,8 @@ class Interest < ApplicationRecord
   # MONETIZE ==============================================================
   #
   # BELONGS_TO ASSOCIATIONS ===============================================
-  #
+  belongs_to :seo_metadatum, optional: true
+
   # HAS_ONE ASSOCIATIONS ==================================================
   #
   # HAS_ONE THROUGH ASSOCIATIONS ==========================================
@@ -47,7 +50,11 @@ class Interest < ApplicationRecord
   # AASM STATES ===========================================================
   #
   # ENUMS =================================================================
-  #
+  enum language: {
+    ru: 'ru',
+    en: 'en'
+  }, _prefix: true
+
   # SECURE TOKEN ==========================================================
   #
   # SECURE PASSWORD =======================================================
@@ -65,6 +72,7 @@ class Interest < ApplicationRecord
 
   # CALLBACKS =============================================================
   before_validation :set_slug
+  after_commit :adjust_seo_metadata
 
   # SCOPES ================================================================
   #
@@ -79,5 +87,15 @@ class Interest < ApplicationRecord
     parameterized_title = title&.parameterize || SecureRandom.uuid
     self.slug = parameterized_title if Interest.where(slug: parameterized_title).empty?
     self.slug = SecureRandom.hex unless slug
+  end
+
+  def adjust_seo_metadata
+    unless seo_metadatum
+      update(seo_metadatum: SeoMetadatum.create!(interest: self,
+                                                 language: language,
+                                                 title: title,
+                                                 description: description,
+                                                 keywords: ''))
+    end
   end
 end
