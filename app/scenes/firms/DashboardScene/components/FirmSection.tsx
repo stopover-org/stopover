@@ -123,7 +123,10 @@ const FirmSection = ({
             <VerifyFirm />
           )}
           {currentUser.serviceUser && (
-            <EditSeoMetadataFirm seoMetadatumFragmentRef={firm.seoMetadatum!} />
+            <EditSeoMetadataFirm
+              seoMetadatumFragmentRef={firm.seoMetadatum!}
+              menuItem={false}
+            />
           )}
           {currentUser.serviceUser && firm.firmType === "onboarding" && (
             <ResetOnboardingFirm firmFragmentRef={firm} />
