@@ -12,6 +12,7 @@ import { scene_DateInterestTimetable_Query } from "artifacts/scene_DateInterestT
 import moment from "moment";
 import { useParams } from "next/navigation";
 import InterestTimetableScene from "scenes/attendees/interests/InterestTimetableScene/InterestTimetableScene";
+import { urlSafeDateFormat } from "lib/utils/dates";
 
 const Query = graphql`
   query scene_DateInterestTimetable_Query($id: ID!, $filters: EventsFilter!) {
@@ -40,7 +41,7 @@ const Scene = ({
   const title = `${data?.interest?.title} - ${t("models.schedule.plural")}`;
   useDocumentTitle(data?.interest?.title ? title : t("general.404"));
   const params = useParams();
-  const date = moment(params.date);
+  const date = moment(params.date, urlSafeDateFormat);
 
   return (
     <SceneWrapper>
@@ -52,7 +53,7 @@ const Scene = ({
           <InterestTimetableScene
             interestFragmentRef={data.interest!}
             eventsConnectionFragmentRef={data.events}
-            date={moment(params.date)}
+            date={moment(params.date, urlSafeDateFormat)}
           />
         </AuthGuard>
       </Layout>

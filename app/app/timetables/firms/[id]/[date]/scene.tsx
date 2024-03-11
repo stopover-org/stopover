@@ -12,6 +12,7 @@ import { scene_FirmTimetable_Query } from "artifacts/scene_FirmTimetable_Query.g
 import FirmTimetableScene from "scenes/attendees/firms/FirmTimetableScene";
 import moment from "moment";
 import { useParams } from "next/navigation";
+import { urlSafeDateFormat } from "lib/utils/dates";
 
 const Query = graphql`
   query scene_DateFirmTimetable_Query($id: ID!, $filters: EventsFilter!) {
@@ -38,7 +39,7 @@ const Scene = ({
   const title = `${data?.firm?.title} - ${t("models.schedule.plural")}`;
   useDocumentTitle(data?.firm?.title ? title : t("general.404"));
   const params = useParams();
-  const date = moment(params.date);
+  const date = moment(params.date, urlSafeDateFormat);
 
   return (
     <SceneWrapper>
@@ -49,7 +50,7 @@ const Scene = ({
         >
           <FirmTimetableScene
             firmFragmentRef={data.firm!}
-            date={moment(params.date)}
+            date={moment(params.date, urlSafeDateFormat)}
           />
         </AuthGuard>
       </Layout>

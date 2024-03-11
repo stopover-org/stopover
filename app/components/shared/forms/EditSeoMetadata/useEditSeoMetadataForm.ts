@@ -30,7 +30,6 @@ function useDefaultValues(
     seoMetadatumFragmentRef
   );
 
-  console.log(metadata);
   return React.useMemo(
     () => ({
       seoMetadatumId: metadata.id,

@@ -54,7 +54,7 @@ const FirmTimetableScene = ({
         </Grid>
       )}
       <Grid lg={12} md={12} sm={12} xs={12}>
-        <Link href={`/first/${firm.id}`} component="h1" level="h2">
+        <Link href={`/firms/${firm.id}`} component="h1" level="h2">
           {firm.title}
         </Link>
         <Typography component="h2" level="h4">
