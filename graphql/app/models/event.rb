@@ -325,11 +325,11 @@ class Event < ApplicationRecord
 
   def adjust_seo_metadata
     unless seo_metadatum
-      update(seo_metadatum: SeoMetadatum.create!(event: self,
-                                                 language: language,
-                                                 title: title,
-                                                 description: description,
-                                                 keywords: ''))
+      update!(seo_metadatum: SeoMetadatum.create!(event: self,
+                                                  language: language,
+                                                  title: title,
+                                                  description: description,
+                                                  keywords: ''))
     end
   end
 end

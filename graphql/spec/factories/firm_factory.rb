@@ -37,6 +37,7 @@ FactoryBot.define do
   factory :firm do
     title { Faker::App.name }
     primary_email { Faker::Internet.email }
+    description { Faker::Hipster.paragraphs.join('. ') }
     margin { 10 }
     address { build(:address) }
     status { 'active' }

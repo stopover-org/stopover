@@ -24,6 +24,7 @@ RSpec.describe SeoMetadatum, type: :model do
       should have_one(:event)
       should have_one(:interest)
       should have_one(:firm)
+      should have_one(:article)
     end
 
     it 'enums' do
@@ -32,5 +33,11 @@ RSpec.describe SeoMetadatum, type: :model do
                                        .backed_by_column_of_type(:string)
                                        .with_prefix(true)
     end
+  end
+
+  describe 'translatable' do
+    subject { create(:seo_metadatum) }
+
+    include_examples :translatable_spec, SeoMetadatum
   end
 end

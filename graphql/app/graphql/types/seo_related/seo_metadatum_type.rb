@@ -7,6 +7,30 @@ module Types
       field :description, String, null: false
       field :keywords, String, null: false
       field :language, String, null: false
+
+      def title
+        if current_firm == object.event.firm
+          object.title
+        else
+          object.translate(:title)
+        end
+      end
+
+      def description
+        if current_firm == object.event.firm
+          object.description
+        else
+          object.translate(:description)
+        end
+      end
+    end
+
+    def keywords
+      if current_firm == object.event.firm
+        object.keywords
+      else
+        object.translate(:keywords)
+      end
     end
   end
 end

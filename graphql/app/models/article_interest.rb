@@ -2,29 +2,28 @@
 
 # == Schema Information
 #
-# Table name: dynamic_translations
+# Table name: article_interests
 #
-#  id                :bigint           not null, primary key
-#  source            :string           not null
-#  source_field      :string           not null
-#  target_language   :string           not null
-#  translatable_type :string
-#  translation       :string           default(""), not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  translatable_id   :bigint
+#  id          :bigint           not null, primary key
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  article_id  :bigint
+#  interest_id :bigint
 #
 # Indexes
 #
-#  index_dynamic_translations_on_translatable  (translatable_type,translatable_id)
+#  index_article_interests_on_article_id                  (article_id)
+#  index_article_interests_on_article_id_and_interest_id  (article_id,interest_id) UNIQUE
+#  index_article_interests_on_interest_id                 (interest_id)
 #
-class DynamicTranslation < ApplicationRecord
+class ArticleInterest < ApplicationRecord
   # MODULES ===============================================================
   #
   # MONETIZE ==============================================================
   #
   # BELONGS_TO ASSOCIATIONS ===============================================
-  belongs_to :translatable, polymorphic: true
+  belongs_to :article
+  belongs_to :interest
 
   # HAS_ONE ASSOCIATIONS ==================================================
   #
@@ -47,16 +46,12 @@ class DynamicTranslation < ApplicationRecord
   # RICH_TEXT =============================================================
   #
   # VALIDATIONS ===========================================================
-  validates :source, :source_field,
-            :target_language, presence: true,
-            allow_nil: true
+  validates :article_id, uniqueness: { scope: :interest_id }
+
   # CALLBACKS =============================================================
   #
   # SCOPES ================================================================
   #
   # DELEGATION ============================================================
-
-  def refresh
-    TranslationManagement::RefreshTranslationJob.perform_later(dynamic_translation_id: id)
-  end
+  #
 end
