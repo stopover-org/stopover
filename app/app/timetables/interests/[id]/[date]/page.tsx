@@ -28,7 +28,9 @@ const Page = async ({ params }: { params: Record<string, string> }) => {
       startDate: moment(params.date, urlSafeDateFormat)
         .startOf("day")
         .toISOString(),
-      endDate: moment(params.dateurlSafeDateFormat).endOf("day").toISOString(),
+      endDate: moment(params.date, urlSafeDateFormat)
+        .endOf("day")
+        .toISOString(),
     },
   });
 
