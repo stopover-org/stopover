@@ -6,7 +6,7 @@ import Typography from "components/v2/Typography";
 import Description from "components/v2/Description";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import BreadcrumbsComponent from "../../../components/v2/Breadcrumbs/Breadcrumbs";
+import BreadcrumbsComponent from "components/v2/Breadcrumbs/Breadcrumbs";
 
 const Img = styled.img`
   width: 100%;

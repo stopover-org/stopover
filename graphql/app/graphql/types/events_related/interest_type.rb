@@ -10,6 +10,7 @@ module Types
       field :original_title, String, null: false
       field :description, String, null: false
       field :original_description, String, null: false
+      field :articles, Types::SeoRelated::ArticleType.connection_type, null: false
 
       # SEO RELATED
       field :seo_metadatum, Types::SeoRelated::SeoMetadatumType
@@ -32,6 +33,10 @@ module Types
 
       def preview
         object.preview&.url
+      end
+
+      def articles
+        object.articles.order(created_at: :desc)
       end
     end
   end

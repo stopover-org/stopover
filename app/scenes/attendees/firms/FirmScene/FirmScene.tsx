@@ -113,9 +113,6 @@ export const FirmScene = ({ firmFragmentRef }: Props) => {
         </Grid>
       )}
       <Grid lg={firm.image ? 6 : 9} md={9} sm={12} xs={12}>
-        <Link fontSize="lg" href={`/timetables/firms/${firm.id}`}>
-          {t("models.schedule.plural")}
-        </Link>
         {firm.description && <Description html={firm.description} />}
         {firm.address && (
           <>

@@ -20,6 +20,7 @@ import Link from "components/v2/Link";
 import moment from "moment";
 import { urlSafeDateFormat } from "lib/utils/dates";
 import { useTranslation } from "react-i18next";
+import ArticleCard from "components/shared/ArticleCard";
 
 interface InterestSceneProps {
   eventsFragmentRef: InterestScene_EventsPaginationFragment$key;
@@ -108,6 +109,12 @@ const InterestScene = ({
         preview
         description
         slug
+        articles(first: 999) {
+          nodes {
+            ...ArticleCard_ArticleFragment
+            id
+          }
+        }
       }
     `,
     interestFragmentRef
@@ -163,34 +170,42 @@ const InterestScene = ({
       </Grid>
       <Divider />
       {events.map((event) => (
-        <EventCardCompact key={event!.id} eventFragmentRef={event!} />
+        <>
+          <EventCardCompact key={event!.id} eventFragmentRef={event!} />
+          <Grid xs={12}>
+            <Pagination
+              showPrev={hasPrevious}
+              showNext={hasNext}
+              onPrev={() => {
+                if (hasPrevious) {
+                  loadPrevious(10, {
+                    onComplete: () => updateCurrentPage(currentPage - 1),
+                  });
+                  return;
+                }
+                updateCurrentPage(currentPage - 1);
+              }}
+              onNext={() => {
+                if (hasNext) {
+                  loadNext(10, {
+                    onComplete: () => updateCurrentPage(currentPage + 1),
+                  });
+                  return;
+                }
+                updateCurrentPage(currentPage + 1);
+              }}
+              currentPage={currentPage}
+              perPage={10}
+              total={data.events.edges.length}
+            />
+          </Grid>
+        </>
       ))}
+
       <Grid xs={12}>
-        <Pagination
-          showPrev={hasPrevious}
-          showNext={hasNext}
-          onPrev={() => {
-            if (hasPrevious) {
-              loadPrevious(10, {
-                onComplete: () => updateCurrentPage(currentPage - 1),
-              });
-              return;
-            }
-            updateCurrentPage(currentPage - 1);
-          }}
-          onNext={() => {
-            if (hasNext) {
-              loadNext(10, {
-                onComplete: () => updateCurrentPage(currentPage + 1),
-              });
-              return;
-            }
-            updateCurrentPage(currentPage + 1);
-          }}
-          currentPage={currentPage}
-          perPage={10}
-          total={data.events.edges.length}
-        />
+        {interest.articles.nodes.map((article) => (
+          <ArticleCard key={article.id} articleFragmentRef={article} />
+        ))}
       </Grid>
     </Grid>
   );
