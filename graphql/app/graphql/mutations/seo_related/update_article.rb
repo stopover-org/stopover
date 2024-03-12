@@ -14,7 +14,7 @@ module Mutations
       field :article, Types::SeoRelated::ArticleType
 
       def resolve(article:, **args)
-        article.assign_attributes(args)
+        article.assign_attributes(args.except(:image))
 
         if args.key?(:image)
           Stopover::FilesSupport.attach_image(article,

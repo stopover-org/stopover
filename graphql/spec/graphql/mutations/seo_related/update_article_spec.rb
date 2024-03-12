@@ -6,7 +6,7 @@ RSpec.describe Mutations::SeoRelated::UpdateArticle, type: :mutation do
   let(:current_user) { create(:service_user) }
   let(:mutation) do
     <<-GRAPHQL
-      mutation UpdateArticle($input: CreateArticleInput!) {
+      mutation UpdateArticle($input: UpdateArticleInput!) {
         updateArticle(input: $input) {
           article {
             id
@@ -65,7 +65,7 @@ RSpec.describe Mutations::SeoRelated::UpdateArticle, type: :mutation do
         expect(result.dig(:data, :updateArticle, :article, key)).to eq(value)
       end
 
-      expect(result.dig(:data, :updateArticle, :notification)).to eq('Article was created')
+      expect(result.dig(:data, :updateArticle, :notification)).to eq('Article saved')
     end
   end
 

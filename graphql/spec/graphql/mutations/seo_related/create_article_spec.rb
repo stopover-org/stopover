@@ -62,7 +62,7 @@ RSpec.describe Mutations::SeoRelated::CreateArticle, type: :mutation do
         expect(result.dig(:data, :createArticle, :article, key)).to eq(value)
       end
 
-      expect(result.dig(:data, :createArticle, :notification)).to eq('Article was created')
+      expect(result.dig(:data, :createArticle, :notification)).to eq('Article saved')
     end
   end
 
