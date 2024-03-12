@@ -93,6 +93,7 @@ type Address implements Node {
 type Article implements Node {
   content: String!
   id: ID!
+  image: String!
   language: String!
   title: String!
 }

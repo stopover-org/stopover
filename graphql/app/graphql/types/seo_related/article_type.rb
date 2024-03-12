@@ -6,6 +6,11 @@ module Types
       field :title, String, null: false
       field :content, String, null: false
       field :language, String, null: false
+      field :image, String, null: false
+
+      def image
+        object.image.url
+      end
     end
   end
 end

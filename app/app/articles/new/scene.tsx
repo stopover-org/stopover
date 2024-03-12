@@ -10,6 +10,7 @@ import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_NewArticle_Query } from "artifacts/scene_NewArticle_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent";
 import AttendeeSidebar from "components/shared/AttendeeSidebar";
+import NewArticleScene from "../../../scenes/articles/NewArticleScene";
 
 const Query = graphql`
   query scene_NewArticle_Query {
@@ -64,7 +65,9 @@ const Scene = ({
             accessible={data.currentUser?.serviceUser}
             redirectTo="/articles"
           >
-            <Wrapper>New Article Scene</Wrapper>
+            <Wrapper>
+              <NewArticleScene />
+            </Wrapper>
           </AuthGuard>
         </AuthGuard>
       </Layout>
