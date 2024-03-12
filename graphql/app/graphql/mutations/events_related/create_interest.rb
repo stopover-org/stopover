@@ -27,10 +27,6 @@ module Mutations
           { interest: interest.errors.empty? ? interest : nil,
             errors: interest.errors.full_messages }
         end
-
-        { interest: interest.errors.empty? ? interest : nil,
-          notification: interest.errors.empty? ? I18n.t('graphql.mutations.create_interest.notifications.success') : nil,
-          errors: interest.errors.full_messages }
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
         message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')

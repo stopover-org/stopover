@@ -18,7 +18,11 @@ module Stopover
     end
 
     def self.attach_image(record, image_url:, key: 'image')
-      record.send(key.to_sym).attach(url_to_io(image_url))
+      if image_url
+        record.send(key.to_sym).attach(url_to_io(image_url))
+      else
+        record.send(key.to_sym).purge
+      end
     end
 
     def self.update_images(record, image_urls:, key: 'images')
@@ -38,7 +42,11 @@ module Stopover
     end
 
     def self.update_image(record, image_url:, key: 'image')
-      record.send(key.to_sym).attach(url_to_io(image_url)) if URI.parse(image_url).path != URI.parse(record.send(key.to_sym).url).path
+      if image_url
+        record.send(key.to_sym).attach(url_to_io(image_url)) if URI.parse(image_url).path != URI.parse(record.send(key.to_sym).url).path
+      else
+        record.send(key.to_sym).purge
+      end
     end
 
     def self.base64?(string)

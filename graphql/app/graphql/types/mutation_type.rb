@@ -57,5 +57,6 @@ module Types
     # SEO RELATED
     field :update_seo_metadata, mutation: Mutations::SeoRelated::UpdateSeoMetadata
     field :create_article, mutation: Mutations::SeoRelated::CreateArticle
+    field :update_article, mutation: Mutations::SeoRelated::UpdateArticle
   end
 end

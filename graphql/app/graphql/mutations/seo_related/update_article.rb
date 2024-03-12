@@ -2,9 +2,10 @@
 
 module Mutations
   module SeoRelated
-    class CreateArticle < BaseMutation
+    class UpdateArticle < BaseMutation
       include Mutations::Authorizations::ServiceUserAuthorized
 
+      argument :article_id, ID, loads: Types::SeoRelated::ArticleType
       argument :title, String
       argument :content, String
       argument :language, String
@@ -12,8 +13,8 @@ module Mutations
 
       field :article, Types::SeoRelated::ArticleType
 
-      def resolve(**args)
-        article = Article.new(args.except(:image))
+      def resolve(article:, **args)
+        article.assign_attributes(args)
 
         if args.key?(:image)
           Stopover::FilesSupport.attach_image(article,
@@ -24,7 +25,7 @@ module Mutations
         if article.save
           {
             article: article,
-            notification: I18n.t('graphql.mutations.create_article.notifications.success')
+            notification: I18n.t('graphql.mutations.update_article.notifications.success')
           }
         else
           {

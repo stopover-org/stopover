@@ -162,3 +162,6 @@ ru:
       create_article:
         notifications:
           success: 'Статья сохранена'
+      update_article:
+        notifications:
+          success: 'Статья сохранена'

@@ -18,6 +18,8 @@
 #  index_articles_on_seo_metadatum_id  (seo_metadatum_id)
 #
 class Article < ApplicationRecord
+  GRAPHQL_TYPE = Types::SeoRelated::ArticleType
+
   # MODULES ===============================================================
   #
   # MONETIZE ==============================================================

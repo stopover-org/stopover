@@ -161,4 +161,7 @@ en:
           success: 'Seo Metadata was updated'
       create_article:
         notifications:
-          success: 'Article was created'
+          success: 'Article saved'
+      update_article:
+        notifications:
+          success: 'Article saved'
