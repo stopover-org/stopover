@@ -119,5 +119,9 @@ module Types
     def article(id:)
       id
     end
+
+    def articles
+      Article.all
+    end
   end
 end
