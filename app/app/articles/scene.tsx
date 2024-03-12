@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_ArticlesScene_Query } from "artifacts/scene_ArticlesScene_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent";
-import ArticlesScene from "../../scenes/articles/ArticlesScene";
+import ArticlesScene from "scenes/articles/ArticlesScene";
 
 const Query = graphql`
   query scene_ArticlesScene_Query {

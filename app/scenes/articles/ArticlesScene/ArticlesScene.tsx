@@ -100,7 +100,7 @@ const ArticlesScene = ({
     <Grid container spacing={2}>
       <Grid xs={12}>
         <Stack direction="row" justifyContent="flex-end">
-          <Button>New Article</Button>
+          <Button>{t("scenes.articles.articlesScene.new")}</Button>
         </Stack>
       </Grid>
       <Grid xs={12}>
