@@ -2,17 +2,16 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::SeoRelated::UpdateSeoMetadata, type: :mutation do
+RSpec.describe Mutations::SeoRelated::CreateArticle, type: :mutation do
   let(:current_user) { create(:service_user) }
-  let!(:seo_metadatum) { create(:seo_metadatum) }
   let(:mutation) do
     <<-GRAPHQL
-      mutation UpdateSeoMetadata($input: UpdateSeoMetadataInput!) {
-        updateSeoMetadata(input: $input) {
-          seoMetadatum {
+      mutation CreateArticle($input: CreateArticleInput!) {
+        createArticle(input: $input) {
+          article {
+            id
             title
-            description
-            keywords
+            content
             language
           }
           errors
@@ -21,20 +20,19 @@ RSpec.describe Mutations::SeoRelated::UpdateSeoMetadata, type: :mutation do
       }
     GRAPHQL
   end
+
   let(:input) do
     {
-      seoMetadatumId: GraphqlSchema.id_from_object(seo_metadatum),
       title: 'unique title',
-      description: 'description',
-      keywords: 'key1, key2, key3',
+      content: 'description',
       language: 'ru'
     }
   end
+
   let(:expected) do
     {
       title: 'unique title',
-      description: 'description',
-      keywords: 'key1, key2, key3',
+      content: 'description',
       language: 'ru'
     }
   end
@@ -48,27 +46,27 @@ RSpec.describe Mutations::SeoRelated::UpdateSeoMetadata, type: :mutation do
   shared_examples :fail do |error|
     it 'fails' do
       result = nil
-      expect { result = subject.to_h.deep_symbolize_keys }.to change { SeoMetadatum.count }.by(0)
+      expect { result = subject.to_h.deep_symbolize_keys }.to change { Article.count }.by(0)
 
-      expect(result.dig(:data, :updateSeoMetadata, :seoMetadatum)).to be_nil
-      expect(result.dig(:data, :updateSeoMetadata, :errors)).to include(error)
+      expect(result.dig(:data, :createArticle, :article)).to be_nil
+      expect(result.dig(:data, :createArticle, :errors)).to include(error)
     end
   end
 
   shared_examples :successful do
     it 'successful' do
       result = nil
-      expect { result = subject.to_h.deep_symbolize_keys }.to change { SeoMetadatum.count }.by(0)
+      expect { result = subject.to_h.deep_symbolize_keys }.to change { Article.count }.by(1)
 
       expected.each do |key, value|
-        expect(result.dig(:data, :updateSeoMetadata, :seoMetadatum, key)).to eq(value)
+        expect(result.dig(:data, :createArticle, :article, key)).to eq(value)
       end
 
-      expect(result.dig(:data, :updateSeoMetadata, :notification)).to eq('Seo Metadata was updated')
+      expect(result.dig(:data, :createArticle, :notification)).to eq('Article was created')
     end
   end
 
-  context 'update seo metadata' do
+  context 'create article' do
     context 'as service user' do
       include_examples :successful
     end

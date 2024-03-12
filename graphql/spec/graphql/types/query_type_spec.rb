@@ -104,6 +104,9 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                              name: 'changeEventOptionAvailability'
                            },
                            {
+                             name: 'createArticle'
+                           },
+                           {
                              name: 'createCheckout'
                            },
                            {

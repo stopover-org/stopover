@@ -15,16 +15,24 @@ module Mutations
       field :booking, Types::BookingsRelated::BookingType
 
       def resolve(booking:, **args)
-        booking.notifications.create!(subject: args[:subject],
-                                      content: Stopover::MailProvider.prepare_content(
-                                        file: 'mailer/firms/bookings/custom_notification',
-                                        locals: {
-                                          content: args[:content]
-                                        }
-                                      ),
-                                      notification_type: 'custom',
-                                      delivery_method: 'email',
-                                      to: booking.account.primary_email)
+        notification = booking.notifications.create(subject: args[:subject],
+                                                    content: Stopover::MailProvider.prepare_content(
+                                                      file: 'mailer/firms/bookings/custom_notification',
+                                                      locals: {
+                                                        content: args[:content]
+                                                      }
+                                                    ),
+                                                    notification_type: 'custom',
+                                                    delivery_method: 'email',
+                                                    to: booking.account.primary_email)
+        if notification.errors.empty?
+          {
+            booking: booking.reload,
+            notification: I18n.t('graphql.mutations.create_notification.notifications.success')
+          }
+        else
+          { booking: booking, errors: notification.errors.full_message }
+        end
         {
           booking: booking.reload,
           notification: I18n.t('graphql.mutations.create_notification.notifications.success')

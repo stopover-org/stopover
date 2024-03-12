@@ -15,7 +15,11 @@ module Mutations
 
       def resolve(**args)
         current_account.assign_attributes(args)
-        current_account.save!
+        if current_account.save
+          { account: current_account, notification: '' }
+        else
+          { account: current_account, errors: current_account.errors.full_message }
+        end
 
         { account: current_account, notification: '' }
       rescue StandardError => e

@@ -159,3 +159,6 @@ ru:
       update_seo_metadata:
         notifications:
           success: 'Метадата была обновлена'
+      create_article:
+        notifications:
+          success: 'Статья сохранена'

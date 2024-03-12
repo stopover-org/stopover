@@ -9,7 +9,7 @@ module Types
       field :language, String, null: false
 
       def title
-        if current_firm == object.event.firm
+        if current_user.service_user
           object.title
         else
           object.translate(:title)
@@ -17,7 +17,7 @@ module Types
       end
 
       def description
-        if current_firm == object.event.firm
+        if current_user.service_user
           object.description
         else
           object.translate(:description)
@@ -26,7 +26,7 @@ module Types
     end
 
     def keywords
-      if current_firm == object.event.firm
+      if current_user.service_user
         object.keywords
       else
         object.translate(:keywords)

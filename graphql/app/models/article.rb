@@ -48,7 +48,7 @@ class Article < ApplicationRecord
   # SECURE PASSWORD =======================================================
   #
   # ATTACHMENTS ===========================================================
-  has_many_attached :images
+  has_one_attached :images
 
   # RICH_TEXT =============================================================
   #

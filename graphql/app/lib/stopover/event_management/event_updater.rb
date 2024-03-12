@@ -10,10 +10,12 @@ module Stopover
       def execute(**args)
         Event.transaction do
           args[:country] = ISO3166::Country.find_country_by_any_name(args[:country]).iso_short_name if args[:country]
+
           unless @event.address
             @event.address = Address.new(firm: @event.firm,
                                          country: @event.firm.address&.country)
           end
+
           @event.address.assign_attributes(args.slice(:full_address,
                                                       :country,
                                                       :region,
@@ -68,19 +70,9 @@ module Stopover
           end
 
           if args.key?(:images)
-            purge_images!(args)
-
-            images_to_attach = []
-
-            args[:images].each do |url|
-              next if skip_purge?(url)
-
-              images_to_attach << Stopover::FilesSupport.url_to_io(url)
-            rescue StandardError => e
-              Sentry.capture_exception(e) if Rails.env.production?
-            end
-
-            @event.images.attach(images_to_attach)
+            Stopover::FilesSupport.update_images(@event,
+                                                 image_urls: args[:images],
+                                                 key: 'images')
           end
 
           if args[:booking_cancellation_options].present?
@@ -104,24 +96,6 @@ module Stopover
         end
 
         @event
-      end
-
-      def get_images_to_remove(args)
-        @event.images.select do |image|
-          args[:images].map { |img| URI.parse(img).path }.exclude?(URI.parse(image.url).path)
-        end
-      end
-
-      def purge_images!(args)
-        images_to_remove = get_images_to_remove(args)
-
-        images_to_remove.each do |image|
-          image.purge
-        end
-      end
-
-      def skip_purge?(url)
-        @event.images.select { |image| URI.parse(url).path == URI.parse(image.url).path }.any?
       end
     end
   end

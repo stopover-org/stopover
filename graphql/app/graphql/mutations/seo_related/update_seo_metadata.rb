@@ -3,8 +3,6 @@
 module Mutations
   module SeoRelated
     class UpdateSeoMetadata < BaseMutation
-      AUTHORIZATION_FIELD = 'current_firm'
-
       include Mutations::Authorizations::ServiceUserAuthorized
 
       field :seo_metadatum, Types::SeoRelated::SeoMetadatumType
@@ -28,7 +26,7 @@ module Mutations
         message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')
 
         {
-          event: nil,
+          seo_metadatum: nil,
           errors: [message]
         }
       end

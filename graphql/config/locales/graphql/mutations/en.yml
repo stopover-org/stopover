@@ -159,3 +159,6 @@ en:
       update_seo_metadata:
         notifications:
           success: 'Seo Metadata was updated'
+      create_article:
+        notifications:
+          success: 'Article was created'

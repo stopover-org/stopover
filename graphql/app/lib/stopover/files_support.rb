@@ -5,6 +5,42 @@ require 'open-uri'
 
 module Stopover
   class FilesSupport
+    def self.attach_images(record, image_urls:, key: 'images')
+      images_to_attach = []
+
+      image_urls.each do |url|
+        images_to_attach << url_to_io(url)
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+      end
+
+      record.send(key.to_sym).attach(images_to_attach)
+    end
+
+    def self.attach_image(record, image_url:, key: 'image')
+      record.send(key.to_sym).attach(url_to_io(image_url))
+    end
+
+    def self.update_images(record, image_urls:, key: 'images')
+      purge_images!(record, image_urls: image_urls, key: key)
+
+      images_to_attach = []
+
+      image_urls.each do |url|
+        next if skip_purge?(record, url: url, key: key)
+
+        images_to_attach << url_to_io(url)
+      rescue StandardError => e
+        Sentry.capture_exception(e) if Rails.env.production?
+      end
+
+      record.send(key.to_sym).attach(images_to_attach)
+    end
+
+    def self.update_image(record, image_url:, key: 'image')
+      record.send(key.to_sym).attach(url_to_io(image_url)) if URI.parse(image_url).path != URI.parse(record.send(key.to_sym).url).path
+    end
+
     def self.base64?(string)
       start_regex = %r{data:image/[a-z]{3,4};base64,}
       start_regex.match(string)
@@ -61,6 +97,26 @@ module Stopover
       end
 
       files
+    end
+
+    def self.get_images_to_remove(record, image_urls:, key: 'images')
+      record.send(key.to_sym).select do |image|
+        image_urls.map { |img| URI.parse(img).path }.exclude?(URI.parse(image.url).path)
+      end
+    end
+
+    def self.purge_images!(record, image_urls:, key: 'images')
+      images_to_remove = get_images_to_remove(record,
+                                              image_urls: image_urls,
+                                              key: key)
+
+      images_to_remove.each do |image|
+        image.purge
+      end
+    end
+
+    def self.skip_purge?(record, url:, key: 'images')
+      record.send(key.to_sym).select { |image| URI.parse(url).path == URI.parse(image.url).path }.any?
     end
   end
 end
