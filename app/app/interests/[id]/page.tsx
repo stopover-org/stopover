@@ -39,10 +39,12 @@ export const revalidate = 0;
 const PageQuery = `
   query PageQuery($id: ID!) {
     interest(id: $id) {
-      title
-      slug
-      description
-      preview
+      seoMetadatum {
+        title
+        description
+        keywords
+        language
+      }
     }
   }
 `;
@@ -62,11 +64,16 @@ export const generateMetadata = async ({
   );
 
   return merge(defaultMetadata, {
-    title: response?.interest?.title || defaultTitle,
-    description: response?.interest?.description?.replace(/<[^>]*>?/gm, ""),
+    title: response?.interest?.seoMetadatum?.title || defaultTitle,
+    description: response?.interest?.seoMetadatum?.description?.replace(
+      /<[^>]*>?/gm,
+      ""
+    ),
+    keywords: response?.interest?.seoMetadatum?.keywords,
     openGraph: {
+      locale: language,
       type: "profile",
-      title: response?.interest?.title || defaultTitle,
+      title: response?.interest?.seoMetadatum?.title || defaultTitle,
       phoneNumbers: sharedPhones,
       emails: sharedEmails,
       images: [response?.interest?.preview, ...sharedImages],

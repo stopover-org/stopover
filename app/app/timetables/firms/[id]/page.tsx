@@ -52,6 +52,11 @@ const PageQuery = `
       address {
         country
       }
+      seoMetadatum {
+        title
+        description
+        keywords
+      }
     }
   }
 `;
@@ -64,27 +69,23 @@ export const generateMetadata = async ({
   searchParams: { language?: string };
 }): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, { id: unescape(params.id) });
-  const defaultFirmTitle = await translate(
-    "models.firm.singular",
-    {},
-    language
-  );
-
-  const defaultScheduleTitle = await translate(
-    "models.schedule.plural",
-    {},
-    language
-  );
-  const defaultTitle = `${defaultFirmTitle} (${defaultScheduleTitle})`;
+  const defaultTitle = await translate("models.firm.singular", {}, language);
 
   return merge(defaultMetadata, {
-    title: `${response?.firm?.title} - ${defaultScheduleTitle}` || defaultTitle,
-    description: response?.firm?.description?.replace(/<[^>]*>?/gm, ""),
+    title: response?.firm?.seoMetadatum?.title || defaultTitle,
+    description: response?.firm?.seoMetadatum?.description?.replace(
+      /<[^>]*>?/gm,
+      ""
+    ),
+    keywords: response?.firm?.seoMetadatum?.keywords,
     openGraph: {
+      locale: language,
       type: "profile",
-      title:
-        `${response?.firm?.title} - ${defaultScheduleTitle}` || defaultTitle,
-      description: response?.firm?.description?.replace(/<[^>]*>?/gm, ""),
+      title: response?.firm?.seoMetadatum?.title || defaultTitle,
+      description: response?.firm?.seoMetadatum?.description?.replace(
+        /<[^>]*>?/gm,
+        ""
+      ),
       phoneNumbers: [response?.firm?.primaryPhone, ...sharedPhones],
       emails: [response?.firm?.primaryEmail, ...sharedEmails],
       images: [response?.firm?.image, ...sharedImages],
