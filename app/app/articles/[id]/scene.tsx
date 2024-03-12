@@ -7,25 +7,20 @@ import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
 import { useTranslation } from "react-i18next";
 import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
-import { scene_EditArticle_Query } from "artifacts/scene_EditArticle_Query.graphql";
-import SidebarContent from "components/shared/SidebarContent";
-import EditArticleScene from "scenes/articles/EditArticleScene";
+import { scene_SingleArticle_Query } from "artifacts/scene_SingleArticle_Query.graphql";
+import SingleArticleScene from "../../../scenes/articles/SingleArticleScene";
 
 const Query = graphql`
-  query scene_EditArticle_Query($id: ID!) {
+  query scene_SingleArticle_Query($id: ID!) {
     currentUser {
       ...Layout_CurrentUserFragment
       ...AttendeeSidebar_CurrentUserFragment
       serviceUser
       status
-      account {
-        ...SidebarContent_AccountFragment
-        id
-      }
     }
     article(id: $id) {
-      ...EditArticleScene_ArticleFragment
       id
+      ...SingleArticleScene_ArticleFragment
     }
   }
 `;
@@ -33,7 +28,7 @@ const Query = graphql`
 const Scene = ({
   queryRef,
 }: {
-  queryRef: PreloadedQuery<scene_EditArticle_Query>;
+  queryRef: PreloadedQuery<scene_SingleArticle_Query>;
 }) => {
   const data = usePreloadedQuery(Query, queryRef);
   const { t } = useTranslation();
@@ -51,12 +46,7 @@ const Scene = ({
             accessible={!!data.currentUser?.serviceUser && !!data.article?.id}
             redirectTo="/articles"
           >
-            <SidebarContent
-              sx={{ paddingLeft: "10px" }}
-              accountFragmentRef={data.currentUser.account}
-            >
-              <EditArticleScene articleFragmentRef={data.article!} />
-            </SidebarContent>
+            <SingleArticleScene articleFragmentRef={data.article!} />
           </AuthGuard>
         </AuthGuard>
       </Layout>

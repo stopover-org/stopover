@@ -14,7 +14,7 @@ const NewArticleForm = () => {
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit()} style={{ width: "100%" }}>
         <ArticleForm />
-        <Fieldset>
+        <Fieldset margin="10px 0 0 0 ">
           <Grid xs={12} sm={12} md={12} lg={12}>
             <SubmitButton size="sm" submitting={form.formState.isSubmitting}>
               {t("general.save")}

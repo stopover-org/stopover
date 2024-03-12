@@ -19,7 +19,7 @@ const ArticleForm = () => {
   const imageField = form.useFormField("image");
 
   return (
-    <Fieldset>
+    <Fieldset margin="10px 0 0 0 ">
       <Grid xs={12} sm={12} md={8} lg={8} pb="7px">
         <Input
           {...form.useFormField("title")}
