@@ -2,8 +2,8 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useSelectCurrentFirm_AccountFragment$key } from "../../../artifacts/useSelectCurrentFirm_AccountFragment.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { useSelectCurrentFirm_AccountFragment$key } from "artifacts/useSelectCurrentFirm_AccountFragment.graphql";
 
 interface SelectCurrentFirmFields {
   firmId?: string;

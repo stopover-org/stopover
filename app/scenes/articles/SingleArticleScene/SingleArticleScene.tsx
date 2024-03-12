@@ -33,7 +33,7 @@ const SingleArticleScene = ({
       spacing={2}
     >
       <Grid xs={12} sm={12} md={12} lg={12}>
-        <Typography level="h3" component="h1">
+        <Typography level="h1" component="h1">
           {article.title}
         </Typography>
       </Grid>

@@ -77,8 +77,8 @@ export function useEditArticleForm(
       defaultValues: useDefaultValues(articleFragmentRef),
       resolver: yupResolver(validationSchema),
       onCompleted(result) {
-        if (result.createArticle?.article?.id) {
-          router.replace(`/articles/${result.createArticle?.article?.id}`);
+        if (result.updateArticle?.article?.id) {
+          router.replace(`/articles/${result.updateArticle?.article?.id}`);
 
           (window as any).location.reload();
         }

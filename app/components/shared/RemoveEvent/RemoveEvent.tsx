@@ -2,10 +2,10 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { Box } from "@mui/joy";
 import { useTranslation } from "react-i18next";
-import { RemoveEvent_EventFragment$key } from "../../../artifacts/RemoveEvent_EventFragment.graphql";
-import Button from "../../v2/Button";
+import { RemoveEvent_EventFragment$key } from "artifacts/RemoveEvent_EventFragment.graphql";
+import Button from "components/v2/Button";
+import { ButtonProps } from "components/v2/Button/Button";
 import RemoveEventModal from "./RemoveEventModal";
-import { ButtonProps } from "../../v2/Button/Button";
 
 interface PublishEventProps extends ButtonProps {
   eventFragmentRef: RemoveEvent_EventFragment$key;

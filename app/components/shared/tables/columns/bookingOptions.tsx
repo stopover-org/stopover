@@ -1,12 +1,12 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import { getCurrencyFormat } from "../../../../lib/utils/currencyFormatter";
-import { bookingOptions_BookingFragmentRef$key } from "../../../../artifacts/bookingOptions_BookingFragmentRef.graphql";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import { bookingOptions_BookingFragmentRef$key } from "artifacts/bookingOptions_BookingFragmentRef.graphql";
+import OptionTagColor from "components/shared/OptionTagColor/OptionTagColor";
+import Checkbox from "components/v2/Checkbox";
+import { ChangeBookingOptionAvailabilityModal_BookingOptionFragment$key } from "artifacts/ChangeBookingOptionAvailabilityModal_BookingOptionFragment.graphql";
 import ChangeBookingOptionAvailability from "../../ChangeBookingOptionAvailabilityModal";
-import OptionTagColor from "../../OptionTagColor/OptionTagColor";
-import Checkbox from "../../../v2/Checkbox";
-import { ChangeBookingOptionAvailabilityModal_BookingOptionFragment$key } from "../../../../artifacts/ChangeBookingOptionAvailabilityModal_BookingOptionFragment.graphql";
 
 export function useBookingOptionsHeaders() {
   const { t } = useTranslation();

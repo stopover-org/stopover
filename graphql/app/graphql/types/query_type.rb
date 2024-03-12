@@ -45,6 +45,8 @@ module Types
       argument :id, ID, loads: Types::SeoRelated::ArticleType, required: false
     end
 
+    field :articles, Types::SeoRelated::ArticleType.connection_type, null: false
+
     def events(**args)
       firm_id = args[:filters][:firm].id if args[:filters] && (args[:filters][:firm])
       arguments = {

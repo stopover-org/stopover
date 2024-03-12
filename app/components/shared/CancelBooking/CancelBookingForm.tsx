@@ -2,7 +2,7 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
-import { CancelBookingForm_BookingFragment$key } from "../../../artifacts/CancelBookingForm_BookingFragment.graphql";
+import { CancelBookingForm_BookingFragment$key } from "artifacts/CancelBookingForm_BookingFragment.graphql";
 import { useCancelBookingForm } from "./useCancelBookingForm";
 import SubmitButton from "../SubmitButton";
 

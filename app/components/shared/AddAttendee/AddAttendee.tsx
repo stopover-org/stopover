@@ -1,9 +1,9 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { AddAttendee_BookingFragment$key } from "artifacts/AddAttendee_BookingFragment.graphql";
+import SubmitButton from "components/shared/SubmitButton";
 import { useAddAttendeeForm } from "./useAddAttendeeForm";
-import { AddAttendee_BookingFragment$key } from "../../../artifacts/AddAttendee_BookingFragment.graphql";
-import SubmitButton from "../SubmitButton";
 
 interface AddAttendeeProps {
   bookingFragmentRef: AddAttendee_BookingFragment$key;

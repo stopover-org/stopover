@@ -15,10 +15,10 @@ import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useTranslation } from "react-i18next";
+import { RemoveAttendeeModal_BookingFragment$key } from "artifacts/RemoveAttendeeModal_BookingFragment.graphql";
+import Button from "components/v2/Button";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
 import RemoveAttendee from "./RemoveAttendee";
-import { RemoveAttendeeModal_BookingFragment$key } from "../../../artifacts/RemoveAttendeeModal_BookingFragment.graphql";
-import Button from "../../v2/Button";
-import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
 
 interface RemoveAttendeeModalProps {
   attendeeFragmentRef: RemoveAttendeeModal_BookingFragment$key;

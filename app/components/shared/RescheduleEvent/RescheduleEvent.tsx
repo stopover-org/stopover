@@ -2,10 +2,10 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Box } from "@mui/joy";
-import { RescheduleEvent_EventFragment$key } from "../../../artifacts/RescheduleEvent_EventFragment.graphql";
-import Button from "../../v2/Button";
+import { RescheduleEvent_EventFragment$key } from "artifacts/RescheduleEvent_EventFragment.graphql";
+import Button from "components/v2/Button";
+import { ButtonProps } from "components/v2/Button/Button";
 import RescheduleEventModal from "./RescheduleEventModal";
-import { ButtonProps } from "../../v2/Button/Button";
 
 interface PublishEventProps extends ButtonProps {
   eventFragmentRef: RescheduleEvent_EventFragment$key;

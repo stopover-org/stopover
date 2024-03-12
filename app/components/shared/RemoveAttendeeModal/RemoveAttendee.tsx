@@ -1,8 +1,8 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { RemoveAttendee_AttendeeFragment$key } from "artifacts/RemoveAttendee_AttendeeFragment.graphql";
 import { useRemoveAttendeeForm } from "./useRemoveAttendeeForm";
-import { RemoveAttendee_AttendeeFragment$key } from "../../../artifacts/RemoveAttendee_AttendeeFragment.graphql";
 import SubmitButton from "../SubmitButton";
 
 interface RegisterAttendeeProps {

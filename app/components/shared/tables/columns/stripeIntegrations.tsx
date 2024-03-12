@@ -1,9 +1,9 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import { stripeIntegrations_EventFragment$key } from "../../../../artifacts/stripeIntegrations_EventFragment.graphql";
-import useStatusColor from "../../../../lib/hooks/useStatusColor";
-import Tag from "../../../v2/Tag/Tag";
+import { stripeIntegrations_EventFragment$key } from "artifacts/stripeIntegrations_EventFragment.graphql";
+import useStatusColor from "lib/hooks/useStatusColor";
+import Tag from "components/v2/Tag";
 
 const StatusTag = ({ status }: { status: string }) => {
   const color = useStatusColor({
