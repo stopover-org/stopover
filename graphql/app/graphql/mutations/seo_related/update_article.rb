@@ -9,6 +9,7 @@ module Mutations
       argument :title, String
       argument :content, String
       argument :language, String
+      argument :interest_ids, [ID], loads: Types::EventsRelated::InterestType
       argument :image, String, required: false
 
       field :article, Types::SeoRelated::ArticleType
@@ -20,6 +21,13 @@ module Mutations
           Stopover::FilesSupport.attach_image(article,
                                               image_url: args[:image],
                                               key: 'image')
+        end
+
+        if args.key?(:interests)
+          article.article_interests.destroy_all
+          args[:interests].each do |interest|
+            article.article_interests.build(interest: interest)
+          end
         end
 
         if article.save

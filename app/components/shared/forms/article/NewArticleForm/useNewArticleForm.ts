@@ -11,6 +11,7 @@ interface NewArticleFormFields {
   content: string;
   image: string;
   language: string;
+  interestIds: string[];
 }
 
 function useDefaultValues(): NewArticleFormFields {
@@ -20,6 +21,7 @@ function useDefaultValues(): NewArticleFormFields {
       content: "",
       image: "",
       language: "en",
+      interestIds: [],
     }),
     []
   );
@@ -59,9 +61,7 @@ export function useNewArticleForm() {
       resolver: yupResolver(validationSchema),
       onCompleted(result) {
         if (result.createArticle?.article?.id) {
-          router.replace(`/articles/${result.createArticle?.article?.id}`);
-
-          (window as any).location.reload();
+          router.push(`/articles/${result.createArticle?.article?.id}`);
         }
       },
     }

@@ -13,6 +13,7 @@ interface NewArticleFormFields {
   content: string;
   image: string;
   language: string;
+  interestIds: string[];
 }
 
 function useDefaultValues(
@@ -26,6 +27,9 @@ function useDefaultValues(
         content
         image
         language
+        interests {
+          id
+        }
       }
     `,
     articleFragmentRef
@@ -37,6 +41,7 @@ function useDefaultValues(
       content: article.content,
       image: article.image,
       language: article.language,
+      interestIds: article.interests.map((interest) => interest.id),
     }),
     [article]
   );
@@ -63,6 +68,7 @@ export function useEditArticleForm(
       ) {
         updateArticle(input: $input) {
           article {
+            ...useEditArticleForm_ArticleFragment
             id
             title
             content
@@ -78,9 +84,7 @@ export function useEditArticleForm(
       resolver: yupResolver(validationSchema),
       onCompleted(result) {
         if (result.updateArticle?.article?.id) {
-          router.replace(`/articles/${result.updateArticle?.article?.id}`);
-
-          (window as any).location.reload();
+          router.push(`/articles/${result.updateArticle?.article?.id}`);
         }
       },
     }

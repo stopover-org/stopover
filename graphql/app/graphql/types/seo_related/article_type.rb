@@ -7,6 +7,7 @@ module Types
       field :content, String, null: false
       field :language, String, null: false
       field :image, String, null: false
+      field :interests, [Types::EventsRelated::InterestType], null: false
 
       def image
         object.image.url

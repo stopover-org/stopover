@@ -94,6 +94,7 @@ type Article implements Node {
   content: String!
   id: ID!
   image: String!
+  interests: [Interest!]!
   language: String!
   title: String!
 }
@@ -508,6 +509,7 @@ input CreateArticleInput {
   clientMutationId: String
   content: String!
   image: String
+  interestIds: [ID!]!
   language: String!
   title: String!
 }
@@ -2357,6 +2359,7 @@ input UpdateArticleInput {
   clientMutationId: String
   content: String!
   image: String
+  interestIds: [ID!]!
   language: String!
   title: String!
 }

@@ -1,6 +1,6 @@
 import useFormContext from "lib/hooks/useFormContext";
 import React from "react";
-import { Grid, Option } from "@mui/joy";
+import { Autocomplete, Grid, Option } from "@mui/joy";
 import Fieldset from "components/v2/Fieldset";
 import Input from "components/v2/Input";
 import Select from "components/v2/Select";
@@ -10,13 +10,46 @@ import Typography from "components/v2/Typography";
 import Editor from "components/v2/Editor";
 import Description from "components/v2/Description";
 import { useTranslation } from "react-i18next";
+import { graphql, useLazyLoadQuery } from "react-relay";
+import { ArticleForm_InterestsQuery } from "artifacts/ArticleForm_InterestsQuery.graphql";
 
 const ArticleForm = () => {
+  const data = useLazyLoadQuery<ArticleForm_InterestsQuery>(
+    graphql`
+      query ArticleForm_InterestsQuery {
+        interests {
+          nodes {
+            title
+            id
+          }
+        }
+      }
+    `,
+    {}
+  );
   const form = useFormContext();
   const { t } = useTranslation();
   const languageField = form.useFormField("language");
   const contentField = form.useFormField("content");
   const imageField = form.useFormField("image");
+  const interestIds = form.useFormField("interestIds");
+  const selectedInterests = React.useMemo(
+    () =>
+      interestIds.value.map((id: string) => ({
+        value: id,
+        label: data?.interests?.nodes?.find((interest) => interest.id === id)
+          ?.title,
+      })),
+    [interestIds, data?.interests?.nodes]
+  );
+
+  const availableInterests = React.useMemo(
+    () =>
+      data?.interests?.nodes?.filter(
+        (interest) => !interestIds.value.includes(interest.id)
+      ),
+    [interestIds.value, data?.interests]
+  );
 
   return (
     <Fieldset margin="10px 0 0 0 ">
@@ -48,6 +81,24 @@ const ArticleForm = () => {
       </Grid>
       <Grid xs={12} sm={12} md={12} lg={12}>
         <ImagePreviewFields />
+      </Grid>
+      <Grid xs={12}>
+        <Typography level="title-lg">{t("models.interest.plural")}</Typography>
+      </Grid>
+      <Grid xs={12} sm={12} md={8} lg={6}>
+        <Autocomplete
+          disableClearable
+          multiple
+          placeholder={t("models.interest.plural")}
+          onChange={(event, values) => {
+            interestIds.onChange(values.map(({ value }) => value));
+          }}
+          options={availableInterests?.map((interest) => ({
+            value: interest.id,
+            label: interest.title,
+          }))}
+          value={selectedInterests}
+        />
       </Grid>
       <Grid xs={12} sm={12} md={12} lg={12}>
         <Typography fontSize="lg">

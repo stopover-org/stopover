@@ -62,11 +62,18 @@ module Stopover
             end
           end
 
-          @event.save!
+          if args[:interests]
+            @event.event_interests.destroy_all
+            args[:interests].each do |interest|
+              @event.event_interests.build(interest: interest)
+            end
+          end
         end
 
-        @event
+        @event.save!
       end
+
+      @event
     end
   end
 end
