@@ -8,6 +8,7 @@ interface EditorProps {
   placeholder?: string;
   label?: string;
   errorMessage?: string;
+  withImagePlugin?: boolean;
 }
 
 export const EditorStyles = `
@@ -48,34 +49,50 @@ const Editor = ({
   placeholder,
   label,
   errorMessage,
-}: EditorProps) => (
-  <FormControl>
-    {label && <FormLabel>{label}</FormLabel>}
-    <TinymceEditor
-      apiKey="hqlsvda7rj2nm0vtq7y28mg1zghcmvct4gjn2n95kc59y6jk"
-      init={{
-        menubar: false,
-        plugins: "linkwordcount",
-        toolbar: "blocks | bold italic underline strikethrough",
-        placeholder,
-        body_class: "tinymce-editor",
-        content_style: `body { font-family: Roboto, sans-serif; font-weight: 300; white-space: pre-wrap; }${EditorStyles}`,
-      }}
-      onEditorChange={(_, editor) => {
-        if (onChange instanceof Function) {
-          onChange(editor.getContent({ format: "html" }));
-        }
-      }}
-      value={value}
-    />
-    {errorMessage && (
-      <FormHelperText>
-        <Typography fontSize="sm" color="danger">
-          {errorMessage}
-        </Typography>
-      </FormHelperText>
-    )}
-  </FormControl>
-);
+  withImagePlugin = false,
+}: EditorProps) => {
+  const apiKey = process.env.NEXT_PUBLIC_TINYMCE_API_KEY;
+  const toolbar = React.useMemo(
+    () =>
+      `blocks | bold italic underline strikethrough${
+        withImagePlugin ? " | image" : ""
+      }`,
+    [withImagePlugin]
+  );
+
+  const plugins = React.useMemo(
+    () => `link wordcount${withImagePlugin ? " image" : ""}`,
+    [withImagePlugin]
+  );
+  return (
+    <FormControl>
+      {label && <FormLabel>{label}</FormLabel>}
+      <TinymceEditor
+        apiKey={apiKey}
+        init={{
+          menubar: false,
+          plugins,
+          toolbar,
+          placeholder,
+          body_class: "tinymce-editor",
+          content_style: `body { font-family: Roboto, sans-serif; font-weight: 300; white-space: pre-wrap; }${EditorStyles}`,
+        }}
+        onEditorChange={(_, editor) => {
+          if (onChange instanceof Function) {
+            onChange(editor.getContent({ format: "html" }));
+          }
+        }}
+        value={value}
+      />
+      {errorMessage && (
+        <FormHelperText>
+          <Typography fontSize="sm" color="danger">
+            {errorMessage}
+          </Typography>
+        </FormHelperText>
+      )}
+    </FormControl>
+  );
+};
 
 export default React.memo(Editor);

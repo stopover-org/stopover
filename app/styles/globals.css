@@ -110,3 +110,8 @@ table {
     font-size: 12px;
     font-weight: 400;
 }
+
+.description-class img {
+    max-width: 100%;
+    height: auto;
+}

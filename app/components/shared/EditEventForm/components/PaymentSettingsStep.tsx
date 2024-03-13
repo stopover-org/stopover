@@ -3,11 +3,11 @@ import { graphql, useFragment } from "react-relay";
 import { FormLabel, Grid } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import Checkbox from "components/v2/Checkbox";
-import { PaymentSettingsStep_FirmFragment$key } from "../../../../artifacts/PaymentSettingsStep_FirmFragment.graphql";
-import Fieldset from "../../../v2/Fieldset";
-import Input from "../../../v2/Input/Input";
-import useFormContext from "../../../../lib/hooks/useFormContext";
-import Typography from "../../../v2/Typography";
+import { PaymentSettingsStep_FirmFragment$key } from "artifacts/PaymentSettingsStep_FirmFragment.graphql";
+import Fieldset from "components/v2/Fieldset";
+import Input from "components/v2/Input";
+import useFormContext from "lib/hooks/useFormContext";
+import Typography from "components/v2/Typography";
 
 interface PaymentSettingsStepProps {
   firmFragmentRef: PaymentSettingsStep_FirmFragment$key;

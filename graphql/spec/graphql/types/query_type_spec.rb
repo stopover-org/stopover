@@ -43,6 +43,12 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                        queryType: {
                          fields: [
                            {
+                             name: 'article'
+                           },
+                           {
+                             name: 'articles'
+                           },
+                           {
                              name: 'booking'
                            },
                            {
@@ -102,6 +108,9 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                            },
                            {
                              name: 'changeEventOptionAvailability'
+                           },
+                           {
+                             name: 'createArticle'
                            },
                            {
                              name: 'createCheckout'
@@ -171,6 +180,9 @@ RSpec.describe Types::QueryType, type: :graphql_type do
                            },
                            {
                              name: 'updateAccount'
+                           },
+                           {
+                             name: 'updateArticle'
                            },
                            {
                              name: 'updateAttendee'

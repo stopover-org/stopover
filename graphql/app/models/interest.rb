@@ -5,7 +5,6 @@
 # Table name: interests
 #
 #  id               :bigint           not null, primary key
-#  active           :boolean          default(TRUE)
 #  description      :text             default("")
 #  language         :string           default("en")
 #  slug             :string           not null
@@ -42,10 +41,12 @@ class Interest < ApplicationRecord
   # HAS_MANY ASSOCIATIONS =================================================
   has_many :account_interests, dependent: :destroy
   has_many :event_interests, dependent: :destroy
+  has_many :article_interests, dependent: :destroy
 
   # HAS_MANY THROUGH ASSOCIATIONS =========================================
   has_many :accounts, through: :account_interests
   has_many :events, through: :event_interests
+  has_many :articles, through: :article_interests
 
   # AASM STATES ===========================================================
   #
@@ -65,7 +66,7 @@ class Interest < ApplicationRecord
   # RICH_TEXT =============================================================
   #
   # VALIDATIONS ===========================================================
-  validates :title, :language, :active, presence: true
+  validates :title, :language, presence: true
   validates :slug, uniqueness: { case_sensitive: false }
   validates :title, uniqueness: { case_sensitive: false }
   validates :description, presence: true
@@ -78,10 +79,6 @@ class Interest < ApplicationRecord
   #
   # DELEGATION ============================================================
 
-  def should_index?
-    active
-  end
-
   def set_slug
     return if slug
     parameterized_title = title&.parameterize || SecureRandom.uuid
@@ -91,11 +88,11 @@ class Interest < ApplicationRecord
 
   def adjust_seo_metadata
     unless seo_metadatum
-      update(seo_metadatum: SeoMetadatum.create!(interest: self,
-                                                 language: language,
-                                                 title: title,
-                                                 description: description,
-                                                 keywords: ''))
+      update!(seo_metadatum: SeoMetadatum.create!(interest: self,
+                                                  language: language,
+                                                  title: title,
+                                                  description: description,
+                                                  keywords: [slug, title].join(' ')))
     end
   end
 end

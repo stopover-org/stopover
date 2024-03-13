@@ -19,7 +19,7 @@ interface IFieldsetProps
 const Fieldset = ({
   children,
   variant = "outlined",
-  margin = "20px",
+  margin = "10px",
   ...props
 }: IFieldsetProps) => (
   <Grid xs={12} sx={{ zIndex: "unset" }} {...props}>

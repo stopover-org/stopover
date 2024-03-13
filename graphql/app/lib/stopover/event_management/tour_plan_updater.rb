@@ -13,14 +13,17 @@ module Stopover
         TourPlan.transaction do
           tour_plan = tour_plan_args[:id] ? GraphqlSchema.object_from_id(tour_plan_args[:id]) : @event.tour_plans.build
           tour_plan.assign_attributes(tour_plan_args.slice(:title, :description))
-          tour_plan.image.attach(Stopover::FilesSupport.url_to_io(tour_plan[:image])) if tour_plan[:image]
+
+          Stopover::FilesSupport.attach_image(tour_plan_args, image_url: args[:image], key: 'image') if args.key?(:image)
 
           place_ids = []
 
           tour_plan_args[:tour_places].map do |place|
             tour_place = place[:id] ? GraphqlSchema.object_from_id(place[:id]) : tour_plan.tour_places.build
             tour_place.assign_attributes(place.slice(:title, :description, :duration_time))
-            tour_place.image.attach(Stopover::FilesSupport.url_to_io(place[:image])) if place[:image]
+
+            Stopover::FilesSupport.attach_image(tour_place, image_url: place[:image], key: 'image') if args.key?(:image)
+
             if tour_place.persisted?
               tour_place.save!
               place_ids << tour_place.id if tour_place.persisted?

@@ -41,6 +41,12 @@ module Types
       argument :ids, [ID], loads: Types::EventsRelated::EventType, required: false
     end
 
+    field :article, Types::SeoRelated::ArticleType do
+      argument :id, ID, loads: Types::SeoRelated::ArticleType, required: false
+    end
+
+    field :articles, Types::SeoRelated::ArticleType.connection_type, null: false
+
     def events(**args)
       firm_id = args[:filters][:firm].id if args[:filters] && (args[:filters][:firm])
       arguments = {
@@ -108,6 +114,14 @@ module Types
 
     def trips(**args)
       ::TripsQuery.new(args[:filters]&.to_h || {}, current_user).all
+    end
+
+    def article(id:)
+      id
+    end
+
+    def articles
+      Article.all
     end
   end
 end

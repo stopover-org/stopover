@@ -2,8 +2,8 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { Grid } from "@mui/joy";
 import moment, { Moment } from "moment";
-import Typography from "../../../../components/v2/Typography";
-import { TripScene_TripFragment$key } from "../../../../artifacts/TripScene_TripFragment.graphql";
+import Typography from "components/v2/Typography";
+import { TripScene_TripFragment$key } from "artifacts/TripScene_TripFragment.graphql";
 import DateBookingsSection from "./components/DateBookingsSection";
 
 interface TripSceneProps {

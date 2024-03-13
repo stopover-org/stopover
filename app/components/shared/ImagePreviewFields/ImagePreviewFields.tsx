@@ -1,6 +1,6 @@
 import { Grid, Stack } from "@mui/joy";
 import React from "react";
-import useFormContext from "../../../lib/hooks/useFormContext";
+import useFormContext from "lib/hooks/useFormContext";
 import ImagesPreview from "../ImagesPreview";
 
 const ImagePreviewFields = ({ field = "image" }: { field?: string }) => {

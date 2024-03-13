@@ -47,6 +47,11 @@ const PageQuery = `
           city
           street
         }
+        seoMetadatum {
+          title
+          description
+          keywords
+        }
       }
       address {
         country
@@ -57,6 +62,7 @@ const PageQuery = `
         title
         description
         keywords
+        language
       }
     }
   }
@@ -73,7 +79,9 @@ export const generateMetadata = async ({
   const defaultTitle = await translate("models.event.singular", {}, language);
   const keywords = [
     response?.event?.title,
+    response?.event?.seoMetadatum?.title,
     response?.event?.firm?.title,
+    response?.event?.firm?.seoMetadatum?.title,
     response?.event?.firm?.address?.country,
     response?.event?.firm?.address?.city,
     response?.event?.firm?.address?.street,
@@ -93,6 +101,7 @@ export const generateMetadata = async ({
     keywords,
     openGraph: {
       keywords,
+      locale: language,
       title: response?.event?.seoMetadatum?.title || defaultTitle,
       description: response?.event?.seoMetadatum?.description?.replace(
         /<[^>]*>?/gm,

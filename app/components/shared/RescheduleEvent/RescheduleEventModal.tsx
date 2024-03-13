@@ -11,10 +11,10 @@ import { useTranslation } from "react-i18next";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
 import React from "react";
-import Button from "../../v2/Button";
+import Button from "components/v2/Button";
+import { RescheduleEventModal_EventFragment$key } from "artifacts/RescheduleEventModal_EventFragment.graphql";
 import SubmitButton from "../SubmitButton";
 import { useRescheduleEventForm } from "./useRescheduleEventForm";
-import { RescheduleEventModal_EventFragment$key } from "../../../artifacts/RescheduleEventModal_EventFragment.graphql";
 
 interface RescheduleEventModalProps {
   open: boolean;

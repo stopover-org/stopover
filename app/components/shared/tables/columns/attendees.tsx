@@ -7,15 +7,15 @@ import { getCurrencyFormat } from "lib/utils/currencyFormatter";
 import { attendees_BookingFragment$key } from "artifacts/attendees_BookingFragment.graphql";
 import useStatusColor from "lib/hooks/useStatusColor";
 import Tag from "components/v2/Tag/Tag";
-import RegisterAttendee from "../../RegisterAttendee";
-import DeregisterAttendee from "../../DeregisterAttendee";
-import RemoveAttendee from "../../RemoveAttendeeModal";
-import ChangeAttendeeOptionAvailabilityModal from "../../ChangeAttendeeOptionAvailabilityModal";
-import OptionTagColor from "../../OptionTagColor/OptionTagColor";
-import Typography from "../../../v2/Typography/Typography";
-import Table from "../../../v2/Table/Table";
-import Checkbox from "../../../v2/Checkbox";
-import { ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key } from "../../../../artifacts/ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment.graphql";
+import Typography from "components/v2/Typography";
+import Table from "components/v2/Table";
+import Checkbox from "components/v2/Checkbox";
+import { ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key } from "artifacts/ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment.graphql";
+import RegisterAttendee from "components/shared/RegisterAttendee";
+import DeregisterAttendee from "components/shared/DeregisterAttendee";
+import ChangeAttendeeOptionAvailabilityModal from "components/shared/ChangeAttendeeOptionAvailabilityModal";
+import OptionTagColor from "components/shared/OptionTagColor/OptionTagColor";
+import RemoveAttendee from "components/shared/RemoveAttendeeModal";
 
 export function useAttendeesHeaders() {
   const { t } = useTranslation();

@@ -19,8 +19,13 @@ module Mutations
       def resolve(event:, **args)
         event_placement = event.event_placements.create!(**args)
 
-        { event_placement: event_placement,
-          notification: I18n.t('graphql.mutations.create_placement.notifications.success') }
+        if event_placement.errors.empty?
+          { event_placement: event_placement,
+            notification: I18n.t('graphql.mutations.create_placement.notifications.success') }
+        else
+          { event_placement: event_placement,
+            errors: event_placement.errors.full_messages }
+        end
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
         message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')

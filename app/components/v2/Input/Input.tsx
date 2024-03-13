@@ -1,4 +1,5 @@
 import {
+  FormControl,
   FormHelperText,
   FormLabel,
   Input as JoyInput,
@@ -68,7 +69,7 @@ const Input = React.forwardRef(
     );
 
     return (
-      <>
+      <FormControl sx={{ margin: 0, padding: 0 }}>
         {label && <FormLabel>{label}</FormLabel>}
         <JoyInput
           onChange={onChangeHandler}
@@ -103,7 +104,7 @@ const Input = React.forwardRef(
             </Typography>
           </FormHelperText>
         )}
-      </>
+      </FormControl>
     );
   }
 );

@@ -3,8 +3,8 @@ import React from "react";
 import PersonAddDisabledIcon from "@mui/icons-material/PersonAddDisabled";
 import { Tooltip } from "@mui/joy";
 import { useTranslation } from "react-i18next";
+import { DeregisterAttendee_AttendeeFragment$key } from "artifacts/DeregisterAttendee_AttendeeFragment.graphql";
 import { useDeregisterAttendeeForm } from "./useDeregisterAttendeeForm";
-import { DeregisterAttendee_AttendeeFragment$key } from "../../../artifacts/DeregisterAttendee_AttendeeFragment.graphql";
 import SubmitButton from "../SubmitButton";
 
 interface RegisterAttendeeProps {

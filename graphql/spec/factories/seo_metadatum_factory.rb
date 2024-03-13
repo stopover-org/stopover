@@ -15,5 +15,7 @@
 FactoryBot.define do
   factory :seo_metadatum do
     title { 'Seo Metadata Title' }
+    description { 'Seo Metadata Description' }
+    keywords { 'Seo Metadata Keywords' }
   end
 end

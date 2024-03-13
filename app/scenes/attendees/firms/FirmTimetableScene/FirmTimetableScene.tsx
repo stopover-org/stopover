@@ -9,7 +9,7 @@ import Description from "components/v2/Description/Description";
 import Typography from "components/v2/Typography/Typography";
 import GoogleMap from "components/shared/GoogleMap/GoogleMap";
 import Timetable from "components/shared/Timetable";
-import Link from "../../../../components/v2/Link";
+import Link from "components/v2/Link";
 
 interface FirmTimetableSceneProps {
   firmFragmentRef: FirmTimetableScene_FirmFragment$key;

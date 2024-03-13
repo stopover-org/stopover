@@ -16,7 +16,7 @@ export default {
         "The best events in the Balkans",
         "Holidays in the Balkans",
         "Guide to events in the Balkans",
-      ].join(", "),
+      ].join(" "),
     },
   },
 };

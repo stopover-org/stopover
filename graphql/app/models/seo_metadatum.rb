@@ -26,6 +26,7 @@ class SeoMetadatum < ApplicationRecord
   has_one :event
   has_one :interest
   has_one :firm
+  has_one :article
 
   # HAS_ONE ASSOCIATIONS ==================================================
   #

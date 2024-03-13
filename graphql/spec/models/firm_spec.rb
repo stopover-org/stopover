@@ -112,6 +112,11 @@ RSpec.describe Firm, type: :model do
     end
   end
 
+  describe 'metadata' do
+    subject { create(:firm) }
+    include_examples :include_metadata
+  end
+
   describe 'firm' do
     let!(:firm) { create(:firm) }
     let!(:event) { create_list(:recurring_event, 10, firm_id: firm.id) }
@@ -121,5 +126,13 @@ RSpec.describe Firm, type: :model do
       firm.remove!
       expect(firm.status).to eq('removed')
     end
+  end
+
+  describe 'translatable' do
+    subject do
+      create(:firm)
+    end
+
+    include_examples :translatable_spec, Firm
   end
 end

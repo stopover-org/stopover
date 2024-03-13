@@ -5,7 +5,6 @@
 # Table name: interests
 #
 #  id               :bigint           not null, primary key
-#  active           :boolean          default(TRUE)
 #  description      :text             default("")
 #  language         :string           default("en")
 #  slug             :string           not null

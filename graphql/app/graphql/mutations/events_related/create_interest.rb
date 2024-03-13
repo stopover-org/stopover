@@ -13,15 +13,20 @@ module Mutations
       field :interest, Types::EventsRelated::InterestType
 
       def resolve(**inputs)
-        interest = Interest.create(inputs.except(:preview))
+        interest = Interest.new(inputs.except(:preview))
 
-        io_object = Stopover::FilesSupport.url_to_io(inputs[:preview])
-
-        interest.preview.attach(io_object)
-
-        { interest: interest.errors.empty? ? interest : nil,
-          notification: interest.errors.empty? ? I18n.t('graphql.mutations.create_interest.notifications.success') : nil,
-          errors: interest.errors.full_messages }
+        if inputs.key?(:preview)
+          Stopover::FilesSupport.attach_image(interest,
+                                              image_url: inputs[:preview],
+                                              key: 'preview')
+        end
+        if interest.save
+          { interest: interest.errors.empty? ? interest : nil,
+            notification: I18n.t('graphql.mutations.create_interest.notifications.success') }
+        else
+          { interest: interest.errors.empty? ? interest : nil,
+            errors: interest.errors.full_messages }
+        end
       rescue StandardError => e
         Sentry.capture_exception(e) if Rails.env.production?
         message = Rails.env.development? ? e.message : I18n.t('graphql.errors.general')

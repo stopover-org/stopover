@@ -2,8 +2,8 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useRemoveAttendeeForm_AttendeeFragment$key } from "../../../artifacts/useRemoveAttendeeForm_AttendeeFragment.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { useRemoveAttendeeForm_AttendeeFragment$key } from "artifacts/useRemoveAttendeeForm_AttendeeFragment.graphql";
 
 interface DeregisterAttendeeFields {
   attendeeId: string;

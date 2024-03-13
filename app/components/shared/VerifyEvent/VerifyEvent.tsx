@@ -2,10 +2,10 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
 import { Box } from "@mui/joy";
-import { VerifyEventInformation_EventFragment$key } from "../../../artifacts/VerifyEventInformation_EventFragment.graphql";
-import Button from "../../v2/Button";
+import { VerifyEventInformation_EventFragment$key } from "artifacts/VerifyEventInformation_EventFragment.graphql";
+import Button from "components/v2/Button";
+import { ButtonProps } from "components/v2/Button/Button";
 import VerifyEventModal from "./VerifyEventModal";
-import { ButtonProps } from "../../v2/Button/Button";
 
 interface VerifyEventProps extends ButtonProps {
   eventFragmentRef: VerifyEventInformation_EventFragment$key;

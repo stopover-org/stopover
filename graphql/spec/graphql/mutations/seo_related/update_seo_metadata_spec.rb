@@ -68,7 +68,7 @@ RSpec.describe Mutations::SeoRelated::UpdateSeoMetadata, type: :mutation do
     end
   end
 
-  context 'create placement' do
+  context 'update seo metadata' do
     context 'as service user' do
       include_examples :successful
     end

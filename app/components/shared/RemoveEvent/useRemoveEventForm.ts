@@ -2,8 +2,8 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useRemoveEventForm_EventFragment$key } from "../../../artifacts/useRemoveEventForm_EventFragment.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { useRemoveEventForm_EventFragment$key } from "artifacts/useRemoveEventForm_EventFragment.graphql";
 
 interface RemoveEventFields {
   eventId: string;

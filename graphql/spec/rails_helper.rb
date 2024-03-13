@@ -9,6 +9,8 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 require 'rspec/rails'
 require 'support/factory_bot'
 require 'faker'
+require 'libs/mixins/translatable_spec'
+require 'libs/mixins/with_metadata_spec'
 include ActiveSupport::Testing::TimeHelpers
 
 $skip_phone_validation = true

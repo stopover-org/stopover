@@ -3,9 +3,9 @@ import React from "react";
 import { FormProvider } from "react-hook-form";
 import { Autocomplete, AutocompleteOption, Stack } from "@mui/joy";
 import { useSearchParams } from "next/navigation";
+import Typography from "components/v2/Typography";
+import { SelectCurrentFirm_AccountFragment$key } from "artifacts/SelectCurrentFirm_AccountFragment.graphql";
 import { useSelectCurrentFirm } from "./useSelectCurrentFirm";
-import Typography from "../../v2/Typography";
-import { SelectCurrentFirm_AccountFragment$key } from "../../../artifacts/SelectCurrentFirm_AccountFragment.graphql";
 
 interface SelectCurrentFirmProps {
   accountFragmentRef: SelectCurrentFirm_AccountFragment$key;

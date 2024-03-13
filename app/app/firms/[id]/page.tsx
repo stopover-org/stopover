@@ -69,7 +69,9 @@ export const generateMetadata = async ({
       /<[^>]*>?/gm,
       ""
     ),
+    keywords: response?.firm?.seoMetadatum?.keywords,
     openGraph: {
+      locale: language,
       type: "profile",
       title: response?.firm?.seoMetadatum?.title || defaultTitle,
       description: response?.firm?.seoMetadatum?.description?.replace(

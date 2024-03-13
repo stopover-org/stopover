@@ -3,12 +3,12 @@ import { FormControl, FormHelperText, Grid, IconButton, Stack } from "@mui/joy";
 import moment, { Moment } from "moment";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useTranslation } from "react-i18next";
-import Fieldset from "../../../v2/Fieldset";
-import useFormContext from "../../../../lib/hooks/useFormContext";
-import { CreateEventFields } from "../../../../scenes/firms/events/CreateEventScene/useCreateEventForm";
-import DatePicker from "../../../v2/DatePicker/DatePicker";
-import Button from "../../../v2/Button/Button";
-import Typography from "../../../v2/Typography/Typography";
+import Fieldset from "components/v2/Fieldset";
+import useFormContext from "lib/hooks/useFormContext";
+import { CreateEventFields } from "scenes/firms/events/CreateEventScene/useCreateEventForm";
+import DatePicker from "components/v2/DatePicker";
+import Button from "components/v2/Button/Button";
+import Typography from "components/v2/Typography";
 import TimeAutocomplete from "../../TimeAutocomplete";
 
 const SingleDatesFieldset = () => {

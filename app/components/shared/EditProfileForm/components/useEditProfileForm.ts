@@ -3,10 +3,10 @@ import React from "react";
 import { graphql, useFragment } from "react-relay";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEditProfileForm_AccountFragment$key } from "../../../../artifacts/useEditProfileForm_AccountFragment.graphql";
-import { validatePhone } from "../../../../lib/utils/validations";
-import { momentTransform } from "../../../../lib/utils/transforms";
-import useMutationForm from "../../../../lib/hooks/useMutationForm";
+import { useEditProfileForm_AccountFragment$key } from "artifacts/useEditProfileForm_AccountFragment.graphql";
+import { validatePhone } from "lib/utils/validations";
+import { momentTransform } from "lib/utils/transforms";
+import useMutationForm from "lib/hooks/useMutationForm";
 
 export interface EditProfileFields {
   primaryEmail: string;

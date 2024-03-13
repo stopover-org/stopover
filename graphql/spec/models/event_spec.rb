@@ -174,6 +174,12 @@ RSpec.describe Event, type: :model do
     end
   end
 
+  describe 'metadata' do
+    let!(:firm) { create(:firm) }
+    subject { create(:event, firm: firm) }
+    include_examples :include_metadata
+  end
+
   describe 'active event' do
     context 'with recurrent dates' do
       let!(:event) { create(:recurring_event, recurring_days_with_time: ['Monday 11:30']) }
@@ -350,5 +356,11 @@ RSpec.describe Event, type: :model do
         end
       end
     end
+  end
+
+  describe 'translatable' do
+    subject { create(:event) }
+
+    include_examples :translatable_spec, Event
   end
 end

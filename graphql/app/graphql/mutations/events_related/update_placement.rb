@@ -17,7 +17,13 @@ module Mutations
       argument :height_places, Integer, required: true
 
       def resolve(placement:, **args)
-        placement.update!(**args)
+        if placement.update(**args)
+          { event_placement: placement.reload,
+            notification: I18n.t('graphql.mutations.update_placement.notifications.success') }
+        else
+          { event_placement: placement.reload,
+            errors: placement.errors.full_messages }
+        end
 
         { event_placement: placement.reload,
           notification: I18n.t('graphql.mutations.update_placement.notifications.success') }

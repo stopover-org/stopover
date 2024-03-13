@@ -2,8 +2,8 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useBookingEditForm_BookingFragment$key } from "../../../../../artifacts/useBookingEditForm_BookingFragment.graphql";
-import useMutationForm from "../../../../../lib/hooks/useMutationForm";
+import { useBookingEditForm_BookingFragment$key } from "artifacts/useBookingEditForm_BookingFragment.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
 
 interface BookingEditFormFields {
   bookingId: string;

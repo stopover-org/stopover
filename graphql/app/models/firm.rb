@@ -221,11 +221,11 @@ class Firm < ApplicationRecord
 
   def adjust_seo_metadata
     unless seo_metadatum
-      update(seo_metadatum: SeoMetadatum.create!(firm: self,
-                                                 language: language,
-                                                 title: title,
-                                                 description: description,
-                                                 keywords: ''))
+      update!(seo_metadatum: SeoMetadatum.create!(firm: self,
+                                                  language: language,
+                                                  title: title,
+                                                  description: description,
+                                                  keywords: ''))
     end
   end
 end

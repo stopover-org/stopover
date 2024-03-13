@@ -12,6 +12,7 @@ import DoneAllIcon from "@mui/icons-material/DoneAll";
 import RemoveDoneIcon from "@mui/icons-material/RemoveDone";
 import CreateInterest from "components/shared/forms/interest/CreateInterest";
 import EditInterest from "../../../components/shared/forms/interest/EditInterest";
+import EditSeoMetadata from "../../../components/shared/forms/EditSeoMetadata";
 
 interface InterestsSceneProps {
   queryFragmentRef: InterestsScene_QueryFragment$key;
@@ -44,6 +45,9 @@ const InterestsScene = ({ queryFragmentRef }: InterestsSceneProps) => {
               slug
               preview
               ...EditInterest_InterestFragment
+              seoMetadatum {
+                ...EditSeoMetadata_MetadataFragment
+              }
             }
           }
         }
@@ -87,7 +91,12 @@ const InterestsScene = ({ queryFragmentRef }: InterestsSceneProps) => {
             )}
           </Typography>
         ),
-        actions: <EditInterest interestFragmentRef={interest} />,
+        actions: (
+          <Stack direction="row" spacing={2} useFlexGap>
+            <EditInterest interestFragmentRef={interest} />
+            <EditSeoMetadata seoMetadatumFragmentRef={interest.seoMetadatum!} />
+          </Stack>
+        ),
       })),
     [pagedInterests]
   );

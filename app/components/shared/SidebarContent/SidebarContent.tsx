@@ -106,6 +106,12 @@ const SidebarContent = ({
         href: "/interests",
         serviceUser: true,
       });
+
+      array.push({
+        title: t("models.article.plural"),
+        href: "/articles",
+        serviceUser: true,
+      });
     }
 
     return array;
