@@ -1,11 +1,11 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { Divider, Grid } from "@mui/joy";
-import { BookingEditForm_BookingFragment$key } from "../../../../../artifacts/BookingEditForm_BookingFragment.graphql";
+import useSubscription from "lib/hooks/useSubscription";
+import { useBookingDisabled } from "lib/hooks/useBookingStates";
+import { BookingEditForm_BookingFragment$key } from "artifacts/BookingEditForm_BookingFragment.graphql";
 import BookingOptionsEditForm from "./BookingOptionsEditForm";
 import BookingDatesEditForm from "./BookingDatesEditForm";
-import useSubscription from "../../../../../lib/hooks/useSubscription";
-import { useBookingDisabled } from "../../../../../lib/hooks/useBookingStates";
 
 interface BookingEditFormProps {
   bookingFragmentRef: BookingEditForm_BookingFragment$key;

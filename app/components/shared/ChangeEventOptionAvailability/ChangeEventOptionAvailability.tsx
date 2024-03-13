@@ -3,7 +3,7 @@ import React from "react";
 import { Box, IconButton, Tooltip } from "@mui/joy";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
 import { useTranslation } from "react-i18next";
-import { ChangeEventOptionAvailability_EventOptionFragment$key } from "../../../artifacts/ChangeEventOptionAvailability_EventOptionFragment.graphql";
+import { ChangeEventOptionAvailability_EventOptionFragment$key } from "artifacts/ChangeEventOptionAvailability_EventOptionFragment.graphql";
 import ChangeEventOptionAvailabilityModal from "./ChangeEventOptionAvailabilityModal";
 
 interface RegisterAttendeeProps {

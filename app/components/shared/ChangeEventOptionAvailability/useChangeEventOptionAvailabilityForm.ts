@@ -2,8 +2,8 @@ import React from "react";
 import * as Yup from "yup";
 import { graphql, useFragment } from "react-relay";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useMutationForm from "../../../lib/hooks/useMutationForm";
-import { useChangeEventOptionAvailabilityForm_EventOption$key } from "../../../artifacts/useChangeEventOptionAvailabilityForm_EventOption.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { useChangeEventOptionAvailabilityForm_EventOption$key } from "artifacts/useChangeEventOptionAvailabilityForm_EventOption.graphql";
 
 interface DeregisterAttendeeFields {
   eventOptionId: string;
