@@ -97,6 +97,7 @@ type Article implements Node {
   interests: [Interest!]!
   language: String!
   publishedAt: DateTime!
+  seoMetadatum: SeoMetadatum!
   title: String!
 }
 

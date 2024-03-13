@@ -8,7 +8,7 @@ import EditSeoMetadataModal from "./EditSeoMetadataModal";
 
 interface EditEventTourPlanProps {
   seoMetadatumFragmentRef: EditSeoMetadata_MetadataFragment$key;
-  menuItem: boolean;
+  menuItem?: boolean;
 }
 
 const EditSeoMetadata = ({

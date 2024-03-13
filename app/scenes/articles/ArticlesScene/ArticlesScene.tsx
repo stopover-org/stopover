@@ -10,6 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { graphql, usePaginationFragment } from "react-relay";
 import { ArticlesScene_QueryFragment$key } from "artifacts/ArticlesScene_QueryFragment.graphql";
 import { ArticlesTableQueryFragment } from "artifacts/ArticlesTableQueryFragment.graphql";
+import EditSeoMetadata from "../../../components/shared/forms/EditSeoMetadata";
 
 const ArticlesScene = ({
   queryFragmentRef,
@@ -40,6 +41,9 @@ const ArticlesScene = ({
               id
               title
               language
+              seoMetadatum {
+                ...EditSeoMetadata_MetadataFragment
+              }
             }
           }
         }
@@ -65,11 +69,17 @@ const ArticlesScene = ({
         ),
         language: <Typography fontSize="sm">{article.language}</Typography>,
         actions: (
-          <Link href={`/articles/${article.id}/edit`} fontSize="sm" primary>
-            <IconButton>
-              <EditIcon />
-            </IconButton>
-          </Link>
+          <Stack direction="row" spacing={2} useFlexGap>
+            <Link href={`/articles/${article.id}/edit`} fontSize="sm" primary>
+              <IconButton>
+                <EditIcon />
+              </IconButton>
+            </Link>
+            <EditSeoMetadata
+              menuItem={false}
+              seoMetadatumFragmentRef={article.seoMetadatum!}
+            />
+          </Stack>
         ),
       })),
     [pagedArticles]

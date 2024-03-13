@@ -39,7 +39,7 @@ const EditSeoMetadataModal = ({
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">
         <ModalClose />
-        <DialogTitle sx={{ marginRight: "30px", marginLeft: "30px" }}>
+        <DialogTitle>
           <Stack flexDirection="row" alignItems="center" useFlexGap spacing={1}>
             {t("forms.editSeoMetadata.modal.header")}
           </Stack>
@@ -50,40 +50,45 @@ const EditSeoMetadataModal = ({
             onSubmit={form.handleSubmit()}
             style={{ overflowY: "auto", width: "768px", maxWidth: "100%" }}
           >
-            <Grid xs={12} sm={12} md={8} lg={8}>
-              <Input
-                {...form.useFormField("title")}
-                label={t("models.seoMetadatum.attributes.title")}
-                hint={t("forms.editEvent.hints.title")}
-              />
-            </Grid>
-            <Grid xs={12} sm={12} md={4} lg={4}>
-              <Select
-                placeholder={t("languages.action")}
-                sx={{ width: "100%" }}
-                name={languageField.value}
-                onChange={languageField.onChange}
-                value={languageField.value}
-                defaultValue="en"
-                hint={t("forms.editEvent.hints.language")}
-              >
-                <Option value="ru">{t("languages.russian")}</Option>
-                <Option value="en">{t("languages.english")}</Option>
-              </Select>
-            </Grid>
-            <Grid xs={12} sm={12} md={8} lg={8}>
-              <TextArea
-                {...form.useFormField("description")}
-                label={t("models.seoMetadatum.attributes.description")}
-                hint={t("forms.editEvent.hints.title")}
-              />
-            </Grid>
-            <Grid xs={12} sm={12} md={8} lg={8}>
-              <Input
-                {...form.useFormField("keywords")}
-                label={t("models.seoMetadatum.attributes.keywords")}
-                hint={t("forms.editEvent.hints.title")}
-              />
+            <Grid container spacing={2} sx={{ width: "100%" }}>
+              <Grid xs={12} sm={12} md={8} lg={8}>
+                <Input
+                  {...form.useFormField("title")}
+                  label={t("models.seoMetadatum.attributes.title")}
+                  hint={t("forms.editEvent.hints.title")}
+                />
+              </Grid>
+              <Grid xs={12} sm={12} md={4} lg={4}>
+                <Select
+                  placeholder={t("languages.action")}
+                  sx={{ width: "100%" }}
+                  name={languageField.value}
+                  onChange={languageField.onChange}
+                  value={languageField.value}
+                  defaultValue="en"
+                  hint={t("forms.editEvent.hints.language")}
+                  label={t("models.seoMetadatum.attributes.language")}
+                >
+                  <Option value="ru">{t("languages.russian")}</Option>
+                  <Option value="en">{t("languages.english")}</Option>
+                </Select>
+              </Grid>
+              <Grid xs={12} sm={12} md={12} lg={12}>
+                <TextArea
+                  {...form.useFormField("description")}
+                  label={t("models.seoMetadatum.attributes.description")}
+                  hint={t("forms.editEvent.hints.title")}
+                  minRows={6}
+                />
+              </Grid>
+              <Grid xs={12} sm={12} md={12} lg={12}>
+                <TextArea
+                  {...form.useFormField("keywords")}
+                  label={t("models.seoMetadatum.attributes.keywords")}
+                  hint={t("forms.editEvent.hints.title")}
+                  minRows={3}
+                />
+              </Grid>
             </Grid>
             <DialogActions>
               <SubmitButton

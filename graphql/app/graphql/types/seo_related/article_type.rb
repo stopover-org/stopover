@@ -9,6 +9,7 @@ module Types
       field :image, String, null: false
       field :published_at, Types::DateTimeType, null: false
       field :interests, [Types::EventsRelated::InterestType], null: false
+      field :seo_metadatum, Types::SeoRelated::SeoMetadatumType, null: false
 
       def image
         object.image.url
