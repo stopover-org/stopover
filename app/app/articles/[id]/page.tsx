@@ -39,6 +39,7 @@ const PageQuery = `
       title
       publishedAt
       image
+      language
       seoMetadatum {
         title
         description
@@ -67,7 +68,7 @@ export const generateMetadata = async ({
     ),
     keywords: response?.article?.seoMetadatum?.keywords,
     openGraph: {
-      locale: language,
+      locale: response?.article?.language || language,
       type: "article",
       title: response?.article?.seoMetadatum?.title || defaultTitle,
       phoneNumbers: sharedPhones,
