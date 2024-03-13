@@ -30,11 +30,7 @@ export const revalidate = 0;
 export const generateMetadata = async ({
   searchParams: { language },
 }: any): Promise<Metadata> => {
-  const title = await translate(
-    "scenes.articles.newArticleScene",
-    {},
-    language
-  );
+  const title = await translate("models.article.plural", {}, language);
   return merge(defaultMetadata, {
     title,
     openGraph: {

@@ -31,7 +31,7 @@ export const generateMetadata = async ({
   searchParams: { language },
 }: any): Promise<Metadata> => {
   const title = await translate(
-    "scenes.articles.newArticleScene",
+    "scenes.articles.articlesScene.new",
     {},
     language
   );
