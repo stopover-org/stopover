@@ -4,9 +4,9 @@ import { CssVarsProvider, Grid } from "@mui/joy";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import moment, { Moment } from "moment";
-import DatePicker from "../../components/v2/DatePicker";
-import { theme } from "../../lib/theme";
-import Typography from "../../components/v2/Typography";
+import DatePicker from "components/v2/DatePicker";
+import { theme } from "lib/theme";
+import Typography from "components/v2/Typography";
 
 export default {
   title: "Components/v2/DatePicker",

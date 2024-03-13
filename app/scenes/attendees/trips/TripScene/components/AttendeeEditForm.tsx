@@ -2,22 +2,24 @@ import { Divider, Grid, Stack } from "@mui/joy";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { FormProvider } from "react-hook-form";
-import moment from "moment/moment";
 import { useTranslation } from "react-i18next";
-import Input from "../../../../../components/v2/Input";
-import { AttendeeEditForm_AttendeeFragment$key } from "../../../../../artifacts/AttendeeEditForm_AttendeeFragment.graphql";
+import Input from "components/v2/Input";
+import { AttendeeEditForm_AttendeeFragment$key } from "artifacts/AttendeeEditForm_AttendeeFragment.graphql";
+import Typography from "components/v2/Typography";
 import EventOptionEditForm from "./EventOptionEditForm";
 import { useAttendeeEditForm } from "./useAttendeeEditForm";
-import Typography from "../../../../../components/v2/Typography";
-import RemoveAttendee from "../../../../../components/shared/RemoveAttendeeModal/RemoveAttendee";
 
 interface AttendeeEditFormProps {
   attendeeFragmentRef: AttendeeEditForm_AttendeeFragment$key;
-  index: number
-  disabled: boolean
+  index: number;
+  disabled: boolean;
 }
 
-const AttendeeEditForm = ({ attendeeFragmentRef, index, disabled }: AttendeeEditFormProps) => {
+const AttendeeEditForm = ({
+  attendeeFragmentRef,
+  index,
+  disabled,
+}: AttendeeEditFormProps) => {
   const { t } = useTranslation();
   const attendee = useFragment(
     graphql`
@@ -38,24 +40,30 @@ const AttendeeEditForm = ({ attendeeFragmentRef, index, disabled }: AttendeeEdit
     `,
     attendeeFragmentRef
   );
-
   const form = useAttendeeEditForm(attendee, disabled);
-
-  const firstNameField = form.useFormField("firstName")
-  const lastNameField = form.useFormField("lastName")
-  const emailField = form.useFormField("email")
-  const phoneField = form.useFormField("phone")
-
-  const availableEventOptions = React.useMemo(() => attendee.eventOptions.filter(option => option.status === 'available'), [attendee])
+  const firstNameField = form.useFormField("firstName");
+  const lastNameField = form.useFormField("lastName");
+  const emailField = form.useFormField("email");
+  const phoneField = form.useFormField("phone");
+  const availableEventOptions = React.useMemo(
+    () =>
+      attendee.eventOptions.filter((option) => option.status === "available"),
+    [attendee]
+  );
 
   return (
     <FormProvider {...form}>
       <form>
         <Grid container spacing={1}>
           <Grid xs={12} paddingTop={1}>
-            <Stack direction={'row'} justifyContent={"space-between"}>
+            <Stack direction="row" justifyContent="space-between">
               <Typography fontSize="title-lg">
-                {firstNameField.value || lastNameField.value || <>{t("models.attendee.singular")}{index !== 0 && <> ({index})</>}</>}
+                {firstNameField.value || lastNameField.value || (
+                  <>
+                    {t("models.attendee.singular")}
+                    {index !== 0 && <> ({index})</>}
+                  </>
+                )}
               </Typography>
             </Stack>
           </Grid>
@@ -94,9 +102,7 @@ const AttendeeEditForm = ({ attendeeFragmentRef, index, disabled }: AttendeeEdit
 
           {availableEventOptions.length > 0 && (
             <>
-              <Grid xs={12}>
-                Доступные опции
-              </Grid>
+              <Grid xs={12}>Доступные опции</Grid>
               {availableEventOptions.map((option) => (
                 <EventOptionEditForm
                   key={option.id}

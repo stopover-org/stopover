@@ -2,8 +2,8 @@ import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import { Close } from "@mui/icons-material";
-import Checkbox from "../../components/v2/Checkbox";
-import { theme } from "../../lib/theme";
+import Checkbox from "components/v2/Checkbox";
+import { theme } from "lib/theme";
 
 export default {
   title: "Components/V2/Checkbox",

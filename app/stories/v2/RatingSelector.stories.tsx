@@ -1,8 +1,8 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
-import { theme } from "../../lib/theme";
-import RatingSelector from "../../components/v2/RatingSelector";
+import { theme } from "lib/theme";
+import RatingSelector from "components/v2/RatingSelector";
 
 export default {
   title: "Components/V2/RatingSelector",

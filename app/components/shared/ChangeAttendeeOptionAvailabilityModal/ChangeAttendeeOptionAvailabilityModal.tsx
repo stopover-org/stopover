@@ -18,7 +18,7 @@ import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
 import { useTranslation } from "react-i18next";
 import { getCurrencyFormat } from "lib/utils/currencyFormatter";
 import { ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key } from "artifacts/ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment.graphql";
-import Button from "../../v2/Button";
+import Button from "components/v2/Button";
 import ChangeAttendeeOptionAvailability from "./ChangeAttendeeOptionAvailability";
 
 interface ChangeAttendeeOptionAvailabilityModalProps {

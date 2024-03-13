@@ -12,8 +12,8 @@ import defaultMetadata, {
 import scene_SingleArticle_QueryNode, {
   scene_SingleArticle_Query,
 } from "artifacts/scene_SingleArticle_Query.graphql";
+import fetchQuery from "lib/relay/fetchQuery";
 import QueryWrapper from "./query";
-import fetchQuery from "../../../lib/relay/fetchQuery";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {
   const preloadedQuery = await loadSerializableQuery<

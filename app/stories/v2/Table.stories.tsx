@@ -2,8 +2,8 @@ import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid, Stack } from "@mui/joy";
 import { faker } from "@faker-js/faker";
-import { theme } from "../../lib/theme";
-import Table from "../../components/v2/Table";
+import { theme } from "lib/theme";
+import Table from "components/v2/Table";
 
 export default {
   title: "Components/V2/Table",

@@ -10,9 +10,9 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Timetable_AccountQuery } from "artifacts/Timetable_AccountQuery.graphql";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import Button from "components/v2/Button";
+import DatePicker from "components/v2/DatePicker/DatePicker";
 import TimetableBookEvent from "./TimetableBookEvent";
-import Button from "../../v2/Button";
-import DatePicker from "../../v2/DatePicker/DatePicker";
 
 interface TimetableProps {
   eventsConnectionFragmentRef: Timetable_EventsConnectionFragment$key;

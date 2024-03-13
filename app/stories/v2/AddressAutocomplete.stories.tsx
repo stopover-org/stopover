@@ -1,9 +1,9 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
-import AddressAutocomplete from "../../components/v2/AddressAutocomplete";
-import { theme } from "../../lib/theme";
-import Typography from "../../components/v2/Typography";
+import { theme } from "lib/theme";
+import Typography from "components/v2/Typography";
+import AddressAutocomplete from "components/v2/AddressAutocomplete";
 
 export default {
   title: "Components/v2/AddressAutocomplete",

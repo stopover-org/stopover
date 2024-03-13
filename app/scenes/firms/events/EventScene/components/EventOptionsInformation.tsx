@@ -7,7 +7,7 @@ import {
   useEventOptionsColumns,
   useEventOptionsHeaders,
 } from "components/shared/tables/columns/eventOptions";
-import CreateEventOption from "../../../../../components/shared/forms/eventOption/CreateEventOption";
+import CreateEventOption from "components/shared/forms/eventOption/CreateEventOption";
 
 interface EventOptionsInformationProps {
   eventFragmentRef: EventOptionsInformation_EventFragment$key;

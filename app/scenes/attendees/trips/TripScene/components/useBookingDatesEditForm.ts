@@ -3,9 +3,9 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { setTime, timeFormat } from "../../../../../lib/utils/dates";
-import useMutationForm from "../../../../../lib/hooks/useMutationForm";
-import { useBookingDatesEditForm_BookingFragment$key } from "../../../../../artifacts/useBookingDatesEditForm_BookingFragment.graphql";
+import { setTime, timeFormat } from "lib/utils/dates";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { useBookingDatesEditForm_BookingFragment$key } from "artifacts/useBookingDatesEditForm_BookingFragment.graphql";
 
 interface BookingDatesEditFormFields {
   bookingId: string;

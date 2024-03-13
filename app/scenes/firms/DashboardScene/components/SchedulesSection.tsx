@@ -12,7 +12,7 @@ import {
   useSchedulesHeaders,
 } from "components/shared/tables/columns/schedules";
 import moment from "moment";
-import { dateFormat } from "../../../../lib/utils/dates";
+import { dateFormat } from "lib/utils/dates";
 
 interface ScheduleSectionProps {
   firmFragmentRef: SchedulesSection_FirmFragment$key;

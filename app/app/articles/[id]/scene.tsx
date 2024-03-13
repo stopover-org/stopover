@@ -8,7 +8,7 @@ import SceneWrapper from "components/shared/SceneWrapper";
 import { scene_SingleArticle_Query } from "artifacts/scene_SingleArticle_Query.graphql";
 import SingleArticleScene from "scenes/articles/SingleArticleScene";
 import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "../../../lib/hooks/useDocumentTitle";
+import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 
 const Query = graphql`
   query scene_SingleArticle_Query($id: ID!) {

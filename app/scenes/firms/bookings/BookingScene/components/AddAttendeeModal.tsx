@@ -1,21 +1,21 @@
 import {
   Box,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
   Modal,
   ModalDialog,
   Stack,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
 } from "@mui/joy";
 import React from "react";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import Button from "../../../../../components/v2/Button";
-import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
-import AddAttendee from "../../../../../components/shared/AddAttendee";
-import { AddAttendeeModal_BookingFragment$key } from "../../../../../artifacts/AddAttendeeModal_BookingFragment.graphql";
+import Button from "components/v2/Button";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import AddAttendee from "components/shared/AddAttendee";
+import { AddAttendeeModal_BookingFragment$key } from "artifacts/AddAttendeeModal_BookingFragment.graphql";
 
 interface AddAttendeeModalProps {
   bookingFragmentRef: AddAttendeeModal_BookingFragment$key;

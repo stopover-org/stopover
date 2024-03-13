@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
 import Button from "components/v2/Button";
 import { ChangeEventOptionAvailabilityModal_EventOptionFragment$key } from "artifacts/ChangeEventOptionAvailabilityModal_EventOptionFragment.graphql";
-import SubmitButton from "../SubmitButton/SubmitButton";
+import SubmitButton from "components/shared/SubmitButton/";
 import { useChangeEventOptionAvailabilityForm } from "./useChangeEventOptionAvailabilityForm";
 
 interface ChangeEventOptionAvailabilityModalProps {

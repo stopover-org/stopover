@@ -1,8 +1,8 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
-import Typography from "../../components/v2/Typography";
-import { theme } from "../../lib/theme";
+import Typography from "components/v2/Typography";
+import { theme } from "lib/theme";
 
 export default {
   title: "Components/V2/Typography",

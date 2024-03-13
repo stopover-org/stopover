@@ -10,7 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { graphql, usePaginationFragment } from "react-relay";
 import { ArticlesScene_QueryFragment$key } from "artifacts/ArticlesScene_QueryFragment.graphql";
 import { ArticlesTableQueryFragment } from "artifacts/ArticlesTableQueryFragment.graphql";
-import EditSeoMetadata from "../../../components/shared/forms/EditSeoMetadata";
+import EditSeoMetadata from "components/shared/forms/EditSeoMetadata";
 
 const ArticlesScene = ({
   queryFragmentRef,

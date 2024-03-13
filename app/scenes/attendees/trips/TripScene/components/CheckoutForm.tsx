@@ -8,9 +8,9 @@ import { capitalize } from "lib/utils/capitalize";
 import Typography from "components/v2/Typography";
 import { getCurrencyFormat } from "lib/utils/currencyFormatter";
 import { useBookingPayable } from "lib/hooks/useBookingStates";
+import Link from "components/v2/Link";
 import { useCheckoutForm } from "./useCheckoutForm";
 import QRModal from "./QRModal";
-import Link from "../../../../../components/v2/Link";
 
 interface CheckoutFormProps {
   bookingFragmentRef: CheckoutForm_BookingFragmentRef$key;

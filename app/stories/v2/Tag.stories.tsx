@@ -1,8 +1,8 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
-import { theme } from "../../lib/theme";
-import Tag from "../../components/v2/Tag";
+import { theme } from "lib/theme";
+import Tag from "components/v2/Tag";
 
 export default {
   title: "Components/V2/Tag",

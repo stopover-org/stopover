@@ -1,9 +1,9 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid, Stack } from "@mui/joy";
-import Typography from "../../components/v2/Typography";
-import { theme } from "../../lib/theme";
-import Rating from "../../components/v2/Rating";
+import Typography from "components/v2/Typography";
+import { theme } from "lib/theme";
+import Rating from "components/v2/Rating";
 
 export default {
   title: "Components/V2/Rating",

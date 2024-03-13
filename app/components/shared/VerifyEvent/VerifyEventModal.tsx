@@ -3,10 +3,10 @@ import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
-import Button from "../../v2/Button";
-import SubmitButton from "../SubmitButton/SubmitButton";
+import { VerifyEventModal_EventFragment$key } from "artifacts/VerifyEventModal_EventFragment.graphql";
+import Button from "components/v2/Button";
+import SubmitButton from "../SubmitButton";
 import { useVerifyEvent } from "./useVerifyEvent";
-import { VerifyEventModal_EventFragment$key } from "../../../artifacts/VerifyEventModal_EventFragment.graphql";
 
 interface VerifyEventProps {
   eventFragmentRef: VerifyEventModal_EventFragment$key;

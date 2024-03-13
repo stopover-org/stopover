@@ -1,8 +1,8 @@
 import React from "react";
 import { ComponentStory } from "@storybook/react";
 import { Box, CssVarsProvider, Grid } from "@mui/joy";
-import { theme } from "../lib/theme";
-import Typography from "../components/v2/Typography";
+import { theme } from "lib/theme";
+import Typography from "components/v2/Typography";
 
 export default {
   title: "Global Properties/Color Palette",

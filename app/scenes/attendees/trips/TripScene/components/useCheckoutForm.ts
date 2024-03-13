@@ -3,9 +3,9 @@ import React from "react";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import useMutationForm from "../../../../../lib/hooks/useMutationForm";
-import { useCheckoutForm_BookingFragment$key } from "../../../../../artifacts/useCheckoutForm_BookingFragment.graphql";
-import { useCheckoutForm_CreateCheckoutMutation } from "../../../../../artifacts/useCheckoutForm_CreateCheckoutMutation.graphql";
+import useMutationForm from "lib/hooks/useMutationForm";
+import { useCheckoutForm_BookingFragment$key } from "artifacts/useCheckoutForm_BookingFragment.graphql";
+import { useCheckoutForm_CreateCheckoutMutation } from "artifacts/useCheckoutForm_CreateCheckoutMutation.graphql";
 
 interface CreateCheckoutFields {
   bookingId: string;

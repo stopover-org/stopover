@@ -4,8 +4,8 @@ import React from "react";
 import { FormProvider } from "react-hook-form";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
-import { BookingOptionsEditForm_BookingFragment$key } from "../../../../../artifacts/BookingOptionsEditForm_BookingFragment.graphql";
-import Typography from "../../../../../components/v2/Typography";
+import { BookingOptionsEditForm_BookingFragment$key } from "artifacts/BookingOptionsEditForm_BookingFragment.graphql";
+import Typography from "components/v2/Typography";
 import EventOptionEditForm from "./EventOptionEditForm";
 import { useBookingEditForm } from "./useBookingEditForm";
 

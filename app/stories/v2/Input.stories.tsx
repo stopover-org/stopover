@@ -2,11 +2,11 @@ import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Divider, Grid } from "@mui/joy";
 import { CalendarMonthTwoTone } from "@mui/icons-material";
-import Input from "../../components/v2/Input";
-import { theme } from "../../lib/theme";
-import PhoneInput from "../../components/v2/PhoneInput";
-import ChipsInput from "../../components/v2/ChipsInput";
-import TextArea from "../../components/v2/TextArea";
+import Input from "components/v2/Input";
+import { theme } from "lib/theme";
+import PhoneInput from "components/v2/PhoneInput";
+import ChipsInput from "components/v2/ChipsInput";
+import TextArea from "components/v2/TextArea";
 
 export default {
   title: "Components/v2/Input",
