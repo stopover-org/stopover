@@ -71,7 +71,7 @@ const ArticlesScene = ({
         actions: (
           <Stack direction="row" spacing={2} useFlexGap>
             <Link href={`/articles/${article.id}/edit`} fontSize="sm" primary>
-              <IconButton>
+              <IconButton color="primary">
                 <EditIcon />
               </IconButton>
             </Link>
