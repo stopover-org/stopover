@@ -28,7 +28,8 @@ RSpec.describe Mutations::SeoRelated::UpdateArticle, type: :mutation do
       articleId: GraphqlSchema.id_from_object(article),
       title: 'unique title',
       content: 'description',
-      language: 'ru'
+      language: 'ru',
+      interestIds: []
     }
   end
 

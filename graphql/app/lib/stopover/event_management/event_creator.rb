@@ -68,12 +68,12 @@ module Stopover
               @event.event_interests.build(interest: interest)
             end
           end
+
+          @event.save!
         end
 
-        @event.save!
+        @event
       end
-
-      @event
     end
   end
 end

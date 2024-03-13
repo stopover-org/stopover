@@ -25,7 +25,8 @@ RSpec.describe Mutations::SeoRelated::CreateArticle, type: :mutation do
     {
       title: 'unique title',
       content: 'description',
-      language: 'ru'
+      language: 'ru',
+      interestIds: []
     }
   end
 
