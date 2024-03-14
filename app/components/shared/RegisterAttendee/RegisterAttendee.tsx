@@ -4,8 +4,8 @@ import { Tooltip } from "@mui/joy";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useTranslation } from "react-i18next";
 import { RegisterAttendee_AttendeeFragment$key } from "artifacts/RegisterAttendee_AttendeeFragment.graphql";
+import SubmitButton from "components/shared/SubmitButton";
 import { useRegisterAttendeeForm } from "./useRegisterAttendeeForm";
-import SubmitButton from "../SubmitButton";
 
 interface RegisterAttendeeProps {
   attendeeFragmentRef: RegisterAttendee_AttendeeFragment$key;

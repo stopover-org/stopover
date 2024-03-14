@@ -10,7 +10,7 @@ import { BookingSummary_BookingFragment$key } from "artifacts/BookingSummary_Boo
 import { useAddAttendeeForm } from "components/shared/AddAttendee/useAddAttendeeForm";
 import SubmitButton from "components/shared/SubmitButton";
 import { useBookingDisabled } from "lib/hooks/useBookingStates";
-import { useRemoveAttendeeForm } from "../RemoveAttendeeModal/useRemoveAttendeeForm";
+import { useRemoveAttendeeForm } from "components/shared/RemoveAttendeeModal/useRemoveAttendeeForm";
 
 interface BookingSummaryProps {
   bookingFragmentRef: BookingSummary_BookingFragment$key;

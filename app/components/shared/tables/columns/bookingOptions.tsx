@@ -6,7 +6,7 @@ import { bookingOptions_BookingFragmentRef$key } from "artifacts/bookingOptions_
 import OptionTagColor from "components/shared/OptionTagColor/OptionTagColor";
 import Checkbox from "components/v2/Checkbox";
 import { ChangeBookingOptionAvailabilityModal_BookingOptionFragment$key } from "artifacts/ChangeBookingOptionAvailabilityModal_BookingOptionFragment.graphql";
-import ChangeBookingOptionAvailability from "../../ChangeBookingOptionAvailabilityModal";
+import ChangeBookingOptionAvailability from "components/shared/ChangeBookingOptionAvailabilityModal";
 
 export function useBookingOptionsHeaders() {
   const { t } = useTranslation();

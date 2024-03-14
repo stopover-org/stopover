@@ -4,8 +4,8 @@ import { useMediaQuery } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
 import { AttendeeSidebar_CurrentUserFragment$key } from "artifacts/AttendeeSidebar_CurrentUserFragment.graphql";
-import Sidebar from "../Sidebar/Sidebar";
-import { GlobalSidebarContext } from "../../GlobalSidebarProvider";
+import Sidebar from "components/shared/Sidebar";
+import { GlobalSidebarContext } from "components/GlobalSidebarProvider";
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {

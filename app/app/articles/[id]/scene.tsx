@@ -2,7 +2,7 @@
 
 import React from "react";
 import { graphql, PreloadedQuery, usePreloadedQuery } from "react-relay";
-import Layout from "components/MainPage/Layout";
+import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
 import { scene_SingleArticle_Query } from "artifacts/scene_SingleArticle_Query.graphql";

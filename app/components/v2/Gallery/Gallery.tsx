@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Box, Grid, Stack } from "@mui/joy";
-import Typography from "../Typography";
+import Typography from "components/v2/Typography";
 
 const Img = styled.img`
   width: 100%;

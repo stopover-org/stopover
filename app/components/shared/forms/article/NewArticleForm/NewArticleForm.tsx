@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { FormProvider } from "react-hook-form";
 import SubmitButton from "components/shared/SubmitButton";
 import Fieldset from "components/v2/Fieldset";
+import ArticleForm from "components/shared/forms/article/ArticleForm";
 import { useNewArticleForm } from "./useNewArticleForm";
-import ArticleForm from "../ArticleForm";
 
 const NewArticleForm = () => {
   const { t } = useTranslation();

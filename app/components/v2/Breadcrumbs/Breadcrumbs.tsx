@@ -1,8 +1,8 @@
 import { Box, Stack, useTheme } from "@mui/joy";
 import React from "react";
 import { useMediaQuery } from "@mui/material";
-import Typography from "../Typography";
-import Link from "../Link";
+import Typography from "components/v2/Typography";
+import Link from "components/v2/Link";
 
 interface IBreadcrumb {
   title: string;

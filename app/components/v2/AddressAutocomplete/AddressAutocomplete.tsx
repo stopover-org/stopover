@@ -9,7 +9,7 @@ import {
 import React from "react";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import { FieldError } from "react-hook-form";
-import Typography from "../Typography";
+import Typography from "components/v2/Typography";
 
 interface BaseAddressAutocompleteProps {
   countries?: string[];

@@ -13,7 +13,7 @@ import { graphql, useFragment } from "react-relay";
 import React from "react";
 import Button from "components/v2/Button";
 import { RescheduleEventModal_EventFragment$key } from "artifacts/RescheduleEventModal_EventFragment.graphql";
-import SubmitButton from "../SubmitButton";
+import SubmitButton from "components/shared/SubmitButton";
 import { useRescheduleEventForm } from "./useRescheduleEventForm";
 
 interface RescheduleEventModalProps {

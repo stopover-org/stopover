@@ -4,7 +4,7 @@ import { getCurrencyFormat } from "lib/utils/currencyFormatter";
 import Checkbox from "components/v2/Checkbox";
 import { ChangeEventOptionAvailability_EventOptionFragment$key } from "artifacts/ChangeEventOptionAvailability_EventOptionFragment.graphql";
 import OptionTagColor from "components/shared/OptionTagColor/OptionTagColor";
-import ChangeEventOptionAvailability from "../../ChangeEventOptionAvailability";
+import ChangeEventOptionAvailability from "components/shared/ChangeEventOptionAvailability";
 
 export function useEventOptionsHeaders() {
   const { t } = useTranslation();

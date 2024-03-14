@@ -1,6 +1,6 @@
 "use client";
 
-import "../styles/globals.css";
+import "styles/globals.css";
 import React from "react";
 import "rc-slider/assets/index.css";
 import "react-phone-input-2/lib/style.css";

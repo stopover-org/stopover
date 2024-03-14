@@ -6,8 +6,8 @@ import SubmitButton from "components/shared/SubmitButton";
 import Fieldset from "components/v2/Fieldset";
 import { graphql, useFragment } from "react-relay";
 import { EditArticleForm_ArticleFragment$key } from "artifacts/EditArticleForm_ArticleFragment.graphql";
+import ArticleForm from "components/shared/forms/article/ArticleForm";
 import { useEditArticleForm } from "./useEditArticleForm";
-import ArticleForm from "../ArticleForm";
 
 const EditArticleForm = ({
   articleFragmentRef,

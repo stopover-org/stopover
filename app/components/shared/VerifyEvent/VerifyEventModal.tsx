@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
 import { VerifyEventModal_EventFragment$key } from "artifacts/VerifyEventModal_EventFragment.graphql";
 import Button from "components/v2/Button";
-import SubmitButton from "../SubmitButton";
+import SubmitButton from "components/shared/SubmitButton";
 import { useVerifyEvent } from "./useVerifyEvent";
 
 interface VerifyEventProps {

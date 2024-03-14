@@ -9,7 +9,7 @@ import { CreateEventFields } from "scenes/firms/events/CreateEventScene/useCreat
 import DatePicker from "components/v2/DatePicker";
 import Button from "components/v2/Button/Button";
 import Typography from "components/v2/Typography";
-import TimeAutocomplete from "../../TimeAutocomplete";
+import TimeAutocomplete from "components/shared/TimeAutocomplete";
 
 const SingleDatesFieldset = () => {
   const form = useFormContext<CreateEventFields>();

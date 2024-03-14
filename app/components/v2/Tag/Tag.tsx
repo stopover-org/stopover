@@ -1,7 +1,7 @@
 import React from "react";
-import Link from "../Link";
-import { LinkProps } from "../Link/Link";
-import Typography from "../Typography";
+import Link from "components/v2/Link";
+import { LinkProps } from "components/v2/Link/Link";
+import Typography from "components/v2/Typography";
 
 interface BaseTagProps {
   underline?: boolean;

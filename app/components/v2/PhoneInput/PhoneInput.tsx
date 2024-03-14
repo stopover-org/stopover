@@ -12,7 +12,7 @@ import {
 import { useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
 import { getCountryFromOffset } from "lib/utils/timezones";
-import Input from "../Input";
+import Input from "components/v2/Input";
 import CountryCodesAutocomplete from "./CountryCodesAutocomplete";
 
 export interface PhoneInputProps {

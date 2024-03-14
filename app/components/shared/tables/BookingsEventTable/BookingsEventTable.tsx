@@ -5,11 +5,14 @@ import { BookingsEventTableBookingsPaginationQuery } from "artifacts/BookingsEve
 import { BookingsEventTable_BookingsPaginationFragment$key } from "artifacts/BookingsEventTable_BookingsPaginationFragment.graphql";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "lib/hooks/useQuery";
-import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
+import {
+  useBookingsColumns,
+  useBookingsHeaders,
+} from "components/shared/tables/columns/bookings";
+import DateQueryInput from "components/shared/DateQueryInput";
 import Filters from "../../Filters";
 import ContactEmailInput from "../BookingsFirmTable/components/ContactEmailInput";
 import ContactPhoneInput from "../BookingsFirmTable/components/ContactPhoneInput";
-import DateQueryInput from "../../DateQueryInput/DateQueryInput";
 
 interface BookingsEventTableProps {
   eventFragmentRef: BookingsEventTable_BookingsPaginationFragment$key;
