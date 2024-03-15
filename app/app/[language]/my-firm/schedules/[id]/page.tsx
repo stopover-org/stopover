@@ -4,7 +4,8 @@ import scene_FirmSchedule_QueryNode, {
 } from "artifacts/scene_FirmSchedule_Query.graphql";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
-import QueryWrapper from "./query";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import Scene from "./scene";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {
   const preloadedQuery = await loadSerializableQuery<
@@ -13,10 +14,12 @@ const Page = async ({ params }: { params: Record<string, string> }) => {
   >(scene_FirmSchedule_QueryNode.params, { id: unescape(params.id) });
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

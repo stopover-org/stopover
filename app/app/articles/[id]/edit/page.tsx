@@ -7,7 +7,7 @@ import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
 import scene_EditArticle_QueryNode, {
   scene_EditArticle_Query,
 } from "artifacts/scene_EditArticle_Query.graphql";
-import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper/PreloadedQueryWrapper";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
 import Scene from "./scene";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {

@@ -6,7 +6,8 @@ import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
 import { parseValue } from "lib/hooks/useQuery";
 import { BookingsFilter } from "artifacts/BookingsFirmTableFirmPaginationQuery.graphql";
-import QueryWrapper from "./query";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import Scene from "./scene";
 
 const filterParsers = {
   contactEmail: (value: string) => parseValue(value),
@@ -41,10 +42,12 @@ const Page = async ({
   >(scene_FirmBookings_QueryNode.params, { bookingsFilter: filters });
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

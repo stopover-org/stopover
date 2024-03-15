@@ -28,10 +28,10 @@ const Query = graphql`
 
 const Scene = ({
   queryRef,
-}: {
+}: Partial<{
   queryRef: PreloadedQuery<scene_FirmEvents_Query>;
-}) => {
-  const data = usePreloadedQuery(Query, queryRef);
+}>) => {
+  const data = usePreloadedQuery(Query, queryRef!);
   const { t } = useTranslation();
 
   useDocumentTitle(`${t("models.event.plural")}`);

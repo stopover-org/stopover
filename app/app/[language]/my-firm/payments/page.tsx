@@ -4,7 +4,8 @@ import scene_FirmPayments_QueryNode, {
 } from "artifacts/scene_FirmPayments_Query.graphql";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
-import QueryWrapper from "./query";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import Scene from "./scene";
 
 const Page = async () => {
   const preloadedQuery = await loadSerializableQuery<
@@ -13,10 +14,12 @@ const Page = async () => {
   >(scene_FirmPayments_QueryNode.params, {});
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

@@ -27,10 +27,10 @@ const Query = graphql`
 
 const Scene = ({
   queryRef,
-}: {
+}: Partial<{
   queryRef: PreloadedQuery<scene_AttendeeInterest_Query>;
-}) => {
-  const data = usePreloadedQuery(Query, queryRef);
+}>) => {
+  const data = usePreloadedQuery(Query, queryRef!);
   const { t } = useTranslation();
 
   useDocumentTitle(data.interest?.title || t("general.404"));

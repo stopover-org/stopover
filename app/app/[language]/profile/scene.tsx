@@ -26,10 +26,10 @@ export const Query = graphql`
 
 const Scene = ({
   queryRef,
-}: {
+}: Partial<{
   queryRef: PreloadedQuery<scene_Profile_Query>;
-}) => {
-  const data = usePreloadedQuery(Query, queryRef);
+}>) => {
+  const data = usePreloadedQuery(Query, queryRef!);
   const { t } = useTranslation();
 
   useDocumentTitle(`${t("scenes.attendees.profile.profileScene.title")}`);

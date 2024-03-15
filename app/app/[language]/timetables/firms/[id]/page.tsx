@@ -14,7 +14,8 @@ import scene_FirmTimetable_QueryNode, {
   scene_FirmTimetable_Query,
 } from "artifacts/scene_FirmTimetable_Query.graphql";
 import moment from "moment";
-import QueryWrapper from "./query";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import Scene from "./scene";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {
   const preloadedQuery = await loadSerializableQuery<
@@ -30,10 +31,12 @@ const Page = async ({ params }: { params: Record<string, string> }) => {
   });
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

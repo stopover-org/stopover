@@ -19,10 +19,10 @@ export const Query = graphql`
 
 const Scene = ({
   queryRef,
-}: {
+}: Partial<{
   queryRef: PreloadedQuery<scene_SignIn_Query>;
-}) => {
-  const { currentUser } = usePreloadedQuery(Query, queryRef);
+}>) => {
+  const { currentUser } = usePreloadedQuery(Query, queryRef!);
 
   return (
     <SceneWrapper>

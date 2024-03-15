@@ -13,7 +13,8 @@ import defaultMetadata, {
 import { merge } from "lodash";
 import fetchQuery from "lib/relay/fetchQuery";
 import { Metadata } from "next";
-import QueryWrapper from "./query";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import Scene from "./scene";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {
   const preloadedQuery = await loadSerializableQuery<
@@ -25,10 +26,12 @@ const Page = async ({ params }: { params: Record<string, string> }) => {
   });
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

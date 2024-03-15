@@ -31,10 +31,10 @@ const Query = graphql`
 
 const Scene = ({
   queryRef,
-}: {
+}: Partial<{
   queryRef: PreloadedQuery<scene_InterestTimetable_Query>;
-}) => {
-  const data = usePreloadedQuery(Query, queryRef);
+}>) => {
+  const data = usePreloadedQuery(Query, queryRef!);
   const { t } = useTranslation();
   const title = `${data?.interest?.title} - ${t("models.schedule.plural")}`;
   useDocumentTitle(data?.interest?.title ? title : t("general.404"));

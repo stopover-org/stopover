@@ -7,7 +7,8 @@ import { cookies } from "next/headers";
 import { Metadata } from "next";
 import { merge } from "lodash";
 import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
-import QueryWrapper from "./query";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import Scene from "./scene";
 
 const Page = async () => {
   const preloadedQuery = await loadSerializableQuery<
@@ -16,10 +17,12 @@ const Page = async () => {
   >(scene_Trips_QueryNode.params, {});
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

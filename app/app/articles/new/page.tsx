@@ -7,7 +7,7 @@ import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
 import scene_NewArticle_QueryNode, {
   scene_NewArticle_Query,
 } from "artifacts/scene_NewArticle_Query.graphql";
-import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper/PreloadedQueryWrapper";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
 import Scene from "./scene";
 
 const Page = async () => {

@@ -4,7 +4,8 @@ import { cookies } from "next/headers";
 import scene_FirmUsers_QueryNode, {
   scene_FirmUsers_Query,
 } from "artifacts/scene_FirmUsers_Query.graphql";
-import QueryWrapper from "./query";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import Scene from "./scene";
 
 const Page = async () => {
   const preloadedQuery = await loadSerializableQuery<
@@ -13,10 +14,12 @@ const Page = async () => {
   >(scene_FirmUsers_QueryNode.params, {});
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

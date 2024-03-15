@@ -6,7 +6,8 @@ import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
 import { parseValue } from "lib/hooks/useQuery";
 import { SchedulesFilter } from "artifacts/SchedulesSceneFirmFragment.graphql";
-import QueryWrapper from "./query";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import Scene from "./scene";
 
 const filterParsers = {
   eventIds: (value: string) => parseValue(value),
@@ -39,10 +40,12 @@ const Page = async ({
   >(scene_FirmSchedules_QueryNode.params, { filters });
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

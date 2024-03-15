@@ -11,7 +11,8 @@ import { Metadata } from "next";
 import { merge } from "lodash";
 import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
 import { captureException } from "@sentry/nextjs";
-import QueryWrapper from "./query";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import Scene from "./scene";
 
 const filterParsers = {
   query: (value: string) => parseValue(value),
@@ -62,10 +63,12 @@ const Page = async ({
   });
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

@@ -32,10 +32,10 @@ const Query = graphql`
 
 const Scene = ({
   queryRef,
-}: {
+}: Partial<{
   queryRef: PreloadedQuery<scene_Dashboard_Query>;
-}) => {
-  const { currentUser } = usePreloadedQuery(Query, queryRef);
+}>) => {
+  const { currentUser } = usePreloadedQuery(Query, queryRef!);
   const { t } = useTranslation();
 
   useDocumentTitle(t("scenes.firms.dashboardScene.title"));

@@ -13,7 +13,7 @@ import scene_SingleArticle_QueryNode, {
   scene_SingleArticle_Query,
 } from "artifacts/scene_SingleArticle_Query.graphql";
 import fetchQuery from "lib/relay/fetchQuery";
-import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper/PreloadedQueryWrapper";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
 import Scene from "./scene";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {
