@@ -5,12 +5,21 @@ import { PreloadedQuery, RelayEnvironmentProvider } from "react-relay";
 import useSerializablePreloadedQuery from "lib/relay/useSerializablePreloadedQuery";
 import { SerializablePreloadedQuery } from "lib/relay/loadSerializableQuery";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import { ConcreteRequest, OperationType } from "relay-runtime";
+import { ConcreteRequest, OperationType, VariablesOf } from "relay-runtime";
 import React from "react";
 
 export interface SceneProps<TQuery extends OperationType> {
   queryRef: PreloadedQuery<TQuery>;
 }
+
+export interface PageProps {
+  params: Record<string, any>;
+  searchParams: Record<string, any>;
+}
+
+export type GetVariablesFn = <TQuery extends OperationType>(
+  props: Record<string, any>
+) => VariablesOf<TQuery>;
 
 type SceneComponent<TQuery extends OperationType> = React.ReactElement<
   SceneProps<TQuery>

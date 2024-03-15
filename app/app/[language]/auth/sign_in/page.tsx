@@ -4,17 +4,18 @@ import scene_SignIn_QueryNode, {
   scene_SignIn_Query,
 } from "artifacts/scene_SignIn_Query.graphql";
 import { cookies } from "next/headers";
-import { Metadata } from "next";
-import { merge } from "lodash";
-import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
 import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import { PageProps } from "components/shared/relay/PreloadedQueryWrapper/PreloadedQueryWrapper";
 import Scene from "./scene";
+import { getVariables } from "./metadata";
 
-const Page = async () => {
+export { revalidate, generateMetadata } from "./metadata";
+
+const Page = async ({ params }: PageProps) => {
   const preloadedQuery = await loadSerializableQuery<
     typeof scene_SignIn_QueryNode,
     scene_SignIn_Query
-  >(scene_SignIn_QueryNode.params, {});
+  >(scene_SignIn_QueryNode.params, getVariables<scene_SignIn_Query>(params));
 
   return (
     <PreloadedQueryWrapper
@@ -27,21 +28,3 @@ const Page = async () => {
 };
 
 export default Page;
-
-export const revalidate = 0;
-
-export const generateMetadata = async ({
-  searchParams: { language },
-}: any): Promise<Metadata> => {
-  const title = await translate(
-    "scenes.signInScene.signInAction",
-    {},
-    language
-  );
-  return merge(defaultMetadata, {
-    title,
-    openGraph: {
-      title,
-    },
-  });
-};
