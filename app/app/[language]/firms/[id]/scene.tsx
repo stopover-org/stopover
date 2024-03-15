@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { graphql, PreloadedQuery, usePreloadedQuery } from "react-relay";
+import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
@@ -10,6 +10,7 @@ import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import FirmScene from "scenes/attendees/firms/FirmScene";
 import { scene_AttendeesFirm_Query } from "artifacts/scene_AttendeesFirm_Query.graphql";
 import NotFound from "components/shared/NotFound/NotFound";
+import { SceneProps } from "components/shared/relay/PreloadedQueryWrapper";
 
 const Query = graphql`
   query scene_AttendeesFirm_Query($id: ID!) {
@@ -26,9 +27,7 @@ const Query = graphql`
 
 const Scene = ({
   queryRef,
-}: Partial<{
-  queryRef: PreloadedQuery<scene_AttendeesFirm_Query>;
-}>) => {
+}: Partial<SceneProps<scene_AttendeesFirm_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
   const { t } = useTranslation();
 

@@ -1,7 +1,6 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { Divider, Grid } from "@mui/joy";
-import useSubscription from "lib/hooks/useSubscription";
 import { useBookingDisabled } from "lib/hooks/useBookingStates";
 import { BookingEditForm_BookingFragment$key } from "artifacts/BookingEditForm_BookingFragment.graphql";
 import BookingOptionsEditForm from "./BookingOptionsEditForm";
@@ -37,19 +36,6 @@ const BookingEditForm = ({ bookingFragmentRef }: BookingEditFormProps) => {
     `,
     bookingFragmentRef
   );
-
-  useSubscription({
-    variables: { bookingId: booking.id },
-    subscription: graphql`
-      subscription BookingEditForm_BookingChangedSubscription($bookingId: ID!) {
-        bookingChanged(bookingId: $bookingId) {
-          booking {
-            ...BookingEditForm_BookingFragment
-          }
-        }
-      }
-    `,
-  });
   const disabled = useBookingDisabled(booking);
   const eventOptions = React.useMemo(
     () => booking.eventOptions.filter(({ status }) => status === "available"),

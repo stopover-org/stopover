@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { graphql, PreloadedQuery, usePreloadedQuery } from "react-relay";
+import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
@@ -10,6 +10,7 @@ import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_FirmBookings_Query } from "artifacts/scene_FirmBookings_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent/SidebarContent";
 import BookingsScene from "scenes/firms/bookings/BookingsScene/BookingsScene";
+import { SceneProps } from "components/shared/relay/PreloadedQueryWrapper";
 
 const Query = graphql`
   query scene_FirmBookings_Query($bookingsFilter: BookingsFilter) {
@@ -26,11 +27,7 @@ const Query = graphql`
   }
 `;
 
-const Scene = ({
-  queryRef,
-}: Partial<{
-  queryRef: PreloadedQuery<scene_FirmBookings_Query>;
-}>) => {
+const Scene = ({ queryRef }: Partial<SceneProps<scene_FirmBookings_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
   const { t } = useTranslation();
 

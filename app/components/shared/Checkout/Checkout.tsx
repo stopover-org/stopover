@@ -6,7 +6,6 @@ import Typography from "components/v2/Typography";
 import { getCurrencyFormat } from "lib/utils/currencyFormatter";
 import useStatusColor from "lib/hooks/useStatusColor";
 import Tag from "components/v2/Tag";
-import useSubscription from "lib/hooks/useSubscription";
 import useEdges from "lib/hooks/useEdges";
 import { Checkout_BookingFragment$key } from "artifacts/Checkout_BookingFragment.graphql";
 
@@ -52,20 +51,6 @@ const Checkout = ({ bookingFragmentRef }: CheckoutProps) => {
     `,
     bookingFragmentRef
   );
-
-  useSubscription({
-    variables: { bookingId: booking.id },
-    subscription: graphql`
-      subscription Checkout_BookingChangedSubscription($bookingId: ID!) {
-        bookingChanged(bookingId: $bookingId) {
-          booking {
-            ...Checkout_BookingFragment
-          }
-        }
-      }
-    `,
-  });
-
   const { t } = useTranslation();
   const payments = useEdges(booking.payments).map((v) => v!);
 
