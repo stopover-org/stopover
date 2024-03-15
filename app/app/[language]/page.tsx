@@ -4,10 +4,11 @@ import scene_HomePage_QueryNode, {
 } from "artifacts/scene_HomePage_Query.graphql";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
 import { Metadata } from "next";
 import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
 import { merge } from "lodash";
-import QueryWrapper from "./query";
+import Scene from "./scene";
 
 const Page = async () => {
   const preloadedQuery = await loadSerializableQuery<
@@ -16,10 +17,12 @@ const Page = async () => {
   >(scene_HomePage_QueryNode.params, {});
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

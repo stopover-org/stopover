@@ -13,7 +13,8 @@ import scene_SingleArticle_QueryNode, {
   scene_SingleArticle_Query,
 } from "artifacts/scene_SingleArticle_Query.graphql";
 import fetchQuery from "lib/relay/fetchQuery";
-import QueryWrapper from "./query";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper/PreloadedQueryWrapper";
+import Scene from "./scene";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {
   const preloadedQuery = await loadSerializableQuery<
@@ -22,10 +23,12 @@ const Page = async ({ params }: { params: Record<string, string> }) => {
   >(scene_SingleArticle_QueryNode.params, { id: unescape(params.id) });
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

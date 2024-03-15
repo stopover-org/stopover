@@ -7,7 +7,8 @@ import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
 import scene_EditArticle_QueryNode, {
   scene_EditArticle_Query,
 } from "artifacts/scene_EditArticle_Query.graphql";
-import QueryWrapper from "./query";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper/PreloadedQueryWrapper";
+import Scene from "./scene";
 
 const Page = async ({ params }: { params: Record<string, string> }) => {
   const preloadedQuery = await loadSerializableQuery<
@@ -16,10 +17,12 @@ const Page = async ({ params }: { params: Record<string, string> }) => {
   >(scene_EditArticle_QueryNode.params, { id: unescape(params.id) });
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

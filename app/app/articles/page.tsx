@@ -7,7 +7,8 @@ import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
 import scene_ArticlesScene_QueryNode, {
   scene_ArticlesScene_Query,
 } from "artifacts/scene_ArticlesScene_Query.graphql";
-import QueryWrapper from "./query";
+import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import Scene from "./scene";
 
 const Page = async () => {
   const preloadedQuery = await loadSerializableQuery<
@@ -16,10 +17,12 @@ const Page = async () => {
   >(scene_ArticlesScene_QueryNode.params, {});
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

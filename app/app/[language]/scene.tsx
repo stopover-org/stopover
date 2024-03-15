@@ -18,10 +18,10 @@ const Query = graphql`
 
 const Scene = ({
   queryRef,
-}: {
+}: Partial<{
   queryRef: PreloadedQuery<scene_HomePage_Query>;
-}) => {
-  const data = usePreloadedQuery(Query, queryRef);
+}>) => {
+  const data = usePreloadedQuery(Query, queryRef!);
 
   return (
     <SceneWrapper>
@@ -32,4 +32,4 @@ const Scene = ({
   );
 };
 
-export default React.memo(Scene);
+export default Scene;
