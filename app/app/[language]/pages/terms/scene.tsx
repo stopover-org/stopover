@@ -6,6 +6,8 @@ import { Sheet } from "@mui/joy";
 import Typography from "components/v2/Typography";
 import Link from "components/v2/Link";
 import { scene_TermsQuery } from "artifacts/scene_TermsQuery.graphql";
+import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
+import { useTranslation } from "react-i18next";
 
 const Terms = () => {
   const [server, setServer] = React.useState(true);
@@ -19,6 +21,9 @@ const Terms = () => {
     `,
     {}
   );
+  const { t } = useTranslation();
+
+  useDocumentTitle(t("seo.pages.terms.title"));
 
   React.useEffect(() => {
     setServer(false);

@@ -41,7 +41,7 @@ const Workflow = () => {
   );
   const { t } = useTranslation();
 
-  useDocumentTitle(t("general.firmWorkflow"));
+  useDocumentTitle(t("seo.firms.workflow.title"));
 
   const thme = useTheme();
   const isMobileView = useMediaQuery(thme.breakpoints.down("md"));

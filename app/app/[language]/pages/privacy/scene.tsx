@@ -23,7 +23,7 @@ const Privacy = () => {
   );
   const { t } = useTranslation();
 
-  useDocumentTitle(t("general.privacy"));
+  useDocumentTitle(t("seo.pages.privacy.title"));
 
   React.useEffect(() => {
     setServer(false);

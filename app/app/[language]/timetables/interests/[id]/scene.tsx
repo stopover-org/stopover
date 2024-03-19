@@ -5,9 +5,7 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
-import { useTranslation } from "react-i18next";
 import NotFound from "components/shared/NotFound/NotFound";
-import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_InterestTimetable_Query } from "artifacts/scene_InterestTimetable_Query.graphql";
 import moment from "moment";
 import InterestTimetableScene from "scenes/attendees/interests/InterestTimetableScene";
@@ -34,9 +32,6 @@ const Scene = ({
   queryRef,
 }: Partial<SceneProps<scene_InterestTimetable_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
-  const { t } = useTranslation();
-  const title = `${data?.interest?.title} - ${t("models.schedule.plural")}`;
-  useDocumentTitle(data?.interest?.title ? title : t("general.404"));
 
   return (
     <SceneWrapper>

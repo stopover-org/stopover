@@ -22,7 +22,7 @@ const RefundTerms = () => {
   );
   const { t } = useTranslation();
 
-  useDocumentTitle(t("general.refundTerms"));
+  useDocumentTitle(t("seo.pages.refundTerms.title"));
 
   React.useEffect(() => {
     setServer(false);
