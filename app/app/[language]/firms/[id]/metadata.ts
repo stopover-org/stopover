@@ -1,14 +1,17 @@
 import { Metadata } from "next";
-import { merge } from "lodash";
 import fetchQuery from "lib/relay/fetchQuery";
-import defaultMetadata, {
+import {
   sharedEmails,
   sharedImages,
   sharedPhones,
 } from "lib/utils/defaultMetadata";
-import { GetVariablesFn } from "components/shared/relay/PreloadedQueryWrapper";
+import {
+  GetVariablesFn,
+  PageProps,
+} from "components/shared/relay/PreloadedQueryWrapper";
+import { generateCommonMetadata } from "../../../../lib/utils/metadata";
 
-export const PAGE_TITLE = "general.404";
+export const PAGE_TITLE = "seo.firms.id.title";
 export const getVariables: GetVariablesFn = ({ params }) => ({
   id: unescape(params.id),
 });
@@ -34,29 +37,37 @@ const PageQuery = `
   }
 `;
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: { id: string; language: string };
-}): Promise<Metadata> => {
-  const response = await fetchQuery(PageQuery, getVariables(params));
-
-  return merge(defaultMetadata, {
+export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
+  const response = await fetchQuery(PageQuery, getVariables(props));
+  const translateParams = {
     title: response?.firm?.seoMetadatum?.title,
     description: response?.firm?.seoMetadatum?.description,
     keywords: response?.firm?.seoMetadatum?.keywords,
-    openGraph: {
-      locale: params.language,
-      type: "profile",
-      title: response?.firm?.seoMetadatum?.title,
-      description: response?.firm?.seoMetadatum?.description,
-      phoneNumbers: [response?.firm?.primaryPhone, ...sharedPhones],
-      emails: [response?.firm?.primaryEmail, ...sharedEmails],
-      images: [
-        ...(response?.firm?.seoMetadatum?.featuredImages || []),
-        ...sharedImages,
-      ],
-      countryName: response?.firm?.address?.country,
+  };
+
+  const metadata = generateCommonMetadata(
+    {
+      title: PAGE_TITLE,
+      description: "seo.events.id.description",
+      keywords: "seo.events.id.keywords",
     },
-  });
+    getVariables,
+    props,
+    false,
+    translateParams,
+    {
+      openGraph: {
+        type: "profile",
+        phoneNumbers: [response?.firm?.primaryPhone, ...sharedPhones],
+        emails: [response?.firm?.primaryEmail, ...sharedEmails],
+        images: [
+          ...(response?.firm?.seoMetadatum?.featuredImages || []),
+          ...sharedImages,
+        ],
+        countryName: response?.firm?.address?.country,
+      },
+    }
+  );
+
+  return metadata;
 };

@@ -1,8 +1,7 @@
 import { GetVariablesFn } from "components/shared/relay/PreloadedQueryWrapper";
-import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
-import { merge } from "lodash";
-import { GenerateMetadataFn } from "lib/utils/metadata";
+import { generateCommonMetadata, GenerateMetadataFn } from "lib/utils/metadata";
 import fetchQuery from "lib/relay/fetchQuery";
+import moment from "moment";
 
 export const PAGE_TITLE = "seo.checkouts.verify.id.title";
 export const getVariables: GetVariablesFn = ({ params }) => ({
@@ -19,18 +18,24 @@ const PageQuery = `
     }
   }
 `;
-export const generateMetadata: GenerateMetadataFn = async ({ params }) => {
-  const response = await fetchQuery(PageQuery, getVariables(params));
-  const title = await translate(
-    PAGE_TITLE,
-    { title: response?.booking?.event?.title },
-    params.language
-  );
-  return merge(defaultMetadata, {
-    title,
-    openGraph: {
-      locale: params.language,
-      title,
+export const generateMetadata: GenerateMetadataFn = async (props) => {
+  const response = await fetchQuery(PageQuery, getVariables(props));
+  const translateParams = {
+    title: response?.booking?.event?.title,
+    date: moment(response?.booking?.bookedFor).calendar(),
+  };
+
+  const metadata = generateCommonMetadata(
+    {
+      title: PAGE_TITLE,
+      description: "seo.checkouts.verify.id.description",
+      keywords: "seo.checkouts.verify.id.keywords",
     },
-  });
+    getVariables,
+    props,
+    false,
+    translateParams
+  );
+
+  return metadata;
 };

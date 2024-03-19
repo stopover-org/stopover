@@ -3,8 +3,7 @@ import { GetVariablesFn } from "components/shared/relay/PreloadedQueryWrapper";
 import moment, { Moment } from "moment";
 import { EventsFilter } from "artifacts/scene_EventsPage_Query.graphql";
 import { Metadata } from "next";
-import { merge } from "lodash";
-import defaultMetadata, { translate } from "../../../lib/utils/defaultMetadata";
+import { generateCommonMetadata } from "lib/utils/metadata";
 
 export const filterParsers: Record<
   string,
@@ -30,11 +29,8 @@ export const filterParsers: Record<
     return undefined;
   },
 };
-export const PAGE_TITLE = "models.event.plural";
-export const getVariables: GetVariablesFn = ({
-  searchParams,
-  humanReadable,
-}) => {
+export const PAGE_TITLE = "seo.events.title";
+export const getVariables: GetVariablesFn = ({ params, searchParams }) => {
   const query = Object.entries(searchParams).reduce(
     (acc: EventsFilter, entry: [string, any]) => {
       try {
@@ -44,7 +40,7 @@ export const getVariables: GetVariablesFn = ({
             .map((val: string) => moment(val))
             .filter((dt: Moment) => dt.isValid());
 
-          if (humanReadable) {
+          if (params.humanReadable) {
             if (dates[1]) {
               acc.startDate = acc.startDate.calendar();
             }
@@ -80,36 +76,25 @@ export const getVariables: GetVariablesFn = ({
 
 export const revalidate = 0;
 
-export const generateMetadata = async ({
-  searchParams,
-  params: { language },
-}: any): Promise<Metadata> => {
-  let variables = getVariables({ searchParams, humanReadable: true });
+export const generateMetadata = async (props: {
+  searchParams: Record<string, string>;
+  params: { language: string };
+}): Promise<Metadata> => {
   const defaultVariables = {
     city: "Serbia",
     startDate: moment().calendar(),
     endDate: moment().calendar(),
     categories: [].join(" "),
   };
-
-  variables = merge(defaultVariables, variables);
-
-  const title = await translate("seo.events.title", variables, language);
-  const description = await translate(
-    "seo.events.description",
-    variables,
-    language
-  );
-  const keywords = await translate("seo.events.keywords", variables, language);
-
-  return merge(defaultMetadata, {
-    title,
-    description,
-    keywords,
-    openGraph: {
-      title,
-      description,
-      keywords,
+  return generateCommonMetadata(
+    {
+      title: PAGE_TITLE,
+      description: "seo.events.description",
+      keywords: "seo.events.keywords",
     },
-  });
+    getVariables,
+    { ...props, humanReadable: true },
+    true,
+    defaultVariables
+  );
 };

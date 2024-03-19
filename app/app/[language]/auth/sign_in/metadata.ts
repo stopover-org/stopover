@@ -1,18 +1,20 @@
-import { GetVariablesFn } from "components/shared/relay/PreloadedQueryWrapper";
-import { GenerateMetadataFn } from "lib/utils/metadata";
-import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
-import { merge } from "lodash";
+import {
+  GetVariablesFn,
+  PageProps,
+} from "components/shared/relay/PreloadedQueryWrapper";
+import { generateCommonMetadata, GenerateMetadataFn } from "lib/utils/metadata";
 
-export const PAGE_TITLE = "scenes.signInScene.signInAction";
+export const PAGE_TITLE = "seo.auth.signIn.title";
 export const getVariables: GetVariablesFn = () => ({});
 export const revalidate = 0;
-export const generateMetadata: GenerateMetadataFn = async ({ params }) => {
-  const title = await translate(PAGE_TITLE, {}, params.language);
-  return merge(defaultMetadata, {
-    title,
-    openGraph: {
-      locale: params.language,
-      title,
+export const generateMetadata: GenerateMetadataFn = async (props: PageProps) =>
+  generateCommonMetadata(
+    {
+      title: PAGE_TITLE,
+      description: "seo.auth.signIn.description",
+      keywords: "seo.auth.signIn.keywords",
     },
-  });
-};
+    getVariables,
+    props,
+    true
+  );

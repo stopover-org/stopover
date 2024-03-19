@@ -1,35 +1,21 @@
 import { GetVariablesFn } from "components/shared/relay/PreloadedQueryWrapper";
-import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
-import { merge } from "lodash";
 import { Metadata } from "next";
+import { generateCommonMetadata } from "lib/utils/metadata";
 
-export const PAGE_TITLE = "";
+export const PAGE_TITLE = "seo.firms.landing.title";
 export const getVariables: GetVariablesFn = () => ({});
 export const revalidate = 0;
 export const generateMetadata = async ({
-  params: { language },
+  params,
 }: {
   params: { language: string };
-}): Promise<Metadata> => {
-  const title = await translate(
-    "scenes.firms.firmLandingScene.subtitle",
-    {},
-    language
-  );
-
-  const description = await translate(
-    "scenes.firms.firmLandingScene.points",
-    {},
-    language
-  );
-
-  return merge(defaultMetadata, {
-    title,
-    description,
-    openGraph: {
-      locale: language,
-      title,
-      description,
+}): Promise<Metadata> =>
+  generateCommonMetadata(
+    {
+      title: PAGE_TITLE,
+      description: "seo.firms.landing.description",
+      keywords: "seo.firms.landing.keywords",
     },
-  });
-};
+    getVariables,
+    { params }
+  );

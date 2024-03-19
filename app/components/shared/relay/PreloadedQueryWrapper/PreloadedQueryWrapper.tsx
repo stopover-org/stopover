@@ -12,7 +12,7 @@ export interface SceneProps<TQuery extends OperationType> {
   queryRef: PreloadedQuery<TQuery>;
 }
 
-export interface PageProps {
+export interface PageProps extends Record<string, any> {
   params: Record<string, any>;
   searchParams: Record<string, any>;
 }

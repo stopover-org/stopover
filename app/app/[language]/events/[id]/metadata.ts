@@ -1,16 +1,14 @@
 import { GetVariablesFn } from "components/shared/relay/PreloadedQueryWrapper";
 import { Metadata } from "next";
-import { merge } from "lodash";
 import fetchQuery from "lib/relay/fetchQuery";
-import defaultMetadata, {
+import {
   sharedEmails,
   sharedImages,
   sharedPhones,
-  translate,
 } from "lib/utils/defaultMetadata";
-import { GenerateMetadataFn } from "lib/utils/metadata";
+import { generateCommonMetadata, GenerateMetadataFn } from "lib/utils/metadata";
 
-export const PAGE_TITLE = "models.event.singular";
+export const PAGE_TITLE = "seo.events.id.title";
 export const getVariables: GetVariablesFn = ({ params }) => ({
   id: unescape(params.id),
 });
@@ -40,28 +38,38 @@ const PageQuery = `
     }
   }
 `;
-export const generateMetadata: GenerateMetadataFn = async ({
-  params,
-}): Promise<Metadata> => {
-  const response = await fetchQuery(PageQuery, { id: unescape(params.id) });
-  const defaultTitle = await translate(PAGE_TITLE, {}, params.language);
-
-  return merge(defaultMetadata, {
-    title: response?.event?.seoMetadatum?.title || defaultTitle,
+export const generateMetadata: GenerateMetadataFn = async (
+  props
+): Promise<Metadata> => {
+  const response = await fetchQuery(PageQuery, getVariables(props));
+  const translateParams = {
+    title: response?.event?.seoMetadatum?.title,
     description: response?.event?.seoMetadatum?.description,
     keywords: response?.event?.seoMetadatum?.keywords,
-    openGraph: {
-      locale: params.language,
-      title: response?.event?.seoMetadatum?.title || defaultTitle,
-      keywords: response?.event?.seoMetadatum?.keywords,
-      description: response?.event?.seoMetadatum?.description,
-      phoneNumbers: [response?.event?.firm?.primaryPhone, ...sharedPhones],
-      emails: [response?.event?.firm?.primaryEmail, ...sharedEmails],
-      images: [
-        ...(response?.event?.seoMetadatum?.featuredImages || []),
-        ...sharedImages,
-      ],
-      countryName: response?.event?.address?.country,
+  };
+
+  const metadata = generateCommonMetadata(
+    {
+      title: PAGE_TITLE,
+      description: "seo.events.id.description",
+      keywords: "seo.events.id.keywords",
     },
-  });
+    getVariables,
+    props,
+    false,
+    translateParams,
+    {
+      openGraph: {
+        phoneNumbers: [response?.event?.firm?.primaryPhone, ...sharedPhones],
+        emails: [response?.event?.firm?.primaryEmail, ...sharedEmails],
+        images: [
+          ...(response?.event?.seoMetadatum?.featuredImages || []),
+          ...sharedImages,
+        ],
+        countryName: response?.event?.address?.country,
+      },
+    }
+  );
+
+  return metadata;
 };
