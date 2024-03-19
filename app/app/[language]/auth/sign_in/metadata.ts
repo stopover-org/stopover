@@ -11,6 +11,7 @@ export const generateMetadata: GenerateMetadataFn = async ({ params }) => {
   return merge(defaultMetadata, {
     title,
     openGraph: {
+      locale: params.language,
       title,
     },
   });

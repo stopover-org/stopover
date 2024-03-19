@@ -11,6 +11,7 @@ import FirmScene from "scenes/attendees/firms/FirmScene";
 import { scene_AttendeesFirm_Query } from "artifacts/scene_AttendeesFirm_Query.graphql";
 import NotFound from "components/shared/NotFound/NotFound";
 import { SceneProps } from "components/shared/relay/PreloadedQueryWrapper";
+import { PAGE_TITLE } from "./metadata";
 
 const Query = graphql`
   query scene_AttendeesFirm_Query($id: ID!) {
@@ -31,7 +32,7 @@ const Scene = ({
   const data = usePreloadedQuery(Query, queryRef!);
   const { t } = useTranslation();
 
-  useDocumentTitle(data.firm?.title || t("general.404"));
+  useDocumentTitle(data.firm?.title || t(PAGE_TITLE));
 
   return (
     <SceneWrapper>

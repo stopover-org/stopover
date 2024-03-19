@@ -328,8 +328,22 @@ class Event < ApplicationRecord
       update!(seo_metadatum: SeoMetadatum.create!(event: self,
                                                   language: language,
                                                   title: title,
-                                                  description: description,
-                                                  keywords: ''))
+                                                  description: ActionView::Base.full_sanitizer.sanitize(description, { tags: [] }),
+                                                  keywords: [
+                                                    title,
+                                                    firm.title,
+                                                    address&.country,
+                                                    address&.region,
+                                                    address&.city,
+                                                    address&.street,
+                                                    address&.full_address,
+                                                    firm.address&.country,
+                                                    firm.address&.region,
+                                                    firm.address&.city,
+                                                    firm.address&.street,
+                                                    firm.address&.full_address,
+                                                    *available_dates.map(&:to_s)
+                                                  ].join(' ')))
     end
   end
 end

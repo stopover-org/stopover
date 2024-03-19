@@ -4,8 +4,9 @@ import scene_SignIn_QueryNode, {
   scene_SignIn_Query,
 } from "artifacts/scene_SignIn_Query.graphql";
 import { cookies } from "next/headers";
-import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
-import { PageProps } from "components/shared/relay/PreloadedQueryWrapper/PreloadedQueryWrapper";
+import PreloadedQueryWrapper, {
+  PageProps,
+} from "components/shared/relay/PreloadedQueryWrapper";
 import Scene from "./scene";
 import { getVariables } from "./metadata";
 

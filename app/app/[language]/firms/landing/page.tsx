@@ -4,17 +4,20 @@ import scene_LandingFirms_QueryNode, {
   scene_LandingFirms_Query,
 } from "artifacts/scene_LandingFirms_Query.graphql";
 import { cookies } from "next/headers";
-import { Metadata } from "next";
-import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
-import { merge } from "lodash";
 import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
 import Scene from "./scene";
+import { getVariables } from "./metadata";
 
-const Page = async () => {
+export { revalidate, generateMetadata } from "./metadata";
+
+const Page = async (props: { params: { language: string } }) => {
   const preloadedQuery = await loadSerializableQuery<
     typeof scene_LandingFirms_QueryNode,
     scene_LandingFirms_Query
-  >(scene_LandingFirms_QueryNode.params, {});
+  >(
+    scene_LandingFirms_QueryNode.params,
+    getVariables<scene_LandingFirms_Query>(props)
+  );
 
   return (
     <PreloadedQueryWrapper
@@ -27,30 +30,3 @@ const Page = async () => {
 };
 
 export default Page;
-
-export const revalidate = 0;
-
-export const generateMetadata = async ({
-  searchParams: { language },
-}: any): Promise<Metadata> => {
-  const title = await translate(
-    "scenes.firms.firmLandingScene.subtitle",
-    {},
-    language
-  );
-
-  const description = await translate(
-    "scenes.firms.firmLandingScene.points",
-    {},
-    language
-  );
-
-  return merge(defaultMetadata, {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-    },
-  });
-};

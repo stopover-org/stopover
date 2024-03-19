@@ -13,7 +13,7 @@ import NotFound from "components/shared/NotFound";
 import { SceneProps } from "components/shared/relay/PreloadedQueryWrapper";
 
 export const Query = graphql`
-  query scene_EventPage_Query($id: ID!) {
+  query query_EventPage_Query($id: ID!) {
     currentUser {
       ...Layout_CurrentUserFragment
       account {

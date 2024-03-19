@@ -2065,6 +2065,7 @@ input SchedulesFilter {
 
 type SeoMetadatum implements Node {
   description: String!
+  featuredImages: [String!]!
   id: ID!
   keywords: String!
   language: String!

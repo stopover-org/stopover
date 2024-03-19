@@ -10,6 +10,7 @@ import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import VerifyBookingScene from "scenes/attendees/bookings/VerifyBookingScene";
 import { scene_VerifyCheckout_Query } from "artifacts/scene_VerifyCheckout_Query.graphql";
 import { SceneProps } from "components/shared/relay/PreloadedQueryWrapper";
+import { PAGE_TITLE } from "./metadata";
 
 export const Query = graphql`
   query scene_VerifyCheckout_Query($id: ID!) {
@@ -37,9 +38,7 @@ const Scene = ({
   const data = usePreloadedQuery(Query, queryRef!);
   const { t } = useTranslation();
 
-  useDocumentTitle(
-    `${t("models.booking.singular")} ${data.booking!.event!.title}`
-  );
+  useDocumentTitle(t(PAGE_TITLE));
 
   return (
     <SceneWrapper>

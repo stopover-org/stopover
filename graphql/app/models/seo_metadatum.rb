@@ -60,4 +60,18 @@ class SeoMetadatum < ApplicationRecord
   #
   # DELEGATION ============================================================
   #
+
+  def featured_images
+    if event
+      event.images
+    elsif interest
+      [interest.preview]
+    elsif firm
+      [firm.image]
+    elsif article
+      [article.image]
+    else
+      []
+    end
+  end
 end
