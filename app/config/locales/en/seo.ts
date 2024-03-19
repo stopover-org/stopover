@@ -502,6 +502,11 @@ export default {
         title: "{{title}}",
         description: "{{description}}",
         keywords: "{{keywords}}",
+        edit: {
+          title: "Edit {{title}}",
+          description: "{{description}}",
+          keywords: "{{keywords}}",
+        },
       },
       new: {
         title: "Creating a New Article: Quick and Easy",
@@ -519,6 +524,18 @@ export default {
           "Article management",
           "Website content creation",
         ].join(" "),
+      },
+    },
+    trips: {
+      title: "Your Travels",
+      description:
+        "Explore unique cultures, magnificent attractions, and exciting events in each of the fascinating places",
+      keywords: [].join(" "),
+      id: {
+        title: "Trip to {{cities}}, {{startDate}} - {{endDate}}",
+        description:
+          "Explore unique cultures, magnificent attractions, and exciting events in each of the fascinating places",
+        keywords: [].join(" "),
       },
     },
   },

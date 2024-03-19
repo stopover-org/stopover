@@ -507,11 +507,28 @@ export default {
         title: "{{title}}",
         description: "{{description}}",
         keywords: "{{keywords}}",
+        edit: {
+          title: "Редактирование {{title}}",
+          description: "{{description}}",
+          keywords: "{{keywords}}",
+        },
       },
       new: {
         title: "{{title}}",
         description: "{{description}}",
         keywords: "{{keywords}}",
+      },
+    },
+    trips: {
+      title: "Ваши путешествия",
+      description:
+        "Исследуйте уникальные культуры, великолепные достопримечательности и захватывающие события в каждом из увлекательных мест",
+      keywords: [].join(" "),
+      id: {
+        title: "Путешествие {{cities}}",
+        description:
+          "Исследуйте уникальные культуры, великолепные достопримечательности и захватывающие события в каждом из увлекательных мест",
+        keywords: [].join(" "),
       },
     },
   },

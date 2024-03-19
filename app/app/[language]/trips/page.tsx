@@ -4,17 +4,17 @@ import scene_Trips_QueryNode, {
 } from "artifacts/scene_Trips_Query.graphql";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
-import { Metadata } from "next";
-import { merge } from "lodash";
-import defaultMetadata, { translate } from "lib/utils/defaultMetadata";
-import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import PreloadedQueryWrapper, {
+  PageProps,
+} from "components/shared/relay/PreloadedQueryWrapper";
 import Scene from "./scene";
+import { getVariables } from "./metadata";
 
-const Page = async () => {
+const Page = async (props: PageProps) => {
   const preloadedQuery = await loadSerializableQuery<
     typeof scene_Trips_QueryNode,
     scene_Trips_Query
-  >(scene_Trips_QueryNode.params, {});
+  >(scene_Trips_QueryNode.params, getVariables<scene_Trips_Query>(props));
 
   return (
     <PreloadedQueryWrapper
@@ -27,17 +27,3 @@ const Page = async () => {
 };
 
 export default Page;
-
-export const revalidate = 0;
-
-export const generateMetadata = async ({
-  searchParams: { language },
-}: any): Promise<Metadata> => {
-  const title = await translate("models.trip.plural", {}, language);
-  return merge(defaultMetadata, {
-    title,
-    openGraph: {
-      title,
-    },
-  });
-};
