@@ -94,7 +94,7 @@ export const generateMetadata = async (props: {
     },
     getVariables,
     { ...props, humanReadable: true },
-    true,
+    false,
     defaultVariables
   );
 };
