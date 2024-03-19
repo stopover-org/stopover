@@ -5,8 +5,6 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
-import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_FirmPayment_Query } from "artifacts/scene_FirmPayment_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent/SidebarContent";
 import PaymentScene from "scenes/firms/payments/PaymentScene";
@@ -32,9 +30,6 @@ const Query = graphql`
 
 const Scene = ({ queryRef }: Partial<SceneProps<scene_FirmPayment_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
-  const { t } = useTranslation();
-
-  useDocumentTitle(`${t("models.payment.singular")}`);
 
   return (
     <SceneWrapper>

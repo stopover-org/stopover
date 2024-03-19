@@ -5,8 +5,6 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
-import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_InterestsScene_Query } from "artifacts/scene_InterestsScene_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent/SidebarContent";
 import InterestsScene from "scenes/firms/interests";
@@ -29,9 +27,6 @@ const Scene = ({
   queryRef,
 }: Partial<SceneProps<scene_InterestsScene_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
-  const { t } = useTranslation();
-
-  useDocumentTitle(`${t("models.interest.plural")}`);
 
   return (
     <SceneWrapper>

@@ -5,12 +5,9 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
-import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import VerifyBookingScene from "scenes/attendees/bookings/VerifyBookingScene";
 import { scene_VerifyCheckout_Query } from "artifacts/scene_VerifyCheckout_Query.graphql";
 import { SceneProps } from "components/shared/relay/PreloadedQueryWrapper";
-import { PAGE_TITLE } from "./metadata";
 
 export const Query = graphql`
   query scene_VerifyCheckout_Query($id: ID!) {
@@ -28,6 +25,7 @@ export const Query = graphql`
       event {
         title
       }
+      bookedFor
       ...VerifyBookingScene_BookingFragment
     }
   }
@@ -36,9 +34,6 @@ const Scene = ({
   queryRef,
 }: Partial<SceneProps<scene_VerifyCheckout_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
-  const { t } = useTranslation();
-
-  useDocumentTitle(t(PAGE_TITLE));
 
   return (
     <SceneWrapper>

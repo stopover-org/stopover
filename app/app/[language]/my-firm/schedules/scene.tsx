@@ -5,8 +5,6 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
-import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_FirmSchedules_Query } from "artifacts/scene_FirmSchedules_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent/SidebarContent";
 import SchedulesScene from "scenes/firms/schedules/SchedulesScene/SchedulesScene";
@@ -31,9 +29,6 @@ const Scene = ({
   queryRef,
 }: Partial<SceneProps<scene_FirmSchedules_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
-  const { t } = useTranslation();
-
-  useDocumentTitle(`${t("models.schedule.plural")}`);
 
   return (
     <SceneWrapper>

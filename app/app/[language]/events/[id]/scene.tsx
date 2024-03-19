@@ -6,14 +6,12 @@ import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
 import EventScene from "scenes/attendees/events/EventScene";
-import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_EventPage_Query } from "artifacts/scene_EventPage_Query.graphql";
 import NotFound from "components/shared/NotFound";
 import { SceneProps } from "components/shared/relay/PreloadedQueryWrapper";
 
 export const Query = graphql`
-  query query_EventPage_Query($id: ID!) {
+  query scene_EventPage_Query($id: ID!) {
     currentUser {
       ...Layout_CurrentUserFragment
       account {
@@ -30,13 +28,6 @@ export const Query = graphql`
 
 const Scene = ({ queryRef }: Partial<SceneProps<scene_EventPage_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
-  const { t } = useTranslation();
-
-  useDocumentTitle(
-    data.event
-      ? `${t("models.event.singular")} ${data.event?.title}`
-      : t("general.404")
-  );
 
   return (
     <SceneWrapper>

@@ -5,8 +5,6 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
-import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_NewFirm_Query } from "artifacts/scene_NewFirm_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent";
 import AttendeeSidebar from "components/shared/AttendeeSidebar";
@@ -33,7 +31,6 @@ const Query = graphql`
 
 const Scene = ({ queryRef }: Partial<SceneProps<scene_NewFirm_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
-  const { t } = useTranslation();
   // eslint-disable-next-line react/no-unstable-nested-components
   const Wrapper = ({ children }: any) =>
     data.currentUser.serviceUser ? (
@@ -48,8 +45,6 @@ const Scene = ({ queryRef }: Partial<SceneProps<scene_NewFirm_Query>>) => {
         {children}
       </AttendeeSidebar>
     );
-
-  useDocumentTitle(`${t("scenes.attendees.firms.newFirmScene.title")}`);
 
   return (
     <SceneWrapper>

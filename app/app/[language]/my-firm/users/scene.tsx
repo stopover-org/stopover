@@ -5,8 +5,6 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
-import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import SidebarContent from "components/shared/SidebarContent/SidebarContent";
 import UsersScene from "scenes/firms/users/UsersScene";
 import { scene_FirmUsers_Query } from "artifacts/scene_FirmUsers_Query.graphql";
@@ -29,9 +27,6 @@ const Query = graphql`
 
 const Scene = ({ queryRef }: Partial<SceneProps<scene_FirmUsers_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
-  const { t } = useTranslation();
-
-  useDocumentTitle(`${t("models.user.plural")}`);
 
   return (
     <SceneWrapper>

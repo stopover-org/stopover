@@ -18,7 +18,7 @@ export interface PageProps extends Record<string, any> {
 }
 
 export type GetVariablesFn = <TQuery extends OperationType>(
-  props: Record<string, any>
+  props: PageProps
 ) => VariablesOf<TQuery>;
 
 type SceneComponent<TQuery extends OperationType> = React.ReactElement<

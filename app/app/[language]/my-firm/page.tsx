@@ -4,14 +4,19 @@ import scene_Firm_QueryNode, {
 } from "artifacts/scene_Firm_Query.graphql";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
-import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import PreloadedQueryWrapper, {
+  PageProps,
+} from "components/shared/relay/PreloadedQueryWrapper";
 import Scene from "./scene";
+import { getVariables } from "./metadata";
 
-const Page = async () => {
+export { revalidate, generateMetadata } from "./metadata";
+
+const Page = async (props: PageProps) => {
   const preloadedQuery = await loadSerializableQuery<
     typeof scene_Firm_QueryNode,
     scene_Firm_Query
-  >(scene_Firm_QueryNode.params, {});
+  >(scene_Firm_QueryNode.params, getVariables<scene_Firm_Query>(props));
 
   return (
     <PreloadedQueryWrapper
@@ -24,23 +29,3 @@ const Page = async () => {
 };
 
 export default Page;
-
-export const revalidate = 0;
-
-export const generateMetadata = () => ({
-  title: "Firm",
-  robots: {
-    follow: false,
-    index: false,
-    nocache: true,
-    googleBot: {
-      index: false,
-      follow: false,
-      noimageindex: true,
-      nocache: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-});

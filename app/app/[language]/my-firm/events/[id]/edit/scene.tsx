@@ -5,8 +5,6 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
-import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_FirmEditEvent_Query } from "artifacts/scene_FirmEditEvent_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent/SidebarContent";
 import EditEventScene from "scenes/firms/events/EditEventScene/EditEventScene";
@@ -34,13 +32,6 @@ const Scene = ({
   queryRef,
 }: Partial<SceneProps<scene_FirmEditEvent_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
-  const { t } = useTranslation();
-
-  useDocumentTitle(
-    `${t("models.event.singular")} ${
-      data.currentUser.account.firm?.event?.title
-    }`
-  );
 
   return (
     <SceneWrapper>

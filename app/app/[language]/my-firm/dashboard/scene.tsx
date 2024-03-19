@@ -5,8 +5,6 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
-import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import SidebarContent from "components/shared/SidebarContent/SidebarContent";
 import DashboardScene from "scenes/firms/DashboardScene";
 import { scene_Dashboard_Query } from "artifacts/scene_Dashboard_Query.graphql";
@@ -33,9 +31,6 @@ const Query = graphql`
 
 const Scene = ({ queryRef }: Partial<SceneProps<scene_Dashboard_Query>>) => {
   const { currentUser } = usePreloadedQuery(Query, queryRef!);
-  const { t } = useTranslation();
-
-  useDocumentTitle(t("scenes.firms.dashboardScene.title"));
 
   return (
     <SceneWrapper>

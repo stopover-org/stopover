@@ -4,42 +4,22 @@ import scene_FirmBookings_QueryNode, {
 } from "artifacts/scene_FirmBookings_Query.graphql";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
-import { parseValue } from "lib/hooks/useQuery";
-import { BookingsFilter } from "artifacts/BookingsFirmTableFirmPaginationQuery.graphql";
-import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import PreloadedQueryWrapper, {
+  PageProps,
+} from "components/shared/relay/PreloadedQueryWrapper";
 import Scene from "./scene";
+import { getVariables } from "./metadata";
 
-const filterParsers = {
-  contactEmail: (value: string) => parseValue(value),
-  contactPhone: (value: string) => parseValue(value),
-  eventIds: (value: string) => parseValue(value),
-  bookedFor: (value: string) => parseValue(value),
-};
+export { revalidate, generateMetadata } from "./metadata";
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: Record<string, string>;
-}) => {
-  const filters: BookingsFilter = React.useMemo(() => {
-    const query = Object.entries(searchParams).reduce(
-      (acc: BookingsFilter, entry: [string, any]) => {
-        // @ts-ignore
-        const parser = filterParsers[entry[0]];
-        if (parser) {
-          acc[entry[0] as keyof BookingsFilter] = parser(entry[1]);
-        }
-        return acc;
-      },
-      {}
-    );
-    return query;
-  }, [searchParams]);
-
+const Page = async (props: PageProps) => {
   const preloadedQuery = await loadSerializableQuery<
     typeof scene_FirmBookings_QueryNode,
     scene_FirmBookings_Query
-  >(scene_FirmBookings_QueryNode.params, { bookingsFilter: filters });
+  >(
+    scene_FirmBookings_QueryNode.params,
+    getVariables<scene_FirmBookings_Query>(props)
+  );
 
   return (
     <PreloadedQueryWrapper
@@ -52,23 +32,3 @@ const Page = async ({
 };
 
 export default Page;
-
-export const revalidate = 0;
-
-export const generateMetadata = () => ({
-  title: "Bookings",
-  robots: {
-    follow: false,
-    index: false,
-    nocache: true,
-    googleBot: {
-      index: false,
-      follow: false,
-      noimageindex: true,
-      nocache: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-});

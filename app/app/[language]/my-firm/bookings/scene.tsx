@@ -5,8 +5,6 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
-import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_FirmBookings_Query } from "artifacts/scene_FirmBookings_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent/SidebarContent";
 import BookingsScene from "scenes/firms/bookings/BookingsScene/BookingsScene";
@@ -29,9 +27,6 @@ const Query = graphql`
 
 const Scene = ({ queryRef }: Partial<SceneProps<scene_FirmBookings_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
-  const { t } = useTranslation();
-
-  useDocumentTitle(t("models.booking.plural"));
 
   return (
     <SceneWrapper>

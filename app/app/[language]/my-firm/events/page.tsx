@@ -7,6 +7,8 @@ import { cookies } from "next/headers";
 import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
 import Scene from "./scene";
 
+export { revalidate, generateMetadata } from "./metadata";
+
 const Page = async () => {
   const preloadedQuery = await loadSerializableQuery<
     typeof scene_FirmEvents_QueryNode,
@@ -24,23 +26,3 @@ const Page = async () => {
 };
 
 export default Page;
-
-export const revalidate = 0;
-
-export const generateMetadata = () => ({
-  title: "Firm",
-  robots: {
-    follow: false,
-    index: false,
-    nocache: true,
-    googleBot: {
-      index: false,
-      follow: false,
-      noimageindex: true,
-      nocache: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-});

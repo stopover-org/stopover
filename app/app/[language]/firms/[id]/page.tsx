@@ -4,19 +4,21 @@ import scene_AttendeesFirm_QueryNode, {
 } from "artifacts/scene_AttendeesFirm_Query.graphql";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
-import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import PreloadedQueryWrapper, {
+  PageProps,
+} from "components/shared/relay/PreloadedQueryWrapper";
 import Scene from "./scene";
 import { getVariables } from "./metadata";
 
 export { revalidate, generateMetadata } from "./metadata";
 
-const Page = async ({ params }: { params: Record<string, string> }) => {
+const Page = async (props: PageProps) => {
   const preloadedQuery = await loadSerializableQuery<
     typeof scene_AttendeesFirm_QueryNode,
     scene_AttendeesFirm_Query
   >(
     scene_AttendeesFirm_QueryNode.params,
-    getVariables<scene_AttendeesFirm_Query>(params)
+    getVariables<scene_AttendeesFirm_Query>(props)
   );
 
   return (

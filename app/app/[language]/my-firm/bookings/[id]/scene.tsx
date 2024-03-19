@@ -5,8 +5,6 @@ import { graphql, usePreloadedQuery } from "react-relay";
 import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import SceneWrapper from "components/shared/SceneWrapper";
-import { useTranslation } from "react-i18next";
-import { useDocumentTitle } from "lib/hooks/useDocumentTitle";
 import { scene_FirmBooking_Query } from "artifacts/scene_FirmBooking_Query.graphql";
 import SidebarContent from "components/shared/SidebarContent/SidebarContent";
 import BookingScene from "scenes/firms/bookings/BookingScene/BookingScene";
@@ -35,13 +33,6 @@ const Query = graphql`
 
 const Scene = ({ queryRef }: Partial<SceneProps<scene_FirmBooking_Query>>) => {
   const data = usePreloadedQuery(Query, queryRef!);
-  const { t } = useTranslation();
-
-  useDocumentTitle(
-    `${t("models.booking.singular")} ${
-      data.currentUser.account.firm!.booking!.event.title
-    }`
-  );
 
   return (
     <SceneWrapper>

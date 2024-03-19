@@ -4,40 +4,22 @@ import scene_FirmSchedules_QueryNode, {
 } from "artifacts/scene_FirmSchedules_Query.graphql";
 import loadSerializableQuery from "lib/relay/loadSerializableQuery";
 import { cookies } from "next/headers";
-import { parseValue } from "lib/hooks/useQuery";
-import { SchedulesFilter } from "artifacts/SchedulesSceneFirmFragment.graphql";
-import PreloadedQueryWrapper from "components/shared/relay/PreloadedQueryWrapper";
+import PreloadedQueryWrapper, {
+  PageProps,
+} from "components/shared/relay/PreloadedQueryWrapper";
 import Scene from "./scene";
+import { getVariables } from "./metadata";
 
-const filterParsers = {
-  eventIds: (value: string) => parseValue(value),
-  scheduledFor: (value: string) => parseValue(value),
-};
+export { revalidate, generateMetadata } from "./metadata";
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: Record<string, string>;
-}) => {
-  const filters: SchedulesFilter = React.useMemo(() => {
-    const query = Object.entries(searchParams).reduce(
-      (acc: SchedulesFilter, entry: [string, any]) => {
-        // @ts-ignore
-        const parser = filterParsers[entry[0]];
-        if (parser) {
-          acc[entry[0] as keyof SchedulesFilter] = parser(entry[1]);
-        }
-        return acc;
-      },
-      {}
-    );
-    return query;
-  }, [searchParams]);
-
+const Page = async (props: PageProps) => {
   const preloadedQuery = await loadSerializableQuery<
     typeof scene_FirmSchedules_QueryNode,
     scene_FirmSchedules_Query
-  >(scene_FirmSchedules_QueryNode.params, { filters });
+  >(
+    scene_FirmSchedules_QueryNode.params,
+    getVariables<scene_FirmSchedules_Query>(props)
+  );
 
   return (
     <PreloadedQueryWrapper
@@ -50,23 +32,3 @@ const Page = async ({
 };
 
 export default Page;
-
-export const revalidate = 0;
-
-export const generateMetadata = () => ({
-  title: "Schedules",
-  robots: {
-    follow: false,
-    index: false,
-    nocache: true,
-    googleBot: {
-      index: false,
-      follow: false,
-      noimageindex: true,
-      nocache: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-});

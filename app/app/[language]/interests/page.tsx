@@ -12,13 +12,13 @@ import { getVariables } from "./metadata";
 
 export { revalidate, generateMetadata } from "./metadata";
 
-const Page = async ({ params }: PageProps) => {
+const Page = async (props: PageProps) => {
   const preloadedQuery = await loadSerializableQuery<
     typeof scene_InterestsScene_QueryNode,
     scene_InterestsScene_Query
   >(
     scene_InterestsScene_QueryNode.params,
-    getVariables<scene_InterestsScene_Query>(params)
+    getVariables<scene_InterestsScene_Query>(props)
   );
 
   return (
