@@ -1,4 +1,4 @@
-import { describe, expect, it } from "@jest/globals";
+import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
 import {
   generateMetadata,
   getVariables,
@@ -8,8 +8,26 @@ import {
 import defaultMetadata from "lib/utils/defaultMetadata";
 import { merge } from "lodash";
 import { Metadata } from "next";
+import { setupData } from "lib/testing/setupData";
 
 describe("[language]/checkouts/verify/[id]", () => {
+  beforeAll(async () => {
+    const result = await setupData({
+      setup_variables: [
+        {
+          factory: "published_event",
+          attributes: {},
+        },
+      ],
+    });
+
+    console.log(result);
+  });
+
+  afterAll(async () => {
+    // await teardownData();
+  });
+
   it("PAGE_TITLE", () => {
     expect(PAGE_TITLE).toBe("seo.checkouts.verify.id.title");
   });

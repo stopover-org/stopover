@@ -21,7 +21,6 @@
     "@chatra/chatra": "^1.0.3",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@faker-js/faker": "^8.0.2",
     "@fontsource/public-sans": "^4.5.12",
     "@hookform/resolvers": "^3.0.0",
     "@mui/base": "^5.0.0-alpha.124",
@@ -92,6 +91,7 @@
   "devDependencies": {
     "@apollo/client": "^3.8.4",
     "@babel/core": "^7.19.6",
+    "@faker-js/faker": "^8.4.1",
     "@jest/globals": "^29.7.0",
     "@storybook/addon-actions": "^6.5.13",
     "@storybook/addon-essentials": "^6.5.13",
