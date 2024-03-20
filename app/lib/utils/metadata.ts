@@ -48,7 +48,7 @@ export const generateCommonMetadata = async (
       description,
       keywords,
       openGraph: {
-        language,
+        locale: language,
         title,
         description,
         keywords,
