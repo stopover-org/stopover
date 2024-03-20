@@ -12,20 +12,29 @@ import defaultMetadata, {
 import scene_SingleArticle_QueryNode, {
   scene_SingleArticle_Query,
 } from "artifacts/scene_SingleArticle_Query.graphql";
-import QueryWrapper from "./query";
-import fetchQuery from "../../../lib/relay/fetchQuery";
+import fetchQuery from "lib/relay/fetchQuery";
+import PreloadedQueryWrapper, {
+  PageProps,
+} from "components/shared/relay/PreloadedQueryWrapper";
+import Scene from "./scene";
+import { getVariables } from "./metadata";
 
-const Page = async ({ params }: { params: Record<string, string> }) => {
+const Page = async (props: PageProps) => {
   const preloadedQuery = await loadSerializableQuery<
     typeof scene_SingleArticle_QueryNode,
     scene_SingleArticle_Query
-  >(scene_SingleArticle_QueryNode.params, { id: unescape(params.id) });
+  >(
+    scene_SingleArticle_QueryNode.params,
+    getVariables<scene_SingleArticle_Query>(props)
+  );
 
   return (
-    <QueryWrapper
+    <PreloadedQueryWrapper
       preloadedQuery={preloadedQuery}
       cookies={cookies().getAll()}
-    />
+    >
+      <Scene />
+    </PreloadedQueryWrapper>
   );
 };
 

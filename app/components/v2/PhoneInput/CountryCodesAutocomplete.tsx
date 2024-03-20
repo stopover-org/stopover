@@ -13,7 +13,7 @@ import {
   getCountryCallingCode,
 } from "libphonenumber-js";
 import { useMediaQuery } from "@mui/material";
-import Typography from "../Typography";
+import Typography from "components/v2/Typography";
 
 interface CountryCodesAutocompleteProps {
   selectedCountry: string;

@@ -16,10 +16,10 @@ import { graphql, useFragment } from "react-relay";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
 import { useTranslation } from "react-i18next";
-import Button from "../../v2/Button";
-import { getCurrencyFormat } from "../../../lib/utils/currencyFormatter";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import { ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key } from "artifacts/ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment.graphql";
+import Button from "components/v2/Button";
 import ChangeAttendeeOptionAvailability from "./ChangeAttendeeOptionAvailability";
-import { ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key } from "../../../artifacts/ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment.graphql";
 
 interface ChangeAttendeeOptionAvailabilityModalProps {
   optionFragmentRef: ChangeAttendeeOptionAvailabilityModal_AttendeeOptionFragment$key;

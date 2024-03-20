@@ -5,7 +5,7 @@ import { Box, DialogTitle, Divider, Modal, ModalDialog, Stack } from "@mui/joy";
 import React from "react";
 import { SelectPlacesModal_EventPlacementFragment$key } from "artifacts/SelectPlacesModal_EventPlacementFragment.graphql";
 import { SelectPlacesModal_ScheduleFragment$key } from "artifacts/SelectPlacesModal_ScheduleFragment.graphql";
-import SubmitButton from "components/shared/SubmitButton/SubmitButton";
+import SubmitButton from "components/shared/SubmitButton";
 import Input from "components/v2/Input/Input";
 
 interface SelectPlacesModalProps {

@@ -11,8 +11,8 @@ import Link from "components/v2/Link";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import RemoveDoneIcon from "@mui/icons-material/RemoveDone";
 import CreateInterest from "components/shared/forms/interest/CreateInterest";
-import EditInterest from "../../../components/shared/forms/interest/EditInterest";
-import EditSeoMetadata from "../../../components/shared/forms/EditSeoMetadata";
+import EditInterest from "components/shared/forms/interest/EditInterest";
+import EditSeoMetadata from "components/shared/forms/EditSeoMetadata";
 
 interface InterestsSceneProps {
   queryFragmentRef: InterestsScene_QueryFragment$key;

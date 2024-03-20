@@ -7,7 +7,7 @@ import { SidebarContent_AccountFragment$key } from "artifacts/SidebarContent_Acc
 import { GlobalSidebarContext } from "components/GlobalSidebarProvider";
 import Typography from "components/v2/Typography";
 import Sidebar from "components/shared/Sidebar";
-import SelectCurrentFirm from "../SelectCurrentFirm";
+import SelectCurrentFirm from "components/shared/SelectCurrentFirm";
 
 const ContentWrapper = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {

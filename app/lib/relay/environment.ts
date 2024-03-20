@@ -9,7 +9,6 @@ import {
   Store,
   Variables,
 } from "relay-runtime";
-import { createRelaySubscriptionHandler } from "graphql-ruby-client";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 export const IS_SERVER = typeof window === typeof undefined;
@@ -65,7 +64,7 @@ export const responseCache: QueryResponseCache | null = IS_SERVER
       ttl: CACHE_TTL,
     });
 
-function createNetwork(isServer = false, cookies: RequestCookie[] = []) {
+function createNetwork(cookies: RequestCookie[] = []) {
   async function fetchResponse(
     params: RequestParameters,
     variables: Variables,
@@ -84,21 +83,13 @@ function createNetwork(isServer = false, cookies: RequestCookie[] = []) {
     return networkFetch(params, variables, cookies);
   }
 
-  const subscriptionHandler = isServer
-    ? undefined
-    : createRelaySubscriptionHandler({
-        // eslint-disable-next-line global-require
-        cable: require("@rails/actioncable").createConsumer(
-          getGraphQLBaseUrl().replace("https://", "ws://")
-        ),
-      });
-  const network = Network.create(fetchResponse, subscriptionHandler);
+  const network = Network.create(fetchResponse);
   return network;
 }
 
 export function createEnvironment(cookies: RequestCookie[] = []) {
   return new Environment({
-    network: createNetwork(IS_SERVER, cookies),
+    network: createNetwork(cookies),
     store: new Store(RecordSource.create()),
     isServer: IS_SERVER,
   });

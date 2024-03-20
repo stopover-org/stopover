@@ -1,8 +1,8 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
-import { theme } from "../../lib/theme";
-import Link from "../../components/v2/Link";
+import { theme } from "lib/theme";
+import Link from "components/v2/Link";
 
 export default {
   title: "Components/V2/Link",

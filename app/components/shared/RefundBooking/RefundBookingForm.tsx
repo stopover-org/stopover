@@ -3,7 +3,7 @@ import React from "react";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { RefundBookingForm_BookingFragment$key } from "artifacts/RefundBookingForm_BookingFragment.graphql";
-import SubmitButton from "../SubmitButton";
+import SubmitButton from "components/shared/SubmitButton";
 import { useRefundBookingForm } from "./useRefundBookingForm";
 
 interface RefundBookingFormProps {

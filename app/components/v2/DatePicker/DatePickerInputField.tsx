@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FormControl, InputProps as JoyInputProps } from "@mui/joy";
-import Input, { InputProps } from "../Input/Input";
+import Input, { InputProps } from "components/v2/Input/Input";
 
 interface BaseDatePickerInputFieldProps {
   label?: React.ReactNode;

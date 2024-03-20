@@ -11,8 +11,8 @@ import {
 } from "libphonenumber-js";
 import { useTheme } from "@mui/joy";
 import { useMediaQuery } from "@mui/material";
-import Input from "../Input";
-import { getCountryFromOffset } from "../../../lib/utils/timezones";
+import { getCountryFromOffset } from "lib/utils/timezones";
+import Input from "components/v2/Input";
 import CountryCodesAutocomplete from "./CountryCodesAutocomplete";
 
 export interface PhoneInputProps {

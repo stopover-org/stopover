@@ -20,7 +20,6 @@ import {
   useRefundsHeaders,
 } from "components/shared/tables/columns/refunds";
 import Button from "components/v2/Button";
-import useSubscription from "lib/hooks/useSubscription";
 import { getCurrencyFormat } from "lib/utils/currencyFormatter";
 import { useMediaQuery } from "@mui/material";
 import CreateNotification from "components/shared/CreateNotification";
@@ -107,20 +106,6 @@ const BookingScene = ({ bookingFragmentRef }: BookingSceneProps) => {
     `,
     bookingFragmentRef
   );
-
-  useSubscription({
-    variables: { bookingId: booking.id },
-    subscription: graphql`
-      subscription BookingScene_BookingChangedSubscription($bookingId: ID!) {
-        bookingChanged(bookingId: $bookingId) {
-          booking {
-            ...BookingScene_FirmBookingFragment
-          }
-        }
-      }
-    `,
-  });
-
   const [refundModal, setRefundModal] = React.useState(false);
   const tagColor = useStatusColor({
     primary: ["active"],

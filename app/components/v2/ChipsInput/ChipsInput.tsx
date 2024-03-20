@@ -1,7 +1,7 @@
 import React from "react";
 import { Chip, ChipDelete, FormHelperText, Stack } from "@mui/joy";
-import Input from "../Input";
-import { InputProps } from "../Input/Input";
+import Input from "components/v2/Input";
+import { InputProps } from "components/v2/Input/Input";
 
 interface BaseChipsInputProps {}
 

@@ -14,7 +14,6 @@ import { VerifyBookingScene_BookingFragment$key } from "artifacts/VerifyBookingS
 import Typography from "components/v2/Typography";
 import BookingSummary from "components/shared/BookingSummary";
 import Checkout from "components/shared/Checkout";
-import useSubscription from "lib/hooks/useSubscription";
 import Link from "components/v2/Link";
 
 interface VerifyBookingSceneProps {
@@ -82,22 +81,6 @@ const VerifyBookingScene = ({
     `,
     bookingFragmentRef
   );
-
-  useSubscription({
-    variables: { bookingId: booking.id },
-    subscription: graphql`
-      subscription VerifyBookingScene_BookingChangedSubscription(
-        $bookingId: ID!
-      ) {
-        bookingChanged(bookingId: $bookingId) {
-          booking {
-            ...VerifyBookingScene_BookingFragment
-            ...Checkout_BookingFragment
-          }
-        }
-      }
-    `,
-  });
   const { t } = useTranslation();
 
   return (

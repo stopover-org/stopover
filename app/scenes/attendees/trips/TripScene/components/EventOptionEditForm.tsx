@@ -2,12 +2,12 @@ import { graphql, useFragment } from "react-relay";
 import { Grid } from "@mui/joy";
 import React from "react";
 import moment from "moment";
-import Checkbox from "../../../../../components/v2/Checkbox/Checkbox";
-import Typography from "../../../../../components/v2/Typography/Typography";
-import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
-import { EventOptionEditForm_EventOptionFragment$key } from "../../../../../artifacts/EventOptionEditForm_EventOptionFragment.graphql";
-import useFormContext from "../../../../../lib/hooks/useFormContext";
-import { EventOptionEditForm_BookingFragment$key } from "../../../../../artifacts/EventOptionEditForm_BookingFragment.graphql";
+import Checkbox from "components/v2/Checkbox/Checkbox";
+import Typography from "components/v2/Typography/Typography";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import { EventOptionEditForm_EventOptionFragment$key } from "artifacts/EventOptionEditForm_EventOptionFragment.graphql";
+import useFormContext from "lib/hooks/useFormContext";
+import { EventOptionEditForm_BookingFragment$key } from "artifacts/EventOptionEditForm_BookingFragment.graphql";
 
 interface EventOptionEditFormProps {
   eventOptionFragmentRef: EventOptionEditForm_EventOptionFragment$key;

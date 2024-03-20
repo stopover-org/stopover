@@ -6,9 +6,9 @@ import Fieldset from "components/v2/Fieldset/Fieldset";
 import Button from "components/v2/Button/Button";
 import useFormContext from "lib/hooks/useFormContext";
 import { EditEventForm_FirmFragment$key } from "artifacts/EditEventForm_FirmFragment.graphql";
+import SubmitButton from "components/shared/SubmitButton";
 import GeneralStep from "./components/GeneralStep";
 import DatesStep from "./components/DatesStep";
-import SubmitButton from "../SubmitButton";
 import PaymentSettingsStep from "./components/PaymentSettingsStep";
 
 interface EditEventFormProps {

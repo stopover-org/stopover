@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
 import Button from "components/v2/Button";
 import { UnpublishEventModal_EventFragment$key } from "artifacts/UnpublishEventModal_EventFragment.graphql";
-import SubmitButton from "../SubmitButton/SubmitButton";
+import SubmitButton from "components/shared/SubmitButton/";
 import { useUnpublishEventForm } from "./useUnpublishEventForm";
 
 interface UnpublishEventModalProps {

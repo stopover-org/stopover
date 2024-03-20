@@ -1,9 +1,9 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
-import { theme } from "../../lib/theme";
-import SliderRange from "../../components/v2/SliderRange";
-import Input from "../../components/v2/Input";
+import { theme } from "lib/theme";
+import SliderRange from "components/v2/SliderRange";
+import Input from "components/v2/Input";
 
 export default {
   title: "Components/V2/SliderRange",

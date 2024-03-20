@@ -4,10 +4,10 @@ import { Moment } from "moment/moment";
 import { FormControl, FormLabel, Grid, IconButton, Tooltip } from "@mui/joy";
 import { ClickAwayListener } from "@mui/base";
 import ClearIcon from "@mui/icons-material/Clear";
-import DatePicker from "../DatePicker";
-import { DatePickerProps as JoyDatePickerProps } from "../DatePicker/DatePicker";
-import Input, { InputProps } from "../Input/Input";
-import { getDate } from "../../../lib/utils/dates";
+import { getDate } from "lib/utils/dates";
+import DatePicker from "components/v2/DatePicker";
+import { DatePickerProps as JoyDatePickerProps } from "components/v2/DatePicker/DatePicker";
+import Input, { InputProps } from "components/v2/Input/Input";
 import PickersDay from "./PickersDay";
 
 interface BaseDatePickerProps {

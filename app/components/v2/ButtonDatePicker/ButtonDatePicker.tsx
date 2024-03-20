@@ -2,10 +2,10 @@ import { Moment } from "moment";
 import React from "react";
 import { ClickAwayListener } from "@mui/base";
 import { Stack } from "@mui/joy";
-import Button from "../Button";
-import DatePicker from "../DatePicker";
-import { ButtonProps } from "../Button/Button";
-import { DatePickerProps } from "../DatePicker/DatePicker";
+import Button from "components/v2/Button";
+import DatePicker from "components/v2/DatePicker";
+import { ButtonProps } from "components/v2/Button/Button";
+import { DatePickerProps } from "components/v2/DatePicker/DatePicker";
 
 interface BaseButtonDatePickerProps {
   children: React.ReactNode;

@@ -1,7 +1,11 @@
 import React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export function parseValue(value: string) {
+export function parseValue(value?: string) {
+  if (value === undefined) {
+    return undefined;
+  }
+
   try {
     return JSON.parse(value);
   } catch (error) {

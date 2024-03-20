@@ -7,6 +7,7 @@ module Types
       field :description, String, null: false
       field :keywords, String, null: false
       field :language, String, null: false
+      field :featured_images, [String], null: false
 
       def title
         if current_user.service_user

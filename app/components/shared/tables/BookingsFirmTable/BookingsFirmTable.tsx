@@ -8,7 +8,10 @@ import Filters from "components/shared/Filters";
 import { useTranslation } from "react-i18next";
 import DateQueryInput from "components/shared/DateQueryInput";
 import moment from "moment";
-import { useBookingsColumns, useBookingsHeaders } from "../columns/bookings";
+import {
+  useBookingsColumns,
+  useBookingsHeaders,
+} from "components/shared/tables/columns/bookings";
 import ContactEmailInput from "./components/ContactEmailInput";
 import ContactPhoneInput from "./components/ContactPhoneInput";
 

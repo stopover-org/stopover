@@ -2,8 +2,8 @@ import { Box, FormControl, FormLabel, IconButton, Option } from "@mui/joy";
 import React from "react";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import Select from "../../Select";
-import Typography from "../../Typography";
+import Select from "components/v2/Select";
+import Typography from "components/v2/Typography";
 
 export interface TablePaginationProps {
   rowsPerPageOptions?: number[];

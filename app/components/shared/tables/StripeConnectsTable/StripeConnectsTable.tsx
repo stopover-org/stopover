@@ -5,7 +5,7 @@ import Table from "components/v2/Table";
 import {
   useStripeConnectsColumns,
   useStripeConnectsHeaders,
-} from "../columns/stripeConnects";
+} from "components/shared/tables/columns/stripeConnects";
 
 interface StripeConnectsTableProps {
   firmFragmentRef: StripeConnectsTable_FirmFragment$key;

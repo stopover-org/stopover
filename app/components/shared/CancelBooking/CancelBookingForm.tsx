@@ -3,8 +3,8 @@ import React from "react";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { CancelBookingForm_BookingFragment$key } from "artifacts/CancelBookingForm_BookingFragment.graphql";
+import SubmitButton from "components/shared/SubmitButton";
 import { useCancelBookingForm } from "./useCancelBookingForm";
-import SubmitButton from "../SubmitButton";
 
 interface CancelBookingFormProps {
   bookingFragmentRef: CancelBookingForm_BookingFragment$key;

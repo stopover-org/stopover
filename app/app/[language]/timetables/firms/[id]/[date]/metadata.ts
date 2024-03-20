@@ -1,0 +1,64 @@
+import {
+  GetVariablesFn,
+  PageProps,
+} from "components/shared/relay/PreloadedQueryWrapper";
+import { Metadata } from "next";
+import { generateCommonMetadata } from "lib/utils/metadata";
+import moment from "moment";
+import { urlSafeDateFormat } from "lib/utils/dates";
+import fetchQuery from "lib/relay/fetchQuery";
+import {
+  sharedEmails,
+  sharedImages,
+  sharedPhones,
+} from "lib/utils/defaultMetadata";
+
+export const PAGE_TITLE = "seo.timetable.firms.id.date.title";
+export const getVariables: GetVariablesFn = (props: PageProps) => ({
+  id: unescape(props.params.id),
+  filters: {
+    firmId: unescape(props.params.id),
+    startDate: moment(props.params.date, urlSafeDateFormat)
+      .startOf("day")
+      .toISOString(),
+    endDate: moment(props.params.date, urlSafeDateFormat)
+      .endOf("day")
+      .toISOString(),
+  },
+});
+export const revalidate = 0;
+const PageQuery = `
+  query PageQuery($id: ID!) {
+    firm(id: $id) {
+      title
+      primaryPhone
+      primaryEmail
+      image
+      address {
+        country
+      }
+    }
+  }
+`;
+export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
+  const response = await fetchQuery(PageQuery, getVariables(props));
+  return generateCommonMetadata(
+    {
+      title: PAGE_TITLE,
+      description: "seo.timetable.firms.id.date.description",
+      keywords: "seo.timetable.firms.id.date.keywords",
+    },
+    getVariables,
+    props,
+    true,
+    { firm: response?.firm?.title, date: moment(props.params.date).calendar() },
+    {
+      openGraph: {
+        phoneNumbers: [response?.firm?.primaryPhone, ...sharedPhones],
+        emails: [response?.firm?.primaryEmail, ...sharedEmails],
+        images: [response?.firm?.image, ...sharedImages],
+        countryName: response?.firm?.address?.country,
+      },
+    }
+  );
+};

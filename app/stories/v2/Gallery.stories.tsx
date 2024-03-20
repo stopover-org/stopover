@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import Gallery from "../../components/v2/Gallery";
+import Gallery from "components/v2/Gallery";
 
 const imagesArray: any = [
   {

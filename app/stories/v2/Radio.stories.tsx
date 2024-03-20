@@ -8,8 +8,8 @@ import {
   RadioGroup,
 } from "@mui/joy";
 import { Close } from "@mui/icons-material";
-import { theme } from "../../lib/theme";
-import Radio from "../../components/v2/Radio";
+import { theme } from "lib/theme";
+import Radio from "components/v2/Radio";
 
 export default {
   title: "Components/V2/Radio",

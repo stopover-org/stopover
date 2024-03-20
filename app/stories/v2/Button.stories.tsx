@@ -2,8 +2,8 @@ import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import ThumbUp from "@mui/icons-material/ThumbUp";
-import Button from "../../components/v2/Button";
-import { theme } from "../../lib/theme";
+import Button from "components/v2/Button";
+import { theme } from "lib/theme";
 
 export default {
   title: "Components/v2/Button",

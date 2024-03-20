@@ -2,7 +2,7 @@ import { DialogActions, Divider, Modal, ModalDialog, Stack } from "@mui/joy";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import SubmitButton from "components/shared/SubmitButton/SubmitButton";
+import SubmitButton from "components/shared/SubmitButton";
 import Button from "components/v2/Button";
 import { useRemoveFirm } from "../useRemoveFirm";
 

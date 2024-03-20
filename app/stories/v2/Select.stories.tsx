@@ -2,8 +2,8 @@ import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { Chip, CssVarsProvider, Grid, Option } from "@mui/joy";
 import { FavoriteBorder } from "@mui/icons-material";
-import { theme } from "../../lib/theme";
-import Select from "../../components/v2/Select";
+import { theme } from "lib/theme";
+import Select from "components/v2/Select";
 
 export default {
   title: "Components/V2/Select",

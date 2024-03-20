@@ -2,7 +2,7 @@ import React from "react";
 import { PickerOverlay } from "filestack-react";
 import { PickerOptions } from "filestack-js";
 import { useTranslation } from "react-i18next";
-import Button from "../Button";
+import Button from "components/v2/Button";
 
 interface BaseFileUploaderProps {
   onChange: (files: string[]) => void;

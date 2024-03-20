@@ -1,9 +1,9 @@
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import { ProfileScene_AccountFragment$key } from "../../../artifacts/ProfileScene_AccountFragment.graphql";
-import EditProfileForm from "../../../components/shared/EditProfileForm";
-import Typography from "../../../components/v2/Typography";
+import { ProfileScene_AccountFragment$key } from "artifacts/ProfileScene_AccountFragment.graphql";
+import EditProfileForm from "components/shared/EditProfileForm";
+import Typography from "components/v2/Typography";
 
 interface ProfileSceneProps {
   accountFragmentRef: ProfileScene_AccountFragment$key;

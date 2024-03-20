@@ -3,8 +3,8 @@ import NextLink from "next/link";
 import { styled, Tooltip } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import LaunchIcon from "@mui/icons-material/Launch";
-import Typography from "../Typography";
-import { TypographyProps } from "../Typography/Typography";
+import Typography from "components/v2/Typography";
+import { TypographyProps } from "components/v2/Typography/Typography";
 
 interface BaseLinkProps {
   children: React.ReactNode;

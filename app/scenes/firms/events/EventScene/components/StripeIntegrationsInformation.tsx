@@ -1,12 +1,12 @@
 import { graphql, useFragment } from "react-relay";
 import React from "react";
 import { TabPanel } from "@mui/joy";
-import Table from "../../../../../components/v2/Table";
 import {
   useStripeIntegrationsColumns,
   useStripeIntegrationsHeaders,
-} from "../../../../../components/shared/tables/columns/stripeIntegrations";
-import { StripeIntegrationsInformation_EventFragment$key } from "../../../../../artifacts/StripeIntegrationsInformation_EventFragment.graphql";
+} from "components/shared/tables/columns/stripeIntegrations";
+import { StripeIntegrationsInformation_EventFragment$key } from "artifacts/StripeIntegrationsInformation_EventFragment.graphql";
+import Table from "components/v2/Table";
 
 interface StripeIntegrationsInformationProps {
   eventFragmentRef: StripeIntegrationsInformation_EventFragment$key;

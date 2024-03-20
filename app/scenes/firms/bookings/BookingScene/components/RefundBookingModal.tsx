@@ -1,22 +1,22 @@
 import {
   Box,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
   Modal,
   ModalDialog,
   Stack,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
 } from "@mui/joy";
 import React from "react";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import RefundBookingForm from "../../../../../components/shared/RefundBooking/RefundBookingForm";
-import Button from "../../../../../components/v2/Button";
-import { RefundBookingModal_BookingFragment$key } from "../../../../../artifacts/RefundBookingModal_BookingFragment.graphql";
-import { getCurrencyFormat } from "../../../../../lib/utils/currencyFormatter";
-import Typography from "../../../../../components/v2/Typography";
+import RefundBookingForm from "components/shared/RefundBooking/RefundBookingForm";
+import Button from "components/v2/Button";
+import { RefundBookingModal_BookingFragment$key } from "artifacts/RefundBookingModal_BookingFragment.graphql";
+import { getCurrencyFormat } from "lib/utils/currencyFormatter";
+import Typography from "components/v2/Typography";
 
 interface RefundBookingModalProps {
   open: boolean;

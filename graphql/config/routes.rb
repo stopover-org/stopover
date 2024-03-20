@@ -70,4 +70,7 @@ Rails.application.routes.draw do
 
   post '/webhooks', to: 'webhooks#create'
   post '/connect_webhooks', to: 'connect_webhooks#create'
+
+  post :test_setup, to: 'testings#setup' unless Rails.env.production?
+  post :test_teardown, to: 'testings#teardown' unless Rails.env.production?
 end

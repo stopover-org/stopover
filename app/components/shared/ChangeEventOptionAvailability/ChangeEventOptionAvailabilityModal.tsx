@@ -11,10 +11,10 @@ import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { graphql, useFragment } from "react-relay";
-import Button from "../../v2/Button";
-import SubmitButton from "../SubmitButton/SubmitButton";
+import Button from "components/v2/Button";
+import { ChangeEventOptionAvailabilityModal_EventOptionFragment$key } from "artifacts/ChangeEventOptionAvailabilityModal_EventOptionFragment.graphql";
+import SubmitButton from "components/shared/SubmitButton/";
 import { useChangeEventOptionAvailabilityForm } from "./useChangeEventOptionAvailabilityForm";
-import { ChangeEventOptionAvailabilityModal_EventOptionFragment$key } from "../../../artifacts/ChangeEventOptionAvailabilityModal_EventOptionFragment.graphql";
 
 interface ChangeEventOptionAvailabilityModalProps {
   eventOptionFragmentRef: ChangeEventOptionAvailabilityModal_EventOptionFragment$key;

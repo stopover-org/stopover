@@ -1,6 +1,6 @@
 "use client";
 
-import Layout from "components/MainPage/Layout";
+import Layout from "components/shared/MainPage/Layout";
 import AuthGuard from "components/shared/AuthGuard";
 import { graphql, useLazyLoadQuery } from "react-relay";
 import { notFound_Query } from "artifacts/notFound_Query.graphql";

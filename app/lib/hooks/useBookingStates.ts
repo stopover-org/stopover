@@ -2,10 +2,10 @@ import moment from "moment";
 import React from "react";
 import { graphql, useFragment } from "react-relay";
 import { useTranslation } from "react-i18next";
-import { useBookingStates_ReasonBookingFragment$key } from "../../artifacts/useBookingStates_ReasonBookingFragment.graphql";
-import { useBookingStates_BookingFragment$key } from "../../artifacts/useBookingStates_BookingFragment.graphql";
-import { useBookingStates_CancellableBookingFragment$key } from "../../artifacts/useBookingStates_CancellableBookingFragment.graphql";
-import { useBookingStates_PayableBookingFragment$key } from "../../artifacts/useBookingStates_PayableBookingFragment.graphql";
+import { useBookingStates_ReasonBookingFragment$key } from "artifacts/useBookingStates_ReasonBookingFragment.graphql";
+import { useBookingStates_BookingFragment$key } from "artifacts/useBookingStates_BookingFragment.graphql";
+import { useBookingStates_CancellableBookingFragment$key } from "artifacts/useBookingStates_CancellableBookingFragment.graphql";
+import { useBookingStates_PayableBookingFragment$key } from "artifacts/useBookingStates_PayableBookingFragment.graphql";
 
 export function useBookingDisabled(
   bookingFragmentRef: useBookingStates_BookingFragment$key

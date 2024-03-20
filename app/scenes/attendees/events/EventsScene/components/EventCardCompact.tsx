@@ -16,8 +16,8 @@ import Link from "components/v2/Link";
 import { getCurrencyFormat } from "lib/utils/currencyFormatter";
 import { EventCardCompact_BookEventMutation } from "artifacts/EventCardCompact_BookEventMutation.graphql";
 import { EventCardCompacts_EventFragment$key } from "artifacts/EventCardCompacts_EventFragment.graphql";
-import SubmitButton from "components/shared/SubmitButton/SubmitButton";
-import Button from "components/v2/Button/Button";
+import SubmitButton from "components/shared/SubmitButton";
+import Button from "components/v2/Button";
 import { useUpdateQuery } from "lib/hooks/useQuery";
 import DateAutocomplete from "./DateAutocomplete";
 

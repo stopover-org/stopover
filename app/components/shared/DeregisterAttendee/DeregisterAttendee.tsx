@@ -4,8 +4,8 @@ import PersonAddDisabledIcon from "@mui/icons-material/PersonAddDisabled";
 import { Tooltip } from "@mui/joy";
 import { useTranslation } from "react-i18next";
 import { DeregisterAttendee_AttendeeFragment$key } from "artifacts/DeregisterAttendee_AttendeeFragment.graphql";
+import SubmitButton from "components/shared/SubmitButton";
 import { useDeregisterAttendeeForm } from "./useDeregisterAttendeeForm";
-import SubmitButton from "../SubmitButton";
 
 interface RegisterAttendeeProps {
   attendeeFragmentRef: DeregisterAttendee_AttendeeFragment$key;
