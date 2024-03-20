@@ -72,9 +72,10 @@ const config = {
     // maxWorkers: "50%",
 
     // An array of directory names to be searched recursively up from the requiring module's location
-    // moduleDirectories: [
-    //   "node_modules"
-    // ],
+    moduleDirectories: [
+        "node_modules",
+        __dirname,
+    ],
 
     // An array of file extensions your modules use
     // moduleFileExtensions: [
@@ -155,8 +156,7 @@ const config = {
 
     // The glob patterns Jest uses to detect test files
     testMatch: [
-        "**/__tests__/**/*.[jt]s?(x)",
-        "./tests/?(*.)+(spec|test).[tj]s?(x)"
+        "**/tests/**/*.test.[jt]s?(x)",
     ],
 
     // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
@@ -175,6 +175,14 @@ const config = {
 
     // A map from regular expressions to paths to transformers
     // transform: undefined,
+    transform: {
+        // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
+        // '^.+\\.m?[tj]sx?$' to process js/ts/mjs/mts with `ts-jest`
+        '^.+\\.tsx?$': [
+            'ts-jest',
+            {},
+        ],
+    },
 
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
     // transformIgnorePatterns: [
