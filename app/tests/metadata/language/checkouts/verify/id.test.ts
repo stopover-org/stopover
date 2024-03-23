@@ -8,11 +8,11 @@ import {
 import defaultMetadata from "lib/utils/defaultMetadata";
 import { merge } from "lodash";
 import { Metadata } from "next";
-import { setupData } from "lib/testing/setupData";
+import { setupData, teardownData } from "lib/testing/setupData";
 
 describe("[language]/checkouts/verify/[id]", () => {
   beforeAll(async () => {
-    const result = await setupData({
+    await setupData({
       setup_variables: [
         {
           factory: "published_event",
@@ -20,12 +20,10 @@ describe("[language]/checkouts/verify/[id]", () => {
         },
       ],
     });
-
-    console.log(result);
   });
 
   afterAll(async () => {
-    // await teardownData();
+    await teardownData();
   });
 
   it("PAGE_TITLE", () => {
@@ -41,21 +39,21 @@ describe("[language]/checkouts/verify/[id]", () => {
       // /[language]/checkouts/verify/123==
       it("default props", () => {
         const defaultProps = {
-          params: { language, id: "id" },
+          params: { language, id: "123==" },
           searchParams: {},
         };
 
-        expect(getVariables(defaultProps)).toStrictEqual({});
+        expect(getVariables(defaultProps)).toStrictEqual({ id: "123==" });
       });
 
       // /[language]/checkouts/verify/123==?param1=123&param2=123
       it("various searchParams", () => {
         const defaultProps = {
-          params: { language, id: "id" },
+          params: { language, id: "123==" },
           searchParams: { param1: "123", param2: "123" },
         };
 
-        expect(getVariables(defaultProps)).toStrictEqual({});
+        expect(getVariables(defaultProps)).toStrictEqual({ id: "123==" });
       });
     })
   );
