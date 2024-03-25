@@ -24,11 +24,15 @@ export async function networkFetch(
   variables: Variables,
   cookies: RequestCookie[] = []
 ): Promise<GraphQLResponse> {
-  const headers = {
+  const headers: Record<string, string> = {
     Accept: "application/json",
     "Content-Type": "application/json",
     Cookie: getCookiesString(cookies),
   };
+
+  if (process.env.NODE_ENV === "test") {
+    headers["X-Sandbox"] = "true";
+  }
 
   const resp = await fetch(getGraphQLBaseUrl(), {
     method: "POST",
