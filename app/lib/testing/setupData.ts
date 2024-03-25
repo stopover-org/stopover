@@ -1,10 +1,14 @@
 import { getGraphQLBaseUrl } from "lib/relay/environment";
 
 async function postData(data: Record<string, any>, url: string) {
-  const headers = {
+  const headers: Record<string, string> = {
     Accept: "application/json",
     "Content-Type": "application/json",
   };
+
+  if (process.env.NODE_ENV === "test") {
+    headers["X-Sandbox"] = "true";
+  }
 
   const resp = await fetch(url, {
     method: "POST",

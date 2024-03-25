@@ -9,6 +9,8 @@ class GraphqlController < ApplicationController
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
   before_action :authorize!
+  before_action :load_test_env
+  after_action :unload_test_env
 
   def execute
     variables = prepare_variables(params[:variables])
@@ -21,6 +23,7 @@ class GraphqlController < ApplicationController
 
     set_locale
     update_user_locale
+
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     status_code = result&.dig('errors', 0, 'extensions', 'statusCode') || 200
     cookies.permanent[Stopover::AuthorizationSupport::COOKIE_KEY] = context[:current_user]&.access_token

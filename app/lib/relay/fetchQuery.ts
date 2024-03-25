@@ -3,11 +3,15 @@ import { getCookiesString, getGraphQLBaseUrl } from "./environment";
 
 export default async function (query: string, variables: any) {
   try {
-    const headers = {
+    const headers: Record<string, string> = {
       Accept: "application/json",
       "Content-Type": "application/json",
       Cookie: getCookiesString(cookies().getAll()),
     };
+
+    if (process.env.NODE_ENV === "test") {
+      headers["X-Sandbox"] = "true";
+    }
 
     const resp = await fetch(getGraphQLBaseUrl(), {
       method: "POST",
@@ -26,6 +30,7 @@ export default async function (query: string, variables: any) {
 
     return json.data;
   } catch (err) {
+    console.log(err);
     return null;
   }
 }

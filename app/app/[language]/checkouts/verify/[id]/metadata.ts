@@ -1,5 +1,9 @@
 import { GetVariablesFn } from "components/shared/relay/PreloadedQueryWrapper";
-import { generateCommonMetadata, GenerateMetadataFn } from "lib/utils/metadata";
+import {
+  generateCommonMetadata,
+  GenerateMetadataFn,
+  notFoundMetadata,
+} from "lib/utils/metadata";
 import fetchQuery from "lib/relay/fetchQuery";
 import moment from "moment";
 
@@ -12,6 +16,7 @@ export const revalidate = 0;
 const PageQuery = `
   query PageQuery($id: ID!) {
     booking(id: $id) {
+      id
       event {
         title
       }
@@ -24,6 +29,10 @@ export const generateMetadata: GenerateMetadataFn = async (props) => {
     title: response?.booking?.event?.title,
     date: moment(response?.booking?.bookedFor).calendar(),
   };
+
+  if (!response?.booking?.id) {
+    return notFoundMetadata(props.params.language);
+  }
 
   const metadata = generateCommonMetadata(
     {

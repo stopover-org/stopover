@@ -28,11 +28,11 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
   end
 
   before(:each) do
-    $skip_phone_validation = false
+    Flipper.enable(:skip_phone_validation)
   end
 
   teardown do
-    $skip_phone_validation = true
+    Flipper.disable(:skip_phone_validation)
   end
 
   shared_examples :notification_sent do |travel_to_delay|
@@ -164,7 +164,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -176,7 +176,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             input[:code] = user.confirmation_code
 
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.count }.by(1)
 
             user = User.last
             expect(user.status).to eq('active')
@@ -210,7 +210,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -246,7 +246,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -305,7 +305,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -472,7 +472,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -516,7 +516,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -552,7 +552,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -609,7 +609,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -764,7 +764,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -775,7 +775,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.count }.by(1)
 
             user = User.last
             expect(user.status).to eq('active')
@@ -809,7 +809,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -845,7 +845,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -904,7 +904,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1071,7 +1071,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1115,7 +1115,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1151,7 +1151,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1208,7 +1208,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1344,7 +1344,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1356,7 +1356,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             input[:code] = user.confirmation_code
             expect(user.account).not_to be_nil
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.count }.by(1)
 
             user = current_user.reload
             expect(user.status).to eq('active')
@@ -1385,7 +1385,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1417,7 +1417,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1477,7 +1477,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1604,7 +1604,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1646,7 +1646,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1678,7 +1678,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1737,7 +1737,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1873,7 +1873,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1884,7 +1884,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
             user = User.last
             input[:code] = user.confirmation_code
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
-                                                                .and change { Notification.count }.by(1)
+                                                                                         .and change { Notification.count }.by(1)
 
             user.reload
 
@@ -1914,7 +1914,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -1949,7 +1949,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -2007,7 +2007,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: email, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -2132,7 +2132,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -2175,7 +2175,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -2210,7 +2210,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 
@@ -2266,7 +2266,7 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
                                   variables: {
                                     input: { username: phone, type: type }
                                   },
-                                    context: { current_user: current_user })
+                                  context: { current_user: current_user })
           end
         end
 

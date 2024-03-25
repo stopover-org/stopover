@@ -11,6 +11,7 @@ module Mixins
     end
 
     def adjust_translations
+      return unless Flipper.enabled?(:global_translations)
       self.class::TRANSLATABLE_FIELDS.each do |field|
         self.class::AVAILABLE_LANGUAGES.each do |language|
           next if self[field]&.empty? || self[field].nil?
