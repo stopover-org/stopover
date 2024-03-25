@@ -31,7 +31,7 @@ class TestingsController < ApplicationController
       model = hash[:model].camelize.constantize
       record = model.find_by(id: hash[:id].to_i)
 
-      record&.delete
+      record&.destroy
       Redis.new.lrem('testing:e2e:records', 1, hash.deep_stringify_keys.to_json)
     end
 
