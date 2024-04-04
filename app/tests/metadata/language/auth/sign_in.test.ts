@@ -4,7 +4,7 @@ import {
   getVariables,
   PAGE_TITLE,
   revalidate,
-} from "app/[language]/auth/sign_in/metadata";
+} from "app/[language]/auth/sign-in/metadata";
 import defaultMetadata from "lib/utils/defaultMetadata";
 import { merge } from "lodash";
 import { Metadata } from "next";

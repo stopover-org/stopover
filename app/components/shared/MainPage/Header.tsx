@@ -119,7 +119,7 @@ const Header = ({ currentUserFragment }: HeaderProps) => {
           )}
           {!isAuthorized && (
             <Link
-              href="/auth/sign_in"
+              href="/auth/sign-in"
               textAlign="right"
               level={isSmallDisplay ? "body-sm" : "body-md"}
               fontSize="lg"

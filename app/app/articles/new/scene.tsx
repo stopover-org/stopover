@@ -33,7 +33,7 @@ const Scene = ({ queryRef }: Partial<SceneProps<scene_NewArticle_Query>>) => {
       <Layout currentUserFragment={data.currentUser}>
         <AuthGuard
           accessible={data.currentUser?.status === "active"}
-          redirectTo="/auth/sign_in"
+          redirectTo="/auth/sign-in"
         >
           <AuthGuard
             accessible={data.currentUser?.serviceUser}

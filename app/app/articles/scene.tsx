@@ -36,7 +36,7 @@ const Scene = ({
       <Layout currentUserFragment={data.currentUser}>
         <AuthGuard
           accessible={data.currentUser?.status === "active"}
-          redirectTo="/auth/sign_in"
+          redirectTo="/auth/sign-in"
         >
           <AuthGuard accessible={data.currentUser?.serviceUser}>
             <SidebarContent
