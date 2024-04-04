@@ -1,5 +1,5 @@
 import React from "react";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { Grid, Sheet } from "@mui/joy";
 import Typography from "components/v2/Typography";
 
@@ -36,7 +36,8 @@ const AuthGuard = ({
   }
 
   if (!noAccess) {
-    noAccess = "You don't have access to this page";
+    notFound();
+    return null;
   }
 
   if (typeof noAccess === "string") {

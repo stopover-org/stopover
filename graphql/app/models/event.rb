@@ -325,25 +325,26 @@ class Event < ApplicationRecord
 
   def adjust_seo_metadata
     unless seo_metadatum
-      update!(seo_metadatum: SeoMetadatum.create!(event: self,
-                                                  language: language,
-                                                  title: title,
-                                                  description: ActionView::Base.full_sanitizer.sanitize(description, { tags: [] }),
-                                                  keywords: [
-                                                    title,
-                                                    firm.title,
-                                                    address&.country,
-                                                    address&.region,
-                                                    address&.city,
-                                                    address&.street,
-                                                    address&.full_address,
-                                                    firm.address&.country,
-                                                    firm.address&.region,
-                                                    firm.address&.city,
-                                                    firm.address&.street,
-                                                    firm.address&.full_address,
-                                                    *available_dates.map(&:to_s)
-                                                  ].join(' ')))
+      metadata = SeoMetadatum.new(event: self,
+                                  language: language,
+                                  title: title,
+                                  description: ActionView::Base.full_sanitizer.sanitize(description, { tags: [] }),
+                                  keywords: [
+                                    title,
+                                    firm.title,
+                                    address&.country,
+                                    address&.region,
+                                    address&.city,
+                                    address&.street,
+                                    address&.full_address,
+                                    firm.address&.country,
+                                    firm.address&.region,
+                                    firm.address&.city,
+                                    firm.address&.street,
+                                    firm.address&.full_address,
+                                    *available_dates.map(&:to_s)
+                                  ].join(' '))
+      metadata.save!
     end
   end
 end

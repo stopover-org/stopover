@@ -6,7 +6,7 @@ module Connections
       @arguments = args[:arguments]
       @query_type = @arguments[:query_type]
       @per_page = @query_type::PER_PAGE
-      @max_per_page = defined?(@query_type::MAX_PER_PAGE) ? @query_type::MAX_PER_PAGE : 1000
+      @max_per_page = @query_type.class.const_defined?(:MAX_PER_PAGE) ? @query_type::MAX_PER_PAGE : 1000
       super([], default_page_size: @per_page, max_page_size: @max_page_size, **args)
     end
 

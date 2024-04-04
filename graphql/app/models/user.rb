@@ -178,7 +178,7 @@ class User < ApplicationRecord
   end
 
   def skip_phone_validation
-    $skip_phone_validation || false
+    Flipper.enabled?(:skip_phone_validation) || false
   end
 
   def can_send_code?

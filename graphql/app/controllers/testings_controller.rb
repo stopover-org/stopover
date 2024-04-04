@@ -1,39 +1,40 @@
+# frozen_string_literal: true
+
 require 'factory_bot'
 require 'factory_bot_rails'
 
 class TestingsController < ApplicationController
-  before_action :load_test_env
-  after_action :unload_test_env
-
   def setup
     result = []
     setup_variables = params[:setup_variables]
     setup_variables.each do |model_variable|
-      result << FactoryBot.create(model_variable[:factory].to_sym,
-                                  **model_variable[:attributes].to_unsafe_h)
+      record = FactoryBot.create(model_variable[:factory].to_sym,
+                                 **model_variable[:attributes].to_unsafe_h)
+      result << record
     end
 
-    render json: result.map { |record| record.attributes.to_json }
+    json = result.map do |record|
+      json = record.attributes
+      json[:access_token] = record.access_token if record.is_a? User
+
+      json[:graphql_id] = GraphqlSchema.id_from_object(record) if record.class.const_defined?(:GRAPHQL_TYPE)
+
+      json.to_json
+    end
+
+    render json: json
   end
 
   def teardown
-    conn = ActiveRecord::Base.connection
-    tables = conn.execute("show tables").map { |r| r[0] }
-    # keep schema_migrations table
-    tables.delete "schema_migrations"
-    # wipe all other tables
-    tables.each { |t| conn.execute("TRUNCATE #{t}") }
+    Redis.new.lrange('testing:e2e:records', 0, -1).each do |record_hash|
+      hash = JSON.parse(record_hash).deep_symbolize_keys
+      model = hash[:model].camelize.constantize
+      record = model.find_by(id: hash[:id].to_i)
+
+      record&.destroy
+      Redis.new.lrem('testing:e2e:records', 1, hash.deep_stringify_keys.to_json)
+    end
 
     render json: {}
-  end
-
-  private
-
-  def load_test_env
-    $skip_phone_validation = true
-  end
-
-  def unload_test_env
-    $skip_phone_validation = false
   end
 end

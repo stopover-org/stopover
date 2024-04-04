@@ -38,7 +38,7 @@ module Stopover
       end
     end
 
-    def self.schedule(event)
+    def self.schedule(event, _days_in_advance = SCHEDULE_DAYS_IN_ADVANCE)
       SCHEDULE_DAYS_IN_ADVANCE.times do |i|
         date = (Time.current + i.days)
         break if event.end_date && event.end_date < date

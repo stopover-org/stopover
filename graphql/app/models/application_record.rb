@@ -2,6 +2,7 @@
 
 class ApplicationRecord < ActiveRecord::Base
   primary_abstract_class
+  after_commit :e2e_callback, on: :create
   # MODULES ===============================================================
   #
   # MONETIZE ==============================================================
@@ -43,5 +44,12 @@ class ApplicationRecord < ActiveRecord::Base
 
   def relay_id
     GraphqlSchema.id_from_object(self)
+  end
+
+  def e2e_callback
+    if Flipper.enabled?(:global_sandbox)
+      Redis.new.lpush('testing:e2e:records', { model: self.class.name.underscore,
+                                               id: id }.to_json)
+    end
   end
 end

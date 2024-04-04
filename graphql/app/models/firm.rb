@@ -204,7 +204,7 @@ class Firm < ApplicationRecord
   end
 
   def skip_phone_validation
-    $skip_phone_validation || false
+    Flipper.enabled?(:skip_phone_validation) || false
   end
 
   def adjust_events_margin
@@ -221,11 +221,12 @@ class Firm < ApplicationRecord
 
   def adjust_seo_metadata
     unless seo_metadatum
-      update!(seo_metadatum: SeoMetadatum.create!(firm: self,
-                                                  language: language,
-                                                  title: title,
-                                                  description: description,
-                                                  keywords: ''))
+      metadata = SeoMetadatum.create!(firm: self,
+                                      language: language,
+                                      title: title,
+                                      description: description,
+                                      keywords: '')
+      metadata.save!
     end
   end
 end
