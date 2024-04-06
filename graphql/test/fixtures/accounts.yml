@@ -1,0 +1,44 @@
+admin_account:
+  language: 'ru'
+  name: 'Mikhail D.'
+  phones: ['+381621496690']
+  primary_phone: '+381621496690'
+  primary_email: 'mikhail@stopoverx.com'
+  status: 'initial'
+  firm: stopoverx
+  user: admin
+manager_stopoverx_account:
+  language: 'ru'
+  name: 'Stopoverx Manager'
+  phones: ['+38162149661']
+  primary_phone: '+38162149661'
+  primary_email: 'manager_stopoverx@stopoverx.com'
+  status: 'initial'
+  firm: stopoverx
+  user: manager_stopoverx
+manager_cash_only_travel_agency_account:
+  language: 'ru'
+  name: 'Manager Cash Only Travel Agency'
+  phones: ['+381621496692']
+  primary_phone: '+381621496692'
+  primary_email: 'manager_cash_only_travel_agency@stopoverx.com'
+  status: 'initial'
+  firm: cash_only_travel_agency
+  user: manager_cash_only_travel_agency
+manager_stripe_only_travel_agency_account:
+  language: 'ru'
+  name: 'Manager Stripe Only Travel Agency'
+  phones: ['+381621496693']
+  primary_phone: '+381621496693'
+  primary_email: 'manager_stripe_only_travel_agency@stopoverx.com'
+  status: 'initial'
+  firm: stripe_only_travel_agency
+  user: manager_stripe_only_travel_agency
+attendee_account:
+  language: 'ru'
+  name: 'Attendee'
+  phones: ['+381621496694']
+  primary_phone: '+381621496694'
+  primary_email: 'attendee@stopoverx.com'
+  status: 'initial'
+  user: attendee

@@ -71,6 +71,10 @@ Rails.application.routes.draw do
   post '/webhooks', to: 'webhooks#create'
   post '/connect_webhooks', to: 'connect_webhooks#create'
 
-  post :test_setup, to: 'testings#setup' unless Rails.env.production?
-  post :test_teardown, to: 'testings#teardown' unless Rails.env.production?
+  if Rails.env.test?
+    post :test_setup, to: 'testings#setup'
+    post :test_teardown, to: 'testings#teardown'
+    post :setup_fixtures, to: 'testings#setup_fixtures'
+    post :teardown_fixtures, to: 'testings#teardown_fixtures'
+  end
 end

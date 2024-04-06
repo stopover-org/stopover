@@ -1,0 +1,30 @@
+admin:
+  confirmed_at: Time.zone.now - 1.minute
+  email: 'mikhail@stopoverx.com'
+  phone: '+381621496690'
+  service_user: true
+  status: 'active'
+manager_stopoverx:
+  confirmed_at: Time.zone.now - 1.minute
+  email: 'manager_stopoverx@stopoverx.com'
+  phone: '+38162149661'
+  service_user: false
+  status: 'active'
+manager_cash_only_travel_agency:
+  confirmed_at: Time.zone.now - 1.minute
+  email: 'manager_cash_only_travel_agency@stopoverx.com'
+  phone: '+381621496692'
+  service_user: false
+  status: 'active'
+manager_stripe_only_travel_agency:
+  confirmed_at: Time.zone.now - 1.minute
+  email: 'manager_stripe_only_travel_agency@stopoverx.com'
+  phone: '+381621496693'
+  service_user: false
+  status: 'active'
+attendee:
+  confirmed_at: Time.zone.now - 1.minute
+  email: 'attendee@stopoverx.com'
+  phone: '+381621496694'
+  service_user: false
+  status: 'active'

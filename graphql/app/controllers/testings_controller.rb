@@ -4,17 +4,21 @@ require 'factory_bot'
 require 'factory_bot_rails'
 
 class TestingsController < ApplicationController
+  # load fixtures in test env
   def setup_fixtures
     raise 'Wrong Environment' unless Rails.env.test?
-    Rails.logger.debug 'load fixtures'
+
     fixtures_dir = File.join(Rails.root, '/test/fixtures')
-    Dir.glob(File.join(fixtures_dir,'*.yml')).each do |file|
+    Rails.logger.debug { "load fixtures from #{fixtures_dir}" }
+
+    Dir.glob(File.join(fixtures_dir, '*.yml')).each do |file|
       base_name = File.basename(file, '.*')
-      Rails.logger.debug "Loading #{base_name}..."
+      Rails.logger.debug { "Loading #{base_name}..." }
       ActiveRecord::FixtureSet.create_fixtures(fixtures_dir, base_name)
     end
   end
 
+  # wipe database in test env
   def teardown_fixtures
     raise 'Wrong Environment' unless Rails.env.test?
     Rails.logger.debug 'Teardown'
