@@ -136,10 +136,13 @@ const FirmSection = ({
       <Grid xs={12}>{firm.contactPerson}</Grid>
       <Grid xs={12} padding={0} margin={0}>
         <Section variant="soft" color="primary" margin={0} padding={0}>
-          {t(`models.firm.statusExplanations.${firm.status}`, {
-            returnObjects: true,
-            email: "mikhail@stopoverx.com",
-          }).map((translation: string) => (
+          {t<string, any, any>(
+            `models.firm.statusExplanations.${firm.status}`,
+            {
+              returnObjects: true,
+              email: "mikhail@stopoverx.com",
+            }
+          ).map((translation: string) => (
             <Typography
               fontSize="sm"
               level="body-sm"

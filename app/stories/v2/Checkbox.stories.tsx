@@ -1,14 +1,9 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import { Close } from "@mui/icons-material";
 import Checkbox from "components/v2/Checkbox";
 import { theme } from "lib/theme";
-
-export default {
-  title: "Components/V2/Checkbox",
-  component: Checkbox,
-} as ComponentMeta<typeof Checkbox>;
 
 const Preview = () => (
   <CssVarsProvider theme={theme}>
@@ -105,7 +100,14 @@ const Preview = () => (
     </Grid>
   </CssVarsProvider>
 );
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+
+export default {
+  title: "Components/V2/Checkbox",
+  component: Preview,
+} as Meta<typeof Checkbox>;
+
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };

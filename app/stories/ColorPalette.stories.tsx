@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentStory } from "@storybook/react";
+import { StoryObj } from "@storybook/react";
 import { Box, CssVarsProvider, Grid } from "@mui/joy";
 import { theme } from "lib/theme";
 import Typography from "components/v2/Typography";
@@ -56,8 +56,8 @@ const Preview = () => (
   </CssVarsProvider>
 );
 
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
-
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };

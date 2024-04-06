@@ -1,14 +1,9 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import { theme } from "lib/theme";
 import SliderRange from "components/v2/SliderRange";
 import Input from "components/v2/Input";
-
-export default {
-  title: "Components/V2/SliderRange",
-  component: SliderRange,
-} as ComponentMeta<typeof SliderRange>;
 
 const Preview = () => {
   const [value, setValue] = React.useState([200, 9900]);
@@ -61,8 +56,14 @@ const Preview = () => {
     </CssVarsProvider>
   );
 };
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+export default {
+  title: "Components/V2/SliderRange",
+  component: Preview,
+} as Meta<typeof SliderRange>;
+
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };

@@ -132,10 +132,13 @@ const EventScene = ({
       />
       <Grid xs={12} padding={0}>
         <Section variant="soft" color="primary" margin={0} padding={0}>
-          {t(`models.event.statusExplanations.${event.status}`, {
-            returnObjects: true,
-            email: "mikhail@stopoverx.com",
-          }).map((translation: string) => (
+          {t<string, any, any>(
+            `models.event.statusExplanations.${event.status}`,
+            {
+              returnObjects: true,
+              email: "mikhail@stopoverx.com",
+            }
+          ).map((translation: string) => (
             <React.Fragment key={translation}>
               <Typography fontSize="sm" level="body-sm" sx={{ width: "100%" }}>
                 {translation}{" "}

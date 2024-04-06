@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { CssVarsProvider, Divider, Grid } from "@mui/joy";
 import { CalendarMonthTwoTone } from "@mui/icons-material";
 import Input from "components/v2/Input";
@@ -7,11 +7,6 @@ import { theme } from "lib/theme";
 import PhoneInput from "components/v2/PhoneInput";
 import ChipsInput from "components/v2/ChipsInput";
 import TextArea from "components/v2/TextArea";
-
-export default {
-  title: "Components/v2/Input",
-  component: Input,
-} as ComponentMeta<typeof Input>;
 
 const Preview = () => {
   const [phone, setPhone] = React.useState("");
@@ -282,7 +277,14 @@ const Preview = () => {
     </CssVarsProvider>
   );
 };
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+
+export default {
+  title: "Components/v2/Input",
+  component: Preview,
+} as Meta<typeof Input>;
+
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };

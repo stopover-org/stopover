@@ -1,14 +1,9 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import ThumbUp from "@mui/icons-material/ThumbUp";
 import Button from "components/v2/Button";
 import { theme } from "lib/theme";
-
-export default {
-  title: "Components/v2/Button",
-  component: Button,
-} as ComponentMeta<typeof Button>;
 
 const Preview = () => (
   <CssVarsProvider theme={theme}>
@@ -80,7 +75,14 @@ const Preview = () => (
     </Grid>
   </CssVarsProvider>
 );
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+
+export default {
+  title: "Components/v2/Button",
+  component: Preview,
+} as Meta<typeof Button>;
+
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };
