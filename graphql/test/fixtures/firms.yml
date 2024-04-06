@@ -1,0 +1,40 @@
+stopoverx:
+  available_payment_methods: []
+  business_type: 'company'
+  contact_person: 'Mikhail D.'
+  contacts: ['mikhail@stopoverx.com']
+  description: 'Event Management Portal'
+  firm_type: 'live'
+  language: 'en'
+  margin: 0,
+  primary_email: 'mikhail@stopoverx.com'
+  ref_number: 'ref-stopoverx'
+  status: 'active'
+  title: 'Stopoverx'
+cash_only_travel_agency:
+  available_payment_methods: ['cash']
+  business_type: 'company'
+  contact_person: 'Some Person'
+  contacts: ['cash_only_travel_agency@stopoverx.com']
+  description: 'Travel Agency with cash only payments'
+  firm_type: 'live'
+  language: 'en'
+  margin: 10,
+  primary_email: 'cash_only_travel_agency@stopoverx.com'
+  ref_number: 'ref-cash_only_travel_agency'
+  status: 'active'
+  title: 'Cash Only Travel Agency'
+stripe_only_travel_agency:
+  available_payment_methods: ['stripe']
+  business_type: 'company'
+  contact_person: 'Some Person'
+  contacts: ['stripe_only_travel_agency@stopoverx.com']
+  description: 'Travel Agency with stripe only payments'
+  firm_type: 'live'
+  language: 'en'
+  margin: 10,
+  primary_email: 'stripe_only_travel_agency@stopoverx.com'
+  ref_number: 'ref-stripe_only_travel_agency'
+  status: 'active'
+  title: 'Stripe Only Travel Agency'
+
