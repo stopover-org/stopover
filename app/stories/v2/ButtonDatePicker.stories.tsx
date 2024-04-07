@@ -12,17 +12,17 @@ const Preview = () => (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <Grid container spacing={2} xs={12}>
         <Grid xs={3}>
-          <Grid xs={12}>
+          <Grid xs={12} padding={2}>
             {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
             <ButtonDatePicker onChange={(date) => {}}>Book</ButtonDatePicker>
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={12} padding={2}>
             {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
             <ButtonDatePicker variant="outlined" onChange={(date) => {}}>
               Book
             </ButtonDatePicker>
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={12} padding={2}>
             <ButtonDatePicker
               variant="outlined"
               /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
@@ -38,7 +38,7 @@ const Preview = () => (
               Available Dates case
             </ButtonDatePicker>
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={12} padding={2}>
             <ButtonDatePicker
               variant="outlined"
               /* eslint-disable-next-line @typescript-eslint/no-unused-vars */

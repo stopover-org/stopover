@@ -16,7 +16,7 @@
 │   - * @storybook/manager-webpack5                                                                                                                                                       │
 │   - Add the following dependencies:                                                                                                                                                     │
 │   - * @storybook/nextjs                                                                                                                                                                 │
-│   - Remove the core.builder field in .storybook/main.js.                                                                                                                                │
+│   - Remove the core.builder field in .storybook/main.ts.                                                                                                                                │
 │                                                                                                                                                                                         │
 │                                                                                                                                                                                         │
 │   To learn more about the new framework format, see: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#new-framework-api                                                  │
@@ -200,7 +200,7 @@ This codemod is not perfect however, so you may need to manually fix any issues 
 │                                                                                                    │
 ╰────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ? Do you want to run the 'autodocsTrue' migration on your project? › (Y/n)✔ Do you want to run the 'autodocsTrue' migration on your project? … yes
-✅ Setting 'docs.autodocs' to true in main.js
+✅ Setting 'docs.autodocs' to true in main.ts
 ✅ ran autodocsTrue migration
 
 🔎 found a 'webpack5-compiler-setup' migration:
@@ -239,7 +239,7 @@ This codemod is not perfect however, so you may need to manually fix any issues 
 ✔ Which compiler would you like to use? › SWC
 Verifying @storybook/addon-webpack5-compiler-swc
 Installing @storybook/addon-webpack5-compiler-swc@^1.0.2
-Adding '@storybook/addon-webpack5-compiler-swc' to main.js addons field.
+Adding '@storybook/addon-webpack5-compiler-swc' to main.ts addons field.
 ✅ ran webpack5-compiler-setup migration
 
 🔎 found a 'upgradeStorybookRelatedDependencies' migration:

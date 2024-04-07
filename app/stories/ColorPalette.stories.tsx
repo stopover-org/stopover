@@ -4,10 +4,6 @@ import { Box, CssVarsProvider, Grid } from "@mui/joy";
 import { theme } from "lib/theme";
 import Typography from "components/v2/Typography";
 
-export default {
-  title: "Global Properties/Color Palette",
-};
-
 const colorNames = [
   "common",
   "danger",
@@ -55,6 +51,11 @@ const Preview = () => (
     ))}
   </CssVarsProvider>
 );
+
+export default {
+  title: "Global Properties/Color Palette",
+  component: Preview,
+};
 
 export const DesignPreview: StoryObj<typeof Preview> = {
   args: {
