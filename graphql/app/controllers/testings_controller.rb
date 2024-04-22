@@ -2,37 +2,50 @@
 
 require 'factory_bot'
 require 'factory_bot_rails'
+require 'active_record/fixtures'
 
 class TestingsController < ApplicationController
+  before_action :check_environment
+
   # load fixtures in test env
-  def setup_fixtures
-    raise 'Wrong Environment' unless Rails.env.test?
+  def setup_fixtures(actual_render = true)
+    files = Stopover::Testing::E2eHelper.fixture_files
+    Rails.logger.info { "load fixtures from #{files.join(', ')}" }
 
-    fixtures_dir = File.join(Rails.root, '/test/fixtures')
-    Rails.logger.debug { "load fixtures from #{fixtures_dir}" }
-
-    Dir.glob(File.join(fixtures_dir, '*.yml')).each do |file|
-      base_name = File.basename(file, '.*')
-      Rails.logger.debug { "Loading #{base_name}..." }
-      ActiveRecord::FixtureSet.create_fixtures(fixtures_dir, base_name)
+    files.each do |file|
+      ActiveRecord::FixtureSet.create_fixtures(File.join(Rails.root, '/test/fixtures'), file)
     end
+
+    $stdout.puts User.all.map(&:inspect)
+
+    render json: nil if actual_render
   end
 
   # wipe database in test env
+  # база должна не очищаться а откатываться. Как откатить базу данных?
   def teardown_fixtures
-    raise 'Wrong Environment' unless Rails.env.test?
-    Rails.logger.debug 'Teardown'
+    Rails.logger.info 'Teardown'
 
-    ActiveRecord::Base.connection.disable_referential_integrity do
-      ApplicationRecord.descendants.each do |model|
-        model.delete_all
-      end
+    setup_fixtures(false)
+
+    render json: nil
+  end
+
+  def test_sign_in
+    Rails.logger.info "Log in #{params[:email]}"
+
+    user = User.find_by(email: params[:email])
+
+    if user
+      user.update!(confirmed_at: Time.zone.now, session_password: SecureRandom.hex(50))
+
+      return render json: Stopover::Testing::E2eHelper.user_data(user)
     end
+
+    render json: nil
   end
 
   def setup
-    raise 'Wrong Environment' unless Rails.env.test?
-
     result = []
     setup_variables = params[:setup_variables]
     setup_variables.each do |model_variable|
@@ -41,11 +54,11 @@ class TestingsController < ApplicationController
       result << record
     end
 
-    json = result.map do |record|
-      json = record.attributes
-      json[:access_token] = record.access_token if record.is_a? User
+    json = result.map do |model_instance|
+      json = model_instance.attributes
+      json[:access_token] = model_instance.access_token if model_instance.is_a? User
 
-      json[:graphql_id] = GraphqlSchema.id_from_object(record) if record.class.const_defined?(:GRAPHQL_TYPE)
+      json[:graphql_id] = GraphqlSchema.id_from_object(model_instance) if model_instance.class.const_defined?(:GRAPHQL_TYPE)
 
       json.to_json
     end
@@ -54,8 +67,6 @@ class TestingsController < ApplicationController
   end
 
   def teardown
-    raise 'Wrong Environment' unless Rails.env.test?
-
     Redis.new.lrange('testing:e2e:records', 0, -1).each do |record_hash|
       hash = JSON.parse(record_hash).deep_symbolize_keys
       model = hash[:model].camelize.constantize
@@ -66,5 +77,11 @@ class TestingsController < ApplicationController
     end
 
     render json: {}
+  end
+
+  private
+
+  def check_environment
+    raise 'Wrong Environment' unless Rails.env.test?
   end
 end

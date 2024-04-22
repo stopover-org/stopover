@@ -76,5 +76,6 @@ Rails.application.routes.draw do
     post :test_teardown, to: 'testings#teardown'
     post :setup_fixtures, to: 'testings#setup_fixtures'
     post :teardown_fixtures, to: 'testings#teardown_fixtures'
+    post :test_sign_in, to: 'testings#test_sign_in'
   end
 end

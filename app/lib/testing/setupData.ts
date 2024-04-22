@@ -10,6 +10,13 @@ async function postData(data: Record<string, any>, url: string) {
     headers["X-Sandbox"] = "true";
   }
 
+  // eslint-disable-next-line no-console
+  console.log(
+    `POST ${url} with ${JSON.stringify(data)} with headers ${JSON.stringify(
+      headers
+    )}`
+  );
+
   const resp = await fetch(url, {
     method: "POST",
     headers,
@@ -22,9 +29,37 @@ async function postData(data: Record<string, any>, url: string) {
 }
 
 export async function setupData(data: Record<string, any>) {
-  return postData(data, `${new URL(getGraphQLBaseUrl()).origin}/test_setup`);
+  return JSON.parse(
+    await postData(data, `${new URL(getGraphQLBaseUrl()).origin}/test_setup`)
+  );
 }
 
-export function teardownData() {
-  return postData({}, `${new URL(getGraphQLBaseUrl()).origin}/test_teardown`);
+export async function teardownData() {
+  return JSON.parse(
+    await postData({}, `${new URL(getGraphQLBaseUrl()).origin}/test_teardown`)
+  );
+}
+
+export async function setupFixtures() {
+  return JSON.parse(
+    await postData({}, `${new URL(getGraphQLBaseUrl()).origin}/setup_fixtures`)
+  );
+}
+
+export async function teardownFixtures() {
+  return JSON.parse(
+    await postData(
+      {},
+      `${new URL(getGraphQLBaseUrl()).origin}/teardown_fixtures`
+    )
+  );
+}
+
+export async function testSignIn({ email }: { email: string }) {
+  return JSON.parse(
+    await postData(
+      { email },
+      `${new URL(getGraphQLBaseUrl()).origin}/test_sign_in`
+    )
+  );
 }
