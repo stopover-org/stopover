@@ -8,12 +8,7 @@ import {
 import defaultMetadata from "lib/utils/defaultMetadata";
 import { merge } from "lodash";
 import { Metadata } from "next";
-import {
-  setupFixtures,
-  teardownData,
-  teardownFixtures,
-  testSignIn,
-} from "lib/testing/setupData";
+import { setupData, teardownData, testSignIn } from "lib/testing/setupData";
 import headers from "next/headers";
 
 jest.mock("next/headers", () => {
@@ -26,14 +21,18 @@ jest.mock("next/headers", () => {
 
 describe("[language]/checkouts/verify/[id]", () => {
   beforeAll(async () => {
-    await setupFixtures();
+    const factoryResult = await setupData({
+      setup_variables: [{ factory: "payment_successful" }],
+    });
+
+    console.log(factoryResult);
 
     const user = await testSignIn({ email: "attendee@stopoverx.com" });
     console.log("signed in user", user);
   });
 
   afterAll(async () => {
-    await teardownFixtures();
+    await teardownData();
   });
 
   it.only("PAGE_TITLE", () => {

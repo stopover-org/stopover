@@ -24,11 +24,12 @@ module FirmManagement
     ].freeze
 
     def perform(firm_id)
+      should_restore_notification_delivery = Flipper.disabled?(:skip_notifications_delivery)
       firm = Firm.find(firm_id)
 
       return unless firm.firm_type_onboarding?
 
-      $skip_delivery = true
+      Flipper.enable(:skip_notifications_delivery)
 
       USER_EMAILS.each do |email|
         user = User.find_by(email: email)
@@ -114,9 +115,9 @@ module FirmManagement
         end
       end
 
-      $skip_delivery = false
+      Flipper.disable(:skip_notifications_delivery) if should_restore_notification_delivery
     rescue StandardError => e
-      $skip_delivery = false
+      Flipper.disable(:skip_notifications_delivery) if should_restore_notification_delivery
 
       raise e
     end

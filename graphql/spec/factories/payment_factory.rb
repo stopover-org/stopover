@@ -33,6 +33,10 @@ FactoryBot.define do
       status { 'processing' }
     end
 
+    trait :payment_successful_trait do
+      status { 'successful' }
+    end
+
     transient do
       with_checkout_session_id { false }
     end
@@ -42,5 +46,6 @@ FactoryBot.define do
     end
 
     factory :payment_in_process, traits: [:payment_in_process_trait]
+    factory :payment_successful, traits: [:payment_successful_trait]
   end
 end

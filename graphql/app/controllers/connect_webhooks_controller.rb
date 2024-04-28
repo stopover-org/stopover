@@ -27,7 +27,7 @@ class ConnectWebhooksController < ApplicationController
     when 'account.application.deauthorized'
       stripe_connect_id = event.data.object.account
 
-      Stopover::StripeAccountService.dactiate(stripe_connect_id)
+      Stopover::StripeAccountService.deactivate(stripe_connect_id)
     end
 
     LogEvent.create!(event_type: event.type, content: event)

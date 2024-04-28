@@ -40,21 +40,6 @@ export async function teardownData() {
   );
 }
 
-export async function setupFixtures() {
-  return JSON.parse(
-    await postData({}, `${new URL(getGraphQLBaseUrl()).origin}/setup_fixtures`)
-  );
-}
-
-export async function teardownFixtures() {
-  return JSON.parse(
-    await postData(
-      {},
-      `${new URL(getGraphQLBaseUrl()).origin}/teardown_fixtures`
-    )
-  );
-}
-
 export async function testSignIn({ email }: { email: string }) {
   return JSON.parse(
     await postData(

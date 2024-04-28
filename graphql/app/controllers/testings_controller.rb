@@ -2,35 +2,8 @@
 
 require 'factory_bot'
 require 'factory_bot_rails'
-require 'active_record/fixtures'
 
 class TestingsController < ApplicationController
-  before_action :check_environment
-
-  # load fixtures in test env
-  def setup_fixtures(actual_render = true)
-    files = Stopover::Testing::E2eHelper.fixture_files
-    Rails.logger.info { "load fixtures from #{files.join(', ')}" }
-
-    files.each do |file|
-      ActiveRecord::FixtureSet.create_fixtures(File.join(Rails.root, '/test/fixtures'), file)
-    end
-
-    $stdout.puts User.all.map(&:inspect)
-
-    render json: nil if actual_render
-  end
-
-  # wipe database in test env
-  # база должна не очищаться а откатываться. Как откатить базу данных?
-  def teardown_fixtures
-    Rails.logger.info 'Teardown'
-
-    setup_fixtures(false)
-
-    render json: nil
-  end
-
   def test_sign_in
     Rails.logger.info "Log in #{params[:email]}"
 
@@ -49,8 +22,9 @@ class TestingsController < ApplicationController
     result = []
     setup_variables = params[:setup_variables]
     setup_variables.each do |model_variable|
+      attributes = model_variable[:attributes]&.to_unsafe_h || {}
       record = FactoryBot.create(model_variable[:factory].to_sym,
-                                 **model_variable[:attributes].to_unsafe_h)
+                                 **attributes)
       result << record
     end
 
@@ -77,11 +51,5 @@ class TestingsController < ApplicationController
     end
 
     render json: {}
-  end
-
-  private
-
-  def check_environment
-    raise 'Wrong Environment' unless Rails.env.test?
   end
 end

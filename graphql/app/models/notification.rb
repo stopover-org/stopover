@@ -76,7 +76,7 @@ class Notification < ApplicationRecord
   # DELEGATION ============================================================
 
   def trigger
-    service.deliver(from: from, to: to, content: content, subject: subject, type: 'text/html') unless $skip_delivery
+    service.deliver(from: from, to: to, content: content, subject: subject, type: 'text/html') if Flipper.disabled?(:skip_notifications_delivery)
     sent_at = Time.zone.now
 
     update!(sent_at: sent_at)
