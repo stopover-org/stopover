@@ -1,14 +1,9 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import { theme } from "lib/theme";
 import Typography from "components/v2/Typography";
 import AddressAutocomplete from "components/v2/AddressAutocomplete";
-
-export default {
-  title: "Components/v2/AddressAutocomplete",
-  component: AddressAutocomplete,
-} as ComponentMeta<typeof AddressAutocomplete>;
 
 const Preview = () => (
   <CssVarsProvider theme={theme}>
@@ -38,7 +33,14 @@ const Preview = () => (
     </Grid>
   </CssVarsProvider>
 );
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+
+export default {
+  title: "Components/v2/AddressAutocomplete",
+  component: Preview,
+} as Meta<typeof AddressAutocomplete>;
+
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };

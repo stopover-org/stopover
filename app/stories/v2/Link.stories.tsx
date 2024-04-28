@@ -1,13 +1,8 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import { theme } from "lib/theme";
 import Link from "components/v2/Link";
-
-export default {
-  title: "Components/V2/Link",
-  component: Link,
-} as ComponentMeta<typeof Link>;
 
 const Preview = () => (
   <CssVarsProvider theme={theme}>
@@ -28,8 +23,14 @@ const Preview = () => (
     </Grid>
   </CssVarsProvider>
 );
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
 
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+export default {
+  title: "Components/V2/Link",
+  component: Preview,
+} as Meta<typeof Link>;
+
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };

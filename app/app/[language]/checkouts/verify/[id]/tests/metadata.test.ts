@@ -8,7 +8,12 @@ import {
 import defaultMetadata from "lib/utils/defaultMetadata";
 import { merge } from "lodash";
 import { Metadata } from "next";
-import { setupData, teardownData } from "lib/testing/setupData";
+import {
+  setupFixtures,
+  teardownData,
+  teardownFixtures,
+  testSignIn,
+} from "lib/testing/setupData";
 import headers from "next/headers";
 
 jest.mock("next/headers", () => {
@@ -20,38 +25,18 @@ jest.mock("next/headers", () => {
 });
 
 describe("[language]/checkouts/verify/[id]", () => {
-  let user: any = null;
-  let booking: any = null;
-
   beforeAll(async () => {
-    const [jsonUser] = await setupData({
-      setup_variables: [
-        {
-          factory: "active_user",
-          attributes: {},
-        },
-      ],
-    });
+    await setupFixtures();
 
-    user = JSON.parse(jsonUser);
-
-    const [jsonBooking] = await setupData({
-      setup_variables: [
-        {
-          factory: "fully_paid_booking",
-          attributes: {},
-        },
-      ],
-    });
-
-    booking = JSON.parse(jsonBooking);
+    const user = await testSignIn({ email: "attendee@stopoverx.com" });
+    console.log("signed in user", user);
   });
 
   afterAll(async () => {
-    await teardownData();
+    await teardownFixtures();
   });
 
-  it("PAGE_TITLE", () => {
+  it.only("PAGE_TITLE", () => {
     expect(PAGE_TITLE).toBe("seo.checkouts.verify.id.title");
   });
 
@@ -62,7 +47,7 @@ describe("[language]/checkouts/verify/[id]", () => {
   ["en", "ru"].map((language) =>
     describe("getVariables", () => {
       // /[language]/checkouts/verify/123==
-      it("default props", () => {
+      it.only("default props", () => {
         const defaultProps = {
           params: { language, id: "123==" },
           searchParams: {},
@@ -84,6 +69,8 @@ describe("[language]/checkouts/verify/[id]", () => {
   );
 
   describe("generateMetadata", () => {
+    const user = { access_token: "" };
+    const booking = { graphql_id: "" };
     describe("existing booking", () => {
       const expected: Record<string, Metadata> = {
         ru: merge(defaultMetadata, {

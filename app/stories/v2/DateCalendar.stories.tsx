@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -7,11 +7,6 @@ import moment from "moment";
 import { theme } from "lib/theme";
 import DateCalendar from "components/v2/DateCalendar/DateCalendar";
 import Typography from "components/v2/Typography";
-
-export default {
-  title: "Components/v2/DateCalendar",
-  component: DateCalendar,
-} as ComponentMeta<typeof DateCalendar>;
 
 const Preview = () => (
   <CssVarsProvider theme={theme}>
@@ -48,7 +43,14 @@ const Preview = () => (
     </LocalizationProvider>
   </CssVarsProvider>
 );
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+
+export default {
+  title: "Components/v2/DateCalendar",
+  component: Preview,
+} as Meta<typeof DateCalendar>;
+
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -7,11 +7,6 @@ import moment, { Moment } from "moment";
 import { theme } from "lib/theme";
 import DateRangePicker from "components/v2/DateRangePicker";
 import Typography from "components/v2/Typography";
-
-export default {
-  title: "Components/v2/DateRangePicker",
-  component: DateRangePicker,
-} as ComponentMeta<typeof DateRangePicker>;
 
 const Preview = () => {
   const [selectedDates, setDates] = React.useState<
@@ -73,7 +68,14 @@ const Preview = () => {
     </CssVarsProvider>
   );
 };
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+
+export default {
+  title: "Components/v2/DateRangePicker",
+  component: Preview,
+} as Meta<typeof DateRangePicker>;
+
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };

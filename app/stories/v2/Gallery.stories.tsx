@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import Gallery from "components/v2/Gallery";
 
 const imagesArray: any = [
@@ -28,16 +28,16 @@ const imagesArray: any = [
     title: "diving",
   },
 ];
-
-export default {
-  title: "Components/V2/Gallery",
-  component: Gallery,
-} as ComponentMeta<typeof Gallery>;
-
 // onOpen and onClose was excluded from args but they will not be used
 const Preview = () => <Gallery images={imagesArray} width="600px" />;
 
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+export default {
+  title: "Components/V2/Gallery",
+  component: Preview,
+} as Meta<typeof Gallery>;
+
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };

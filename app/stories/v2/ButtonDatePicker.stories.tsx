@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { CssVarsProvider, Grid } from "@mui/joy";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -7,27 +7,22 @@ import moment from "moment";
 import { theme } from "lib/theme";
 import ButtonDatePicker from "components/v2/ButtonDatePicker";
 
-export default {
-  title: "Components/v2/ButtonDatePicker",
-  component: ButtonDatePicker,
-} as ComponentMeta<typeof ButtonDatePicker>;
-
 const Preview = () => (
   <CssVarsProvider theme={theme}>
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <Grid container spacing={2} xs={12}>
         <Grid xs={3}>
-          <Grid xs={12}>
+          <Grid xs={12} padding={2}>
             {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
             <ButtonDatePicker onChange={(date) => {}}>Book</ButtonDatePicker>
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={12} padding={2}>
             {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
             <ButtonDatePicker variant="outlined" onChange={(date) => {}}>
               Book
             </ButtonDatePicker>
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={12} padding={2}>
             <ButtonDatePicker
               variant="outlined"
               /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
@@ -43,7 +38,7 @@ const Preview = () => (
               Available Dates case
             </ButtonDatePicker>
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={12} padding={2}>
             <ButtonDatePicker
               variant="outlined"
               /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
@@ -69,7 +64,14 @@ const Preview = () => (
     </LocalizationProvider>
   </CssVarsProvider>
 );
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+
+export default {
+  title: "Components/v2/ButtonDatePicker",
+  component: Preview,
+} as Meta<typeof ButtonDatePicker>;
+
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };

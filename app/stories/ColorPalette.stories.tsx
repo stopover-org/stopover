@@ -1,12 +1,8 @@
 import React from "react";
-import { ComponentStory } from "@storybook/react";
+import { StoryObj } from "@storybook/react";
 import { Box, CssVarsProvider, Grid } from "@mui/joy";
 import { theme } from "lib/theme";
 import Typography from "components/v2/Typography";
-
-export default {
-  title: "Global Properties/Color Palette",
-};
 
 const colorNames = [
   "common",
@@ -56,8 +52,13 @@ const Preview = () => (
   </CssVarsProvider>
 );
 
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
+export default {
+  title: "Global Properties/Color Palette",
+  component: Preview,
+};
 
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };

@@ -1,14 +1,9 @@
 import React from "react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { Chip, CssVarsProvider, Grid, Option } from "@mui/joy";
 import { FavoriteBorder } from "@mui/icons-material";
 import { theme } from "lib/theme";
 import Select from "components/v2/Select";
-
-export default {
-  title: "Components/V2/Select",
-  component: Select,
-} as ComponentMeta<typeof Select>;
 
 const Preview = () => (
   <CssVarsProvider theme={theme}>
@@ -218,7 +213,14 @@ const Preview = () => (
     </Grid>
   </CssVarsProvider>
 );
-export const DesignPreview: ComponentStory<typeof Preview> = Preview;
-DesignPreview.parameters = {
-  controls: { hideNoControlsWarning: true },
+
+export default {
+  title: "Components/V2/Select",
+  component: Preview,
+} as Meta<typeof Select>;
+
+export const DesignPreview: StoryObj<typeof Preview> = {
+  args: {
+    controls: { hideNoControlsWarning: true },
+  },
 };
