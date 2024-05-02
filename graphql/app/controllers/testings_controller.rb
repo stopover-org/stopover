@@ -5,14 +5,16 @@ require 'factory_bot_rails'
 
 class TestingsController < ApplicationController
   def test_sign_in
-    Rails.logger.info "Log in #{params[:email]}"
+    Stopover::FlagsSupport.skip_notifications(skip: true) do
+      Rails.logger.info "Log in #{params[:email]}"
 
-    user = User.find_by(email: params[:email])
+      user = User.find_or_create_by(email: params[:email])
 
-    if user
-      user.update!(confirmed_at: Time.zone.now, session_password: SecureRandom.hex(50))
+      if user
+        user.update!(confirmed_at: Time.zone.now, session_password: SecureRandom.hex(50), status: :active)
 
-      return render json: Stopover::Testing::E2eHelper.user_data(user)
+        return render json: Stopover::Testing::E2eHelper.user_data(user)
+      end
     end
 
     render json: nil
@@ -35,6 +37,10 @@ class TestingsController < ApplicationController
         json[:access_token] = model_instance.access_token if model_instance.is_a? User
 
         json[:graphql_id] = GraphqlSchema.id_from_object(model_instance) if model_instance.class.const_defined?(:GRAPHQL_TYPE)
+
+        json[:account] = model_instance.account.to_json if model_instance&.account
+
+        json[:user] = model_instance.user.to_json if model_instance&.user
 
         json.to_json
       end

@@ -20,22 +20,25 @@ jest.mock("next/headers", () => {
 });
 
 describe("[language]/checkouts/verify/[id]", () => {
+  let booking: Record<string, any> | undefined;
+  let user: Record<string, any> | undefined;
+  let email: string | undefined;
   beforeAll(async () => {
-    const factoryResult = await setupData({
-      setup_variables: [{ factory: "payment_successful" }],
+    booking = await setupData({
+      setup_variables: [{ factory: "fully_paid_booking" }],
+      skip_delivery: true,
     });
 
-    console.log(factoryResult);
+    email = booking?.user?.email;
 
-    const user = await testSignIn({ email: "attendee@stopoverx.com" });
-    console.log("signed in user", user);
+    user = await testSignIn({ email: email! });
   });
 
   afterAll(async () => {
     await teardownData();
   });
 
-  it.only("PAGE_TITLE", () => {
+  it("PAGE_TITLE", () => {
     expect(PAGE_TITLE).toBe("seo.checkouts.verify.id.title");
   });
 
@@ -46,7 +49,7 @@ describe("[language]/checkouts/verify/[id]", () => {
   ["en", "ru"].map((language) =>
     describe("getVariables", () => {
       // /[language]/checkouts/verify/123==
-      it.only("default props", () => {
+      it("default props", () => {
         const defaultProps = {
           params: { language, id: "123==" },
           searchParams: {},
@@ -68,8 +71,118 @@ describe("[language]/checkouts/verify/[id]", () => {
   );
 
   describe("generateMetadata", () => {
-    const user = { access_token: "" };
-    const booking = { graphql_id: "" };
+    describe("not authorized user", () => {
+      const expected: Record<string, Metadata> = {
+        ru: merge(defaultMetadata, {
+          description:
+            "Пожалуйста, войдите, чтобы получить доступ к вашей учетной записи и воспользоваться персонализированными услугами, предназначенными специально для вас.",
+          keywords:
+            "Вход Доступ Аутентификация Пользовательские учетные данные Безопасный портал Учетная запись Аутентификация Войти Логин пользователя Пользовательский доступ",
+          openGraph: {
+            description:
+              "Пожалуйста, войдите, чтобы получить доступ к вашей учетной записи и воспользоваться персонализированными услугами, предназначенными специально для вас.",
+            keywords:
+              "Вход Доступ Аутентификация Пользовательские учетные данные Безопасный портал Учетная запись Аутентификация Войти Логин пользователя Пользовательский доступ",
+            locale: "ru",
+            title: "Stopover. Your Travel Manger | Авторизация",
+          },
+          robots: {
+            follow: false,
+            googleBot: {
+              follow: false,
+              index: false,
+              "max-image-preview": "large",
+              "max-snippet": -1,
+              "max-video-preview": -1,
+              nocache: true,
+              noimageindex: true,
+            },
+            index: false,
+            nocache: true,
+          },
+          title: "Stopover. Your Travel Manger | Авторизация",
+        }),
+        en: merge(defaultMetadata, {
+          description:
+            "Please sign in to access your account and enjoy personalized services tailored just for you.",
+          keywords:
+            "Sign in Access Authentication User credentials Secure portal Account Login User login User access",
+          openGraph: {
+            description:
+              "Please sign in to access your account and enjoy personalized services tailored just for you.",
+            keywords:
+              "Sign in Access Authentication User credentials Secure portal Account Login User login User access",
+            locale: "en",
+            title: "Stopover. Your Travel Manager | Sign In",
+          },
+          robots: {
+            follow: false,
+            googleBot: {
+              follow: false,
+              index: false,
+              "max-image-preview": "large",
+              "max-snippet": -1,
+              "max-video-preview": -1,
+              nocache: true,
+              noimageindex: true,
+            },
+            index: false,
+            nocache: true,
+          },
+          title: "Stopover. Your Travel Manager | Sign In",
+        }),
+      };
+
+      Object.keys(expected).map((language) =>
+        describe(language, () => {
+          (headers.cookies as any).mockImplementation(() => ({
+            getAll: () => [
+              {
+                name: "access_token",
+                value: "incorrect-access-token",
+              },
+              {
+                name: "i18next",
+                value: language,
+              },
+            ],
+          }));
+
+          // /[language]/checkouts/verify/123==
+          it("default props", async () => {
+            const defaultProps = {
+              params: {
+                language,
+                id: booking!.graphql_id,
+                testing: true,
+              },
+              searchParams: {},
+            };
+
+            expect(await generateMetadata(defaultProps)).toStrictEqual(
+              expected[language]
+            );
+          });
+
+          // /[language]/checkouts/verify/123==?param1=123&param2=123
+          it("various searchParams", async () => {
+            const defaultProps = {
+              params: {
+                language,
+                id: booking!.graphql_id,
+                testing: true,
+              },
+              searchParams: { param1: "123", param2: "123" },
+            };
+
+            expect(await generateMetadata(defaultProps)).toStrictEqual(
+              expected[language]
+            );
+          });
+        })
+      );
+    });
+
     describe("existing booking", () => {
       const expected: Record<string, Metadata> = {
         ru: merge(defaultMetadata, {
@@ -138,7 +251,7 @@ describe("[language]/checkouts/verify/[id]", () => {
             getAll: () => [
               {
                 name: "access_token",
-                value: user.access_token,
+                value: user!.access_token,
               },
               {
                 name: "i18next",
@@ -148,13 +261,12 @@ describe("[language]/checkouts/verify/[id]", () => {
           }));
 
           // /[language]/checkouts/verify/123==
-          it("default props", async () => {
+          it.only("default props", async () => {
             const defaultProps = {
               params: {
                 language,
-                id: booking.graphql_id,
+                id: booking!.graphql_id,
                 testing: true,
-                cookies: { access_token: user.access_token },
               },
               searchParams: {},
             };
@@ -169,9 +281,8 @@ describe("[language]/checkouts/verify/[id]", () => {
             const defaultProps = {
               params: {
                 language,
-                id: booking.graphql_id,
+                id: booking!.graphql_id,
                 testing: true,
-                cookies: { access_token: user.access_token },
               },
               searchParams: { param1: "123", param2: "123" },
             };
@@ -252,7 +363,7 @@ describe("[language]/checkouts/verify/[id]", () => {
             getAll: () => [
               {
                 name: "access_token",
-                value: user.access_token,
+                value: user!.access_token,
               },
               {
                 name: "i18next",
@@ -268,7 +379,6 @@ describe("[language]/checkouts/verify/[id]", () => {
                 language,
                 id: "id",
                 testing: true,
-                cookies: { access_token: user.access_token },
               },
               searchParams: {},
             };
@@ -285,7 +395,6 @@ describe("[language]/checkouts/verify/[id]", () => {
                 language,
                 id: "id",
                 testing: true,
-                cookies: { access_token: user.access_token },
               },
               searchParams: { param1: "123", param2: "123" },
             };

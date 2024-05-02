@@ -34,7 +34,7 @@ export const generateMetadata: GenerateMetadataFn = async (props) => {
     return notFoundMetadata(props.params.language);
   }
 
-  const metadata = generateCommonMetadata(
+  return generateCommonMetadata(
     {
       title: PAGE_TITLE,
       description: "seo.checkouts.verify.id.description",
@@ -45,6 +45,4 @@ export const generateMetadata: GenerateMetadataFn = async (props) => {
     false,
     translateParams
   );
-
-  return metadata;
 };

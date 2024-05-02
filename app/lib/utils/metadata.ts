@@ -59,12 +59,14 @@ export const generateCommonMetadata = async (
 };
 
 export const notFoundMetadata = async (language: string): Promise<Metadata> => {
-  const title = await translate("general.404", {}, language);
+  const message = await translate("general.404", {}, language);
   return merge(defaultMetadata, {
-    title,
+    title: message,
     openGraph: {
       locale: language,
-      title,
+      title: message,
+      description: message,
+      keywords: message,
     },
   });
 };

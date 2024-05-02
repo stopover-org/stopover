@@ -29,22 +29,28 @@ async function postData(data: Record<string, any>, url: string) {
 }
 
 export async function setupData(data: Record<string, any>) {
-  return JSON.parse(
+  const response = JSON.parse(
     await postData(data, `${new URL(getGraphQLBaseUrl()).origin}/test_setup`)
   );
+
+  if (response.user) {
+    response.user = JSON.parse(response.user);
+  }
+
+  if (response.account) {
+    response.account = JSON.parse(response.account);
+  }
+
+  return response;
 }
 
 export async function teardownData() {
-  return JSON.parse(
-    await postData({}, `${new URL(getGraphQLBaseUrl()).origin}/test_teardown`)
-  );
+  return postData({}, `${new URL(getGraphQLBaseUrl()).origin}/test_teardown`);
 }
 
 export async function testSignIn({ email }: { email: string }) {
-  return JSON.parse(
-    await postData(
-      { email },
-      `${new URL(getGraphQLBaseUrl()).origin}/test_sign_in`
-    )
+  return postData(
+    { email },
+    `${new URL(getGraphQLBaseUrl()).origin}/test_sign_in`
   );
 }
