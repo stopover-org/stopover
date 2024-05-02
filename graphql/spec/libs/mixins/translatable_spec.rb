@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.shared_examples :translatable_spec do |klass|
+  before do
+    Flipper.enable(:global_translations)
+  end
+
+  teardown do
+    Flipper.disable(:global_translations)
+  end
   context "on create #{klass}" do
     it 'translate' do
       model = nil

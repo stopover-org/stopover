@@ -429,6 +429,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
+          Flipper.disable(:skip_phone_validation)
+
           travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
@@ -448,6 +450,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
         it 'failed' do
           result = nil
+
+          Flipper.disable(:skip_phone_validation)
 
           travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
@@ -1028,6 +1032,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
         it 'failed' do
           result = nil
 
+          Flipper.disable(:skip_phone_validation)
+
           travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)
 
@@ -1047,6 +1053,8 @@ RSpec.describe Mutations::AuthRelated::SignIn, type: :mutation do
 
         it 'failed' do
           result = nil
+
+          Flipper.disable(:skip_phone_validation)
 
           travel_to(default_time) do
             expect { result = subject.to_h.deep_symbolize_keys }.to change { User.count }.by(0)

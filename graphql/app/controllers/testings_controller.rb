@@ -21,23 +21,26 @@ class TestingsController < ApplicationController
   def setup
     result = []
     setup_variables = params[:setup_variables]
-    setup_variables.each do |model_variable|
-      attributes = model_variable[:attributes]&.to_unsafe_h || {}
-      record = FactoryBot.create(model_variable[:factory].to_sym,
-                                 **attributes)
-      result << record
+    skip_delivery = params[:skip_delivery]
+    Stopover::FlagsSupport.skip_notifications(skip: skip_delivery) do
+      setup_variables.each do |model_variable|
+        attributes = model_variable[:attributes]&.to_unsafe_h || {}
+        record = FactoryBot.create(model_variable[:factory].to_sym,
+                                   **attributes)
+        result << record
+      end
+
+      json = result.map do |model_instance|
+        json = model_instance.attributes
+        json[:access_token] = model_instance.access_token if model_instance.is_a? User
+
+        json[:graphql_id] = GraphqlSchema.id_from_object(model_instance) if model_instance.class.const_defined?(:GRAPHQL_TYPE)
+
+        json.to_json
+      end
+
+      render json: json
     end
-
-    json = result.map do |model_instance|
-      json = model_instance.attributes
-      json[:access_token] = model_instance.access_token if model_instance.is_a? User
-
-      json[:graphql_id] = GraphqlSchema.id_from_object(model_instance) if model_instance.class.const_defined?(:GRAPHQL_TYPE)
-
-      json.to_json
-    end
-
-    render json: json
   end
 
   def teardown
