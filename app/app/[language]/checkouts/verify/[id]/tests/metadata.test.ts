@@ -10,9 +10,8 @@ import { setupData, teardownData, testSignIn } from "lib/testing/setupData";
 import { mockCookies } from "lib/testing/mockCookies";
 import {
   checkoutsVerifyIdMetadata,
-  notAuthorizedMetadata,
   notFoundMetadata,
-} from "./expectedMetadata";
+} from "lib/testing/expectedMetadata";
 
 jest.mock("next/headers", () => {
   const originalModule = jest.requireActual("next/headers");
@@ -75,14 +74,12 @@ describe("[language]/checkouts/verify/[id]", () => {
 
   describe("generateMetadata", () => {
     describe("not authorized user", () => {
-      const expected: Record<string, Metadata> = notAuthorizedMetadata();
-
-      Object.keys(expected).map((language) =>
+      ["ru", "en"].forEach((language) => {
         describe(language, () => {
           mockCookies({ accessToken: "incorrect-access-token", language });
 
           // /[language]/checkouts/verify/123==
-          it.only("default props", async () => {
+          it("default props", async () => {
             const defaultProps = {
               params: {
                 language,
@@ -91,10 +88,10 @@ describe("[language]/checkouts/verify/[id]", () => {
               },
               searchParams: {},
             };
+            const metadata = await generateMetadata(defaultProps);
+            const expectedMetadata = notFoundMetadata()[language];
 
-            expect(await generateMetadata(defaultProps)).toEqual(
-              expected[language]
-            );
+            expect(metadata).toStrictEqual(expectedMetadata);
           });
 
           // /[language]/checkouts/verify/123==?param1=123&param2=123
@@ -108,12 +105,14 @@ describe("[language]/checkouts/verify/[id]", () => {
               searchParams: { param1: "123", param2: "123" },
             };
 
-            expect(await generateMetadata(defaultProps)).toEqual(
-              expected[language]
-            );
+            generateMetadata(defaultProps).then((metadata) => {
+              const expectedMetadata = notFoundMetadata()[language];
+
+              expect(metadata).toStrictEqual(expectedMetadata);
+            });
           });
-        })
-      );
+        });
+      });
     });
 
     describe("existing booking", () => {

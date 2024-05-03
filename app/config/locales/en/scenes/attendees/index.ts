@@ -6,4 +6,4 @@ import firms from "./firms";
 import profile from "./profile";
 import timetables from "./timetables";
 
-export default merge(timetables, bookings, events, trips, firms, profile);
+export default merge({}, timetables, bookings, events, trips, firms, profile);

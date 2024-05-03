@@ -135,6 +135,7 @@ const translation = {
 };
 
 export default merge(
+  {},
   translations,
   formsTranslations,
   scenesTranslations,

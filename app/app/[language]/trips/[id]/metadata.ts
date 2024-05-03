@@ -9,7 +9,7 @@ import {
   sharedEmails,
   sharedImages,
   sharedPhones,
-} from "../../../../lib/utils/defaultMetadata";
+} from "lib/utils/defaultMetadata";
 
 export const PAGE_TITLE = "seo.trips.id.title";
 export const getVariables: GetVariablesFn = (props: PageProps) => ({

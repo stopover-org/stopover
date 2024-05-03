@@ -11,7 +11,7 @@ import moment from "moment";
 import { useParams } from "next/navigation";
 import InterestTimetableScene from "scenes/attendees/interests/InterestTimetableScene/InterestTimetableScene";
 import { urlSafeDateFormat } from "lib/utils/dates";
-import { SceneProps } from "../../../../../../components/shared/relay/PreloadedQueryWrapper";
+import { SceneProps } from "components/shared/relay/PreloadedQueryWrapper";
 
 const Query = graphql`
   query scene_DateInterestTimetable_Query($id: ID!, $filters: EventsFilter!) {

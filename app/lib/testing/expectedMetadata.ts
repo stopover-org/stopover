@@ -1,8 +1,9 @@
 import { merge } from "lodash";
 import defaultMetadata from "lib/utils/defaultMetadata";
+import { Metadata } from "next";
 
-export const notFoundMetadata = () => ({
-  ru: merge(defaultMetadata, {
+export const notFoundMetadata = (): Record<string, Metadata> => ({
+  ru: merge({}, defaultMetadata, {
     description: "Такой страницы не существует",
     keywords: "Такой страницы не существует",
     openGraph: {
@@ -27,7 +28,7 @@ export const notFoundMetadata = () => ({
     },
     title: "Такой страницы не существует",
   }),
-  en: merge(defaultMetadata, {
+  en: merge({}, defaultMetadata, {
     description: "This page doesn't exist",
     keywords: "This page doesn't exist",
     openGraph: {
@@ -54,8 +55,8 @@ export const notFoundMetadata = () => ({
   }),
 });
 
-export const notAuthorizedMetadata = () => ({
-  ru: merge(defaultMetadata, {
+export const notAuthorizedMetadata = (): Record<string, Metadata> => ({
+  ru: merge({}, defaultMetadata, {
     description:
       "Пожалуйста, войдите, чтобы получить доступ к вашей учетной записи и воспользоваться персонализированными услугами, предназначенными специально для вас.",
     keywords:
@@ -82,9 +83,9 @@ export const notAuthorizedMetadata = () => ({
       index: false,
       nocache: true,
     },
-    title: "Stopover. Your Travel Manger | Авторизация",
+    title: "Stopover. Your Travel Manger | Авторизация1234567890-",
   }),
-  en: merge(defaultMetadata, {
+  en: merge({}, defaultMetadata, {
     description:
       "Please sign in to access your account and enjoy personalized services tailored just for you.",
     keywords:
@@ -111,12 +112,12 @@ export const notAuthorizedMetadata = () => ({
       index: false,
       nocache: true,
     },
-    title: "Stopover. Your Travel Manager | Sign In",
+    title: "Stopover. Your Travel Manager | Sign Авторизация1234567890-",
   }),
 });
 
-export const checkoutsVerifyIdMetadata = () => ({
-  ru: merge(defaultMetadata, {
+export const checkoutsVerifyIdMetadata = (): Record<string, Metadata> => ({
+  ru: merge({}, defaultMetadata, {
     description:
       "Пожалуйста, войдите, чтобы получить доступ к вашей учетной записи и воспользоваться персонализированными услугами, предназначенными специально для вас.",
     keywords:
@@ -145,7 +146,7 @@ export const checkoutsVerifyIdMetadata = () => ({
     },
     title: "Stopover. Your Travel Manger | Авторизация",
   }),
-  en: merge(defaultMetadata, {
+  en: merge({}, defaultMetadata, {
     description:
       "Please sign in to access your account and enjoy personalized services tailored just for you.",
     keywords:

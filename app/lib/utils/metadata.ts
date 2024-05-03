@@ -15,7 +15,7 @@ export const generateCommonMetadata = async (
   defaultValues: Record<string, string> = {},
   additionalMetadata: Partial<Metadata> = {}
 ): Promise<Metadata> => {
-  const variables = merge(defaultValues, getVariables(props));
+  const variables = merge({}, defaultValues, getVariables(props));
   const language = props.params.language || "en";
   const title = await translate(translations.title, variables, language);
   const description = await translate(
@@ -41,6 +41,7 @@ export const generateCommonMetadata = async (
     },
   };
   return merge(
+    {},
     defaultMetadata,
     additionalMetadata,
     {
@@ -60,7 +61,7 @@ export const generateCommonMetadata = async (
 
 export const notFoundMetadata = async (language: string): Promise<Metadata> => {
   const message = await translate("general.404", {}, language);
-  return merge(defaultMetadata, {
+  return merge({}, defaultMetadata, {
     title: message,
     description: message,
     keywords: message,
