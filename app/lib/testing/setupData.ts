@@ -23,9 +23,8 @@ async function postData(data: Record<string, any>, url: string) {
     body: JSON.stringify(data),
     credentials: "include",
   });
-  const json = await resp.json();
 
-  return json;
+  return resp.json();
 }
 
 export async function setupData(data: Record<string, any>) {

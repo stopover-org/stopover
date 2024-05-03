@@ -62,6 +62,8 @@ export const notFoundMetadata = async (language: string): Promise<Metadata> => {
   const message = await translate("general.404", {}, language);
   return merge(defaultMetadata, {
     title: message,
+    description: message,
+    keywords: message,
     openGraph: {
       locale: language,
       title: message,
