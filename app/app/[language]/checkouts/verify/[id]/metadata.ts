@@ -1,4 +1,7 @@
-import { GetVariablesFn } from "components/shared/relay/PreloadedQueryWrapper";
+import {
+  GetVariablesFn,
+  PageProps,
+} from "components/shared/relay/PreloadedQueryWrapper";
 import {
   generateCommonMetadata,
   GenerateMetadataFn,
@@ -6,13 +9,35 @@ import {
 } from "lib/utils/metadata";
 import fetchQuery from "lib/relay/fetchQuery";
 import moment from "moment";
+import { Metadata } from "next";
 
+/**
+ * Holds the title of the page for SEO purposes.
+ *
+ * @type {string}
+ * @constant
+ * @default "seo.checkouts.verify.id.title"
+ */
 export const PAGE_TITLE = "seo.checkouts.verify.id.title";
+/**
+ * Function that retrieves variables based on provided parameters.
+ *
+ * @param {Object} options - The options object.
+ * @param {Object} options.params - The parameters passed to the function.
+ * @param {string} options.params.id - The ID of the booking.
+ *
+ * @returns {Object} - An object containing the retrieved variables.
+ */
 export const getVariables: GetVariablesFn = ({ params }) => ({
   id: unescape(params.id),
 });
 export const revalidate = 0;
 
+/**
+ * Represents the GraphQL query for retrieving booking details and associated event information.
+ *
+ * @typedef {string} PageQuery
+ */
 const PageQuery = `
   query PageQuery($id: ID!) {
     booking(id: $id) {
@@ -24,9 +49,22 @@ const PageQuery = `
     }
   }
 `;
-export const generateMetadata: GenerateMetadataFn = async (props) => {
+/**
+ * Generates metadata for a page.
+ * @param {PageProps} props - The page props.
+ * @returns {Promise<Metadata>} The generated metadata.
+ */
+export const generateMetadata: GenerateMetadataFn = async (
+  props: PageProps
+): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, getVariables(props));
   const translateParams = {
+    /**
+     * Retrieves the title of the event from the given response object.
+     *
+     * @param {Object} response - The response object from which to extract the event title.
+     * @returns {string|undefined} - The title of the event, or undefined if it is not found or not in the expected format.
+     */
     title: response?.booking?.event?.title,
     date: moment(new Date(response?.booking?.bookedFor)).calendar(),
   };

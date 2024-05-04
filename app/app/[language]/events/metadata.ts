@@ -90,8 +90,8 @@ export const filterParsers: Record<
 };
 
 /**
- * The PAGE_TITLE variable represents the title of the SEO Events page.
- * It is a string that contains the translation key for the SEO Events title.
+ * The string representing the title of a web page.
+ *
  * @type {string}
  * @constant
  * @default "seo.events.title"
