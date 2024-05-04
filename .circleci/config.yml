@@ -3,10 +3,13 @@ version: 2.1
 workflows:
   stopover-app-workflow:
     jobs:
+      - build_graphql
+      - build frontend
       - test_graphql
+      - test_frontend
 
 jobs:
-  test_graphql:
+  build_graphql:
     executor: stopover_graphql_stack__ruby_pg_es_redis
     working_directory: ~/stopover/graphql
     steps:
@@ -22,17 +25,9 @@ jobs:
       - install_node_js
       - install_ruby_dependencies
 
-      # DATABASE SETUP
-      - wait_for_postgres
-      - setup_database
-
-      # RUN TESTS
-      - wait_for_opensearch
-      - exec_rspec
-
-  test_frontend:
+  build_frontend:
     executor: stopover_frontend_stack__ruby_pg_es_redis
-    working_directory: ~/stopover/graphql
+    working_directory: ~/stopover/app
     steps:
       # CHECKOUT
       - checkout:
@@ -47,6 +42,23 @@ jobs:
       - install_ruby_dependencies
       - install_frontend_dependencies
 
+
+  test_graphql:
+    executor: stopover_graphql_stack__ruby_pg_es_redis
+    working_directory: ~/stopover/graphql
+    steps:
+      # DATABASE SETUP
+      - wait_for_postgres
+      - setup_database
+
+      # RUN TESTS
+      - wait_for_opensearch
+      - exec_rspec
+
+  test_frontend:
+    executor: stopover_frontend_stack__ruby_pg_es_redis
+    working_directory: ~/stopover/app
+    steps:
       # DATABASE SETUP
       - wait_for_postgres
       - setup_database
@@ -151,8 +163,9 @@ commands:
         - run:
             name: 'Change Working Directory to Frontend App'
             command: cd ../app
-        - run: 'Install Dependencies'
-          command: npm ci
+        - run:
+            name: 'Install Dependencies'
+            command: npm ci
 
     exec_jest:
       steps:
