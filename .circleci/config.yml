@@ -158,7 +158,7 @@ commands:
     steps:
       - run:
           name: 'Create Artifact Directory'
-          command: mkdir ~/artifacts
+          command: mkdir ./artifacts
           working_directory: ../app
       - run:
           name: 'Generate Graphql Types'
