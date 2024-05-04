@@ -3,13 +3,12 @@ version: 2.1
 workflows:
   stopover-app-workflow:
     jobs:
-      - build
+      - test_graphql
 
 jobs:
-  build:
-    executor: stopover_stack__ruby_pg_es_redis
+  test_graphql:
+    executor: stopover_graphql_stack__ruby_pg_es_redis
     working_directory: ~/stopover/graphql
-    # resource_class: 'medium+'
     steps:
       # CHECKOUT
       - checkout:
@@ -30,6 +29,34 @@ jobs:
       # RUN TESTS
       - wait_for_opensearch
       - exec_rspec
+
+  test_frontend:
+    executor: stopover_frontend_stack__ruby_pg_es_redis
+    working_directory: ~/stopover/graphql
+    steps:
+      # CHECKOUT
+      - checkout:
+          path: ~/stopover
+
+      # DEBUG
+      - ensure_working_directory
+
+      # DEPENDENCIES
+      # - install_system_dependencies
+      - install_node_js
+      - install_ruby_dependencies
+      - install_frontend_dependencies
+
+      # DATABASE SETUP
+      - wait_for_postgres
+      - setup_database
+
+      # SETUP BACKEND SERVER
+      - wait_for_opensearch
+      - exec_rails_server
+
+      # RUN TESTS
+      - exec_jest
 
 commands:
   # [COMMANDS] DEPENDENCIES
@@ -113,6 +140,30 @@ commands:
       - store_test_results:
           path: ~/rspec
 
+    exec_rails_server:
+      steps:
+        - run:
+            name: 'Run Rails Server'
+            command: bin/rails s
+
+    install_frontend_dependencies:
+      steps:
+        - run:
+            name: 'Change Working Directory to Frontend App'
+            command: cd ../app
+        - run: 'Install Dependencies'
+          command: npm ci
+
+    exec_jest:
+      steps:
+        - run:
+            name: 'Change Working Directory to Frontend App'
+            command: cd ../app
+        - run:
+            name: 'Jest Tests'
+            command: npm test
+
+
   wait_for_postgres:
     steps:
       - run: 'dockerize -wait tcp://localhost:5432 -timeout 1m'
@@ -150,8 +201,15 @@ images:
     image: 'cimg/redis:7.0'
 
 executors:
-  stopover_stack__ruby_pg_es_redis:
+  stopover_graphql_stack__ruby_pg_es_redis:
     working_directory: '~/stopover/graphql'
+    docker:
+      - *_ruby
+      - *_postgres
+      - *_opensearch
+      - *_redis
+  stopover_frontend_stack__ruby_pg_es_redis:
+    working_directory: '~/stopover/app'
     docker:
       - *_ruby
       - *_postgres
