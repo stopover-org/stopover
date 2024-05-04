@@ -40,6 +40,14 @@ export async function setupData(data: Record<string, any>) {
     response.account = JSON.parse(response.account);
   }
 
+  if (response.event) {
+    response.event = JSON.parse(response.event);
+  }
+
+  if (response.schedule) {
+    response.schedule = JSON.parse(response.schedule);
+  }
+
   return response;
 }
 

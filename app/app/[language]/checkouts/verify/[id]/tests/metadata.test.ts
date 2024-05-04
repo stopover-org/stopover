@@ -1,4 +1,11 @@
-import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+} from "@jest/globals";
 import {
   generateMetadata,
   getVariables,
@@ -8,10 +15,9 @@ import {
 import { Metadata } from "next";
 import { setupData, teardownData, testSignIn } from "lib/testing/setupData";
 import { mockCookies } from "lib/testing/mockCookies";
-import {
-  checkoutsVerifyIdMetadata,
-  notFoundMetadata,
-} from "lib/testing/expectedMetadata";
+import { notFoundMetadata } from "lib/testing/expectedMetadata";
+import moment from "moment/moment";
+import { checkoutsVerifyIdMetadata } from "./metadata.expected";
 
 jest.mock("next/headers", () => {
   const originalModule = jest.requireActual("next/headers");
@@ -74,9 +80,17 @@ describe("[language]/checkouts/verify/[id]", () => {
 
   describe("generateMetadata", () => {
     describe("not authorized user", () => {
-      ["ru", "en"].forEach((language) => {
+      let expected: Record<string, Metadata> = {};
+
+      beforeEach(() => {
+        expected = notFoundMetadata();
+      });
+
+      ["ru", "en"].map((language) =>
         describe(language, () => {
-          mockCookies({ accessToken: "incorrect-access-token", language });
+          beforeEach(() => {
+            mockCookies({ accessToken: "incorrect-access-token", language });
+          });
 
           // /[language]/checkouts/verify/123==
           it("default props", async () => {
@@ -89,9 +103,8 @@ describe("[language]/checkouts/verify/[id]", () => {
               searchParams: {},
             };
             const metadata = await generateMetadata(defaultProps);
-            const expectedMetadata = notFoundMetadata()[language];
 
-            expect(metadata).toStrictEqual(expectedMetadata);
+            expect(metadata).toStrictEqual(expected[language]);
           });
 
           // /[language]/checkouts/verify/123==?param1=123&param2=123
@@ -104,23 +117,26 @@ describe("[language]/checkouts/verify/[id]", () => {
               },
               searchParams: { param1: "123", param2: "123" },
             };
+            const metadata = await generateMetadata(defaultProps);
 
-            generateMetadata(defaultProps).then((metadata) => {
-              const expectedMetadata = notFoundMetadata()[language];
-
-              expect(metadata).toStrictEqual(expectedMetadata);
-            });
+            expect(metadata).toStrictEqual(expected[language]);
           });
-        });
-      });
+        })
+      );
     });
 
     describe("existing booking", () => {
-      const expected: Record<string, Metadata> = checkoutsVerifyIdMetadata();
+      let expected: Record<string, Metadata> = {};
 
-      Object.keys(expected).map((language) =>
+      beforeEach(() => {
+        expected = checkoutsVerifyIdMetadata(booking!);
+      });
+
+      ["ru", "en"].map((language) =>
         describe(language, () => {
-          mockCookies({ accessToken: user?.access_token, language });
+          beforeEach(() => {
+            mockCookies({ accessToken: user?.access_token, language });
+          });
 
           // /[language]/checkouts/verify/123==
           it("default props", async () => {
@@ -158,11 +174,17 @@ describe("[language]/checkouts/verify/[id]", () => {
     });
 
     describe("non existing booking", () => {
-      const expected: Record<string, Metadata> = notFoundMetadata();
+      let expected: Record<string, Metadata> = {};
 
-      Object.keys(expected).map((language) =>
+      beforeEach(() => {
+        expected = notFoundMetadata();
+      });
+
+      ["ru", "en"].map((language) =>
         describe(language, () => {
-          mockCookies({ accessToken: user?.access_token, language });
+          beforeEach(() => {
+            mockCookies({ accessToken: user?.access_token, language });
+          });
 
           // /[language]/checkouts/verify/123==
           it("default props", async () => {

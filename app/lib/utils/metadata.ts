@@ -7,6 +7,22 @@ import { merge } from "lodash";
 import defaultMetadata, { translate } from "./defaultMetadata";
 
 export type GenerateMetadataFn = (props: PageProps) => Promise<Metadata>;
+export const noindexMetadata = {
+  robots: {
+    follow: false,
+    index: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+      nocache: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
 export const generateCommonMetadata = async (
   translations: { title: string; description: string; keywords: string },
   getVariables: GetVariablesFn,
@@ -24,22 +40,6 @@ export const generateCommonMetadata = async (
     language
   );
   const keywords = await translate(translations.keywords, variables, language);
-  const noindexMetadata = {
-    robots: {
-      follow: false,
-      index: false,
-      nocache: true,
-      googleBot: {
-        index: false,
-        follow: false,
-        noimageindex: true,
-        nocache: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-  };
   return merge(
     {},
     defaultMetadata,
@@ -61,7 +61,7 @@ export const generateCommonMetadata = async (
 
 export const notFoundMetadata = async (language: string): Promise<Metadata> => {
   const message = await translate("general.404", {}, language);
-  return merge({}, defaultMetadata, {
+  return merge({}, defaultMetadata, noindexMetadata, {
     title: message,
     description: message,
     keywords: message,

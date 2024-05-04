@@ -42,6 +42,10 @@ class TestingsController < ApplicationController
 
         json[:user] = model_instance.user.to_json if model_instance&.user
 
+        json[:event] = model_instance.event.to_json if model_instance&.event
+
+        json[:schedule] = model_instance.schedule.to_json if model_instance&.schedule
+
         json.to_json
       end
 
