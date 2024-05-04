@@ -4,7 +4,7 @@ workflows:
   stopover-app-workflow:
     jobs:
       - build_graphql
-      - build frontend
+      - build_frontend
       - test_graphql
       - test_frontend
 
@@ -152,29 +152,29 @@ commands:
       - store_test_results:
           path: ~/rspec
 
-    exec_rails_server:
-      steps:
-        - run:
-            name: 'Run Rails Server'
-            command: bin/rails s
+  exec_rails_server:
+    steps:
+      - run:
+          name: 'Run Rails Server'
+          command: bin/rails s
 
-    install_frontend_dependencies:
-      steps:
-        - run:
-            name: 'Change Working Directory to Frontend App'
-            command: cd ../app
-        - run:
-            name: 'Install Dependencies'
-            command: npm ci
+  install_frontend_dependencies:
+    steps:
+      - run:
+          name: 'Change Working Directory to Frontend App'
+          command: cd ../app
+      - run:
+          name: 'Install Dependencies'
+          command: npm ci
 
-    exec_jest:
-      steps:
-        - run:
-            name: 'Change Working Directory to Frontend App'
-            command: cd ../app
-        - run:
-            name: 'Jest Tests'
-            command: npm test
+  exec_jest:
+    steps:
+      - run:
+          name: 'Change Working Directory to Frontend App'
+          command: cd ../app
+      - run:
+          name: 'Jest Tests'
+          command: npm test
 
 
   wait_for_postgres:
