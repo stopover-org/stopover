@@ -188,7 +188,7 @@ commands:
     steps:
       - run:
           name: 'Run Rails Server'
-          command: bin/rails s
+          command: bin/rails s &
 
   install_frontend_dependencies:
     steps:
@@ -254,7 +254,7 @@ executors:
       - *_opensearch
       - *_redis
   stopover_frontend_stack__ruby_pg_es_redis:
-    working_directory: '~/stopover/app'
+    working_directory: '~/stopover/graphql'
     docker:
       - *_ruby
       - *_postgres
