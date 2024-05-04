@@ -3,13 +3,13 @@ version: 2.1
 workflows:
   stopover-app-workflow:
     jobs:
-      - build
+      - test_graphql
+      - test_frontend
 
 jobs:
-  build:
-    executor: stopover_stack__ruby_pg_es_redis
+  test_graphql:
+    executor: stopover_graphql_stack__ruby_pg_es_redis
     working_directory: ~/stopover/graphql
-    # resource_class: 'medium+'
     steps:
       # CHECKOUT
       - checkout:
@@ -31,9 +31,36 @@ jobs:
       - wait_for_opensearch
       - exec_rspec
 
+  test_frontend:
+    executor: stopover_frontend_stack__ruby_pg_es_redis
+    working_directory: ~/stopover/graphql
+    steps:
+      # CHECKOUT
+      - checkout:
+          path: ~/stopover
+
+      # DEBUG
+      - ensure_working_directory
+
+      # DEPENDENCIES
+      # - install_system_dependencies
+      - install_node_js
+      - install_ruby_dependencies
+      - install_frontend_dependencies
+
+      # DATABASE SETUP
+      - wait_for_postgres
+      - setup_database
+
+      # SETUP BACKEND SERVER
+      - wait_for_opensearch
+      - exec_rails_server
+
+      # RUN TESTS
+      - exec_jest
+
 commands:
   # [COMMANDS] DEPENDENCIES
-
   ensure_working_directory:
     steps:
       - run:
@@ -86,7 +113,6 @@ commands:
             sudo npm install -g -f yarn@latest # update yarn
             node -v
 
-  # [COMMANDS] TASKS
 
   setup_database:
     steps:
@@ -95,6 +121,7 @@ commands:
           command: |
             cp config/database.example.yml config/database.yml
             bin/rails db:create db:schema:load
+
 
   exec_rspec:
     steps:
@@ -112,6 +139,28 @@ commands:
           when: always
       - store_test_results:
           path: ~/rspec
+
+  exec_rails_server:
+    steps:
+      - run:
+          name: 'Run Rails Server'
+          command: bin/rails s -b 127.0.0.1 -p 8080
+          background: true
+
+  install_frontend_dependencies:
+    steps:
+      - run:
+          name: 'Install Dependencies'
+          command: npm ci
+          working_directory: ../app
+
+  exec_jest:
+    steps:
+      - run:
+          name: 'Jest'
+          command: npm test
+          working_directory: ../app
+
 
   wait_for_postgres:
     steps:
@@ -150,7 +199,14 @@ images:
     image: 'cimg/redis:7.0'
 
 executors:
-  stopover_stack__ruby_pg_es_redis:
+  stopover_graphql_stack__ruby_pg_es_redis:
+    working_directory: '~/stopover/graphql'
+    docker:
+      - *_ruby
+      - *_postgres
+      - *_opensearch
+      - *_redis
+  stopover_frontend_stack__ruby_pg_es_redis:
     working_directory: '~/stopover/graphql'
     docker:
       - *_ruby
