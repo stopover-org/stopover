@@ -24,10 +24,11 @@ jobs:
       # - install_system_dependencies
       - install_node_js
       - install_ruby_dependencies
+      - ensure_working_directory
 
   build_frontend:
     executor: stopover_frontend_stack__ruby_pg_es_redis
-    working_directory: ~/stopover/app
+    working_directory: ~/stopover/graphql
     steps:
       # CHECKOUT
       - checkout:
@@ -41,6 +42,7 @@ jobs:
       - install_node_js
       - install_ruby_dependencies
       - install_frontend_dependencies
+      - ensure_working_directory
 
 
   test_graphql:
@@ -58,6 +60,7 @@ jobs:
       # - install_system_dependencies
       - install_node_js
       - install_ruby_dependencies
+      - ensure_working_directory
 
       # DATABASE SETUP
       - wait_for_postgres
@@ -66,10 +69,11 @@ jobs:
       # RUN TESTS
       - wait_for_opensearch
       - exec_rspec
+      - ensure_working_directory
 
   test_frontend:
     executor: stopover_frontend_stack__ruby_pg_es_redis
-    working_directory: ~/stopover/app
+    working_directory: ~/stopover/graphql
     steps:
       # CHECKOUT
       - checkout:
@@ -83,6 +87,7 @@ jobs:
       - install_node_js
       - install_ruby_dependencies
       - install_frontend_dependencies
+      - ensure_working_directory
 
       # DATABASE SETUP
       - wait_for_postgres
@@ -91,9 +96,11 @@ jobs:
       # SETUP BACKEND SERVER
       - wait_for_opensearch
       - exec_rails_server
+      - ensure_working_directory
 
       # RUN TESTS
       - exec_jest
+      - ensure_working_directory
 
 commands:
   # [COMMANDS] DEPENDENCIES
