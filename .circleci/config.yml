@@ -158,6 +158,9 @@ commands:
   generate_gql_types:
     steps:
       - run:
+          name: 'Create Artifact Directory'
+          command: mkdir ./artifacts
+      - run:
           name: 'Generate Graphql Types'
           command: npm run generate
           working_directory: ../app
