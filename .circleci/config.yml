@@ -195,8 +195,8 @@ commands:
       - run:
           name: 'Install Dependencies'
           command: |
-            cd ../app | \
-            ls -al | \
+            cd ../app && \
+            ls -al && \
             npm ci
 
   exec_jest:
@@ -204,8 +204,8 @@ commands:
       - run:
           name: 'Jest Tests'
           command: |
-            cd ../app | \
-            ls -al | \
+            cd ../app && \
+            ls -al && \
             npm test
 
 
