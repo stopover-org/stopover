@@ -298,6 +298,8 @@ class Event < ApplicationRecord
   end
 
   def sync_stripe
+    return if Flipper.enabled?(:skip_stripe_integration)
+
     StripeIntegratorSyncJob.perform_later('event', id)
   end
 
