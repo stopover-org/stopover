@@ -113,7 +113,6 @@ commands:
             sudo npm install -g -f yarn@latest # update yarn
             node -v
 
-  # [COMMANDS] TASKS
 
   setup_database:
     steps:
@@ -122,6 +121,7 @@ commands:
           command: |
             cp config/database.example.yml config/database.yml
             bin/rails db:create db:schema:load
+
 
   exec_rspec:
     steps:
