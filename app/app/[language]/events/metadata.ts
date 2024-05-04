@@ -4,6 +4,7 @@ import moment from "moment";
 import { EventsFilter } from "artifacts/scene_EventsPage_Query.graphql";
 import { Metadata } from "next";
 import { generateCommonMetadata } from "lib/utils/metadata";
+import { filterObject } from "filestack-js";
 
 /**
  * @typedef {Object} EventsFilter
@@ -168,7 +169,7 @@ export const generateMetadata = async (props: {
     city: "Serbia",
     startDate: moment().calendar(),
     endDate: moment().calendar(),
-    categories: [].join(" "),
+    interests: [].join(" "),
   };
   return generateCommonMetadata(
     {

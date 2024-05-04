@@ -1,7 +1,21 @@
-import { afterAll, beforeAll, describe, expect } from "@jest/globals";
+import { beforeEach, describe, expect } from "@jest/globals";
 import moment from "moment";
-import { setupData, teardownData } from "lib/testing/setupData";
-import { PAGE_TITLE, getVariables, revalidate } from "../metadata";
+import {
+  PAGE_TITLE,
+  getVariables,
+  revalidate,
+  generateMetadata,
+} from "../metadata";
+import { mockCookies } from "../../../../lib/testing/mockCookies";
+import { expectedEventsMetadata } from "./expected.metadata";
+
+jest.mock("next/headers", () => {
+  const originalModule = jest.requireActual("next/headers");
+  return {
+    ...originalModule,
+    cookies: jest.fn(),
+  };
+});
 
 describe("[language]/events", () => {
   it("PAGE_TITLE", () => {
@@ -260,42 +274,73 @@ describe("[language]/events", () => {
   );
 
   describe("generateMetadata", () => {
-    const expected = { en: {}, ru: {} };
-    beforeAll(async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const data = await setupData({
-        setup_variables: [
-          { factory: "recurring_event" },
-          { factory: "recurring_event" },
-          { factory: "active_user" },
-        ],
-        skip_delivery: true,
-      });
-      const user = data[data.length - 1];
-
-      console.log(user);
-    });
-
-    afterAll(async () => {
-      await teardownData();
-    });
+    let user: Record<string, any> | undefined;
 
     ["authorized", "not_authorized"].map((userType) =>
       describe(`${userType} user`, () => {
-        Object.keys(expected).map((language) =>
+        ["ru", "en"].map((language) =>
           describe(`${language} generateMetadata`, () => {
-            // /[language]/events
-            it("default props", () => {});
+            if (userType === "authorized") {
+              beforeEach(() => {
+                mockCookies({ accessToken: user?.access_token, language });
+              });
+            }
 
             // /[language]/events
-            it("without events", () => {});
+            it("default props", async () => {
+              const expected = expectedEventsMetadata({
+                city: "Serbia",
+                startDate: moment().calendar(),
+                endDate: moment().calendar(),
+                interests: "",
+              });
+              const searchParams = {};
+              const metadata = await generateMetadata({
+                params: { language },
+                searchParams,
+              });
+
+              expect(metadata).toEqual(expected[language]);
+            });
 
             describe("search params", () => {
               // /[language]/events?query="query"
-              it("query", () => {});
+              it("query", async () => {
+                const expected = expectedEventsMetadata({
+                  city: "Serbia",
+                  startDate: moment().calendar(),
+                  endDate: moment().calendar(),
+                  interests: "",
+                });
+                const searchParams = { query: "query" };
+                const metadata = await generateMetadata({
+                  params: { language },
+                  searchParams,
+                });
+
+                expect(metadata).toEqual(expected[language]);
+              });
 
               // /[language]/events?interests=%5B"active-holiday"%5D
-              it("interests", () => {});
+              it("interests", async () => {
+                const expected = expectedEventsMetadata({
+                  city: "Serbia",
+                  startDate: moment().calendar(),
+                  endDate: moment().calendar(),
+                  interests: ["active-holiday"].join(""),
+                });
+
+                const searchParams = {
+                  interests: JSON.stringify(["active-holiday"]),
+                };
+
+                const metadata = await generateMetadata({
+                  params: { language },
+                  searchParams,
+                });
+
+                expect(metadata).toEqual(expected[language]);
+              });
 
               // /[language]/events?minPrice=345
               it("minPrice", () => {});
