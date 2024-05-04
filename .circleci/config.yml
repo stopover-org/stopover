@@ -47,6 +47,18 @@ jobs:
     executor: stopover_graphql_stack__ruby_pg_es_redis
     working_directory: ~/stopover/graphql
     steps:
+      # CHECKOUT
+      - checkout:
+          path: ~/stopover
+
+      # DEBUG
+      - ensure_working_directory
+
+      # DEPENDENCIES
+      # - install_system_dependencies
+      - install_node_js
+      - install_ruby_dependencies
+
       # DATABASE SETUP
       - wait_for_postgres
       - setup_database
@@ -59,6 +71,19 @@ jobs:
     executor: stopover_frontend_stack__ruby_pg_es_redis
     working_directory: ~/stopover/app
     steps:
+      # CHECKOUT
+      - checkout:
+          path: ~/stopover
+
+      # DEBUG
+      - ensure_working_directory
+
+      # DEPENDENCIES
+      # - install_system_dependencies
+      - install_node_js
+      - install_ruby_dependencies
+      - install_frontend_dependencies
+
       # DATABASE SETUP
       - wait_for_postgres
       - setup_database
