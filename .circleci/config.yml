@@ -47,7 +47,6 @@ jobs:
       - install_node_js
       - install_ruby_dependencies
       - install_frontend_dependencies
-      - generate_gql_types
 
       # DATABASE SETUP
       - wait_for_postgres
@@ -155,7 +154,7 @@ commands:
           command: npm ci
           working_directory: ../app
 
-  generate_gql_types:
+  exec_jest:
     steps:
       - run:
           name: 'Create Artifact Directory'
@@ -165,9 +164,6 @@ commands:
           name: 'Generate Graphql Types'
           command: npm run generate
           working_directory: ../app
-
-  exec_jest:
-    steps:
       - run:
           name: 'Jest'
           command: npm test
