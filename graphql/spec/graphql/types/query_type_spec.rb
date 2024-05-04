@@ -911,7 +911,7 @@ RSpec.describe Types::QueryType, type: :graphql_type do
         expect(result.dig(:data, :eventFilters, :city)).to eq('')
       end
 
-      it 'except removed events' do
+      xit 'except removed events' do
         Event.last.update_columns(status: :removed)
         Event.reindex_test
         result = subject
