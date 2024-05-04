@@ -61,7 +61,6 @@ jobs:
 
 commands:
   # [COMMANDS] DEPENDENCIES
-
   ensure_working_directory:
     steps:
       - run:
@@ -145,7 +144,8 @@ commands:
     steps:
       - run:
           name: 'Run Rails Server'
-          command: bin/rails s -b 127.0.0.1 -p 8080 &
+          command: bin/rails s -b 127.0.0.1 -p 8080
+          background: true
 
   install_frontend_dependencies:
     steps:
