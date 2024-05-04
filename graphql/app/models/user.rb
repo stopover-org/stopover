@@ -68,10 +68,10 @@ class User < ApplicationRecord
   # RICH_TEXT =============================================================
   #
   # VALIDATIONS ===========================================================
-  validates :email, uniqueness: { message: 'is taken', allow_blank: true }
-  validates :phone, uniqueness: { message: 'is taken', allow_blank: true }
-  validates :phone, phone: { message: 'is invalid', allow_blank: true }, unless: :skip_phone_validation
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'is invalid', allow_blank: true }
+  validates :email, uniqueness: { allow_blank: true }
+  validates :phone, uniqueness: { allow_blank: true }
+  validates :phone, phone: { allow_blank: true }, unless: :skip_phone_validation
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, allow_blank: true }
 
   # CALLBACKS =============================================================
   before_validation :transform_email
@@ -178,7 +178,7 @@ class User < ApplicationRecord
   end
 
   def skip_phone_validation
-    Flipper.enabled?(:skip_phone_validation) || false
+    Flipper.enabled?(:skip_phone_validation)
   end
 
   def can_send_code?

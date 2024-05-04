@@ -4,6 +4,7 @@ import payoutTranslations from "./payout";
 import refundTranslations from "./refund";
 
 export default merge(
+  {},
   paymentTranslations,
   payoutTranslations,
   refundTranslations

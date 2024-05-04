@@ -8,6 +8,7 @@ import stripeIntegrationTranslations from "./stripeIntegration";
 import eventPlacements from "./eventPlacement";
 
 export default merge(
+  {},
   bookingCancellationOptionTranslations,
   eventTranslations,
   eventOptionTranslations,

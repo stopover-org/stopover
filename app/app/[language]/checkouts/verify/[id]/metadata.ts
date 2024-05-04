@@ -17,6 +17,7 @@ const PageQuery = `
   query PageQuery($id: ID!) {
     booking(id: $id) {
       id
+      bookedFor
       event {
         title
       }
@@ -27,14 +28,14 @@ export const generateMetadata: GenerateMetadataFn = async (props) => {
   const response = await fetchQuery(PageQuery, getVariables(props));
   const translateParams = {
     title: response?.booking?.event?.title,
-    date: moment(response?.booking?.bookedFor).calendar(),
+    date: moment(new Date(response?.booking?.bookedFor)).calendar(),
   };
 
   if (!response?.booking?.id) {
     return notFoundMetadata(props.params.language);
   }
 
-  const metadata = generateCommonMetadata(
+  return generateCommonMetadata(
     {
       title: PAGE_TITLE,
       description: "seo.checkouts.verify.id.description",
@@ -45,6 +46,4 @@ export const generateMetadata: GenerateMetadataFn = async (props) => {
     false,
     translateParams
   );
-
-  return metadata;
 };

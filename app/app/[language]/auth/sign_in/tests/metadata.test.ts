@@ -44,7 +44,7 @@ describe("[language]/auth/sign_in]", () => {
 
   describe("generateMetadata", () => {
     const expected: Record<string, Metadata> = {
-      ru: merge(defaultMetadata, {
+      ru: merge({}, defaultMetadata, {
         description:
           "Пожалуйста, войдите, чтобы получить доступ к вашей учетной записи и воспользоваться персонализированными услугами, предназначенными специально для вас.",
         keywords:
@@ -73,7 +73,7 @@ describe("[language]/auth/sign_in]", () => {
         },
         title: "Stopover. Your Travel Manger | Авторизация",
       }),
-      en: merge(defaultMetadata, {
+      en: merge({}, defaultMetadata, {
         description:
           "Please sign in to access your account and enjoy personalized services tailored just for you.",
         keywords:

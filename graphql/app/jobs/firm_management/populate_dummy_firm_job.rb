@@ -24,101 +24,97 @@ module FirmManagement
     ].freeze
 
     def perform(firm_id)
-      firm = Firm.find(firm_id)
+      Stopover::FlagsSupport.skip_notifications do
+        firm = Firm.find(firm_id)
 
-      return unless firm.firm_type_onboarding?
+        return unless firm.firm_type_onboarding?
 
-      $skip_delivery = true
-
-      USER_EMAILS.each do |email|
-        user = User.find_by(email: email)
-        user&.destroy!
-      end
-
-      firm.payouts.destroy_all
-      firm.refunds.destroy_all
-      firm.payments.destroy_all
-      firm.event_placements.destroy_all
-      firm.tour_places.each do |place|
-        place.dynamic_translations.destroy_all
-      end
-      firm.tour_places.destroy_all
-      firm.tour_plans.each do |plan|
-        plan.dynamic_translations.destroy_all
-      end
-      firm.tour_plans.destroy_all
-      firm.notifications.destroy_all
-      firm.attendees.destroy_all
-      firm.attendee_options.destroy_all
-      firm.events.each do |event|
-        event.bookings.each do |booking|
-          booking.booking_options.destroy_all
+        USER_EMAILS.each do |email|
+          user = User.find_by(email: email)
+          user&.destroy!
         end
-        event.bookings.destroy_all
-        event.dynamic_translations.destroy_all
-        event.event_options.each do |opt|
-          opt.dynamic_translations.destroy_all
+
+        firm.payouts.destroy_all
+        firm.refunds.destroy_all
+        firm.payments.destroy_all
+        firm.event_placements.destroy_all
+        firm.tour_places.each do |place|
+          place.dynamic_translations.destroy_all
         end
-      end
-      firm.events.destroy_all
-      firm.dynamic_translations.destroy_all
-
-      firm.activate! unless firm.active?
-
-      create_daily_events(firm, 0, images_count: 0)
-      create_weekly_events(firm, 1, images_count: 3)
-      create_monthly_events(firm, 2, images_count: 6)
-      create_single_events(firm, 3, images_count: 9)
-
-      create_daily_events(firm, 4, with_placements: true)
-      create_weekly_events(firm, 5, with_placements: true)
-      create_monthly_events(firm, 6, with_placements: true)
-      create_single_events(firm, 7, with_placements: true)
-
-      create_daily_events(firm, 8, with_options: true)
-      create_weekly_events(firm, 9, with_options: true)
-      create_monthly_events(firm, 10, with_options: true)
-      create_single_events(firm, 11, with_options: true)
-
-      create_daily_events(firm, 12, with_tour_plan: true)
-      create_weekly_events(firm, 13, with_tour_plan: true)
-      create_monthly_events(firm, 14, with_tour_plan: true)
-      create_single_events(firm, 15, with_tour_plan: true)
-
-      firm.events.each do |event|
-        event.unpublish!
-        event.publish!
-        ScheduleEventJob.perform_now(event_id: event.id)
-        if event.recurring_days_with_time.size == 7
-          4.times.each do |n|
-            time = Time.zone.now.at_beginning_of_day - n.days + 13.hours + n.hours
-            event.schedules.create!(scheduled_for: time, status: :active)
+        firm.tour_places.destroy_all
+        firm.tour_plans.each do |plan|
+          plan.dynamic_translations.destroy_all
+        end
+        firm.tour_plans.destroy_all
+        firm.notifications.destroy_all
+        firm.attendees.destroy_all
+        firm.attendee_options.destroy_all
+        firm.events.each do |event|
+          event.bookings.each do |booking|
+            booking.booking_options.destroy_all
+          end
+          event.bookings.destroy_all
+          event.dynamic_translations.destroy_all
+          event.event_options.each do |opt|
+            opt.dynamic_translations.destroy_all
           end
         end
-        Stopover::StripeIntegrator.sync(event)
-        event.event_options.each do |event_option|
-          Stopover::StripeIntegrator.sync(event_option)
+        firm.events.destroy_all
+        firm.dynamic_translations.destroy_all
+
+        firm.activate! unless firm.active?
+
+        create_daily_events(firm, 0, images_count: 0)
+        create_weekly_events(firm, 1, images_count: 3)
+        create_monthly_events(firm, 2, images_count: 6)
+        create_single_events(firm, 3, images_count: 9)
+
+        create_daily_events(firm, 4, with_placements: true)
+        create_weekly_events(firm, 5, with_placements: true)
+        create_monthly_events(firm, 6, with_placements: true)
+        create_single_events(firm, 7, with_placements: true)
+
+        create_daily_events(firm, 8, with_options: true)
+        create_weekly_events(firm, 9, with_options: true)
+        create_monthly_events(firm, 10, with_options: true)
+        create_single_events(firm, 11, with_options: true)
+
+        create_daily_events(firm, 12, with_tour_plan: true)
+        create_weekly_events(firm, 13, with_tour_plan: true)
+        create_monthly_events(firm, 14, with_tour_plan: true)
+        create_single_events(firm, 15, with_tour_plan: true)
+
+        firm.events.each do |event|
+          event.unpublish!
+          event.publish!
+          ScheduleEventJob.perform_now(event_id: event.id)
+          if event.recurring_days_with_time.size == 7
+            4.times.each do |n|
+              time = Time.zone.now.at_beginning_of_day - n.days + 13.hours + n.hours
+              event.schedules.create!(scheduled_for: time, status: :active)
+            end
+          end
+          Stopover::StripeIntegrator.sync(event)
+          event.event_options.each do |event_option|
+            Stopover::StripeIntegrator.sync(event_option)
+          end
         end
-      end
 
-      firm.events.reindex
-      firm.schedules.reindex
+        firm.events.reindex
+        firm.schedules.reindex
 
-      USER_EMAILS.each do |email|
-        user = User.new(email: email, status: 'active', confirmation_code: '1234')
-        user.save!
-        user.activate!(code: '1234')
+        USER_EMAILS.each do |email|
+          user = User.new(email: email, status: 'active', confirmation_code: '1234')
+          user.save!
+          user.activate!(code: '1234')
 
-        firm.schedules.where('scheduled_for > NOW()').first(4).each do |schedule|
-          book_event(schedule, user.account)
+          firm.schedules.where('scheduled_for > NOW()').first(4).each do |schedule|
+            book_event(schedule, user.account)
+          end
         end
+      rescue StandardError => e
+        raise e
       end
-
-      $skip_delivery = false
-    rescue StandardError => e
-      $skip_delivery = false
-
-      raise e
     end
 
     def create_daily_events(firm, index, with_placements: false, with_options: false, with_tour_plan: false, images_count: 0)

@@ -1,20 +1,23 @@
-import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+} from "@jest/globals";
 import {
   generateMetadata,
   getVariables,
   PAGE_TITLE,
   revalidate,
 } from "app/[language]/checkouts/verify/[id]/metadata";
-import defaultMetadata from "lib/utils/defaultMetadata";
-import { merge } from "lodash";
 import { Metadata } from "next";
-import {
-  setupFixtures,
-  teardownData,
-  teardownFixtures,
-  testSignIn,
-} from "lib/testing/setupData";
-import headers from "next/headers";
+import { setupData, teardownData, testSignIn } from "lib/testing/setupData";
+import { mockCookies } from "lib/testing/mockCookies";
+import { notFoundMetadata } from "lib/testing/expectedMetadata";
+import moment from "moment/moment";
+import { checkoutsVerifyIdMetadata } from "./metadata.expected";
 
 jest.mock("next/headers", () => {
   const originalModule = jest.requireActual("next/headers");
@@ -25,18 +28,25 @@ jest.mock("next/headers", () => {
 });
 
 describe("[language]/checkouts/verify/[id]", () => {
+  let booking: Record<string, any> | undefined;
+  let user: Record<string, any> | undefined;
+  let email: string | undefined;
   beforeAll(async () => {
-    await setupFixtures();
+    booking = await setupData({
+      setup_variables: [{ factory: "fully_paid_booking" }],
+      skip_delivery: true,
+    });
 
-    const user = await testSignIn({ email: "attendee@stopoverx.com" });
-    console.log("signed in user", user);
+    email = booking?.user?.email;
+
+    user = await testSignIn({ email: email! });
   });
 
   afterAll(async () => {
-    await teardownFixtures();
+    await teardownData();
   });
 
-  it.only("PAGE_TITLE", () => {
+  it("PAGE_TITLE", () => {
     expect(PAGE_TITLE).toBe("seo.checkouts.verify.id.title");
   });
 
@@ -47,7 +57,7 @@ describe("[language]/checkouts/verify/[id]", () => {
   ["en", "ru"].map((language) =>
     describe("getVariables", () => {
       // /[language]/checkouts/verify/123==
-      it.only("default props", () => {
+      it("default props", () => {
         const defaultProps = {
           params: { language, id: "123==" },
           searchParams: {},
@@ -69,98 +79,77 @@ describe("[language]/checkouts/verify/[id]", () => {
   );
 
   describe("generateMetadata", () => {
-    const user = { access_token: "" };
-    const booking = { graphql_id: "" };
-    describe("existing booking", () => {
-      const expected: Record<string, Metadata> = {
-        ru: merge(defaultMetadata, {
-          description:
-            "Пожалуйста, войдите, чтобы получить доступ к вашей учетной записи и воспользоваться персонализированными услугами, предназначенными специально для вас.",
-          keywords:
-            "Вход Доступ Аутентификация Пользовательские учетные данные Безопасный портал Учетная запись Аутентификация Войти Логин пользователя Пользовательский доступ",
-          openGraph: {
-            description:
-              "Пожалуйста, войдите, чтобы получить доступ к вашей учетной записи и воспользоваться персонализированными услугами, предназначенными специально для вас.",
-            keywords:
-              "Вход Доступ Аутентификация Пользовательские учетные данные Безопасный портал Учетная запись Аутентификация Войти Логин пользователя Пользовательский доступ",
-            locale: "ru",
-            title: "Stopover. Your Travel Manger | Авторизация",
-          },
-          robots: {
-            follow: false,
-            googleBot: {
-              follow: false,
-              index: false,
-              "max-image-preview": "large",
-              "max-snippet": -1,
-              "max-video-preview": -1,
-              nocache: true,
-              noimageindex: true,
-            },
-            index: false,
-            nocache: true,
-          },
-          title: "Stopover. Your Travel Manger | Авторизация",
-        }),
-        en: merge(defaultMetadata, {
-          description:
-            "Please sign in to access your account and enjoy personalized services tailored just for you.",
-          keywords:
-            "Sign in Access Authentication User credentials Secure portal Account Login User login User access",
-          openGraph: {
-            description:
-              "Please sign in to access your account and enjoy personalized services tailored just for you.",
-            keywords:
-              "Sign in Access Authentication User credentials Secure portal Account Login User login User access",
-            locale: "en",
-            title: "Stopover. Your Travel Manager | Sign In",
-          },
-          robots: {
-            follow: false,
-            googleBot: {
-              follow: false,
-              index: false,
-              "max-image-preview": "large",
-              "max-snippet": -1,
-              "max-video-preview": -1,
-              nocache: true,
-              noimageindex: true,
-            },
-            index: false,
-            nocache: true,
-          },
-          title: "Stopover. Your Travel Manager | Sign In",
-        }),
-      };
+    describe("not authorized user", () => {
+      let expected: Record<string, Metadata> = {};
 
-      Object.keys(expected).map((language) =>
+      beforeEach(() => {
+        expected = notFoundMetadata();
+      });
+
+      ["ru", "en"].map((language) =>
         describe(language, () => {
-          (headers.cookies as any).mockImplementation(() => ({
-            getAll: () => [
-              {
-                name: "access_token",
-                value: user.access_token,
-              },
-              {
-                name: "i18next",
-                value: language,
-              },
-            ],
-          }));
+          beforeEach(() => {
+            mockCookies({ accessToken: "incorrect-access-token", language });
+          });
 
           // /[language]/checkouts/verify/123==
           it("default props", async () => {
             const defaultProps = {
               params: {
                 language,
-                id: booking.graphql_id,
+                id: booking?.graphql_id,
                 testing: true,
-                cookies: { access_token: user.access_token },
+              },
+              searchParams: {},
+            };
+            const metadata = await generateMetadata(defaultProps);
+
+            expect(metadata).toStrictEqual(expected[language]);
+          });
+
+          // /[language]/checkouts/verify/123==?param1=123&param2=123
+          it("various searchParams", async () => {
+            const defaultProps = {
+              params: {
+                language,
+                id: booking?.graphql_id,
+                testing: true,
+              },
+              searchParams: { param1: "123", param2: "123" },
+            };
+            const metadata = await generateMetadata(defaultProps);
+
+            expect(metadata).toStrictEqual(expected[language]);
+          });
+        })
+      );
+    });
+
+    describe("existing booking", () => {
+      let expected: Record<string, Metadata> = {};
+
+      beforeEach(() => {
+        expected = checkoutsVerifyIdMetadata(booking!);
+      });
+
+      ["ru", "en"].map((language) =>
+        describe(language, () => {
+          beforeEach(() => {
+            mockCookies({ accessToken: user?.access_token, language });
+          });
+
+          // /[language]/checkouts/verify/123==
+          it("default props", async () => {
+            const defaultProps = {
+              params: {
+                language,
+                id: booking!.graphql_id,
+                testing: true,
               },
               searchParams: {},
             };
 
-            expect(await generateMetadata(defaultProps)).toStrictEqual(
+            expect(await generateMetadata(defaultProps)).toEqual(
               expected[language]
             );
           });
@@ -170,14 +159,13 @@ describe("[language]/checkouts/verify/[id]", () => {
             const defaultProps = {
               params: {
                 language,
-                id: booking.graphql_id,
+                id: booking!.graphql_id,
                 testing: true,
-                cookies: { access_token: user.access_token },
               },
               searchParams: { param1: "123", param2: "123" },
             };
 
-            expect(await generateMetadata(defaultProps)).toStrictEqual(
+            expect(await generateMetadata(defaultProps)).toEqual(
               expected[language]
             );
           });
@@ -186,95 +174,30 @@ describe("[language]/checkouts/verify/[id]", () => {
     });
 
     describe("non existing booking", () => {
-      const expected: Record<string, Metadata> = {
-        ru: merge(defaultMetadata, {
-          description:
-            "Пожалуйста, войдите, чтобы получить доступ к вашей учетной записи и воспользоваться персонализированными услугами, предназначенными специально для вас.",
-          keywords:
-            "Вход Доступ Аутентификация Пользовательские учетные данные Безопасный портал Учетная запись Аутентификация Войти Логин пользователя Пользовательский доступ",
-          openGraph: {
-            description:
-              "Пожалуйста, войдите, чтобы получить доступ к вашей учетной записи и воспользоваться персонализированными услугами, предназначенными специально для вас.",
-            keywords:
-              "Вход Доступ Аутентификация Пользовательские учетные данные Безопасный портал Учетная запись Аутентификация Войти Логин пользователя Пользовательский доступ",
-            locale: "ru",
-            title: "Stopover. Your Travel Manger | Авторизация",
-          },
-          robots: {
-            follow: false,
-            googleBot: {
-              follow: false,
-              index: false,
-              "max-image-preview": "large",
-              "max-snippet": -1,
-              "max-video-preview": -1,
-              nocache: true,
-              noimageindex: true,
-            },
-            index: false,
-            nocache: true,
-          },
-          title: "Stopover. Your Travel Manger | Авторизация",
-        }),
-        en: merge(defaultMetadata, {
-          description:
-            "Please sign in to access your account and enjoy personalized services tailored just for you.",
-          keywords:
-            "Sign in Access Authentication User credentials Secure portal Account Login User login User access",
-          openGraph: {
-            description:
-              "Please sign in to access your account and enjoy personalized services tailored just for you.",
-            keywords:
-              "Sign in Access Authentication User credentials Secure portal Account Login User login User access",
-            locale: "en",
-            title: "Stopover. Your Travel Manager | Sign In",
-          },
-          robots: {
-            follow: false,
-            googleBot: {
-              follow: false,
-              index: false,
-              "max-image-preview": "large",
-              "max-snippet": -1,
-              "max-video-preview": -1,
-              nocache: true,
-              noimageindex: true,
-            },
-            index: false,
-            nocache: true,
-          },
-          title: "Stopover. Your Travel Manager | Sign In",
-        }),
-      };
+      let expected: Record<string, Metadata> = {};
 
-      Object.keys(expected).map((language) =>
+      beforeEach(() => {
+        expected = notFoundMetadata();
+      });
+
+      ["ru", "en"].map((language) =>
         describe(language, () => {
-          (headers.cookies as any).mockImplementation(() => ({
-            getAll: () => [
-              {
-                name: "access_token",
-                value: user.access_token,
-              },
-              {
-                name: "i18next",
-                value: language,
-              },
-            ],
-          }));
+          beforeEach(() => {
+            mockCookies({ accessToken: user?.access_token, language });
+          });
 
           // /[language]/checkouts/verify/123==
           it("default props", async () => {
             const defaultProps = {
               params: {
                 language,
-                id: "id",
+                id: "123==",
                 testing: true,
-                cookies: { access_token: user.access_token },
               },
               searchParams: {},
             };
 
-            expect(await generateMetadata(defaultProps)).toStrictEqual(
+            expect(await generateMetadata(defaultProps)).toEqual(
               expected[language]
             );
           });
@@ -284,14 +207,13 @@ describe("[language]/checkouts/verify/[id]", () => {
             const defaultProps = {
               params: {
                 language,
-                id: "id",
+                id: "123==",
                 testing: true,
-                cookies: { access_token: user.access_token },
               },
               searchParams: { param1: "123", param2: "123" },
             };
 
-            expect(await generateMetadata(defaultProps)).toStrictEqual(
+            expect(await generateMetadata(defaultProps)).toEqual(
               expected[language]
             );
           });

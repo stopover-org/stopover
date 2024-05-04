@@ -2,44 +2,19 @@
 
 require 'factory_bot'
 require 'factory_bot_rails'
-require 'active_record/fixtures'
 
 class TestingsController < ApplicationController
-  before_action :check_environment
-
-  # load fixtures in test env
-  def setup_fixtures(actual_render = true)
-    files = Stopover::Testing::E2eHelper.fixture_files
-    Rails.logger.info { "load fixtures from #{files.join(', ')}" }
-
-    files.each do |file|
-      ActiveRecord::FixtureSet.create_fixtures(File.join(Rails.root, '/test/fixtures'), file)
-    end
-
-    $stdout.puts User.all.map(&:inspect)
-
-    render json: nil if actual_render
-  end
-
-  # wipe database in test env
-  # база должна не очищаться а откатываться. Как откатить базу данных?
-  def teardown_fixtures
-    Rails.logger.info 'Teardown'
-
-    setup_fixtures(false)
-
-    render json: nil
-  end
-
   def test_sign_in
-    Rails.logger.info "Log in #{params[:email]}"
+    Stopover::FlagsSupport.skip_notifications(skip: true) do
+      Rails.logger.info "Log in #{params[:email]}"
 
-    user = User.find_by(email: params[:email])
+      user = User.find_or_create_by(email: params[:email])
 
-    if user
-      user.update!(confirmed_at: Time.zone.now, session_password: SecureRandom.hex(50))
+      if user
+        user.update!(confirmed_at: Time.zone.now, session_password: SecureRandom.hex(50), status: :active)
 
-      return render json: Stopover::Testing::E2eHelper.user_data(user)
+        return render json: Stopover::Testing::E2eHelper.user_data(user)
+      end
     end
 
     render json: nil
@@ -48,22 +23,34 @@ class TestingsController < ApplicationController
   def setup
     result = []
     setup_variables = params[:setup_variables]
-    setup_variables.each do |model_variable|
-      record = FactoryBot.create(model_variable[:factory].to_sym,
-                                 **model_variable[:attributes].to_unsafe_h)
-      result << record
+    skip_delivery = params[:skip_delivery]
+    Stopover::FlagsSupport.skip_notifications(skip: skip_delivery) do
+      setup_variables.each do |model_variable|
+        attributes = model_variable[:attributes]&.to_unsafe_h || {}
+        record = FactoryBot.create(model_variable[:factory].to_sym,
+                                   **attributes)
+        result << record
+      end
+
+      json = result.map do |model_instance|
+        json = model_instance.attributes
+        json[:access_token] = model_instance.access_token if model_instance.is_a? User
+
+        json[:graphql_id] = GraphqlSchema.id_from_object(model_instance) if model_instance.class.const_defined?(:GRAPHQL_TYPE)
+
+        json[:account] = model_instance.account.to_json if model_instance&.account
+
+        json[:user] = model_instance.user.to_json if model_instance&.user
+
+        json[:event] = model_instance.event.to_json if model_instance&.event
+
+        json[:schedule] = model_instance.schedule.to_json if model_instance&.schedule
+
+        json.to_json
+      end
+
+      render json: json
     end
-
-    json = result.map do |model_instance|
-      json = model_instance.attributes
-      json[:access_token] = model_instance.access_token if model_instance.is_a? User
-
-      json[:graphql_id] = GraphqlSchema.id_from_object(model_instance) if model_instance.class.const_defined?(:GRAPHQL_TYPE)
-
-      json.to_json
-    end
-
-    render json: json
   end
 
   def teardown
@@ -77,11 +64,5 @@ class TestingsController < ApplicationController
     end
 
     render json: {}
-  end
-
-  private
-
-  def check_environment
-    raise 'Wrong Environment' unless Rails.env.test?
   end
 end

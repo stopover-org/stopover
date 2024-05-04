@@ -5,6 +5,7 @@ import bookingTranslations from "./booking";
 import bookingOptionTranslations from "./bookingOption";
 
 export default merge(
+  {},
   attendeeTranslations,
   attendeeOptionTranslations,
   bookingTranslations,

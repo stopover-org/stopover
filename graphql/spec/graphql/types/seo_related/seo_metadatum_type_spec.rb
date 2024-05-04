@@ -30,6 +30,7 @@ RSpec.describe Types::SeoRelated::SeoMetadatumType, type: :graphql_type do
                                                           {
                                                             name: 'description'
                                                           },
+                                                          { name: 'featuredImages' },
                                                           {
                                                             name: 'id'
                                                           },

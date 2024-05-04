@@ -5,6 +5,7 @@ import stripeConnectTranslations from "./stripeConnect";
 import addressTranslations from "./address";
 
 export default merge(
+  {},
   balanceTranslations,
   firmTranslations,
   stripeConnectTranslations,

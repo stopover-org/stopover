@@ -95,8 +95,14 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
+  config.before(:each) do
+    Flipper.enable(:skip_phone_validation)
+  end
+
   config.before(:suite) do
-    # reindex models
+    ApplicationRecord.descendants.each do |model|
+      model.searchkick_index.refresh if model.singleton_methods.include? :searchkick_index
+    end
 
     # and disable callbacks
     Searchkick.disable_callbacks

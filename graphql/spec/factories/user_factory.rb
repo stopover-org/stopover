@@ -25,9 +25,7 @@
 FactoryBot.define do
   factory :user do
     phone { Faker::PhoneNumber.phone_number }
-    sequence :email do |n|
-      "#{n}@example.com"
-    end
+    email { "#{SecureRandom.hex(200)}#{Time.zone.now.to_i}@example.com" }
 
     trait :disabled do
       session_password { Faker::Internet.password }

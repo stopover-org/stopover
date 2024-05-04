@@ -6,6 +6,7 @@ import landingsTranslations from "./Landings";
 import articlesTranslations from "./articles";
 
 export default merge(
+  {},
   articlesTranslations,
   firmsTranslations,
   attendeesTranslations,

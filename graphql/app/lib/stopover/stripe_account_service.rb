@@ -15,7 +15,7 @@ module Stopover
       stripe_connect
     end
 
-    def self.dactivate(stripe_connect_id)
+    def self.deactivate(stripe_connect_id)
       stripe_connect = StripeConnect.find_by(stripe_connect_id: stripe_connect_id)
       stripe_connect.deactivate!
 

@@ -23,43 +23,41 @@ async function postData(data: Record<string, any>, url: string) {
     body: JSON.stringify(data),
     credentials: "include",
   });
-  const json = await resp.json();
 
-  return json;
+  return resp.json();
 }
 
 export async function setupData(data: Record<string, any>) {
-  return JSON.parse(
+  const response = JSON.parse(
     await postData(data, `${new URL(getGraphQLBaseUrl()).origin}/test_setup`)
   );
+
+  if (response.user) {
+    response.user = JSON.parse(response.user);
+  }
+
+  if (response.account) {
+    response.account = JSON.parse(response.account);
+  }
+
+  if (response.event) {
+    response.event = JSON.parse(response.event);
+  }
+
+  if (response.schedule) {
+    response.schedule = JSON.parse(response.schedule);
+  }
+
+  return response;
 }
 
 export async function teardownData() {
-  return JSON.parse(
-    await postData({}, `${new URL(getGraphQLBaseUrl()).origin}/test_teardown`)
-  );
-}
-
-export async function setupFixtures() {
-  return JSON.parse(
-    await postData({}, `${new URL(getGraphQLBaseUrl()).origin}/setup_fixtures`)
-  );
-}
-
-export async function teardownFixtures() {
-  return JSON.parse(
-    await postData(
-      {},
-      `${new URL(getGraphQLBaseUrl()).origin}/teardown_fixtures`
-    )
-  );
+  return postData({}, `${new URL(getGraphQLBaseUrl()).origin}/test_teardown`);
 }
 
 export async function testSignIn({ email }: { email: string }) {
-  return JSON.parse(
-    await postData(
-      { email },
-      `${new URL(getGraphQLBaseUrl()).origin}/test_sign_in`
-    )
+  return postData(
+    { email },
+    `${new URL(getGraphQLBaseUrl()).origin}/test_sign_in`
   );
 }

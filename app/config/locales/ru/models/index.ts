@@ -8,6 +8,7 @@ import usersRelatedTranslations from "./usersRelated";
 import seoRelated from "./seoRelated";
 
 export default merge(
+  {},
   seoRelated,
   bookingsRelatedTranslations,
   eventsRelatedTranslations,

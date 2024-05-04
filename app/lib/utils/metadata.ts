@@ -7,6 +7,22 @@ import { merge } from "lodash";
 import defaultMetadata, { translate } from "./defaultMetadata";
 
 export type GenerateMetadataFn = (props: PageProps) => Promise<Metadata>;
+export const noindexMetadata = {
+  robots: {
+    follow: false,
+    index: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+      nocache: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
 export const generateCommonMetadata = async (
   translations: { title: string; description: string; keywords: string },
   getVariables: GetVariablesFn,
@@ -15,7 +31,7 @@ export const generateCommonMetadata = async (
   defaultValues: Record<string, string> = {},
   additionalMetadata: Partial<Metadata> = {}
 ): Promise<Metadata> => {
-  const variables = merge(defaultValues, getVariables(props));
+  const variables = merge({}, defaultValues, getVariables(props));
   const language = props.params.language || "en";
   const title = await translate(translations.title, variables, language);
   const description = await translate(
@@ -24,23 +40,8 @@ export const generateCommonMetadata = async (
     language
   );
   const keywords = await translate(translations.keywords, variables, language);
-  const noindexMetadata = {
-    robots: {
-      follow: false,
-      index: false,
-      nocache: true,
-      googleBot: {
-        index: false,
-        follow: false,
-        noimageindex: true,
-        nocache: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-  };
   return merge(
+    {},
     defaultMetadata,
     additionalMetadata,
     {
@@ -59,12 +60,16 @@ export const generateCommonMetadata = async (
 };
 
 export const notFoundMetadata = async (language: string): Promise<Metadata> => {
-  const title = await translate("general.404", {}, language);
-  return merge(defaultMetadata, {
-    title,
+  const message = await translate("general.404", {}, language);
+  return merge({}, defaultMetadata, noindexMetadata, {
+    title: message,
+    description: message,
+    keywords: message,
     openGraph: {
       locale: language,
-      title,
+      title: message,
+      description: message,
+      keywords: message,
     },
   });
 };

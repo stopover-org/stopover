@@ -31,6 +31,7 @@ import resetOnboardingFirm from "./resetOnboardingFirm";
 import editSeoMetadata from "./editSeoMetadata";
 
 export default merge(
+  {},
   editSeoMetadata,
   resetOnboardingFirm,
   createEventOption,
