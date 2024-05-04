@@ -193,20 +193,18 @@ commands:
   install_frontend_dependencies:
     steps:
       - run:
-          name: 'Change Working Directory to Frontend App'
-          command: cd ../app
-      - run:
           name: 'Install Dependencies'
-          command: npm ci
+          command: |
+            cd ../app | \
+            npm ci
 
   exec_jest:
     steps:
       - run:
-          name: 'Change Working Directory to Frontend App'
-          command: cd ../app
-      - run:
           name: 'Jest Tests'
-          command: npm test
+          command: |
+            cd ../app | \
+            npm test
 
 
   wait_for_postgres:
