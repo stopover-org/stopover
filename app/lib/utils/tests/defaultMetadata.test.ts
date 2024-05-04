@@ -47,6 +47,7 @@ describe("default metadata", () => {
           "max-snippet": -1,
           "max-video-preview": -1,
           noimageindex: false,
+          nocache: false,
         },
         index: true,
         nocache: false,
