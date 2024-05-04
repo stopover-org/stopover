@@ -151,17 +151,15 @@ commands:
     steps:
       - run:
           name: 'Install Dependencies'
-          command: |
-            cd ../app && \
-            npm ci
+          command: npm ci
+          working_directory: ../app
 
   exec_jest:
     steps:
       - run:
-          name: 'Jest Tests'
-          command: |
-            cd ../app && \
-            npm test
+          name: 'Jest'
+          command: npm test
+          working_directory: ../app
 
 
   wait_for_postgres:
