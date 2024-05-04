@@ -28,27 +28,32 @@ async function postData(data: Record<string, any>, url: string) {
 }
 
 export async function setupData(data: Record<string, any>) {
-  const response = JSON.parse(
-    await postData(data, `${new URL(getGraphQLBaseUrl()).origin}/test_setup`)
+  const rawResponse = await postData(
+    data,
+    `${new URL(getGraphQLBaseUrl()).origin}/test_setup`
   );
 
-  if (response.user) {
-    response.user = JSON.parse(response.user);
-  }
+  return rawResponse
+    .map((resp: string) => JSON.parse(resp))
+    .map((resp: Record<string, any>) => {
+      if (resp.user) {
+        resp.user = JSON.parse(resp.user);
+      }
 
-  if (response.account) {
-    response.account = JSON.parse(response.account);
-  }
+      if (resp.account) {
+        resp.account = JSON.parse(resp.account);
+      }
 
-  if (response.event) {
-    response.event = JSON.parse(response.event);
-  }
+      if (resp.event) {
+        resp.event = JSON.parse(resp.event);
+      }
 
-  if (response.schedule) {
-    response.schedule = JSON.parse(response.schedule);
-  }
+      if (resp.schedule) {
+        resp.schedule = JSON.parse(resp.schedule);
+      }
 
-  return response;
+      return resp;
+    });
 }
 
 export async function teardownData() {

@@ -16,7 +16,6 @@ import { Metadata } from "next";
 import { setupData, teardownData, testSignIn } from "lib/testing/setupData";
 import { mockCookies } from "lib/testing/mockCookies";
 import { notFoundMetadata } from "lib/testing/expectedMetadata";
-import moment from "moment/moment";
 import { checkoutsVerifyIdMetadata } from "./metadata.expected";
 
 jest.mock("next/headers", () => {
@@ -32,7 +31,7 @@ describe("[language]/checkouts/verify/[id]", () => {
   let user: Record<string, any> | undefined;
   let email: string | undefined;
   beforeAll(async () => {
-    booking = await setupData({
+    [booking] = await setupData({
       setup_variables: [{ factory: "fully_paid_booking" }],
       skip_delivery: true,
     });

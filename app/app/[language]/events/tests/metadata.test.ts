@@ -1,5 +1,6 @@
-import { describe, expect } from "@jest/globals";
+import { afterAll, beforeAll, describe, expect } from "@jest/globals";
 import moment from "moment";
+import { setupData, teardownData } from "lib/testing/setupData";
 import { PAGE_TITLE, getVariables, revalidate } from "../metadata";
 
 describe("[language]/events", () => {
@@ -142,118 +143,117 @@ describe("[language]/events", () => {
         });
 
         describe("dates", () => {
-          // /[language]/events?city="Beograd"&dates=%5B"2024-05-21"%2C"2024-05-22"%5D
-          describe("minDate and max Date", () => {
-            it("valid date", () => {
-              const searchParams = {
-                dates: JSON.stringify(["2024-05-21", "2024-05-22"]),
-              };
+          // /[language]/events?dates=%5B"2024-05-21"%2C"2024-05-22"%5D
+          it("minDate and max Date", () => {
+            const searchParams = {
+              dates: JSON.stringify(["2024-05-21", "2024-05-22"]),
+            };
 
-              expect(
-                getVariables({ params: { language }, searchParams })
-              ).toEqual({
-                filters: {
-                  startDate: moment("2024-05-21").toISOString(),
-                  endDate: moment("2024-05-22").toISOString(),
-                },
-              });
-
-              expect(
-                getVariables({
-                  params: { language, humanReadable: true },
-                  searchParams,
-                })
-              ).toEqual({
-                filters: {
-                  startDate: moment("2024-05-21").calendar(),
-                  endDate: moment("2024-05-22").calendar(),
-                },
-              });
+            expect(
+              getVariables({ params: { language }, searchParams })
+            ).toEqual({
+              filters: {
+                startDate: moment("2024-05-21").toISOString(),
+                endDate: moment("2024-05-22").toISOString(),
+              },
             });
 
-            // /[language]/events?city="Beograd"&dates=%5B"2024-05-22"%2C"2024-05-21"%5D
-            describe("minDate and max Date order independently", () => {
-              it("valid date", () => {
-                const searchParams = {
-                  dates: JSON.stringify(["2024-05-22", "2024-05-21"]),
-                };
+            expect(
+              getVariables({
+                params: { language, humanReadable: true },
+                searchParams,
+              })
+            ).toEqual({
+              filters: {
+                startDate: moment("2024-05-21").calendar(),
+                endDate: moment("2024-05-22").calendar(),
+              },
+            });
+          });
 
-                expect(
-                  getVariables({ params: { language }, searchParams })
-                ).toEqual({
-                  filters: {
-                    startDate: moment("2024-05-21").toISOString(),
-                    endDate: moment("2024-05-22").toISOString(),
-                  },
-                });
+          // /[language]/events?dates=%5B"2024-05-22"%2C"2024-05-21"%5D
+          it("minDate and max Date order independently", () => {
+            const searchParams = {
+              dates: JSON.stringify(["2024-05-22", "2024-05-21"]),
+            };
 
-                expect(
-                  getVariables({
-                    params: { language, humanReadable: true },
-                    searchParams,
-                  })
-                ).toEqual({
-                  filters: {
-                    startDate: moment("2024-05-21").calendar(),
-                    endDate: moment("2024-05-22").calendar(),
-                  },
-                });
-              });
+            expect(
+              getVariables({ params: { language }, searchParams })
+            ).toEqual({
+              filters: {
+                startDate: moment("2024-05-21").toISOString(),
+                endDate: moment("2024-05-22").toISOString(),
+              },
             });
 
-            it("invalid dates", () => {
-              const searchParams = {
-                dates: JSON.stringify(["invalid-date", "invalid-date2"]),
-              };
+            expect(
+              getVariables({
+                params: { language, humanReadable: true },
+                searchParams,
+              })
+            ).toEqual({
+              filters: {
+                startDate: moment("2024-05-21").calendar(),
+                endDate: moment("2024-05-22").calendar(),
+              },
+            });
+          });
 
-              expect(
-                getVariables({ params: { language }, searchParams })
-              ).toEqual({
-                filters: {},
-              });
+          // /[language]/events?dates=%5B"invalid"%2C"invalid"%5D
+          it("invalid dates", () => {
+            const searchParams = {
+              dates: JSON.stringify(["invalid-date", "invalid-date2"]),
+            };
 
-              expect(
-                getVariables({
-                  params: { language, humanReadable: true },
-                  searchParams,
-                })
-              ).toEqual({
-                filters: {},
-              });
+            expect(
+              getVariables({ params: { language }, searchParams })
+            ).toEqual({
+              filters: {},
             });
 
-            it("incomplete dates", () => {
-              const searchParams = {
-                dates: JSON.stringify(["2024-05-21"]),
-              };
+            expect(
+              getVariables({
+                params: { language, humanReadable: true },
+                searchParams,
+              })
+            ).toEqual({
+              filters: {},
+            });
+          });
 
-              expect(
-                getVariables({ params: { language }, searchParams })
-              ).toEqual({
-                filters: {},
-              });
+          // /[language]/events?dates=%5B"2024-05-22"%5D
+          it("incomplete dates", () => {
+            const searchParams = {
+              dates: JSON.stringify(["2024-05-21"]),
+            };
 
-              expect(
-                getVariables({
-                  params: { language, humanReadable: true },
-                  searchParams,
-                })
-              ).toEqual({
-                filters: {},
-              });
+            expect(
+              getVariables({ params: { language }, searchParams })
+            ).toEqual({
+              filters: {},
+            });
+
+            expect(
+              getVariables({
+                params: { language, humanReadable: true },
+                searchParams,
+              })
+            ).toEqual({
+              filters: {},
             });
           });
         });
+      });
 
-        it("invalid params", () => {
-          expect(
-            getVariables({
-              params: { language },
-              searchParams: { invalidParam: "invalid" },
-            })
-          ).toEqual({
-            filters: {},
-          });
+      // /[language]/events?invalidParam"invalid"
+      it("invalid params", () => {
+        expect(
+          getVariables({
+            params: { language },
+            searchParams: { invalidParam: JSON.stringify("invalid") },
+          })
+        ).toEqual({
+          filters: {},
         });
       });
     })
@@ -261,35 +261,72 @@ describe("[language]/events", () => {
 
   describe("generateMetadata", () => {
     const expected = { en: {}, ru: {} };
+    beforeAll(async () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const data = await setupData({
+        setup_variables: [
+          { factory: "recurring_event" },
+          { factory: "recurring_event" },
+          { factory: "active_user" },
+        ],
+        skip_delivery: true,
+      });
+      const user = data[data.length - 1];
+
+      console.log(user);
+    });
+
+    afterAll(async () => {
+      await teardownData();
+    });
+
     ["authorized", "not_authorized"].map((userType) =>
       describe(`${userType} user`, () => {
-        it("query", () => {});
+        Object.keys(expected).map((language) =>
+          describe(`${language} generateMetadata`, () => {
+            // /[language]/events
+            it("default props", () => {});
 
-        it("interests", () => {});
+            // /[language]/events
+            it("without events", () => {});
 
-        it("minPrice", () => {});
+            describe("search params", () => {
+              // /[language]/events?query="query"
+              it("query", () => {});
 
-        it("maxPrice", () => {});
+              // /[language]/events?interests=%5B"active-holiday"%5D
+              it("interests", () => {});
 
-        it("city", () => {});
+              // /[language]/events?minPrice=345
+              it("minPrice", () => {});
 
-        it("interests", () => {});
+              // /[language]/events?maxPrice=345
+              it("maxPrice", () => {});
 
-        describe("dates", () => {
-          describe("minDate", () => {
-            it("valid date", () => {});
+              // /[language]/events?city="Beograd"
+              it("city", () => {});
 
-            it("invalid date", () => {});
-          });
+              it("interests", () => {});
 
-          describe("maxDate", () => {
-            it("valid date", () => {});
+              describe("dates", () => {
+                // /[language]/events?dates=%5B"2024-05-21"%2C"2024-05-22"%5D
+                it("minDate and max Date", () => {});
 
-            it("invalid date", () => {});
-          });
-        });
+                // /[language]/events?dates=%5B"2024-05-22"%2C"2024-05-21"%5D
+                it("minDate and max Date order independently", () => {});
 
-        it("invalid params", () => {});
+                // /[language]/events?dates=%5B"invalid"%2C"invalid"%5D
+                it("invalid dates", () => {});
+
+                // /[language]/events?dates=%5B"2024-05-22"%5D
+                it("incomplete dates", () => {});
+              });
+
+              // /[language]/events?invalidParam"invalid"
+              it("invalid params", () => {});
+            });
+          })
+        );
       })
     );
   });

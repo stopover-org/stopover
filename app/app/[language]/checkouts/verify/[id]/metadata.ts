@@ -35,8 +35,6 @@ export const revalidate = 0;
 
 /**
  * Represents the GraphQL query for retrieving booking details and associated event information.
- *
- * @typedef {string} PageQuery
  */
 const PageQuery = `
   query PageQuery($id: ID!) {
