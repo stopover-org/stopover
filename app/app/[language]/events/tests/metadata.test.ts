@@ -304,7 +304,7 @@ describe("[language]/events", () => {
                   endDate: moment().endOf("day").calendar(),
                   interests: [],
                 });
-                const searchParams = { query: "query" };
+                const searchParams = { query: JSON.stringify("query") };
                 const metadata = await generateMetadata({
                   params: { language },
                   searchParams,

@@ -41,8 +41,8 @@ describe("[language]/checkouts/verify/[id]", () => {
     user = await testSignIn({ email: email! });
   });
 
-  afterAll(async () => {
-    await teardownData();
+  afterAll(() => {
+    teardownData();
   });
 
   it("PAGE_TITLE", () => {
