@@ -57,6 +57,7 @@ jobs:
       - exec_rails_server
 
       # RUN TESTS
+      - wait_for_graphql
       - exec_jest
 
 commands:
@@ -169,6 +170,9 @@ commands:
           command: npm test
           working_directory: ../app
 
+  wait_for_graphql:
+    steps:
+      - run: 'dockerize -wait tcp://localhost:8080 -timeout 1m'
 
   wait_for_postgres:
     steps:

@@ -16,13 +16,6 @@ async function postData(data: Record<string, any>, url: string) {
     headers["X-Sandbox"] = "true";
   }
 
-  // eslint-disable-next-line no-console
-  console.log(
-    `POST ${url} with ${JSON.stringify(data)} with headers ${JSON.stringify(
-      headers
-    )}`
-  );
-
   const resp = await fetch(url, {
     method: "POST",
     headers,
