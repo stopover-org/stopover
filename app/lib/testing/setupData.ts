@@ -39,10 +39,14 @@ export async function setupData(data: {
   setup_variables: Array<Partial<Record<"factory" | "attributes", any>>>;
   skip_delivery?: boolean;
 }) {
-  const rawResponse = await postData(
+  let rawResponse = await postData(
     data,
     `${new URL(getGraphQLBaseUrl()).origin}/test_setup`
   );
+
+  if (!Array.isArray(rawResponse)) {
+    rawResponse = [rawResponse];
+  }
 
   return rawResponse
     .map((resp: string) => JSON.parse(resp))
