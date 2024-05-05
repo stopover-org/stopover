@@ -1,4 +1,7 @@
-import { GetVariablesFn } from "components/shared/relay/PreloadedQueryWrapper";
+import {
+  GetVariablesFn,
+  PageProps,
+} from "components/shared/relay/PreloadedQueryWrapper";
 import { Metadata } from "next";
 import fetchQuery from "lib/relay/fetchQuery";
 import {
@@ -6,9 +9,31 @@ import {
   sharedImages,
   sharedPhones,
 } from "lib/utils/defaultMetadata";
-import { generateCommonMetadata, GenerateMetadataFn } from "lib/utils/metadata";
+import {
+  generateCommonMetadata,
+  GenerateMetadataFn,
+  notFoundMetadata,
+} from "lib/utils/metadata";
 
-export const PAGE_TITLE = "seo.events.id.title";
+/**
+ * The title for the SEO Events ID page.
+ *
+ * @type {string}
+ * @constant
+ * @default "seo.events.id.title"
+ */
+export const PAGE_TITLE: string = "seo.events.id.title";
+/**
+ * @function getVariables
+ * @description Retrieves variables based on the provided parameters.
+ *
+ * @param {object} options - The options object.
+ * @param {object} options.params - The parameters object.
+ * @param {string} options.params.id - The ID of the variable.
+ *
+ * @returns {object} - The variables object.
+ * @property {string} id - The unescaped ID of the variable.
+ */
 export const getVariables: GetVariablesFn = ({ params }) => ({
   id: unescape(params.id),
 });
@@ -38,8 +63,16 @@ const PageQuery = `
     }
   }
 `;
+/**
+ * Generates metadata for a given set of properties.
+ *
+ * @async
+ * @function generateMetadata
+ * @param {object} props - The properties for generating metadata.
+ * @returns {Promise<Metadata>} - The generated metadata.
+ */
 export const generateMetadata: GenerateMetadataFn = async (
-  props
+  props: PageProps
 ): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, getVariables(props));
   const translateParams = {
@@ -48,7 +81,11 @@ export const generateMetadata: GenerateMetadataFn = async (
     keywords: response?.event?.seoMetadatum?.keywords,
   };
 
-  const metadata = generateCommonMetadata(
+  if (!response?.event) {
+    return notFoundMetadata(props.params.language);
+  }
+
+  return generateCommonMetadata(
     {
       title: PAGE_TITLE,
       description: "seo.events.id.description",
@@ -60,16 +97,19 @@ export const generateMetadata: GenerateMetadataFn = async (
     translateParams,
     {
       openGraph: {
-        phoneNumbers: [response?.event?.firm?.primaryPhone, ...sharedPhones],
-        emails: [response?.event?.firm?.primaryEmail, ...sharedEmails],
+        phoneNumbers: [
+          response?.event?.firm?.primaryPhone,
+          ...sharedPhones,
+        ].filter(Boolean),
+        emails: [response?.event?.firm?.primaryEmail, ...sharedEmails].filter(
+          Boolean
+        ),
         images: [
           ...(response?.event?.seoMetadatum?.featuredImages || []),
           ...sharedImages,
-        ],
+        ].filter(Boolean),
         countryName: response?.event?.address?.country,
       },
     }
   );
-
-  return metadata;
 };

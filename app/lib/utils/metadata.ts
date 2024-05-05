@@ -7,7 +7,7 @@ import { merge } from "lodash";
 import defaultMetadata, { translate } from "./defaultMetadata";
 
 export type GenerateMetadataFn = (props: PageProps) => Promise<Metadata>;
-export const noindexMetadata = {
+export const noindexMetadata: Record<"robots", Metadata["robots"]> = {
   robots: {
     follow: false,
     index: false,
@@ -23,6 +23,18 @@ export const noindexMetadata = {
     },
   },
 };
+/**
+ * Generates common metadata for a page.
+ *
+ * @param {object} translations - The translations for the title, description, and keywords.
+ * @param {function} getVariables - The function to retrieve the page variables.
+ * @param {object} props - The props object containing page parameters and other data.
+ * @param {boolean} [noindex=false] - Flag indicating whether the page should be noindexed.
+ * @param {object} [defaultValues={}] - Default values for the page variables.
+ * @param {object} [additionalMetadata={}] - Additional metadata to include.
+ *
+ * @returns {Promise} A promise that resolves to the generated metadata.
+ */
 export const generateCommonMetadata = async (
   translations: { title: string; description: string; keywords: string },
   getVariables: GetVariablesFn,
@@ -68,6 +80,11 @@ export const generateCommonMetadata = async (
   );
 };
 
+/**
+ * Fetches the metadata for a "not found" page in the specified language.
+ * @param {string} language - The language code for the metadata.
+ * @returns {Promise<Metadata>} - A promise that resolves to the metadata object.
+ */
 export const notFoundMetadata = async (language: string): Promise<Metadata> => {
   const message = await translate("general.404", {}, language);
   return merge({}, defaultMetadata, noindexMetadata, {
