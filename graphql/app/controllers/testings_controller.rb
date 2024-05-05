@@ -6,18 +6,23 @@ require 'factory_bot_rails'
 class TestingsController < ApplicationController
   def test_sign_in
     Stopover::FlagsSupport.skip_notifications(skip: true) do
-      Rails.logger.info "Log in #{params[:email]}"
+      Stopover::FlagsSupport.disable_phone_validation(skip: true) do
+        Rails.logger.info "Log in #{params[:email]}"
 
-      user = User.find_or_create_by(email: params[:email])
+        user = User.find_or_create_by(email: params[:email])
 
-      if user
-        user.update!(confirmed_at: Time.zone.now, session_password: SecureRandom.hex(50), status: :active)
+        if user
+          user.update!(confirmed_at: Time.zone.now, session_password: SecureRandom.hex(50), status: :active)
 
-        return render json: Stopover::Testing::E2eHelper.user_data(user)
+          return render json: Stopover::Testing::E2eHelper.user_data(user)
+        end
+
+        render json: nil
       end
     end
-
-    render json: nil
+  rescue StandardError => e
+    Rails.logger.warn e
+    Rails.logger.warn params.to_unsafe_h
   end
 
   def setup
