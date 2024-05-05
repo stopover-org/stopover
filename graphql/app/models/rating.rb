@@ -10,13 +10,11 @@
 #  updated_at   :datetime         not null
 #  account_id   :bigint
 #  event_id     :bigint
-#  review_id    :bigint
 #
 # Indexes
 #
 #  index_ratings_on_account_id  (account_id)
 #  index_ratings_on_event_id    (event_id)
-#  index_ratings_on_review_id   (review_id)
 #
 class Rating < ApplicationRecord
   # MODULES ===============================================================

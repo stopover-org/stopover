@@ -127,7 +127,6 @@ class Firm < ApplicationRecord
             allow_blank: true
   validates :primary_email,
             format: { with: URI::MailTo::EMAIL_REGEXP,
-                      message: 'is invalid',
                       allow_blank: true }
 
   # CALLBACKS =============================================================
@@ -201,10 +200,6 @@ class Firm < ApplicationRecord
 
   def adjust_available_payment_methods
     self.available_payment_methods = ['cash'] if available_payment_methods.empty?
-  end
-
-  def skip_phone_validation
-    Flipper.enabled?(:skip_phone_validation) || false
   end
 
   def adjust_events_margin

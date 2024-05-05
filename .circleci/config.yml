@@ -57,6 +57,7 @@ jobs:
       - exec_rails_server
 
       # RUN TESTS
+      - wait_for_graphql
       - exec_jest
 
 commands:
@@ -144,7 +145,7 @@ commands:
     steps:
       - run:
           name: 'Run Rails Server'
-          command: bin/rails s -b 127.0.0.1 -p 8080
+          command: bin/rails s -b 127.0.0.1 -p 8080 -e development
           background: true
 
   install_frontend_dependencies:
@@ -169,6 +170,9 @@ commands:
           command: npm test
           working_directory: ../app
 
+  wait_for_graphql:
+    steps:
+      - run: 'dockerize -wait tcp://localhost:8080 -timeout 1m'
 
   wait_for_postgres:
     steps:
