@@ -55,6 +55,9 @@ class TestingsController < ApplicationController
         end
       end
     end
+  rescue StandardError => e
+    Rails.logger.warn e
+    Rails.logger.warn params.to_unsafe_h
   end
 
   def teardown
@@ -68,5 +71,8 @@ class TestingsController < ApplicationController
     end
 
     render json: {}
+  rescue StandardError => e
+    Rails.logger.warn e
+    Rails.logger.warn params.to_unsafe_h
   end
 end

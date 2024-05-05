@@ -5,16 +5,10 @@ class ApplicationController < ActionController::API
   after_action :unload_test_env
 
   def load_test_env
-    if request.headers['X-Sandbox'] == 'true'
-      Flipper.enable(:global_sandbox)
-      Flipper.enable(:skip_phone_validation)
-    end
+    Flipper.enable(:global_sandbox) if request.headers['X-Sandbox'] == 'true'
   end
 
   def unload_test_env
-    if request.headers['X-Sandbox'] == 'true'
-      Flipper.disable(:global_sandbox)
-      Flipper.disable(:skip_phone_validation)
-    end
+    Flipper.disable(:global_sandbox) if request.headers['X-Sandbox'] == 'true'
   end
 end
