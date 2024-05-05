@@ -335,28 +335,165 @@ describe("[language]/events", () => {
               });
 
               // /[language]/events?minPrice=345
-              it("minPrice", () => {});
+              it("minPrice", async () => {
+                const expected = expectedEventsMetadata({
+                  city: "Serbia",
+                  startDate: moment().calendar(),
+                  endDate: moment().endOf("day").calendar(),
+                });
+
+                const searchParams = {
+                  minPrice: JSON.stringify(345),
+                };
+
+                const metadata = await generateMetadata({
+                  params: { language },
+                  searchParams,
+                });
+
+                expect(metadata).toEqual(expected[language]);
+              });
 
               // /[language]/events?maxPrice=345
-              it("maxPrice", () => {});
+              it("maxPrice", async () => {
+                const expected = expectedEventsMetadata({
+                  city: "Serbia",
+                  startDate: moment().calendar(),
+                  endDate: moment().endOf("day").calendar(),
+                });
+
+                const searchParams = {
+                  maxPrice: JSON.stringify(345),
+                };
+
+                const metadata = await generateMetadata({
+                  params: { language },
+                  searchParams,
+                });
+
+                expect(metadata).toEqual(expected[language]);
+              });
 
               // /[language]/events?city="Beograd"
-              it("city", () => {});
+              it("city", async () => {
+                const expected = expectedEventsMetadata({
+                  city: "Beograd",
+                  startDate: moment().calendar(),
+                  endDate: moment().endOf("day").calendar(),
+                });
 
-              it("interests", () => {});
+                const searchParams = {
+                  city: JSON.stringify("Beograd"),
+                };
+
+                const metadata = await generateMetadata({
+                  params: { language },
+                  searchParams,
+                });
+
+                expect(metadata).toEqual(expected[language]);
+              });
+
+              it("interests", async () => {
+                const expected = expectedEventsMetadata({
+                  city: "Serbia",
+                  startDate: moment().calendar(),
+                  endDate: moment().endOf("day").calendar(),
+                  interests: ["active-holiday"],
+                });
+
+                const searchParams = {
+                  interests: JSON.stringify(["active-holiday"]),
+                };
+
+                const metadata = await generateMetadata({
+                  params: { language },
+                  searchParams,
+                });
+
+                expect(metadata).toEqual(expected[language]);
+              });
 
               describe("dates", () => {
                 // /[language]/events?dates=%5B"2024-05-21"%2C"2024-05-22"%5D
-                it("minDate and max Date", () => {});
+                it("minDate and max Date", async () => {
+                  const expected = expectedEventsMetadata({
+                    city: "Serbia",
+                    startDate: moment("2024-05-21").calendar(),
+                    endDate: moment("2024-05-22").calendar(),
+                  });
+
+                  const searchParams = {
+                    dates: JSON.stringify(["2024-05-21", "2024-05-22"]),
+                  };
+
+                  const metadata = await generateMetadata({
+                    params: { language },
+                    searchParams,
+                  });
+
+                  expect(metadata).toEqual(expected[language]);
+                });
 
                 // /[language]/events?dates=%5B"2024-05-22"%2C"2024-05-21"%5D
-                it("minDate and max Date order independently", () => {});
+                it("minDate and max Date order independently", async () => {
+                  const expected = expectedEventsMetadata({
+                    city: "Serbia",
+                    startDate: moment("2024-05-21").calendar(),
+                    endDate: moment("2024-05-22").calendar(),
+                  });
+
+                  const searchParams = {
+                    dates: JSON.stringify(["2024-05-22", "2024-05-21"]),
+                  };
+
+                  const metadata = await generateMetadata({
+                    params: { language },
+                    searchParams,
+                  });
+
+                  expect(metadata).toEqual(expected[language]);
+                });
 
                 // /[language]/events?dates=%5B"invalid"%2C"invalid"%5D
-                it("invalid dates", () => {});
+                it("invalid dates", async () => {
+                  const expected = expectedEventsMetadata({
+                    city: "Serbia",
+                    startDate: moment().calendar(),
+                    endDate: moment().endOf("day").calendar(),
+                  });
+
+                  const searchParams = {
+                    dates: JSON.stringify(["invalid", "invalid"]),
+                  };
+
+                  const metadata = await generateMetadata({
+                    params: { language },
+                    searchParams,
+                  });
+
+                  expect(metadata).toEqual(expected[language]);
+                });
 
                 // /[language]/events?dates=%5B"2024-05-22"%5D
-                it("incomplete dates", () => {});
+                it("incomplete dates", async () => {
+                  const expected = expectedEventsMetadata({
+                    city: "Serbia",
+                    startDate: moment().calendar(),
+                    endDate: moment().endOf("day").calendar(),
+                  });
+
+                  const searchParams = {
+                    dates: JSON.stringify(["2024-05-21"]),
+                  };
+
+                  const metadata = await generateMetadata({
+                    params: { language },
+                    searchParams,
+                  });
+
+                  expect(metadata).toEqual(expected[language]);
+                });
               });
 
               // /[language]/events?invalidParam"invalid"

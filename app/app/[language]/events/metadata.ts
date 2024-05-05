@@ -178,8 +178,11 @@ export const generateMetadata = async (props: {
       description: "seo.events.description",
       keywords: "seo.events.keywords",
     },
-    (...rest) => getVariables(...rest).filters,
-    { ...props, humanReadable: true },
+    (rest) => getVariables(rest).filters,
+    {
+      params: { ...props.params, humanReadable: true },
+      searchParams: props.searchParams,
+    },
     false,
     defaultVariables
   );
