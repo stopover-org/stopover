@@ -6,12 +6,12 @@ export const expectedEventsMetadata = ({
   city = "",
   startDate = "",
   endDate = "",
-  interests = "",
+  interests = [],
 }: {
   city?: string;
   startDate?: string;
   endDate?: string;
-  interests?: string;
+  interests?: string[];
 }): Record<string, Metadata> => ({
   ru: merge({}, defaultMetadata, {
     description: `Планируйте ваше время в ${city} на период с ${startDate} по ${endDate}. Изучите разнообразные мероприятия, включая ${interests}, чтобы насладиться лучшими культурными и развлекательными событиями в ${city}.`,

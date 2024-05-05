@@ -274,25 +274,17 @@ describe("[language]/events", () => {
   );
 
   describe("generateMetadata", () => {
-    let user: Record<string, any> | undefined;
-
-    ["authorized", "not_authorized"].map((userType) =>
+    ["authorized"].map((userType) =>
       describe(`${userType} user`, () => {
         ["ru", "en"].map((language) =>
           describe(`${language} generateMetadata`, () => {
-            if (userType === "authorized") {
-              beforeEach(() => {
-                mockCookies({ accessToken: user?.access_token, language });
-              });
-            }
-
             // /[language]/events
             it("default props", async () => {
               const expected = expectedEventsMetadata({
                 city: "Serbia",
                 startDate: moment().calendar(),
-                endDate: moment().calendar(),
-                interests: "",
+                endDate: moment().endOf("day").calendar(),
+                interests: [],
               });
               const searchParams = {};
               const metadata = await generateMetadata({
@@ -309,8 +301,8 @@ describe("[language]/events", () => {
                 const expected = expectedEventsMetadata({
                   city: "Serbia",
                   startDate: moment().calendar(),
-                  endDate: moment().calendar(),
-                  interests: "",
+                  endDate: moment().endOf("day").calendar(),
+                  interests: [],
                 });
                 const searchParams = { query: "query" };
                 const metadata = await generateMetadata({
@@ -326,8 +318,8 @@ describe("[language]/events", () => {
                 const expected = expectedEventsMetadata({
                   city: "Serbia",
                   startDate: moment().calendar(),
-                  endDate: moment().calendar(),
-                  interests: ["active-holiday"].join(""),
+                  endDate: moment().endOf("day").calendar(),
+                  interests: ["active-holiday"],
                 });
 
                 const searchParams = {

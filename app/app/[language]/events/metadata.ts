@@ -168,16 +168,17 @@ export const generateMetadata = async (props: {
   const defaultVariables = {
     city: "Serbia",
     startDate: moment().calendar(),
-    endDate: moment().calendar(),
-    interests: [].join(" "),
+    endDate: moment().endOf("day").calendar(),
+    interests: [],
   };
+
   return generateCommonMetadata(
     {
       title: PAGE_TITLE,
       description: "seo.events.description",
       keywords: "seo.events.keywords",
     },
-    getVariables,
+    (...rest) => getVariables(...rest).filters,
     { ...props, humanReadable: true },
     false,
     defaultVariables
