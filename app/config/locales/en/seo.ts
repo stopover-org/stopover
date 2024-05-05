@@ -20,14 +20,14 @@ export default {
     },
     events: {
       title:
-        "Events in {{city}}, from {{startDate}} to {{endDate}}. {{categories}}",
+        "Events in {{city}}, from {{startDate}} to {{endDate}}. {{interests}}",
       description:
-        "Plan your time in {{city}} from {{startDate}} to {{endDate}}. Explore various events including {{categories}} to enjoy the best cultural and entertainment events in {{city}}.",
+        "Plan your time in {{city}} from {{startDate}} to {{endDate}}. Explore various events including {{interests}} to enjoy the best cultural and entertainment events in {{city}}.",
       keywords: [
         "Events in {{city}}",
         "{{city}} events",
         "{{startDate}} - {{endDate}}",
-        "{{categories}} events",
+        "{{interests}} events",
         "Best events in {{city}}",
         "Cultural events",
         "Entertainment events",

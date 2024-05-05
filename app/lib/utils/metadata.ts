@@ -28,10 +28,19 @@ export const generateCommonMetadata = async (
   getVariables: GetVariablesFn,
   props: PageProps,
   noindex: boolean = false,
-  defaultValues: Record<string, string> = {},
+  defaultValues: Record<string, any> = {},
   additionalMetadata: Partial<Metadata> = {}
 ): Promise<Metadata> => {
-  const variables = merge({}, defaultValues, getVariables(props));
+  const variables = Object.entries(
+    merge({}, defaultValues, getVariables(props))
+  ).reduce((acc, [key, value]) => {
+    if (Array.isArray(value)) {
+      acc[key] = value.join(" ");
+    } else {
+      acc[key] = value;
+    }
+    return acc;
+  }, {} as Record<string, any>);
   const language = props.params.language || "en";
   const title = await translate(translations.title, variables, language);
   const description = await translate(

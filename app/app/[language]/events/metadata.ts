@@ -1,59 +1,135 @@
 import { parseValue } from "lib/hooks/useQuery";
 import { GetVariablesFn } from "components/shared/relay/PreloadedQueryWrapper";
-import moment, { Moment } from "moment";
+import moment from "moment";
 import { EventsFilter } from "artifacts/scene_EventsPage_Query.graphql";
 import { Metadata } from "next";
 import { generateCommonMetadata } from "lib/utils/metadata";
+import { filterObject } from "filestack-js";
 
+/**
+ * @typedef {Object} EventsFilter
+ *
+ * @property {EventsFilter.query} query - Parses the given value into an EventsFilter query.
+ * @property {EventsFilter.interests} interests - Parse the given value to construct an "interests" filter object.
+ * @property {EventsFilter.minPrice} minPrice - Converts the provided value into an integer and returns it as the minimum price for filtering events.
+ * @property {EventsFilter.maxPrice} maxPrice - Converts a string value to a maximum price number.
+ * @property {EventsFilter.city} city - Parses the given value to form a valid "city" property value for the EventsFilter object.
+ * @property {EventsFilter.endDate} endDate - Parses a value and returns the end date for an events filter.
+ * @property {EventsFilter.startDate} startDate - Parses a string value into a start date for the EventsFilter.
+ */
 export const filterParsers: Record<
   string,
   (value: string, key?: string) => any
 > = {
+  /**
+   * Parses the given value into an EventsFilter query.
+   *
+   * @param {string} value - The value to be parsed. Should be stringified string
+   * @returns {EventsFilter["query"]} - The parsed query.
+   */
   query: (value: string): EventsFilter["query"] => parseValue(value),
+  /**
+   * Parse the given value to construct an "interests" filter object.
+   *
+   * @param {string} value - The value representing the interests. Should be stringified array of strings
+   * @returns {EventsFilter["interests"]} - The parsed interests filter object.
+   */
   interests: (value: string): EventsFilter["interests"] => parseValue(value),
+  /**
+   * Converts the provided value into an integer and returns it as the minimum price for filtering events.
+   *
+   * @param {string} value - The value to be converted into an integer. Should be stringified integer number
+   * @returns {EventsFilter["minPrice"]} - The minimum price value as an integer.
+   */
   minPrice: (value: string): EventsFilter["minPrice"] => parseInt(value, 10),
+  /**
+   * Converts a string value to a maximum price number.
+   *
+   * @param {string} value - The value to convert to a maximum price. Should be stringified integer number.
+   * @returns {EventsFilter["maxPrice"]} - The maximum price as a number.
+   */
   maxPrice: (value: string): EventsFilter["maxPrice"] => parseInt(value, 10),
+  /**
+   * Parses the given value to form a valid "city" property value for the EventsFilter object.
+   *
+   * @param {string} value - The value to be parsed.
+   * @returns {EventsFilter["city"]} - The parsed "city" property value.
+   */
   city: (value: string): EventsFilter["city"] => parseValue(value),
+  /**
+   * Parses a value and returns the end date for an events filter.
+   *
+   * @param {string} value - The value to be parsed. Should be stringified array of two valid dates
+   * @returns {EventsFilter["endDate"]} - The end date if the value is successfully parsed, otherwise undefined.
+   */
   endDate: (value: string): EventsFilter["endDate"] => {
     const dates = parseValue(value);
     if (Array.isArray(dates) && dates.length === 2) {
-      return dates[1];
+      return dates
+        .map((date) => moment(date))
+        .filter((date) => date.isValid())
+        .sort((a, b) => b.valueOf() - a.valueOf())[1];
     }
     return undefined;
   },
+  /**
+   * Parses a string value into a start date for the EventsFilter.
+   *
+   * @param {string} value - The value to parse. Should be stringified array of two valid dates
+   * @returns {EventsFilter["startDate"]} - The start date for the EventsFilter.
+   */
   startDate: (value: string): EventsFilter["startDate"] => {
     const dates = parseValue(value);
     if (Array.isArray(dates) && dates.length === 2) {
-      return dates[0];
+      return dates
+        .map((date) => moment(date))
+        .filter((date) => date.isValid())
+        .sort((a, b) => b.valueOf() - a.valueOf())[0];
     }
     return undefined;
   },
 };
-export const PAGE_TITLE = "seo.events.title";
+
+/**
+ * The string representing the title of a web page.
+ *
+ * @type {string}
+ * @constant
+ * @default "seo.events.title"
+ */
+export const PAGE_TITLE: string = "seo.events.title";
 export const getVariables: GetVariablesFn = ({ params, searchParams }) => {
   const query = Object.entries(searchParams).reduce(
     (acc: EventsFilter, entry: [string, any]) => {
       try {
         if (entry[0] === "dates") {
-          const dates = filterParsers
-            .startDate(entry[1])
-            .map((val: string) => moment(val))
-            .filter((dt: Moment) => dt.isValid());
+          /**
+           * Converts the given dates to Moment objects, filters out invalid dates, and sorts them in ascending order.
+           *
+           * @param {Array} dates - An array of dates.
+           * @returns {Array} - An array of Moment objects representing valid dates sorted in ascending order.
+           */
+          const dates = [
+            filterParsers.startDate(entry[1]),
+            filterParsers.endDate(entry[1]),
+          ]
+            .filter(Boolean)
+            .map((date) => moment(date))
+            .filter((date) => date.isValid())
+            .sort((a, b) => b.valueOf() - a.valueOf());
+
+          if (dates.length !== 2) {
+            return acc;
+          }
 
           if (params.humanReadable) {
-            if (dates[1]) {
-              acc.startDate = acc.startDate.calendar();
-            }
-            if (dates[0]) {
-              acc.endDate = acc.endDate.calendar();
-            }
+            acc.startDate = dates[1].calendar();
+
+            acc.endDate = dates[0].calendar();
           } else {
-            if (dates[1]) {
-              acc.startDate = acc.startDate.toISOString();
-            }
-            if (dates[0]) {
-              acc.endDate = acc.endDate.toISOString();
-            }
+            acc.startDate = dates[1].toISOString();
+
+            acc.endDate = dates[0].toISOString();
           }
         } else {
           const key: keyof EventsFilter = entry[0] as keyof EventsFilter;
@@ -76,6 +152,15 @@ export const getVariables: GetVariablesFn = ({ params, searchParams }) => {
 
 export const revalidate = 0;
 
+/**
+ * Generates metadata for a given set of properties.
+ *
+ * @param {Object} props - The properties used to generate the metadata.
+ * @param {Object} props.searchParams - The search parameters.
+ * @param {Object} props.params - The parameters.
+ * @param {string} props.params.language - The language.
+ * @returns {Promise<Object>} - A Promise resolving to the generated metadata.
+ */
 export const generateMetadata = async (props: {
   searchParams: Record<string, string>;
   params: { language: string };
@@ -83,17 +168,21 @@ export const generateMetadata = async (props: {
   const defaultVariables = {
     city: "Serbia",
     startDate: moment().calendar(),
-    endDate: moment().calendar(),
-    categories: [].join(" "),
+    endDate: moment().endOf("day").calendar(),
+    interests: [],
   };
+
   return generateCommonMetadata(
     {
       title: PAGE_TITLE,
       description: "seo.events.description",
       keywords: "seo.events.keywords",
     },
-    getVariables,
-    { ...props, humanReadable: true },
+    (rest) => getVariables(rest).filters,
+    {
+      params: { ...props.params, humanReadable: true },
+      searchParams: props.searchParams,
+    },
     false,
     defaultVariables
   );

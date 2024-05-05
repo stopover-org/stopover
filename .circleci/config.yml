@@ -157,6 +157,14 @@ commands:
   exec_jest:
     steps:
       - run:
+          name: 'Create Artifact Directory'
+          command: mkdir ./artifacts
+          working_directory: ../app
+      - run:
+          name: 'Generate Graphql Types'
+          command: npm run generate
+          working_directory: ../app
+      - run:
           name: 'Jest'
           command: npm test
           working_directory: ../app
