@@ -1,124 +1,44 @@
 import { Metadata } from "next";
+import { merge } from "lodash";
+import defaultMetadata from "lib/utils/defaultMetadata";
 
 export const expectedMetadata = (
   firm?: Record<string, any>
 ): Record<string, Metadata> => ({
-  en: {
-    alternates: {
-      languages: {
-        "en-US": "/en",
-        "ru-RU": "/ru",
-      },
-    },
+  en: merge({}, defaultMetadata, {
     description: firm?.description,
-    formatDetection: {
-      address: true,
-      date: true,
-      email: true,
-      telephone: true,
-    },
-    icons: {
-      apple: "/icon.png",
-      icon: "/favicon.ico",
-      other: {
-        rel: "apple-touch-icon-precomposed",
-        url: "/icon.png",
-      },
-      shortcut: "/icon.png",
-    },
-    keywords: "",
     openGraph: {
-      countryName: "Serbia",
       description: firm?.description,
-      emails: ["anneliese_mann@botsford.co", "mikhail@stopoverx.com"],
-      images: [
-        "https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx+(1).png",
-        "https://s3.eu-north-1.amazonaws.com/stopoverx.production/orange_onion.png",
-      ],
-      locale: "en",
-      phoneNumbers: ["+381621496696"],
-      siteName: "Stopoverx",
+      emails: [firm?.primary_email, "mikhail@stopoverx.com"],
       title: firm?.title,
       type: "profile",
+      keywords: "",
+      locale: "en",
     },
-    robots: {
-      follow: true,
-      googleBot: {
-        follow: true,
-        index: true,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-        "max-video-preview": -1,
-        nocache: false,
-        noimageindex: false,
-      },
-      index: true,
-      nocache: false,
-    },
+    keywords: "",
     title: firm?.title,
     verification: {
       other: {
         me: ["mikhail@stopoverx.com", "+381621496696"],
       },
     },
-  },
-  ru: {
-    alternates: {
-      languages: {
-        "en-US": "/en",
-        "ru-RU": "/ru",
-      },
-    },
+  }),
+  ru: merge({}, defaultMetadata, {
     description: firm?.description,
-    formatDetection: {
-      address: true,
-      date: true,
-      email: true,
-      telephone: true,
-    },
-    icons: {
-      apple: "/icon.png",
-      icon: "/favicon.ico",
-      other: {
-        rel: "apple-touch-icon-precomposed",
-        url: "/icon.png",
-      },
-      shortcut: "/icon.png",
-    },
-    keywords: "",
     openGraph: {
-      countryName: "Serbia",
       description: firm?.description,
-      emails: ["anneliese_mann@botsford.co", "mikhail@stopoverx.com"],
-      images: [
-        "https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx+(1).png",
-        "https://s3.eu-north-1.amazonaws.com/stopoverx.production/orange_onion.png",
-      ],
-      locale: "en",
-      phoneNumbers: ["+381621496696"],
-      siteName: "Stopoverx",
+      emails: [firm?.primary_email, "mikhail@stopoverx.com"],
       title: firm?.title,
       type: "profile",
+      keywords: "",
+      locale: "ru",
     },
-    robots: {
-      follow: true,
-      googleBot: {
-        follow: true,
-        index: true,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-        "max-video-preview": -1,
-        nocache: false,
-        noimageindex: false,
-      },
-      index: true,
-      nocache: false,
-    },
+    keywords: "",
     title: firm?.title,
     verification: {
       other: {
         me: ["mikhail@stopoverx.com", "+381621496696"],
       },
     },
-  },
+  }),
 });

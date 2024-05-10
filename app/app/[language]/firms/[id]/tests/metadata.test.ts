@@ -68,7 +68,8 @@ describe("[language]/firms/[id]", () => {
           mockCookies({ accessToken: undefined, language });
         });
 
-        it.only("default props", async () => {
+        // /[language]/firms/[id]
+        it("default props", async () => {
           const defaultProps = {
             params: {
               language,
@@ -80,6 +81,7 @@ describe("[language]/firms/[id]", () => {
           expect(metadata).toStrictEqual(expectedMetadata(firm)[language]);
         });
 
+        // /[language]/firms/[id]
         it("incorrect id", async () => {
           const props = {
             params: {
@@ -92,6 +94,7 @@ describe("[language]/firms/[id]", () => {
           expect(metadata).toStrictEqual(notFoundMetadata()[language]);
         });
 
+        // /[language]/firms/[id]?param1=123&param2=456
         it("with search params", async () => {
           const props = {
             params: {
