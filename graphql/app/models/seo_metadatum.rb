@@ -63,13 +63,13 @@ class SeoMetadatum < ApplicationRecord
 
   def featured_images
     if event
-      event.images.map(&:url)
+      event.images.map(&:url).reject(&:blank?)
     elsif interest
-      [interest.preview&.url]
+      [interest.preview&.url].reject(&:blank?)
     elsif firm
-      [firm.image&.url]
+      [firm.image&.url].reject(&:blank?)
     elsif article
-      [article.image&.url]
+      [article.image&.url].reject(&:blank?)
     else
       []
     end
