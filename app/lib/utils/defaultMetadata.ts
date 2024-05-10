@@ -43,6 +43,7 @@ export const openGraph: Metadata["openGraph"] = {
   type: "website",
   countryName: "Serbia",
 };
+
 export const robots: Metadata["robots"] = {
   follow: true,
   index: true,
@@ -75,7 +76,35 @@ const defaultMetadata: Metadata = {
   title: "Stopover | Event Management",
   verification,
 };
-
+/**
+ * Translates the given set of keywords into the specified language using the provided translation data.
+ *
+ * @param {object} translations - An object containing keyword translations in multiple languages.
+ * @param {object} variables - An object containing variables to be replaced in the translated keywords.
+ * @param {string} language - The language code for the desired translation.
+ * @returns {Promise<string>} - A Promise that resolves with the translated keywords.
+ *
+ * @throws {Error} If translations is not an object, variables is not an object, or language is not a string.
+ *
+ * @example
+ *
+ * const translations = {
+ *   keywords: {
+ *     hello: 'Bonjour',
+ *     world: 'monde',
+ *     code: 'code'
+ *   }
+ * };
+ *
+ * const variables = {
+ *   name: 'John'
+ * };
+ *
+ * const language = 'fr';
+ *
+ * const keywords = await translate(translations.keywords, variables, language);
+ * console.log(keywords); // Output: "Bonjour, monde!"
+ */
 export const translate = async (key: string, opts?: any, lang?: string) => {
   const language =
     lang || (await cookies().get("i18next" as any)?.value) || "en";

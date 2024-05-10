@@ -88,8 +88,8 @@ describe("[language]/events/[id]", () => {
             });
           });
 
-          afterAll(() => {
-            teardownData();
+          afterAll(async () => {
+            await teardownData();
           });
 
           it("execute", async () => {
@@ -129,8 +129,8 @@ describe("[language]/events/[id]", () => {
             });
           });
 
-          afterAll(() => {
-            teardownData();
+          afterAll(async () => {
+            await teardownData();
           });
 
           it("execute", async () => {
@@ -162,8 +162,8 @@ describe("[language]/events/[id]", () => {
             });
           });
 
-          afterAll(() => {
-            teardownData();
+          afterAll(async () => {
+            await teardownData();
           });
 
           it("execute", async () => {
@@ -195,8 +195,8 @@ describe("[language]/events/[id]", () => {
             });
           });
 
-          afterAll(() => {
-            teardownData();
+          afterAll(async () => {
+            await teardownData();
           });
 
           it("execute", async () => {

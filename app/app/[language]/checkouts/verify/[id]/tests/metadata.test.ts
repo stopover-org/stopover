@@ -41,8 +41,8 @@ describe("[language]/checkouts/verify/[id]", () => {
     user = await testSignIn({ email: email! });
   });
 
-  afterAll(() => {
-    teardownData();
+  afterAll(async () => {
+    await teardownData();
   });
 
   it("PAGE_TITLE", () => {
@@ -97,7 +97,6 @@ describe("[language]/checkouts/verify/[id]", () => {
               params: {
                 language,
                 id: booking?.graphql_id,
-                testing: true,
               },
               searchParams: {},
             };
@@ -112,7 +111,6 @@ describe("[language]/checkouts/verify/[id]", () => {
               params: {
                 language,
                 id: booking?.graphql_id,
-                testing: true,
               },
               searchParams: { param1: "123", param2: "123" },
             };
@@ -143,7 +141,6 @@ describe("[language]/checkouts/verify/[id]", () => {
               params: {
                 language,
                 id: booking!.graphql_id,
-                testing: true,
               },
               searchParams: {},
             };
@@ -159,7 +156,6 @@ describe("[language]/checkouts/verify/[id]", () => {
               params: {
                 language,
                 id: booking!.graphql_id,
-                testing: true,
               },
               searchParams: { param1: "123", param2: "123" },
             };
@@ -191,7 +187,6 @@ describe("[language]/checkouts/verify/[id]", () => {
               params: {
                 language,
                 id: "123==",
-                testing: true,
               },
               searchParams: {},
             };
@@ -207,7 +202,6 @@ describe("[language]/checkouts/verify/[id]", () => {
               params: {
                 language,
                 id: "123==",
-                testing: true,
               },
               searchParams: { param1: "123", param2: "123" },
             };

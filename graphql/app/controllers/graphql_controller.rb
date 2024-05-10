@@ -12,6 +12,13 @@ class GraphqlController < ApplicationController
   before_action :load_test_env
   after_action :unload_test_env
 
+  # Executes a GraphQL query.
+  # @param [Hash] params - The input parameters for executing the query.
+  # @option params [Hash] :variables - The variables to be passed to the query.
+  # @option params [String] :query - The GraphQL query.
+  # @option params [String] :operationName - The name of the operation within the GraphQL query.
+  #
+  # @return [void]
   def execute
     variables = prepare_variables(params[:variables])
     query = params[:query]
@@ -38,7 +45,6 @@ class GraphqlController < ApplicationController
 
   private
 
-  # Handle variables in form data, JSON body, or a blank value
   def prepare_variables(variables_param)
     case variables_param
     when String
