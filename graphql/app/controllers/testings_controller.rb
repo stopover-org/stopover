@@ -57,6 +57,8 @@ class TestingsController < ApplicationController
 
             json[:schedule] = model_instance.schedule.to_json if model_instance.try(:schedule)
 
+            json[:seo_metadatum] = model_instance.seo_metadatum.to_json if model_instance.try(:seo_metadatum)
+
             json.to_json
           end
 

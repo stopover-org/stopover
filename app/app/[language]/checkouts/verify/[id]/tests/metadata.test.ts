@@ -1,12 +1,4 @@
 import {
-  afterAll,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-} from "@jest/globals";
-import {
   generateMetadata,
   getVariables,
   PAGE_TITLE,
