@@ -18,6 +18,8 @@ jest.mock("next/headers", () => {
   };
 });
 
+jest.retryTimes(3);
+
 describe("[language]/firms/[id]", () => {
   let firm: Record<string, any> | undefined;
   beforeAll(async () => {

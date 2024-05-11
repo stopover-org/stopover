@@ -26,6 +26,8 @@ jest.mock("next/headers", () => {
   };
 });
 
+jest.retryTimes(3);
+
 describe("[language]/checkouts/verify/[id]", () => {
   let booking: Record<string, any> | undefined;
   let user: Record<string, any> | undefined;

@@ -39,45 +39,75 @@ export async function setupData(data: {
   setup_variables: Array<Partial<Record<"factory" | "attributes", any>>>;
   skip_delivery?: boolean;
 }) {
-  let rawResponse = await postData(
-    data,
-    `${new URL(getGraphQLBaseUrl()).origin}/test_setup`
-  );
+  const execRequest = async () => {
+    let rawResponse = await postData(
+      data,
+      `${new URL(getGraphQLBaseUrl()).origin}/test_setup`
+    );
 
-  if (!Array.isArray(rawResponse)) {
-    rawResponse = [rawResponse];
-  }
+    if (!Array.isArray(rawResponse)) {
+      rawResponse = [rawResponse];
+    }
 
-  return rawResponse
-    .map((resp: string) => JSON.parse(resp))
-    .map((resp: Record<string, any>) => {
-      if (resp.user) {
-        resp.user = JSON.parse(resp.user);
-      }
+    rawResponse = rawResponse.map((resp: string) =>
+      resp.replaceAll("&", "&amp;").replaceAll("'", "&#39;")
+    );
 
-      if (resp.account) {
-        resp.account = JSON.parse(resp.account);
-      }
+    return rawResponse
+      .map(
+        /**
+         * Parses the given response string into a JSON object
+         *
+         * @param {string} resp - The response string to be parsed
+         * @returns {object} - The parsed JSON object
+         */
+        (resp: string) => JSON.parse(resp)
+      )
+      .map(
+        /**
+         * Parses JSON properties in the given response object.
+         *
+         * @param {Record<string, any>} resp - The response object to parse.
+         * @returns {Record<string, any>} - The response object with parsed JSON properties.
+         */
+        (resp: Record<string, any>): Record<string, any> => {
+          if (resp.user) {
+            resp.user = JSON.parse(resp.user);
+          }
 
-      if (resp.accounts) {
-        resp.accounts = resp.accounts
-          .map(JSON.parse)
-          .map((account: Record<string, any>) => ({
-            ...account,
-            user: JSON.parse(account.user),
-          }));
-      }
+          if (resp.account) {
+            resp.account = JSON.parse(resp.account);
+          }
 
-      if (resp.event) {
-        resp.event = JSON.parse(resp.event);
-      }
+          if (resp.accounts) {
+            resp.accounts = resp.accounts
+              .map(JSON.parse)
+              .map((account: Record<string, any>) => ({
+                ...account,
+                user: JSON.parse(account.user),
+              }));
+          }
 
-      if (resp.schedule) {
-        resp.schedule = JSON.parse(resp.schedule);
-      }
+          if (resp.event) {
+            resp.event = JSON.parse(resp.event);
+          }
 
-      return resp;
+          if (resp.schedule) {
+            resp.schedule = JSON.parse(resp.schedule);
+          }
+
+          return resp;
+        }
+      );
+  };
+  try {
+    return await execRequest();
+  } catch (error) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 3000);
     });
+    return execRequest();
+  }
 }
 
 /**
@@ -85,7 +115,16 @@ export async function setupData(data: {
  * @returns {Promise} - A promise that resolves when the teardown data is complete.
  */
 export async function teardownData() {
-  return postData({}, `${new URL(getGraphQLBaseUrl()).origin}/test_teardown`);
+  const execRequest = () =>
+    postData({}, `${new URL(getGraphQLBaseUrl()).origin}/test_teardown`);
+  try {
+    return await execRequest();
+  } catch (error) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 3000);
+    });
+    return execRequest();
+  }
 }
 
 /**

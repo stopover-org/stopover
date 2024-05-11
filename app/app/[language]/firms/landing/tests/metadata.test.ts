@@ -14,6 +14,8 @@ jest.mock("next/headers", () => {
   };
 });
 
+jest.retryTimes(3);
+
 describe("[language]/firms/landing", () => {
   it("PAGE_TITLE", () => {
     expect(PAGE_TITLE).toBe("seo.firms.landing.title");

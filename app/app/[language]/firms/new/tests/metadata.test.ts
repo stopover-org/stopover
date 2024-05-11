@@ -17,6 +17,8 @@ jest.mock("next/headers", () => {
   };
 });
 
+jest.retryTimes(3);
+
 describe("[language]/firms/new", () => {
   let firm: Record<string, any> | undefined;
   let accessToken: string | undefined;

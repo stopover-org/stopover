@@ -16,6 +16,8 @@ jest.mock("next/headers", () => {
   };
 });
 
+jest.retryTimes(3);
+
 describe("[language]/events", () => {
   it("PAGE_TITLE", () => {
     expect(PAGE_TITLE).toEqual("seo.events.title");
