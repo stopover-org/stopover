@@ -96,6 +96,10 @@ export async function setupData(data: {
             resp.schedule = JSON.parse(resp.schedule);
           }
 
+          if (resp.seo_metadatum) {
+            resp.seo_metadatum = JSON.parse(resp.seo_metadatum);
+          }
+
           return resp;
         }
       );

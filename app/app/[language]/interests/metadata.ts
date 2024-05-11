@@ -6,9 +6,22 @@ import { Metadata } from "next";
 import { generateCommonMetadata, notFoundMetadata } from "lib/utils/metadata";
 import fetchQuery from "../../../lib/relay/fetchQuery";
 
-export const PAGE_TITLE = "seo.interests.title";
+/**
+ * Represents the page title.
+ *
+ * @constant {string}
+ * @description The value of PAGE_TITLE is used as the title for the SEO interests page.
+ */
+export const PAGE_TITLE: string = "seo.interests.title";
 export const getVariables: GetVariablesFn = () => ({});
-export const revalidate = 0;
+/**
+ * Represents the revalidate flag.
+ *
+ * @type {number}
+ * @description The revalidate flag indicates whether revalidation is required.
+ *              A value of 0 indicates revalidation is not required.
+ */
+export const revalidate: number = 0;
 const PageQuery = `
   query PageQuery {
     currentUser {
@@ -16,6 +29,12 @@ const PageQuery = `
     }
   }
 `;
+/**
+ * Generates metadata for a page based on the provided props.
+ *
+ * @param {PageProps} props - The props for the page.
+ * @returns {Promise<Metadata>} - A Promise that resolves to the generated metadata.
+ */
 export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, getVariables(props));
   if (!response?.currentUser?.serviceUser) {
