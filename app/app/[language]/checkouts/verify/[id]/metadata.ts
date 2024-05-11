@@ -18,7 +18,7 @@ import { Metadata } from "next";
  * @constant
  * @default "seo.checkouts.verify.id.title"
  */
-export const PAGE_TITLE = "seo.checkouts.verify.id.title";
+export const PAGE_TITLE: string = "seo.checkouts.verify.id.title";
 /**
  * Function that retrieves variables based on provided parameters.
  *
@@ -31,7 +31,14 @@ export const PAGE_TITLE = "seo.checkouts.verify.id.title";
 export const getVariables: GetVariablesFn = ({ params }) => ({
   id: unescape(params.id),
 });
-export const revalidate = 0;
+/**
+ * Represents the revalidate flag.
+ *
+ * @type {number}
+ * @description The revalidate flag indicates whether revalidation is required.
+ *              A value of 0 indicates revalidation is not required.
+ */
+export const revalidate: number = 0;
 
 /**
  * Represents the GraphQL query for retrieving booking details and associated event information.

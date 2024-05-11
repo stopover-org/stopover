@@ -6,7 +6,6 @@ import {
   revalidate,
   generateMetadata,
 } from "../metadata";
-import { mockCookies } from "../../../../lib/testing/mockCookies";
 import { expectedMetadata } from "./metadata.expected";
 
 jest.mock("next/headers", () => {

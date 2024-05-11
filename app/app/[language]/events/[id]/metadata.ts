@@ -40,7 +40,7 @@ export const getVariables: GetVariablesFn = ({ params }: PageProps) => ({
  * @description The revalidate flag indicates whether revalidation is required.
  *              A value of 0 indicates revalidation is not required.
  */
-export const revalidate = 1800;
+export const revalidate: number = 1800;
 
 const PageQuery = `
   query PageQuery($id: ID!) {
