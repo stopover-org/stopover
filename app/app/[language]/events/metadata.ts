@@ -150,7 +150,14 @@ export const getVariables: GetVariablesFn = ({ params, searchParams }) => {
   return { filters: query };
 };
 
-export const revalidate = 0;
+/**
+ * Represents the revalidate flag.
+ *
+ * @type {number}
+ * @description The revalidate flag indicates whether revalidation is required.
+ *              A value of 0 indicates revalidation is not required.
+ */
+export const revalidate: number = 0;
 
 /**
  * Generates metadata for a given set of properties.

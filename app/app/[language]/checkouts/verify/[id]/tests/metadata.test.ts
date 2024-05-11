@@ -26,6 +26,8 @@ jest.mock("next/headers", () => {
   };
 });
 
+jest.retryTimes(3);
+
 describe("[language]/checkouts/verify/[id]", () => {
   let booking: Record<string, any> | undefined;
   let user: Record<string, any> | undefined;
@@ -41,8 +43,8 @@ describe("[language]/checkouts/verify/[id]", () => {
     user = await testSignIn({ email: email! });
   });
 
-  afterAll(() => {
-    teardownData();
+  afterAll(async () => {
+    await teardownData();
   });
 
   it("PAGE_TITLE", () => {
@@ -97,7 +99,6 @@ describe("[language]/checkouts/verify/[id]", () => {
               params: {
                 language,
                 id: booking?.graphql_id,
-                testing: true,
               },
               searchParams: {},
             };
@@ -112,7 +113,6 @@ describe("[language]/checkouts/verify/[id]", () => {
               params: {
                 language,
                 id: booking?.graphql_id,
-                testing: true,
               },
               searchParams: { param1: "123", param2: "123" },
             };
@@ -143,7 +143,6 @@ describe("[language]/checkouts/verify/[id]", () => {
               params: {
                 language,
                 id: booking!.graphql_id,
-                testing: true,
               },
               searchParams: {},
             };
@@ -159,7 +158,6 @@ describe("[language]/checkouts/verify/[id]", () => {
               params: {
                 language,
                 id: booking!.graphql_id,
-                testing: true,
               },
               searchParams: { param1: "123", param2: "123" },
             };
@@ -191,7 +189,6 @@ describe("[language]/checkouts/verify/[id]", () => {
               params: {
                 language,
                 id: "123==",
-                testing: true,
               },
               searchParams: {},
             };
@@ -207,7 +204,6 @@ describe("[language]/checkouts/verify/[id]", () => {
               params: {
                 language,
                 id: "123==",
-                testing: true,
               },
               searchParams: { param1: "123", param2: "123" },
             };

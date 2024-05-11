@@ -24,20 +24,23 @@ import {
  */
 export const PAGE_TITLE: string = "seo.events.id.title";
 /**
- * @function getVariables
- * @description Retrieves variables based on the provided parameters.
+ * Get variables from PageProps.
  *
- * @param {object} options - The options object.
- * @param {object} options.params - The parameters object.
- * @param {string} options.params.id - The ID of the variable.
+ * @param {PageProps} - The page props object.
  *
- * @returns {object} - The variables object.
- * @property {string} id - The unescaped ID of the variable.
+ * @returns {Object} - The variables object.
  */
-export const getVariables: GetVariablesFn = ({ params }) => ({
+export const getVariables: GetVariablesFn = ({ params }: PageProps) => ({
   id: unescape(params.id),
 });
-export const revalidate = 1800;
+/**
+ * The revalidate variable represents the time (in seconds) interval for revalidating data.
+ *
+ * @type {number}
+ * @description The revalidate flag indicates whether revalidation is required.
+ *              A value of 0 indicates revalidation is not required.
+ */
+export const revalidate: number = 1800;
 
 const PageQuery = `
   query PageQuery($id: ID!) {
@@ -64,12 +67,10 @@ const PageQuery = `
   }
 `;
 /**
- * Generates metadata for a given set of properties.
+ * Generates metadata for a page.
  *
- * @async
- * @function generateMetadata
- * @param {object} props - The properties for generating metadata.
- * @returns {Promise<Metadata>} - The generated metadata.
+ * @param {PageProps} props - The page props.
+ * @returns {Promise<Metadata>} The generated metadata.
  */
 export const generateMetadata: GenerateMetadataFn = async (
   props: PageProps

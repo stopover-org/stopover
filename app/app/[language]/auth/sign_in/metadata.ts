@@ -12,7 +12,7 @@ import { Metadata } from "next";
  * @constant
  * @default "seo.auth.signIn.title"
  */
-export const PAGE_TITLE = "seo.auth.signIn.title";
+export const PAGE_TITLE: string = "seo.auth.signIn.title";
 /**
  * @typedef {function} GetVariablesFn
  * @description Represents a function that retrieves variables.
@@ -20,7 +20,14 @@ export const PAGE_TITLE = "seo.auth.signIn.title";
  * @returns {Object} - An object containing the variables.
  */
 export const getVariables: GetVariablesFn = () => ({});
-export const revalidate = 0;
+/**
+ * Represents the revalidate flag.
+ *
+ * @type {number}
+ * @description The revalidate flag indicates whether revalidation is required.
+ *              A value of 0 indicates revalidation is not required.
+ */
+export const revalidate: number = 0;
 /**
  * Function to generate metadata for a page.
  * @param {PageProps} props - The props object containing page information.

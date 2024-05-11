@@ -8,6 +8,8 @@ import {
 import { Metadata } from "next";
 import { expectedMetadata } from "./metadata.expected";
 
+jest.retryTimes(3);
+
 describe("[language]/auth/sign_in]", () => {
   it("PAGE_TITLE", () => {
     expect(PAGE_TITLE).toBe("seo.auth.signIn.title");

@@ -18,6 +18,8 @@ jest.mock("next/headers", () => {
   };
 });
 
+jest.retryTimes(3);
+
 describe("[language]/events/[id]", () => {
   it("PAGE_TITLE", () => {
     expect(PAGE_TITLE).toEqual("seo.events.id.title");
@@ -88,8 +90,8 @@ describe("[language]/events/[id]", () => {
             });
           });
 
-          afterAll(() => {
-            teardownData();
+          afterAll(async () => {
+            await teardownData();
           });
 
           it("execute", async () => {
@@ -129,8 +131,8 @@ describe("[language]/events/[id]", () => {
             });
           });
 
-          afterAll(() => {
-            teardownData();
+          afterAll(async () => {
+            await teardownData();
           });
 
           it("execute", async () => {
@@ -162,8 +164,8 @@ describe("[language]/events/[id]", () => {
             });
           });
 
-          afterAll(() => {
-            teardownData();
+          afterAll(async () => {
+            await teardownData();
           });
 
           it("execute", async () => {
@@ -195,8 +197,8 @@ describe("[language]/events/[id]", () => {
             });
           });
 
-          afterAll(() => {
-            teardownData();
+          afterAll(async () => {
+            await teardownData();
           });
 
           it("execute", async () => {

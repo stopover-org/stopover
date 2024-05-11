@@ -24,6 +24,23 @@ const TypographyLink = styled(Typography)(() => ({
   display: "inline-block",
 }));
 
+/**
+ * A custom Link component.
+ *
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The content of the link.
+ * @param {string} props.href - The url of the link.
+ * @param {boolean} [props.primary] - Whether the link color should be primary.
+ * @param {string} [props.color] - The color of the link.
+ * @param {boolean} [props.underline=true] - Whether the link should be underlined.
+ * @param {object} [props.sx] - Additional styling for the link.
+ * @param {string} [props.level] - The typography level of the link.
+ * @param {string} [props.target] - The target window for the link.
+ * @param {boolean} [props.icon=true] - Whether to display an icon next to the link text.
+ * @param {React.Ref<HTMLParagraphElement>} ref - The ref object used for references.
+ *
+ * @returns {React.Element} The rendered Link component.
+ */
 const Link = React.forwardRef(
   (
     {
