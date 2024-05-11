@@ -44,98 +44,96 @@ describe("[language]/firms/new", () => {
     expect(revalidate).toBe(0);
   });
 
-  describe("[language]/firms/new", () => {
-    ["ru", "en"].map((language) =>
-      describe(language, () => {
-        describe("getVariables", () => {
-          // /[language]/firms/new
-          it("default props", () => {
-            const defaultProps = {
+  ["ru", "en"].map((language) =>
+    describe(language, () => {
+      describe("getVariables", () => {
+        // /[language]/firms/new
+        it("default props", () => {
+          const defaultProps = {
+            params: { language },
+            searchParams: {},
+          };
+
+          expect(getVariables(defaultProps)).toStrictEqual({});
+        });
+
+        // /[language]/firms/new?param1=123&param2=456
+        it("various params", () => {
+          const props = {
+            params: { language },
+            searchParams: {
+              param1: "123",
+              param2: "456",
+            },
+          };
+
+          expect(getVariables(props)).toStrictEqual({});
+        });
+      });
+
+      describe("generateMetadata", () => {
+        // /[language]/firms/new
+        describe("not authorized user", () => {
+          it("default props", async () => {
+            const props = {
               params: { language },
               searchParams: {},
             };
 
-            expect(getVariables(defaultProps)).toStrictEqual({});
+            expect(await generateMetadata(props)).toStrictEqual(
+              expectedMetadata()[language]
+            );
+          });
+        });
+
+        describe("authorized user", () => {
+          beforeEach(() => {
+            mockCookies({ accessToken, language });
           });
 
-          // /[language]/firms/new?param1=123&param2=456
-          it("various params", () => {
+          it("default props", async () => {
             const props = {
               params: { language },
-              searchParams: {
-                param1: "123",
-                param2: "456",
-              },
+              searchParams: {},
             };
 
-            expect(getVariables(props)).toStrictEqual({});
+            expect(await generateMetadata(props)).toStrictEqual(
+              expectedMetadata()[language]
+            );
           });
         });
 
-        describe("generateMetadata", () => {
-          // /[language]/firms/new
-          describe("not authorized user", () => {
-            it("default props", async () => {
-              const props = {
-                params: { language },
-                searchParams: {},
-              };
+        // /[language]/firms/new?param1=123&param2=456
+        describe("not authorized user", () => {
+          it("various params", async () => {
+            const props = {
+              params: { language },
+              searchParams: { param1: 123, param2: 456 },
+            };
 
-              expect(await generateMetadata(props)).toStrictEqual(
-                expectedMetadata()[language]
-              );
-            });
-          });
-
-          describe("authorized user", () => {
-            beforeEach(() => {
-              mockCookies({ accessToken, language });
-            });
-
-            it("default props", async () => {
-              const props = {
-                params: { language },
-                searchParams: {},
-              };
-
-              expect(await generateMetadata(props)).toStrictEqual(
-                expectedMetadata()[language]
-              );
-            });
-          });
-
-          // /[language]/firms/new?param1=123&param2=456
-          describe("not authorized user", () => {
-            it("various params", async () => {
-              const props = {
-                params: { language },
-                searchParams: { param1: 123, param2: 456 },
-              };
-
-              expect(await generateMetadata(props)).toStrictEqual(
-                expectedMetadata()[language]
-              );
-            });
-          });
-
-          describe("authorized user", () => {
-            beforeEach(() => {
-              mockCookies({ accessToken, language });
-            });
-
-            it("various params", async () => {
-              const props = {
-                params: { language },
-                searchParams: { param1: 123, param2: 456 },
-              };
-
-              expect(await generateMetadata(props)).toStrictEqual(
-                expectedMetadata()[language]
-              );
-            });
+            expect(await generateMetadata(props)).toStrictEqual(
+              expectedMetadata()[language]
+            );
           });
         });
-      })
-    );
-  });
+
+        describe("authorized user", () => {
+          beforeEach(() => {
+            mockCookies({ accessToken, language });
+          });
+
+          it("various params", async () => {
+            const props = {
+              params: { language },
+              searchParams: { param1: 123, param2: 456 },
+            };
+
+            expect(await generateMetadata(props)).toStrictEqual(
+              expectedMetadata()[language]
+            );
+          });
+        });
+      });
+    })
+  );
 });
