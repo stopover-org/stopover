@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { merge } from "lodash";
 import defaultMetadata from "lib/utils/defaultMetadata";
 
-export const expectedEventsMetadata = ({
+export const expectedMetadata = ({
   city = "",
   startDate = "",
   endDate = "",

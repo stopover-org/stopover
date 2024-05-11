@@ -12,10 +12,11 @@ module Stopover
         json.to_json
       end
 
-      def self.trip_data(trip)
-        { **trip.attributes,
-          graphql_id: GraphqlSchema.id_from_object(trip),
-          bookings: trip.bookings.map { |booking| booking_data(booking) } }
+      def self.account_data(account)
+        json = account.attributes
+        json[:user] = user_data(account.user)
+
+        json.to_json
       end
     end
   end

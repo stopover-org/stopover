@@ -43,8 +43,8 @@ const Workflow = () => {
 
   useDocumentTitle(t("seo.firms.workflow.title"));
 
-  const thme = useTheme();
-  const isMobileView = useMediaQuery(thme.breakpoints.down("md"));
+  const theme = useTheme();
+  const isMobileView = useMediaQuery(theme.breakpoints.down("md"));
 
   React.useEffect(() => {
     setServer(false);

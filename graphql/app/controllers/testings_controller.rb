@@ -49,7 +49,9 @@ class TestingsController < ApplicationController
 
             json[:account] = model_instance.account.to_json if model_instance.try(:account)
 
-            json[:user] = model_instance.user.to_json if model_instance.try(:user)
+            json[:accounts] = model_instance.accounts.map { |account| Stopover::Testing::E2eHelper.account_data(account) } if model_instance.try(:accounts)
+
+            json[:user] = Stopover::Testing::E2eHelper.user_data(model_instance.user) if model_instance.try(:user)
 
             json[:event] = model_instance.event.to_json if model_instance.try(:event)
 

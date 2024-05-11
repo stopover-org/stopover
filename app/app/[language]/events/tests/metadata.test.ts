@@ -7,7 +7,7 @@ import {
   generateMetadata,
 } from "../metadata";
 import { mockCookies } from "../../../../lib/testing/mockCookies";
-import { expectedEventsMetadata } from "./expected.metadata";
+import { expectedMetadata } from "./metadata.expected";
 
 jest.mock("next/headers", () => {
   const originalModule = jest.requireActual("next/headers");
@@ -280,7 +280,7 @@ describe("[language]/events", () => {
           describe(`${language} generateMetadata`, () => {
             // /[language]/events
             it("default props", async () => {
-              const expected = expectedEventsMetadata({
+              const expected = expectedMetadata({
                 city: "Serbia",
                 startDate: moment().calendar(),
                 endDate: moment().endOf("day").calendar(),
@@ -298,7 +298,7 @@ describe("[language]/events", () => {
             describe("search params", () => {
               // /[language]/events?query="query"
               it("query", async () => {
-                const expected = expectedEventsMetadata({
+                const expected = expectedMetadata({
                   city: "Serbia",
                   startDate: moment().calendar(),
                   endDate: moment().endOf("day").calendar(),
@@ -315,7 +315,7 @@ describe("[language]/events", () => {
 
               // /[language]/events?interests=%5B"active-holiday"%5D
               it("interests", async () => {
-                const expected = expectedEventsMetadata({
+                const expected = expectedMetadata({
                   city: "Serbia",
                   startDate: moment().calendar(),
                   endDate: moment().endOf("day").calendar(),
@@ -336,7 +336,7 @@ describe("[language]/events", () => {
 
               // /[language]/events?minPrice=345
               it("minPrice", async () => {
-                const expected = expectedEventsMetadata({
+                const expected = expectedMetadata({
                   city: "Serbia",
                   startDate: moment().calendar(),
                   endDate: moment().endOf("day").calendar(),
@@ -356,7 +356,7 @@ describe("[language]/events", () => {
 
               // /[language]/events?maxPrice=345
               it("maxPrice", async () => {
-                const expected = expectedEventsMetadata({
+                const expected = expectedMetadata({
                   city: "Serbia",
                   startDate: moment().calendar(),
                   endDate: moment().endOf("day").calendar(),
@@ -376,7 +376,7 @@ describe("[language]/events", () => {
 
               // /[language]/events?city="Beograd"
               it("city", async () => {
-                const expected = expectedEventsMetadata({
+                const expected = expectedMetadata({
                   city: "Beograd",
                   startDate: moment().calendar(),
                   endDate: moment().endOf("day").calendar(),
@@ -395,7 +395,7 @@ describe("[language]/events", () => {
               });
 
               it("interests", async () => {
-                const expected = expectedEventsMetadata({
+                const expected = expectedMetadata({
                   city: "Serbia",
                   startDate: moment().calendar(),
                   endDate: moment().endOf("day").calendar(),
@@ -417,7 +417,7 @@ describe("[language]/events", () => {
               describe("dates", () => {
                 // /[language]/events?dates=%5B"2024-05-21"%2C"2024-05-22"%5D
                 it("minDate and max Date", async () => {
-                  const expected = expectedEventsMetadata({
+                  const expected = expectedMetadata({
                     city: "Serbia",
                     startDate: moment("2024-05-21").calendar(),
                     endDate: moment("2024-05-22").calendar(),
@@ -437,7 +437,7 @@ describe("[language]/events", () => {
 
                 // /[language]/events?dates=%5B"2024-05-22"%2C"2024-05-21"%5D
                 it("minDate and max Date order independently", async () => {
-                  const expected = expectedEventsMetadata({
+                  const expected = expectedMetadata({
                     city: "Serbia",
                     startDate: moment("2024-05-21").calendar(),
                     endDate: moment("2024-05-22").calendar(),
@@ -457,7 +457,7 @@ describe("[language]/events", () => {
 
                 // /[language]/events?dates=%5B"invalid"%2C"invalid"%5D
                 it("invalid dates", async () => {
-                  const expected = expectedEventsMetadata({
+                  const expected = expectedMetadata({
                     city: "Serbia",
                     startDate: moment().calendar(),
                     endDate: moment().endOf("day").calendar(),
@@ -477,7 +477,7 @@ describe("[language]/events", () => {
 
                 // /[language]/events?dates=%5B"2024-05-22"%5D
                 it("incomplete dates", async () => {
-                  const expected = expectedEventsMetadata({
+                  const expected = expectedMetadata({
                     city: "Serbia",
                     startDate: moment().calendar(),
                     endDate: moment().endOf("day").calendar(),

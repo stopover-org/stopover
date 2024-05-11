@@ -59,6 +59,15 @@ export async function setupData(data: {
         resp.account = JSON.parse(resp.account);
       }
 
+      if (resp.accounts) {
+        resp.accounts = resp.accounts
+          .map(JSON.parse)
+          .map((account: Record<string, any>) => ({
+            ...account,
+            user: JSON.parse(account.user),
+          }));
+      }
+
       if (resp.event) {
         resp.event = JSON.parse(resp.event);
       }
