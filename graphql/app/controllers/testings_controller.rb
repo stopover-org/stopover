@@ -59,6 +59,8 @@ class TestingsController < ApplicationController
 
             json[:seo_metadatum] = model_instance.seo_metadatum.to_json if model_instance.try(:seo_metadatum)
 
+            json[:firm] = Stopover::Testing::E2eHelper.firm_data(model_instance.firm) if model_instance.try(:firm)
+
             json.to_json
           end
 

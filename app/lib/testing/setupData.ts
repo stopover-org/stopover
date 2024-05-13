@@ -1,7 +1,41 @@
 import { getGraphQLBaseUrl } from "lib/relay/environment";
 
 /**
+ * Parses a JSON string and returns it as a JavaScript object.
+ *
+ * @param {string} json - The JSON string to be parsed.
+ * @returns {Record<string, any>} - The parsed JSON object.
+ */
+const parseJSON = (json: string): Record<string, any> => JSON.parse(json);
+/**
+ * Parses an array of JSON strings representing accounts and returns an array of account objects.
+ *
+ * @param {string[]} json - An array of JSON strings representing accounts.
+ * @returns {Record<string, any>[]} - An array of account objects.
+ */
+const parseAccounts = (json: string[]): Record<string, any>[] =>
+  json.map(parseJSON).map((account: Record<string, any>) => ({
+    ...account,
+    user: JSON.parse(account.user),
+  }));
+
+/**
+ * Parses the given JSON string and returns the firm object.
+ *
+ * @param {string} json - The JSON string to parse.
+ * @return {Record<string, any>} - The parsed firm object.
+ */
+const parseFirm = (json: string): Record<string, any> => {
+  const firm = parseJSON(json);
+  if (firm.accounts) {
+    firm.accounts = parseAccounts(firm.accounts);
+  }
+
+  return firm;
+};
+/**
  * Sends a POST request with data to the given URL.
+ *
  * @param {Record<string, any>} data - The data to send in the request body.
  * @param {string} url - The URL to send the request to.
  * @return {Promise<any>} - A promise that resolves to the JSON response from the server.
@@ -72,32 +106,31 @@ export async function setupData(data: {
          */
         (resp: Record<string, any>): Record<string, any> => {
           if (resp.user) {
-            resp.user = JSON.parse(resp.user);
+            resp.user = parseJSON(resp.user);
           }
 
           if (resp.account) {
-            resp.account = JSON.parse(resp.account);
+            resp.account = parseJSON(resp.account);
           }
 
           if (resp.accounts) {
-            resp.accounts = resp.accounts
-              .map(JSON.parse)
-              .map((account: Record<string, any>) => ({
-                ...account,
-                user: JSON.parse(account.user),
-              }));
+            resp.accounts = parseAccounts(resp.accounts);
           }
 
           if (resp.event) {
-            resp.event = JSON.parse(resp.event);
+            resp.event = parseJSON(resp.event);
           }
 
           if (resp.schedule) {
-            resp.schedule = JSON.parse(resp.schedule);
+            resp.schedule = parseJSON(resp.schedule);
           }
 
           if (resp.seo_metadatum) {
-            resp.seo_metadatum = JSON.parse(resp.seo_metadatum);
+            resp.seo_metadatum = parseJSON(resp.seo_metadatum);
+          }
+
+          if (resp.firm) {
+            resp.firm = parseFirm(resp.firm);
           }
 
           return resp;

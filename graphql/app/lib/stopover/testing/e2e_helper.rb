@@ -14,7 +14,16 @@ module Stopover
 
       def self.account_data(account)
         json = account.attributes
+        json[:graphql_id] = GraphqlSchema.id_from_object(account)
         json[:user] = user_data(account.user)
+
+        json.to_json
+      end
+
+      def self.firm_data(firm)
+        json = firm.attributes
+        json[:graphql_id] = GraphqlSchema.id_from_object(firm)
+        json[:accounts] = firm.accounts.map { |account| account_data(account) }
 
         json.to_json
       end
