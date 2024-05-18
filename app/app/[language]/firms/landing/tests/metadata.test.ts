@@ -1,3 +1,5 @@
+import { setupData, teardownData } from "lib/testing/setupData";
+import { mockCookies } from "lib/testing/mockCookies";
 import {
   generateMetadata,
   getVariables,
@@ -17,6 +19,10 @@ jest.mock("next/headers", () => {
 jest.retryTimes(3);
 
 describe("[language]/firms/landing", () => {
+  afterEach(async () => {
+    await teardownData();
+  });
+
   it("PAGE_TITLE", () => {
     expect(PAGE_TITLE).toBe("seo.firms.landing.title");
   });
@@ -53,8 +59,96 @@ describe("[language]/firms/landing", () => {
       });
 
       describe("generateMetadata", () => {
-        // /[language]/firms/landing
-        it("default props", async () => {
+        it("authorized user", async () => {
+          const [currentUser] = await setupData({
+            setup_variables: [{ factory: "active_user" }],
+            skip_delivery: true,
+          });
+
+          mockCookies({
+            accessToken: currentUser?.access_token,
+            language,
+          });
+
+          const props = {
+            params: { language },
+            searchParams: {},
+          };
+
+          expect(await generateMetadata(props)).toStrictEqual(
+            expectedMetadata()[language]
+          );
+        });
+
+        it("not authorized user", async () => {
+          mockCookies({
+            accessToken: undefined,
+            language,
+          });
+
+          const props = {
+            params: { language },
+            searchParams: {},
+          };
+
+          expect(await generateMetadata(props)).toStrictEqual(
+            expectedMetadata()[language]
+          );
+        });
+
+        it("restricted user", async () => {
+          const [currentUser] = await setupData({
+            setup_variables: [{ factory: "disabled_user" }],
+            skip_delivery: true,
+          });
+
+          mockCookies({
+            accessToken: currentUser?.access_token,
+            language,
+          });
+
+          const props = {
+            params: { language },
+            searchParams: {},
+          };
+
+          expect(await generateMetadata(props)).toStrictEqual(
+            expectedMetadata()[language]
+          );
+        });
+
+        it("manager user", async () => {
+          const [firm] = await setupData({
+            setup_variables: [{ factory: "firm" }],
+            skip_delivery: true,
+          });
+
+          mockCookies({
+            accessToken: firm?.accounts?.[0]?.user?.access_token,
+            language,
+          });
+
+          const props = {
+            params: { language },
+            searchParams: {},
+          };
+
+          expect(await generateMetadata(props)).toStrictEqual(
+            expectedMetadata()[language]
+          );
+        });
+
+        it("service user", async () => {
+          const [currentUser] = await setupData({
+            setup_variables: [{ factory: "service_user" }],
+            skip_delivery: true,
+          });
+
+          mockCookies({
+            accessToken: currentUser?.access_token,
+            language,
+          });
+
           const props = {
             params: { language },
             searchParams: {},
