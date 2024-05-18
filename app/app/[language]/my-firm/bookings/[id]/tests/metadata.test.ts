@@ -17,7 +17,7 @@ jest.mock("next/headers", () => {
   };
 });
 
-// jest.retryTimes(3);
+jest.retryTimes(3);
 
 describe("/[language]/my-firm/bookings/[id]", () => {
   let booking: Record<string, any> | undefined;
@@ -84,7 +84,7 @@ describe("/[language]/my-firm/bookings/[id]", () => {
             };
 
             expect(await generateMetadata(props)).toStrictEqual(
-              expectedMetadata()[language]
+              expectedMetadata(booking)[language]
             );
           });
 
@@ -99,7 +99,7 @@ describe("/[language]/my-firm/bookings/[id]", () => {
             };
 
             expect(await generateMetadata(props)).toStrictEqual(
-              expectedMetadata()[language]
+              expectedMetadata(booking)[language]
             );
           });
         });

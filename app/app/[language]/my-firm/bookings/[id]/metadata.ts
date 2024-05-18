@@ -38,14 +38,16 @@ export const revalidate: number = 0;
 const PageQuery = `
   query PageQuery($id: ID!) {
     currentUser {
-      firm {
-        booking(id: $id) {
-          event {
-            seoMetadatum {
-              title
-              description
-              keywords
-              featuredImages
+      account {
+        firm {
+          booking(id: $id) {
+            event {
+              seoMetadatum {
+                title
+                description
+                keywords
+                featuredImages
+              }
             }
           }
         }
@@ -62,13 +64,19 @@ const PageQuery = `
 export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, getVariables(props));
 
-  if (!response?.firm?.booking) {
+  if (!response?.currentUser?.account?.firm?.booking) {
     return notFoundMetadata(props.params.language);
   }
+
   const translateParams = {
-    title: response?.booking?.event?.seoMetadatum?.title,
-    description: response?.booking?.event?.seoMetadatum?.description,
-    keywords: response?.booking?.event?.seoMetadatum?.keywords,
+    title:
+      response?.currentUser?.account?.firm?.booking?.event?.seoMetadatum?.title,
+    description:
+      response?.currentUser?.account?.firm?.booking?.event?.seoMetadatum
+        ?.description,
+    keywords:
+      response?.currentUser?.account?.firm?.booking?.event?.seoMetadatum
+        ?.keywords,
   };
   return generateCommonMetadata(
     {
