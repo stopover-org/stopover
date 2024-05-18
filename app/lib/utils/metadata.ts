@@ -144,3 +144,21 @@ export const notFoundMetadata = async (language: string): Promise<Metadata> => {
     },
   });
 };
+
+export const redirectMetadata = async (
+  url: string,
+  language: string
+): Promise<Metadata> => {
+  const message = await translate("general.redirectTo", { url }, language);
+  return merge({}, defaultMetadata, noindexMetadata, {
+    title: message,
+    description: message,
+    keywords: "",
+    openGraph: {
+      locale: language,
+      title: message,
+      description: message,
+      keywords: "",
+    },
+  });
+};
