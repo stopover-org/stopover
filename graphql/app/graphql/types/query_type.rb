@@ -101,9 +101,7 @@ module Types
       rescue StandardError
         nil
       end
-      interest ||= Interest.find_by(slug: id)
-
-      interest
+      interest || Interest.find_by(slug: id)
     end
 
     def event(id:)

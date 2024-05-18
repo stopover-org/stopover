@@ -73,14 +73,6 @@ describe("/[language]/my-firm/bookings/[id]", () => {
             accessToken: booking?.firm?.accounts?.[0]?.user.access_token,
             language,
           });
-
-          console.log(
-            {
-              accessToken: booking?.firm?.accounts?.[0]?.user.access_token,
-              language,
-            },
-            booking
-          );
         });
 
         describe("existing booking", () => {
