@@ -25,7 +25,7 @@ jest.mock("next/headers", () => {
 
 jest.retryTimes(3);
 
-describe("[language]/my-firm/events/[id]/edit", () => {
+describe("[language]/my-firm/events/[id]", () => {
   let event: Record<string, any> | undefined;
 
   beforeAll(async () => {
@@ -40,7 +40,7 @@ describe("[language]/my-firm/events/[id]/edit", () => {
   });
 
   it("PAGE_TITLE", () => {
-    expect(PAGE_TITLE).toEqual("seo.myFirm.events.id.edit.title");
+    expect(PAGE_TITLE).toEqual("seo.myFirm.events.id.title");
   });
 
   it("revalidate", () => {
