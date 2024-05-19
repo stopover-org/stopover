@@ -8,7 +8,7 @@ import {
   notFoundMetadata,
   redirectMetadata,
 } from "lib/utils/metadata";
-import fetchQuery from "../../../../../lib/relay/fetchQuery";
+import fetchQuery from "lib/relay/fetchQuery";
 
 /**
  * The title of the payments page for SEO purposes.
@@ -54,6 +54,11 @@ const PageQuery = `
     }
   }
 `;
+/**
+ * Generates metadata for a page.
+ * @param {PageProps} props - The page props.
+ * @returns {Promise<Metadata>} - The generated metadata.
+ */
 export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, getVariables(props));
 
