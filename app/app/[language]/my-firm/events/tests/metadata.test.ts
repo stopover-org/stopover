@@ -19,7 +19,7 @@ jest.retryTimes(3);
 
 describe("[language]/my-firm/events/new", () => {
   it("PAGE_TITLE", () => {
-    expect(PAGE_TITLE).toEqual("seo.myFirm.events.new.title");
+    expect(PAGE_TITLE).toEqual("seo.myFirm.events.title");
   });
 
   it("revalidate", () => {
