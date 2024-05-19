@@ -60,6 +60,7 @@ export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
       props.params.language
     );
   }
+
   return generateCommonMetadata(
     {
       title: PAGE_TITLE,

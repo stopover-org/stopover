@@ -53,7 +53,7 @@ class TestingsController < ApplicationController
 
             json[:user] = Stopover::Testing::E2eHelper.user_data(model_instance.user) if model_instance.try(:user)
 
-            json[:event] = model_instance.event.to_json if model_instance.try(:event)
+            json[:event] = Stopover::Testing::E2eHelper.event_data(model_instance.event) if model_instance.try(:event)
 
             json[:schedule] = model_instance.schedule.to_json if model_instance.try(:schedule)
 

@@ -25,12 +25,12 @@ jest.mock("next/headers", () => {
 
 jest.retryTimes(3);
 
-describe("[language]/my-firm/events/[id]", () => {
-  let event: Record<string, any> | undefined;
+describe("[language]/my-firm/payments/[id]", () => {
+  let payment: Record<string, any> | undefined;
 
   beforeAll(async () => {
-    [event] = await setupData({
-      setup_variables: [{ factory: "event" }],
+    [payment] = await setupData({
+      setup_variables: [{ factory: "payment" }],
       skip_delivery: true,
     });
   });
@@ -40,7 +40,7 @@ describe("[language]/my-firm/events/[id]", () => {
   });
 
   it("PAGE_TITLE", () => {
-    expect(PAGE_TITLE).toEqual("seo.myFirm.events.id.title");
+    expect(PAGE_TITLE).toEqual("seo.myFirm.payments.id.title");
   });
 
   it("revalidate", () => {
@@ -53,17 +53,18 @@ describe("[language]/my-firm/events/[id]", () => {
         it("default props", () => {
           expect(
             getVariables({
-              params: { language, id: event?.graphql_id },
+              params: { language, id: payment?.graphql_id },
               searchParams: {},
             })
-          ).toEqual({ id: event?.graphql_id });
+          ).toEqual({ id: payment?.graphql_id });
         });
       });
 
       describe("generateMetadata", () => {
         describe("incorrect id", () => {
           it("generate", async () => {
-            const accessToken = event?.firm?.accounts?.[0]?.user?.access_token;
+            const accessToken =
+              payment?.firm?.accounts?.[0]?.user?.access_token;
 
             mockCookies({ accessToken, language });
 
@@ -87,7 +88,7 @@ describe("[language]/my-firm/events/[id]", () => {
 
             expect(
               await generateMetadata({
-                params: { language, id: event?.graphql_id },
+                params: { language, id: payment?.graphql_id },
                 searchParams: {},
               })
             ).toStrictEqual(notFoundMetadata()[language]);
@@ -105,7 +106,7 @@ describe("[language]/my-firm/events/[id]", () => {
 
             expect(
               await generateMetadata({
-                params: { language, id: event?.graphql_id },
+                params: { language, id: payment?.graphql_id },
                 searchParams: {},
               })
             ).toStrictEqual(notFoundMetadata()[language]);
@@ -123,7 +124,7 @@ describe("[language]/my-firm/events/[id]", () => {
 
             expect(
               await generateMetadata({
-                params: { language, id: event?.graphql_id },
+                params: { language, id: payment?.graphql_id },
                 searchParams: {},
               })
             ).toStrictEqual(notFoundMetadata()[language]);
@@ -132,16 +133,19 @@ describe("[language]/my-firm/events/[id]", () => {
 
         describe("manager", () => {
           it("generate", async () => {
-            const accessToken = event?.firm?.accounts?.[0]?.user?.access_token;
+            const accessToken =
+              payment?.firm?.accounts?.[0]?.user?.access_token;
 
             mockCookies({ accessToken, language });
 
             expect(
               await generateMetadata({
-                params: { language, id: event?.graphql_id },
+                params: { language, id: payment?.graphql_id },
                 searchParams: {},
               })
-            ).toStrictEqual(expectedMetadata(event?.seo_metadatum)[language]);
+            ).toStrictEqual(
+              expectedMetadata(payment?.event?.seo_metadatum)[language]
+            );
           });
         });
       });

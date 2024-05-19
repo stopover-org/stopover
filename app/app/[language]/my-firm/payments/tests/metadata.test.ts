@@ -17,9 +17,9 @@ jest.mock("next/headers", () => {
 
 jest.retryTimes(3);
 
-describe("[language]/my-firm/events", () => {
+describe("[language]/my-firm/payments", () => {
   it("PAGE_TITLE", () => {
-    expect(PAGE_TITLE).toEqual("seo.myFirm.events.title");
+    expect(PAGE_TITLE).toEqual("seo.myFirm.payments.title");
   });
 
   it("revalidate", () => {

@@ -70,6 +70,10 @@ export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
     );
   }
 
+  if (!response?.currentUser?.account?.firm?.event) {
+    return notFoundMetadata(props.params.language);
+  }
+
   const translateParams = {
     title: response?.currentUser?.account?.firm?.event?.seoMetadatum?.title,
     description:

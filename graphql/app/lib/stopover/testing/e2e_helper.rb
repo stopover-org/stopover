@@ -27,6 +27,14 @@ module Stopover
 
         json.to_json
       end
+
+      def self.event_data(event)
+        json = event.attributes
+        json[:graphql_id] = GraphqlSchema.id_from_object(event)
+        json[:seo_metadatum] = event.seo_metadatum.attributes
+
+        json.to_json
+      end
     end
   end
 end

@@ -79,6 +79,7 @@ class Payment < ApplicationRecord
   default_scope { in_order_of(:status, %w[pending processing successful canceled]).order(created_at: :desc) }
 
   # DELEGATION ============================================================
+  delegate :event, to: :booking
 
   def balance_amount
     total_price - refunds_amount
