@@ -167,7 +167,7 @@ commands:
           working_directory: ../app
       - run:
           name: 'Jest'
-          command: npm test
+          command: npm test -- --maxWorkers=1
           working_directory: ../app
 
   wait_for_graphql:
