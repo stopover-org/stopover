@@ -49,7 +49,10 @@ export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
   if (
     ["active", "pending"].includes(response?.currentUser?.account?.firm?.status)
   ) {
-    return redirectMetadata("/my-firm/dashboard", props.params.language);
+    return redirectMetadata(
+      `${props.params.language}/my-firm/dashboard`,
+      props.params.language
+    );
   }
 
   return generateCommonMetadata(

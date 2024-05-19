@@ -1,10 +1,7 @@
 import { setupData, teardownData } from "lib/testing/setupData";
 import { beforeEach } from "@jest/globals";
 import { mockCookies } from "lib/testing/mockCookies";
-import {
-  notFoundMetadata,
-  redirectMetadata,
-} from "lib/testing/expectedMetadata";
+import { redirectMetadata } from "lib/testing/expectedMetadata";
 import {
   generateMetadata,
   getVariables,
@@ -165,7 +162,7 @@ describe("[language]/firms/new", () => {
               };
 
               expect(await generateMetadata(props)).toStrictEqual(
-                redirectMetadata("&#x2F;my-firm&#x2F;dashboard")[language]
+                redirectMetadata(`${language}/my-firm/dashboard`)[language]
               );
             });
           });
@@ -225,7 +222,7 @@ describe("[language]/firms/new", () => {
             };
 
             expect(await generateMetadata(props)).toStrictEqual(
-              redirectMetadata("&#x2F;my-firm&#x2F;dashboard")[language]
+              redirectMetadata(`${language}/my-firm/dashboard`)[language]
             );
           });
 
@@ -253,7 +250,7 @@ describe("[language]/firms/new", () => {
             };
 
             expect(await generateMetadata(props)).toStrictEqual(
-              redirectMetadata("&#x2F;my-firm&#x2F;dashboard")[language]
+              redirectMetadata(`${language}/my-firm/dashboard`)[language]
             );
           });
 

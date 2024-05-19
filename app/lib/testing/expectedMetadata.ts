@@ -116,55 +116,58 @@ export const notAuthorizedMetadata = (): Record<string, Metadata> => ({
   }),
 });
 
-export const redirectMetadata = (url: string): Record<string, Metadata> => ({
-  ru: merge({}, defaultMetadata, {
-    description: `Stopover. Your Travel Manager | Переход на ${url}`,
-    keywords: "",
-    openGraph: {
+export const redirectMetadata = (url: string): Record<string, Metadata> => {
+  url = url.replaceAll("/", "&#x2F;");
+  return {
+    ru: merge({}, defaultMetadata, {
       description: `Stopover. Your Travel Manager | Переход на ${url}`,
       keywords: "",
-      locale: "ru",
-      title: `Stopover. Your Travel Manager | Переход на ${url}`,
-    },
-    robots: {
-      follow: false,
-      googleBot: {
-        follow: false,
-        index: false,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-        "max-video-preview": -1,
-        nocache: true,
-        noimageindex: true,
+      openGraph: {
+        description: `Stopover. Your Travel Manager | Переход на ${url}`,
+        keywords: "",
+        locale: "ru",
+        title: `Stopover. Your Travel Manager | Переход на ${url}`,
       },
-      index: false,
-      nocache: true,
-    },
-    title: `Stopover. Your Travel Manager | Переход на ${url}`,
-  }),
-  en: merge({}, defaultMetadata, {
-    description: `Stopover. Your Travel Manager | Redirect to ${url}`,
-    keywords: "",
-    openGraph: {
+      robots: {
+        follow: false,
+        googleBot: {
+          follow: false,
+          index: false,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+          "max-video-preview": -1,
+          nocache: true,
+          noimageindex: true,
+        },
+        index: false,
+        nocache: true,
+      },
+      title: `Stopover. Your Travel Manager | Переход на ${url}`,
+    }),
+    en: merge({}, defaultMetadata, {
       description: `Stopover. Your Travel Manager | Redirect to ${url}`,
       keywords: "",
-      locale: "en",
-      title: `Stopover. Your Travel Manager | Redirect to ${url}`,
-    },
-    robots: {
-      follow: false,
-      googleBot: {
-        follow: false,
-        index: false,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-        "max-video-preview": -1,
-        nocache: true,
-        noimageindex: true,
+      openGraph: {
+        description: `Stopover. Your Travel Manager | Redirect to ${url}`,
+        keywords: "",
+        locale: "en",
+        title: `Stopover. Your Travel Manager | Redirect to ${url}`,
       },
-      index: false,
-      nocache: true,
-    },
-    title: `Stopover. Your Travel Manager | Redirect to ${url}`,
-  }),
-});
+      robots: {
+        follow: false,
+        googleBot: {
+          follow: false,
+          index: false,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+          "max-video-preview": -1,
+          nocache: true,
+          noimageindex: true,
+        },
+        index: false,
+        nocache: true,
+      },
+      title: `Stopover. Your Travel Manager | Redirect to ${url}`,
+    }),
+  };
+};

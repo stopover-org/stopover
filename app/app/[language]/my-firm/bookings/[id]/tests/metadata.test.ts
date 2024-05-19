@@ -77,7 +77,7 @@ describe("/[language]/my-firm/bookings/[id]", () => {
 
         describe("existing booking", () => {
           // /[language]/my-firm/bookings/[id]
-          it.only("default props", async () => {
+          it("default props", async () => {
             const props = {
               params: { language, id: booking?.graphql_id },
               searchParams: {},

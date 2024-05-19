@@ -177,3 +177,135 @@ export async function testSignIn({ email }: { email: string }) {
     `${new URL(getGraphQLBaseUrl()).origin}/test_sign_in`
   );
 }
+
+/**
+ * Create the authorized user.
+ *
+ * @param {boolean} [tokenOnly=true] - Whether to return only the access token of the user.
+ * @param {Object} [attributes={}] - Additional attributes for the user.
+ * @returns {Promise<string | Record<string, any> | null>} - A promise that resolves to the access token if `tokenOnly` is `true`.
+ * Otherwise, resolves to the user information. If no user information is available, resolves to `undefined`.
+ */
+export async function getAuthorizedUser({
+  tokenOnly = true,
+  attributes = {},
+}: {
+  tokenOnly: boolean;
+  attributes: Record<string, any>;
+}) {
+  const [user] = await setupData({
+    setup_variables: [{ factory: "active_user", attributes }],
+    skip_delivery: true,
+  });
+  if (tokenOnly) {
+    return user?.access_token;
+  }
+  return user;
+}
+
+/**
+ * Create a not authorized user.
+ *
+ * @param {boolean} tokenOnly - Indicates whether to return only the access token.
+ * @param {Record<string, any>} attributes - Additional attributes for the user.
+ * @returns {Promise<string | Record<string, any> | null>} - Returns a promise that resolves to the access token if `tokenOnly` is `true`.
+ * Otherwise, resolves to the user information. If no user information is available, resolves to `undefined`.
+ */
+export async function getNotAuthorizedUser({
+  tokenOnly = true,
+  attributes = {},
+}: {
+  tokenOnly: boolean;
+  attributes: Record<string, any>;
+}) {
+  const [user] = await setupData({
+    setup_variables: [{ factory: "temporary_user", attributes }],
+    skip_delivery: true,
+  });
+  if (tokenOnly) {
+    return user?.access_token;
+  }
+  return user;
+}
+
+/**
+ * Retrieves the manager user with specified options.
+ *
+ * @param {boolean} [options.tokenOnly=true] - Whether to only return the access token.
+ * @param {Object} [options.attributes={}] - Additional attributes.
+ * @returns {Promise<string | Record<string, any> | null>} - Returns a promise that resolves to the access token if `tokenOnly` is `true`,
+ * or resolves to the user information. If no user information is available, resolves to `undefined`.
+ */
+export async function getManager({
+  tokenOnly = true,
+  attributes = {},
+}: {
+  tokenOnly: boolean;
+  attributes: Record<string, any>;
+}) {
+  const [firm] = await setupData({
+    setup_variables: [{ factory: "firm", attributes }],
+    skip_delivery: true,
+  });
+  const user = firm?.accounts?.[0]?.user;
+  if (tokenOnly) {
+    return user?.access_token;
+  }
+  return user;
+}
+
+/**
+ * Retrieves the restricted user.
+ *
+ * @param {boolean} [tokenOnly=true] - Specifies whether to return only the access token or the entire user object.
+ * @param {Record<string, any>} attributes={} - Optional attributes to set up the user.
+ * @returns {Promise<string | Record<string, any> | undefined>} - Returns a promise that resolves to the access token if `tokenOnly` is `true`.
+ * Otherwise, resolves to the user information. If no user information is available, resolves to `undefined`.
+ */
+export async function getRestrictedUser({
+  tokenOnly = true,
+  attributes = {},
+}: {
+  tokenOnly: boolean;
+  attributes: Record<string, any>;
+}) {
+  const [user] = await setupData({
+    setup_variables: [{ factory: "disabled_user", attributes }],
+    skip_delivery: true,
+  });
+  if (tokenOnly) {
+    return user?.access_token;
+  }
+  return user;
+}
+
+/**
+ * Create the service user.
+ *
+ * @param {boolean} tokenOnly - Indicates whether to return only the access token or the entire user object. Defaults to true.
+ * @param {Record<string, any>} attributes - Additional attributes to be passed to the setupData method.
+ * @returns {Promise<string | Record<string, any> | null>} - Returns a promise that resolves to the access token if `tokenOnly` is `true`.
+ * Otherwise, resolves to the user information. If no user information is available, resolves to `undefined`.
+ */
+export async function getServiceUser({
+  tokenOnly = true,
+  attributes = {},
+}: {
+  tokenOnly: boolean;
+  attributes: Record<string, any>;
+}) {
+  const [firm] = await setupData({
+    setup_variables: [
+      {
+        factory: "firm",
+        attributes: { with_service_user: true, ...attributes },
+      },
+    ],
+    skip_delivery: true,
+  });
+  const user = firm?.accounts?.[0]?.user;
+  if (tokenOnly) {
+    return user?.access_token;
+  }
+  return user;
+}

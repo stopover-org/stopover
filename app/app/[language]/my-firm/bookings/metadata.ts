@@ -3,9 +3,14 @@ import {
   PageProps,
 } from "components/shared/relay/PreloadedQueryWrapper";
 import { Metadata } from "next";
-import { generateCommonMetadata } from "lib/utils/metadata";
+import {
+  generateCommonMetadata,
+  notFoundMetadata,
+  redirectMetadata,
+} from "lib/utils/metadata";
 import { parseValue } from "lib/hooks/useQuery";
 import { BookingsFilter } from "artifacts/BookingsFirmTableFirmPaginationQuery.graphql";
+import fetchQuery from "../../../../lib/relay/fetchQuery";
 
 const filterParsers = {
   contactEmail: (value: string) => parseValue(value),
@@ -14,7 +19,18 @@ const filterParsers = {
   bookedFor: (value: string) => parseValue(value),
 };
 
-export const PAGE_TITLE = "seo.myFirm.bookings.title";
+/**
+ * The title of the SEO page for myFirm bookings.
+ *
+ * @constant {string}
+ * @description The value of PAGE_TITLE is used as the title for the SEO bookings page.
+ */
+export const PAGE_TITLE: string = "seo.myFirm.bookings.title";
+/**
+ * Function to extract and parse variables from PageProps
+ * @param {PageProps} props - The PageProps object containing the search parameters
+ * @returns {object} - An object containing the parsed booking filters
+ */
 export const getVariables: GetVariablesFn = (props: PageProps) => {
   const filters: Partial<BookingsFilter> = Object.entries(
     props.searchParams
@@ -28,9 +44,46 @@ export const getVariables: GetVariablesFn = (props: PageProps) => {
   }, {});
   return { bookingFilters: filters };
 };
-export const revalidate = 0;
-export const generateMetadata = async (props: PageProps): Promise<Metadata> =>
-  generateCommonMetadata(
+/**
+ * Represents the revalidate flag.
+ *
+ * @type {number}
+ * @description The revalidate flag indicates whether revalidation is required.
+ *              A value of 0 indicates revalidation is not required.
+ */
+export const revalidate: number = 0;
+/**
+ * Generates metadata for a page based on the provided properties.
+ *
+ * @param {PageProps} props - The properties of the page.
+ * @returns {Promise<Metadata>} - A promise that resolves to the generated metadata.
+ */
+const PageQuery = `
+  query PageQuery {
+   currentUser {
+     account {
+        firm {
+          status
+        }
+      }
+    }
+  }
+`;
+export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
+  const response = await fetchQuery(PageQuery, getVariables(props));
+
+  if (!response?.currentUser?.account?.firm) {
+    return notFoundMetadata(props.params.language);
+  }
+
+  if (response?.currentUser?.account?.firm?.status === "removed") {
+    return redirectMetadata(
+      `${props.params.language}/firms/new`,
+      props.params.language
+    );
+  }
+
+  return generateCommonMetadata(
     {
       title: PAGE_TITLE,
       description: "seo.myFirm.bookings.description",
@@ -40,3 +93,4 @@ export const generateMetadata = async (props: PageProps): Promise<Metadata> =>
     props,
     true
   );
+};
