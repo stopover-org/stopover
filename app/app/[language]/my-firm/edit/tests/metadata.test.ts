@@ -1,6 +1,5 @@
 import { expect } from "@jest/globals";
 import { describeMyFirmResources } from "lib/testing/expectedMetadata";
-import moment from "moment";
 import {
   generateMetadata,
   getVariables,
@@ -19,9 +18,9 @@ jest.mock("next/headers", () => {
 
 jest.retryTimes(3);
 
-describe("[language]/my-firm/dashboard", () => {
+describe("[language]/my-firm/edit", () => {
   it("PAGE_TITLE", () => {
-    expect(PAGE_TITLE).toEqual("seo.myFirm.dashboard.title");
+    expect(PAGE_TITLE).toEqual("seo.myFirm.edit.title");
   });
 
   it("revalidate", () => {
@@ -34,14 +33,7 @@ describe("[language]/my-firm/dashboard", () => {
       getVariables,
       generateMetadata,
       expectedMetadata,
-      {
-        bookingsFilter: {
-          bookedFor: moment().startOf("minute").toDate(),
-        },
-        schedulesFilter: {
-          scheduledFor: moment().startOf("minute").toDate(),
-        },
-      }
+      {}
     )
   );
 });

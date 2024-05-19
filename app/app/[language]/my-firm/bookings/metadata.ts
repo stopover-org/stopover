@@ -10,7 +10,7 @@ import {
 } from "lib/utils/metadata";
 import { parseValue } from "lib/hooks/useQuery";
 import { BookingsFilter } from "artifacts/BookingsFirmTableFirmPaginationQuery.graphql";
-import fetchQuery from "../../../../lib/relay/fetchQuery";
+import fetchQuery from "lib/relay/fetchQuery";
 
 const filterParsers = {
   contactEmail: (value: string) => parseValue(value),
@@ -52,12 +52,6 @@ export const getVariables: GetVariablesFn = (props: PageProps) => {
  *              A value of 0 indicates revalidation is not required.
  */
 export const revalidate: number = 0;
-/**
- * Generates metadata for a page based on the provided properties.
- *
- * @param {PageProps} props - The properties of the page.
- * @returns {Promise<Metadata>} - A promise that resolves to the generated metadata.
- */
 const PageQuery = `
   query PageQuery {
    currentUser {
@@ -69,6 +63,12 @@ const PageQuery = `
     }
   }
 `;
+/**
+ * Generates metadata for a page based on the provided properties.
+ *
+ * @param {PageProps} props - The properties of the page.
+ * @returns {Promise<Metadata>} - A promise that resolves to the generated metadata.
+ */
 export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, getVariables(props));
 
