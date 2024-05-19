@@ -255,6 +255,11 @@ export default {
           title: "Аналитика, Бронирования, Управление: {{title}}",
           description: "Аналитика, Бронирования, Управление: {{description}}",
           keywords: "{{keywords}}",
+          edit: {
+            title: "Аналитика, Бронирования, Управление: {{title}}",
+            description: "Аналитика, Бронирования, Управление: {{description}}",
+            keywords: "{{keywords}}",
+          },
         },
       },
       payments: {

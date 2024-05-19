@@ -145,6 +145,13 @@ export const notFoundMetadata = async (language: string): Promise<Metadata> => {
   });
 };
 
+/**
+ * Retrieves metadata for redirecting to a given URL.
+ *
+ * @param {string} url - The URL to redirect to.
+ * @param {string} language - The language for localization.
+ * @returns {Promise<Metadata>} - A promise that resolves to the redirected metadata.
+ */
 export const redirectMetadata = async (
   url: string,
   language: string

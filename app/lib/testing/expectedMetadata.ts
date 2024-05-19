@@ -185,13 +185,15 @@ export const describeMyFirmResources = (
   getVariables: any,
   generateMetadata: any,
   expected: any,
-  expectedVariables: any
+  expectedVariables: any,
+  params: Record<string, any> = {},
+  searchParams: Record<string, any> = {}
 ) =>
   describe(language, () => {
     describe("getVariables", () => {
       it("default props", () => {
         expect(
-          getVariables({ params: { language }, searchParams: {} })
+          getVariables({ params: { language, ...params }, searchParams })
         ).toEqual(expectedVariables);
       });
     });
@@ -207,7 +209,10 @@ export const describeMyFirmResources = (
           mockCookies({ accessToken, language });
 
           expect(
-            await generateMetadata({ params: { language }, searchParams: {} })
+            await generateMetadata({
+              params: { language, ...params },
+              searchParams,
+            })
           ).toStrictEqual(notFoundMetadata()[language]);
         });
       });
@@ -222,7 +227,10 @@ export const describeMyFirmResources = (
           mockCookies({ accessToken, language });
 
           expect(
-            await generateMetadata({ params: { language }, searchParams: {} })
+            await generateMetadata({
+              params: { language, ...params },
+              searchParams,
+            })
           ).toStrictEqual(notFoundMetadata()[language]);
         });
       });
@@ -252,7 +260,10 @@ export const describeMyFirmResources = (
           mockCookies({ accessToken, language });
 
           expect(
-            await generateMetadata({ params: { language }, searchParams: {} })
+            await generateMetadata({
+              params: { language, ...params },
+              searchParams,
+            })
           ).toStrictEqual(expected()[language]);
         });
       });
@@ -267,7 +278,10 @@ export const describeMyFirmResources = (
           mockCookies({ accessToken, language });
 
           expect(
-            await generateMetadata({ params: { language }, searchParams: {} })
+            await generateMetadata({
+              params: { language, ...params },
+              searchParams,
+            })
           ).toStrictEqual(expected()[language]);
         });
       });
@@ -282,7 +296,10 @@ export const describeMyFirmResources = (
           mockCookies({ accessToken, language });
 
           expect(
-            await generateMetadata({ params: { language }, searchParams: {} })
+            await generateMetadata({
+              params: { language, ...params },
+              searchParams,
+            })
           ).toStrictEqual(expected()[language]);
         });
       });
@@ -299,7 +316,10 @@ export const describeMyFirmResources = (
           mockCookies({ accessToken, language });
 
           expect(
-            await generateMetadata({ params: { language }, searchParams: {} })
+            await generateMetadata({
+              params: { language, ...params },
+              searchParams,
+            })
           ).toStrictEqual(expected()[language]);
         });
       });
@@ -316,7 +336,10 @@ export const describeMyFirmResources = (
           mockCookies({ accessToken, language });
 
           expect(
-            await generateMetadata({ params: { language }, searchParams: {} })
+            await generateMetadata({
+              params: { language, ...params },
+              searchParams,
+            })
           ).toStrictEqual(redirectMetadata(`${language}/firms/new`)[language]);
         });
       });

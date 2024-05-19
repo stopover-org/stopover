@@ -1,4 +1,3 @@
-import { expect } from "@jest/globals";
 import { describeMyFirmResources } from "lib/testing/expectedMetadata";
 import {
   generateMetadata,

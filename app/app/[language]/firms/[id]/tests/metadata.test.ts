@@ -1,6 +1,5 @@
 import { setupData, teardownData } from "lib/testing/setupData";
 import { mockCookies } from "lib/testing/mockCookies";
-import { expect } from "@jest/globals";
 import { notFoundMetadata } from "lib/testing/expectedMetadata";
 import {
   generateMetadata,
