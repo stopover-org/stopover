@@ -1,8 +1,9 @@
 import { redirectMetadata } from "lib/testing/expectedMetadata";
 import {
-  getAuthorizedUser,
   getNotAuthorizedUser,
   getRestrictedUser,
+  setupData,
+  teardownData,
 } from "lib/testing/setupData";
 import { mockCookies } from "lib/testing/mockCookies";
 import {
@@ -24,8 +25,20 @@ jest.mock("next/headers", () => {
 jest.retryTimes(3);
 
 describe("[language]/trips", () => {
+  let trip: Record<string, any> | undefined;
+  beforeAll(async () => {
+    [trip] = await setupData({
+      setup_variables: [{ factory: "trip" }],
+      skip_delivery: true,
+    });
+  });
+
+  afterAll(async () => {
+    await teardownData();
+  });
+
   it("PAGE_TITLE", () => {
-    expect(PAGE_TITLE).toEqual("seo.trips.title");
+    expect(PAGE_TITLE).toEqual("seo.trips.id.title");
   });
 
   it("revalidate", () => {
@@ -38,26 +51,23 @@ describe("[language]/trips", () => {
         it("default props", () => {
           expect(
             getVariables({
-              params: { language },
+              params: { language, id: trip?.graphql_id },
               searchParams: {},
             })
-          ).toEqual({});
+          ).toEqual({ id: trip?.graphql_id });
         });
       });
 
       describe("generateMetadata", () => {
         describe("authorized user", () => {
           it("generate", async () => {
-            const accessToken = await getAuthorizedUser({
-              tokenOnly: true,
-              attributes: {},
-            });
+            const accessToken = trip?.user?.access_token;
 
             mockCookies({ accessToken, language });
 
             expect(
               await generateMetadata({
-                params: { language },
+                params: { language, id: trip?.graphql_id },
                 searchParams: {},
               })
             ).toStrictEqual(expectedMetadata()[language]);
@@ -75,10 +85,10 @@ describe("[language]/trips", () => {
 
             expect(
               await generateMetadata({
-                params: { language },
+                params: { language, id: trip?.graphql_id },
                 searchParams: {},
               })
-            ).toStrictEqual(expectedMetadata()[language]);
+            ).toStrictEqual(redirectMetadata(`${language}/trips`)[language]);
           });
         });
 
@@ -92,10 +102,11 @@ describe("[language]/trips", () => {
             mockCookies({ accessToken, language });
 
             expect(
-              await generateMetadata({ params: { language }, searchParams: {} })
-            ).toStrictEqual(
-              redirectMetadata(`${language}/auth/sign_in`)[language]
-            );
+              await generateMetadata({
+                params: { language, id: trip?.graphql_id },
+                searchParams: {},
+              })
+            ).toStrictEqual(redirectMetadata(`${language}/trips`)[language]);
           });
         });
       });
