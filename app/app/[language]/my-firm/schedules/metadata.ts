@@ -64,6 +64,12 @@ const PageQuery = `
     }
   }
 `;
+/**
+ * @function generateMetadata
+ * @description Generates metadata for a page.
+ * @param {PageProps} props - The page properties.
+ * @returns {Promise<Metadata>} - The generated metadata.
+ */
 export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
   const response = await fetchQuery(PageQuery, getVariables(props));
 
