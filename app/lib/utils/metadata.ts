@@ -144,3 +144,28 @@ export const notFoundMetadata = async (language: string): Promise<Metadata> => {
     },
   });
 };
+
+/**
+ * Retrieves metadata for redirecting to a given URL.
+ *
+ * @param {string} url - The URL to redirect to.
+ * @param {string} language - The language for localization.
+ * @returns {Promise<Metadata>} - A promise that resolves to the redirected metadata.
+ */
+export const redirectMetadata = async (
+  url: string,
+  language: string
+): Promise<Metadata> => {
+  const message = await translate("general.redirectTo", { url }, language);
+  return merge({}, defaultMetadata, noindexMetadata, {
+    title: message,
+    description: message,
+    keywords: "",
+    openGraph: {
+      locale: language,
+      title: message,
+      description: message,
+      keywords: "",
+    },
+  });
+};

@@ -4,8 +4,31 @@ import englishTranslations from "config/locales/en";
 import russianTranslations from "config/locales/ru";
 import { cookies } from "next/headers";
 
-export const sharedPhones = ["+381621496696"];
-export const sharedEmails = ["mikhail@stopoverx.com"];
+/**
+ * Array variable that holds the shared phone numbers.
+ *
+ * @type {Array.<string>}
+ * @name sharedPhones
+ * @description This variable is used to store the shared phone numbers.
+ *              Each phone number in the array is represented as a string
+ *              and follows the internationally recognized E.164 format.
+ *
+ * @example
+ * const sharedPhones = ["+381621496696"];
+ */
+export const sharedPhones: Array<string> = ["+381621496696"];
+/**
+ * Array variable that holds the shared phone numbers.
+ *
+ * @type {Array.<string>}
+ * @name sharedEmails
+ * @description This variable is used to store the shared emails.
+ *              Each email in the array is represented as a string.
+ *
+ * @example
+ * const sharedEmails = ["mikhail@dorokhovich.ru"];
+ */
+export const sharedEmails: Array<string> = ["mikhail@stopoverx.com"];
 export const sharedImages = [
   "https://s3.eu-north-1.amazonaws.com/stopoverx.production/stopoverx+(1).png",
   "https://s3.eu-north-1.amazonaws.com/stopoverx.production/orange_onion.png",

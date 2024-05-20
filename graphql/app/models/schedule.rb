@@ -70,6 +70,7 @@ class Schedule < ApplicationRecord
   default_scope { in_order_of(:status, %w[active disabled]).order(scheduled_for: :asc) }
 
   # DELEGATION ============================================================
+  delegate :firm, to: :event
 
   private
 

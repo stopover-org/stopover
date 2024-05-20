@@ -115,6 +115,7 @@ class Booking < ApplicationRecord
   default_scope { in_order_of(:status, %w[paid active cancelled]).order(created_at: :asc) }
 
   # DELEGATION ============================================================
+  delegate :seo_metadatum, to: :event
 
   def check_max_attendees
     return true unless event

@@ -46,13 +46,20 @@ FactoryBot.define do
     transient do
       accounts { create_list(:account, 1) }
       skip_accounts { false }
+      with_service_user { false }
     end
 
     before(:create) do |firm, evaluator|
-      unless evaluator.skip_accounts
+      if !evaluator.skip_accounts || evaluator.with_service_user
         evaluator.accounts.map do |account|
           firm.account_firms << firm.account_firms.build(account: account)
           account.update!(firm: firm)
+        end
+      end
+
+      if evaluator.with_service_user
+        firm.accounts.map do |account|
+          account.user.update!(service_user: true)
         end
       end
     end

@@ -1,6 +1,7 @@
 import { setupData, teardownData } from "lib/testing/setupData";
 import { beforeEach } from "@jest/globals";
 import { mockCookies } from "lib/testing/mockCookies";
+import { redirectMetadata } from "lib/testing/expectedMetadata";
 import {
   generateMetadata,
   getVariables,
@@ -72,60 +73,208 @@ describe("[language]/firms/new", () => {
       });
 
       describe("generateMetadata", () => {
-        // /[language]/firms/new
-        describe("not authorized user", () => {
-          it("default props", async () => {
+        beforeEach(() => {
+          mockCookies({ accessToken, language });
+        });
+
+        describe("by user type", () => {
+          // /[language]/firms/new
+          describe("not authorized user", () => {
+            it("default props", async () => {
+              const props = {
+                params: { language },
+                searchParams: {},
+              };
+
+              expect(await generateMetadata(props)).toStrictEqual(
+                expectedMetadata()[language]
+              );
+            });
+          });
+
+          describe("authorized user", () => {
+            beforeEach(() => {
+              mockCookies({ accessToken, language });
+            });
+
+            it("default props", async () => {
+              const props = {
+                params: { language },
+                searchParams: {},
+              };
+
+              expect(await generateMetadata(props)).toStrictEqual(
+                expectedMetadata()[language]
+              );
+            });
+          });
+
+          describe("restricted user", () => {
+            beforeEach(async () => {
+              const [restrictedUser] = await setupData({
+                setup_variables: [
+                  {
+                    factory: "inactive_user",
+                  },
+                ],
+                skip_delivery: true,
+              });
+
+              mockCookies({
+                accessToken: restrictedUser?.access_token,
+                language,
+              });
+            });
+
+            it("default props", async () => {
+              const props = {
+                params: { language },
+                searchParams: {},
+              };
+
+              expect(await generateMetadata(props)).toStrictEqual(
+                expectedMetadata()[language]
+              );
+            });
+          });
+
+          describe("manager user", () => {
+            beforeEach(async () => {
+              const [activeFirm] = await setupData({
+                setup_variables: [
+                  {
+                    factory: "firm",
+                  },
+                ],
+                skip_delivery: true,
+              });
+
+              mockCookies({
+                accessToken: activeFirm?.accounts?.[0]?.user?.access_token,
+                language,
+              });
+            });
+
+            it("default props", async () => {
+              const props = {
+                params: { language },
+                searchParams: {},
+              };
+
+              expect(await generateMetadata(props)).toStrictEqual(
+                redirectMetadata(`${language}/my-firm/dashboard`)[language]
+              );
+            });
+          });
+
+          describe("service user", () => {
+            beforeEach(async () => {
+              const [serviceUser] = await setupData({
+                setup_variables: [
+                  {
+                    factory: "service_user",
+                  },
+                ],
+                skip_delivery: true,
+              });
+
+              mockCookies({
+                accessToken: serviceUser?.access_token,
+                language,
+              });
+            });
+
+            it("default props", async () => {
+              const props = {
+                params: { language },
+                searchParams: {},
+              };
+
+              expect(await generateMetadata(props)).toStrictEqual(
+                expectedMetadata()[language]
+              );
+            });
+          });
+        });
+
+        describe("by firm status", () => {
+          it("active firm", async () => {
+            const [activeFirm] = await setupData({
+              setup_variables: [
+                {
+                  factory: "firm",
+                  attributes: {
+                    status: "active",
+                  },
+                },
+              ],
+              skip_delivery: true,
+            });
+
+            mockCookies({
+              accessToken: activeFirm?.accounts?.[0]?.user?.access_token,
+              language,
+            });
+
             const props = {
               params: { language },
               searchParams: {},
             };
 
             expect(await generateMetadata(props)).toStrictEqual(
-              expectedMetadata()[language]
+              redirectMetadata(`${language}/my-firm/dashboard`)[language]
             );
           });
-        });
 
-        describe("authorized user", () => {
-          beforeEach(() => {
-            mockCookies({ accessToken, language });
-          });
+          it("pending firm", async () => {
+            const [pendingFirm] = await setupData({
+              setup_variables: [
+                {
+                  factory: "firm",
+                  attributes: {
+                    status: "pending",
+                  },
+                },
+              ],
+              skip_delivery: true,
+            });
 
-          it("default props", async () => {
+            mockCookies({
+              accessToken: pendingFirm?.accounts?.[0]?.user?.access_token,
+              language,
+            });
+
             const props = {
               params: { language },
               searchParams: {},
             };
 
             expect(await generateMetadata(props)).toStrictEqual(
-              expectedMetadata()[language]
+              redirectMetadata(`${language}/my-firm/dashboard`)[language]
             );
           });
-        });
 
-        // /[language]/firms/new?param1=123&param2=456
-        describe("not authorized user", () => {
-          it("various params", async () => {
+          it("removed firm", async () => {
+            const [removedFirm] = await setupData({
+              setup_variables: [
+                {
+                  factory: "firm",
+                  attributes: {
+                    status: "removed",
+                  },
+                },
+              ],
+              skip_delivery: true,
+            });
+
+            mockCookies({
+              accessToken: removedFirm?.accounts?.[0]?.user?.access_token,
+              language,
+            });
+
             const props = {
               params: { language },
-              searchParams: { param1: 123, param2: 456 },
-            };
-
-            expect(await generateMetadata(props)).toStrictEqual(
-              expectedMetadata()[language]
-            );
-          });
-        });
-
-        describe("authorized user", () => {
-          beforeEach(() => {
-            mockCookies({ accessToken, language });
-          });
-
-          it("various params", async () => {
-            const props = {
-              params: { language },
-              searchParams: { param1: 123, param2: 456 },
+              searchParams: {},
             };
 
             expect(await generateMetadata(props)).toStrictEqual(

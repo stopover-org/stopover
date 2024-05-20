@@ -22,5 +22,16 @@
 FactoryBot.define do
   factory :schedule do
     status { :active }
+
+    transient do
+      with_event { false }
+    end
+
+    before(:create) do |schedule, evaluator|
+      if evaluator.with_event
+        schedule.event = create(:recurring_event)
+        schedule.scheduled_for = 1.day.from_now
+      end
+    end
   end
 end

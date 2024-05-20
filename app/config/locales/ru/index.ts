@@ -47,6 +47,7 @@ const translation = {
     termsOfUsage: "Условия пользования сервисом",
     free: "Бесплатно",
     contacts: "Контакты",
+    redirectTo: "Stopover. Your Travel Manager | Переход на {{url}}",
   },
   weekdays: {
     monday: "Понедельник",

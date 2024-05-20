@@ -1,5 +1,6 @@
 import { setupData, teardownData } from "lib/testing/setupData";
 import { notFoundMetadata } from "lib/testing/expectedMetadata";
+import { mockCookies } from "lib/testing/mockCookies";
 import {
   generateMetadata,
   getVariables,
@@ -7,7 +8,6 @@ import {
   revalidate,
 } from "../metadata";
 import { expectedMetadata } from "./metadata.expected";
-import { mockCookies } from "../../../../../lib/testing/mockCookies";
 
 jest.mock("next/headers", () => {
   const originalModule = jest.requireActual("next/headers");

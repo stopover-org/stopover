@@ -252,6 +252,11 @@ export default {
           title: "Analytics, Reservations, Management: {{title}}",
           description: "Analytics, Reservations, Management: {{description}}",
           keywords: "{{keywords}}",
+          edit: {
+            title: "Analytics, Reservations, Management: {{title}}",
+            description: "Analytics, Reservations, Management: {{description}}",
+            keywords: "{{keywords}}",
+          },
         },
       },
       payments: {
