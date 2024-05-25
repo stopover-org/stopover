@@ -1,6 +1,55 @@
 version: '3.1'
 
 services:
+  authentik:
+    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.4.2}
+    restart: unless-stopped
+    command: server
+    environment:
+      AUTHENTIK_REDIS__HOST: redis
+      AUTHENTIK_POSTGRESQL__HOST: db
+      AUTHENTIK_POSTGRESQL__USER: robot
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: password
+      AUTHENTIK_ERROR_REPORTING__ENABLED: true
+    env_file:
+      - .env
+    volumes:
+      - ./media:/media
+      - ./custom-templates:/templates
+    ports:
+      - "9000:9000"
+      - "9443:9443"
+    depends_on:
+      - db
+      - redis
+  authentik-worker:
+    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.4.2}
+    restart: unless-stopped
+    command: worker
+    environment:
+      AUTHENTIK_REDIS__HOST: redis
+      AUTHENTIK_POSTGRESQL__HOST: db
+      AUTHENTIK_POSTGRESQL__USER: robot
+      AUTHENTIK_POSTGRESQL__NAME: authentik
+      AUTHENTIK_POSTGRESQL__PASSWORD: password
+    # `user: root` and the docker socket volume are optional.
+    # See more for the docker socket integration here:
+    # https://goauthentik.io/docs/outposts/integrations/docker
+    # Removing `user: root` also prevents the worker from fixing the permissions
+    # on the mounted folders, so when removing this make sure the folders have the correct UID/GID
+    # (1000:1000 by default)
+    env_file:
+      - .env
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./media:/media
+      - ./certs:/certs
+      - ./custom-templates:/templates
+    depends_on:
+      - db
+      - redis
   opensearch-node1:
     image: opensearchproject/opensearch:latest
     container_name: opensearch-node1
@@ -63,46 +112,46 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - 5432:5432
-  web:
-    image: graphql
-    build:
-      dockerfile: ./Dockerfile
-      context: graphql
-    command: bash -c "bundle exec rails s -p 8080 -b '0.0.0.0'"
-    environment:
-      DATABASE_USERNAME: robot
-      DATABASE_PASSWORD: password
-      DATABASE_HOST: db
-      RAILS_MAX_THREADS: 20
-      REDIS_URL: redis://redis:6379/12
-      RAILS_ENV: ${RAILS_ENV}
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
-    ports:
-      - 8080:8080
-    depends_on:
-      - db
-      - redis
-      - opensearch-node1
-      - opensearch-node2
-  worker:
-    image: graphql
-    build:
-      dockerfile: ./Dockerfile
-      context: graphql
-    command: bash -c "foreman start"
-    environment:
-      DATABASE_USERNAME: robot
-      DATABASE_PASSWORD: password
-      DATABASE_HOST: db
-      RAILS_MAX_THREADS: 20
-      REDIS_URL: redis://redis:6379/12
-      RAILS_ENV: ${RAILS_ENV}
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
-    depends_on:
-      - db
-      - redis
-      - opensearch-node1
-      - opensearch-node2
+#  web:
+#    image: graphql
+#    build:
+#      dockerfile: ./Dockerfile
+#      context: graphql
+#    command: bash -c "bundle exec rails s -p 8080 -b '0.0.0.0'"
+#    environment:
+#      DATABASE_USERNAME: robot
+#      DATABASE_PASSWORD: password
+#      DATABASE_HOST: db
+#      RAILS_MAX_THREADS: 20
+#      REDIS_URL: redis://redis:6379/12
+#      RAILS_ENV: ${RAILS_ENV}
+#      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+#    ports:
+#      - 8080:8080
+#    depends_on:
+#      - db
+#      - redis
+#      - opensearch-node1
+#      - opensearch-node2
+#  worker:
+#    image: graphql
+#    build:
+#      dockerfile: ./Dockerfile
+#      context: graphql
+#    command: bash -c "foreman start"
+#    environment:
+#      DATABASE_USERNAME: robot
+#      DATABASE_PASSWORD: password
+#      DATABASE_HOST: db
+#      RAILS_MAX_THREADS: 20
+#      REDIS_URL: redis://redis:6379/12
+#      RAILS_ENV: ${RAILS_ENV}
+#      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+#    depends_on:
+#      - db
+#      - redis
+#      - opensearch-node1
+#      - opensearch-node2
 volumes:
   postgres_data: { }
   cache:
