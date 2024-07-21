@@ -142,7 +142,8 @@ const EventsScene = ({ eventsFragmentRef }: Props) => {
         },
       }
     );
-  }, [query, startDate, endDate, minPrice, maxPrice, interests]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, startDate, endDate, minPrice, maxPrice, interests.join(", ")]);
 
   React.useEffect(() => {
     setContent(
