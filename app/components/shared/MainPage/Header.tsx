@@ -12,6 +12,7 @@ import Link from "components/v2/Link";
 import { Header_CurrentUserFragment$key } from "artifacts/Header_CurrentUserFragment.graphql";
 import { Header_SignOutMutation } from "artifacts/Header_SignOutMutation.graphql";
 import { GlobalSidebarContext } from "components/GlobalSidebarProvider";
+import { signIn } from "next-auth/react";
 
 interface HeaderProps {
   currentUserFragment: Header_CurrentUserFragment$key;
@@ -118,8 +119,9 @@ const Header = ({ currentUserFragment }: HeaderProps) => {
             </Link>
           )}
           {!isAuthorized && (
+            // eslint-disable-next-line jsx-a11y/anchor-is-valid
             <Link
-              href="/auth/sign_in"
+              onClick={() => signIn("keycloak")}
               textAlign="right"
               level={isSmallDisplay ? "body-sm" : "body-md"}
               fontSize="lg"
