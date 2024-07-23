@@ -20,7 +20,7 @@
         </script>
     <#elseif section = "form">
         <div>
-            <img class="logo" src="${url.resourcesPath}/img/my-logo.png" alt="My Auth">
+            <img class="logo" src="${url.resourcesPath}/img/logo.png" alt="My Auth">
         </div>
         <div class="box-container">
             <!--<div>
@@ -33,11 +33,22 @@
                     <div>
                         <label class="visibility" id="v" onclick="togglePassword()"><img id="vi" src="${url.resourcesPath}/img/eye-off.png"></label>
                     </div>
-                <input id="password" class="login-field" placeholder="${msg("password")}" type="password" name="password" tabindex="2">
-                <input class="submit" type="submit" value="${msg("doLogIn")}" tabindex="3">
-				<div>
-					<p class="copyright">&copy; ${msg("copyright", "${.now?string('yyyy')}")}</p>
-				</div>
+                    <input id="password" class="login-field" placeholder="${msg("password")}" type="password" name="password" tabindex="2">
+                    <div id="kc-registration-container" class="pf-v5-c-login__main-footer-band">
+                        <div id="kc-registration" class="pf-v5-c-login__main-footer-band-item">
+                            <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
+                                <div><a tabindex="5"
+                                                         href="${url.registrationUrl}">${msg("doRegister")}</a></div>
+                            </#if>
+                            <#if realm.resetPasswordAllowed>
+                                <div><a tabindex="6" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></div>
+                            </#if>
+                        </div>
+                    </div>
+                    <input class="submit" type="submit" value="${msg("doLogIn")}" tabindex="3">
+                    <div>
+                        <p class="copyright">&copy; ${msg("copyright", "${.now?string('yyyy')}")}</p>
+                    </div>
                 </form>
             </div>
         </#if>
