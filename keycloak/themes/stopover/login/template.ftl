@@ -8,16 +8,34 @@
     <meta name="robots" content="noindex, nofollow">
 
     <title><#nested "title"></title>
+
     <#if properties.styles?has_content>
         <#list properties.styles?split(' ') as style>
             <link href="${url.resourcesPath}/${style}" rel="stylesheet" />
         </#list>
     </#if>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"/>
+    <link href="${url.resourcesPath}/img/favicon.png" rel="icon"/>
+
+    <script>
+        function togglePassword(id1 = 'password', id2 = 'v1') {
+            var x = document.getElementById(id1);
+            var v = document.getElementById(id2);
+            if (x.type === "password") {
+                x.type = "text";
+                v.src = "${url.resourcesPath}/img/eye.png";
+            } else {
+                x.type = "password";
+                v.src = "${url.resourcesPath}/img/eye-off.png";
+            }
+        }
+    </script>
 </head>
 
 <body>
     <#nested "header">
-    <div class="login-content" style="background-image: url(&quot;${url.resourcesPath}/img/my-login-bg.jpg&quot;);">
+    <div class="form-content">
         <div class="box">
             <#if displayMessage && message?has_content>
                 <div class="alert alert-${message.type}">
@@ -36,6 +54,9 @@
                     <span class="message-text">${message.summary?no_esc}</span>
                 </div>
             </#if>
+            <div>
+                <img class="logo" src="${url.resourcesPath}/img/logo.png" alt="My Auth">
+            </div>
             <#nested "form">
         </div>
     </div>

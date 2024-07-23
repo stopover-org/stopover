@@ -1,61 +1,51 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayInfo=social.displayInfo; section>
-    <#if section == "title">
-        ${msg("loginTitle", (realm.displayName!''))}
-    <#elseif section == "header">
-        <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet"/>
-        <link href="${url.resourcesPath}/img/favicon.png" rel="icon"/>
-        <script>
-            function togglePassword() {
-                var x = document.getElementById("password");
-                var v = document.getElementById("vi");
-                if (x.type === "password") {
-                    x.type = "text";
-                    v.src = "${url.resourcesPath}/img/eye.png";
-                } else {
-                    x.type = "password";
-                    v.src = "${url.resourcesPath}/img/eye-off.png";
-                }
-            }
-        </script>
-    <#elseif section == "form">
-        <div>
-            <img class="logo" src="${url.resourcesPath}/img/logo.png" alt="My Auth">
-        </div>
+    <#if section == "form">
         <div class="box-container">
-            <!--<div>
-                <p class="application-name">Custom Identity Service</p>
-            </div>-->
             <#if realm.password>
-                <div>
-                    <form id="kc-form-login" class="form" onsubmit="return true;" action="${url.loginAction}" method="post">
-                        <input id="username" class="login-field" placeholder="${msg("username")}" type="text" name="username" tabindex="1">
+                <main>
+                    <header>
+                        <h1>
+                            ${msg("logInTitle")}
+                        </h1>
+                    </header>
+                    <form id="kc-form-login" class="${properties.kcFormClass!}" onsubmit="return true;" action="${url.loginAction}" method="post">
+                        <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('email', properties.kcFormGroupErrorClass!)}">
+                            <input id="email" class="${properties.kcInputClass!}" placeholder="${msg("email")}" type="text" name="email" tabindex="1">
+                        </div>
+
                         <div>
                             <label class="visibility" id="v" onclick="togglePassword()">
                                 <img id="vi" src="${url.resourcesPath}/img/eye-off.png">
                             </label>
                         </div>
-                        <input id="password" class="login-field" placeholder="${msg("password")}" type="password" name="password" tabindex="2">
+
+                        <div class="${properties.kcFormGroupClass!} ${messagesPerField.printIfExists('password', properties.kcFormGroupErrorClass!)}">
+                            <input id="password" class="${properties.kcInputClass!}" placeholder="${msg("password")}" type="password" name="password" tabindex="2">
+                        </div>
+
                         <div id="kc-registration-container" class="pf-v5-c-login__main-footer-band">
                             <div id="kc-registration" class="pf-v5-c-login__main-footer-band-item">
                                 <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
                                     <div>
-                                        <a tabindex="5" href="${url.registrationUrl}">${msg("doRegister")}</a>
+                                        <a tabindex="3" href="${url.registrationUrl}">${msg("doRegister")}</a>
                                     </div>
                                 </#if>
                                 <#if realm.resetPasswordAllowed>
                                     <div>
-                                        <a tabindex="6" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a>
+                                        <a tabindex="4" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a>
                                     </div>
                                 </#if>
                             </div>
                         </div>
-                        <input class="submit" type="submit" value="${msg("doLogIn")}" tabindex="3">
+
+                        <input class="submit" class="${properties.kcButtonClassCustom!} ${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" value="${msg("doLogIn")}" tabindex="5">
+
                         <div>
                             <p class="copyright">&copy; ${msg("copyright", "${.now?string('yyyy')}")}</p>
                         </div>
                     </form>
-                </div>
+                </main>
             </#if>
             <#if social.providers??>
                 <div class="alternate-wrapper">
