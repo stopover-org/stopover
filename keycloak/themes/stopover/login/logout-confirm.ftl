@@ -1,8 +1,8 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout; section>
-    <#if section = "header">
+    <#if section == "header">
         <!-- ${msg("logoutConfirmTitle")} -->
-    <#elseif section = "form">
+    <#elseif section == "form">
         <div id="kc-logout-confirm" class="content-area">
             <p class="instruction">${msg("logoutConfirmHeader")}</p>
             <form class="form-actions" action="${url.logoutConfirmAction}" method="POST">
@@ -17,18 +17,16 @@
                         <input tabindex="4"
                                class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}"
                                name="confirmLogout" id="kc-logout" type="submit" value="${msg("doLogout")}"/>
-						<input tabindex="4"
-                               name="cancelLogout" id="kc-logout-go-back" type="button" 
-							   onclick="history.back()"
-							   value="${msg("doLogoutGoBack")}"/>
+                        <input tabindex="4"
+                               name="cancelLogout" id="kc-logout-go-back" type="button"
+                               onclick="history.back()"
+                               value="${msg("doLogoutGoBack")}"/>
                     </div>
-
                 </div>
             </form>
 
             <div id="kc-info-message">
-                <#if logoutConfirm.skipLink>
-                <#else>
+                <#if !logoutConfirm.skipLink>
                     <#if (client.baseUrl)?has_content>
                         <p><a href="${client.baseUrl}">${kcSanitize(msg("backToApplication"))?no_esc}</a></p>
                     </#if>
@@ -37,5 +35,5 @@
 
             <div class="clearfix"></div>
         </div>
-    </#if>
+    </#elseif>
 </@layout.registrationLayout>
