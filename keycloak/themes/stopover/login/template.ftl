@@ -58,6 +58,9 @@
                 <img class="logo" src="${url.resourcesPath}/img/logo.png" alt="My Auth">
             </div>
             <#nested "form">
+            <div>
+                <p class="copyright">&copy; ${msg("copyright", "${.now?string('yyyy')}")}</p>
+            </div>
         </div>
     </div>
 </body>

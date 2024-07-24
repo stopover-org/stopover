@@ -1,6 +1,6 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayInfo=true displayMessage=!messagesPerField.existsError('username'); section>
-    <#if section == "header">
+    <#if section = "header">
         <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet"/>
         <link href="${url.resourcesPath}/img/favicon.png" rel="icon"/>
         <script>
@@ -16,25 +16,17 @@
                 }
             }
         </script>
-    <#elseif section == "form">
+    <#elseif section = "form">
         <form id="kc-reset-password-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post">
             <div class="${properties.kcFormGroupClass!}">
                 <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="username" class="${properties.kcLabelClass!}">
-                        <#if !realm.loginWithEmailAllowed>
-                            ${msg("username")}
-                        <#elseif !realm.registrationEmailAsUsername>
-                            ${msg("usernameOrEmail")}
-                        <#else>
-                            ${msg("email")}
-                        </#if>
-                    </label>
+                    <label for="username" class="${properties.kcLabelClass!}"><#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if></label>
                 </div>
                 <div class="${properties.kcInputWrapperClass!}">
                     <input type="text" id="username" name="username" class="${properties.kcInputClass!}" autofocus value="" aria-invalid="<#if messagesPerField.existsError('username')>true</#if>"/>
                     <#if messagesPerField.existsError('username')>
                         <span id="input-error-username" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
-                            ${kcSanitize(messagesPerField.get('username'))?no_esc}
+                                    ${kcSanitize(messagesPerField.get('username'))?no_esc}
                         </span>
                     </#if>
                 </div>
@@ -51,7 +43,7 @@
                 </div>
             </div>
         </form>
-    <#elseif section == "info">
+    <#elseif section = "info" >
         <#if realm.duplicateEmailsAllowed>
             ${msg("emailInstructionUsername")}
         <#else>

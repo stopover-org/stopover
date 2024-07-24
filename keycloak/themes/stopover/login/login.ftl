@@ -40,10 +40,6 @@
                         </div>
 
                         <input class="submit" class="${properties.kcButtonClassCustom!} ${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" value="${msg("doLogIn")}" tabindex="5">
-
-                        <div>
-                            <p class="copyright">&copy; ${msg("copyright", "${.now?string('yyyy')}")}</p>
-                        </div>
                     </form>
                 </main>
             </#if>
