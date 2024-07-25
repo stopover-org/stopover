@@ -51,7 +51,6 @@
                     <#if message.type == 'info'>
                         <span class="${properties.kcFeedbackInfoIcon!}"></span>
                     </#if>
-                    <span class="message-text">${message.summary?no_esc}</span>
                 </div>
             </#if>
             <div>

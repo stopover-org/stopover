@@ -4,7 +4,8 @@ body, html {
     flex: 1;
     overflow: hidden;
     min-height: 0;
-    font-size: 14px;
+    font-size: 16px;
+    line-height: 1.15em;
     color: rgba(0, 0, 0, .87);
     margin: 0;
     height: 100%;
@@ -328,10 +329,15 @@ main {
     padding-top: 50px;
 }
 
-main header {
+main header, .main header {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-right: 64px;
     font-family: Roboto, sans-serif;
+}
+
+
+main header.centered, .main header.centered {
+    text-align: center;
 }
