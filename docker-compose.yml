@@ -25,6 +25,29 @@ services:
       - db  # Wait for the database to be ready
       - redis  # Wait for Redis to be ready
 
+  neo4j:
+    build:
+      context: ./neo4j
+    environment:
+      - NEO4J_AUTH=none
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/certs:/etc/nginx/certs
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - neo4j
+      - keycloak
+
   # OpenSearch node 1
   opensearch-node1:
     image: opensearchproject/opensearch:latest  # OpenSearch image
@@ -152,3 +175,5 @@ volumes:
     driver: local
   opensearch-data1:
   opensearch-data2:
+  neo4j_data:
+    driver: local
