@@ -1,114 +1,154 @@
 version: '3.1'
 
 services:
+  # Keycloak service for authentication and authorization
+  keycloak:
+    build:
+      context: keycloak  # Build context for Keycloak
+    container_name: keycloak  # Container name for easier identification
+    environment:
+      KEYCLOAK_ADMIN: admin  # Keycloak admin username
+      KEYCLOAK_ADMIN_PASSWORD: admin  # Keycloak admin password
+      KEYCLOAK_DATABASE_VENDOR: postgres  # Database vendor
+      KC_DB: postgres  # Database name
+      KC_DB_URL_HOST: db  # Database host
+      KC_DB_URL_DATABASE: keycloak  # Database URL
+      KC_DB_URL_PORT: 5432  # Database port
+      KC_DB_USERNAME: robot  # Database username
+      KC_DB_PASSWORD: password  # Database password
+    ports:
+      - '8081:8080'  # Expose Keycloak on port 8081
+    volumes:
+      - ./keystore.p12:/keystore.p12  # Volume for keystore
+      - ./keycloak/themes/stopover:/opt/keycloak/themes/stopover  # Volume for Keycloak themes
+    depends_on:
+      - db  # Wait for the database to be ready
+      - redis  # Wait for Redis to be ready
+
+  # OpenSearch node 1
   opensearch-node1:
-    image: opensearchproject/opensearch:latest
-    container_name: opensearch-node1
+    image: opensearchproject/opensearch:latest  # OpenSearch image
+    container_name: opensearch-node1  # Container name
     environment:
-      - cluster.name=opensearch-cluster # Name the cluster
-      - node.name=opensearch-node1 # Name the node that will run in this container
-      - discovery.seed_hosts=opensearch-node1,opensearch-node2 # Nodes to look for when discovering the cluster
-      - cluster.initial_cluster_manager_nodes=opensearch-node1,opensearch-node2 # Nodes eligibile to serve as cluster manager
-      - bootstrap.memory_lock=true # Disable JVM heap memory swapping
-      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM
-      - "DISABLE_INSTALL_DEMO_CONFIG=true" # Prevents execution of bundled demo script which installs demo certificates and security configurations to OpenSearch
-      - "DISABLE_SECURITY_PLUGIN=true" # Disables Security plugin
+      - cluster.name=opensearch-cluster  # Cluster name
+      - node.name=opensearch-node1  # Node name
+      - discovery.seed_hosts=opensearch-node1,opensearch-node2  # Seed hosts for cluster discovery
+      - cluster.initial_cluster_manager_nodes=opensearch-node1,opensearch-node2  # Cluster manager nodes
+      - bootstrap.memory_lock=true  # Disable JVM heap memory swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"  # JVM heap sizes
+      - "DISABLE_INSTALL_DEMO_CONFIG=true"  # Disable demo configuration
+      - "DISABLE_SECURITY_PLUGIN=true"  # Disable security plugin
     ulimits:
       memlock:
-        soft: -1 # Set memlock to unlimited (no soft or hard limit)
-        hard: -1
+        soft: -1  # Set memlock to unlimited (soft limit)
+        hard: -1  # Set memlock to unlimited (hard limit)
       nofile:
-        soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
-        hard: 65536
+        soft: 65536  # Maximum number of open files (soft limit)
+        hard: 65536  # Maximum number of open files (hard limit)
     volumes:
-      - opensearch-data1:/usr/share/opensearch/data # Creates volume called opensearch-data1 and mounts it to the container
+      - opensearch-data1:/usr/share/opensearch/data  # Data volume
     ports:
-      - 9200:9200 # REST API
-      - 9600:9600 # Performance Analyzer
+      - "9200:9200"  # REST API port
+      - "9600:9600"  # Performance Analyzer port
+
+  # OpenSearch node 2
   opensearch-node2:
-    image: opensearchproject/opensearch:latest
-    container_name: opensearch-node2
+    image: opensearchproject/opensearch:latest  # OpenSearch image
+    container_name: opensearch-node2  # Container name
     environment:
-      - cluster.name=opensearch-cluster # Name the cluster
-      - node.name=opensearch-node2 # Name the node that will run in this container
-      - discovery.seed_hosts=opensearch-node1,opensearch-node2 # Nodes to look for when discovering the cluster
-      - cluster.initial_cluster_manager_nodes=opensearch-node1,opensearch-node2 # Nodes eligibile to serve as cluster manager
-      - bootstrap.memory_lock=true # Disable JVM heap memory swapping
-      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM
-      - "DISABLE_INSTALL_DEMO_CONFIG=true" # Prevents execution of bundled demo script which installs demo certificates and security configurations to OpenSearch
-      - "DISABLE_SECURITY_PLUGIN=true" # Disables Security plugin
+      - cluster.name=opensearch-cluster  # Cluster name
+      - node.name=opensearch-node2  # Node name
+      - discovery.seed_hosts=opensearch-node1,opensearch-node2  # Seed hosts for cluster discovery
+      - cluster.initial_cluster_manager_nodes=opensearch-node1,opensearch-node2  # Cluster manager nodes
+      - bootstrap.memory_lock=true  # Disable JVM heap memory swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"  # JVM heap sizes
+      - "DISABLE_INSTALL_DEMO_CONFIG=true"  # Disable demo configuration
+      - "DISABLE_SECURITY_PLUGIN=true"  # Disable security plugin
     ulimits:
       memlock:
-        soft: -1 # Set memlock to unlimited (no soft or hard limit)
-        hard: -1
+        soft: -1  # Set memlock to unlimited (soft limit)
+        hard: -1  # Set memlock to unlimited (hard limit)
       nofile:
-        soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
-        hard: 65536
+        soft: 65536  # Maximum number of open files (soft limit)
+        hard: 65536  # Maximum number of open files (hard limit)
     volumes:
-      - opensearch-data2:/usr/share/opensearch/data # Creates volume called opensearch-data2 and mounts it to the container
+      - opensearch-data2:/usr/share/opensearch/data  # Data volume
+
+  # Redis service for caching
   redis:
-    image: redis:6.2-alpine
-    restart: always
+    image: redis:6.2-alpine  # Redis image
+    container_name: redis
+    restart: always  # Always restart the container if it stops
     ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning
+      - '6379:6379'  # Expose Redis on port 6379
+    command: redis-server --save 20 1 --loglevel warning  # Redis command with configuration
     volumes:
-      - cache:/data
+      - cache:/data  # Data volume
+
+  # PostgreSQL database service
   db:
-    image: postgres
+    image: postgres  # PostgreSQL image
+    container_name: db
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data  # Data volume
     environment:
-      POSTGRES_USER: robot
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: robot  # Database username
+      POSTGRES_PASSWORD: password  # Database password
     ports:
-      - 5432:5432
+      - '5432:5432'  # Expose PostgreSQL on port 5432
+
+  # Web service for the Rails application
   web:
-    image: graphql
     build:
-      dockerfile: ./Dockerfile
-      context: graphql
-    command: bash -c "bundle exec rails s -p 8080 -b '0.0.0.0'"
+      context: graphql  # Build context for the Rails application
+    container_name: web
+    command: dockerize -wait tcp://db:5432 -timeout 30s bundle exec rails s -p 8080 -b '0.0.0.0'  # Command to start the Rails server
     environment:
-      DATABASE_USERNAME: robot
-      DATABASE_PASSWORD: password
-      DATABASE_HOST: db
-      RAILS_MAX_THREADS: 20
-      REDIS_URL: redis://redis:6379/12
-      RAILS_ENV: ${RAILS_ENV}
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      DATABASE_USERNAME: robot  # Database username
+      DATABASE_PASSWORD: password  # Database password
+      DATABASE_HOST: db  # Database host
+      RAILS_MAX_THREADS: 20  # Maximum number of Rails threads
+      REDIS_URL: redis://redis:6379/12  # Redis URL
+      RAILS_ENV: ${RAILS_ENV:-development}   # Rails environment
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}  # Rails master key
+      OPENSEARCH_URL: http://opensearch-node1:9200
     ports:
-      - 8080:8080
+      - "8080:8080"  # Expose the Rails server on port 8080
+    volumes:
+      - ./graphql:/app/graphql  # Mount the source code directory as a volume
     depends_on:
-      - db
-      - redis
-      - opensearch-node1
-      - opensearch-node2
+      - db  # Wait for the database to be ready
+      - redis  # Wait for Redis to be ready
+      - opensearch-node1  # Wait for OpenSearch node 1 to be ready
+      - opensearch-node2  # Wait for OpenSearch node 2 to be ready
+
+  # Worker service for background jobs
   worker:
-    image: graphql
     build:
-      dockerfile: ./Dockerfile
-      context: graphql
-    command: bash -c "foreman start"
+      context: graphql  # Build context for the Rails application
+    container_name: worker
+    command: dockerize -wait tcp://db:5432 -timeout 30s foreman start  # Command to start the background jobs
     environment:
-      DATABASE_USERNAME: robot
-      DATABASE_PASSWORD: password
-      DATABASE_HOST: db
-      RAILS_MAX_THREADS: 20
-      REDIS_URL: redis://redis:6379/12
-      RAILS_ENV: ${RAILS_ENV}
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      DATABASE_USERNAME: robot  # Database username
+      DATABASE_PASSWORD: password  # Database password
+      DATABASE_HOST: db  # Database host
+      RAILS_MAX_THREADS: 20  # Maximum number of Rails threads
+      REDIS_URL: redis://redis:6379/12  # Redis URL
+      RAILS_ENV: ${RAILS_ENV:-development}   # Rails environment
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}  # Rails master key
+      OPENSEARCH_URL: http://opensearch-node1:9200
+    volumes:
+      - ./graphql:/app/graphql  # Mount the source code directory as a volume
     depends_on:
-      - db
-      - redis
-      - opensearch-node1
-      - opensearch-node2
+      - db  # Wait for the database to be ready
+      - redis  # Wait for Redis to be ready
+      - opensearch-node1  # Wait for OpenSearch node 1 to be ready
+      - opensearch-node2  # Wait for OpenSearch node 2 to be ready
+
+# Define volumes for persistent storage
 volumes:
   postgres_data: { }
   cache:
     driver: local
   opensearch-data1:
   opensearch-data2:
-networks:
-  default:
-    name: stopover_default
