@@ -1,0 +1,60 @@
+# schema.graphql
+input SchedulingInput {
+  taskId: ID!
+  scheduleTime: String!
+}
+
+input UpdateSchedulingInput {
+  scheduleId: ID!
+  newScheduleTime: String!
+}
+
+input ToggleSchedulingInput {
+  scheduleId: ID!
+}
+
+enum TaskStatus {
+  PENDING
+  PROCESSING
+  SUCCEEDED
+  FAILED
+  TERMINATED
+}
+
+type Task {
+  id: ID!
+  status: TaskStatus!
+  retries: Int!
+}
+
+type Scheduling {
+  id: ID!
+  taskId: ID!
+  nextScheduleTime: String!
+  active: Boolean!
+}
+
+type Event {
+  id: ID!
+  message: String!
+}
+
+type Query {
+  task(id: ID!): Task
+  scheduling(id: ID!): Scheduling
+}
+
+type Mutation {
+  retryTask(id: ID!): Task
+  terminateTask(id: ID!): Task
+  scheduleNow(taskId: ID!): Task
+  createScheduling(input: SchedulingInput!): Scheduling
+  updateScheduling(input: UpdateSchedulingInput!): Scheduling
+  toggleScheduling(input: ToggleSchedulingInput!): Scheduling
+  removeScheduling(scheduleId: ID!): Scheduling
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
