@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  viator_event:
+    build:
+      context: ./viator_event
+    env_file: ./viator_event/.env
+    ports:
+      - "${PORT}:8000"
+    networks:
+      - shared_network
+
+#  adapter2:
+#    build:
+#      context: ./adapter2
+#    env_file: ./adapter2/.env
+#    ports:
+#      - "${PORT}:8000"
+#    networks:
+#      - shared_network
+
+networks:
+  shared_network:
+    driver: bridge
