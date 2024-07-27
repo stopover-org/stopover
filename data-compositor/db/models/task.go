@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/stopover-org/stopover/data-compositor/internal/graphql/graph/model"
@@ -22,8 +23,8 @@ type Task struct {
 	Retries   int                `gorm:"default:0;not null"`
 	Artifacts []string           `gorm:"type:text[]"`
 
-	AdapterType   graphql.AdapterType    `gorm:"type:string;nut null"`
-	Configuration map[string]interface{} `gorm:"type:jsonb;not null"`
+	AdapterType   graphql.AdapterType `gorm:"type:string;nut null"`
+	Configuration json.RawMessage     `gorm:"type:jsonb;not null"`
 
 	SchedulingID uuid.UUID `gorm:"type:uuid;not null;index"`
 	Scheduling   Scheduling
@@ -47,7 +48,9 @@ func (task *Task) BeforeCreate(tx *gorm.DB) (err error) {
 	}
 
 	if task.Configuration == nil {
-		task.Configuration = make(map[string]interface{})
+		emptyConfig := make(map[string]interface{})
+		emptyConfigJSON, _ := json.Marshal(emptyConfig)
+		task.Configuration = emptyConfigJSON
 	}
 
 	return validateTaskStatus(task.Status)

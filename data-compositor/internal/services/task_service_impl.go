@@ -101,12 +101,19 @@ func (s *taskServiceImpl) ExecTask(id uuid.UUID) (*models.Task, error) {
 	task.Status = graphql.TaskStatusProcessing
 	task.Retries++
 
-	url, ok := task.Configuration["url"].(string)
+	var config map[string]interface{}
+
+	// Unmarshal the JSON-encoded byte slice to a map
+	if err := json.Unmarshal(task.Configuration, &config); err != nil {
+		return nil, err
+	}
+
+	url, ok := config["url"].(string)
 	if !ok || url == "" {
 		return nil, fmt.Errorf("URL not found in task configuration")
 	}
 
-	PostUrl(task.ID, url, task.Configuration)
+	PostUrl(task.ID, url, config)
 
 	if err := s.db.Save(task).Error; err != nil {
 		return nil, err

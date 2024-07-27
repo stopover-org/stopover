@@ -26,10 +26,15 @@ func (s *schedulingServiceImpl) CreateScheduling(createdFields graphql.Schedulin
 		return nil, err
 	}
 
+	configJSON, err := json.Marshal(configuration)
+	if err != nil {
+		return nil, err
+	}
+
 	scheduling := &models.Scheduling{
 		Status:        graphql.SchedulingStatusInactive,
 		AdapterType:   createdFields.AdapterType,
-		Configuration: configuration,
+		Configuration: configJSON,
 	}
 
 	if createdFields.RetentionPeriod != nil {
@@ -47,10 +52,38 @@ func (s *schedulingServiceImpl) CreateScheduling(createdFields graphql.Schedulin
 	return scheduling, nil
 }
 
-func (s *schedulingServiceImpl) UpdateScheduling(scheduleId uuid.UUID, updatedFields graphql.UpdateSchedulingInput) (*models.Scheduling, error) {
-	scheduling := &models.Scheduling{}
+func (s *schedulingServiceImpl) UpdateScheduling(id uuid.UUID, updatedFields graphql.UpdateSchedulingInput) (*models.Scheduling, error) {
+	scheduling := &models.Scheduling{
+		ID: id,
+	}
 
-	if err := s.db.First(scheduling, "id = ?", scheduleId).Error; err != nil {
+	if updatedFields.Configuration != nil {
+		var configuration map[string]interface{}
+		if err := json.Unmarshal([]byte(*updatedFields.Configuration), &configuration); err != nil {
+			return nil, err
+		}
+
+		configJSON, err := json.Marshal(configuration)
+		if err != nil {
+			return nil, err
+		}
+
+		scheduling.Configuration = configJSON
+	}
+
+	if updatedFields.AdapterType != nil {
+		scheduling.AdapterType = *updatedFields.AdapterType
+	}
+
+	if updatedFields.RetentionPeriod != nil {
+		scheduling.RetentionPeriod = *updatedFields.RetentionPeriod
+	}
+
+	if updatedFields.MaxRetries != nil {
+		scheduling.MaxRetries = *updatedFields.MaxRetries
+	}
+
+	if err := s.db.First(scheduling, "id = ?", id).Error; err != nil {
 		return nil, err
 	}
 

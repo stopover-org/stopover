@@ -332,7 +332,6 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	ec := executionContext{rc, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputSchedulingInput,
-		ec.unmarshalInputToggleSchedulingInput,
 		ec.unmarshalInputUpdateSchedulingInput,
 	)
 	first := true
@@ -441,10 +440,10 @@ input SchedulingInput {
 
 input UpdateSchedulingInput {
     id: ID!
-}
-
-input ToggleSchedulingInput {
-    id: ID!
+    retentionPeriod: Int
+    maxRetries: Int
+    adapterType: AdapterType
+    configuration: String
 }
 
 enum TaskStatus {
@@ -3934,33 +3933,6 @@ func (ec *executionContext) unmarshalInputSchedulingInput(ctx context.Context, o
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputToggleSchedulingInput(ctx context.Context, obj interface{}) (graphql1.ToggleSchedulingInput, error) {
-	var it graphql1.ToggleSchedulingInput
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"id"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "id":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-			data, err := ec.unmarshalNID2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ID = data
-		}
-	}
-
-	return it, nil
-}
-
 func (ec *executionContext) unmarshalInputUpdateSchedulingInput(ctx context.Context, obj interface{}) (graphql1.UpdateSchedulingInput, error) {
 	var it graphql1.UpdateSchedulingInput
 	asMap := map[string]interface{}{}
@@ -3968,7 +3940,7 @@ func (ec *executionContext) unmarshalInputUpdateSchedulingInput(ctx context.Cont
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"id"}
+	fieldsInOrder := [...]string{"id", "retentionPeriod", "maxRetries", "adapterType", "configuration"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -3982,6 +3954,34 @@ func (ec *executionContext) unmarshalInputUpdateSchedulingInput(ctx context.Cont
 				return it, err
 			}
 			it.ID = data
+		case "retentionPeriod":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("retentionPeriod"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.RetentionPeriod = data
+		case "maxRetries":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("maxRetries"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.MaxRetries = data
+		case "adapterType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("adapterType"))
+			data, err := ec.unmarshalOAdapterType2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐAdapterType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AdapterType = data
+		case "configuration":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("configuration"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Configuration = data
 		}
 	}
 
@@ -5068,6 +5068,22 @@ func (ec *executionContext) marshalN__TypeKind2string(ctx context.Context, sel a
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) unmarshalOAdapterType2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐAdapterType(ctx context.Context, v interface{}) (*graphql1.AdapterType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var res = new(graphql1.AdapterType)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOAdapterType2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐAdapterType(ctx context.Context, sel ast.SelectionSet, v *graphql1.AdapterType) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) unmarshalOBoolean2bool(ctx context.Context, v interface{}) (bool, error) {

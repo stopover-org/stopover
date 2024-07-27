@@ -43,12 +43,12 @@ type Task struct {
 	Scheduling    *Scheduling `json:"scheduling"`
 }
 
-type ToggleSchedulingInput struct {
-	ID string `json:"id"`
-}
-
 type UpdateSchedulingInput struct {
-	ID string `json:"id"`
+	ID              string       `json:"id"`
+	RetentionPeriod *int         `json:"retentionPeriod,omitempty"`
+	MaxRetries      *int         `json:"maxRetries,omitempty"`
+	AdapterType     *AdapterType `json:"adapterType,omitempty"`
+	Configuration   *string      `json:"configuration,omitempty"`
 }
 
 type AdapterType string

@@ -8,10 +8,10 @@ input SchedulingInput {
 
 input UpdateSchedulingInput {
     id: ID!
-}
-
-input ToggleSchedulingInput {
-    id: ID!
+    retentionPeriod: Int
+    maxRetries: Int
+    adapterType: AdapterType
+    configuration: String
 }
 
 enum TaskStatus {

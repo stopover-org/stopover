@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/stopover-org/stopover/data-compositor/internal/graphql/graph/model"
@@ -34,7 +35,7 @@ type Scheduling struct {
 	Status           graphql.SchedulingStatus `gorm:"default:INACTIVE;not null"`
 	AdapterType      graphql.AdapterType      `gorm:"not null"`
 
-	Configuration map[string]interface{} `gorm:"type:jsonb;not null"`
+	Configuration json.RawMessage `gorm:"type:jsonb;not null"`
 
 	Tasks []Task `gorm:"foreignKey:SchedulingID"`
 }
