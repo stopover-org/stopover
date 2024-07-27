@@ -30,7 +30,10 @@ type Scheduling struct {
 	MaxRetries       int              `gorm:"default:3;not null"`
 	Status           SchedulingStatus `gorm:"not null"`
 	AdapterType      string           `gorm:"not null"`
-	Tasks            []Task           `gorm:"foreignKey:SchedulingID"`
+
+	Configuration map[string]interface{} `gorm:"type:jsonb;not null"`
+
+	Tasks []Task `gorm:"foreignKey:SchedulingID"`
 }
 
 func (scheduling *Scheduling) BeforeCreate(tx *gorm.DB) (err error) {

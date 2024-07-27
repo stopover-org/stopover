@@ -1,7 +1,10 @@
 package services
 
 import (
+	"errors"
+	"github.com/google/uuid"
 	"github.com/stopover-org/stopover/data-compositor/db"
+	"github.com/stopover-org/stopover/data-compositor/db/models"
 	"gorm.io/gorm"
 )
 
@@ -15,28 +18,45 @@ func NewSchedulingService() SchedulingService {
 	}
 }
 
-func (s *schedulingServiceImpl) CreateScheduling(taskId, scheduleTime string) (*Scheduling, error) {
-	scheduling := &Scheduling{
-		TaskID:       taskId,
-		ScheduleTime: scheduleTime,
-		Active:       true,
+func (s *schedulingServiceImpl) CreateScheduling(taskId uuid.UUID, createdFields map[string]interface{}) (*models.Scheduling, error) {
+	scheduling := &models.Scheduling{
+		Status: models.SchedulingStatusInactive,
 	}
 
-	if err := s.db.Create(scheduling).Error; err != nil {
+	if err := s.db.Model(scheduling).Updates(createdFields).Error; err != nil {
 		return nil, err
 	}
 
 	return scheduling, nil
 }
 
-func (s *schedulingServiceImpl) UpdateScheduling(scheduleId, newScheduleTime string) (*Scheduling, error) {
-	scheduling := &Scheduling{}
+func (s *schedulingServiceImpl) UpdateScheduling(scheduleId uuid.UUID, updatedFields map[string]interface{}) (*models.Scheduling, error) {
+	scheduling := &models.Scheduling{}
 
 	if err := s.db.First(scheduling, "id = ?", scheduleId).Error; err != nil {
 		return nil, err
 	}
 
-	scheduling.ScheduleTime = newScheduleTime
+	if err := s.db.Model(scheduling).Updates(updatedFields).Error; err != nil {
+
+		return nil, err
+	}
+
+	return scheduling, nil
+}
+
+func (s *schedulingServiceImpl) ToggleScheduling(id uuid.UUID) (*models.Scheduling, error) {
+	scheduling := &models.Scheduling{}
+
+	if err := s.db.First(scheduling, "id = ?", id).Error; err != nil {
+		return nil, err
+	}
+
+	if scheduling.Status == models.SchedulingStatusActive {
+		scheduling.Status = models.SchedulingStatusInactive
+	} else {
+		scheduling.Status = models.SchedulingStatusActive
+	}
 	if err := s.db.Save(scheduling).Error; err != nil {
 		return nil, err
 	}
@@ -44,25 +64,14 @@ func (s *schedulingServiceImpl) UpdateScheduling(scheduleId, newScheduleTime str
 	return scheduling, nil
 }
 
-func (s *schedulingServiceImpl) ToggleScheduling(scheduleId string) (*Scheduling, error) {
-	scheduling := &Scheduling{}
+func (s *schedulingServiceImpl) RemoveScheduling(id uuid.UUID) (*models.Scheduling, error) {
+	scheduling := &models.Scheduling{}
 
-	if err := s.db.First(scheduling, "id = ?", scheduleId).Error; err != nil {
-		return nil, err
+	if scheduling.Status != models.SchedulingStatusActive {
+		return nil, errors.New("Active scheduling cannot be removed")
 	}
 
-	scheduling.Active = !scheduling.Active
-	if err := s.db.Save(scheduling).Error; err != nil {
-		return nil, err
-	}
-
-	return scheduling, nil
-}
-
-func (s *schedulingServiceImpl) RemoveScheduling(scheduleId string) (*Scheduling, error) {
-	scheduling := &Scheduling{}
-
-	if err := s.db.First(scheduling, "id = ?", scheduleId).Error; err != nil {
+	if err := s.db.First(scheduling, "id = ?", id).Error; err != nil {
 		return nil, err
 	}
 
@@ -73,18 +82,30 @@ func (s *schedulingServiceImpl) RemoveScheduling(scheduleId string) (*Scheduling
 	return scheduling, nil
 }
 
-func (s *schedulingServiceImpl) ScheduleNow(id string) (*Scheduling, error) {
-	scheduling := &Scheduling{}
+func (s *schedulingServiceImpl) ScheduleNow(id uuid.UUID) (*models.Task, *models.Scheduling, error) {
+	scheduling := &models.Scheduling{}
 
 	if err := s.db.First(scheduling, "id = ?", id).Error; err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return scheduling, nil
+	task := &models.Task{
+		Scheduling:    *scheduling,
+		Retries:       0,
+		Status:        models.TaskStatusPending,
+		AdapterType:   scheduling.AdapterType,
+		Configuration: scheduling.Configuration,
+	}
+
+	if err := s.db.Create(task).Error; err != nil {
+		return nil, scheduling, err
+	}
+
+	return task, scheduling, nil
 }
 
-func (s *schedulingServiceImpl) GetScheduling(id string) (*Scheduling, error) {
-	scheduling := &Scheduling{}
+func (s *schedulingServiceImpl) GetScheduling(id uuid.UUID) (*models.Scheduling, error) {
+	scheduling := &models.Scheduling{}
 
 	if err := s.db.First(scheduling, "id = ?", id).Error; err != nil {
 		return nil, err

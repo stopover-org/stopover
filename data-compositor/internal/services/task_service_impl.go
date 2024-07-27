@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/stopover-org/stopover/data-compositor/db"
 	"github.com/stopover-org/stopover/data-compositor/db/models"
 	"gorm.io/gorm"
@@ -21,44 +22,63 @@ func NewTaskService() TaskService {
 	}
 }
 
-func PostUrl(url string, configuration map[string]interface{}) {
+func updateTaskStatus(db *gorm.DB, id uuid.UUID, status models.TaskStatus) {
+	if err := db.Model(&models.Task{}).Where("id = ?", id).Update("Status", status).Error; err != nil {
+		log.Printf("failed to update task status for task %s: %v", id, err)
+	}
+}
+
+func PostUrl(id uuid.UUID, url string, configuration map[string]interface{}) {
 	go func() {
-		// Convert the entire configuration to JSON
 		jsonData, err := json.Marshal(configuration)
 		if err != nil {
 			log.Printf("error occurred while marshaling configuration: %v", err)
+			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
 			return
 		}
 
-		// Create a new HTTP POST request with the JSON data
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		if err != nil {
 			log.Printf("error occurred while creating request: %v", err)
+			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
 			return
 		}
 
-		// Set the appropriate headers
 		req.Header.Set("Content-Type", "application/json")
 
-		// Send the POST request
 		client := &http.Client{}
 		resp, err := client.Do(req)
 		if err != nil {
 			log.Printf("error occurred while sending request: %v", err)
+			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
 			return
 		}
 		defer resp.Body.Close()
 
-		// Check the response status
 		if resp.StatusCode != http.StatusOK {
 			log.Printf("request failed with status: %s", resp.Status)
+			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
 			return
 		}
 
-		// Read and log the response body
 		var result map[string]interface{}
 		if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 			log.Printf("error occurred while decoding response: %v", err)
+			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
+			return
+		}
+
+		task := &models.Task{}
+		if err := db.DB.First(task, "id = ?", id).Error; err != nil {
+			log.Printf("error occurred while fetching task: %v", err)
+			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
+			return
+		}
+
+		task.Status = models.TaskStatusCompleted
+		if err := db.DB.Save(task).Error; err != nil {
+			log.Printf("error occurred while saving task: %v", err)
+			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
 			return
 		}
 
@@ -84,7 +104,11 @@ func (s *taskServiceImpl) ExecTask(id string) (*models.Task, error) {
 		return nil, fmt.Errorf("URL not found in task configuration")
 	}
 
-	PostUrl(url, task.Configuration)
+	PostUrl(task.ID, url, task.Configuration)
+
+	if err := s.db.Save(task).Error; err != nil {
+		return nil, err
+	}
 
 	return task, nil
 }
@@ -98,21 +122,12 @@ func (s *taskServiceImpl) RetryTask(id string) (*models.Task, error) {
 	task.Status = models.TaskStatusRunning
 	task.Retries++
 
-	if err := s.db.Save(task).Error; err != nil {
-		return nil, err
+	url, ok := task.Configuration["url"].(string)
+	if !ok || url == "" {
+		return nil, fmt.Errorf("URL not found in task configuration")
 	}
 
-	return task, nil
-}
-
-func (s *taskServiceImpl) TerminateTask(id string) (*models.Task, error) {
-	task := &models.Task{}
-
-	if err := s.db.First(task, "id = ?", id).Error; err != nil {
-		return nil, err
-	}
-
-	task.Status = models.TaskStatusTerminated
+	PostUrl(task.ID, url, task.Configuration)
 
 	if err := s.db.Save(task).Error; err != nil {
 		return nil, err
