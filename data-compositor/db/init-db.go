@@ -4,14 +4,14 @@ package db
 import (
 	"context"
 	"fmt"
-	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
 	"os"
-	"time"
+
+	"github.com/stopover-org/stopover/data-compositor/db/models"
 )
 
 var DB *gorm.DB
@@ -53,7 +53,7 @@ func Init() {
 	}
 
 	// Migrate the schema
-	err = DB.AutoMigrate(&Task{}, &Scheduling{})
+	err = DB.AutoMigrate(&models.Task{}, &models.Scheduling{})
 	if err != nil {
 		log.Fatalf("Error migrating schema: %v", err)
 	}
@@ -85,23 +85,4 @@ func checkAndCreateDatabase(dsn, dbName string) error {
 	}
 
 	return nil
-}
-
-type Task struct {
-	ID           uuid.UUID `gorm:"type:uuid;primaryKey"`
-	Status       string    `gorm:"not null"`
-	Retries      int       `gorm:"default:3;not null"`
-	Artifacts    []string  `gorm:"type:text[]"`
-	SchedulingID uuid.UUID `gorm:"type:uuid;not null;index"` // Foreign key
-	Scheduling   Scheduling
-}
-
-type Scheduling struct {
-	ID               uuid.UUID `gorm:"type:uuid;primaryKey"`
-	NextScheduleTime time.Time
-	RetentionPeriod  int    `gorm:"default:86400;not null"`
-	MaxRetries       int    `gorm:"not null"`
-	Status           string `gorm:"not null"`
-	AdapterType      string `gorm:"not null"`
-	Tasks            []Task `gorm:"foreignKey:SchedulingID"` // One-to-many relationship
 }

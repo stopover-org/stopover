@@ -13,4 +13,6 @@ type SchedulingService interface {
 	ToggleScheduling(scheduleId string) (*Scheduling, error)
 	RemoveScheduling(scheduleId string) (*Scheduling, error)
 	ScheduleNow(scheduleId string) (*Scheduling, error)
+
+	GetScheduling(scheduleId string) (*Scheduling, error)
 }

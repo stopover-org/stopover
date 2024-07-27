@@ -1,26 +1,11 @@
 package services
 
-type TaskStatus string
-
-const (
-	Pending    TaskStatus = "PENDING"
-	Processing TaskStatus = "PROCESSING"
-	Succeeded  TaskStatus = "SUCCEEDED"
-	Failed     TaskStatus = "FAILED"
-	Terminated TaskStatus = "TERMINATED"
-)
-
-type Task struct {
-	ID        string
-	Status    TaskStatus
-	Retries   int
-	Artifacts []string
-}
+import "github.com/stopover-org/stopover/data-compositor/db/models"
 
 type TaskService interface {
-	ExecTask(id, data string) (*Task, error)
-	RetryTask(id string) (*Task, error)
-	TerminateTask(id string) (*Task, error)
+	ExecTask(id string) (*models.Task, error)
+	RetryTask(id string) (*models.Task, error)
+	TerminateTask(id string) (*models.Task, error)
 
-	GetTask(id string) (*Task, error)
+	GetTask(id string) (*models.Task, error)
 }
