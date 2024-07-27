@@ -1,6 +1,7 @@
 package services
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/google/uuid"
 	"github.com/stopover-org/stopover/data-compositor/db"
@@ -20,11 +21,26 @@ func NewSchedulingService() SchedulingService {
 }
 
 func (s *schedulingServiceImpl) CreateScheduling(createdFields graphql.SchedulingInput) (*models.Scheduling, error) {
-	scheduling := &models.Scheduling{
-		Status: graphql.SchedulingStatusInactive,
+	var configuration map[string]interface{}
+	if err := json.Unmarshal([]byte(createdFields.Configuration), &configuration); err != nil {
+		return nil, err
 	}
 
-	if err := s.db.Model(scheduling).Updates(createdFields).Error; err != nil {
+	scheduling := &models.Scheduling{
+		Status:        graphql.SchedulingStatusInactive,
+		AdapterType:   createdFields.AdapterType,
+		Configuration: configuration,
+	}
+
+	if createdFields.RetentionPeriod != nil {
+		scheduling.RetentionPeriod = *createdFields.RetentionPeriod
+	}
+
+	if createdFields.MaxRetries != nil {
+		scheduling.MaxRetries = *createdFields.MaxRetries
+	}
+
+	if err := s.db.Create(scheduling).Error; err != nil {
 		return nil, err
 	}
 

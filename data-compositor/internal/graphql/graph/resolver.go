@@ -9,8 +9,8 @@ import (
 )
 
 type Resolver struct {
-	NewTaskService       services.TaskService
-	NewSchedulingService services.SchedulingService
+	TaskService       services.TaskService
+	SchedulingService services.SchedulingService
 }
 
 func (r *mutationResolver) RetryTask(ctx context.Context, id string) (*graphql.Task, error) {
@@ -19,7 +19,7 @@ func (r *mutationResolver) RetryTask(ctx context.Context, id string) (*graphql.T
 		return nil, err
 	}
 
-	task, err := r.NewTaskService.RetryTask(guid)
+	task, err := r.Resolver.TaskService.RetryTask(guid)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +32,7 @@ func (r *mutationResolver) ScheduleNow(ctx context.Context, id string) (*graphql
 		return nil, err
 	}
 
-	task, _, err := r.NewSchedulingService.ScheduleNow(guid)
+	task, _, err := r.Resolver.SchedulingService.ScheduleNow(guid)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (r *mutationResolver) ScheduleNow(ctx context.Context, id string) (*graphql
 }
 
 func (r *mutationResolver) CreateScheduling(ctx context.Context, input graphql.SchedulingInput) (*graphql.Scheduling, error) {
-	scheduling, err := r.NewSchedulingService.CreateScheduling(input)
+	scheduling, err := r.Resolver.SchedulingService.CreateScheduling(input)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (r *mutationResolver) UpdateScheduling(ctx context.Context, input graphql.U
 		return nil, err
 	}
 
-	scheduling, err := services.NewSchedulingService().UpdateScheduling(guid, input)
+	scheduling, err := r.Resolver.SchedulingService.UpdateScheduling(guid, input)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (r *mutationResolver) ToggleScheduling(ctx context.Context, id string) (*gr
 		return nil, err
 	}
 
-	scheduling, err := services.NewSchedulingService().ToggleScheduling(guid)
+	scheduling, err := r.Resolver.SchedulingService.ToggleScheduling(guid)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func (r *mutationResolver) RemoveScheduling(ctx context.Context, id string) (*gr
 		return nil, err
 	}
 
-	scheduling, err := r.NewSchedulingService.RemoveScheduling(guid)
+	scheduling, err := r.Resolver.SchedulingService.RemoveScheduling(guid)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func (r *queryResolver) Task(ctx context.Context, id string) (*graphql.Task, err
 		return nil, err
 	}
 
-	task, err := r.NewTaskService.GetTask(guid)
+	task, err := r.Resolver.TaskService.GetTask(guid)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +113,7 @@ func (r *queryResolver) Scheduling(ctx context.Context, id string) (*graphql.Sch
 		return nil, err
 	}
 
-	scheduling, err := r.NewSchedulingService.GetScheduling(guid)
+	scheduling, err := r.Resolver.SchedulingService.GetScheduling(guid)
 	if err != nil {
 		return nil, err
 	}

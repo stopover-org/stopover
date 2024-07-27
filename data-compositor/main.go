@@ -4,6 +4,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/stopover-org/stopover/data-compositor/internal/services"
 	"log"
 
 	"github.com/labstack/echo/v4"
@@ -20,7 +21,10 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// GraphQL handler
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
+		TaskService:       services.NewTaskService(),
+		SchedulingService: services.NewSchedulingService(),
+	}}))
 
 	e.POST("/graphql", func(c echo.Context) error {
 		srv.ServeHTTP(c.Response(), c.Request())
