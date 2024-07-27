@@ -3,10 +3,12 @@ package services
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/stopover-org/stopover/data-compositor/db"
 	"github.com/stopover-org/stopover/data-compositor/db/models"
+	"github.com/stopover-org/stopover/data-compositor/internal/graphql/graph/model"
 	"gorm.io/gorm"
 	"log"
 	"net/http"
@@ -22,7 +24,7 @@ func NewTaskService() TaskService {
 	}
 }
 
-func updateTaskStatus(db *gorm.DB, id uuid.UUID, status models.TaskStatus) {
+func updateTaskStatus(db *gorm.DB, id uuid.UUID, status graphql.TaskStatus) {
 	if err := db.Model(&models.Task{}).Where("id = ?", id).Update("Status", status).Error; err != nil {
 		log.Printf("failed to update task status for task %s: %v", id, err)
 	}
@@ -33,14 +35,14 @@ func PostUrl(id uuid.UUID, url string, configuration map[string]interface{}) {
 		jsonData, err := json.Marshal(configuration)
 		if err != nil {
 			log.Printf("error occurred while marshaling configuration: %v", err)
-			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
+			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
 			return
 		}
 
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		if err != nil {
 			log.Printf("error occurred while creating request: %v", err)
-			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
+			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
 			return
 		}
 
@@ -50,35 +52,35 @@ func PostUrl(id uuid.UUID, url string, configuration map[string]interface{}) {
 		resp, err := client.Do(req)
 		if err != nil {
 			log.Printf("error occurred while sending request: %v", err)
-			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
+			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
 			return
 		}
 		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
 			log.Printf("request failed with status: %s", resp.Status)
-			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
+			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
 			return
 		}
 
 		var result map[string]interface{}
 		if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 			log.Printf("error occurred while decoding response: %v", err)
-			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
+			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
 			return
 		}
 
 		task := &models.Task{}
 		if err := db.DB.First(task, "id = ?", id).Error; err != nil {
 			log.Printf("error occurred while fetching task: %v", err)
-			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
+			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
 			return
 		}
 
-		task.Status = models.TaskStatusCompleted
+		task.Status = graphql.TaskStatusCompleted
 		if err := db.DB.Save(task).Error; err != nil {
 			log.Printf("error occurred while saving task: %v", err)
-			updateTaskStatus(db.DB, id, models.TaskStatusFailed)
+			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
 			return
 		}
 
@@ -86,7 +88,7 @@ func PostUrl(id uuid.UUID, url string, configuration map[string]interface{}) {
 	}()
 }
 
-func (s *taskServiceImpl) ExecTask(id string) (*models.Task, error) {
+func (s *taskServiceImpl) ExecTask(id uuid.UUID) (*models.Task, error) {
 	task := &models.Task{}
 	if err := s.db.First(task, "id = ?", id).Error; err != nil {
 		return nil, err
@@ -96,7 +98,7 @@ func (s *taskServiceImpl) ExecTask(id string) (*models.Task, error) {
 		return nil, fmt.Errorf("max retries exceeded. max retries: %s", task.Scheduling.MaxRetries)
 	}
 
-	task.Status = models.TaskStatusRunning
+	task.Status = graphql.TaskStatusProcessing
 	task.Retries++
 
 	url, ok := task.Configuration["url"].(string)
@@ -113,21 +115,18 @@ func (s *taskServiceImpl) ExecTask(id string) (*models.Task, error) {
 	return task, nil
 }
 
-func (s *taskServiceImpl) RetryTask(id string) (*models.Task, error) {
+func (s *taskServiceImpl) RetryTask(id uuid.UUID) (*models.Task, error) {
 	task := &models.Task{}
 	if err := s.db.First(task, "id = ?", id).Error; err != nil {
 		return nil, err
 	}
 
-	task.Status = models.TaskStatusRunning
-	task.Retries++
-
-	url, ok := task.Configuration["url"].(string)
-	if !ok || url == "" {
-		return nil, fmt.Errorf("URL not found in task configuration")
+	if task.Status == graphql.TaskStatusProcessing {
+		return nil, errors.New("task is already processing")
 	}
 
-	PostUrl(task.ID, url, task.Configuration)
+	task.Status = graphql.TaskStatusPending
+	task.Retries = 0
 
 	if err := s.db.Save(task).Error; err != nil {
 		return nil, err
@@ -136,7 +135,7 @@ func (s *taskServiceImpl) RetryTask(id string) (*models.Task, error) {
 	return task, nil
 }
 
-func (s *taskServiceImpl) GetTask(id string) (*models.Task, error) {
+func (s *taskServiceImpl) GetTask(id uuid.UUID) (*models.Task, error) {
 	task := &models.Task{}
 
 	if err := s.db.First(task, "id = ?", id).Error; err != nil {

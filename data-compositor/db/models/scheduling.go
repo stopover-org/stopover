@@ -3,33 +3,36 @@ package models
 import (
 	"fmt"
 	"github.com/google/uuid"
+	"github.com/stopover-org/stopover/data-compositor/internal/graphql/graph/model"
 	"gorm.io/gorm"
 	"time"
 )
 
-type SchedulingStatus string
-
-const (
-	SchedulingStatusActive   SchedulingStatus = "ACTIVE"
-	SchedulingStatusInactive SchedulingStatus = "INACTIVE"
-)
-
-func validateSchedulingStatus(status SchedulingStatus) error {
+func validateSchedulingStatus(status graphql.SchedulingStatus) error {
 	switch status {
-	case SchedulingStatusActive, SchedulingStatusInactive:
+	case graphql.SchedulingStatusActive, graphql.SchedulingStatusInactive:
 		return nil
 	default:
 		return fmt.Errorf("invalid SchedulingStatus: %s", status)
 	}
 }
 
+func validateAdapterType(adapterType graphql.AdapterType) error {
+	switch adapterType {
+	case graphql.AdapterTypeViatorEventScrapper:
+		return nil
+	default:
+		return fmt.Errorf("invalid AdapterType: %s", adapterType)
+	}
+}
+
 type Scheduling struct {
 	ID               uuid.UUID `gorm:"type:uuid;primaryKey"`
 	NextScheduleTime time.Time
-	RetentionPeriod  int              `gorm:"default:86400;not null"`
-	MaxRetries       int              `gorm:"default:3;not null"`
-	Status           SchedulingStatus `gorm:"not null"`
-	AdapterType      string           `gorm:"not null"`
+	RetentionPeriod  int                      `gorm:"default:86400;not null"`
+	MaxRetries       int                      `gorm:"default:3;not null"`
+	Status           graphql.SchedulingStatus `gorm:"default:INACTIVE;not null"`
+	AdapterType      graphql.AdapterType      `gorm:"not null"`
 
 	Configuration map[string]interface{} `gorm:"type:jsonb;not null"`
 
@@ -41,9 +44,19 @@ func (scheduling *Scheduling) BeforeCreate(tx *gorm.DB) (err error) {
 		scheduling.ID = uuid.New()
 	}
 
+	err = validateAdapterType(scheduling.AdapterType)
+	if err != nil {
+		return err
+	}
+
 	return validateSchedulingStatus(scheduling.Status)
 }
 
 func (scheduling *Scheduling) BeforeUpdate(tx *gorm.DB) (err error) {
+	err = validateAdapterType(scheduling.AdapterType)
+	if err != nil {
+		return err
+	}
+
 	return validateSchedulingStatus(scheduling.Status)
 }

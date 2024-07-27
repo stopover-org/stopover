@@ -3,22 +3,13 @@ package models
 import (
 	"fmt"
 	"github.com/google/uuid"
+	"github.com/stopover-org/stopover/data-compositor/internal/graphql/graph/model"
 	"gorm.io/gorm"
 )
 
-type TaskStatus string
-
-const (
-	TaskStatusPending    TaskStatus = "PENDING"
-	TaskStatusRunning    TaskStatus = "RUNNING"
-	TaskStatusCompleted  TaskStatus = "COMPLETED"
-	TaskStatusFailed     TaskStatus = "FAILED"
-	TaskStatusTerminated TaskStatus = "TERMINATED"
-)
-
-func validateTaskStatus(status TaskStatus) error {
+func validateTaskStatus(status graphql.TaskStatus) error {
 	switch status {
-	case TaskStatusPending, TaskStatusRunning, TaskStatusCompleted, TaskStatusFailed, TaskStatusTerminated:
+	case graphql.TaskStatusPending, graphql.TaskStatusProcessing, graphql.TaskStatusCompleted, graphql.TaskStatusFailed, graphql.TaskStatusTerminated:
 		return nil
 	default:
 		return fmt.Errorf("invalid TaskStatus: %s", status)
@@ -26,12 +17,12 @@ func validateTaskStatus(status TaskStatus) error {
 }
 
 type Task struct {
-	ID        uuid.UUID  `gorm:"type:uuid;primaryKey"`
-	Status    TaskStatus `gorm:"default:PENDING;not null"`
-	Retries   int        `gorm:"default:0;not null"`
-	Artifacts []string   `gorm:"type:text[]"`
+	ID        uuid.UUID          `gorm:"type:uuid;primaryKey"`
+	Status    graphql.TaskStatus `gorm:"default:PENDING;not null"`
+	Retries   int                `gorm:"default:0;not null"`
+	Artifacts []string           `gorm:"type:text[]"`
 
-	AdapterType   string                 `gorm:"type:string;nut null"`
+	AdapterType   graphql.AdapterType    `gorm:"type:string;nut null"`
 	Configuration map[string]interface{} `gorm:"type:jsonb;not null"`
 
 	SchedulingID uuid.UUID `gorm:"type:uuid;not null;index"`
@@ -48,7 +39,7 @@ func (task *Task) BeforeCreate(tx *gorm.DB) (err error) {
 	}
 
 	if task.Status == "" {
-		task.Status = TaskStatusPending
+		task.Status = graphql.TaskStatusPending
 	}
 
 	if task.AdapterType == "" {

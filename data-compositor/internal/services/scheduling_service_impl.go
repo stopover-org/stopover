@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stopover-org/stopover/data-compositor/db"
 	"github.com/stopover-org/stopover/data-compositor/db/models"
+	"github.com/stopover-org/stopover/data-compositor/internal/graphql/graph/model"
 	"gorm.io/gorm"
 )
 
@@ -18,9 +19,9 @@ func NewSchedulingService() SchedulingService {
 	}
 }
 
-func (s *schedulingServiceImpl) CreateScheduling(taskId uuid.UUID, createdFields map[string]interface{}) (*models.Scheduling, error) {
+func (s *schedulingServiceImpl) CreateScheduling(createdFields graphql.SchedulingInput) (*models.Scheduling, error) {
 	scheduling := &models.Scheduling{
-		Status: models.SchedulingStatusInactive,
+		Status: graphql.SchedulingStatusInactive,
 	}
 
 	if err := s.db.Model(scheduling).Updates(createdFields).Error; err != nil {
@@ -30,7 +31,7 @@ func (s *schedulingServiceImpl) CreateScheduling(taskId uuid.UUID, createdFields
 	return scheduling, nil
 }
 
-func (s *schedulingServiceImpl) UpdateScheduling(scheduleId uuid.UUID, updatedFields map[string]interface{}) (*models.Scheduling, error) {
+func (s *schedulingServiceImpl) UpdateScheduling(scheduleId uuid.UUID, updatedFields graphql.UpdateSchedulingInput) (*models.Scheduling, error) {
 	scheduling := &models.Scheduling{}
 
 	if err := s.db.First(scheduling, "id = ?", scheduleId).Error; err != nil {
@@ -52,10 +53,10 @@ func (s *schedulingServiceImpl) ToggleScheduling(id uuid.UUID) (*models.Scheduli
 		return nil, err
 	}
 
-	if scheduling.Status == models.SchedulingStatusActive {
-		scheduling.Status = models.SchedulingStatusInactive
+	if scheduling.Status == graphql.SchedulingStatusActive {
+		scheduling.Status = graphql.SchedulingStatusInactive
 	} else {
-		scheduling.Status = models.SchedulingStatusActive
+		scheduling.Status = graphql.SchedulingStatusActive
 	}
 	if err := s.db.Save(scheduling).Error; err != nil {
 		return nil, err
@@ -67,7 +68,7 @@ func (s *schedulingServiceImpl) ToggleScheduling(id uuid.UUID) (*models.Scheduli
 func (s *schedulingServiceImpl) RemoveScheduling(id uuid.UUID) (*models.Scheduling, error) {
 	scheduling := &models.Scheduling{}
 
-	if scheduling.Status != models.SchedulingStatusActive {
+	if scheduling.Status != graphql.SchedulingStatusActive {
 		return nil, errors.New("Active scheduling cannot be removed")
 	}
 
@@ -92,7 +93,7 @@ func (s *schedulingServiceImpl) ScheduleNow(id uuid.UUID) (*models.Task, *models
 	task := &models.Task{
 		Scheduling:    *scheduling,
 		Retries:       0,
-		Status:        models.TaskStatusPending,
+		Status:        graphql.TaskStatusPending,
 		AdapterType:   scheduling.AdapterType,
 		Configuration: scheduling.Configuration,
 	}

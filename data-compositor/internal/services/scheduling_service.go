@@ -3,11 +3,12 @@ package services
 import (
 	"github.com/google/uuid"
 	"github.com/stopover-org/stopover/data-compositor/db/models"
+	"github.com/stopover-org/stopover/data-compositor/internal/graphql/graph/model"
 )
 
 type SchedulingService interface {
-	CreateScheduling(taskId uuid.UUID, createdFields map[string]interface{}) (*models.Scheduling, error)
-	UpdateScheduling(scheduleId uuid.UUID, updatedFields map[string]interface{}) (*models.Scheduling, error)
+	CreateScheduling(createdFields graphql.SchedulingInput) (*models.Scheduling, error)
+	UpdateScheduling(scheduleId uuid.UUID, updatedFields graphql.UpdateSchedulingInput) (*models.Scheduling, error)
 	ToggleScheduling(scheduleId uuid.UUID) (*models.Scheduling, error)
 	RemoveScheduling(scheduleId uuid.UUID) (*models.Scheduling, error)
 	ScheduleNow(scheduleId uuid.UUID) (*models.Task, *models.Scheduling, error)
