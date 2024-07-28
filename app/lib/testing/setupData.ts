@@ -33,6 +33,7 @@ const parseFirm = (json: string): Record<string, any> => {
 
   return firm;
 };
+
 /**
  * Sends a POST request with data to the given URL.
  *
@@ -84,7 +85,9 @@ export async function setupData(data: {
     }
 
     rawResponse = rawResponse.map((resp: string) =>
-      resp.replaceAll("&", "&amp;").replaceAll("'", "&#39;")
+      resp
+        .replaceAll(/&(?![a-zA-Z]+;)/g, "&amp;")
+        .replaceAll(/(?<!&#39;)'(?!#39;)/g, "&#39;")
     );
 
     return rawResponse

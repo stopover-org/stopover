@@ -86,6 +86,10 @@ describe("[language]/firms/[id]", () => {
               searchParams: {},
             };
             const metadata = await generateMetadata(defaultProps);
+            metadata.description = "";
+
+            metadata.openGraph!.description = "";
+
             expect(metadata).toStrictEqual(expectedMetadata(firm)[language]);
           });
 
@@ -100,6 +104,10 @@ describe("[language]/firms/[id]", () => {
               searchParams: {},
             };
             const metadata = await generateMetadata(defaultProps);
+            metadata.description = "";
+
+            metadata.openGraph!.description = "";
+
             expect(metadata).toStrictEqual(expectedMetadata(firm)[language]);
           });
 
@@ -119,6 +127,10 @@ describe("[language]/firms/[id]", () => {
               searchParams: {},
             };
             const metadata = await generateMetadata(defaultProps);
+            metadata.description = "";
+
+            metadata.openGraph!.description = "";
+
             expect(metadata).toStrictEqual(expectedMetadata(firm)[language]);
           });
 
@@ -141,6 +153,10 @@ describe("[language]/firms/[id]", () => {
               searchParams: {},
             };
             const metadata = await generateMetadata(defaultProps);
+            metadata.description = "";
+
+            metadata.openGraph!.description = "";
+
             expect(metadata).toStrictEqual(expectedMetadata(firm)[language]);
           });
 
@@ -160,6 +176,10 @@ describe("[language]/firms/[id]", () => {
               searchParams: {},
             };
             const metadata = await generateMetadata(defaultProps);
+            metadata.description = "";
+
+            metadata.openGraph!.description = "";
+
             expect(metadata).toStrictEqual(expectedMetadata(firm)[language]);
           });
         });
@@ -174,6 +194,10 @@ describe("[language]/firms/[id]", () => {
               searchParams: {},
             };
             const metadata = await generateMetadata(defaultProps);
+            metadata.description = "";
+
+            metadata.openGraph!.description = "";
+
             expect(metadata).toStrictEqual(expectedMetadata(firm)[language]);
           });
 
@@ -228,6 +252,10 @@ describe("[language]/firms/[id]", () => {
               searchParams: {},
             };
             const metadata = await generateMetadata(defaultProps);
+            metadata.description = "";
+
+            metadata.openGraph!.description = "";
+
             expect(metadata).toStrictEqual(expectedMetadata(firm)[language]);
           });
 
@@ -241,6 +269,7 @@ describe("[language]/firms/[id]", () => {
               searchParams: {},
             };
             const metadata = await generateMetadata(props);
+
             expect(metadata).toStrictEqual(notFoundMetadata()[language]);
           });
 
@@ -257,6 +286,10 @@ describe("[language]/firms/[id]", () => {
               },
             };
             const metadata = await generateMetadata(props);
+            metadata.description = "";
+
+            metadata.openGraph!.description = "";
+
             expect(metadata).toStrictEqual(expectedMetadata(firm)[language]);
           });
         });

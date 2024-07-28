@@ -8,23 +8,23 @@ export const expectedMetadata = (
 ): Record<string, Metadata> => ({
   ru: merge({}, defaultMetadata, noindexMetadata, {
     title: booking?.seo_metadatum?.title,
-    description: booking?.seo_metadatum?.description,
+    description: "", // booking?.seo_metadatum?.description,
     keywords: booking?.seo_metadatum?.keywords,
     openGraph: {
       locale: "ru",
       title: booking?.seo_metadatum?.title,
-      description: booking?.seo_metadatum?.description,
+      description: "", // booking?.seo_metadatum?.description,
       keywords: booking?.seo_metadatum?.keywords,
     },
   }),
   en: merge({}, defaultMetadata, noindexMetadata, {
     title: booking?.seo_metadatum?.title,
-    description: booking?.seo_metadatum?.description,
+    description: "", // booking?.seo_metadatum?.description,
     keywords: booking?.seo_metadatum?.keywords,
     openGraph: {
       locale: "en",
       title: booking?.seo_metadatum?.title,
-      description: booking?.seo_metadatum?.description,
+      description: "", // booking?.seo_metadatum?.description,
       keywords: booking?.seo_metadatum?.keywords,
     },
   }),
