@@ -51,8 +51,6 @@ type Scheduling {
     status: SchedulingStatus!
     adapterType: AdapterType!
     configuration: String!
-
-    tasks: [Task!]!
 }
 
 type Query {

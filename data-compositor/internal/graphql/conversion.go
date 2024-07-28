@@ -33,11 +33,6 @@ func SchedulingToGraphql(scheduling *models.Scheduling) (*graphql.Scheduling, er
 		return nil, err
 	}
 
-	tasks, err := TasksToGraphql(scheduling.Tasks)
-	if err != nil {
-		return nil, err
-	}
-
 	return &graphql.Scheduling{
 		ID:               scheduling.ID.String(),
 		NextScheduleTime: formatToISO8601(&scheduling.NextScheduleTime),
@@ -46,7 +41,6 @@ func SchedulingToGraphql(scheduling *models.Scheduling) (*graphql.Scheduling, er
 		Status:           scheduling.Status,
 		AdapterType:      scheduling.AdapterType,
 		Configuration:    string(configuration),
-		Tasks:            tasks,
 	}, nil
 }
 
@@ -56,7 +50,7 @@ func TaskToGraphql(task *models.Task) (*graphql.Task, error) {
 		return nil, err
 	}
 
-	scheduling, err := SchedulingToGraphql(&task.Scheduling)
+	scheduling, err := SchedulingToGraphql(task.Scheduling)
 	if err != nil {
 		return nil, err
 	}

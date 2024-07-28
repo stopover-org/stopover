@@ -22,7 +22,6 @@ type Scheduling struct {
 	Status           SchedulingStatus `json:"status"`
 	AdapterType      AdapterType      `json:"adapterType"`
 	Configuration    string           `json:"configuration"`
-	Tasks            []*Task          `json:"tasks"`
 }
 
 type SchedulingInput struct {

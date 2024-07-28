@@ -117,7 +117,7 @@ func (s *schedulingServiceImpl) ToggleScheduling(id uuid.UUID) (*models.Scheduli
 func (s *schedulingServiceImpl) RemoveScheduling(id uuid.UUID) (*models.Scheduling, error) {
 	scheduling := &models.Scheduling{}
 
-	if scheduling.Status != graphql.SchedulingStatusActive {
+	if scheduling.Status == graphql.SchedulingStatusActive {
 		return nil, errors.New("Active scheduling cannot be removed")
 	}
 
@@ -140,7 +140,7 @@ func (s *schedulingServiceImpl) ScheduleNow(id uuid.UUID) (*models.Task, *models
 	}
 
 	task := &models.Task{
-		Scheduling:    *scheduling,
+		Scheduling:    scheduling,
 		Retries:       0,
 		Status:        graphql.TaskStatusPending,
 		AdapterType:   scheduling.AdapterType,

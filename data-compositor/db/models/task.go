@@ -27,7 +27,7 @@ type Task struct {
 	Configuration json.RawMessage     `gorm:"type:jsonb;not null"`
 
 	SchedulingID uuid.UUID `gorm:"type:uuid;not null;index"`
-	Scheduling   Scheduling
+	Scheduling   *Scheduling
 }
 
 func (task *Task) BeforeCreate(tx *gorm.DB) (err error) {
