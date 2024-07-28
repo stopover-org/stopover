@@ -4,17 +4,27 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/stopover-org/stopover/data-compositor/db"
+	"github.com/stopover-org/stopover/data-compositor/internal/jobs"
 	"github.com/stopover-org/stopover/data-compositor/internal/services"
+	"github.com/stopover-org/stopover/data-compositor/kafka"
 	"log"
 
 	"github.com/labstack/echo/v4"
-	"github.com/stopover-org/stopover/data-compositor/db"
 	"github.com/stopover-org/stopover/data-compositor/internal/graphql/graph"
 )
 
 func main() {
-	// Initialize the database
-	db.Init()
+	log.Println("Starting job scheduler")
+
+	// Get singletons
+	dbInstance := db.GetInstance()
+	kafkaInstance := kafka.Init()
+
+	// Setup and start the scheduler
+	jobs.SetupScheduler(dbInstance, kafkaInstance)
+
+	// Initialize Echo
 	e := echo.New()
 
 	e.Use(middleware.Logger())

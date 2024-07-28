@@ -20,7 +20,7 @@ type taskServiceImpl struct {
 
 func NewTaskService() TaskService {
 	return &taskServiceImpl{
-		db: db.DB,
+		db: db.GetInstance(),
 	}
 }
 
@@ -30,19 +30,19 @@ func updateTaskStatus(db *gorm.DB, id uuid.UUID, status graphql.TaskStatus) {
 	}
 }
 
-func PostUrl(id uuid.UUID, url string, configuration map[string]interface{}) {
+func (s *taskServiceImpl) PostUrl(id uuid.UUID, url string, configuration map[string]interface{}) {
 	go func() {
 		jsonData, err := json.Marshal(configuration)
 		if err != nil {
 			log.Printf("error occurred while marshaling configuration: %v", err)
-			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
+			updateTaskStatus(s.db, id, graphql.TaskStatusFailed)
 			return
 		}
 
 		req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		if err != nil {
 			log.Printf("error occurred while creating request: %v", err)
-			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
+			updateTaskStatus(s.db, id, graphql.TaskStatusFailed)
 			return
 		}
 
@@ -52,35 +52,35 @@ func PostUrl(id uuid.UUID, url string, configuration map[string]interface{}) {
 		resp, err := client.Do(req)
 		if err != nil {
 			log.Printf("error occurred while sending request: %v", err)
-			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
+			updateTaskStatus(s.db, id, graphql.TaskStatusFailed)
 			return
 		}
 		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
 			log.Printf("request failed with status: %s", resp.Status)
-			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
+			updateTaskStatus(s.db, id, graphql.TaskStatusFailed)
 			return
 		}
 
 		var result map[string]interface{}
 		if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 			log.Printf("error occurred while decoding response: %v", err)
-			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
+			updateTaskStatus(s.db, id, graphql.TaskStatusFailed)
 			return
 		}
 
 		task := &models.Task{}
-		if err := db.DB.First(task, "id = ?", id).Error; err != nil {
+		if err := s.db.First(task, "id = ?", id).Error; err != nil {
 			log.Printf("error occurred while fetching task: %v", err)
-			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
+			updateTaskStatus(s.db, id, graphql.TaskStatusFailed)
 			return
 		}
 
 		task.Status = graphql.TaskStatusCompleted
-		if err := db.DB.Save(task).Error; err != nil {
+		if err := s.db.Save(task).Error; err != nil {
 			log.Printf("error occurred while saving task: %v", err)
-			updateTaskStatus(db.DB, id, graphql.TaskStatusFailed)
+			updateTaskStatus(s.db, id, graphql.TaskStatusFailed)
 			return
 		}
 
@@ -113,7 +113,7 @@ func (s *taskServiceImpl) ExecTask(id uuid.UUID) (*models.Task, error) {
 		return nil, fmt.Errorf("URL not found in task configuration")
 	}
 
-	PostUrl(task.ID, url, config)
+	s.PostUrl(task.ID, url, config)
 
 	if err := s.db.Save(task).Error; err != nil {
 		return nil, err

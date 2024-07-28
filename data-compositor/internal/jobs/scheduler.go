@@ -1,22 +1,23 @@
 package jobs
 
 import (
-    "fmt"
-    "time"
+	"github.com/segmentio/kafka-go"
+	"gorm.io/gorm"
+	"time"
 
-    "github.com/go-co-op/gocron"
+	"github.com/go-co-op/gocron"
 )
 
-func SetupScheduler() *gocron.Scheduler {
-    // Create a new scheduler
-    s := gocron.NewScheduler(time.UTC)
+func SetupScheduler(db *gorm.DB, kafkaWriter *kafka.Writer) *gocron.Scheduler {
+	// Create a new scheduler
+	s := gocron.NewScheduler(time.UTC)
 
-    // Define jobs
-    s.Every(10).Minutes().Do(task1)
+	// Define jobs
+	scheduleTasksJob := NewScheduleTasksJob(db, kafkaWriter)
+	_, _ = s.Every(1).Minute().Do(scheduleTasksJob.Run)
 
-    return s
-}
+	// Start the scheduler
+	s.StartAsync()
 
-func task1() {
-    fmt.Println("Running Task 2: Every 10 minutes")
+	return s
 }

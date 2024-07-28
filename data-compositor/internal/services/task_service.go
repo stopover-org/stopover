@@ -10,4 +10,6 @@ type TaskService interface {
 	RetryTask(id uuid.UUID) (*models.Task, error)
 
 	GetTask(id uuid.UUID) (*models.Task, error)
+
+	PostUrl(id uuid.UUID, url string, configuration map[string]interface{})
 }

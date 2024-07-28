@@ -1,22 +1,33 @@
-// db/init.go
 package db
 
 import (
 	"context"
 	"fmt"
+	"log"
+	"os"
+	"sync"
+
 	"github.com/jackc/pgx/v4"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
-	"os"
 
 	"github.com/stopover-org/stopover/data-compositor/db/models"
 )
 
-var DB *gorm.DB
+var (
+	db   *gorm.DB
+	once sync.Once
+)
 
-func Init() {
+func GetInstance() *gorm.DB {
+	once.Do(func() {
+		initDB()
+	})
+	return db
+}
+
+func initDB() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file")
@@ -47,13 +58,13 @@ func Init() {
 		os.Getenv("DB_PORT"),
 	)
 
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
 
 	// Migrate the schema
-	err = DB.AutoMigrate(&models.Task{}, &models.Scheduling{})
+	err = db.AutoMigrate(&models.Task{}, &models.Scheduling{})
 	if err != nil {
 		log.Fatalf("Error migrating schema: %v", err)
 	}

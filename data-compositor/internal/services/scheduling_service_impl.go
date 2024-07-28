@@ -17,7 +17,7 @@ type schedulingServiceImpl struct {
 
 func NewSchedulingService() SchedulingService {
 	return &schedulingServiceImpl{
-		db: db.DB,
+		db: db.GetInstance(),
 	}
 }
 
@@ -39,6 +39,12 @@ func (s *schedulingServiceImpl) CreateScheduling(createdFields graphql.Schedulin
 	}
 
 	if createdFields.RetentionPeriod != nil {
+		retentionPeriod := *createdFields.RetentionPeriod
+		if retentionPeriod < 60 {
+			retentionPeriod = 60
+			createdFields.RetentionPeriod = &retentionPeriod
+		}
+
 		scheduling.RetentionPeriod = *createdFields.RetentionPeriod
 	}
 
