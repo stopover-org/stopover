@@ -8,6 +8,7 @@ import (
 	"github.com/stopover-org/stopover/data-compositor/db/models"
 	"github.com/stopover-org/stopover/data-compositor/internal/graphql/graph/model"
 	"gorm.io/gorm"
+	"time"
 )
 
 type schedulingServiceImpl struct {
@@ -104,8 +105,14 @@ func (s *schedulingServiceImpl) ToggleScheduling(id uuid.UUID) (*models.Scheduli
 
 	if scheduling.Status == graphql.SchedulingStatusActive {
 		scheduling.Status = graphql.SchedulingStatusInactive
+		scheduling.NextScheduleTime = nil
 	} else {
 		scheduling.Status = graphql.SchedulingStatusActive
+
+		if scheduling.RetentionPeriod != 0 {
+			now := time.Now()
+			scheduling.NextScheduleTime = &now
+		}
 	}
 	if err := s.db.Save(scheduling).Error; err != nil {
 		return nil, err
@@ -135,14 +142,17 @@ func (s *schedulingServiceImpl) RemoveScheduling(id uuid.UUID) (*models.Scheduli
 func (s *schedulingServiceImpl) ScheduleNow(id uuid.UUID) (*models.Task, *models.Scheduling, error) {
 	scheduling := &models.Scheduling{}
 
-	if err := s.db.First(scheduling, "id = ?", id).Error; err != nil {
+	if err := s.db.First(scheduling, "id = ? AND status = ?", id, graphql.SchedulingStatusActive).Error; err != nil {
 		return nil, nil, err
 	}
+
+	now := time.Now()
 
 	task := &models.Task{
 		Scheduling:    scheduling,
 		Retries:       0,
 		Status:        graphql.TaskStatusPending,
+		ScheduledAt:   &now,
 		AdapterType:   scheduling.AdapterType,
 		Configuration: scheduling.Configuration,
 	}

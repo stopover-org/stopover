@@ -42,8 +42,6 @@ services:
     depends_on:
       - db  # Wait for the database to be ready
       - redis  # Wait for Redis to be ready
-    networks:
-      - my_network
 
   # OpenSearch node 1
   opensearch-node1:
@@ -70,8 +68,6 @@ services:
     ports:
       - "9200:9200"  # REST API port
       - "9600:9600"  # Performance Analyzer port
-    networks:
-      - my_network
 
   # OpenSearch node 2
   opensearch-node2:
@@ -95,8 +91,6 @@ services:
         hard: 65536  # Maximum number of open files (hard limit)
     volumes:
       - opensearch-data2:/usr/share/opensearch/data  # Data volume
-    networks:
-      - my_network
 
   # Redis service for caching
   redis:
@@ -108,8 +102,6 @@ services:
     command: redis-server --save 20 1 --loglevel warning  # Redis command with configuration
     volumes:
       - cache:/data  # Data volume
-    networks:
-      - my_network
 
   # PostgreSQL database service
   db:
@@ -122,8 +114,6 @@ services:
       POSTGRES_PASSWORD: password  # Database password
     ports:
       - '5432:5432'  # Expose PostgreSQL on port 5432
-    networks:
-      - my_network
 
   # Web service for the Rails application
   web:
@@ -149,8 +139,6 @@ services:
       - redis  # Wait for Redis to be ready
       - opensearch-node1  # Wait for OpenSearch node 1 to be ready
       - opensearch-node2  # Wait for OpenSearch node 2 to be ready
-    networks:
-      - my_network
 
   # Worker service for background jobs
   worker:
@@ -174,8 +162,6 @@ services:
       - redis  # Wait for Redis to be ready
       - opensearch-node1  # Wait for OpenSearch node 1 to be ready
       - opensearch-node2  # Wait for OpenSearch node 2 to be ready
-    networks:
-      - my_network
 
 networks:
   my_network:

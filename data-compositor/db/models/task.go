@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stopover-org/stopover/data-compositor/internal/graphql/graph/model"
 	"gorm.io/gorm"
+	"time"
 )
 
 func validateTaskStatus(status graphql.TaskStatus) error {
@@ -25,6 +26,9 @@ type Task struct {
 
 	AdapterType   graphql.AdapterType `gorm:"type:string;nut null"`
 	Configuration json.RawMessage     `gorm:"type:jsonb;not null"`
+
+	ScheduledAt *time.Time
+	ExecutedAt  *time.Time
 
 	SchedulingID uuid.UUID `gorm:"type:uuid;not null;index"`
 	Scheduling   *Scheduling

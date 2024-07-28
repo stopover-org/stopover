@@ -29,7 +29,7 @@ func validateAdapterType(adapterType graphql.AdapterType) error {
 
 type Scheduling struct {
 	ID               uuid.UUID `gorm:"type:uuid;primaryKey"`
-	NextScheduleTime time.Time
+	NextScheduleTime *time.Time
 	RetentionPeriod  int                      `gorm:"default:86400;not null"`
 	MaxRetries       int                      `gorm:"default:3;not null"`
 	Status           graphql.SchedulingStatus `gorm:"default:INACTIVE;not null"`
