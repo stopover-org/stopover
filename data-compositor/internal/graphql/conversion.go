@@ -35,7 +35,7 @@ func SchedulingToGraphql(scheduling *models.Scheduling) (*graphql.Scheduling, er
 
 	return &graphql.Scheduling{
 		ID:               scheduling.ID.String(),
-		NextScheduleTime: formatToISO8601(&scheduling.NextScheduleTime),
+		NextScheduleTime: formatToISO8601(scheduling.NextScheduleTime),
 		RetentionPeriod:  scheduling.RetentionPeriod,
 		MaxRetries:       scheduling.MaxRetries,
 		Status:           scheduling.Status,
