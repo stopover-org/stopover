@@ -143,7 +143,7 @@ func (s *schedulingServiceImpl) ScheduleNow(id uuid.UUID) (*models.Task, *models
 	scheduling := &models.Scheduling{}
 
 	if err := s.db.First(scheduling, "id = ? AND status = ?", id, graphql.SchedulingStatusActive).Error; err != nil {
-		return nil, nil, err
+		return nil, scheduling, err
 	}
 
 	now := time.Now()
@@ -158,7 +158,16 @@ func (s *schedulingServiceImpl) ScheduleNow(id uuid.UUID) (*models.Task, *models
 	}
 
 	if err := s.db.Create(task).Error; err != nil {
-		return nil, scheduling, err
+		return task, scheduling, err
+	}
+
+	if scheduling.RetentionPeriod > 0 {
+		nextSchedulingTime := scheduling.NextScheduleTime.Add(time.Duration(scheduling.RetentionPeriod) * time.Second)
+		scheduling.NextScheduleTime = &nextSchedulingTime
+
+		if err := s.db.Save(scheduling).Error; err != nil {
+			return task, scheduling, err
+		}
 	}
 
 	return task, scheduling, nil
