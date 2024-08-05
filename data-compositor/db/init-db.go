@@ -20,7 +20,7 @@ var (
 	once sync.Once
 )
 
-func GetInstance() *gorm.DB {
+func Instance() *gorm.DB {
 	once.Do(func() {
 		initDB()
 	})

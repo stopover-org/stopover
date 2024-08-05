@@ -14,7 +14,7 @@ var (
 	once        sync.Once
 )
 
-func Init() *kafka.Writer {
+func Instance() *kafka.Writer {
 	once.Do(initKafkaWriter)
 	return kafkaWriter
 }
@@ -26,7 +26,7 @@ func initKafkaWriter() {
 	}
 
 	kafkaURL := getEnv("KAFKA_URL", "localhost:9092")
-	kafkaTopic := getEnv("KAFKA_TOPIC", "data-compositor")
+	kafkaTopic := getEnv("", "data-compositor")
 
 	kafkaWriter = &kafka.Writer{
 		Addr:     kafka.TCP(kafkaURL),

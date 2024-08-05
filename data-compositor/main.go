@@ -18,8 +18,8 @@ func main() {
 	log.Println("Starting job scheduler")
 
 	// Get singletons
-	dbInstance := db.GetInstance()
-	kafkaInstance := kafka.Init()
+	dbInstance := db.Instance()
+	kafkaInstance := kafka.Instance()
 
 	// Setup and start the scheduler
 	jobs.SetupScheduler(dbInstance, kafkaInstance)

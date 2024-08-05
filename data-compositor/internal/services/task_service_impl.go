@@ -20,7 +20,7 @@ type taskServiceImpl struct {
 
 func NewTaskService() TaskService {
 	return &taskServiceImpl{
-		db: db.GetInstance(),
+		db: db.Instance(),
 	}
 }
 

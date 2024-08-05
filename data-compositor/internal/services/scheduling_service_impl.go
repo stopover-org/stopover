@@ -17,7 +17,7 @@ type schedulingServiceImpl struct {
 
 func NewSchedulingService() SchedulingService {
 	return &schedulingServiceImpl{
-		db: db.GetInstance(),
+		db: db.Instance(),
 	}
 }
 
