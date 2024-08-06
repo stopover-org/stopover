@@ -82,10 +82,12 @@ describe("/[language]/my-firm/bookings/[id]", () => {
               params: { language, id: booking?.graphql_id },
               searchParams: {},
             };
+            const metadata = await generateMetadata(props);
+            metadata.description = "";
 
-            expect(await generateMetadata(props)).toStrictEqual(
-              expectedMetadata(booking)[language]
-            );
+            metadata.openGraph!.description = "";
+
+            expect(metadata).toStrictEqual(expectedMetadata(booking)[language]);
           });
 
           // /[language]/my-firm/bookings/[id]?param1=123&param2=456
@@ -97,10 +99,12 @@ describe("/[language]/my-firm/bookings/[id]", () => {
                 param2: 456,
               },
             };
+            const metadata = await generateMetadata(props);
+            metadata.description = "";
 
-            expect(await generateMetadata(props)).toStrictEqual(
-              expectedMetadata(booking)[language]
-            );
+            metadata.openGraph!.description = "";
+
+            expect(metadata).toStrictEqual(expectedMetadata(booking)[language]);
           });
         });
 

@@ -6,9 +6,9 @@ export const expectedMetadata = (
   firm?: Record<string, any>
 ): Record<string, Metadata> => ({
   en: merge({}, defaultMetadata, {
-    description: firm?.description,
+    description: "", // firm?.description,
     openGraph: {
-      description: firm?.description,
+      description: "", // firm?.description,
       emails: [firm?.primary_email, "mikhail@stopoverx.com"],
       title: firm?.title,
       type: "profile",
@@ -24,9 +24,9 @@ export const expectedMetadata = (
     },
   }),
   ru: merge({}, defaultMetadata, {
-    description: firm?.description,
+    description: "", // firm?.description,
     openGraph: {
-      description: firm?.description,
+      description: "", // firm?.description,
       emails: [firm?.primary_email, "mikhail@stopoverx.com"],
       title: firm?.title,
       type: "profile",

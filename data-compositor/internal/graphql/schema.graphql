@@ -1,0 +1,73 @@
+# schema.graphql
+input SchedulingInput {
+    retentionPeriod: Int
+    maxRetries: Int
+    adapterType: AdapterType!
+    configuration: String!
+}
+
+input UpdateSchedulingInput {
+    id: ID!
+    retentionPeriod: Int
+    maxRetries: Int
+    adapterType: AdapterType
+    configuration: String
+}
+
+enum TaskStatus {
+    PENDING
+    PROCESSING
+    COMPLETED
+    FAILED
+    TERMINATED
+}
+
+enum SchedulingStatus {
+    ACTIVE
+    INACTIVE
+}
+
+enum AdapterType {
+    VIATOR_EVENT_SCRAPPER
+}
+
+type Task {
+    id: ID!
+    status: TaskStatus!
+    retries: Int!
+    artifacts: [String!]!
+    adapterType: AdapterType!
+    configuration: String!
+
+    schedulingId: ID!
+    scheduling: Scheduling!
+}
+
+type Scheduling {
+    id: ID!
+    nextScheduleTime: String
+    retentionPeriod: Int!
+    maxRetries: Int!
+    status: SchedulingStatus!
+    adapterType: AdapterType!
+    configuration: String!
+}
+
+type Query {
+    task(id: ID!): Task
+    scheduling(id: ID!): Scheduling
+}
+
+type Mutation {
+    retryTask(id: ID!): Task
+    scheduleNow(id: ID!): Task
+    createScheduling(input: SchedulingInput!): Scheduling
+    updateScheduling(input: UpdateSchedulingInput!): Scheduling
+    toggleScheduling(id: ID!): Scheduling
+    removeScheduling(id: ID!): Scheduling
+}
+
+schema {
+    query: Query
+    mutation: Mutation
+}

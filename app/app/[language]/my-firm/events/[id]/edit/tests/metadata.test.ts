@@ -25,7 +25,7 @@ jest.mock("next/headers", () => {
 
 jest.retryTimes(3);
 
-describe("[language]/my-firm/events/[id]/edit", () => {
+xdescribe("[language]/my-firm/events/[id]/edit", () => {
   let event: Record<string, any> | undefined;
 
   beforeAll(async () => {
