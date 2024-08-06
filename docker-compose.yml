@@ -77,7 +77,6 @@ services:
       - ./keycloak/themes/stopover:/opt/keycloak/themes/stopover  # Volume for Keycloak themes
     depends_on:
       - db  # Wait for the database to be ready
-      - redis  # Wait for Redis to be ready
 
   # OpenSearch node 1
   opensearch-node1:
