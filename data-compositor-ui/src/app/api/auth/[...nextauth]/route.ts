@@ -3,7 +3,7 @@ import KeycloakProvider, {
   KeycloakProfile,
 } from "next-auth/providers/keycloak";
 import { OAuthConfig } from "next-auth/providers/oauth";
-import { JWT } from "next-auth/jwt";
+import { CallbacksOptions } from "next-auth/src/core/types";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -14,7 +14,7 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ token, account, ...rest }: CallbacksOptions["jwt"]["params"]) {
       if (account) {
         token.id_token = account.id_token;
 
@@ -24,7 +24,7 @@ export const authOptions: AuthOptions = {
     },
   },
   events: {
-    async signOut({ token }: { token: JWT }) {
+    async signOut({ token }: CallbacksOptions["jwt"]["params"]) {
       if (token.provider === "keycloak") {
         const issuerUrl = (
           authOptions.providers.find(
@@ -36,10 +36,7 @@ export const authOptions: AuthOptions = {
           `${issuerUrl}/protocol/openid-connect/logout`,
         );
 
-        logOutUrl.searchParams.set(
-          "id_token_hint",
-          (token as Record<string, any>)?.id_token!,
-        );
+        logOutUrl.searchParams.set("id_token_hint", token.id_token!);
 
         await fetch(logOutUrl);
       }

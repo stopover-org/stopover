@@ -5,7 +5,7 @@ import Logout from "@/components/Logout";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const Home = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions as any);
   if (session) {
     return (
       <div>
