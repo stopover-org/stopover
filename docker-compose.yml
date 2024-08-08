@@ -127,7 +127,7 @@ services:
     volumes:
       - opensearch-data2:/usr/share/opensearch/data  # Data volume
 
-   Redis service for caching
+#   Redis service for caching
   redis:
     image: redis:6.2-alpine  # Redis image
     container_name: redis
