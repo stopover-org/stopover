@@ -2,13 +2,15 @@
 
 import Logout from "@/components/Logout";
 import Login from "@/components/Login";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Dialog, DialogPanel, PopoverGroup } from "@headlessui/react";
+import { SessionProvider, useSession } from "next-auth/react";
 
-const Header = ({ session }: { session: Record<string, any> | null }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+const Header = () => {
+  const session = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <header className="bg-white">
       <nav
@@ -50,9 +52,9 @@ const Header = ({ session }: { session: Record<string, any> | null }) => {
             Tasks
           </a>
         </PopoverGroup>
-        {session ? (
+        {session.status === "authenticated" ? (
           <div className="hidden lg:flex-col lg:flex lg:flex-1 lg:items-end">
-            <div>{session.user?.name}</div>
+            <div>{session.data?.user?.name}</div>
             <div>
               <Logout />
             </div>
@@ -104,9 +106,9 @@ const Header = ({ session }: { session: Record<string, any> | null }) => {
                   Tasks
                 </a>
               </div>
-              {session ? (
+              {session.status === "authenticated" ? (
                 <div className="py-6">
-                  <div>{session.user?.name}</div>
+                  <div>{session.data?.user?.name}</div>
                   <div>
                     <Logout />
                   </div>
@@ -124,4 +126,8 @@ const Header = ({ session }: { session: Record<string, any> | null }) => {
   );
 };
 
-export default memo(Header);
+export default memo(() => (
+  <SessionProvider>
+    <Header />
+  </SessionProvider>
+));
