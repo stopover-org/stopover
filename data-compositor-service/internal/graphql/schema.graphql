@@ -1,5 +1,6 @@
 # schema.graphql
 input SchedulingInput {
+    name: String!
     retentionPeriod: Int
     maxRetries: Int
     adapterType: AdapterType!

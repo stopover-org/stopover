@@ -25,6 +25,7 @@ type Scheduling struct {
 }
 
 type SchedulingInput struct {
+	Name            string      `json:"name"`
 	RetentionPeriod *int        `json:"retentionPeriod,omitempty"`
 	MaxRetries      *int        `json:"maxRetries,omitempty"`
 	AdapterType     AdapterType `json:"adapterType"`

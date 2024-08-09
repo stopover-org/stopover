@@ -33,6 +33,7 @@ func (s *schedulingServiceImpl) CreateScheduling(createdFields graphql.Schedulin
 	}
 
 	scheduling := &models.Scheduling{
+		Name:          createdFields.Name,
 		Status:        graphql.SchedulingStatusInactive,
 		AdapterType:   createdFields.AdapterType,
 		Configuration: configJSON,

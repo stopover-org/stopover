@@ -424,6 +424,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 var sources = []*ast.Source{
 	{Name: "../schema.graphql", Input: `# schema.graphql
 input SchedulingInput {
+    name: String!
     retentionPeriod: Int
     maxRetries: Int
     adapterType: AdapterType!
@@ -3808,13 +3809,20 @@ func (ec *executionContext) unmarshalInputSchedulingInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"retentionPeriod", "maxRetries", "adapterType", "configuration"}
+	fieldsInOrder := [...]string{"name", "retentionPeriod", "maxRetries", "adapterType", "configuration"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
+		case "name":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
 		case "retentionPeriod":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("retentionPeriod"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)

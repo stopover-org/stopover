@@ -1,5 +1,7 @@
 import type { Config } from "tailwindcss";
 
+import generated from "@tailwindcss/forms";
+
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -15,6 +17,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [generated],
 };
 export default config;
