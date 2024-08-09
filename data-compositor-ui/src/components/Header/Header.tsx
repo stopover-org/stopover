@@ -2,7 +2,7 @@
 
 import Logout from "@/components/Logout";
 import Login from "@/components/Login";
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Dialog, DialogPanel, PopoverGroup } from "@headlessui/react";
 import { SessionProvider, useSession } from "next-auth/react";
@@ -38,20 +38,22 @@ const Header = () => {
           </button>
         </div>
 
-        <PopoverGroup className="hidden lg:flex lg:gap-x-12">
-          <a
-            href="/scheduler"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Scheduler
-          </a>
-          <a
-            href="/tasks"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Tasks
-          </a>
-        </PopoverGroup>
+        {session.status === "authenticated" && (
+          <PopoverGroup className="hidden lg:flex lg:gap-x-12">
+            <a
+              href="/scheduler"
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Scheduler
+            </a>
+            <a
+              href="/tasks"
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Tasks
+            </a>
+          </PopoverGroup>
+        )}
         {session.status === "authenticated" ? (
           <div className="hidden lg:flex-col lg:flex lg:flex-1 lg:items-end">
             <div>{session.data?.user?.name}</div>
@@ -92,20 +94,22 @@ const Header = () => {
           </div>
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
-              <div className="space-y-2 py-6">
-                <a
-                  href="/schedulings"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Scheduler
-                </a>
-                <a
-                  href="/tasks"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Tasks
-                </a>
-              </div>
+              {session.status === "authenticated" && (
+                <div className="space-y-2 py-6">
+                  <a
+                    href="/schedulings"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Scheduler
+                  </a>
+                  <a
+                    href="/tasks"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  >
+                    Tasks
+                  </a>
+                </div>
+              )}
               {session.status === "authenticated" ? (
                 <div className="py-6">
                   <div>{session.data?.user?.name}</div>
@@ -126,8 +130,4 @@ const Header = () => {
   );
 };
 
-export default memo(() => (
-  <SessionProvider>
-    <Header />
-  </SessionProvider>
-));
+export default memo(Header);

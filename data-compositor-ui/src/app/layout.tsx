@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { memo, ReactNode } from "react";
 import SceneWrapper from "@/components/SceneWrapper";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import NoAccess from "@/components/NoAccess";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,12 +18,18 @@ const RootLayout = async ({
   children,
 }: Readonly<{
   children: ReactNode;
-}>) => (
-  <html lang="en">
-    <body className={inter.className}>
-      <SceneWrapper>{children}</SceneWrapper>
-    </body>
-  </html>
-);
+}>) => {
+  const session: Record<string, any> | null = await getServerSession(
+    authOptions as any,
+  );
+
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <SceneWrapper>{session?.user ? children : <NoAccess />}</SceneWrapper>
+      </body>
+    </html>
+  );
+};
 
 export default memo(RootLayout);
