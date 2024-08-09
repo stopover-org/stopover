@@ -4,8 +4,11 @@ import { Login } from "@/components/Login";
 import Logout from "@/components/Logout";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export const Home = async () => {
-  const session = await getServerSession(authOptions as any);
+const Page = async () => {
+  const session: Record<string, any> | null = await getServerSession(
+    authOptions as any,
+  );
+
   if (session) {
     return (
       <div>
@@ -16,6 +19,7 @@ export const Home = async () => {
       </div>
     );
   }
+
   return (
     <div>
       <Login />
@@ -23,4 +27,4 @@ export const Home = async () => {
   );
 };
 
-export default memo(Home);
+export default memo(Page);
