@@ -1,6 +1,45 @@
 /* Patternfly CSS places a "bg-login.jpg" as the background on this ".login-pf" class.
    This clashes with the "keycloak-bg.png' background defined on the body below.
    Therefore the Patternfly background must be set to none. */
+:root, .pf-c-button {
+    --pf-global--primary-color--100: #fff6d3;
+    --pf-global--primary-color--200: #ffe9a5;
+    --pf-global--primary-color--300: #ffd76d;
+    --pf-global--primary-color--400: #ffba32;
+    --pf-global--primary-color--500: #ffa20a;
+    --pf-global--primary-color--600: #ff8a00;
+    --pf-global--primary-color--700: #cc6502;
+    --pf-global--primary-color--800: #a14e0b;
+    --pf-global--primary-color--900: #82410c;
+
+    --pf-global--BackgroundColor--100: #fff6d3;
+    --pf-global--BackgroundColor--200: #ffe9a5;
+    --pf-global--BackgroundColor--300: #ffd76d;
+    --pf-global--BackgroundColor--400: #ffba32;
+    --pf-global--BackgroundColor--500: #ffa20a;
+    --pf-global--BackgroundColor--600: #ff8a00;
+    --pf-global--BackgroundColor--700: #cc6502;
+    --pf-global--BackgroundColor--800: #a14e0b;
+    --pf-global--BackgroundColor--900: #82410c;
+
+    --pf-c-button--m-primary--BackgroundColor: var(--pf-global--primary-color--500);
+    --pf-c-button--m-primary--hover--BackgroundColor: var(--pf-global--primary-color--700)
+}
+
+.pf-c-button.pf-m-control {
+    background-color: transparent;
+}
+
+a {
+    color: var(--pf-global--primary-color--500);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--pf-global--primary-color--700);
+    text-decoration: underline;
+}
+
 .login-pf {
     background: none;
 }
@@ -70,10 +109,6 @@ button#kc-current-locale-link::after {
 
 .login-pf .container {
     padding-top: 40px;
-}
-
-.login-pf a:hover {
-    color: #0099d3;
 }
 
 #kc-logo {
@@ -396,9 +431,11 @@ ul#kc-totp-supported-apps {
     #kc-header-wrapper {
         font-size: 16px;
         font-weight: bold;
-        padding: 20px 60px 0 0;
+        padding: 20px 0 0 0;
         color: #72767b;
         letter-spacing: 0;
+        display: flex;
+        justify-content: center;
     }
 
     div.kc-logo-text {
@@ -497,7 +534,7 @@ ul#kc-totp-supported-apps {
 
 .select-auth-box-headline {
     font-size: var(--pf-global--FontSize--md);
-    color: var(--pf-global--primary-color--100);
+    color: var(--pf-global--primary-color--500);
     font-weight: bold;
 }
 
@@ -517,7 +554,7 @@ ul#kc-totp-supported-apps {
     padding: 0 20px;
     max-width: 500px;
     border-top: 4px solid;
-    border-color: var(--pf-global--primary-color--100);
+    border-color: var(--pf-global--primary-color--500);
 }
 
 /*phone*/
@@ -627,3 +664,10 @@ ul#kc-totp-supported-apps {
     overflow-wrap: break-word
 }
 /* End Recovery codes */
+
+.logo-top {
+    display: block;
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+}
