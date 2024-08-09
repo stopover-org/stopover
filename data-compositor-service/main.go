@@ -6,9 +6,11 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/stopover-org/stopover/data-compositor/db"
 	"github.com/stopover-org/stopover/data-compositor/internal/jobs"
+	"github.com/stopover-org/stopover/data-compositor/internal/middlewares"
 	"github.com/stopover-org/stopover/data-compositor/internal/services"
 	"github.com/stopover-org/stopover/data-compositor/kafka"
 	"log"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/stopover-org/stopover/data-compositor/internal/graphql/graph"
@@ -16,6 +18,9 @@ import (
 
 func main() {
 	log.Println("Starting job scheduler")
+
+	oidcIssuer := os.Getenv("OIDC_ISSUER")
+	oidcClientID := os.Getenv("OIDC_CLIENT_ID")
 
 	// Get singletons
 	dbInstance := db.Instance()
@@ -28,6 +33,7 @@ func main() {
 	e := echo.New()
 
 	e.Use(middleware.Logger())
+	e.Use(middlewares.OIDCAuthMiddleware(oidcIssuer, oidcClientID))
 	e.Use(middleware.Recover())
 
 	// GraphQL handler

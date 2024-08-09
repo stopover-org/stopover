@@ -56,7 +56,7 @@ export const authOptions: AuthOptions = {
         await signOutKeycloak(token);
 
         await signOut();
-        return null;
+        return {};
       }
 
       return token;
