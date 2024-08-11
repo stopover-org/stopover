@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -53,6 +53,11 @@ const NewSchedulingForm = () => {
       commitMutation({ variables });
     },
     [commitMutation],
+  );
+
+  const adapterTypes: AdapterType[] = useMemo(
+    () => ["VIATOR_EVENT_SCRAPPER"],
+    [],
   );
 
   return (
@@ -172,9 +177,9 @@ const NewSchedulingForm = () => {
                   className="block w-full border-0 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-amber-500 sm:max-w-md"
                   {...register("adapterType")}
                 >
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>Mexico</option>
+                  {adapterTypes.map((adapter) => (
+                    <option>{adapter}</option>
+                  ))}
                 </select>
               </div>
               <span className="text-sm text-red-500 mt-1 ml-1">
