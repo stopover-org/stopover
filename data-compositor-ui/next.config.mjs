@@ -4,7 +4,7 @@ const nextConfig = {
         relay: {
             src: "./src",
             language: "typescript", // "javascript" | "typescript" | "flow"
-            schema: "./schema.graphql",
+            schema: "../data-compositor-service/internal/graphql/schema.graphql",
             excludes: ["**/node_modules/**", "**/__mocks__/**", "**/__generated__/**"],
         },
     },
