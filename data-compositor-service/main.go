@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/stopover-org/stopover/data-compositor/db"
 	"github.com/stopover-org/stopover/data-compositor/internal/jobs"
@@ -17,10 +18,16 @@ import (
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+
 	log.Println("Starting job scheduler")
 
 	oidcIssuer := os.Getenv("OIDC_ISSUER")
 	oidcClientID := os.Getenv("OIDC_CLIENT_ID")
+	corsDomains := os.Getenv("CORS_DOMAINS")
 
 	// Get singletons
 	dbInstance := db.Instance()
@@ -31,6 +38,13 @@ func main() {
 
 	// Initialize Echo
 	e := echo.New()
+
+	// Middleware
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{corsDomains}, // Add your allowed domains here
+		AllowMethods: []string{"*"},
+		AllowHeaders: []string{"*"},
+	}))
 
 	e.Use(middleware.Logger())
 	e.Use(middlewares.OIDCAuthMiddleware(oidcIssuer, oidcClientID))

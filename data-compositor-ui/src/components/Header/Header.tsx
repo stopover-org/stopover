@@ -2,7 +2,7 @@
 
 import Logout from "@/components/Logout";
 import Login from "@/components/Login";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Dialog, DialogPanel, PopoverGroup } from "@headlessui/react";
 import { useSession } from "next-auth/react";
@@ -10,6 +10,11 @@ import { useSession } from "next-auth/react";
 const Header = () => {
   const session = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    // @ts-ignore
+    window.localStorage.setItem("access_token", session?.data?.id_token);
+  }, [session]);
 
   return (
     <header className="bg-white">
@@ -97,7 +102,7 @@ const Header = () => {
               {session.status === "authenticated" && (
                 <div className="space-y-2 py-6">
                   <a
-                    href="/schedulings"
+                    href="/scheduler"
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     Scheduler

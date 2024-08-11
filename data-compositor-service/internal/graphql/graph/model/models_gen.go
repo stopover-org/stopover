@@ -16,6 +16,7 @@ type Query struct {
 
 type Scheduling struct {
 	ID               string           `json:"id"`
+	Name             string           `json:"name"`
 	NextScheduleTime *string          `json:"nextScheduleTime,omitempty"`
 	RetentionPeriod  int              `json:"retentionPeriod"`
 	MaxRetries       int              `json:"maxRetries"`
@@ -45,6 +46,7 @@ type Task struct {
 
 type UpdateSchedulingInput struct {
 	ID              string       `json:"id"`
+	Name            *string      `json:"name,omitempty"`
 	RetentionPeriod *int         `json:"retentionPeriod,omitempty"`
 	MaxRetries      *int         `json:"maxRetries,omitempty"`
 	AdapterType     *AdapterType `json:"adapterType,omitempty"`

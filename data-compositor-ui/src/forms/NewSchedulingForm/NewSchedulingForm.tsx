@@ -1,9 +1,15 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { graphql, useMutation } from "react-relay";
+import {
+  AdapterType,
+  NewSchedulingForm_CreateSchedulingMutation,
+  NewSchedulingForm_CreateSchedulingMutation$variables,
+} from "@/forms/NewSchedulingForm/__generated__/NewSchedulingForm_CreateSchedulingMutation.graphql";
 
 const schema = yup
   .object({
@@ -24,10 +30,39 @@ const NewSchedulingForm = () => {
     resolver: yupResolver(schema),
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [commitMutation, isMutationInFlight] =
+    useMutation<NewSchedulingForm_CreateSchedulingMutation>(graphql`
+      mutation NewSchedulingForm_CreateSchedulingMutation(
+        $input: SchedulingInput!
+      ) {
+        createScheduling(input: $input) {
+          id
+          configuration
+          adapterType
+          status
+
+          retentionPeriod
+          maxRetries
+        }
+      }
+    `);
+
+  const mutate = useCallback(
+    (variables: NewSchedulingForm_CreateSchedulingMutation$variables) => {
+      commitMutation({ variables });
+    },
+    [commitMutation],
+  );
+
   return (
     <form
-      className="flex w-full"
-      onSubmit={handleSubmit((...rest) => console.log(rest))}
+      className="flex flex-col w-full"
+      onSubmit={handleSubmit((data) =>
+        mutate({
+          input: { ...data, adapterType: data.adapterType as AdapterType },
+        }),
+      )}
     >
       <div className="space-y-12 w-full">
         <div className="border-b border-gray-900/10 pb-12">
@@ -38,13 +73,13 @@ const NewSchedulingForm = () => {
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-4">
               <label
-                htmlFor="name"
+                htmlFor="username"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Scheduling Name
               </label>
               <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-amber-500 sm:max-w-md">
+                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                   <input
                     id="name"
                     type="text"

@@ -91,6 +91,10 @@ func (s *schedulingServiceImpl) UpdateScheduling(id uuid.UUID, updatedFields gra
 		scheduling.MaxRetries = *updatedFields.MaxRetries
 	}
 
+	if updatedFields.Name != nil {
+		scheduling.Name = *updatedFields.Name
+	}
+
 	if err := s.db.First(scheduling, "id = ?", id).Error; err != nil {
 		return nil, err
 	}

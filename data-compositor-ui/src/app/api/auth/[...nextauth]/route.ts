@@ -5,6 +5,10 @@ import KeycloakProvider, {
 import { OAuthConfig } from "next-auth/providers/oauth";
 import { signOut } from "next-auth/react";
 import { JWT } from "next-auth/jwt";
+// @ts-ignore
+import type { AdapterUser } from "next-auth/src/adapters";
+// @ts-ignore
+import { Session } from "next-auth/src/core/types";
 
 function parseJwt(token?: string) {
   if (!token) {
@@ -42,6 +46,10 @@ export const authOptions: AuthOptions = {
       if (account) {
         token.id_token = account.id_token;
 
+        token.access_token = account.access_token;
+
+        token.refresh_token = account.refresh_token;
+
         token.provider = account.provider;
       }
       const additional = parseJwt(token.id_token as string) || {};
@@ -60,6 +68,33 @@ export const authOptions: AuthOptions = {
       }
 
       return token;
+    },
+    async session({
+      session,
+      token,
+    }: {
+      session: Session & {
+        id_token?: string;
+        access_token?: string;
+        refresh_token?: string;
+      };
+      /** Available when {@link SessionOptions.strategy} is set to `"jwt"` */
+      token: JWT;
+      /** Available when {@link SessionOptions.strategy} is set to `"database"`. */
+      user: AdapterUser;
+    } & {
+      /**
+       * Available when using {@link SessionOptions.strategy} `"database"`, this is the data
+       * sent from the client via the [`useSession().update`](https://next-auth.js.org/getting-started/client#update-session) method.
+       *
+       * ⚠ Note, you should validate this data before using it.
+       */
+      newSession: any;
+      trigger: "update";
+    }) {
+      // Send properties to the client, like an access_token from a provider.
+      session.id_token = token.id_token;
+      return session;
     },
   },
   events: {
