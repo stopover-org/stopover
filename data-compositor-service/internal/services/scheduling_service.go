@@ -14,4 +14,5 @@ type SchedulingService interface {
 	ScheduleNow(scheduleId uuid.UUID) (*models.Task, *models.Scheduling, error)
 
 	GetScheduling(scheduleId uuid.UUID) (*models.Scheduling, error)
+	GetSchedulings(input graphql.SchedulingFilterInput, first int, after string, last int, before string) ([]models.Scheduling, *graphql.PageInfo, error)
 }

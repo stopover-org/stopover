@@ -51,7 +51,6 @@ input TaskFilterInput {
 type SchedulingConnection {
     edges: [SchedulingEdge!]!
     pageInfo: PageInfo!
-    totalCount: Int
 }
 
 type SchedulingEdge {
@@ -62,7 +61,6 @@ type SchedulingEdge {
 type TaskConnection {
     edges: [TaskEdge!]!
     pageInfo: PageInfo!
-    totalCount: Int
 }
 
 type TaskEdge {
@@ -75,6 +73,7 @@ type PageInfo {
     hasPreviousPage: Boolean!
     startCursor: String
     endCursor: String
+    totalCount: Int
 }
 
 type Scheduling implements Node {

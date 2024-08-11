@@ -121,6 +121,34 @@ func (r *queryResolver) Scheduling(ctx context.Context, id string) (*graphql.Sch
 	return graph.SchedulingToGraphql(scheduling)
 }
 
+func (r *queryResolver) Tasks(ctx context.Context, input *graphql.TaskFilterInput, first *int, after *string, last *int, before *string) (*graphql.TaskConnection, error) {
+	tasks, pageInfo, err := r.Resolver.TaskService.GetTasks(*input, *first, *after, *last, *before)
+	if err != nil {
+		return nil, err
+	}
+
+	connection, err := graph.TasksToGraphqlConnection(tasks, pageInfo)
+	if err != nil {
+		return nil, err
+	}
+
+	return connection, nil
+}
+
+func (r *queryResolver) Schedulings(ctx context.Context, input *graphql.SchedulingFilterInput, first *int, after *string, last *int, before *string) (*graphql.SchedulingConnection, error) {
+	schedulings, pageInfo, err := r.Resolver.SchedulingService.GetSchedulings(*input, *first, *after, *last, *before)
+	if err != nil {
+		return nil, err
+	}
+
+	connection, err := graph.SchedulingsToGraphqlConnection(schedulings, pageInfo)
+	if err != nil {
+		return nil, err
+	}
+
+	return connection, nil
+}
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 

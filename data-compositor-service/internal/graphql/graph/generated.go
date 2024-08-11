@@ -55,9 +55,19 @@ type ComplexityRoot struct {
 		UpdateScheduling func(childComplexity int, input graphql1.UpdateSchedulingInput) int
 	}
 
+	PageInfo struct {
+		EndCursor       func(childComplexity int) int
+		HasNextPage     func(childComplexity int) int
+		HasPreviousPage func(childComplexity int) int
+		StartCursor     func(childComplexity int) int
+		TotalCount      func(childComplexity int) int
+	}
+
 	Query struct {
-		Scheduling func(childComplexity int, id string) int
-		Task       func(childComplexity int, id string) int
+		Scheduling  func(childComplexity int, id string) int
+		Schedulings func(childComplexity int, input *graphql1.SchedulingFilterInput, first *int, after *string, last *int, before *string) int
+		Task        func(childComplexity int, id string) int
+		Tasks       func(childComplexity int, input *graphql1.TaskFilterInput, first *int, after *string, last *int, before *string) int
 	}
 
 	Scheduling struct {
@@ -69,6 +79,17 @@ type ComplexityRoot struct {
 		NextScheduleTime func(childComplexity int) int
 		RetentionPeriod  func(childComplexity int) int
 		Status           func(childComplexity int) int
+		Tasks            func(childComplexity int, input *graphql1.TaskFilterInput, first *int, after *string, last *int, before *string) int
+	}
+
+	SchedulingConnection struct {
+		Edges    func(childComplexity int) int
+		PageInfo func(childComplexity int) int
+	}
+
+	SchedulingEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
 	}
 
 	Task struct {
@@ -80,6 +101,16 @@ type ComplexityRoot struct {
 		Scheduling    func(childComplexity int) int
 		SchedulingID  func(childComplexity int) int
 		Status        func(childComplexity int) int
+	}
+
+	TaskConnection struct {
+		Edges    func(childComplexity int) int
+		PageInfo func(childComplexity int) int
+	}
+
+	TaskEdge struct {
+		Cursor func(childComplexity int) int
+		Node   func(childComplexity int) int
 	}
 }
 
@@ -94,6 +125,8 @@ type MutationResolver interface {
 type QueryResolver interface {
 	Task(ctx context.Context, id string) (*graphql1.Task, error)
 	Scheduling(ctx context.Context, id string) (*graphql1.Scheduling, error)
+	Schedulings(ctx context.Context, input *graphql1.SchedulingFilterInput, first *int, after *string, last *int, before *string) (*graphql1.SchedulingConnection, error)
+	Tasks(ctx context.Context, input *graphql1.TaskFilterInput, first *int, after *string, last *int, before *string) (*graphql1.TaskConnection, error)
 }
 
 type executableSchema struct {
@@ -187,6 +220,41 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.UpdateScheduling(childComplexity, args["input"].(graphql1.UpdateSchedulingInput)), true
 
+	case "PageInfo.endCursor":
+		if e.complexity.PageInfo.EndCursor == nil {
+			break
+		}
+
+		return e.complexity.PageInfo.EndCursor(childComplexity), true
+
+	case "PageInfo.hasNextPage":
+		if e.complexity.PageInfo.HasNextPage == nil {
+			break
+		}
+
+		return e.complexity.PageInfo.HasNextPage(childComplexity), true
+
+	case "PageInfo.hasPreviousPage":
+		if e.complexity.PageInfo.HasPreviousPage == nil {
+			break
+		}
+
+		return e.complexity.PageInfo.HasPreviousPage(childComplexity), true
+
+	case "PageInfo.startCursor":
+		if e.complexity.PageInfo.StartCursor == nil {
+			break
+		}
+
+		return e.complexity.PageInfo.StartCursor(childComplexity), true
+
+	case "PageInfo.totalCount":
+		if e.complexity.PageInfo.TotalCount == nil {
+			break
+		}
+
+		return e.complexity.PageInfo.TotalCount(childComplexity), true
+
 	case "Query.scheduling":
 		if e.complexity.Query.Scheduling == nil {
 			break
@@ -199,6 +267,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Scheduling(childComplexity, args["id"].(string)), true
 
+	case "Query.schedulings":
+		if e.complexity.Query.Schedulings == nil {
+			break
+		}
+
+		args, err := ec.field_Query_schedulings_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Schedulings(childComplexity, args["input"].(*graphql1.SchedulingFilterInput), args["first"].(*int), args["after"].(*string), args["last"].(*int), args["before"].(*string)), true
+
 	case "Query.task":
 		if e.complexity.Query.Task == nil {
 			break
@@ -210,6 +290,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Task(childComplexity, args["id"].(string)), true
+
+	case "Query.tasks":
+		if e.complexity.Query.Tasks == nil {
+			break
+		}
+
+		args, err := ec.field_Query_tasks_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Tasks(childComplexity, args["input"].(*graphql1.TaskFilterInput), args["first"].(*int), args["after"].(*string), args["last"].(*int), args["before"].(*string)), true
 
 	case "Scheduling.adapterType":
 		if e.complexity.Scheduling.AdapterType == nil {
@@ -267,6 +359,46 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Scheduling.Status(childComplexity), true
 
+	case "Scheduling.tasks":
+		if e.complexity.Scheduling.Tasks == nil {
+			break
+		}
+
+		args, err := ec.field_Scheduling_tasks_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Scheduling.Tasks(childComplexity, args["input"].(*graphql1.TaskFilterInput), args["first"].(*int), args["after"].(*string), args["last"].(*int), args["before"].(*string)), true
+
+	case "SchedulingConnection.edges":
+		if e.complexity.SchedulingConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.SchedulingConnection.Edges(childComplexity), true
+
+	case "SchedulingConnection.pageInfo":
+		if e.complexity.SchedulingConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.SchedulingConnection.PageInfo(childComplexity), true
+
+	case "SchedulingEdge.cursor":
+		if e.complexity.SchedulingEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.SchedulingEdge.Cursor(childComplexity), true
+
+	case "SchedulingEdge.node":
+		if e.complexity.SchedulingEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.SchedulingEdge.Node(childComplexity), true
+
 	case "Task.adapterType":
 		if e.complexity.Task.AdapterType == nil {
 			break
@@ -323,6 +455,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Task.Status(childComplexity), true
 
+	case "TaskConnection.edges":
+		if e.complexity.TaskConnection.Edges == nil {
+			break
+		}
+
+		return e.complexity.TaskConnection.Edges(childComplexity), true
+
+	case "TaskConnection.pageInfo":
+		if e.complexity.TaskConnection.PageInfo == nil {
+			break
+		}
+
+		return e.complexity.TaskConnection.PageInfo(childComplexity), true
+
+	case "TaskEdge.cursor":
+		if e.complexity.TaskEdge.Cursor == nil {
+			break
+		}
+
+		return e.complexity.TaskEdge.Cursor(childComplexity), true
+
+	case "TaskEdge.node":
+		if e.complexity.TaskEdge.Node == nil {
+			break
+		}
+
+		return e.complexity.TaskEdge.Node(childComplexity), true
+
 	}
 	return 0, false
 }
@@ -331,7 +491,9 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	rc := graphql.GetOperationContext(ctx)
 	ec := executionContext{rc, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
+		ec.unmarshalInputSchedulingFilterInput,
 		ec.unmarshalInputSchedulingInput,
+		ec.unmarshalInputTaskFilterInput,
 		ec.unmarshalInputUpdateSchedulingInput,
 	)
 	first := true
@@ -430,7 +592,10 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "../schema.graphql", Input: `# schema.graphql
+	{Name: "../schema.graphql", Input: `interface Node {
+    id: ID!
+}
+
 input SchedulingInput {
     name: String!
     retentionPeriod: Int
@@ -465,7 +630,59 @@ enum AdapterType {
     VIATOR_EVENT_SCRAPPER
 }
 
-type Task {
+input SchedulingFilterInput {
+    name: String
+    status: SchedulingStatus
+    adapterType: AdapterType
+}
+
+input TaskFilterInput {
+    schedulingId: ID!
+    status: TaskStatus
+    adapterType: AdapterType
+}
+
+type SchedulingConnection {
+    edges: [SchedulingEdge!]!
+    pageInfo: PageInfo!
+}
+
+type SchedulingEdge {
+    node: Scheduling!
+    cursor: String!
+}
+
+type TaskConnection {
+    edges: [TaskEdge!]!
+    pageInfo: PageInfo!
+}
+
+type TaskEdge {
+    node: Task!
+    cursor: String!
+}
+
+type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+    endCursor: String
+    totalCount: Int
+}
+
+type Scheduling implements Node {
+    id: ID!
+    name: String!
+    nextScheduleTime: String
+    retentionPeriod: Int!
+    maxRetries: Int!
+    status: SchedulingStatus!
+    adapterType: AdapterType!
+    configuration: String!
+    tasks(input: TaskFilterInput, first: Int, after: String, last: Int, before: String): TaskConnection!
+}
+
+type Task implements Node {
     id: ID!
     status: TaskStatus!
     retries: Int!
@@ -477,20 +694,11 @@ type Task {
     scheduling: Scheduling!
 }
 
-type Scheduling {
-    id: ID!
-    name: String!
-    nextScheduleTime: String
-    retentionPeriod: Int!
-    maxRetries: Int!
-    status: SchedulingStatus!
-    adapterType: AdapterType!
-    configuration: String!
-}
-
 type Query {
     task(id: ID!): Task
     scheduling(id: ID!): Scheduling
+    schedulings(input: SchedulingFilterInput, first: Int, after: String, last: Int, before: String): SchedulingConnection!
+    tasks(input: TaskFilterInput, first: Int, after: String, last: Int, before: String): TaskConnection!
 }
 
 type Mutation {
@@ -634,6 +842,57 @@ func (ec *executionContext) field_Query_scheduling_args(ctx context.Context, raw
 	return args, nil
 }
 
+func (ec *executionContext) field_Query_schedulings_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *graphql1.SchedulingFilterInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalOSchedulingFilterInput2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingFilterInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	var arg1 *int
+	if tmp, ok := rawArgs["first"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+		arg1, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["first"] = arg1
+	var arg2 *string
+	if tmp, ok := rawArgs["after"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+		arg2, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["after"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["last"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["last"] = arg3
+	var arg4 *string
+	if tmp, ok := rawArgs["before"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+		arg4, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["before"] = arg4
+	return args, nil
+}
+
 func (ec *executionContext) field_Query_task_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -646,6 +905,108 @@ func (ec *executionContext) field_Query_task_args(ctx context.Context, rawArgs m
 		}
 	}
 	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_tasks_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *graphql1.TaskFilterInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalOTaskFilterInput2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskFilterInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	var arg1 *int
+	if tmp, ok := rawArgs["first"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+		arg1, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["first"] = arg1
+	var arg2 *string
+	if tmp, ok := rawArgs["after"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+		arg2, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["after"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["last"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["last"] = arg3
+	var arg4 *string
+	if tmp, ok := rawArgs["before"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+		arg4, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["before"] = arg4
+	return args, nil
+}
+
+func (ec *executionContext) field_Scheduling_tasks_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *graphql1.TaskFilterInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalOTaskFilterInput2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskFilterInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	var arg1 *int
+	if tmp, ok := rawArgs["first"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+		arg1, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["first"] = arg1
+	var arg2 *string
+	if tmp, ok := rawArgs["after"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+		arg2, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["after"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["last"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["last"] = arg3
+	var arg4 *string
+	if tmp, ok := rawArgs["before"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+		arg4, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["before"] = arg4
 	return args, nil
 }
 
@@ -879,6 +1240,8 @@ func (ec *executionContext) fieldContext_Mutation_createScheduling(ctx context.C
 				return ec.fieldContext_Scheduling_adapterType(ctx, field)
 			case "configuration":
 				return ec.fieldContext_Scheduling_configuration(ctx, field)
+			case "tasks":
+				return ec.fieldContext_Scheduling_tasks(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Scheduling", field.Name)
 		},
@@ -949,6 +1312,8 @@ func (ec *executionContext) fieldContext_Mutation_updateScheduling(ctx context.C
 				return ec.fieldContext_Scheduling_adapterType(ctx, field)
 			case "configuration":
 				return ec.fieldContext_Scheduling_configuration(ctx, field)
+			case "tasks":
+				return ec.fieldContext_Scheduling_tasks(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Scheduling", field.Name)
 		},
@@ -1019,6 +1384,8 @@ func (ec *executionContext) fieldContext_Mutation_toggleScheduling(ctx context.C
 				return ec.fieldContext_Scheduling_adapterType(ctx, field)
 			case "configuration":
 				return ec.fieldContext_Scheduling_configuration(ctx, field)
+			case "tasks":
+				return ec.fieldContext_Scheduling_tasks(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Scheduling", field.Name)
 		},
@@ -1089,6 +1456,8 @@ func (ec *executionContext) fieldContext_Mutation_removeScheduling(ctx context.C
 				return ec.fieldContext_Scheduling_adapterType(ctx, field)
 			case "configuration":
 				return ec.fieldContext_Scheduling_configuration(ctx, field)
+			case "tasks":
+				return ec.fieldContext_Scheduling_tasks(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Scheduling", field.Name)
 		},
@@ -1103,6 +1472,217 @@ func (ec *executionContext) fieldContext_Mutation_removeScheduling(ctx context.C
 	if fc.Args, err = ec.field_Mutation_removeScheduling_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _PageInfo_hasNextPage(ctx context.Context, field graphql.CollectedField, obj *graphql1.PageInfo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PageInfo_hasNextPage(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.HasNextPage, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_PageInfo_hasNextPage(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "PageInfo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _PageInfo_hasPreviousPage(ctx context.Context, field graphql.CollectedField, obj *graphql1.PageInfo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PageInfo_hasPreviousPage(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.HasPreviousPage, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_PageInfo_hasPreviousPage(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "PageInfo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _PageInfo_startCursor(ctx context.Context, field graphql.CollectedField, obj *graphql1.PageInfo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PageInfo_startCursor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.StartCursor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_PageInfo_startCursor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "PageInfo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _PageInfo_endCursor(ctx context.Context, field graphql.CollectedField, obj *graphql1.PageInfo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PageInfo_endCursor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.EndCursor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_PageInfo_endCursor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "PageInfo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _PageInfo_totalCount(ctx context.Context, field graphql.CollectedField, obj *graphql1.PageInfo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PageInfo_totalCount(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_PageInfo_totalCount(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "PageInfo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
 	}
 	return fc, nil
 }
@@ -1229,6 +1809,8 @@ func (ec *executionContext) fieldContext_Query_scheduling(ctx context.Context, f
 				return ec.fieldContext_Scheduling_adapterType(ctx, field)
 			case "configuration":
 				return ec.fieldContext_Scheduling_configuration(ctx, field)
+			case "tasks":
+				return ec.fieldContext_Scheduling_tasks(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Scheduling", field.Name)
 		},
@@ -1241,6 +1823,128 @@ func (ec *executionContext) fieldContext_Query_scheduling(ctx context.Context, f
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_scheduling_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_schedulings(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_schedulings(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Schedulings(rctx, fc.Args["input"].(*graphql1.SchedulingFilterInput), fc.Args["first"].(*int), fc.Args["after"].(*string), fc.Args["last"].(*int), fc.Args["before"].(*string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*graphql1.SchedulingConnection)
+	fc.Result = res
+	return ec.marshalNSchedulingConnection2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingConnection(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_schedulings(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "edges":
+				return ec.fieldContext_SchedulingConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_SchedulingConnection_pageInfo(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type SchedulingConnection", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_schedulings_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_tasks(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_tasks(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Tasks(rctx, fc.Args["input"].(*graphql1.TaskFilterInput), fc.Args["first"].(*int), fc.Args["after"].(*string), fc.Args["last"].(*int), fc.Args["before"].(*string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*graphql1.TaskConnection)
+	fc.Result = res
+	return ec.marshalNTaskConnection2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskConnection(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_tasks(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "edges":
+				return ec.fieldContext_TaskConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TaskConnection_pageInfo(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TaskConnection", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_tasks_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -1725,6 +2429,281 @@ func (ec *executionContext) fieldContext_Scheduling_configuration(_ context.Cont
 	return fc, nil
 }
 
+func (ec *executionContext) _Scheduling_tasks(ctx context.Context, field graphql.CollectedField, obj *graphql1.Scheduling) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Scheduling_tasks(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Tasks, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*graphql1.TaskConnection)
+	fc.Result = res
+	return ec.marshalNTaskConnection2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskConnection(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Scheduling_tasks(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Scheduling",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "edges":
+				return ec.fieldContext_TaskConnection_edges(ctx, field)
+			case "pageInfo":
+				return ec.fieldContext_TaskConnection_pageInfo(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TaskConnection", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Scheduling_tasks_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _SchedulingConnection_edges(ctx context.Context, field graphql.CollectedField, obj *graphql1.SchedulingConnection) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_SchedulingConnection_edges(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Edges, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*graphql1.SchedulingEdge)
+	fc.Result = res
+	return ec.marshalNSchedulingEdge2ᚕᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingEdgeᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_SchedulingConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "SchedulingConnection",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "node":
+				return ec.fieldContext_SchedulingEdge_node(ctx, field)
+			case "cursor":
+				return ec.fieldContext_SchedulingEdge_cursor(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type SchedulingEdge", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _SchedulingConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *graphql1.SchedulingConnection) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_SchedulingConnection_pageInfo(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PageInfo, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*graphql1.PageInfo)
+	fc.Result = res
+	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐPageInfo(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_SchedulingConnection_pageInfo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "SchedulingConnection",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "hasNextPage":
+				return ec.fieldContext_PageInfo_hasNextPage(ctx, field)
+			case "hasPreviousPage":
+				return ec.fieldContext_PageInfo_hasPreviousPage(ctx, field)
+			case "startCursor":
+				return ec.fieldContext_PageInfo_startCursor(ctx, field)
+			case "endCursor":
+				return ec.fieldContext_PageInfo_endCursor(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_PageInfo_totalCount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type PageInfo", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _SchedulingEdge_node(ctx context.Context, field graphql.CollectedField, obj *graphql1.SchedulingEdge) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_SchedulingEdge_node(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Node, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*graphql1.Scheduling)
+	fc.Result = res
+	return ec.marshalNScheduling2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐScheduling(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_SchedulingEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "SchedulingEdge",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Scheduling_id(ctx, field)
+			case "name":
+				return ec.fieldContext_Scheduling_name(ctx, field)
+			case "nextScheduleTime":
+				return ec.fieldContext_Scheduling_nextScheduleTime(ctx, field)
+			case "retentionPeriod":
+				return ec.fieldContext_Scheduling_retentionPeriod(ctx, field)
+			case "maxRetries":
+				return ec.fieldContext_Scheduling_maxRetries(ctx, field)
+			case "status":
+				return ec.fieldContext_Scheduling_status(ctx, field)
+			case "adapterType":
+				return ec.fieldContext_Scheduling_adapterType(ctx, field)
+			case "configuration":
+				return ec.fieldContext_Scheduling_configuration(ctx, field)
+			case "tasks":
+				return ec.fieldContext_Scheduling_tasks(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Scheduling", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _SchedulingEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *graphql1.SchedulingEdge) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_SchedulingEdge_cursor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Cursor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_SchedulingEdge_cursor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "SchedulingEdge",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Task_id(ctx context.Context, field graphql.CollectedField, obj *graphql1.Task) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Task_id(ctx, field)
 	if err != nil {
@@ -2088,8 +3067,222 @@ func (ec *executionContext) fieldContext_Task_scheduling(_ context.Context, fiel
 				return ec.fieldContext_Scheduling_adapterType(ctx, field)
 			case "configuration":
 				return ec.fieldContext_Scheduling_configuration(ctx, field)
+			case "tasks":
+				return ec.fieldContext_Scheduling_tasks(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Scheduling", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TaskConnection_edges(ctx context.Context, field graphql.CollectedField, obj *graphql1.TaskConnection) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TaskConnection_edges(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Edges, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*graphql1.TaskEdge)
+	fc.Result = res
+	return ec.marshalNTaskEdge2ᚕᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskEdgeᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TaskConnection_edges(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TaskConnection",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "node":
+				return ec.fieldContext_TaskEdge_node(ctx, field)
+			case "cursor":
+				return ec.fieldContext_TaskEdge_cursor(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TaskEdge", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TaskConnection_pageInfo(ctx context.Context, field graphql.CollectedField, obj *graphql1.TaskConnection) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TaskConnection_pageInfo(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PageInfo, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*graphql1.PageInfo)
+	fc.Result = res
+	return ec.marshalNPageInfo2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐPageInfo(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TaskConnection_pageInfo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TaskConnection",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "hasNextPage":
+				return ec.fieldContext_PageInfo_hasNextPage(ctx, field)
+			case "hasPreviousPage":
+				return ec.fieldContext_PageInfo_hasPreviousPage(ctx, field)
+			case "startCursor":
+				return ec.fieldContext_PageInfo_startCursor(ctx, field)
+			case "endCursor":
+				return ec.fieldContext_PageInfo_endCursor(ctx, field)
+			case "totalCount":
+				return ec.fieldContext_PageInfo_totalCount(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type PageInfo", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TaskEdge_node(ctx context.Context, field graphql.CollectedField, obj *graphql1.TaskEdge) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TaskEdge_node(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Node, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*graphql1.Task)
+	fc.Result = res
+	return ec.marshalNTask2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTask(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TaskEdge_node(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TaskEdge",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Task_id(ctx, field)
+			case "status":
+				return ec.fieldContext_Task_status(ctx, field)
+			case "retries":
+				return ec.fieldContext_Task_retries(ctx, field)
+			case "artifacts":
+				return ec.fieldContext_Task_artifacts(ctx, field)
+			case "adapterType":
+				return ec.fieldContext_Task_adapterType(ctx, field)
+			case "configuration":
+				return ec.fieldContext_Task_configuration(ctx, field)
+			case "schedulingId":
+				return ec.fieldContext_Task_schedulingId(ctx, field)
+			case "scheduling":
+				return ec.fieldContext_Task_scheduling(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Task", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TaskEdge_cursor(ctx context.Context, field graphql.CollectedField, obj *graphql1.TaskEdge) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TaskEdge_cursor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Cursor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TaskEdge_cursor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TaskEdge",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -3868,6 +5061,47 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    **************************** input.gotpl *****************************
 
+func (ec *executionContext) unmarshalInputSchedulingFilterInput(ctx context.Context, obj interface{}) (graphql1.SchedulingFilterInput, error) {
+	var it graphql1.SchedulingFilterInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"name", "status", "adapterType"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "name":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Name = data
+		case "status":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
+			data, err := ec.unmarshalOSchedulingStatus2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingStatus(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Status = data
+		case "adapterType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("adapterType"))
+			data, err := ec.unmarshalOAdapterType2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐAdapterType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AdapterType = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputSchedulingInput(ctx context.Context, obj interface{}) (graphql1.SchedulingInput, error) {
 	var it graphql1.SchedulingInput
 	asMap := map[string]interface{}{}
@@ -3917,6 +5151,47 @@ func (ec *executionContext) unmarshalInputSchedulingInput(ctx context.Context, o
 				return it, err
 			}
 			it.Configuration = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputTaskFilterInput(ctx context.Context, obj interface{}) (graphql1.TaskFilterInput, error) {
+	var it graphql1.TaskFilterInput
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"schedulingId", "status", "adapterType"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "schedulingId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("schedulingId"))
+			data, err := ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.SchedulingID = data
+		case "status":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
+			data, err := ec.unmarshalOTaskStatus2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskStatus(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Status = data
+		case "adapterType":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("adapterType"))
+			data, err := ec.unmarshalOAdapterType2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐAdapterType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.AdapterType = data
 		}
 	}
 
@@ -3989,6 +5264,29 @@ func (ec *executionContext) unmarshalInputUpdateSchedulingInput(ctx context.Cont
 
 // region    ************************** interface.gotpl ***************************
 
+func (ec *executionContext) _Node(ctx context.Context, sel ast.SelectionSet, obj graphql1.Node) graphql.Marshaler {
+	switch obj := (obj).(type) {
+	case nil:
+		return graphql.Null
+	case graphql1.Scheduling:
+		return ec._Scheduling(ctx, sel, &obj)
+	case *graphql1.Scheduling:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._Scheduling(ctx, sel, obj)
+	case graphql1.Task:
+		return ec._Task(ctx, sel, &obj)
+	case *graphql1.Task:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._Task(ctx, sel, obj)
+	default:
+		panic(fmt.Errorf("unexpected type %T", obj))
+	}
+}
+
 // endregion ************************** interface.gotpl ***************************
 
 // region    **************************** object.gotpl ****************************
@@ -4036,6 +5334,56 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_removeScheduling(ctx, field)
 			})
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var pageInfoImplementors = []string{"PageInfo"}
+
+func (ec *executionContext) _PageInfo(ctx context.Context, sel ast.SelectionSet, obj *graphql1.PageInfo) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, pageInfoImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("PageInfo")
+		case "hasNextPage":
+			out.Values[i] = ec._PageInfo_hasNextPage(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "hasPreviousPage":
+			out.Values[i] = ec._PageInfo_hasPreviousPage(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "startCursor":
+			out.Values[i] = ec._PageInfo_startCursor(ctx, field, obj)
+		case "endCursor":
+			out.Values[i] = ec._PageInfo_endCursor(ctx, field, obj)
+		case "totalCount":
+			out.Values[i] = ec._PageInfo_totalCount(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4116,6 +5464,50 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "schedulings":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_schedulings(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "tasks":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_tasks(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "__type":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Query___type(ctx, field)
@@ -4147,7 +5539,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 	return out
 }
 
-var schedulingImplementors = []string{"Scheduling"}
+var schedulingImplementors = []string{"Scheduling", "Node"}
 
 func (ec *executionContext) _Scheduling(ctx context.Context, sel ast.SelectionSet, obj *graphql1.Scheduling) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, schedulingImplementors)
@@ -4195,6 +5587,11 @@ func (ec *executionContext) _Scheduling(ctx context.Context, sel ast.SelectionSe
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "tasks":
+			out.Values[i] = ec._Scheduling_tasks(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4218,7 +5615,95 @@ func (ec *executionContext) _Scheduling(ctx context.Context, sel ast.SelectionSe
 	return out
 }
 
-var taskImplementors = []string{"Task"}
+var schedulingConnectionImplementors = []string{"SchedulingConnection"}
+
+func (ec *executionContext) _SchedulingConnection(ctx context.Context, sel ast.SelectionSet, obj *graphql1.SchedulingConnection) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, schedulingConnectionImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("SchedulingConnection")
+		case "edges":
+			out.Values[i] = ec._SchedulingConnection_edges(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "pageInfo":
+			out.Values[i] = ec._SchedulingConnection_pageInfo(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var schedulingEdgeImplementors = []string{"SchedulingEdge"}
+
+func (ec *executionContext) _SchedulingEdge(ctx context.Context, sel ast.SelectionSet, obj *graphql1.SchedulingEdge) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, schedulingEdgeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("SchedulingEdge")
+		case "node":
+			out.Values[i] = ec._SchedulingEdge_node(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "cursor":
+			out.Values[i] = ec._SchedulingEdge_cursor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var taskImplementors = []string{"Task", "Node"}
 
 func (ec *executionContext) _Task(ctx context.Context, sel ast.SelectionSet, obj *graphql1.Task) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, taskImplementors)
@@ -4266,6 +5751,94 @@ func (ec *executionContext) _Task(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "scheduling":
 			out.Values[i] = ec._Task_scheduling(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var taskConnectionImplementors = []string{"TaskConnection"}
+
+func (ec *executionContext) _TaskConnection(ctx context.Context, sel ast.SelectionSet, obj *graphql1.TaskConnection) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, taskConnectionImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TaskConnection")
+		case "edges":
+			out.Values[i] = ec._TaskConnection_edges(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "pageInfo":
+			out.Values[i] = ec._TaskConnection_pageInfo(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var taskEdgeImplementors = []string{"TaskEdge"}
+
+func (ec *executionContext) _TaskEdge(ctx context.Context, sel ast.SelectionSet, obj *graphql1.TaskEdge) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, taskEdgeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TaskEdge")
+		case "node":
+			out.Values[i] = ec._TaskEdge_node(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "cursor":
+			out.Values[i] = ec._TaskEdge_cursor(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -4673,6 +6246,16 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 	return res
 }
 
+func (ec *executionContext) marshalNPageInfo2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐPageInfo(ctx context.Context, sel ast.SelectionSet, v *graphql1.PageInfo) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._PageInfo(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNScheduling2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐScheduling(ctx context.Context, sel ast.SelectionSet, v *graphql1.Scheduling) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
@@ -4681,6 +6264,74 @@ func (ec *executionContext) marshalNScheduling2ᚖgithubᚗcomᚋstopoverᚑorg�
 		return graphql.Null
 	}
 	return ec._Scheduling(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNSchedulingConnection2githubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingConnection(ctx context.Context, sel ast.SelectionSet, v graphql1.SchedulingConnection) graphql.Marshaler {
+	return ec._SchedulingConnection(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNSchedulingConnection2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingConnection(ctx context.Context, sel ast.SelectionSet, v *graphql1.SchedulingConnection) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._SchedulingConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNSchedulingEdge2ᚕᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*graphql1.SchedulingEdge) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNSchedulingEdge2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingEdge(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNSchedulingEdge2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingEdge(ctx context.Context, sel ast.SelectionSet, v *graphql1.SchedulingEdge) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._SchedulingEdge(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNSchedulingInput2githubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingInput(ctx context.Context, v interface{}) (graphql1.SchedulingInput, error) {
@@ -4743,6 +6394,84 @@ func (ec *executionContext) marshalNString2ᚕstringᚄ(ctx context.Context, sel
 	}
 
 	return ret
+}
+
+func (ec *executionContext) marshalNTask2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v *graphql1.Task) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._Task(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNTaskConnection2githubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskConnection(ctx context.Context, sel ast.SelectionSet, v graphql1.TaskConnection) graphql.Marshaler {
+	return ec._TaskConnection(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNTaskConnection2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskConnection(ctx context.Context, sel ast.SelectionSet, v *graphql1.TaskConnection) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._TaskConnection(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNTaskEdge2ᚕᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*graphql1.TaskEdge) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNTaskEdge2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskEdge(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
+func (ec *executionContext) marshalNTaskEdge2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskEdge(ctx context.Context, sel ast.SelectionSet, v *graphql1.TaskEdge) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._TaskEdge(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNTaskStatus2githubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskStatus(ctx context.Context, v interface{}) (graphql1.TaskStatus, error) {
@@ -5078,6 +6807,30 @@ func (ec *executionContext) marshalOScheduling2ᚖgithubᚗcomᚋstopoverᚑorg�
 	return ec._Scheduling(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalOSchedulingFilterInput2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingFilterInput(ctx context.Context, v interface{}) (*graphql1.SchedulingFilterInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputSchedulingFilterInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOSchedulingStatus2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingStatus(ctx context.Context, v interface{}) (*graphql1.SchedulingStatus, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var res = new(graphql1.SchedulingStatus)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOSchedulingStatus2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐSchedulingStatus(ctx context.Context, sel ast.SelectionSet, v *graphql1.SchedulingStatus) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
+}
+
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
 	if v == nil {
 		return nil, nil
@@ -5099,6 +6852,30 @@ func (ec *executionContext) marshalOTask2ᚖgithubᚗcomᚋstopoverᚑorgᚋstop
 		return graphql.Null
 	}
 	return ec._Task(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOTaskFilterInput2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskFilterInput(ctx context.Context, v interface{}) (*graphql1.TaskFilterInput, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputTaskFilterInput(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOTaskStatus2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskStatus(ctx context.Context, v interface{}) (*graphql1.TaskStatus, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var res = new(graphql1.TaskStatus)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOTaskStatus2ᚖgithubᚗcomᚋstopoverᚑorgᚋstopoverᚋdataᚑcompositorᚋinternalᚋgraphqlᚋgraphᚋmodelᚐTaskStatus(ctx context.Context, sel ast.SelectionSet, v *graphql1.TaskStatus) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {
