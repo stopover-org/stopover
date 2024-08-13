@@ -122,7 +122,28 @@ func (r *queryResolver) Scheduling(ctx context.Context, id string) (*graphql.Sch
 }
 
 func (r *queryResolver) Tasks(ctx context.Context, input *graphql.TaskFilterInput, first *int, after *string, last *int, before *string) (*graphql.TaskConnection, error) {
-	tasks, pageInfo, err := r.Resolver.TaskService.GetTasks(*input, *first, *after, *last, *before)
+	// Check for nil pointers and provide default values
+	var firstValue, lastValue int
+	var afterValue, beforeValue string
+
+	if input == nil {
+		input = &graphql.TaskFilterInput{}
+	}
+
+	if first != nil {
+		firstValue = *first
+	}
+	if after != nil {
+		afterValue = *after
+	}
+	if last != nil {
+		lastValue = *last
+	}
+	if before != nil {
+		beforeValue = *before
+	}
+
+	tasks, pageInfo, err := r.Resolver.TaskService.GetTasks(*input, firstValue, afterValue, lastValue, beforeValue)
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +157,28 @@ func (r *queryResolver) Tasks(ctx context.Context, input *graphql.TaskFilterInpu
 }
 
 func (r *queryResolver) Schedulings(ctx context.Context, input *graphql.SchedulingFilterInput, first *int, after *string, last *int, before *string) (*graphql.SchedulingConnection, error) {
-	schedulings, pageInfo, err := r.Resolver.SchedulingService.GetSchedulings(*input, *first, *after, *last, *before)
+	// Check for nil pointers and provide default values
+	var firstValue, lastValue int
+	var afterValue, beforeValue string
+
+	if input == nil {
+		input = &graphql.SchedulingFilterInput{}
+	}
+
+	if first != nil {
+		firstValue = *first
+	}
+	if after != nil {
+		afterValue = *after
+	}
+	if last != nil {
+		lastValue = *last
+	}
+	if before != nil {
+		beforeValue = *before
+	}
+
+	schedulings, pageInfo, err := r.Resolver.SchedulingService.GetSchedulings(*input, firstValue, afterValue, lastValue, beforeValue)
 	if err != nil {
 		return nil, err
 	}

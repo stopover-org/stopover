@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stopover-org/stopover/data-compositor/db"
 	"github.com/stopover-org/stopover/data-compositor/db/models"
+	graph "github.com/stopover-org/stopover/data-compositor/internal/graphql"
 	"github.com/stopover-org/stopover/data-compositor/internal/graphql/graph/model"
 	"gorm.io/gorm"
 	"log"
@@ -150,4 +151,63 @@ func (s *taskServiceImpl) GetTask(id uuid.UUID) (*models.Task, error) {
 	}
 
 	return task, nil
+}
+
+func (s *taskServiceImpl) GetTasks(input graphql.TaskFilterInput, first int, after string, last int, before string) ([]models.Task, *graphql.PageInfo, error) {
+	var tasks []models.Task
+	query := s.db.Model(&models.Task{})
+
+	// Handle pagination (limit and offset)
+	if first > 0 {
+		query = query.Limit(first)
+	} else if last > 0 {
+		query = query.Limit(last).Order("id DESC")
+	}
+
+	if after != "" {
+		decodedAfter := graph.DecodeCursor(&after)
+		query = query.Where("id > ?", decodedAfter)
+	}
+
+	if before != "" {
+		decodedBefore := graph.DecodeCursor(&before)
+		query = query.Where("id < ?", decodedBefore)
+	}
+
+	// Order the results (assuming ordering by ID as an example)
+	query = query.Order("id ASC")
+
+	// Execute the query
+	if err := query.Find(&tasks).Error; err != nil {
+		return nil, nil, err
+	}
+
+	pageInfo := &graphql.PageInfo{}
+
+	if len(tasks) > 0 {
+		// Start and end cursors
+		startCursor := graph.EncodeCursor(tasks[0].ID)
+		endCursor := graph.EncodeCursor(tasks[len(tasks)-1].ID)
+		pageInfo.StartCursor = &startCursor
+		pageInfo.EndCursor = &endCursor
+
+		// HasNextPage: check if there are more tasks after the last task
+		hasNextPageQuery := s.db.Model(&models.Task{}).Where("id > ?", tasks[len(tasks)-1].ID)
+		var nextPageTask models.Task
+		pageInfo.HasNextPage = hasNextPageQuery.Select("id").Order("id ASC").Limit(1).Find(&nextPageTask).RowsAffected > 0
+
+		// HasPreviousPage: check if there are more tasks before the first task
+		hasPreviousPageQuery := s.db.Model(&models.Task{}).Where("id < ?", tasks[0].ID)
+		var previousPageTask models.Task
+		pageInfo.HasPreviousPage = hasPreviousPageQuery.Select("id").Order("id DESC").Limit(1).Find(&previousPageTask).RowsAffected > 0
+	}
+
+	// Total count of tasks matching the filter
+	var totalCount int64
+	countQuery := s.db.Model(&models.Task{})
+	countQuery.Count(&totalCount)
+	totalCountInt := int(totalCount)
+	pageInfo.TotalCount = &totalCountInt
+
+	return tasks, pageInfo, nil
 }
