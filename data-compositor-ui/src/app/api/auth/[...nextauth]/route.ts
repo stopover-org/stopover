@@ -21,22 +21,21 @@ function parseJwt(token?: string) {
   return JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
 }
 
-function requestRefreshOfAccessToken(token: JWT) {
-  console.log(token);
+function requestRefreshOfAccessToken(token: JWT & Record<string, any>) {
   return fetch(`${keycloakIssuer}/protocol/openid-connect/token`, {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
       client_id: clientId,
       client_secret: clientSecret,
       grant_type: "refresh_token",
-      refresh_token: token.refreshToken as string,
+      refresh_token: token.refresh_token as string,
     }),
     method: "POST",
     cache: "no-store",
   });
 }
 
-async function signOutKeycloak(token: JWT) {
+async function signOutKeycloak(token: JWT & Record<string, any>) {
   const issuerUrl =
     // prettier-ignore
     (
@@ -62,22 +61,10 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account }) {
-      // const additional = parseJwt(token.id_token as string) || {};
-      //
-      // token = { ...additional, ...token };
-      //
-      // if (
-      //   !Array.isArray(token?.groups) ||
-      //   !(token.groups as string[])
-      //     .map((group: string) => group.toLowerCase())
-      //     .includes("/analyst")
-      // ) {
-      //   await signOutKeycloak(token);
-      //
-      //   await signOut();
-      //   return {};
-      // }
+    async jwt({ token, account }: any) {
+      const additional = parseJwt(token.id_token as string) || {};
+
+      token = { ...additional, ...token };
 
       if (account) {
         token.id_token = account.id_token;
@@ -90,8 +77,16 @@ export const authOptions: AuthOptions = {
         return token;
       }
 
-      if (Date.now() < +token.expires_at! * 1000 - 60 * 1000) {
-        return token;
+      if (
+        !Array.isArray(token?.groups) ||
+        !(token.groups as string[])
+          .map((group: string) => group.toLowerCase())
+          .includes("/analyst")
+      ) {
+        await signOutKeycloak(token);
+
+        await signOut();
+        return {};
       }
 
       try {
@@ -109,6 +104,7 @@ export const authOptions: AuthOptions = {
           ),
           refresh_token: tokens.refresh_token ?? token.refreshToken,
         };
+
         return updatedToken;
       } catch (error: any) {
         return {
@@ -125,17 +121,9 @@ export const authOptions: AuthOptions = {
       session: Session & {
         id_token?: string;
       };
-      /** Available when {@link SessionOptions.strategy} is set to `"jwt"` */
-      token: JWT;
-      /** Available when {@link SessionOptions.strategy} is set to `"database"`. */
+      token: JWT & any;
       user: AdapterUser;
     } & {
-      /**
-       * Available when using {@link SessionOptions.strategy} `"database"`, this is the data
-       * sent from the client via the [`useSession().update`](https://next-auth.js.org/getting-started/client#update-session) method.
-       *
-       * ⚠ Note, you should validate this data before using it.
-       */
       newSession: any;
       trigger: "update";
     }) {
@@ -145,7 +133,7 @@ export const authOptions: AuthOptions = {
     },
   },
   events: {
-    async signOut({ token }) {
+    async signOut({ token }: { token: JWT & Record<string, any> }) {
       if (token.provider === "keycloak") {
         await signOutKeycloak(token);
       }
