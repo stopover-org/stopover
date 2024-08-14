@@ -1,6 +1,6 @@
 "use client";
 
-import { graphql, useLazyLoadQuery } from "react-relay";
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay";
 import { memo } from "react";
 import { page_SchedulingsConnection_Query } from "@/app/scheduler/__generated__/page_SchedulingsConnection_Query.graphql";
 import { truncatedUUID } from "@/utils/truncateUUID";
@@ -8,7 +8,7 @@ import { truncatedUUID } from "@/utils/truncateUUID";
 const Scene = () => {
   const { schedulings } = useLazyLoadQuery<page_SchedulingsConnection_Query>(
     graphql`
-      query page_SchedulingsConnection_Query {
+      query scene_SchedulingsConnection_Query {
         schedulings {
           edges {
             node {
@@ -19,13 +19,18 @@ const Scene = () => {
               adapterType
             }
           }
+          pageInfo {
+            hasNextPage
+            totalCount
+            hasPreviousPage
+            startCursor
+            endCursor
+          }
         }
       }
     `,
     {},
   );
-
-  console.log(schedulings);
 
   return (
     <div className="mt-0 flex lg:ml-4">
