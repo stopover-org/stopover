@@ -10,6 +10,7 @@ import {
   NewSchedulingForm_CreateSchedulingMutation,
   NewSchedulingForm_CreateSchedulingMutation$variables,
 } from "@/forms/NewSchedulingForm/__generated__/NewSchedulingForm_CreateSchedulingMutation.graphql";
+import { useRouter } from "next/navigation";
 
 const schema = yup
   .object({
@@ -22,6 +23,7 @@ const schema = yup
   .required();
 
 const NewSchedulingForm = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -49,8 +51,14 @@ const NewSchedulingForm = () => {
     `);
 
   const mutate = useCallback(
-    (variables: NewSchedulingForm_CreateSchedulingMutation$variables) => {
-      commitMutation({ variables });
+    async (variables: NewSchedulingForm_CreateSchedulingMutation$variables) => {
+      try {
+        await commitMutation({ variables });
+
+        router.push("/scheduler");
+      } catch (err) {
+        console.error(err);
+      }
     },
     [commitMutation],
   );
