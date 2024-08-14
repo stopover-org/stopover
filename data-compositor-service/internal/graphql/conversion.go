@@ -89,6 +89,7 @@ func SchedulingToGraphql(scheduling *models.Scheduling) (*graphql.Scheduling, er
 		Status:           scheduling.Status,
 		AdapterType:      scheduling.AdapterType,
 		Configuration:    string(configuration),
+		Name:             scheduling.Name,
 	}, nil
 }
 
