@@ -2,34 +2,48 @@
 
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay";
 import { memo } from "react";
-import { page_SchedulingsConnection_Query } from "@/app/scheduler/__generated__/page_SchedulingsConnection_Query.graphql";
 import { truncatedUUID } from "@/utils/truncateUUID";
+import { scene_SchedulingsConnection_Query } from "@/app/scheduler/__generated__/scene_SchedulingsConnection_Query.graphql";
+import { scene_Schedulings_Fragment$key } from "@/app/scheduler/__generated__/scene_Schedulings_Fragment.graphql";
 
 const Scene = () => {
-  const { schedulings } = useLazyLoadQuery<page_SchedulingsConnection_Query>(
+  const query = useLazyLoadQuery<scene_SchedulingsConnection_Query>(
     graphql`
       query scene_SchedulingsConnection_Query {
-        schedulings {
+        ...scene_Schedulings_Fragment
+      }
+    `,
+    {},
+  );
+
+  const {
+    data: { schedulings },
+  } = usePaginationFragment<
+    scene_SchedulingsConnection_Query,
+    scene_Schedulings_Fragment$key
+  >(
+    graphql`
+      fragment scene_Schedulings_Fragment on Query
+      @argumentDefinitions(
+        first: { type: "Int", defaultValue: 10 }
+        after: { type: "String", defaultValue: "" }
+      )
+      @refetchable(queryName: "SchedulingsPaginationQuery") {
+        schedulings(first: $first, after: $after)
+          @connection(key: "SchedulingsPagination_schedulings") {
           edges {
             node {
               id
               name
-              nextScheduleTime
               status
+              nextScheduleTime
               adapterType
             }
-          }
-          pageInfo {
-            hasNextPage
-            totalCount
-            hasPreviousPage
-            startCursor
-            endCursor
           }
         }
       }
     `,
-    {},
+    query,
   );
 
   return (

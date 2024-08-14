@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<45558592dc52578815183d51d4f17606>>
+ * @generated SignedSource<<05a5caed4eb5b9982a5478723ff5c993>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,37 +10,52 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type scene_SchedulingsConnection_Query$variables = Record<PropertyKey, never>;
-export type scene_SchedulingsConnection_Query$data = {
+export type SchedulingsPaginationQuery$variables = {
+  after?: string | null | undefined;
+  first?: number | null | undefined;
+};
+export type SchedulingsPaginationQuery$data = {
   readonly " $fragmentSpreads": FragmentRefs<"scene_Schedulings_Fragment">;
 };
-export type scene_SchedulingsConnection_Query = {
-  response: scene_SchedulingsConnection_Query$data;
-  variables: scene_SchedulingsConnection_Query$variables;
+export type SchedulingsPaginationQuery = {
+  response: SchedulingsPaginationQuery$data;
+  variables: SchedulingsPaginationQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
-    "name": "after",
-    "value": ""
+    "defaultValue": "",
+    "kind": "LocalArgument",
+    "name": "after"
   },
   {
-    "kind": "Literal",
+    "defaultValue": 10,
+    "kind": "LocalArgument",
+    "name": "first"
+  }
+],
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "after"
+  },
+  {
+    "kind": "Variable",
     "name": "first",
-    "value": 10
+    "variableName": "first"
   }
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "scene_SchedulingsConnection_Query",
+    "name": "SchedulingsPaginationQuery",
     "selections": [
       {
-        "args": null,
+        "args": (v1/*: any*/),
         "kind": "FragmentSpread",
         "name": "scene_Schedulings_Fragment"
       }
@@ -50,13 +65,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "scene_SchedulingsConnection_Query",
+    "name": "SchedulingsPaginationQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "SchedulingConnection",
         "kind": "LinkedField",
         "name": "schedulings",
@@ -159,11 +174,11 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "schedulings(after:\"\",first:10)"
+        "storageKey": null
       },
       {
         "alias": null,
-        "args": (v0/*: any*/),
+        "args": (v1/*: any*/),
         "filters": null,
         "handle": "connection",
         "key": "SchedulingsPagination_schedulings",
@@ -173,16 +188,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "faff9c9e48d824105404d91c4557e04c",
+    "cacheID": "f7f3fc5b4d30f330245887716b148096",
     "id": null,
     "metadata": {},
-    "name": "scene_SchedulingsConnection_Query",
+    "name": "SchedulingsPaginationQuery",
     "operationKind": "query",
-    "text": "query scene_SchedulingsConnection_Query {\n  ...scene_Schedulings_Fragment\n}\n\nfragment scene_Schedulings_Fragment on Query {\n  schedulings(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        name\n        status\n        nextScheduleTime\n        adapterType\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query SchedulingsPaginationQuery(\n  $after: String = \"\"\n  $first: Int = 10\n) {\n  ...scene_Schedulings_Fragment_2HEEH6\n}\n\nfragment scene_Schedulings_Fragment_2HEEH6 on Query {\n  schedulings(first: $first, after: $after) {\n    edges {\n      node {\n        id\n        name\n        status\n        nextScheduleTime\n        adapterType\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "7e62d392cf837bab526e34bcff2ae92a";
+(node as any).hash = "377ba0ddef567059794937dd8c629a27";
 
 export default node;
