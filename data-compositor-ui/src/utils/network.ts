@@ -1,12 +1,10 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
-import type { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 const graphqlEndpoint =
   process.env.GRAPHQL_ENDPOINT || "http://localhost:3321/graphql";
 
-function fetchQuery(cookies: ReadonlyRequestCookies) {
+function fetchQuery(accessToken?: string) {
   return async function fetchData(operation: { text: any }, variables: any) {
-    const accessToken = cookies.get("access_token")?.value;
     const response = await fetch(graphqlEndpoint, {
       method: "POST",
       headers: {
@@ -26,13 +24,13 @@ function fetchQuery(cookies: ReadonlyRequestCookies) {
 
 let environment: Environment | null = null;
 
-export function getEnvironment(cookies: ReadonlyRequestCookies) {
+function getEnvironment(accessToken?: string) {
   if (environment) {
     return environment;
   }
 
   environment = new Environment({
-    network: Network.create(fetchQuery(cookies)),
+    network: Network.create(fetchQuery(accessToken)),
     store: new Store(new RecordSource()),
   });
 

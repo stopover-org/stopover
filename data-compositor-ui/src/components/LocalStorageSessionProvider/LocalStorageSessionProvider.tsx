@@ -5,7 +5,6 @@ import { memo, ReactNode, useEffect } from "react";
 
 const LocalStorageSessionProvider = ({ children }: { children: ReactNode }) => {
   const session = useSession();
-  console.log(session);
 
   useEffect(() => {
     // @ts-ignore
