@@ -2,9 +2,11 @@
 
 import { graphql, useLazyLoadQuery } from "react-relay";
 import { memo } from "react";
+import { page_SchedulingsConnection_Query } from "@/app/scheduler/__generated__/page_SchedulingsConnection_Query.graphql";
+import { truncatedUUID } from "@/utils/truncateUUID";
 
 const Scene = () => {
-  const data = useLazyLoadQuery(
+  const { schedulings } = useLazyLoadQuery<page_SchedulingsConnection_Query>(
     graphql`
       query page_SchedulingsConnection_Query {
         schedulings {
@@ -22,6 +24,8 @@ const Scene = () => {
     `,
     {},
   );
+
+  console.log(schedulings);
 
   return (
     <div className="mt-0 flex lg:ml-4">
@@ -50,7 +54,25 @@ const Scene = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b border-neutral-200 dark:border-white/10" />
+                  {schedulings.edges.map(({ node: scheduling }) => (
+                    <tr className="border-b border-neutral-200 dark:border-white/10">
+                      <td className="whitespace-nowrap px-6 py-4 font-medium">
+                        {truncatedUUID(scheduling.id)}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        {scheduling.name}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        {scheduling.nextScheduleTime}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        {scheduling.status}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4">
+                        {scheduling.adapterType}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
