@@ -6,6 +6,7 @@ import SceneWrapper from "@/components/SceneWrapper";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import NoAccess from "@/components/NoAccess";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,11 @@ const RootLayout = async ({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SceneWrapper>{session?.user ? children : <NoAccess />}</SceneWrapper>
+        {session?.user ? (
+          <SceneWrapper cookies={cookies()}>{children}</SceneWrapper>
+        ) : (
+          <NoAccess />
+        )}
       </body>
     </html>
   );

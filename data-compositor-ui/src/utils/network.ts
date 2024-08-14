@@ -1,31 +1,42 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
+import type { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 const graphqlEndpoint =
   process.env.GRAPHQL_ENDPOINT || "http://localhost:3321/graphql";
 
-async function fetchQuery(operation: { text: any }, variables: any) {
-  const accessToken = window.localStorage.getItem("access_token");
-  const response = await fetch(graphqlEndpoint, {
-    method: "POST",
-    headers: {
-      // Add authentication and other headers here
-      "content-type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      query: operation.text,
-      variables,
-    }),
-  });
-  return response.json();
+function fetchQuery(cookies: ReadonlyRequestCookies) {
+  return async function fetchData(operation: { text: any }, variables: any) {
+    const accessToken = cookies.get("access_token")?.value;
+    const response = await fetch(graphqlEndpoint, {
+      method: "POST",
+      headers: {
+        // Add authentication and other headers here
+        "content-type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        query: operation.text,
+        variables,
+      }),
+    });
+
+    return response.json();
+  };
 }
 
-// Create a network layer from the fetch function
-const network = Network.create(fetchQuery);
-const store = new Store(new RecordSource());
-const environment = new Environment({
-  network,
-  store,
-});
+let environment: Environment | null = null;
 
-export default environment;
+export function getEnvironment(cookies: ReadonlyRequestCookies) {
+  if (environment) {
+    return environment;
+  }
+
+  environment = new Environment({
+    network: Network.create(fetchQuery(cookies)),
+    store: new Store(new RecordSource()),
+  });
+
+  return environment;
+}
+
+export default getEnvironment;

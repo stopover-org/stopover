@@ -106,12 +106,11 @@ export const authOptions: AuthOptions = {
         };
 
         return updatedToken;
-      } catch (error: any) {
-        return {
-          ...token,
-          error: "RefreshAccessTokenError",
-          rawError: error.message,
-        };
+      } catch {
+        await signOutKeycloak(token);
+
+        await signOut();
+        return {};
       }
     },
     async session({

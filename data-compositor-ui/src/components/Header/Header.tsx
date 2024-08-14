@@ -2,7 +2,7 @@
 
 import Logout from "@/components/Logout";
 import Login from "@/components/Login";
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Dialog, DialogPanel, PopoverGroup } from "@headlessui/react";
 import { useSession } from "next-auth/react";
@@ -10,11 +10,6 @@ import { useSession } from "next-auth/react";
 const Header = () => {
   const session = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    // @ts-ignore
-    window.localStorage.setItem("access_token", session?.data?.id_token);
-  }, [session]);
 
   return (
     <header className="bg-white">
