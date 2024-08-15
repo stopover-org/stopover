@@ -1,31 +1,44 @@
 "use client";
 
 import { memo } from "react";
-import { graphql, useLazyLoadQuery } from "react-relay";
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay";
 import { useParams } from "next/navigation";
 import { scene_Scheduling_Query } from "@/app/scheduler/[id]/__generated__/scene_Scheduling_Query.graphql";
 import NoAccess from "@/components/NoAccess";
+import { CalendarDaysIcon, TrashIcon } from "@heroicons/react/24/solid";
+import ToggleSchedulingForm from "@/forms/ToggleSchedulingForm";
+import { scene_SchedulingFragment$key } from "@/app/scheduler/[id]/__generated__/scene_SchedulingFragment.graphql";
 
 const Scene = () => {
   const params = useParams();
-  const { scheduling } = useLazyLoadQuery<scene_Scheduling_Query>(
+  const query = useLazyLoadQuery<scene_Scheduling_Query>(
     graphql`
       query scene_Scheduling_Query($id: ID!) {
         scheduling(id: $id) {
-          id
-          name
-          status
-          nextScheduleTime
-          adapterType
-          configuration
+          ...scene_SchedulingFragment
         }
       }
     `,
     { id: params.id as string },
   );
 
+  const scheduling = useFragment<scene_SchedulingFragment$key>(
+    graphql`
+      fragment scene_SchedulingFragment on Scheduling {
+        id
+        name
+        status
+        nextScheduleTime
+        adapterType
+        configuration
+        ...ToggleSchedulingForm_SchedulingFragment
+      }
+    `,
+    query.scheduling,
+  );
+
   if (!scheduling) {
-    return <NoAccess />;
+    return <NoAccess signIn={false} />;
   }
 
   return (
@@ -45,9 +58,25 @@ const Scene = () => {
               </span>
             </div>
             <div className="flex">
-              <div className="pl-2">Toggle</div>
-              <div className="pl-2">Schedule Now</div>
-              <div className="pl-2">Delete</div>
+              <ToggleSchedulingForm fragmentRef={scheduling} />
+              <div className="pl-2">
+                <button
+                  type="button"
+                  className="inline-flex bg-amber-500 text-white items-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-transparent hover:bg-amber-600"
+                >
+                  <CalendarDaysIcon className="h-6 w-6" />
+                  Schedule Now
+                </button>
+              </div>
+              <div className="pl-2">
+                <button
+                  type="button"
+                  className="inline-flex bg-red-700 text-white items-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-transparent hover:bg-red-800"
+                >
+                  <TrashIcon className="h-6 w-6" />
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
           <div className="text-2sm">{scheduling.id}</div>

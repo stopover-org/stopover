@@ -32,7 +32,6 @@ const NewSchedulingForm = () => {
     resolver: yupResolver(schema),
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [commitMutation, isMutationInFlight] =
     useMutation<NewSchedulingForm_CreateSchedulingMutation>(graphql`
       mutation NewSchedulingForm_CreateSchedulingMutation(
@@ -52,15 +51,15 @@ const NewSchedulingForm = () => {
 
   const mutate = useCallback(
     async (variables: NewSchedulingForm_CreateSchedulingMutation$variables) => {
-      try {
-        await commitMutation({ variables });
-
-        router.push("/scheduler");
-      } catch (err) {
-        console.error(err);
+      if (isMutationInFlight) {
+        return;
       }
+
+      commitMutation({ variables });
+
+      router.push("/scheduler");
     },
-    [commitMutation],
+    [commitMutation, isMutationInFlight, router],
   );
 
   const adapterTypes: AdapterType[] = useMemo(
