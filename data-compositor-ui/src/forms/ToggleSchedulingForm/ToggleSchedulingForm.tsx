@@ -2,7 +2,7 @@ import { memo, useCallback } from "react";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import { graphql, useFragment, useMutation } from "react-relay";
 import { ToggleSchedulingForm_SchedulingFragment$key } from "@/forms/ToggleSchedulingForm/__generated__/ToggleSchedulingForm_SchedulingFragment.graphql";
-import { ToggleSchedulingForm_CreateSchedulingMutation$variables } from "@/forms/ToggleSchedulingForm/__generated__/ToggleSchedulingForm_CreateSchedulingMutation.graphql";
+import { ToggleSchedulingForm_ToggleSchedulingMutation$variables } from "@/forms/ToggleSchedulingForm/__generated__/ToggleSchedulingForm_ToggleSchedulingMutation.graphql";
 
 const ToggleSchedulingForm = ({
   fragmentRef,
@@ -19,7 +19,7 @@ const ToggleSchedulingForm = ({
   );
 
   const [commitMutation, isMutationInFlight] = useMutation(graphql`
-    mutation ToggleSchedulingForm_CreateSchedulingMutation($id: ID!) {
+    mutation ToggleSchedulingForm_ToggleSchedulingMutation($id: ID!) {
       toggleScheduling(id: $id) {
         ...ToggleSchedulingForm_SchedulingFragment
         ...scene_SchedulingFragment
@@ -29,7 +29,7 @@ const ToggleSchedulingForm = ({
 
   const mutate = useCallback(
     async (
-      variables: ToggleSchedulingForm_CreateSchedulingMutation$variables,
+      variables: ToggleSchedulingForm_ToggleSchedulingMutation$variables,
     ) => {
       if (isMutationInFlight) {
         return;

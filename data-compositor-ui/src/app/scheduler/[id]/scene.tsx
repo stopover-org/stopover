@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay";
 import { useParams } from "next/navigation";
 import { scene_Scheduling_Query } from "@/app/scheduler/[id]/__generated__/scene_Scheduling_Query.graphql";
@@ -8,6 +8,8 @@ import NoAccess from "@/components/NoAccess";
 import { CalendarDaysIcon, TrashIcon } from "@heroicons/react/24/solid";
 import ToggleSchedulingForm from "@/forms/ToggleSchedulingForm";
 import { scene_SchedulingFragment$key } from "@/app/scheduler/[id]/__generated__/scene_SchedulingFragment.graphql";
+import { formatRelative, subDays } from "date-fns";
+import ScheduleSchedulingNowForm from "@/forms/ScheduleSchedulingNowForm";
 
 const Scene = () => {
   const params = useParams();
@@ -32,10 +34,19 @@ const Scene = () => {
         adapterType
         configuration
         ...ToggleSchedulingForm_SchedulingFragment
+        ...ScheduleSchedulingNowForm_SchedulingFragment
       }
     `,
     query.scheduling,
   );
+
+  const calendarDate = useMemo(() => {
+    if (!scheduling?.nextScheduleTime) {
+      return "Not scheduled";
+    }
+    const date = subDays(scheduling?.nextScheduleTime, 1);
+    return formatRelative(date, new Date());
+  }, [scheduling]);
 
   if (!scheduling) {
     return <NoAccess signIn={false} />;
@@ -56,18 +67,13 @@ const Scene = () => {
               <span className="ml-2 py-1 px-2 text-xs rounded-2 inline-block whitespace-nowrap text-center bg-amber-200 text-amber-700 align-baseline font-bold uppercase leading-none">
                 {scheduling.adapterType}
               </span>
+              <span className="ml-2 py-1 px-2 text-xs rounded-2 inline-block whitespace-nowrap text-center bg-amber-200 text-amber-700 align-baseline font-bold uppercase leading-none">
+                {calendarDate}
+              </span>
             </div>
             <div className="flex">
               <ToggleSchedulingForm fragmentRef={scheduling} />
-              <div className="pl-2">
-                <button
-                  type="button"
-                  className="inline-flex bg-amber-500 text-white items-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-transparent hover:bg-amber-600"
-                >
-                  <CalendarDaysIcon className="h-6 w-6" />
-                  Schedule Now
-                </button>
-              </div>
+              <ScheduleSchedulingNowForm fragmentRef={scheduling} />
               <div className="pl-2">
                 <button
                   type="button"
