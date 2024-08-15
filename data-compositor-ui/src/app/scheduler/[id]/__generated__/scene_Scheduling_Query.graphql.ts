@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<74af25cbee954287cdddc4ff5f7bb6dc>>
+ * @generated SignedSource<<9afb1381a750e20a5e83280fda548379>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -127,12 +127,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "fd848bf9ad38f61b78bc46e398e1e926",
+    "cacheID": "662b37de36f57867812c03a3a7323d33",
     "id": null,
     "metadata": {},
     "name": "scene_Scheduling_Query",
     "operationKind": "query",
-    "text": "query scene_Scheduling_Query(\n  $id: ID!\n) {\n  scheduling(id: $id) {\n    ...scene_SchedulingFragment\n    id\n  }\n}\n\nfragment ScheduleSchedulingNowForm_SchedulingFragment on Scheduling {\n  id\n}\n\nfragment ToggleSchedulingForm_SchedulingFragment on Scheduling {\n  id\n}\n\nfragment scene_SchedulingFragment on Scheduling {\n  id\n  name\n  status\n  nextScheduleTime\n  adapterType\n  configuration\n  ...ToggleSchedulingForm_SchedulingFragment\n  ...ScheduleSchedulingNowForm_SchedulingFragment\n}\n"
+    "text": "query scene_Scheduling_Query(\n  $id: ID!\n) {\n  scheduling(id: $id) {\n    ...scene_SchedulingFragment\n    id\n  }\n}\n\nfragment DeleteSchedulingForm_SchedulingFragment on Scheduling {\n  id\n  status\n}\n\nfragment ScheduleSchedulingNowForm_SchedulingFragment on Scheduling {\n  id\n}\n\nfragment ToggleSchedulingForm_SchedulingFragment on Scheduling {\n  id\n}\n\nfragment scene_SchedulingFragment on Scheduling {\n  id\n  name\n  status\n  nextScheduleTime\n  adapterType\n  configuration\n  ...ToggleSchedulingForm_SchedulingFragment\n  ...ScheduleSchedulingNowForm_SchedulingFragment\n  ...DeleteSchedulingForm_SchedulingFragment\n}\n"
   }
 };
 })();

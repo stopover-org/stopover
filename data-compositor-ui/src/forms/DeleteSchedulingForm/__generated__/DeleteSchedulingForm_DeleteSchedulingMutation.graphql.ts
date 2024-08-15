@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6779cb750e68279ca1402950036fac76>>
+ * @generated SignedSource<<0fd8dc1762ad906d96a56a282f1dee6d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,17 +10,17 @@
 
 import { ConcreteRequest, Mutation } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type ToggleSchedulingForm_ToggleSchedulingMutation$variables = {
+export type DeleteSchedulingForm_DeleteSchedulingMutation$variables = {
   id: string;
 };
-export type ToggleSchedulingForm_ToggleSchedulingMutation$data = {
-  readonly toggleScheduling: {
-    readonly " $fragmentSpreads": FragmentRefs<"ToggleSchedulingForm_SchedulingFragment" | "scene_SchedulingFragment">;
+export type DeleteSchedulingForm_DeleteSchedulingMutation$data = {
+  readonly removeScheduling: {
+    readonly " $fragmentSpreads": FragmentRefs<"DeleteSchedulingForm_SchedulingFragment" | "scene_SchedulingFragment">;
   } | null | undefined;
 };
-export type ToggleSchedulingForm_ToggleSchedulingMutation = {
-  response: ToggleSchedulingForm_ToggleSchedulingMutation$data;
-  variables: ToggleSchedulingForm_ToggleSchedulingMutation$variables;
+export type DeleteSchedulingForm_DeleteSchedulingMutation = {
+  response: DeleteSchedulingForm_DeleteSchedulingMutation$data;
+  variables: DeleteSchedulingForm_DeleteSchedulingMutation$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -43,20 +43,20 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ToggleSchedulingForm_ToggleSchedulingMutation",
+    "name": "DeleteSchedulingForm_DeleteSchedulingMutation",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
         "concreteType": "Scheduling",
         "kind": "LinkedField",
-        "name": "toggleScheduling",
+        "name": "removeScheduling",
         "plural": false,
         "selections": [
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "ToggleSchedulingForm_SchedulingFragment"
+            "name": "DeleteSchedulingForm_SchedulingFragment"
           },
           {
             "args": null,
@@ -74,14 +74,14 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ToggleSchedulingForm_ToggleSchedulingMutation",
+    "name": "DeleteSchedulingForm_DeleteSchedulingMutation",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
         "concreteType": "Scheduling",
         "kind": "LinkedField",
-        "name": "toggleScheduling",
+        "name": "removeScheduling",
         "plural": false,
         "selections": [
           {
@@ -95,14 +95,14 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "name",
+            "name": "status",
             "storageKey": null
           },
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "status",
+            "name": "name",
             "storageKey": null
           },
           {
@@ -132,16 +132,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "993c86de1f1a9cdd4bf256a306b5c92f",
+    "cacheID": "defa26baed59de58d070a2197b3901f5",
     "id": null,
     "metadata": {},
-    "name": "ToggleSchedulingForm_ToggleSchedulingMutation",
+    "name": "DeleteSchedulingForm_DeleteSchedulingMutation",
     "operationKind": "mutation",
-    "text": "mutation ToggleSchedulingForm_ToggleSchedulingMutation(\n  $id: ID!\n) {\n  toggleScheduling(id: $id) {\n    ...ToggleSchedulingForm_SchedulingFragment\n    ...scene_SchedulingFragment\n    id\n  }\n}\n\nfragment DeleteSchedulingForm_SchedulingFragment on Scheduling {\n  id\n  status\n}\n\nfragment ScheduleSchedulingNowForm_SchedulingFragment on Scheduling {\n  id\n}\n\nfragment ToggleSchedulingForm_SchedulingFragment on Scheduling {\n  id\n}\n\nfragment scene_SchedulingFragment on Scheduling {\n  id\n  name\n  status\n  nextScheduleTime\n  adapterType\n  configuration\n  ...ToggleSchedulingForm_SchedulingFragment\n  ...ScheduleSchedulingNowForm_SchedulingFragment\n  ...DeleteSchedulingForm_SchedulingFragment\n}\n"
+    "text": "mutation DeleteSchedulingForm_DeleteSchedulingMutation(\n  $id: ID!\n) {\n  removeScheduling(id: $id) {\n    ...DeleteSchedulingForm_SchedulingFragment\n    ...scene_SchedulingFragment\n    id\n  }\n}\n\nfragment DeleteSchedulingForm_SchedulingFragment on Scheduling {\n  id\n  status\n}\n\nfragment ScheduleSchedulingNowForm_SchedulingFragment on Scheduling {\n  id\n}\n\nfragment ToggleSchedulingForm_SchedulingFragment on Scheduling {\n  id\n}\n\nfragment scene_SchedulingFragment on Scheduling {\n  id\n  name\n  status\n  nextScheduleTime\n  adapterType\n  configuration\n  ...ToggleSchedulingForm_SchedulingFragment\n  ...ScheduleSchedulingNowForm_SchedulingFragment\n  ...DeleteSchedulingForm_SchedulingFragment\n}\n"
   }
 };
 })();
 
-(node as any).hash = "bcfbd7b86952277ab3af70beeb8aaa73";
+(node as any).hash = "b0aaf8819bf4b8d43be7d5b620db643d";
 
 export default node;

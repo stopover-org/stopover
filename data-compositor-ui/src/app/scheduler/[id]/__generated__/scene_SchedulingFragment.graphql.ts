@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<846ee7b734c01cbae276e44cacadc90e>>
+ * @generated SignedSource<<ddc21250464c6fcabd16648dfce4ef76>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,7 +19,7 @@ export type scene_SchedulingFragment$data = {
   readonly name: string;
   readonly nextScheduleTime: string | null | undefined;
   readonly status: SchedulingStatus;
-  readonly " $fragmentSpreads": FragmentRefs<"ScheduleSchedulingNowForm_SchedulingFragment" | "ToggleSchedulingForm_SchedulingFragment">;
+  readonly " $fragmentSpreads": FragmentRefs<"DeleteSchedulingForm_SchedulingFragment" | "ScheduleSchedulingNowForm_SchedulingFragment" | "ToggleSchedulingForm_SchedulingFragment">;
   readonly " $fragmentType": "scene_SchedulingFragment";
 };
 export type scene_SchedulingFragment$key = {
@@ -84,12 +84,17 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "ScheduleSchedulingNowForm_SchedulingFragment"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "DeleteSchedulingForm_SchedulingFragment"
     }
   ],
   "type": "Scheduling",
   "abstractKey": null
 };
 
-(node as any).hash = "ecee1183ba9b3d393aa83c569668dbef";
+(node as any).hash = "623863f61d78c7b07e2856a15ec0d02e";
 
 export default node;

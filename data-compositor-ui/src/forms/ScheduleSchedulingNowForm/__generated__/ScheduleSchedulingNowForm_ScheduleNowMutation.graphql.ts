@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<01df2863c857a536bb6fb2e3bef74110>>
+ * @generated SignedSource<<1833f38fce2dc4a0266644da74f2bca7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -158,12 +158,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "eb9e56bf1898dda9726f6fbce9976d8e",
+    "cacheID": "4340edffe3700eb93080ce28e5a0cd31",
     "id": null,
     "metadata": {},
     "name": "ScheduleSchedulingNowForm_ScheduleNowMutation",
     "operationKind": "mutation",
-    "text": "mutation ScheduleSchedulingNowForm_ScheduleNowMutation(\n  $id: ID!\n) {\n  scheduleNow(id: $id) {\n    scheduling {\n      ...ToggleSchedulingForm_SchedulingFragment\n      ...scene_SchedulingFragment\n      id\n    }\n    id\n  }\n}\n\nfragment ScheduleSchedulingNowForm_SchedulingFragment on Scheduling {\n  id\n}\n\nfragment ToggleSchedulingForm_SchedulingFragment on Scheduling {\n  id\n}\n\nfragment scene_SchedulingFragment on Scheduling {\n  id\n  name\n  status\n  nextScheduleTime\n  adapterType\n  configuration\n  ...ToggleSchedulingForm_SchedulingFragment\n  ...ScheduleSchedulingNowForm_SchedulingFragment\n}\n"
+    "text": "mutation ScheduleSchedulingNowForm_ScheduleNowMutation(\n  $id: ID!\n) {\n  scheduleNow(id: $id) {\n    scheduling {\n      ...ToggleSchedulingForm_SchedulingFragment\n      ...scene_SchedulingFragment\n      id\n    }\n    id\n  }\n}\n\nfragment DeleteSchedulingForm_SchedulingFragment on Scheduling {\n  id\n  status\n}\n\nfragment ScheduleSchedulingNowForm_SchedulingFragment on Scheduling {\n  id\n}\n\nfragment ToggleSchedulingForm_SchedulingFragment on Scheduling {\n  id\n}\n\nfragment scene_SchedulingFragment on Scheduling {\n  id\n  name\n  status\n  nextScheduleTime\n  adapterType\n  configuration\n  ...ToggleSchedulingForm_SchedulingFragment\n  ...ScheduleSchedulingNowForm_SchedulingFragment\n  ...DeleteSchedulingForm_SchedulingFragment\n}\n"
   }
 };
 })();

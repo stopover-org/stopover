@@ -5,11 +5,11 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay";
 import { useParams } from "next/navigation";
 import { scene_Scheduling_Query } from "@/app/scheduler/[id]/__generated__/scene_Scheduling_Query.graphql";
 import NoAccess from "@/components/NoAccess";
-import { CalendarDaysIcon, TrashIcon } from "@heroicons/react/24/solid";
 import ToggleSchedulingForm from "@/forms/ToggleSchedulingForm";
 import { scene_SchedulingFragment$key } from "@/app/scheduler/[id]/__generated__/scene_SchedulingFragment.graphql";
 import { formatRelative, subDays } from "date-fns";
 import ScheduleSchedulingNowForm from "@/forms/ScheduleSchedulingNowForm";
+import DeleteSchedulingForm from "@/forms/DeleteSchedulingForm";
 
 const Scene = () => {
   const params = useParams();
@@ -35,6 +35,7 @@ const Scene = () => {
         configuration
         ...ToggleSchedulingForm_SchedulingFragment
         ...ScheduleSchedulingNowForm_SchedulingFragment
+        ...DeleteSchedulingForm_SchedulingFragment
       }
     `,
     query.scheduling,
@@ -74,15 +75,7 @@ const Scene = () => {
             <div className="flex">
               <ToggleSchedulingForm fragmentRef={scheduling} />
               <ScheduleSchedulingNowForm fragmentRef={scheduling} />
-              <div className="pl-2">
-                <button
-                  type="button"
-                  className="inline-flex bg-red-700 text-white items-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-transparent hover:bg-red-800"
-                >
-                  <TrashIcon className="h-6 w-6" />
-                  Delete
-                </button>
-              </div>
+              <DeleteSchedulingForm fragmentRef={scheduling} />
             </div>
           </div>
           <div className="text-2sm">{scheduling.id}</div>
