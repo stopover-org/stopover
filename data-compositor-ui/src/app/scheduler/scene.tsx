@@ -76,7 +76,9 @@ const Scene = () => {
                   {schedulings.edges.map(({ node: scheduling }) => (
                     <tr className="border-b border-neutral-200 dark:border-white/10">
                       <td className="whitespace-nowrap px-6 py-4 font-medium">
-                        {truncatedUUID(scheduling.id)}
+                        <a href={`scheduler/${scheduling.id}`}>
+                          {truncatedUUID(scheduling.id)}
+                        </a>
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
                         {scheduling.name}
