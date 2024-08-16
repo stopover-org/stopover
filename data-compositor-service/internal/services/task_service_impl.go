@@ -146,7 +146,7 @@ func (s *taskServiceImpl) RetryTask(id uuid.UUID) (*models.Task, error) {
 func (s *taskServiceImpl) GetTask(id uuid.UUID) (*models.Task, error) {
 	task := &models.Task{}
 
-	if err := s.db.First(task, "id = ?", id).Error; err != nil {
+	if err := s.db.Preload("Scheduling").First(task, "id = ?", id).Error; err != nil {
 		return nil, err
 	}
 
