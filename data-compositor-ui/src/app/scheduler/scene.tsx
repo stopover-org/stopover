@@ -6,6 +6,7 @@ import { truncatedUUID } from "@/utils/truncateUUID";
 import { scene_SchedulingsConnection_Query } from "@/app/scheduler/__generated__/scene_SchedulingsConnection_Query.graphql";
 import { scene_Schedulings_Fragment$key } from "@/app/scheduler/__generated__/scene_Schedulings_Fragment.graphql";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import { SchedulingsPaginationQuery } from "@/app/scheduler/__generated__/SchedulingsPaginationQuery.graphql";
 
 const Scene = () => {
   const query = useLazyLoadQuery<scene_SchedulingsConnection_Query>(
@@ -20,7 +21,7 @@ const Scene = () => {
   const {
     data: { schedulings },
   } = usePaginationFragment<
-    scene_SchedulingsConnection_Query,
+    SchedulingsPaginationQuery,
     scene_Schedulings_Fragment$key
   >(
     graphql`

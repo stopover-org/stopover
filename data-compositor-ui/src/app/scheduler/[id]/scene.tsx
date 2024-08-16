@@ -1,7 +1,12 @@
 "use client";
 
 import { memo, useMemo } from "react";
-import { graphql, useFragment, useLazyLoadQuery } from "react-relay";
+import {
+  graphql,
+  useFragment,
+  useLazyLoadQuery,
+  usePaginationFragment,
+} from "react-relay";
 import { useParams } from "next/navigation";
 import { scene_Scheduling_Query } from "@/app/scheduler/[id]/__generated__/scene_Scheduling_Query.graphql";
 import NoAccess from "@/components/NoAccess";
@@ -10,6 +15,9 @@ import { scene_SchedulingFragment$key } from "@/app/scheduler/[id]/__generated__
 import { formatRelative, subDays } from "date-fns";
 import ScheduleSchedulingNowForm from "@/forms/ScheduleSchedulingNowForm";
 import DeleteSchedulingForm from "@/forms/DeleteSchedulingForm";
+import TasksList from "@/components/TasksList";
+import { scene_Tasks_SchedulingFragment$key } from "@/app/scheduler/[id]/__generated__/scene_Tasks_SchedulingFragment.graphql";
+import { TasksPaginationQuery } from "./__generated__/TasksPaginationQuery.graphql";
 
 const Scene = () => {
   const params = useParams();
@@ -19,6 +27,7 @@ const Scene = () => {
         scheduling(id: $id) {
           ...scene_SchedulingFragment
         }
+        ...scene_Tasks_SchedulingFragment
       }
     `,
     { id: params.id as string },
@@ -39,6 +48,31 @@ const Scene = () => {
       }
     `,
     query.scheduling,
+  );
+
+  const tasks = usePaginationFragment<
+    TasksPaginationQuery,
+    scene_Tasks_SchedulingFragment$key
+  >(
+    graphql`
+      fragment scene_Tasks_SchedulingFragment on Query
+      @argumentDefinitions(
+        first: { type: "Int", defaultValue: 10 }
+        after: { type: "String", defaultValue: "" }
+      )
+      @refetchable(queryName: "TasksPaginationQuery") {
+        tasks(input: { schedulingId: $id }, first: $first, after: $after)
+          @connection(key: "TasksPagination_tasks") {
+          ...TasksList_TasksConnectionFragment
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      }
+    `,
+    query,
   );
 
   const calendarDate = useMemo(() => {
@@ -80,6 +114,7 @@ const Scene = () => {
           </div>
           <div className="text-2sm">{scheduling.id}</div>
         </div>
+        <TasksList fragmentRef={tasks.data.tasks} />
       </div>
     </div>
   );

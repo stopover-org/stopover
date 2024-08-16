@@ -157,6 +157,10 @@ func (s *taskServiceImpl) GetTasks(input graphql.TaskFilterInput, first int, aft
 	var tasks []models.Task
 	query := s.db.Model(&models.Task{})
 
+	if input.SchedulingID != "" {
+		query = query.Where("scheduling_id = ?", input.SchedulingID)
+	}
+
 	// Handle pagination (limit and offset)
 	if first > 0 {
 		query = query.Limit(first)

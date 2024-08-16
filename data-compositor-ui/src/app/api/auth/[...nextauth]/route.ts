@@ -133,9 +133,7 @@ export const authOptions: AuthOptions = {
   },
   events: {
     async signOut({ token }: { token: JWT & Record<string, any> }) {
-      if (token.provider === "keycloak") {
-        await signOutKeycloak(token);
-      }
+      await signOutKeycloak(token);
     },
   },
 };

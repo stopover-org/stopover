@@ -99,6 +99,10 @@ func TaskToGraphql(task *models.Task) (*graphql.Task, error) {
 		return nil, err
 	}
 
+	if task.Scheduling == nil {
+		task.Scheduling = &models.Scheduling{}
+	}
+
 	scheduling, err := SchedulingToGraphql(task.Scheduling)
 	if err != nil {
 		return nil, err
