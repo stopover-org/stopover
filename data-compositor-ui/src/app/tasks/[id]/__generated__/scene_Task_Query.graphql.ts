@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e5f3d564d52f22b22783ed2dbc2a30a5>>
+ * @generated SignedSource<<f2e2b8068d69253742a50b5b89e6a5a6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -90,6 +90,27 @@ return {
           {
             "alias": null,
             "args": null,
+            "kind": "ScalarField",
+            "name": "adapterType",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "status",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "configuration",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "Scheduling",
             "kind": "LinkedField",
             "name": "scheduling",
@@ -112,12 +133,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "73dbc8e4ed7756207d05b4a92a777faf",
+    "cacheID": "4612abf5f97f4214db2f039a9a91a168",
     "id": null,
     "metadata": {},
     "name": "scene_Task_Query",
     "operationKind": "query",
-    "text": "query scene_Task_Query(\n  $id: ID!\n) {\n  task(id: $id) {\n    ...scene_TaskFragment\n    id\n  }\n}\n\nfragment scene_TaskFragment on Task {\n  id\n  scheduling {\n    id\n    name\n  }\n}\n"
+    "text": "query scene_Task_Query(\n  $id: ID!\n) {\n  task(id: $id) {\n    ...scene_TaskFragment\n    id\n  }\n}\n\nfragment scene_TaskFragment on Task {\n  id\n  adapterType\n  status\n  configuration\n  scheduling {\n    id\n    name\n  }\n}\n"
   }
 };
 })();

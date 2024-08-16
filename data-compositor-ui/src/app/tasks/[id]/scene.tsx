@@ -24,6 +24,9 @@ const Scene = () => {
     graphql`
       fragment scene_TaskFragment on Task {
         id
+        adapterType
+        status
+        configuration
         scheduling {
           id
           name
@@ -32,6 +35,7 @@ const Scene = () => {
     `,
     query.task,
   );
+
   if (!task) {
     return <NoAccess signIn={false} />;
   }
@@ -45,8 +49,22 @@ const Scene = () => {
               <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight flex items-center">
                 Scheduling {task.scheduling.name}
               </h2>
+              <span className="ml-2 py-1 px-2 text-xs rounded-2 inline-block whitespace-nowrap text-center bg-amber-200 text-amber-700 align-baseline font-bold uppercase leading-none">
+                {task.status}
+              </span>
+              <span className="ml-2 py-1 px-2 text-xs rounded-2 inline-block whitespace-nowrap text-center bg-amber-200 text-amber-700 align-baseline font-bold uppercase leading-none">
+                {task.adapterType}
+              </span>
             </div>
           </div>
+        </div>
+        <div className="flex justify-start flex-col w-[100%] pt-6">
+          <div className="font-light font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight flex items-center">
+            Configuration:
+          </div>
+          <pre className="pt-2">
+            {JSON.stringify(JSON.parse(task.configuration), undefined, 2)}
+          </pre>
         </div>
       </div>
     </div>
