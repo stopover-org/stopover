@@ -8,36 +8,19 @@ const InfiniteScroll = ({
   loadNext: () => void;
   children: ReactNode;
 }) => {
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
   const { ref, inView } = useInView();
 
   useEffect(() => {
-    loadNext();
-
-    const loadItems = async () => {
-      setLoading(true);
-
-      await loadNext();
-
-      setLoading(false);
-    };
-
-    loadItems();
-  }, [loadNext, page]);
-
-  useEffect(() => {
-    if (inView && !loading) {
-      setPage((prevPage) => prevPage + 1);
+    if (inView) {
+      loadNext();
     }
-  }, [inView, loading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
 
   return (
     <>
       {children}
-      <tr className="block" ref={ref}>
-        {loading && <td>Loading...</td>}
-      </tr>
+      <tr className="block" ref={ref} />
     </>
   );
 };
