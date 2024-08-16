@@ -7,6 +7,7 @@ import { scene_SchedulingsConnection_Query } from "@/app/scheduler/__generated__
 import { scene_Schedulings_Fragment$key } from "@/app/scheduler/__generated__/scene_Schedulings_Fragment.graphql";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { SchedulingsPaginationQuery } from "@/app/scheduler/__generated__/SchedulingsPaginationQuery.graphql";
+import InfiniteScroll from "@/components/InfiniteScroll";
 
 const Scene = () => {
   const query = useLazyLoadQuery<scene_SchedulingsConnection_Query>(
@@ -20,6 +21,7 @@ const Scene = () => {
 
   const {
     data: { schedulings },
+    loadNext,
   } = usePaginationFragment<
     SchedulingsPaginationQuery,
     scene_Schedulings_Fragment$key
@@ -94,27 +96,32 @@ const Scene = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {schedulings.edges.map(({ node: scheduling }) => (
-                      <tr className="border-b border-neutral-200 dark:border-white/10">
-                        <td className="whitespace-nowrap px-6 py-4 font-medium">
-                          <a href={`scheduler/${scheduling.id}`}>
-                            {truncatedUUID(scheduling.id)}
-                          </a>
-                        </td>
-                        <td className="whitespace-nowrap px-6 py-4">
-                          {scheduling.name}
-                        </td>
-                        <td className="whitespace-nowrap px-6 py-4">
-                          {scheduling.nextScheduleTime}
-                        </td>
-                        <td className="whitespace-nowrap px-6 py-4">
-                          {scheduling.status}
-                        </td>
-                        <td className="whitespace-nowrap px-6 py-4">
-                          {scheduling.adapterType}
-                        </td>
-                      </tr>
-                    ))}
+                    <InfiniteScroll loadNext={() => loadNext(30)}>
+                      {schedulings.edges.map(({ node: scheduling }) => (
+                        <tr
+                          key={scheduling.id}
+                          className="border-b border-neutral-200 dark:border-white/10"
+                        >
+                          <td className="whitespace-nowrap px-6 py-4 font-medium">
+                            <a href={`scheduler/${scheduling.id}`}>
+                              {truncatedUUID(scheduling.id)}
+                            </a>
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4">
+                            {scheduling.name}
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4">
+                            {scheduling.nextScheduleTime}
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4">
+                            {scheduling.status}
+                          </td>
+                          <td className="whitespace-nowrap px-6 py-4">
+                            {scheduling.adapterType}
+                          </td>
+                        </tr>
+                      ))}
+                    </InfiniteScroll>
                   </tbody>
                 </table>
               </div>

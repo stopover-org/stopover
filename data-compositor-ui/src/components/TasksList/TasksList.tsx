@@ -1,12 +1,15 @@
 import { graphql, useFragment } from "react-relay";
 import { truncatedUUID } from "@/utils/truncateUUID";
 import { memo } from "react";
+import InfiniteScroll from "@/components/InfiniteScroll";
 import { TasksList_TasksConnectionFragment$key } from "./__generated__/TasksList_TasksConnectionFragment.graphql";
 
 const TasksList = ({
   fragmentRef,
+  loadNext,
 }: {
   fragmentRef: TasksList_TasksConnectionFragment$key;
+  loadNext: () => void;
 }) => {
   const tasks = useFragment(
     graphql`
@@ -43,21 +46,23 @@ const TasksList = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {tasks.edges.map(({ node: task }) => (
-                    <tr
-                      key={task.id}
-                      className="border-b border-neutral-200 dark:border-white/10"
-                    >
-                      <td className="whitespace-nowrap px-6 py-4 font-medium">
-                        <a href={`/tasks/${task.id}`}>
-                          {truncatedUUID(task.id)}
-                        </a>
-                      </td>
-                      <td className="whitespace-nowrap px-6 py-4">
-                        {task.status}
-                      </td>
-                    </tr>
-                  ))}
+                  <InfiniteScroll loadNext={loadNext}>
+                    {tasks.edges.map(({ node: task }) => (
+                      <tr
+                        key={task.id}
+                        className="border-b border-neutral-200 dark:border-white/10"
+                      >
+                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                          <a href={`/tasks/${task.id}`}>
+                            {truncatedUUID(task.id)}
+                          </a>
+                        </td>
+                        <td className="whitespace-nowrap px-6 py-4">
+                          {task.status}
+                        </td>
+                      </tr>
+                    ))}
+                  </InfiniteScroll>
                 </tbody>
               </table>
             </div>

@@ -114,7 +114,10 @@ const Scene = () => {
           </div>
           <div className="text-2sm">{scheduling.id}</div>
         </div>
-        <TasksList fragmentRef={tasks.data.tasks} />
+        <TasksList
+          loadNext={() => tasks.loadNext(30)}
+          fragmentRef={tasks.data.tasks}
+        />
       </div>
     </div>
   );

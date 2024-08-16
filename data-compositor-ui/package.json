@@ -23,6 +23,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.2",
+    "react-intersection-observer": "^9.13.0",
     "react-relay": "^17.0.0",
     "relay-runtime": "^17.0.0",
     "universal-cookie": "^7.2.0",
