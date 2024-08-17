@@ -3,6 +3,7 @@ package services
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/stopover-org/stopover/data-compositor/db"
 	"github.com/stopover-org/stopover/data-compositor/db/models"
@@ -153,21 +154,34 @@ func (s *schedulingServiceImpl) RemoveScheduling(id uuid.UUID) (*models.Scheduli
 
 func (s *schedulingServiceImpl) ScheduleNow(id uuid.UUID) (*models.Task, *models.Scheduling, error) {
 	scheduling := &models.Scheduling{}
+	task := &models.Task{
+		Retries:       0,
+		Status:        graphql.TaskStatusPending,
+		Artifacts:     []string{},
+		Configuration: json.RawMessage([]byte("{}")), // Default empty JSON
+	}
 
 	if err := s.db.First(scheduling, "id = ? AND status = ?", id, graphql.SchedulingStatusActive).Error; err != nil {
-		return nil, scheduling, err
+		return task, scheduling, err
+	}
+
+	if err := s.db.Where("scheduling_id = ?", id).Where("status = ? OR status = ?", graphql.TaskStatusPending, graphql.TaskStatusProcessing).First(task).Error; err == nil {
+		fmt.Sprintf(
+			"scheduling %s was already scheduled", scheduling.ID.String(),
+		)
+
+		return task, scheduling, errors.New("already scheduled")
+	} else {
+		fmt.Print(err)
 	}
 
 	now := time.Now()
 
-	task := &models.Task{
-		Scheduling:    scheduling,
-		Retries:       0,
-		Status:        graphql.TaskStatusPending,
-		ScheduledAt:   &now,
-		AdapterType:   scheduling.AdapterType,
-		Configuration: scheduling.Configuration,
-	}
+	task.Scheduling = scheduling
+	task.SchedulingID = scheduling.ID
+	task.ScheduledAt = &now
+	task.AdapterType = scheduling.AdapterType
+	task.Configuration = scheduling.Configuration
 
 	if err := s.db.Create(task).Error; err != nil {
 		return task, scheduling, err

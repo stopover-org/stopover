@@ -3,9 +3,11 @@ package db
 import (
 	"context"
 	"fmt"
+	"gorm.io/gorm/logger"
 	"log"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/joho/godotenv"
@@ -33,6 +35,15 @@ func initDB() {
 		log.Fatalf("Error loading .env file")
 	}
 
+	customLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
+		logger.Config{
+			SlowThreshold: time.Second,
+			LogLevel:      logger.Info,
+			Colorful:      true,
+		},
+	)
+
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
 		os.Getenv("DB_HOST"),
@@ -58,7 +69,7 @@ func initDB() {
 		os.Getenv("DB_PORT"),
 	)
 
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: customLogger})
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
