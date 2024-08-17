@@ -61,11 +61,7 @@ const NewSchedulingForm = () => {
     },
     [commitMutation, isMutationInFlight, router],
   );
-
-  const adapterTypes: AdapterType[] = useMemo(
-    () => ["VIATOR_EVENT_SCRAPPER"],
-    [],
-  );
+  const adapterTypes: AdapterType[] = useMemo(() => ["TEST_ADAPTER"], []);
 
   return (
     <form

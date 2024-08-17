@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1237569f9b3f758312fd8609096c4521>>
+ * @generated SignedSource<<c12cf78d49f48a1deee91c05ae5b4a39>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,7 +9,7 @@
 // @ts-nocheck
 
 import { Fragment, ReaderFragment } from 'relay-runtime';
-export type AdapterType = "VIATOR_EVENT_SCRAPPER" | "%future added value";
+export type AdapterType = "TEST_ADAPTER" | "%future added value";
 export type TaskStatus = "COMPLETED" | "FAILED" | "PENDING" | "PROCESSING" | "TERMINATED" | "%future added value";
 import { FragmentRefs } from "relay-runtime";
 export type scene_TaskFragment$data = {

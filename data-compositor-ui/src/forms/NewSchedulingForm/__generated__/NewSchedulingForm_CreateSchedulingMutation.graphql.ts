@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<dd638755f67f7a3688536ce0c9633f49>>
+ * @generated SignedSource<<bc942fc814ef01c977992d643dc383d5>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,7 +9,7 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Mutation } from 'relay-runtime';
-export type AdapterType = "VIATOR_EVENT_SCRAPPER" | "%future added value";
+export type AdapterType = "TEST_ADAPTER" | "%future added value";
 export type SchedulingStatus = "ACTIVE" | "INACTIVE" | "%future added value";
 export type SchedulingInput = {
   adapterType: AdapterType;

@@ -627,7 +627,7 @@ enum SchedulingStatus {
 }
 
 enum AdapterType {
-    VIATOR_EVENT_SCRAPPER
+    TEST_ADAPTER
 }
 
 input SchedulingFilterInput {

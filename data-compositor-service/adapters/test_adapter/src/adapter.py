@@ -1,20 +1,20 @@
-import asyncio
 from playwright.async_api import async_playwright
 from neo4j import GraphDatabase
 
-class ViatorScraper:
+
+class Adapter:
 
     def __init__(self, neo4j_uri, neo4j_user, neo4j_password):
         self.neo4j_driver = GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_password))
 
-    async def scrape_viator(self, url):
+    async def scrape(self, url):
         async with async_playwright() as p:
             browser = await p.chromium.launch(headless=True)
             page = await browser.new_page()
             await page.goto(url)
-            await page.wait_for_selector('.ttd-product-list-card-title')
+            await page.wait_for_selector('.card-body h4 a.title')
 
-            product_titles = await page.query_selector_all('.ttd-product-list-card-title')
+            product_titles = await page.query_selector_all('.card-body h4 a.title')
 
             with self.neo4j_driver.session() as session:
                 for title in product_titles:

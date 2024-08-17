@@ -1,10 +1,10 @@
 version: '3.8'
 
 services:
-  viator_event:
+  test_adapter:
     build:
-      context: ./viator_event
-    env_file: ./viator_event/.env
+      context: test_adapter
+    env_file: test_adapter/.env
     ports:
       - "${PORT}:8000"
     networks:

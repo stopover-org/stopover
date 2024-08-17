@@ -1,0 +1,5 @@
+neo4j==5.22.0
+playwright==1.45.0
+fastapi==0.112.0
+uvicorn==0.30.5
+python-dotenv==1.0.1
