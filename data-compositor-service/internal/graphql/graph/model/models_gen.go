@@ -8,7 +8,20 @@ import (
 	"strconv"
 )
 
+type Node interface {
+	IsNode()
+	GetID() string
+}
+
 type Mutation struct {
+}
+
+type PageInfo struct {
+	HasNextPage     bool    `json:"hasNextPage"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	StartCursor     *string `json:"startCursor,omitempty"`
+	EndCursor       *string `json:"endCursor,omitempty"`
+	TotalCount      *int    `json:"totalCount,omitempty"`
 }
 
 type Query struct {
@@ -16,15 +29,37 @@ type Query struct {
 
 type Scheduling struct {
 	ID               string           `json:"id"`
+	Name             string           `json:"name"`
 	NextScheduleTime *string          `json:"nextScheduleTime,omitempty"`
 	RetentionPeriod  int              `json:"retentionPeriod"`
 	MaxRetries       int              `json:"maxRetries"`
 	Status           SchedulingStatus `json:"status"`
 	AdapterType      AdapterType      `json:"adapterType"`
 	Configuration    string           `json:"configuration"`
+	Tasks            *TaskConnection  `json:"tasks"`
+}
+
+func (Scheduling) IsNode()            {}
+func (this Scheduling) GetID() string { return this.ID }
+
+type SchedulingConnection struct {
+	Edges    []*SchedulingEdge `json:"edges"`
+	PageInfo *PageInfo         `json:"pageInfo"`
+}
+
+type SchedulingEdge struct {
+	Node   *Scheduling `json:"node"`
+	Cursor string      `json:"cursor"`
+}
+
+type SchedulingFilterInput struct {
+	Name        *string           `json:"name,omitempty"`
+	Status      *SchedulingStatus `json:"status,omitempty"`
+	AdapterType *AdapterType      `json:"adapterType,omitempty"`
 }
 
 type SchedulingInput struct {
+	Name            string      `json:"name"`
 	RetentionPeriod *int        `json:"retentionPeriod,omitempty"`
 	MaxRetries      *int        `json:"maxRetries,omitempty"`
 	AdapterType     AdapterType `json:"adapterType"`
@@ -42,8 +77,28 @@ type Task struct {
 	Scheduling    *Scheduling `json:"scheduling"`
 }
 
+func (Task) IsNode()            {}
+func (this Task) GetID() string { return this.ID }
+
+type TaskConnection struct {
+	Edges    []*TaskEdge `json:"edges"`
+	PageInfo *PageInfo   `json:"pageInfo"`
+}
+
+type TaskEdge struct {
+	Node   *Task  `json:"node"`
+	Cursor string `json:"cursor"`
+}
+
+type TaskFilterInput struct {
+	SchedulingID string       `json:"schedulingId"`
+	Status       *TaskStatus  `json:"status,omitempty"`
+	AdapterType  *AdapterType `json:"adapterType,omitempty"`
+}
+
 type UpdateSchedulingInput struct {
 	ID              string       `json:"id"`
+	Name            *string      `json:"name,omitempty"`
 	RetentionPeriod *int         `json:"retentionPeriod,omitempty"`
 	MaxRetries      *int         `json:"maxRetries,omitempty"`
 	AdapterType     *AdapterType `json:"adapterType,omitempty"`

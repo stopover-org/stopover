@@ -1,5 +1,9 @@
-# schema.graphql
+interface Node {
+    id: ID!
+}
+
 input SchedulingInput {
+    name: String!
     retentionPeriod: Int
     maxRetries: Int
     adapterType: AdapterType!
@@ -8,6 +12,7 @@ input SchedulingInput {
 
 input UpdateSchedulingInput {
     id: ID!
+    name: String
     retentionPeriod: Int
     maxRetries: Int
     adapterType: AdapterType
@@ -31,7 +36,59 @@ enum AdapterType {
     VIATOR_EVENT_SCRAPPER
 }
 
-type Task {
+input SchedulingFilterInput {
+    name: String
+    status: SchedulingStatus
+    adapterType: AdapterType
+}
+
+input TaskFilterInput {
+    schedulingId: ID!
+    status: TaskStatus
+    adapterType: AdapterType
+}
+
+type SchedulingConnection {
+    edges: [SchedulingEdge!]!
+    pageInfo: PageInfo!
+}
+
+type SchedulingEdge {
+    node: Scheduling!
+    cursor: String!
+}
+
+type TaskConnection {
+    edges: [TaskEdge!]!
+    pageInfo: PageInfo!
+}
+
+type TaskEdge {
+    node: Task!
+    cursor: String!
+}
+
+type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: String
+    endCursor: String
+    totalCount: Int
+}
+
+type Scheduling implements Node {
+    id: ID!
+    name: String!
+    nextScheduleTime: String
+    retentionPeriod: Int!
+    maxRetries: Int!
+    status: SchedulingStatus!
+    adapterType: AdapterType!
+    configuration: String!
+    tasks(input: TaskFilterInput, first: Int, after: String, last: Int, before: String): TaskConnection!
+}
+
+type Task implements Node {
     id: ID!
     status: TaskStatus!
     retries: Int!
@@ -43,19 +100,11 @@ type Task {
     scheduling: Scheduling!
 }
 
-type Scheduling {
-    id: ID!
-    nextScheduleTime: String
-    retentionPeriod: Int!
-    maxRetries: Int!
-    status: SchedulingStatus!
-    adapterType: AdapterType!
-    configuration: String!
-}
-
 type Query {
     task(id: ID!): Task
     scheduling(id: ID!): Scheduling
+    schedulings(input: SchedulingFilterInput, first: Int, after: String, last: Int, before: String): SchedulingConnection!
+    tasks(input: TaskFilterInput, first: Int, after: String, last: Int, before: String): TaskConnection!
 }
 
 type Mutation {
